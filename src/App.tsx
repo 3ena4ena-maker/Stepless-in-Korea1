@@ -55,6 +55,7 @@ import { BUSAN_ITINERARIES } from './data/itineraries';
 import SubwayStationMap from './components/SubwayStationMap';
 import BusanItinerariesView from './components/BusanItinerariesView';
 import BusanEventsCalendarView from './components/BusanEventsCalendarView';
+import StationSearchBar, { searchStations } from './components/StationSearchBar';
 
 // Dynamic tab loading fallback component for code-split views
 const TabLoadingFallback = ({ text = "정보를 신속하게 불러오는 중..." }: { text?: string }) => (
@@ -1189,16 +1190,29 @@ export default function App() {
                       }
                     }}
                     onNavigateToSearch={(q) => {
+                      const queryToUse = q !== undefined ? q : searchQuery;
                       if (q !== undefined) {
                         setSearchQuery(q);
                       }
+                      if (queryToUse && queryToUse.trim().length > 0) {
+                        const matches = searchStations(queryToUse, STATIONS);
+                        if (matches.length > 0) {
+                          setSelectedStationId(matches[0].station.id);
+                          if (matches[0].matchedExit) {
+                            setExpandedExitNum(matches[0].matchedExit);
+                          }
+                        }
+                      }
                       setCurrentTab('search');
                       setIsHomeLanding(false);
-                      try {
-                        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-                      } catch (e) {
-                        window.scrollTo(0, 0);
-                      }
+                      setTimeout(() => {
+                        const targetEl = document.getElementById('search-selected-station-details') || document.getElementById('search-tab-map-container');
+                        if (targetEl) {
+                          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        } else {
+                          window.scrollTo(0, 0);
+                        }
+                      }, 100);
                     }}
                     onNavigateToReport={() => {
                       setCurrentTab('about');
@@ -1240,26 +1254,29 @@ export default function App() {
                 </p>
 
                 {/* Search Bar Input */}
-                <div className="mt-6 max-w-lg relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                    <Search className="w-5 h-5" />
-                  </div>
-                  <input
-                    type="text"
-                    id="stations-search-input"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={language === 'KR' ? '역 이름이나 출구를 검색해보세요... (예: 서면역, 7번)' : 'Search station or exit index... (e.g., Jeonpo, 7)'}
-                    className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-2xl bg-white text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#003466] text-sm"
+                <div className="mt-6 max-w-xl">
+                  <StationSearchBar
+                    language={language}
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    onSelectStation={(stId, matchedExit) => {
+                      setSelectedStationId(stId);
+                      if (matchedExit) {
+                        setExpandedExitNum(matchedExit);
+                      } else {
+                        setExpandedExitNum(null);
+                      }
+                      setCurrentTab('search');
+                      setIsHomeLanding(false);
+                    }}
+                    onNavigateToSearch={(q) => {
+                      if (q !== undefined) {
+                        setSearchQuery(q);
+                      }
+                      setCurrentTab('search');
+                      setIsHomeLanding(false);
+                    }}
                   />
-                  {searchQuery && (
-                    <button 
-                      onClick={() => setSearchQuery('')}
-                      className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  )}
                 </div>
               </div>
 

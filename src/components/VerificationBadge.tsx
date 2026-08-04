@@ -28,19 +28,19 @@ export function VerificationBadge({
           <span>{language === 'KR' ? '모든 현장 가본 검증 정보' : 'Field Verified Data'}</span>
         </span>
         <span className="text-slate-300">|</span>
-        <span>조사자: <strong className="text-slate-700 font-medium">플로레르</strong></span>
+        <span>{language === 'KR' ? '조사자' : 'Inspector'}: <strong className="text-slate-700 font-medium">{language === 'KR' ? '플로레르' : 'Florair (Stepless)'}</strong></span>
         <span className="text-slate-300">|</span>
-        <span>최근 조사일: <strong className="text-slate-700 font-medium">{todayStr} 기준</strong> <span className="text-blue-600">(매일 자동 업데이트)</span></span>
+        <span>{language === 'KR' ? '최근 조사일:' : 'Audited:'} <strong className="text-slate-700 font-medium">{todayStr} {language === 'KR' ? '기준' : ''}</strong> <span className="text-blue-600">{language === 'KR' ? '(매일 자동 업데이트)' : '(Updated Daily)'}</span></span>
         <span className="text-slate-300">|</span>
         <span>
-          공식 출처:{' '}
+          {language === 'KR' ? '공식 출처:' : 'Source:'}{' '}
           <a 
             href={naverSearchUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600 hover:text-blue-800 font-medium underline inline-flex items-center gap-0.5"
           >
-            <span>네이버지도</span>
+            <span>{language === 'KR' ? '네이버지도' : 'Naver Map'}</span>
             <ExternalLink className="w-2.5 h-2.5 text-blue-600" />
           </a>
         </span>
@@ -61,17 +61,17 @@ export function VerificationBadge({
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-slate-700">
           <span className="inline-flex items-center gap-1">
             <UserCheck className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-            <span>조사자: <strong className="text-slate-900 font-black">플로레르</strong></span>
+            <span>{language === 'KR' ? '조사자:' : 'Auditor:'} <strong className="text-slate-900 font-black">{language === 'KR' ? '플로레르' : 'Florair'}</strong></span>
           </span>
           <span className="text-slate-300">|</span>
           <span className="inline-flex items-center gap-1">
             <Calendar className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-            <span>최근 조사일: <strong className="text-slate-900 font-black">{todayStr} 기준</strong></span>
-            <span className="text-xs text-[#004481] font-bold">(매일 자동 업데이트)</span>
+            <span>{language === 'KR' ? '최근 조사일:' : 'Audit Date:'} <strong className="text-slate-900 font-black">{todayStr} {language === 'KR' ? '기준' : ''}</strong></span>
+            <span className="text-xs text-[#004481] font-bold">{language === 'KR' ? '(매일 자동 업데이트)' : '(Updated Daily)'}</span>
           </span>
           <span className="text-slate-300">|</span>
           <span>
-            공식 출처: {' '}
+            {language === 'KR' ? '공식 출처:' : 'Source:'} {' '}
             <a
               href={naverSearchUrl}
               target="_blank"

@@ -53,6 +53,61 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
   const leafletMapInstance = useRef<any>(null);
   const leafletMarkersRef = useRef<any[]>([]);
 
+  // Safe map cleanup helpers to prevent memory leaks and API error cascades
+  const destroyNaverMap = () => {
+    if (markersRef.current && markersRef.current.length > 0) {
+      markersRef.current.forEach(m => {
+        try {
+          if (m && typeof m.setMap === 'function') {
+            m.setMap(null);
+          }
+        } catch (e) {
+          // ignore Naver API internal auth errors
+        }
+      });
+      markersRef.current = [];
+    }
+    if (mapInstance.current) {
+      try {
+        if (window.naver && window.naver.maps && window.naver.maps.Event) {
+          window.naver.maps.Event.clearInstanceListeners(mapInstance.current);
+        }
+      } catch (e) {
+        // ignore
+      }
+      mapInstance.current = null;
+    }
+    if (mapElement.current) {
+      mapElement.current.innerHTML = '';
+    }
+  };
+
+  const destroyLeafletMap = () => {
+    if (leafletMarkersRef.current && leafletMarkersRef.current.length > 0) {
+      leafletMarkersRef.current.forEach(m => {
+        try {
+          if (m && typeof m.remove === 'function') {
+            m.remove();
+          }
+        } catch (e) {
+          // ignore
+        }
+      });
+      leafletMarkersRef.current = [];
+    }
+    if (leafletMapInstance.current) {
+      try {
+        leafletMapInstance.current.remove();
+      } catch (e) {
+        // ignore
+      }
+      leafletMapInstance.current = null;
+    }
+    if (mapElement.current) {
+      mapElement.current.innerHTML = '';
+    }
+  };
+
   // 1. Asynchronously Load Naver Maps API script
   useEffect(() => {
     // Read client ID from state, or env with extensive fallbacks (defaulting to user-registered jig5o1hthp)
@@ -83,6 +138,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
     // Dynamic error hook in window to prevent default browser alert dialog
     window.navermaps_auth_error = () => {
       console.warn("Naver Maps API Authentication failed for origin:", window.location.origin);
+      destroyNaverMap();
       setNaverAuthFailed(true);
       setUseLeaflet(true); // Automatically switch to Leaflet map when domain is not authorized in NCP
     };
@@ -133,8 +189,13 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
 
   // 2. Initialize or Update Map and Markers on Station / Script loaded changes
   useEffect(() => {
-    if (useLeaflet) return;
+    if (useLeaflet) {
+      destroyNaverMap();
+      return;
+    }
     if (!scriptLoaded || !window.naver || !window.naver.maps || !mapElement.current) return;
+
+    destroyLeafletMap();
 
     const exits = station.exits || [];
     if (exits.length === 0) return;
@@ -461,9 +522,15 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
 
   // 4. Initialize or Update Leaflet Map and Markers
   useEffect(() => {
-    if (!useLeaflet || !leafletLoaded || !mapElement.current) return;
+    if (!useLeaflet) {
+      destroyLeafletMap();
+      return;
+    }
+    if (!leafletLoaded || !mapElement.current) return;
     const L = (window as any).L;
     if (!L) return;
+
+    destroyNaverMap();
 
     const exits = station.exits || [];
     if (exits.length === 0) return;
@@ -755,39 +822,8 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
 
     return () => {
       window.removeEventListener('resize', handleResize);
-
-      try {
-        markersRef.current.forEach(m => {
-          if (m && typeof m.setMap === 'function') {
-            m.setMap(null);
-          }
-        });
-        markersRef.current = [];
-      } catch (e) {
-        console.warn('Map marker cleanup error:', e);
-      }
-
-      try {
-        leafletMarkersRef.current.forEach(m => {
-          if (m && typeof m.remove === 'function') {
-            m.remove();
-          }
-        });
-        leafletMarkersRef.current = [];
-      } catch (e) {
-        console.warn('Leaflet marker cleanup error:', e);
-      }
-
-      try {
-        if (leafletMapInstance.current) {
-          leafletMapInstance.current.remove();
-          leafletMapInstance.current = null;
-        }
-      } catch (e) {
-        console.warn('Leaflet map instance removal error:', e);
-      }
-
-      mapInstance.current = null;
+      destroyNaverMap();
+      destroyLeafletMap();
     };
   }, []);
 
@@ -1014,7 +1050,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
         )}
 
         {loadError ? (
-          <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center space-y-2 bg-rose-50/20">
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 text-center space-y-2 bg-rose-50/20">
             <span className="text-3xl text-rose-500">🗺️</span>
             <p className="font-extrabold text-sm text-slate-800">
               {language === 'KR' ? '지도를 불러올 수 없습니다.' : 'Failed to initialize Map API.'}
@@ -1025,27 +1061,24 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
                 : 'Could not load interactive station map context.'}
             </p>
           </div>
-        ) : useLeaflet ? (
-          !leafletLoaded ? (
-            <div className="w-full h-full flex flex-col items-center justify-center space-y-3">
-              <div className="w-8 h-8 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin" />
-              <p className="text-xs font-bold text-slate-400">
-                {language === 'KR' ? '실시간 인터랙티브 지도 준비 중...' : 'Initializing fallback maps...'}
-              </p>
-            </div>
-          ) : (
-            <div className="w-full h-full" ref={mapElement} id="subway-leaflet-map" />
-          )
-        ) : !scriptLoaded ? (
-          <div className="w-full h-full flex flex-col items-center justify-center space-y-3">
+        ) : useLeaflet && !leafletLoaded ? (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-3 bg-slate-50">
+            <div className="w-8 h-8 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin" />
+            <p className="text-xs font-bold text-slate-400">
+              {language === 'KR' ? '실시간 인터랙티브 지도 준비 중...' : 'Initializing fallback maps...'}
+            </p>
+          </div>
+        ) : !useLeaflet && !scriptLoaded ? (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-3 bg-slate-50">
             <div className="w-8 h-8 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin" />
             <p className="text-xs font-bold text-slate-400">
               {language === 'KR' ? '실시간 지하철역 지도 데이터 로딩 중...' : 'Streaming maps telemetry...'}
             </p>
           </div>
-        ) : (
-          <div className="w-full h-full" ref={mapElement} id="subway-naver-map" />
-        )}
+        ) : null}
+
+        {/* Permanent Map Container DOM Node */}
+        <div className="w-full h-full" ref={mapElement} id="subway-map-container" />
       </div>
 
       {/* Information Tip Bar */}

@@ -47,7 +47,7 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
                 Stepless <span className="text-xs bg-emerald-50 text-emerald-700 font-sans px-2 py-0.5 rounded-full font-bold">Busan</span>
               </span>
               <p className="text-[10px] text-slate-400 font-sans font-medium -mt-1">
-                계단 없는 최적의 부산 지하철 길잡이
+                {language === 'KR' ? '계단 없는 최적의 부산 지하철 길잡이' : 'Step-Free Busan Metro Guide'}
               </p>
             </div>
           </div>
@@ -96,7 +96,7 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
               rel="noopener noreferrer"
               className="px-4 py-1.5 rounded-full bg-[#004481] hover:bg-[#003566] text-white text-xs font-extrabold shadow-2xs transition-colors"
             >
-              釜山교통공사
+              {language === 'KR' ? '부산교통공사' : 'Busan Transit (Humetro)'}
             </a>
           </div>
 

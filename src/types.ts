@@ -24,8 +24,10 @@ export interface ExitInfo {
   hasEscalator: boolean;
   isStrollerFriendly: boolean; // Carrier / heavy bag friendly
   tip: string; // "서면역 7번 출구는 롯데백화점과 직접 연결되어 있어..."
+  tipEn?: string;
   status: StatusType;
   directionDesc: string; // e.g., "롯데백화점, 서면시장 방면, 쥬디스태화 방면"
+  directionDescEn?: string;
   latitude: number; // for path/mapping reference
   longitude: number;
   kakaoMapUrl: string; // Navigation link
