@@ -4,7 +4,7 @@
  * Updated: 2026-08 August Busan Events & Calendar
  */
 
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { 
   Train, 
   Search, 
@@ -53,9 +53,8 @@ import { translateRecommendation } from './utils';
 import { BUSAN_ITINERARIES } from './data/itineraries';
 
 import SubwayStationMap from './components/SubwayStationMap';
-const SubwayStationMapLazy = lazy(() => import('./components/SubwayStationMap'));
-const BusanItinerariesView = lazy(() => import('./components/BusanItinerariesView'));
-const BusanEventsCalendarView = lazy(() => import('./components/BusanEventsCalendarView'));
+import BusanItinerariesView from './components/BusanItinerariesView';
+import BusanEventsCalendarView from './components/BusanEventsCalendarView';
 
 // Dynamic tab loading fallback component for code-split views
 const TabLoadingFallback = ({ text = "정보를 신속하게 불러오는 중..." }: { text?: string }) => (
@@ -265,12 +264,15 @@ export default function App() {
     try {
       const loader = document.getElementById('app-loading-screen');
       if (loader) {
+        loader.style.display = 'none';
         loader.remove();
       }
     } catch (e) {
       // ignore
     }
   }, []);
+
+  const isInitialRoutingCompleteRef = useRef<boolean>(false);
 
   const [hasUpvoted, setHasUpvoted] = useState<Record<string, boolean>>(() => {
     try {
@@ -482,6 +484,7 @@ export default function App() {
     };
 
     handleUrlRouting();
+    isInitialRoutingCompleteRef.current = true;
     window.addEventListener('popstate', handleUrlRouting);
     return () => {
       window.removeEventListener('popstate', handleUrlRouting);
@@ -503,6 +506,9 @@ export default function App() {
 
     // 1. Change URL path safely
     try {
+      if (!isInitialRoutingCompleteRef.current) {
+        return;
+      }
       if (currentTab === 'home') {
         if (isHomeLanding) {
           const expectedPath = '/';
@@ -1335,9 +1341,7 @@ export default function App() {
 
               {/* Station Map directly below station selection */}
               <div id="search-tab-map-container" className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-                <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? '지도를 불러오는 중...' : 'Loading map...'} />}>
-                  <SubwayStationMapLazy station={activeStation} language={language} focusedExitCoords={focusedExitCoords} />
-                </Suspense>
+                <SubwayStationMap station={activeStation} language={language} focusedExitCoords={focusedExitCoords} />
               </div>
 
               {/* 📋 Station Barrier-Free Movement Summary Table & Step-by-Step Info */}
@@ -1776,29 +1780,25 @@ export default function App() {
 
           {/* Tab 3: TRAVEL TIPS VIEW */}
           {currentTab === 'tips' && (
-            <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? '부산 여행 코스 가이드를 불러오는 중...' : 'Loading Busan itineraries...'} />}>
-              <BusanItinerariesView 
-                language={language}
-                initialCategory={selectedItineraryCategory as any}
-                onBack={() => {
-                  setSelectedItineraryCategory(null);
-                }}
-                onSelectCategory={(category) => {
-                  setSelectedItineraryCategory(category);
-                }}
-                tipsSubPage={tipsSubPage}
-                setTipsSubPage={setTipsSubPage}
-                activeRegionPage={activeRegionPage}
-                setActiveRegionPage={setActiveRegionPage}
-              />
-            </Suspense>
+            <BusanItinerariesView 
+              language={language}
+              initialCategory={selectedItineraryCategory as any}
+              onBack={() => {
+                setSelectedItineraryCategory(null);
+              }}
+              onSelectCategory={(category) => {
+                setSelectedItineraryCategory(category);
+              }}
+              tipsSubPage={tipsSubPage}
+              setTipsSubPage={setTipsSubPage}
+              activeRegionPage={activeRegionPage}
+              setActiveRegionPage={setActiveRegionPage}
+            />
           )}
 
           {/* New Tab 4: BUSAN MAJOR EVENTS CALENDAR VIEW */}
           {currentTab === 'schedule' && (
-            <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? '행사 달력을 불러오는 중...' : 'Loading events calendar...'} />}>
-              <BusanEventsCalendarView language={language} />
-            </Suspense>
+            <BusanEventsCalendarView language={language} />
           )}
 
           {/* New Tab 5: ABOUT THE SITE */}
