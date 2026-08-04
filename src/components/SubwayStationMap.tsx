@@ -718,25 +718,12 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
           iconAnchor: [crosswalkMarkerWidth * 0.5, crosswalkMarkerHeight * 0.5]
         });
 
-        // Force map size invalidation after render to ensure 100% full container rendering
-        setTimeout(() => {
-          try {
-            leafletMapInstance.current?.invalidateSize();
-          } catch (e) {
-            // ignore
-          }
-        }, 100);
-        setTimeout(() => {
-          try {
-            leafletMapInstance.current?.invalidateSize();
-          } catch (e) {
-            // ignore
-          }
-        }, 350);
+        const crosswalkMarker = L.marker([pt.lat, pt.lng], { icon: crosswalkIcon, title: titleText }).addTo(leafletMapInstance.current);
+        leafletMarkersRef.current.push(crosswalkMarker);
       });
     }
 
-    // Trigger map invalidation
+    // Force map size invalidation after render to ensure 100% full container rendering
     const timer = setTimeout(() => {
       try {
         leafletMapInstance.current?.invalidateSize();

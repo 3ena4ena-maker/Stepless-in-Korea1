@@ -52,8 +52,9 @@ import { Station, ExitInfo, FacilityReport, StatusType, getExitDisplayName, tran
 import { translateRecommendation } from './utils';
 import { BUSAN_ITINERARIES } from './data/itineraries';
 
+import SubwayStationMap from './components/SubwayStationMap';
+
 // Lazy loaded heavy components for optimal bundle splitting and fast initial page load
-const SubwayStationMap = lazy(() => import('./components/SubwayStationMap'));
 const BusanItinerariesView = lazy(() => import('./components/BusanItinerariesView'));
 const BusanEventsCalendarView = lazy(() => import('./components/BusanEventsCalendarView'));
 
