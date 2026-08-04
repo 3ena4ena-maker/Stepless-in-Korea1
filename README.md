@@ -1,11 +1,13 @@
-<div align="center">
+# Stepless Busan (부산 계단 없는 지하철 & 이동 가이드)
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+배리어프리(Barrier-Free) 부산 도시철도 길잡이 플랫폼입니다. 휠체어, 유모차, 대형 캐리어 이용자 및 교통약자를 위한 무단차 출구, 엘리베이터 동선, 그리고 부산의 최신 축제 및 주요 일정 정보를 제공합니다.
 
-  <h1>Built with AI Studio</h2>
+## 주요 기능
+- **부산 지하철 무단차 출구 & 엘리베이터 탐색**: 역별 엘리베이터 최적 출구 및 이동 동선 안내
+- **실시간 부산 주요 일정 & 축제 달력**: 최신 8월 주요 행사(부산 바다축제, 부산국제불교박람회, 북항 오션 SUP FESTA, 다대포 선셋 영화축제 등) 및 드론라이트쇼 일정 제공
+- **다국어 지원**: 한국어 (KR) 및 영어 (EN) 스위칭
 
-  <p>The fastest path from prompt to production with Gemini.</p>
-
-  <a href="https://aistudio.google.com/apps">Start building</a>
-
-</div>
+## 최근 업데이트
+- 2026년 8월 부산 주요 축제 및 행사 일정 반영
+- 지나간 행사 자동 정리 및 오늘 날짜 기준 실시간 연동
+- Vite base 경로 설정 최적화 (`./`)

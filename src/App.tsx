@@ -1,0 +1,2179 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ * Updated: 2026-08 August Busan Events & Calendar
+ */
+
+import React, { useState, useEffect, Suspense, lazy } from 'react';
+import { 
+  Train, 
+  Search, 
+  MapPin, 
+  Compass, 
+  HelpCircle, 
+  Info, 
+  Heart,
+  AlertTriangle, 
+  Baby, 
+  Luggage, 
+  Check, 
+  Camera, 
+  Send, 
+  X, 
+  CheckCircle2, 
+  ExternalLink,
+  SlidersHorizontal,
+  ChevronRight,
+  ChevronDown,
+  ChevronUp,
+  Plus,
+  RefreshCw,
+  Clock,
+  ThumbsUp,
+  Map,
+  Accessibility,
+  Trash2,
+  Shield,
+  Sparkles,
+  Calendar,
+  UserCheck,
+  ArrowRightLeft,
+  Box
+} from 'lucide-react';
+import Header from './components/Header';
+import TimelineVisualizer from './components/TimelineVisualizer';
+import { StationBarrierFreeCard } from './components/StationBarrierFreeCard';
+import { SiteIntroductionView } from './components/SiteIntroductionView';
+import { HomeOverviewSection } from './components/HomeOverviewSection';
+import { getLockerInfoText, renderLockerInfo } from './data/lockers';
+import { getNearbyPlaces, NearbyExitBadge, NearbyPlace } from './data/nearbyPlaces';
+import { STATIONS, INITIAL_REPORTS } from './data';
+import { Station, ExitInfo, FacilityReport, StatusType, getExitDisplayName, translateExitNumber, getTranslatedStationName } from './types';
+import { translateRecommendation } from './utils';
+import { BUSAN_ITINERARIES } from './data/itineraries';
+
+// Lazy loaded heavy components for optimal bundle splitting and fast initial page load
+const SubwayStationMap = lazy(() => import('./components/SubwayStationMap'));
+const BusanItinerariesView = lazy(() => import('./components/BusanItinerariesView'));
+const BusanEventsCalendarView = lazy(() => import('./components/BusanEventsCalendarView'));
+
+// Dynamic tab loading fallback component for code-split views
+const TabLoadingFallback = ({ text = "정보를 신속하게 불러오는 중..." }: { text?: string }) => (
+  <div className="flex flex-col items-center justify-center min-h-[360px] p-8 text-center space-y-3 animate-fade-in">
+    <div className="w-10 h-10 border-3 border-blue-100 border-t-[#004481] rounded-full animate-spin"></div>
+    <p className="text-sm font-bold text-slate-600">{text}</p>
+  </div>
+);
+
+// Custom icons based on premium vector styles for seamless accessibility display
+const EscalatorIcon = ({ className = "w-5 h-5 text-slate-700 flex-shrink-0" }: { className?: string }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2.5" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    {/* Passenger Circle Head */}
+    <circle cx="10" cy="7.5" r="1.8" fill="currentColor" stroke="none" />
+    {/* Passenger Body */}
+    <path d="M 10 10.2 L 10 14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+    {/* Escalator Track Slope */}
+    <path d="M 3.5 19.5 L 7.5 19.5 C 9.5 19.5, 10.5 18, 12 15.5 L 15.5 10 C 17 8, 18 7, 20.5 7 L 22.5 7" />
+  </svg>
+);
+
+const ElevatorIcon = ({ className = "w-5 h-5 text-slate-700 flex-shrink-0" }: { className?: string }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2.2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    {/* Elevator Cabin Frame */}
+    <rect x="3" y="3" width="18" height="18" rx="2.5" />
+    {/* Up Arrow Inside */}
+    <path d="M 7.5 10 L 9.5 7 L 11.5 10 Z" fill="currentColor" stroke="none" />
+    {/* Down Arrow Inside */}
+    <path d="M 7.5 14 L 9.5 17 L 11.5 14 Z" fill="currentColor" stroke="none" />
+    {/* Center door line */}
+    <line x1="14.5" y1="3" x2="14.5" y2="21" strokeDasharray="2 2" strokeWidth="1.5" />
+    {/* Door indicator arrows */}
+    <path d="M 14.5 12 L 17.5 12" />
+    <path d="M 17.5 12 L 16 10.5" />
+    <path d="M 17.5 12 L 16 13.5" />
+  </svg>
+);
+
+const StairsIcon = ({ className = "w-5 h-5 text-slate-500 flex-shrink-0" }: { className?: string }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2.2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className={className}
+  >
+    <path d="M 3.5 19.5 L 7.5 19.5 L 7.5 15.5 L 11.5 15.5 L 11.5 11.5 L 15.5 11.5 L 15.5 7.5 L 20.5 7.5" />
+  </svg>
+);
+
+// Exit Display name helper is imported directly from Types.ts to ensure bilingual consistency across systems.
+
+export interface TravelerRecommendation {
+  id: string;
+  author: string;
+  topic: string;
+  category: 'FOOD' | 'CAFE' | 'ATTRACTION' | 'TRANSIT' | 'OTHER';
+  stationOrExit: string;
+  content: string;
+  upvotes: number;
+  createdAt: string;
+}
+
+const DEFAULT_RECOMMENDATIONS: TravelerRecommendation[] = [
+  {
+    id: 'rec-1',
+    author: 'BusanLover33',
+    topic: '이재모피자 서면점 & 부산역본점',
+    category: 'FOOD',
+    stationOrExit: '부산역 5번출구 / 전포역 7번출구 근처',
+    content: '이재모피자는 부산 로컬과 여행객 모두가 열광하는 최고의 치즈 피자 전문점입니다! 치즈 크러스트의 쫄깃함이 남달라요. 웨이팅이 기니 앱(테이블링 등)을 꼭 체크하세요.',
+    upvotes: 42,
+    createdAt: '2026-06-01T12:00:00Z'
+  },
+  {
+    id: 'rec-2',
+    author: 'NomadChris',
+    topic: '전포 사잇길 소품샵 & 빈티지 카페 골목',
+    category: 'CAFE',
+    stationOrExit: '전포역 4번 및 8번출구',
+    content: '전포 카페거리에서 조금만 위쪽으로 가면 나오는 사잇길에는 아기자기한 공방, 감성 넘치는 독립 서점, 개성 가득한 빈티지 편집숍들이 가득해요! 평탄하고 걸어 다니기 좋아 기분 좋게 느긋이 산책하기 최고입니다.',
+    upvotes: 28,
+    createdAt: '2026-06-03T15:30:00Z'
+  },
+  {
+    id: 'rec-3',
+    author: 'TransitPro',
+    topic: '알뜰 부산 지하철 1일 무제한 패스',
+    category: 'TRANSIT',
+    stationOrExit: '모든 부산 지하철역 발권기',
+    content: '하루 동안 지하철을 4회 이상 탈 계획이라면 1일권(정기승차권)을 사서 이용하는게 저렴해요! 어른 6,000원, 청소년 4,000원이고 1일권은 최초 사용 당일 부산 지하철 1 ~ 4호선에서 횟수 제한 없이 이용할 수 있어요!',
+    upvotes: 35,
+    createdAt: '2026-06-05T09:15:00Z'
+  }
+];
+
+export default function App() {
+  const [currentTab, setCurrentTab] = useState<string>('home');
+  const [language, setLanguage] = useState<'KR' | 'EN'>('KR');
+  const [selectedStationId, setSelectedStationId] = useState<string>('seomyeon');
+  const [isHomeLanding, setIsHomeLanding] = useState<boolean>(true);
+  const [showPrivacyModal, setShowPrivacyModal] = useState<boolean>(false);
+  const [showTermsModal, setShowTermsModal] = useState<boolean>(false);
+  const [activePathFilter, setActivePathFilter] = useState<'ALL' | 'ACCESSIBLE' | 'CARRY'>('ALL');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedItineraryCategory, setSelectedItineraryCategory] = useState<string | null>(null);
+  const [tipsSubPage, setTipsSubPage] = useState<'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi'>('index');
+  const [activeRegionPage, setActiveRegionPage] = useState<'EAST' | 'WEST' | 'SOUTH' | 'NORTH' | null>(null);
+  const [siteSubPage, setSiteSubPage] = useState<'about' | 'privacy' | 'terms' | 'contact' | 'data-source'>('about');
+  
+  // Geolocation states
+  const [geoLoading, setGeoLoading] = useState<boolean>(false);
+  const [geoResult, setGeoResult] = useState<{
+    stationName: string;
+    distance: number;
+    exitNumber: string;
+    details: string;
+    lat: number;
+    lng: number;
+  } | null>(null);
+
+  // Live reports state
+  const [reports, setReports] = useState<FacilityReport[]>(INITIAL_REPORTS);
+  
+  // Create Report states
+  const [reportStation, setReportStation] = useState<string>('seomyeon');
+  const [reportExit, setReportExit] = useState<string>('7번 출구');
+  const [reportFacility, setReportFacility] = useState<'ELEVATOR' | 'ESCALATOR' | 'RAMP' | 'TOILET' | 'OTHER'>('ELEVATOR');
+  const [reportIssue, setReportIssue] = useState<'BROKEN' | 'MAINTENANCE' | 'CONSTRUCTION' | 'OTHER'>('BROKEN');
+  const [reportText, setReportText] = useState<string>('');
+  const [reportImage, setReportImage] = useState<string | null>(null);
+  const [submittingReport, setSubmittingReport] = useState<boolean>(false);
+  const [reportSuccess, setReportSuccess] = useState<boolean>(false);
+
+  // Active expanded exit details
+  const [expandedExitNum, setExpandedExitNum] = useState<string | null>(null);
+
+  // Toggle for showing the all station summary cards section in Search tab
+  const [showAllStationCards, setShowAllStationCards] = useState<boolean>(false);
+
+  // Track which stations have their attractions expanded in search/bento grid view (default collapsed)
+  const [expandedAttractions, setExpandedAttractions] = useState<Record<string, boolean>>({});
+
+  // Traveler Recommendations states
+  const [recommendations, setRecommendations] = useState<TravelerRecommendation[]>(() => {
+    const saved = localStorage.getItem('busan_traveler_recs');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (e) {
+        console.error("Failed to parse saved recommendations:", e);
+      }
+    }
+    return DEFAULT_RECOMMENDATIONS;
+  });
+
+  // Synchronize traveler recommendations from backend on system start to ensure everyone shares the custom tips
+  useEffect(() => {
+    fetch("/api/recommendations")
+      .then(res => {
+        const contentType = res.headers.get("content-type");
+        if (res.ok && contentType && contentType.includes("application/json")) {
+          return res.json();
+        }
+        throw new Error("API response is not JSON or server is unverified");
+      })
+      .then(data => {
+        if (Array.isArray(data)) {
+          setRecommendations(data);
+          localStorage.setItem('busan_traveler_recs', JSON.stringify(data));
+        }
+      })
+      .catch(err => {
+        // Quiet fallback to local storage / default state if backend route returns HTML
+        console.warn("Backend recommendations API unavailable, using local cache/defaults:", err.message);
+      });
+  }, []);
+
+  const [newRecAuthor, setNewRecAuthor] = useState('');
+  const [newRecTopic, setNewRecTopic] = useState('');
+  const [newRecCategory, setNewRecCategory] = useState<'FOOD' | 'CAFE' | 'ATTRACTION' | 'TRANSIT' | 'OTHER'>('FOOD');
+  const [newRecStation, setNewRecStation] = useState('');
+  const [newRecContent, setNewRecContent] = useState('');
+  const [hasUpvoted, setHasUpvoted] = useState<Record<string, boolean>>(() => {
+    const saved = localStorage.getItem('busan_traveler_upvotes');
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  // User's own written recommendation IDs
+  const [myRecIds, setMyRecIds] = useState<string[]>(() => {
+    const saved = localStorage.getItem('busan_my_rec_ids');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Operator (Admin) Mode states
+  const [isAdminMode, setIsAdminMode] = useState<boolean>(false);
+  const [adminPasswordInput, setAdminPasswordInput] = useState<string>('');
+  const [adminError, setAdminError] = useState<string>('');
+
+  // Delete confirmation state to avoid window.confirm (iframe safety)
+  const [deleteConfId, setDeleteConfId] = useState<string | null>(null);
+
+  // Category filter state for traveler recommendations board
+  const [filterCategory, setFilterCategory] = useState<string>('ALL');
+
+  // Busan Travel Itinerary Curation States
+  const [activeItineraryCategory, setActiveItineraryCategory] = useState<'ALL' | 'TRANSIT' | 'EAST' | 'WEST' | 'SOUTH' | 'NORTH'>('ALL');
+  const [expandedItineraries, setExpandedItineraries] = useState<Record<string, boolean>>({
+    'transit-subway': true, // Auto-expand first item for instant engagement
+  });
+
+  const toggleItinerary = (id: string) => {
+    setExpandedItineraries(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
+  // Handling Path-based Client-side routing on mount and popstate
+  useEffect(() => {
+    const handleUrlRouting = () => {
+      let pathname = window.location.pathname;
+      
+      // Parse SPA redirect query parameter from public/404.html if redirected by GitHub Pages
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirectedPath = searchParams.get('p');
+      if (redirectedPath) {
+        pathname = redirectedPath;
+        const cleanSearch = searchParams.get('q');
+        const newUrl = redirectedPath + (cleanSearch ? '?' + cleanSearch : '') + window.location.hash;
+        window.history.replaceState(null, '', newUrl);
+      }
+
+      const parts = pathname.split('/');
+      
+      // Look for /itinerary-[category]
+      if (parts[1] && parts[1].startsWith('itinerary-')) {
+        const categorySuffix = parts[1].replace('itinerary-', '').toUpperCase();
+        const validCategories = ['DAY', '1NIGHT', '2NIGHTS', '3NIGHTS', '4NIGHTS', 'GOURMET', 'HISTORY'];
+        if (validCategories.includes(categorySuffix)) {
+          setSelectedItineraryCategory(categorySuffix);
+          setCurrentTab('tips');
+          setTipsSubPage('courses');
+          if (parts[2] && ['east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
+            setActiveRegionPage(parts[2].toUpperCase() as any);
+          } else {
+            setActiveRegionPage(null);
+          }
+          setIsHomeLanding(false);
+        } else {
+          setCurrentTab('tips');
+          setSelectedItineraryCategory(null);
+          setTipsSubPage('index');
+          setActiveRegionPage(null);
+        }
+      } else if (parts[1] && parts[1].startsWith('tips-')) {
+        setCurrentTab('tips');
+        setSelectedItineraryCategory(null);
+        const sub = parts[1].replace('tips-', '');
+        if (sub === 'courses' || sub === 'itinerary') {
+          setTipsSubPage('courses');
+          if (parts[2] && ['east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
+            setActiveRegionPage(parts[2].toUpperCase() as any);
+          } else {
+            setActiveRegionPage(null);
+          }
+        } else if (sub === 'transit') {
+          setTipsSubPage('transit');
+          setActiveRegionPage(null);
+        } else if (sub === 'child-free') {
+          setTipsSubPage('child-free');
+          setActiveRegionPage(null);
+        } else if (sub === 'transfer') {
+          setTipsSubPage('transit');
+          setActiveRegionPage(null);
+        } else {
+          setTipsSubPage('index');
+          setActiveRegionPage(null);
+        }
+        setIsHomeLanding(false);
+      } else if (parts[1] === 'station' && parts[2]) {
+        const stationId = parts[2].toLowerCase();
+        const exists = STATIONS.some(s => s.id === stationId);
+        if (exists) {
+          setSelectedStationId(stationId);
+          setIsHomeLanding(false);
+          setCurrentTab('home');
+        }
+      } else if (['home', 'search', 'schedule', 'tips', 'about', 'privacy', 'terms', 'contact', 'data-source'].includes(parts[1])) {
+        if (parts[1] === 'privacy') {
+          setCurrentTab('about');
+          setSiteSubPage('privacy');
+          setIsHomeLanding(false);
+        } else if (parts[1] === 'terms') {
+          setCurrentTab('about');
+          setSiteSubPage('terms');
+          setIsHomeLanding(false);
+        } else if (parts[1] === 'contact') {
+          setCurrentTab('about');
+          setSiteSubPage('contact');
+          setIsHomeLanding(false);
+        } else if (parts[1] === 'data-source' || parts[1] === 'data') {
+          setCurrentTab('about');
+          setSiteSubPage('data-source');
+          setIsHomeLanding(false);
+        } else if (parts[1] === 'about') {
+          setCurrentTab('about');
+          setIsHomeLanding(false);
+          const sub = parts[2] ? parts[2].toLowerCase() : '';
+          if (sub === 'privacy') {
+            setSiteSubPage('privacy');
+          } else if (sub === 'terms') {
+            setSiteSubPage('terms');
+          } else if (sub === 'contact') {
+            setSiteSubPage('contact');
+          } else if (sub === 'data-source' || sub === 'data') {
+            setSiteSubPage('data-source');
+          } else {
+            setSiteSubPage('about');
+          }
+        } else {
+          setCurrentTab(parts[1]);
+          if (parts[1] === 'home') {
+            setIsHomeLanding(true);
+            setSelectedStationId('seomyeon');
+          } else {
+            setIsHomeLanding(false);
+            if (parts[1] === 'search' && parts[2]) {
+              const stationId = parts[2].toLowerCase();
+              const exists = STATIONS.some(s => s.id === stationId);
+              if (exists) {
+                setSelectedStationId(stationId);
+              }
+            } else if (parts[1] === 'tips') {
+              setSelectedItineraryCategory(null);
+              if (parts[2] === 'courses' || parts[2] === 'itinerary') {
+                setTipsSubPage('courses');
+                if (parts[3] && ['east', 'west', 'south', 'north'].includes(parts[3].toLowerCase())) {
+                  setActiveRegionPage(parts[3].toUpperCase() as any);
+                } else {
+                  setActiveRegionPage(null);
+                }
+              } else if (parts[2] === 'transit') {
+                setTipsSubPage('transit');
+                setActiveRegionPage(null);
+              } else if (parts[2] === 'child-free') {
+                setTipsSubPage('child-free');
+                setActiveRegionPage(null);
+              } else if (parts[2] === 'taxi') {
+                setTipsSubPage('taxi');
+                setActiveRegionPage(null);
+              } else if (parts[2] === 'transfer') {
+                setTipsSubPage('transit');
+                setActiveRegionPage(null);
+              } else if (parts[2] && ['east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
+                setTipsSubPage('courses');
+                setActiveRegionPage(parts[2].toUpperCase() as any);
+              } else {
+                setTipsSubPage('index');
+                setActiveRegionPage(null);
+              }
+            }
+          }
+        }
+      } else if (parts[1]) {
+        const stationId = parts[1].toLowerCase();
+        const exists = STATIONS.some(s => s.id === stationId);
+        if (exists) {
+          setSelectedStationId(stationId);
+          setIsHomeLanding(false);
+          setCurrentTab('home');
+        } else {
+          setIsHomeLanding(true);
+          setSelectedStationId('seomyeon');
+          setCurrentTab('home');
+        }
+      } else {
+        // Root path /
+        setIsHomeLanding(true);
+        setSelectedStationId('seomyeon');
+        setCurrentTab('home');
+      }
+    };
+
+    handleUrlRouting();
+    window.addEventListener('popstate', handleUrlRouting);
+    return () => {
+      window.removeEventListener('popstate', handleUrlRouting);
+    };
+  }, []);
+
+  // Synchronize dynamic URL path, document headers metadata (SEO-friendly) and scroll to top on tab switch
+  useEffect(() => {
+    // Scroll window to top whenever tab or view changes to avoid blank space from previous scroll offset
+    try {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    } catch (e) {
+      try {
+        window.scrollTo(0, 0);
+      } catch (err) {
+        // ignore
+      }
+    }
+
+    // 1. Change URL path safely
+    try {
+      if (currentTab === 'home') {
+        if (isHomeLanding) {
+          const expectedPath = '/';
+          if (window.location.pathname !== expectedPath && window.location.pathname !== '/home') {
+            window.history.pushState({ tab: 'home', isHomeLanding: true }, '', expectedPath);
+          }
+        } else if (selectedStationId) {
+          const expectedPath = `/station/${selectedStationId}`;
+          if (window.location.pathname !== expectedPath) {
+            window.history.pushState({ stationId: selectedStationId, tab: 'home', isHomeLanding: false }, '', expectedPath);
+          }
+        }
+      } else if (currentTab !== 'home') {
+        let expectedPath = `/${currentTab}`;
+        if (currentTab === 'search') {
+          if (selectedStationId) {
+            expectedPath = `/search/${selectedStationId}`;
+          }
+        } else if (currentTab === 'tips') {
+          if (selectedItineraryCategory) {
+            if (activeRegionPage) {
+              expectedPath = `/itinerary-${selectedItineraryCategory.toLowerCase()}/${activeRegionPage.toLowerCase()}`;
+            } else {
+              expectedPath = `/itinerary-${selectedItineraryCategory.toLowerCase()}`;
+            }
+          } else if (tipsSubPage === 'courses') {
+            if (activeRegionPage) {
+              expectedPath = `/tips/courses/${activeRegionPage.toLowerCase()}`;
+            } else {
+              expectedPath = '/tips/courses';
+            }
+          } else if (tipsSubPage === 'transit') {
+            expectedPath = '/tips/transit';
+          } else if (tipsSubPage === 'child-free') {
+            expectedPath = '/tips/child-free';
+          } else if (tipsSubPage === 'transfer') {
+            expectedPath = '/tips/transit';
+          } else {
+            if (activeRegionPage) {
+              expectedPath = `/tips/${activeRegionPage.toLowerCase()}`;
+            } else {
+              expectedPath = '/tips';
+            }
+          }
+        } else if (currentTab === 'about') {
+          if (siteSubPage === 'privacy') {
+            expectedPath = '/about/privacy';
+          } else if (siteSubPage === 'terms') {
+            expectedPath = '/about/terms';
+          } else if (siteSubPage === 'contact') {
+            expectedPath = '/about/contact';
+          } else if (siteSubPage === 'data-source') {
+            expectedPath = '/about/data-source';
+          } else {
+            expectedPath = '/about/operator';
+          }
+        }
+        if (window.location.pathname !== expectedPath) {
+          window.history.pushState({ tab: currentTab, category: selectedItineraryCategory, subPage: tipsSubPage, regionPage: activeRegionPage, siteSubPage }, '', expectedPath);
+        }
+      }
+    } catch (e) {
+      console.warn('URL pushState error ignored:', e);
+    }
+
+    // 2. Change metadata (Dynamic Title, Description, and OpenGraph tags)
+    if (((currentTab === 'home' && !isHomeLanding) || currentTab === 'search') && selectedStationId) {
+      const activeST = STATIONS.find(s => s.id === selectedStationId);
+      if (activeST) {
+        const titleText = `${activeST.name} 엘리베이터 위치 & 유모차 동선 안내 | 스탭리스`;
+        document.title = titleText;
+
+        const cleanEngName = activeST.englishName.replace(/\s*Station$/i, '').trim();
+        const descText = `${activeST.name} (${cleanEngName}) 지하철역의 엘리베이터 최단 위치와 유모차, 캐리어 소지자를 위한 계단 회피 추천 동선 정보를 정밀히 안내해 드립니다.`;
+        
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute('content', descText);
+
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if (ogTitle) ogTitle.setAttribute('content', titleText);
+
+        const ogDesc = document.querySelector('meta[property="og:description"]');
+        if (ogDesc) ogDesc.setAttribute('content', descText);
+
+        const canonical = document.querySelector('link[rel="canonical"]');
+        if (canonical) canonical.setAttribute('href', `https://stepless.kr/station/${selectedStationId}`);
+      }
+    } else if (currentTab === 'about') {
+      let pageTitle = "운영자 소개 | 스탭리스";
+      let pageDesc = "부산 지하철 배리어프리 플랫폼 운영자 플로레르 소개";
+      if (siteSubPage === 'privacy') {
+        pageTitle = "개인정보처리방침 | 스탭리스";
+        pageDesc = "Stepless 개인정보처리방침 및 구글 맞춤형 광고 쿠키 정책";
+      } else if (siteSubPage === 'terms') {
+        pageTitle = "서비스 이용약관 | 스탭리스";
+        pageDesc = "Stepless 서비스 이용약관 및 면책사항";
+      } else if (siteSubPage === 'contact') {
+        pageTitle = "문의 및 제휴 안내 | 스탭리스";
+        pageDesc = "Stepless 제휴 문의, 개선 의견 및 대표 이메일 안내";
+      } else if (siteSubPage === 'data-source') {
+        pageTitle = "데이터 출처와 정정 요청 | 스탭리스";
+        pageDesc = "공식 데이터 출처 명시 및 역별 정보 오류 정정 제보 양식";
+      }
+      document.title = pageTitle;
+
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', pageDesc);
+
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) ogTitle.setAttribute('content', pageTitle);
+
+      const ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc) ogDesc.setAttribute('content', pageDesc);
+    } else {
+      document.title = "부산 지하철역 엘리베이터 위치 & 유모차 동선 안내 | 스탭리스";
+      const defaultDesc = "부산 지하철역 엘리베이터 위치, 유모차와 캐리어 소지자를 위한 계단 없는 지하철 최적 동선 안내.";
+      
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', defaultDesc);
+
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) ogTitle.setAttribute('content', "부산 지하철역 엘리베이터 위치 & 유모차 동선 안내 | 스탭리스");
+
+      const ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc) ogDesc.setAttribute('content', defaultDesc);
+
+      const canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) canonical.setAttribute('href', "https://stepless.kr/");
+    }
+  }, [selectedStationId, currentTab, isHomeLanding, selectedItineraryCategory, tipsSubPage, activeRegionPage, siteSubPage]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    const timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, [currentTab, selectedStationId, isHomeLanding, selectedItineraryCategory, tipsSubPage, activeRegionPage]);
+
+  useEffect(() => {
+    localStorage.setItem('busan_traveler_upvotes', JSON.stringify(hasUpvoted));
+  }, [hasUpvoted]);
+
+  useEffect(() => {
+    localStorage.setItem('busan_traveler_recs', JSON.stringify(recommendations));
+  }, [recommendations]);
+
+  // Automatic Translation States using server-side Gemini 3.5 Flash
+  const [translatedRecs, setTranslatedRecs] = useState<Record<string, { topic: string; content: string; stationOrExit: string }>>(() => {
+    const saved = localStorage.getItem('busan_traveler_recs_en');
+    return saved ? JSON.parse(saved) : {};
+  });
+  const [translatingIds, setTranslatingIds] = useState<Record<string, boolean>>({});
+
+  const translatedRecsRef = React.useRef(translatedRecs);
+  const translatingIdsRef = React.useRef(translatingIds);
+
+  useEffect(() => {
+    translatedRecsRef.current = translatedRecs;
+    localStorage.setItem('busan_traveler_recs_en', JSON.stringify(translatedRecs));
+  }, [translatedRecs]);
+
+  useEffect(() => {
+    translatingIdsRef.current = translatingIds;
+  }, [translatingIds]);
+
+  useEffect(() => {
+    if (language !== 'EN') return;
+
+    // Use a local copy to prevent duplicate network calls in the exact same loop tick
+    const currentFetching = { ...translatingIdsRef.current };
+
+    recommendations.forEach((rec) => {
+      if (translatedRecsRef.current[rec.id] || currentFetching[rec.id]) return;
+
+      // Mark as fetching immediately in local tracker and ref synchronously
+      currentFetching[rec.id] = true;
+      translatingIdsRef.current[rec.id] = true;
+      setTranslatingIds(prev => ({ ...prev, [rec.id]: true }));
+
+      fetch("/api/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: rec.topic,
+          content: rec.content,
+          stationOrExit: rec.stationOrExit
+        })
+      })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error("Translation API failed");
+      })
+      .then(data => {
+        setTranslatedRecs(prev => {
+          const updated = {
+            ...prev,
+            [rec.id]: {
+              topic: data.topic,
+              content: data.content,
+              stationOrExit: data.stationOrExit
+            }
+          };
+          localStorage.setItem('busan_traveler_recs_en', JSON.stringify(updated));
+          return updated;
+        });
+      })
+      .catch(err => {
+        console.warn("Translation API failed, using local offline fallback for ID:", rec.id, err);
+        const fallback = translateRecommendation(rec, 'EN');
+        setTranslatedRecs(prev => {
+          const updated = {
+            ...prev,
+            [rec.id]: fallback
+          };
+          localStorage.setItem('busan_traveler_recs_en', JSON.stringify(updated));
+          return updated;
+        });
+      })
+      .finally(() => {
+        setTranslatingIds(prev => ({ ...prev, [rec.id]: false }));
+        translatingIdsRef.current[rec.id] = false;
+      });
+    });
+  }, [language, recommendations]);
+
+  const handleManualTranslate = (rec: TravelerRecommendation) => {
+    if (translatingIds[rec.id]) return;
+
+    setTranslatingIds(prev => ({ ...prev, [rec.id]: true }));
+    translatingIdsRef.current[rec.id] = true;
+
+    fetch("/api/translate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        topic: rec.topic,
+        content: rec.content,
+        stationOrExit: rec.stationOrExit
+      })
+    })
+    .then(res => {
+      if (res.ok) return res.json();
+      throw new Error("Translation failed");
+    })
+    .then(data => {
+      setTranslatedRecs(prev => {
+        const updated = {
+          ...prev,
+          [rec.id]: {
+            topic: data.topic,
+            content: data.content,
+            stationOrExit: data.stationOrExit
+          }
+        };
+        localStorage.setItem('busan_traveler_recs_en', JSON.stringify(updated));
+        return updated;
+      });
+    })
+    .catch(err => {
+      console.warn("Manual translation API failed, using local offline fallback for ID:", rec.id, err);
+      const fallback = translateRecommendation(rec, 'EN');
+      setTranslatedRecs(prev => {
+        const updated = {
+          ...prev,
+          [rec.id]: fallback
+        };
+        localStorage.setItem('busan_traveler_recs_en', JSON.stringify(updated));
+        return updated;
+      });
+    })
+    .finally(() => {
+      setTranslatingIds(prev => ({ ...prev, [rec.id]: false }));
+      translatingIdsRef.current[rec.id] = false;
+    });
+  };
+
+  const handleAddRecommendation = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newRecAuthor.trim() || !newRecTopic.trim() || !newRecContent.trim()) return;
+
+    const newId = `rec-${Date.now()}`;
+    const newRec: TravelerRecommendation = {
+      id: newId,
+      author: newRecAuthor.trim(),
+      topic: newRecTopic.trim(),
+      category: newRecCategory,
+      stationOrExit: newRecStation.trim() || (language === 'KR' ? '모든 구역' : 'All Area'),
+      content: newRecContent.trim(),
+      upvotes: 0,
+      createdAt: new Date().toISOString()
+    };
+
+    // 1. Optimistic UI Updates - renders on screen instantly
+    setRecommendations(prev => {
+      const updated = [newRec, ...prev];
+      localStorage.setItem('busan_traveler_recs', JSON.stringify(updated));
+      return updated;
+    });
+    setMyRecIds(prev => {
+      const updated = [...prev, newId];
+      localStorage.setItem('busan_my_rec_ids', JSON.stringify(updated));
+      return updated;
+    });
+
+    // Reset inputs immediately
+    setNewRecAuthor('');
+    setNewRecTopic('');
+    setNewRecCategory('FOOD');
+    setNewRecStation('');
+    setNewRecContent('');
+
+    // 2. Synchronize with server-side JSON database in the background
+    fetch("/api/recommendations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newRec)
+    })
+    .then(res => {
+      if (res.ok) return res.json();
+      throw new Error("Failed to save recommendation on server");
+    })
+    .then((syncedRec: TravelerRecommendation) => {
+      console.log("Successfully synchronized with server database:", syncedRec);
+    })
+    .catch(err => {
+      console.error("Server sync failed, recommendation remains in local storage:", err);
+    });
+
+    // 3. Translate immediately in background so it's cached and ready instantly when switching language!
+    setTranslatingIds(prev => ({ ...prev, [newId]: true }));
+    fetch("/api/translate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        topic: newRec.topic,
+        content: newRec.content,
+        stationOrExit: newRec.stationOrExit
+      })
+    })
+    .then(res => {
+      if (res.ok) return res.json();
+      throw new Error("Translation failed");
+    })
+    .then(data => {
+      setTranslatedRecs(prev => {
+        const updated = {
+          ...prev,
+          [newId]: {
+            topic: data.topic,
+            content: data.content,
+            stationOrExit: data.stationOrExit
+          }
+        };
+        localStorage.setItem('busan_traveler_recs_en', JSON.stringify(updated));
+        return updated;
+      });
+    })
+    .catch(err => {
+      console.error("Instant translation failed:", err);
+    })
+    .finally(() => {
+      setTranslatingIds(prev => ({ ...prev, [newId]: false }));
+    });
+  };
+
+  const handleDeleteRecommendation = (id: string) => {
+    // Delete from state immediately (Optimistic UI)
+    setRecommendations(prev => prev.filter(rec => rec.id !== id));
+    setMyRecIds(prev => {
+      const updated = prev.filter(item => item !== id);
+      localStorage.setItem('busan_my_rec_ids', JSON.stringify(updated));
+      return updated;
+    });
+    setDeleteConfId(null);
+
+    // Call server to persist deletion
+    fetch(`/api/recommendations/${id}`, {
+      method: "DELETE"
+    })
+    .catch(err => {
+      console.error("Failed to delete recommendation on server:", err);
+    });
+  };
+
+  const handleUpvote = (id: string) => {
+    const isUpvoting = !hasUpvoted[id];
+
+    // Optimistic UI updates
+    setHasUpvoted(prev => ({ ...prev, [id]: isUpvoting }));
+    setRecommendations(prev => prev.map(rec => rec.id === id ? { ...rec, upvotes: Math.max(0, rec.upvotes + (isUpvoting ? 1 : -1)) } : rec));
+
+    // Persist upvote count on server
+    fetch(`/api/recommendations/${id}/upvote`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ upvote: isUpvoting })
+    })
+    .then(res => {
+      if (res.ok) return res.json();
+      throw new Error("Upvote failed");
+    })
+    .then((updatedRec: TravelerRecommendation) => {
+      // Re-synchronize with exact server count
+      setRecommendations(prev => prev.map(rec => rec.id === id ? updatedRec : rec));
+    })
+    .catch(err => {
+      console.error("Failed to update upvote on server:", err);
+      // Rollback optimistic state transition
+      setHasUpvoted(prev => ({ ...prev, [id]: !isUpvoting }));
+      setRecommendations(prev => prev.map(rec => rec.id === id ? { ...rec, upvotes: Math.max(0, rec.upvotes + (isUpvoting ? -1 : 1)) } : rec));
+    });
+  };
+
+  const toggleLanguage = () => {
+    setLanguage(prev => prev === 'KR' ? 'EN' : 'KR');
+  };
+
+  const findNearestStepFreeExit = (lat: number, lng: number) => {
+    const getDistanceInMeters = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+      const ky = 111132;
+      const kx = Math.cos(lat1 * Math.PI / 180) * 111319;
+      const dx = Math.abs(lon1 - lon2) * kx;
+      const dy = Math.abs(lat1 - lat2) * ky;
+      return Math.round(Math.sqrt(dx * dx + dy * dy));
+    };
+
+    const candidates: { station: Station; exit: ExitInfo; distance: number }[] = [];
+    STATIONS.forEach(station => {
+      station.exits.forEach(exit => {
+        if (exit.hasElevator || exit.isAccessible) {
+          const dist = getDistanceInMeters(lat, lng, exit.latitude, exit.longitude);
+          candidates.push({ station, exit, distance: dist });
+        }
+      });
+    });
+
+    if (candidates.length > 0) {
+      candidates.sort((a, b) => a.distance - b.distance);
+      return candidates[0];
+    }
+    return null;
+  };
+
+  const requestNearbyGuide = () => {
+    setGeoLoading(true);
+    setGeoResult(null);
+
+    const processPosition = (userLat: number, userLng: number, isSimulated: boolean) => {
+      const nearest = findNearestStepFreeExit(userLat, userLng);
+      if (nearest) {
+        setSelectedStationId(nearest.station.id);
+        
+        const stationName = nearest.station.name;
+        const exitNumber = nearest.exit.number;
+        const distance = nearest.distance;
+        
+        setGeoResult({
+          stationName,
+          exitNumber,
+          distance,
+          details: '',
+          lat: nearest.exit.latitude,
+          lng: nearest.exit.longitude
+        });
+
+        // Smooth scroll to the Naver Map container
+        setTimeout(() => {
+          const mapEl = document.getElementById('station-map-container');
+          if (mapEl) {
+            mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 250);
+      }
+      setGeoLoading(false);
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setTimeout(() => {
+            processPosition(position.coords.latitude, position.coords.longitude, false);
+          }, 800);
+        },
+        () => {
+          // Simulation fallback for sandboxed iframe
+          setTimeout(() => {
+            // Seomyeon street fallback (near Judith Taehwa)
+            const simulatedLat = 35.1584;
+            const simulatedLng = 129.0595;
+            processPosition(simulatedLat, simulatedLng, true);
+          }, 800);
+        },
+        { timeout: 5000, enableHighAccuracy: true }
+      );
+    } else {
+      setTimeout(() => {
+        const simulatedLat = 35.1584;
+        const simulatedLng = 129.0595;
+        processPosition(simulatedLat, simulatedLng, true);
+      }, 800);
+    }
+  };
+
+  const handleAddReport = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reportText.trim()) return;
+
+    setSubmittingReport(true);
+
+    setTimeout(() => {
+      const selectedStation = STATIONS.find(s => s.id === reportStation);
+      const newReport: FacilityReport = {
+        id: `report-${Date.now()}`,
+        stationId: reportStation,
+        stationName: selectedStation ? selectedStation.name : '부산 지하철역',
+        exitNumber: reportExit,
+        facilityType: reportFacility,
+        reportType: reportIssue,
+        details: reportText,
+        image: reportImage || undefined,
+        status: 'PENDING',
+        createdAt: new Date().toISOString()
+      };
+
+      setReports(prev => [newReport, ...prev]);
+      setReportText('');
+      setReportImage(null);
+      setSubmittingReport(false);
+      setReportSuccess(true);
+
+      // Dismiss success alert automatically
+      setTimeout(() => {
+        setReportSuccess(false);
+      }, 4000);
+    }, 600);
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setReportImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Get active station details based on selection or search
+  const activeStation = STATIONS.find(s => s.id === selectedStationId) || STATIONS[0];
+
+  const focusedExitCoords = (geoResult && activeStation.name === geoResult.stationName)
+    ? { latitude: geoResult.lat, longitude: geoResult.lng }
+    : null;
+
+  // Helper for rendering status markers
+  const getExitStatusText = (status: StatusType) => {
+    switch(status) {
+      case 'OPERATIONAL': 
+        return language === 'KR' ? '운행 원활' : 'Normal';
+      case 'MAINTENANCE': 
+        return language === 'KR' ? '보수 점검' : 'Service';
+      case 'BLOCKED': 
+        return language === 'KR' ? '계단 진입만' : 'Stairs Only';
+    }
+  };
+
+
+
+  // Filter exits of station by Stroller vs Carrier vs All
+  const getFilteredExits = (station: Station) => {
+    return station.exits.filter(exit => {
+      if (activePathFilter === 'ACCESSIBLE') {
+        return exit.hasElevator && exit.isAccessible;
+      }
+      if (activePathFilter === 'CARRY') {
+        return exit.hasElevator || exit.hasEscalator;
+      }
+      return true;
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#f8fafc] text-slate-800 font-sans antialiased pb-24 md:pb-12 flex flex-col justify-between">
+      <div>
+        {/* Navigation Header */}
+        <Header 
+          currentTab={currentTab} 
+          setCurrentTab={(tab) => {
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+
+            const validTabs = ['home', 'search', 'schedule', 'tips', 'about'];
+            const targetTab = validTabs.includes(tab) ? tab : 'home';
+            setCurrentTab(targetTab);
+            if (targetTab === 'home') {
+              setIsHomeLanding(true);
+              setSelectedStationId('seomyeon');
+              setExpandedExitNum(null);
+            } else {
+              setIsHomeLanding(false);
+            }
+            if (targetTab === 'tips') {
+              setSelectedItineraryCategory(null);
+              setTipsSubPage('index');
+              setActiveRegionPage(null);
+            }
+          }} 
+          language={language} 
+          toggleLanguage={toggleLanguage} 
+        />
+
+        {/* Core Main Area */}
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 sm:py-8 animate-fade-in">
+          
+          {/* Tab 1: HOME LANDING VIEW */}
+          {currentTab === 'home' && (
+            <div className="space-y-8">
+              {/* Feature Hero banner removed as requested */}
+              {isHomeLanding && (
+                <>
+                  {/* Dynamic Geolocation Finder Outcome Panel */}
+                  {geoResult && (
+                    <div className="bg-sky-50 border border-sky-100 p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 text-left shadow-sm animate-fade-in" id="geo-result-container">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 bg-sky-200/50 text-[#F06A00] rounded-2xl shrink-0 mt-1">
+                          <MapPin className="w-6 h-6 fill-sky-200" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-extrabold font-heading text-slate-800">
+                            {getExitDisplayName(geoResult.stationName, geoResult.exitNumber, language)}
+                          </h4>
+                          <p className="text-sm font-bold text-[#F06A00] mt-1">
+                            {language === 'KR' 
+                              ? `현재 위치에서 도보 약 ${geoResult.distance}m` 
+                              : `Approx. ${geoResult.distance}m Away on Foot`}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="shrink-0 flex items-center md:self-center self-end mt-2 md:mt-0">
+                        <button
+                          onClick={() => window.open(`https://map.naver.com/v5/search/${geoResult.stationName} ${geoResult.exitNumber}`)}
+                          className="text-xs font-bold text-[#F06A00] bg-orange-50 hover:bg-orange-100/80 border border-orange-200/40 px-5 py-3 rounded-xl transition-colors cursor-pointer whitespace-nowrap shadow-sm"
+                        >
+                          {language === 'KR' ? '네이버 지도 도보 길안내 시작' : 'Launch Naver Map Guide'}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Home Overview Section */}
+                  <HomeOverviewSection 
+                    language={language}
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    onSelectStation={(stId) => {
+                      setSelectedStationId(stId);
+                      setCurrentTab('search');
+                      setIsHomeLanding(false);
+                      try {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                      } catch (e) {
+                        window.scrollTo(0, 0);
+                      }
+                    }}
+                    onNavigateToSearch={(q) => {
+                      if (q !== undefined) {
+                        setSearchQuery(q);
+                      }
+                      setCurrentTab('search');
+                      setIsHomeLanding(false);
+                      try {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                      } catch (e) {
+                        window.scrollTo(0, 0);
+                      }
+                    }}
+                    onNavigateToReport={() => {
+                      setCurrentTab('about');
+                    }}
+                    onNavigateToNearby={() => {
+                      requestNearbyGuide();
+                    }}
+                    onNavigateToItinerary={(category) => {
+                      if (category) {
+                        setSelectedItineraryCategory(category);
+                      }
+                      setCurrentTab('tips');
+                      setTipsSubPage('courses');
+                      try {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                      } catch (e) {
+                        window.scrollTo(0, 0);
+                      }
+                    }}
+                  />
+                </>
+              )}
+
+            </div>
+          )}
+
+          {/* Tab 2: SEARCH / BENTO GRID VIEW */}
+          {currentTab === 'search' && (
+            <div className="space-y-8 text-left">
+              {/* Search Header */}
+              <div>
+                <h2 className="text-2xl font-extrabold font-heading text-slate-800">
+                  {language === 'KR' ? '부산 지하철역 출구 정보 둘러보기' : 'Subway Exit Information Index'}
+                </h2>
+                <p className="text-sm text-slate-500 mt-1">
+                  {language === 'KR' 
+                    ? '부산 핵심 주요역의 총 엘리베이터 수, 에스컬레이터 대수를 한눈에 비교하고 탐색해보세요.' 
+                    : 'Analyze general escalators, elevator configurations across major transit sectors.'}
+                </p>
+
+                {/* Search Bar Input */}
+                <div className="mt-6 max-w-lg relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <Search className="w-5 h-5" />
+                  </div>
+                  <input
+                    type="text"
+                    id="stations-search-input"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={language === 'KR' ? '역 이름이나 출구를 검색해보세요... (예: 서면역, 7번)' : 'Search station or exit index... (e.g., Jeonpo, 7)'}
+                    className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-2xl bg-white text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#003466] text-sm"
+                  />
+                  {searchQuery && (
+                    <button 
+                      onClick={() => setSearchQuery('')}
+                      className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Station Selection Banner */}
+              <div id="search-selected-station-details" className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-xs">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block shrink-0"></span>
+                  <span className="text-base leading-none">📍</span>
+                  <h3 className="text-base sm:text-lg font-bold font-heading text-slate-800">
+                    {language === 'KR' ? '이용중인 지하철역 선택' : 'Select Current Subway Station'}
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5 sm:gap-3">
+                  {[
+                    { id: 'gwangan', name: '광안역', englishName: 'GWANGAN', line: '2호선' },
+                    { id: 'geumnyeonsan', name: '금련산역', englishName: 'GEUMNYEONSAN', line: '2호선' },
+                    { id: 'nampo', name: '남포역', englishName: 'NAMPO', line: '1호선' },
+                    { id: 'dongbaek', name: '동백역', englishName: 'DONGBAEK', line: '2호선' },
+                    { id: 'bexco', name: '벡스코역', englishName: 'BEXCO', line: '2호선·동해선' },
+                    { id: 'busan', name: '부산역', englishName: 'BUSAN', line: '1호선' },
+                    { id: 'bujeon', name: '부전역', englishName: 'BUJEON', line: '1호선·동해선' },
+                    { id: 'seomyeon', name: '서면역', englishName: 'SEOMYEON', line: '1호선·2호선' },
+                    { id: 'suyeong', name: '수영역', englishName: 'SUYEONG', line: '2호선·3호선' },
+                    { id: 'jagalchi', name: '자갈치역', englishName: 'JAGALCHI', line: '1호선' },
+                    { id: 'jeonpo', name: '전포역', englishName: 'JEONPO', line: '2호선' },
+                    { id: 'haeundae', name: '해운대역', englishName: 'HAEUNDAE', line: '2호선' },
+                  ].map((st) => {
+                    const isSelected = selectedStationId === st.id;
+                    return (
+                      <a
+                        key={st.id}
+                        href={`/search/${st.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setSelectedStationId(st.id);
+                          setExpandedExitNum(null);
+                        }}
+                        className={`p-2.5 sm:p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-0.5 active:scale-95 ${
+                          isSelected
+                            ? 'bg-[#1e3a70] border-[#1e3a70] text-white shadow-sm ring-2 ring-blue-500/20'
+                            : 'bg-white border-slate-300 hover:border-blue-400 hover:bg-slate-50 text-slate-800'
+                        }`}
+                      >
+                        <span className={`font-bold text-sm sm:text-base font-heading ${isSelected ? 'text-white' : 'text-slate-800'}`}>
+                          {st.name}
+                        </span>
+                        <div className="text-[11px] sm:text-xs font-semibold inline-flex items-center gap-0.5">
+                          {st.line.split('·').map((part, idx) => {
+                            let colorClass = isSelected ? 'text-blue-200 font-bold' : 'text-blue-600 font-bold';
+                            if (part.includes('1')) {
+                              colorClass = isSelected ? 'text-orange-300 font-bold' : 'text-orange-600 font-bold';
+                            } else if (part.includes('2')) {
+                              colorClass = isSelected ? 'text-emerald-300 font-bold' : 'text-emerald-600 font-bold';
+                            } else if (part.includes('3')) {
+                              colorClass = isSelected ? 'text-amber-300 font-bold' : 'text-amber-700 font-bold';
+                            } else if (part.includes('동해')) {
+                              colorClass = isSelected ? 'text-sky-300 font-bold' : 'text-sky-600 font-bold';
+                            }
+
+                            return (
+                              <React.Fragment key={idx}>
+                                {idx > 0 && (
+                                  <span className={isSelected ? 'text-blue-200/60 font-normal' : 'text-slate-300 font-normal'}>·</span>
+                                )}
+                                <span className={colorClass}>{part}</span>
+                              </React.Fragment>
+                            );
+                          })}
+                        </div>
+                        <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold tracking-wider ${isSelected ? 'text-slate-300' : 'text-slate-400'}`}>
+                          {st.englishName}
+                        </span>
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Station Map directly below station selection */}
+              <div id="search-tab-map-container" className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+                <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? '지도를 불러오는 중...' : 'Loading map...'} />}>
+                  <SubwayStationMap station={activeStation} language={language} focusedExitCoords={focusedExitCoords} />
+                </Suspense>
+              </div>
+
+              {/* 📋 Station Barrier-Free Movement Summary Table & Step-by-Step Info */}
+              <StationBarrierFreeCard station={activeStation} language={language} />
+
+              {/* 🚪 Selected Station Exit Filters & Exit Detail Cards */}
+              <div className="space-y-6">
+                {/* Sub-Tabs selection representing companion types */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-3 gap-3">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    <button
+                      id="search-filter-all-btn"
+                      onClick={() => setActivePathFilter('ALL')}
+                      className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1 border cursor-pointer min-h-[42px] ${
+                        activePathFilter === 'ALL'
+                          ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                          : 'bg-white text-slate-600 border-slate-200 hover:text-slate-900 hover:bg-slate-50'
+                      }`}
+                    >
+                      <span>{language === 'KR' ? '전체 보기' : 'Show All Exits'}</span>
+                    </button>
+                    <button
+                      id="search-filter-accessible-btn"
+                      onClick={() => {
+                        setActivePathFilter('ACCESSIBLE');
+                        setExpandedExitNum(null);
+                      }}
+                      className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer min-h-[42px] ${
+                        activePathFilter === 'ACCESSIBLE'
+                          ? 'bg-emerald-700 text-white border-emerald-700 shadow-2xs'
+                          : 'bg-white text-slate-600 border-slate-200 hover:text-emerald-700 hover:bg-emerald-50/50'
+                      }`}
+                    >
+                      <ElevatorIcon className="w-4 h-4 shrink-0" />
+                      <span>
+                        {language === 'KR' ? (
+                          <>
+                            <span className="hidden sm:inline">엘리베이터 (유모차/휠체어/캐리어)</span>
+                            <span className="inline sm:hidden">엘리베이터 (유모차·휠체어)</span>
+                          </>
+                        ) : 'Elevator'}
+                      </span>
+                    </button>
+                    <button
+                      id="search-filter-carry-btn"
+                      onClick={() => {
+                        setActivePathFilter('CARRY');
+                        setExpandedExitNum(null);
+                      }}
+                      className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer min-h-[42px] ${
+                        activePathFilter === 'CARRY'
+                          ? 'bg-indigo-700 text-white border-indigo-700 shadow-2xs'
+                          : 'bg-white text-slate-600 border-slate-200 hover:text-indigo-700 hover:bg-indigo-50/50'
+                      }`}
+                    >
+                      <EscalatorIcon className="w-4 h-4 shrink-0" />
+                      <span>
+                        {language === 'KR' ? (
+                          <>
+                            <span className="hidden sm:inline">에스컬레이터 (캐리어/도보 가능)</span>
+                            <span className="inline sm:hidden">에스컬레이터 (캐리어)</span>
+                          </>
+                        ) : 'Escalator'}
+                      </span>
+                    </button>
+                  </div>
+
+                  <div className="text-xs text-slate-500">
+                    {language === 'KR' 
+                      ? `총 ${getFilteredExits(activeStation).length}개 출구 표시 중` 
+                      : `${getFilteredExits(activeStation).length} matching exits`}
+                  </div>
+                </div>
+
+                {/* Exits list layout - Unified single Column with Inline Timeline Details */}
+                <div className="max-w-4xl mx-auto space-y-5">
+                  {getFilteredExits(activeStation).map(exit => {
+                    const isExpanded = expandedExitNum === exit.number;
+
+                    return (
+                      <div
+                        key={exit.number}
+                        id={`search-exit-item-${exit.number}`}
+                        className={`bg-white rounded-3xl border p-5 sm:p-6 transition-all shadow-[0_2px_12px_rgb(0,0,0,0.01)] hover:shadow-[0_12px_32px_rgb(0,0,0,0.03)] text-left ${
+                          isExpanded 
+                            ? 'border-[#004481] ring-2 ring-[#004481]/5 bg-slate-50/10' 
+                            : 'border-slate-100 hover:border-slate-300'
+                        }`}
+                      >
+                        {/* Header Details row */}
+                        <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-100 flex-wrap sm:flex-nowrap">
+                          <h3 className="text-lg sm:text-lg font-extrabold text-slate-800 font-heading flex items-center gap-2">
+                            <span>{getExitDisplayName(activeStation.name, exit.number, language)}</span>
+                          </h3>
+
+                          {/* Action to expand Timeline Details Inline */}
+                          <button
+                            id={`search-expand-exit-btn-${exit.number}`}
+                            onClick={() => setExpandedExitNum(isExpanded ? null : exit.number)}
+                            className={`text-xs font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer whitespace-nowrap ${
+                              isExpanded
+                                ? 'bg-[#004481] text-white shadow-sm'
+                                : 'bg-slate-100 hover:bg-slate-200 text-[#004481]'
+                            }`}
+                          >
+                            {isExpanded 
+                              ? (language === 'KR' ? '상세 동선 접기' : 'Close Details')
+                              : (language === 'KR' ? '상세 동선 지도 보기' : 'Show Details & Map')}
+                          </button>
+                        </div>
+
+                        {/* Simple facilities details directly matching user request */}
+                        <div className="space-y-2 mt-3">
+                          {exit.hasEscalator && (
+                            <div className="text-sm font-bold text-slate-700 flex items-center gap-2 bg-slate-50/80 px-2.5 py-1.5 rounded-xl border border-slate-100/50">
+                              <EscalatorIcon />
+                              <span>
+                                {language === 'KR' 
+                                  ? `에스컬레이터 (${
+                                      exit.facilityDirection === 'BOTH' ? '상행 ⬆️ · 하행 ⬇️' :
+                                      exit.facilityDirection === 'UP' ? '상행 ⬆️' : '하행 ⬇️'
+                                    })` 
+                                  : `Escalator (${
+                                      exit.facilityDirection === 'BOTH' ? 'Up ⬆️ · Down ⬇️' :
+                                      exit.facilityDirection === 'UP' ? 'Upward ⬆️' : 'Downward ⬇️'
+                                    })`
+                                }
+                              </span>
+                            </div>
+                          )}
+                          {exit.hasElevator && (
+                            <div className="text-sm font-bold text-slate-700 flex items-center gap-2 bg-slate-50/80 px-2.5 py-1.5 rounded-xl border border-slate-100/50">
+                              <ElevatorIcon />
+                              <span>
+                                {language === 'KR' ? '엘리베이터 🛗' : 'Elevator 🛗'}
+                              </span>
+                            </div>
+                          )}
+                          {!exit.hasElevator && !exit.hasEscalator && (
+                            <div className="text-sm font-bold text-slate-500 flex items-center gap-2 bg-slate-50/80 px-2.5 py-1.5 rounded-xl border border-slate-100/50">
+                              <StairsIcon />
+                              <span>
+                                {language === 'KR' ? '계단 전용 👟' : 'Stairs Only 👟'}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Status banner - only if not OPERATIONAL */}
+                        {exit.status !== 'OPERATIONAL' && (
+                          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-1.5">
+                              <span className={`w-2.5 h-2.5 rounded-full ${
+                                exit.status === 'MAINTENANCE'
+                                  ? 'bg-amber-500'
+                                  : 'bg-rose-500'
+                              }`} />
+                              <span className="text-xs font-bold text-slate-500">
+                                {getExitStatusText(exit.status)}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Inline Timeline Map Visualization - Perfectly mobile-first */}
+                        {isExpanded && (
+                          <div className="mt-6 pt-6 border-t border-slate-150 animate-slide-up">
+                            <TimelineVisualizer
+                              directionDesc={exit.directionDesc}
+                              exitNumber={exit.number}
+                              stationName={activeStation.name}
+                              googleMapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getExitDisplayName(activeStation.name, exit.number, language))}`}
+                              naverMapUrl={exit.naverMapUrl}
+                              language={language}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+
+                  {getFilteredExits(activeStation).length === 0 && (
+                    <div className="p-16 text-center bg-white rounded-3xl border border-dashed border-slate-200">
+                      <Search className="w-12 h-12 text-slate-300 mx-auto" />
+                      <h4 className="font-bold text-slate-700 mt-4">{language === 'KR' ? '알맞는 통과 출구가 없습니다.' : 'No direct exits matched criteria'}</h4>
+                      <p className="text-xs text-slate-400 mt-1">
+                        {language === 'KR' ? '검색 필터를 전체 보기로 변경하여 계단이나 일반 요소를 찾아보세요.' : 'Try changing status to see alternative travel paths.'}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Collapsible Bento Grid Section for All Station Cards */}
+              <div className="bg-white rounded-3xl border border-slate-200/80 p-5 sm:p-6 shadow-xs space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                  <div className="text-left">
+                    <div className="flex items-center gap-2">
+                      <span className="text-base leading-none">🗂️</span>
+                      <h3 className="text-base sm:text-lg font-bold font-heading text-slate-800">
+                        {language === 'KR' ? '부산 지하철 주요역 핵심 요약 카드 목록' : 'All Station Barrier-Free Cards'}
+                      </h3>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1">
+                      {language === 'KR' 
+                        ? '부산 핵심 지하철역의 출구, 승강설비 대수, 이동시간, 물품보관함, 주변 명소 요약 카드를 한눈에 둘러볼 수 있습니다.' 
+                        : 'Browse barrier-free summary cards for all major stations in Busan.'}
+                    </p>
+                  </div>
+
+                  <button
+                    id="toggle-all-station-cards-btn"
+                    onClick={() => setShowAllStationCards(!showAllStationCards)}
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-[#004481] font-bold text-xs transition-colors shrink-0 cursor-pointer"
+                  >
+                    <span>
+                      {(showAllStationCards || searchQuery.trim().length > 0)
+                        ? (language === 'KR' ? '역 카드 목록 접기 ▲' : 'Collapse Cards ▲')
+                        : (language === 'KR' ? '전체 역 카드 펼쳐보기 ▼' : 'Expand Station Cards ▼')}
+                    </span>
+                  </button>
+                </div>
+
+                {(showAllStationCards || searchQuery.trim().length > 0) && (
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2 animate-fade-in">
+                    {STATIONS.filter(s => 
+                      s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                      s.englishName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      s.exits.some(e => e.number.includes(searchQuery))
+                    ).map(station => (
+                      <div 
+                        key={station.id}
+                        id={`bento-station-${station.id}`}
+                        onClick={() => {
+                          setSelectedStationId(station.id);
+                          setExpandedExitNum(null);
+                          const detailsEl = document.getElementById('search-selected-station-details');
+                          if (detailsEl) {
+                            detailsEl.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                        className="lg:col-span-6 bg-white border border-slate-100 rounded-3xl p-5 sm:p-6 shadow-sm hover:shadow-lg transition-all cursor-pointer group text-left flex flex-col justify-between"
+                      >
+                        <div>
+                          {/* Station Title */}
+                          <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3 mb-3.5">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2.5 rounded-2xl bg-sky-50 text-[#004481]">
+                                <Train className="w-5 h-5 shrink-0" />
+                              </div>
+                              <div>
+                                <h3 className="text-lg sm:text-xl font-bold font-heading text-slate-800">
+                                  {language === 'KR' ? station.name : station.englishName}
+                                </h3>
+                                <span className="text-xs text-slate-400 block font-sans">
+                                  {language === 'KR' ? station.englishName : station.name}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Station line stickers */}
+                            <div className="flex gap-1">
+                              {station.lines.map(line => (
+                                <span 
+                                  key={line} 
+                                  className={`px-2.5 py-0.5 text-[11px] font-extrabold text-white rounded-full ${
+                                    line === '1' ? 'bg-[#F06A00]' : 
+                                    line === '2' ? 'bg-[#1b6d24]' : 
+                                    line === '3' ? 'bg-[#906A3B]' : 
+                                    line === '동해' ? 'bg-[#004960]' : 
+                                    'bg-slate-400'
+                                  }`}
+                                >
+                                  {language === 'KR' 
+                                    ? (line === '동해' ? '동해선' : `${line}호선`)
+                                    : (line === '동해' ? 'Donghae Line' : `Line ${line}`)
+                                  }
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Integrated Barrier-Free Summary Table */}
+                          <div className="overflow-hidden rounded-2xl border border-slate-200/90 text-xs mb-3 shadow-2xs">
+                            <table className="w-full text-left border-collapse">
+                              <tbody className="divide-y divide-slate-150">
+                                {/* 1. 출구 번호 */}
+                                <tr>
+                                  <th className="py-2 px-3 font-bold text-slate-800 bg-slate-100/80 w-24 sm:w-28 border-r border-slate-200/80 shrink-0">
+                                    <div className="flex items-center gap-1.5">
+                                      <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                      <span>{language === 'KR' ? '출구 번호' : 'Exit No.'}</span>
+                                    </div>
+                                  </th>
+                                  <td className="py-2 px-3 text-slate-800 font-extrabold">
+                                    {station.recommendedExits || (language === 'KR' ? '지상 엘리베이터 출구' : 'Elevator Exits')}
+                                  </td>
+                                </tr>
+
+                                {/* 2. 승강설비 (EV/ES Counts & Location) */}
+                                <tr className="bg-slate-50/50">
+                                  <th className="py-2 px-3 font-bold text-slate-800 bg-slate-100/80 border-r border-slate-200/80 shrink-0">
+                                    <div className="flex items-center gap-1.5">
+                                      <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                                      <span>{language === 'KR' ? '승강설비' : 'Elevator/ES'}</span>
+                                    </div>
+                                  </th>
+                                  <td className="py-2 px-3 text-slate-800 font-medium space-y-1">
+                                    <div className="flex flex-wrap items-center gap-2">
+                                      <span className="font-extrabold text-[#F06A00]">
+                                        {language === 'KR' ? `엘리베이터 ${station.exits.filter(e => e.hasElevator).length}대` : `EV ${station.exits.filter(e => e.hasElevator).length}`}
+                                      </span>
+                                      <span className="text-slate-300">|</span>
+                                      <span className="font-extrabold text-emerald-700">
+                                        {language === 'KR' ? `에스컬레이터 ${station.exits.filter(e => e.hasEscalator).length}대` : `ES ${station.exits.filter(e => e.hasEscalator).length}`}
+                                      </span>
+                                    </div>
+                                    {station.elevatorLocationDesc && (
+                                      <p className="text-[11px] text-slate-600 leading-tight">
+                                        {station.elevatorLocationDesc}
+                                      </p>
+                                    )}
+                                  </td>
+                                </tr>
+
+                                {/* 3. 이동 시간 */}
+                                <tr>
+                                  <th className="py-2 px-3 font-bold text-slate-800 bg-slate-100/80 border-r border-slate-200/80 shrink-0">
+                                    <div className="flex items-center gap-1.5">
+                                      <Clock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                                      <span>{language === 'KR' ? '이동 시간' : 'Time'}</span>
+                                    </div>
+                                  </th>
+                                  <td className="py-2 px-3 text-slate-700 font-medium">
+                                    {station.avgMovementTime || (language === 'KR' ? '도보 약 2분' : '~2 mins')}
+                                  </td>
+                                </tr>
+
+                                {/* 4. 환승 동선 */}
+                                <tr className="bg-slate-50/50">
+                                  <th className="py-2 px-3 font-bold text-slate-800 bg-slate-100/80 border-r border-slate-200/80 shrink-0">
+                                    <div className="flex items-center gap-1.5">
+                                      <ArrowRightLeft className="w-3.5 h-3.5 text-purple-600 shrink-0" />
+                                      <span>{language === 'KR' ? '환승 동선' : 'Transfer'}</span>
+                                    </div>
+                                  </th>
+                                  <td className="py-2 px-3 text-slate-700 font-medium">
+                                    {station.transferRouteDesc || (language === 'KR' ? '개찰구 ↔ 승강장 수평/수직 엘리베이터 연계' : 'Step-free connecting route')}
+                                  </td>
+                                </tr>
+
+                                {/* 5. 물품보관함 */}
+                                <tr>
+                                  <th className="py-2 px-3 font-bold text-slate-800 bg-slate-100/80 border-r border-slate-200/80 shrink-0">
+                                    <div className="flex items-center gap-1.5">
+                                      <Box className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+                                      <span>{language === 'KR' ? '물품보관함' : 'Lockers'}</span>
+                                    </div>
+                                  </th>
+                                  <td className="py-2 px-3">
+                                    {renderLockerInfo(station.id, language)}
+                                  </td>
+                                </tr>
+
+                                {/* 6. 주변 가볼 만한 곳 */}
+                                <tr className="bg-sky-50/40">
+                                  <th className="py-2 px-3 font-bold text-slate-800 bg-slate-100/80 border-r border-slate-200/80 shrink-0">
+                                    <div className="flex items-center gap-1.5">
+                                      <Compass className="w-3.5 h-3.5 text-sky-700 shrink-0" />
+                                      <span>{language === 'KR' ? '주변 가볼 만한 곳' : 'Nearby Places'}</span>
+                                    </div>
+                                  </th>
+                                  <td className="py-2 px-3 text-slate-800 font-medium">
+                                    {getNearbyPlaces(station.id, language).length > 0 ? (
+                                      <div className="flex flex-col gap-1.5">
+                                        {getNearbyPlaces(station.id, language).map((place, idx) => (
+                                          <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 bg-white p-2 px-2.5 rounded-xl border border-sky-100/80 shadow-2xs">
+                                            <div className="flex flex-col gap-0.5">
+                                              <span className="font-extrabold text-slate-900 text-[11.5px] sm:text-xs">
+                                                {place.name}
+                                              </span>
+                                              <span className="text-slate-600 text-[10.5px]">
+                                                {place.desc}
+                                              </span>
+                                            </div>
+                                            {place.exits && place.exits.length > 0 && (
+                                              <div className="flex flex-wrap gap-1 items-center shrink-0">
+                                                {place.exits.map((ex, exIdx) => (
+                                                  <NearbyExitBadge
+                                                    key={exIdx}
+                                                    num={ex.num}
+                                                    type={ex.type}
+                                                    line={station.lines[0]}
+                                                    language={language}
+                                                  />
+                                                ))}
+                                              </div>
+                                            )}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    ) : (
+                                      <span className="text-slate-400 text-[11px]">{language === 'KR' ? '주변 주요 명소 정보 준비 중' : 'Nearby places info coming soon'}</span>
+                                    )}
+                                  </td>
+                                </tr>
+
+                                {/* 7. 주의사항 */}
+                                <tr className="bg-amber-50/60">
+                                  <th className="py-2 px-3 font-bold text-amber-900 bg-amber-100/80 border-r border-amber-200/80 shrink-0">
+                                    <div className="flex items-center gap-1.5">
+                                      <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                                      <span>{language === 'KR' ? '주의사항' : 'Note'}</span>
+                                    </div>
+                                  </th>
+                                  <td className="py-2 px-3 text-amber-900 font-medium text-[11px] leading-snug">
+                                    {station.precautions || (language === 'KR' ? '혼잡 시간대 대기시간을 고려하세요.' : 'Consider extra wait time during peak hours.')}
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-[#004481] font-bold group-hover:translate-x-1 transition-transform">
+                          <span>{activeStation.name === station.name ? (language === 'KR' ? '현재 선택됨' : 'Active') : (language === 'KR' ? '이 역 가이드로 지정하기' : 'Switch to Station')}</span>
+                          <ChevronRight className="w-4 h-4" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Tab 3: TRAVEL TIPS VIEW */}
+          {currentTab === 'tips' && (
+            <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? '부산 여행 코스 가이드를 불러오는 중...' : 'Loading Busan itineraries...'} />}>
+              <BusanItinerariesView 
+                language={language}
+                initialCategory={selectedItineraryCategory as any}
+                onBack={() => {
+                  setSelectedItineraryCategory(null);
+                }}
+                onSelectCategory={(category) => {
+                  setSelectedItineraryCategory(category);
+                }}
+                tipsSubPage={tipsSubPage}
+                setTipsSubPage={setTipsSubPage}
+                activeRegionPage={activeRegionPage}
+                setActiveRegionPage={setActiveRegionPage}
+              />
+            </Suspense>
+          )}
+
+          {/* New Tab 4: BUSAN MAJOR EVENTS CALENDAR VIEW */}
+          {currentTab === 'schedule' && (
+            <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? '행사 달력을 불러오는 중...' : 'Loading events calendar...'} />}>
+              <BusanEventsCalendarView language={language} />
+            </Suspense>
+          )}
+
+          {/* New Tab 5: ABOUT THE SITE */}
+          {currentTab === 'about' && (
+            <SiteIntroductionView 
+              language={language} 
+              initialPage={siteSubPage}
+              onSubTabChange={(sub) => setSiteSubPage(sub)}
+            />
+          )}
+
+
+        </main>
+      </div>
+
+      {/* Footer information section */}
+      <footer className="mt-12 bg-slate-900 text-slate-400 text-left border-t border-slate-800 pt-16 pb-20 rounded-t-[2.5rem]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-8">
+          <div className="md:col-span-5 space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-xl bg-white/10 text-white shadow-sm">
+                <Train className="w-5 h-5" />
+              </div>
+              <span className="text-lg font-bold font-heading text-white tracking-tight">
+                Stepless (Busan)
+              </span>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">
+              {language === 'KR' 
+                ? '부산 지하철 이용객들의 평등하고 자유로운 지상 이동을 지원하기 위해 설계된 교통약자 특화형 편의 플랫폼입니다. 공공데이터 연계 및 수동 검증 데이터를 기반으로 운영되며, 부산 현지인이 직접 엄선하고 작성한 생생한 부산 여행 코스와 대중교통 이용 팁을 함께 제공하여 누구나 편리하게 부산을 여행할 수 있도록 돕습니다.' 
+                : 'A dedicated public transit helper to establish smooth, accessible pathways throughout major transit hubs. It features verified public data alongside authentic Busan itineraries and practical transit tips curated by a Busan local to ensure a convenient and enjoyable travel experience for everyone.'}
+            </p>
+          </div>
+
+          <div className="md:col-span-3 space-y-3">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">
+              {language === 'KR' ? '관련 서비스 & 커뮤니티' : 'Agencies & Community'}
+            </h4>
+            <ul className="space-y-2 text-xs">
+              <li>
+                <a href="https://www.humetro.busan.kr" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline flex items-center gap-1">
+                  <span>부산교통공사 (Humetro)</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+              <li>
+                <a href="https://www.reddit.com/r/BusanTravelTips/" target="_blank" rel="noopener noreferrer" className="hover:text-[#ff4500] hover:underline flex items-center gap-1 font-semibold text-orange-500">
+                  <span>{language === 'KR' ? '레딧 커뮤니티 (Reddit)' : 'Reddit Community'}</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+              <li>
+                <a href="https://www.data.go.kr" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline flex items-center gap-1">
+                  <span>공공데이터포털 연계</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+              <li>
+                <a href="https://www.visitbusan.net" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline flex items-center gap-1">
+                  <span>비짓부산 배리어프리 투어</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="md:col-span-4 space-y-3">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider font-heading text-left flex items-center gap-2">
+              <UserCheck className="w-4 h-4 text-emerald-400" />
+              <span>{language === 'KR' ? '운영자 정보 및 제휴 문의' : 'Operator & Inquiries'}</span>
+            </h4>
+            <div className="text-xs font-sans text-slate-300 space-y-1">
+              <p>운영 서비스: <strong className="text-white">스탭리스 (Stepless)</strong></p>
+              <p>조사자 및 운영 총괄: <strong className="text-white">플로레르 (Floreur)</strong></p>
+            </div>
+            <p className="text-xs font-sans text-slate-400 leading-relaxed">
+              {language === 'KR' 
+                ? '부산 전철역 엘리베이터 데이터 현행화 제의, 데이터 오류 제보 및 제휴문의는 지원 메일 또는 문의 창구를 이용해 연락 주시기 바랍니다.' 
+                : 'For comments or suggesting detailed accessibility paths, contact the support team.'}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => {
+                  setCurrentTab('about');
+                  setSiteSubPage('contact');
+                  window.scrollTo(0, 0);
+                }}
+                className="px-3 py-1.5 rounded-lg bg-[#004481] hover:bg-blue-800 text-white font-bold text-xs transition-colors cursor-pointer"
+              >
+                ✉️ {language === 'KR' ? '문의 보내기' : 'Contact Us'}
+              </button>
+              <a
+                href="mailto:floreur88@gmail.com"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono text-xs font-bold transition-colors border border-slate-700"
+              >
+                <span>📧 floreur88@gmail.com</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* AdSense & Cookie Privacy Policy Notice */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-slate-800/60">
+          <p className="text-2xs sm:text-xs text-slate-400 leading-relaxed font-sans text-left">
+            📢 <strong>구글 맞춤형 광고 및 쿠키 안내:</strong> 본 배리어프리 플랫폼은 공익적 정보의 지속가능한 제공을 위해 구글 애드센스 맞춤형 광고를 활용하고 있습니다. 쿠키 맞춤 설정 및 거부 안내는 하단의 <button onClick={() => { setCurrentTab('about'); setSiteSubPage('privacy'); window.scrollTo(0, 0); }} className="text-blue-400 underline hover:text-blue-300 font-bold cursor-pointer">개인정보처리방침</button>을 참고해 주시기 바랍니다.
+          </p>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/80 mt-6 pt-6 text-xs text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <span className="font-medium text-slate-400">© 2026 floreur (스탭리스). All rights reserved.</span>
+          
+          {/* Prominent Legal Links Bar */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 justify-center sm:justify-end">
+            <button 
+              onClick={() => {
+                setCurrentTab('about');
+                setSiteSubPage('about');
+                window.scrollTo(0, 0);
+              }}
+              className="px-3 py-1 rounded-md bg-slate-800 hover:bg-blue-900/60 hover:text-white border border-slate-700/80 text-slate-200 font-bold text-xs transition-colors cursor-pointer"
+            >
+              {language === 'KR' ? '👤 운영자 소개' : 'Operator'}
+            </button>
+            <button 
+              onClick={() => {
+                setCurrentTab('about');
+                setSiteSubPage('contact');
+                window.scrollTo(0, 0);
+              }}
+              className="px-3 py-1 rounded-md bg-slate-800 hover:bg-blue-900/60 hover:text-white border border-slate-700/80 text-slate-200 font-bold text-xs transition-colors cursor-pointer"
+            >
+              {language === 'KR' ? '✉️ 정보 오류 요청 제보 및 문의' : 'Inquiries & Edits'}
+            </button>
+            <button 
+              onClick={() => {
+                setCurrentTab('about');
+                setSiteSubPage('privacy');
+                window.scrollTo(0, 0);
+              }}
+              className="px-3 py-1 rounded-md bg-slate-800 hover:bg-blue-900/60 hover:text-white border border-slate-700/80 text-slate-200 font-bold text-xs transition-colors cursor-pointer"
+            >
+              {language === 'KR' ? '🔒 개인정보처리방침' : 'Privacy'}
+            </button>
+            <button 
+              onClick={() => {
+                setCurrentTab('about');
+                setSiteSubPage('terms');
+                window.scrollTo(0, 0);
+              }}
+              className="px-3 py-1 rounded-md bg-slate-800 hover:bg-blue-900/60 hover:text-white border border-slate-700/80 text-slate-200 font-bold text-xs transition-colors cursor-pointer"
+            >
+              {language === 'KR' ? '📄 이용약관' : 'Terms'}
+            </button>
+            <button 
+              onClick={() => {
+                setCurrentTab('about');
+                setSiteSubPage('data-source');
+                window.scrollTo(0, 0);
+              }}
+              className="px-3 py-1 rounded-md bg-slate-800 hover:bg-blue-900/60 hover:text-white border border-slate-700/80 text-slate-200 font-bold text-xs transition-colors cursor-pointer"
+            >
+              {language === 'KR' ? '📊 데이터 출처' : 'Data Sources'}
+            </button>
+            <a 
+              href="https://www.reddit.com/r/BusanTravelTips/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="px-3 py-1 rounded-md bg-slate-800 hover:bg-orange-950/60 hover:text-orange-300 border border-slate-700/80 text-slate-300 font-bold text-xs transition-colors cursor-pointer inline-flex items-center gap-1"
+            >
+              <span>{language === 'KR' ? '레딧 커뮤니티' : 'Reddit'}</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+        </div>
+      </footer>
+
+      {/* Terms of Service Modal */}
+      {showTermsModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-100 flex flex-col max-h-[85vh] animate-slide-up">
+            {/* Header */}
+            <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="text-lg sm:text-xl font-extrabold text-slate-800 font-heading">
+                {language === 'KR' ? '📄 Stepless 서비스 이용약관' : '📄 Stepless Terms of Service'}
+              </h3>
+              <button 
+                onClick={() => setShowTermsModal(false)}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-colors cursor-pointer text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 overflow-y-auto text-left text-xs sm:text-sm text-slate-600 space-y-4">
+              <p className="font-semibold text-slate-700">
+                {language === 'KR' 
+                  ? '본 약관은 Stepless(이하 "서비스")가 제공하는 부산 지하철 편리한 교통 경로 안내 서비스의 이용에 관한 조건 및 규정을 양 당사자 계약의 일환으로 정의합니다.' 
+                  : 'This agreement governs your use of the Stepless easy-access transit pathways search engine and traveler guidelines.'}
+              </p>
+
+              <div>
+                <h4 className="font-bold text-slate-850 text-sm mb-1">{language === 'KR' ? '제 1 조 (목적)' : 'Article 1 (Purpose)'}</h4>
+                <p>
+                  {language === 'KR' 
+                    ? '본 서비스는 휠체어 이용자, 유모차 소지 보행자, 무거운 수하물(캐리어) 동반 관광객 등 이동약자 편의 경로를 제공하고 실증적 통로를 보존하는 공익적 안내 솔루션 제공을 목적으로 합니다.' 
+                    : 'The service assists travelers of reduced mobility (including wheelchair, stroller, or bulky luggage holders) finding flat elevators/escalators.'}
+                </p>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-slate-850 text-sm mb-1">{language === 'KR' ? '제 2 조 (정보 정합성의 면책성)' : 'Article 2 (Limitation of Liability)'}</h4>
+                <p>
+                  {language === 'KR'
+                    ? '1. 본 플랫폼 내 노출되는 출구 정보, 엘리베이터 위치 정보, 및 편의시설 가동 상태는 공공데이터 자원 및 사용자 제보 항목을 상시 수동 정제한 결과물입니다. 실시간 기계 고장, 기상 악화, 또는 역사 보수 계획에 의한 일시중단 등 사정에 따라 현지와 일부 불일치 및 오차가 존재할 수 있으며 당사는 이에 대하여 법적 완전성을 보증하지 아니합니다.'
+                    : '1. All accessibility statuses, lifts layout and geolocation marks are maintained based on general transit open-data and crowd-sourced validation. Physical or temporal differences can occur due to unannounced machine malfunctions or repair cycles.'}
+                </p>
+                <p className="mt-1">
+                  {language === 'KR'
+                    ? '2. 보행 및 횡단보도 이용 시 반드시 실제 거리 신호등의 안내 및 육안 확인 결과에 따르시길 바라며, 현장 사고와 관련된 물적·인적 귀책 사유를 전면 배제합니다.'
+                    : '2. Pedestrians must prioritize local street signals and real-world conditions over navigation suggestions. Stepless disclaims all damages associated with physical incidents.'}
+                </p>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-slate-850 text-sm mb-1">{language === 'KR' ? '제 3 조 (이용자의 권리와 의무)' : 'Article 3 (Visitor Reports)'}</h4>
+                <p>
+                  {language === 'KR'
+                    ? '이용자는 맵 상 시설에 관한 의견을 자유롭게 제보할 수 있습니다. 다만, 악의적인 가짜 고장 신고, 특정 단체를 비방하는 내용을 리포트 란에 상습 도배 시에는 계정 차단 및 관련 정보가 사법 당국에 백업될 수 있음에 유의하십시오.'
+                    : 'Users agree to file authentic information only. Fraudulent reports or spam will lead to instant termination of access.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-5 border-t border-slate-100 flex justify-end">
+              <button 
+                onClick={() => setShowTermsModal(false)}
+                className="px-5 py-2.5 bg-slate-900 hover:bg-slate-850 text-white font-bold text-xs sm:text-sm rounded-xl cursor-pointer shadow-sm transition-colors"
+              >
+                {language === 'KR' ? '동의 및 닫기' : 'Acknowledge & Close'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Privacy Policy Modal */}
+      {showPrivacyModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-100 flex flex-col max-h-[85vh] animate-slide-up">
+            {/* Header */}
+            <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="text-lg sm:text-xl font-extrabold text-slate-800 font-heading">
+                {language === 'KR' ? '🔒 개인정보처리방침 (Privacy Policy)' : '🔒 Privacy Policy'}
+              </h3>
+              <button 
+                onClick={() => setShowPrivacyModal(false)}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-colors cursor-pointer text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 overflow-y-auto text-left text-xs sm:text-sm text-slate-600 space-y-4">
+              <div className="bg-blue-50/80 p-4 border border-blue-100 rounded-2xl text-blue-800 font-semibold text-xs sm:text-sm">
+                {language === 'KR' 
+                  ? '📢 구글 애드센스(Google AdSense) 광고 파트너십 구축에 따른 필수 투명성 준수 사항을 온전히 고지하는 개인정보 보호 규정입니다.'
+                  : '📢 Important: Under GDPR & Google AdSense transparency mandates, this document contains detailed cookie disclosures about advertising targeting.'}
+              </div>
+
+              <div>
+                <h4 className="font-bold text-slate-850 text-sm mb-1">{language === 'KR' ? '1. 개인인식 정보 및 위치 프라이버시 보호' : '1. Personal and Geolocation Data'}</h4>
+                <p>
+                  {language === 'KR'
+                    ? 'Stepless 서비스는 주민등록번호, 휴대전화 등 식별 가능한 어떠한 형태의 직접적인 회원 개인정보도 수집, 가공, 또는 해외 전송하지 않는 프라이버시-퍼스트 환경입니다. 내 주변 출구 탐색 기능은 모바일 기기 내 "로컬 샌드박스 Geolocation API" 상에서만 일회적 거리 연산으로 작동하며 외부 서버로 결코 발송되지 않습니다.'
+                    : 'Stepless strictly avoids gathering direct identifiable demographics (names or SSNs) or transmitting real-time coordinates. Your location is processed solely within your dynamic local browser session.'}
+                </p>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-slate-850 text-sm mb-1 text-emerald-800">{language === 'KR' ? '2. 구글 제3자 타겟 광고 쿠키(Cookie) 명세 고지' : '2. Google Third-Party Cookie Policy'}</h4>
+                <p className="font-medium">
+                  {language === 'KR'
+                    ? '1) 당사는 지속 가능한 이동 편의시설 정보 갱신 및 서비스 운영을 위하여 구글 애드센스(Google AdSense) 광고 시스템 기법을 웹사이트 내에 수용합니다.'
+                    : '1) We allow Google AdSense on our web site to finance persistent field-testing and continuous updates to our map catalog.'}
+                </p>
+                <p className="font-medium mt-1">
+                  {language === 'KR'
+                    ? '2) 구글을 포함한 제3자 서비스 공급업체는 이용자가 본 서비스나 타사 인터넷 사이트에 과거에 가동 및 방문한 기록을 바탕으로 광고를 제공하기 위해 쿠키(Cookie) 기술을 적용합니다.'
+                    : '2) Third-party vendors, including Google, utilize system cookies to construct contextual or personalized ads based on raw historic browser visit parameters.'}
+                </p>
+                <p className="font-medium mt-1">
+                  {language === 'KR'
+                    ? '3) 구글의 광고 쿠키 사용으로 인해 구글 및 제휴 네트워크는 이용자의 서비스 이용 양태에 맞는 전문적인 맞춤형 광고를 제공할 수 있게 됩니다.'
+                    : '3) Googles usage of interest-advertising cookies allows safe presentation of appropriate target banners matching the users current preferences.'}
+                </p>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-slate-850 text-sm mb-1">{language === 'KR' ? '3. 맞춤형 타겟 광고의 제한 및 거부 수칙 (Opt-out)' : '3. Targeted Ads Opt-out Instructions'}</h4>
+                <p>
+                  {language === 'KR'
+                    ? '이용자는 자율적으로 타겟 광고 제공을 사전에 영구 거부하거나 해제할 수 있습니다. 브라우저 설정에서 쿠키를 전면 지우거나 거부할 수 있으며, 구글 공식 광고사 설정을 통해 제어 가능합니다.'
+                    : 'Users can freely block tailored tracking by altering browser settings or custom vendors rules.'}
+                </p>
+                <ul className="list-disc pl-5 space-y-1.5 mt-2 font-semibold text-slate-800 text-xs sm:text-sm">
+                  <li>
+                    <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline inline-flex items-center gap-1">
+                      <span>{language === 'KR' ? '🔗 구글 개인 마케팅 광고 설정 관리' : '🔗 Google Personal Ads Setting Controller'}</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.aboutads.info" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline inline-flex items-center gap-1">
+                      <span>{language === 'KR' ? '🔗 미국 디지털광고협회(DAA) 쿠키 수집 정지 리스트' : '🔗 Digital Advertising Alliance (DAA) Cookie Opt-Out Central'}</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-bold text-slate-850 text-sm mb-1">{language === 'KR' ? '4. 문의 및 보안 의견 접수' : '4. Inquiries'}</h4>
+                <p>
+                  {language === 'KR'
+                    ? '구글 광고 정책 위반 의심 사례, 리포트 불충분 문의, 기타 개인정보 보호 정책에 관한 고견은floreur88@gmail.com 으로 연락 주시면 신속하게 조처하겠습니다.'
+                    : 'For visual layout policies or GDPR inquiries, mail us at floreur88@gmail.com.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-5 border-t border-slate-100 flex justify-end">
+              <button 
+                onClick={() => setShowPrivacyModal(false)}
+                className="px-5 py-2.5 bg-[#004481] hover:bg-[#003566] text-white font-bold text-xs sm:text-sm rounded-xl cursor-pointer shadow-sm transition-colors"
+              >
+                {language === 'KR' ? '약관 동의 및 확인' : 'Accept & Complete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 📱 Sticky Mobile Bottom Navigation Bar (At-a-glance 1-tap switching) */}
+      <nav 
+        className="md:hidden fixed bottom-0 left-0 right-0 z-[1000] bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-2 py-1.5 flex justify-around items-center"
+        aria-label="Mobile Bottom Navigation"
+      >
+        {[
+          { id: 'home', label: language === 'KR' ? '홈' : 'Home', icon: Compass },
+          { id: 'search', label: language === 'KR' ? '역 검색' : 'Stations', icon: Train },
+          { id: 'schedule', label: language === 'KR' ? '일정표' : 'Schedule', icon: Calendar },
+          { id: 'tips', label: language === 'KR' ? '여행 팁' : 'Tips', icon: HelpCircle },
+          { id: 'about', label: language === 'KR' ? '소개' : 'About', icon: Info },
+        ].map(item => {
+          const Icon = item.icon;
+          const isActive = currentTab === item.id || (item.id === 'tips' && currentTab.startsWith('itinerary-'));
+          return (
+            <button
+              key={item.id}
+              id={`mobile-bottom-nav-${item.id}`}
+              onClick={() => {
+                window.scrollTo(0, 0);
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+
+                const validTabs = ['home', 'search', 'schedule', 'tips', 'about'];
+                const targetTab = validTabs.includes(item.id) ? item.id : 'home';
+                setCurrentTab(targetTab);
+                if (targetTab === 'home') {
+                  setIsHomeLanding(true);
+                  setSelectedStationId('seomyeon');
+                  setExpandedExitNum(null);
+                } else {
+                  setIsHomeLanding(false);
+                }
+                if (targetTab === 'tips') {
+                  setSelectedItineraryCategory('DAY');
+                  setTipsSubPage('transit');
+                  setActiveRegionPage(null);
+                }
+              }}
+              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
+                isActive 
+                  ? 'text-[#004481] font-black scale-105' 
+                  : 'text-slate-400 font-medium hover:text-slate-600'
+              }`}
+            >
+              <div className={`p-1 rounded-lg ${isActive ? 'bg-blue-50 text-[#004481]' : ''}`}>
+                <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
+              </div>
+              <span className="text-[10px] leading-tight mt-0.5 tracking-tight">{item.label}</span>
+            </button>
+          );
+        })}
+      </nav>
+    </div>
+  );
+}
