@@ -53,8 +53,7 @@ import { translateRecommendation } from './utils';
 import { BUSAN_ITINERARIES } from './data/itineraries';
 
 import SubwayStationMap from './components/SubwayStationMap';
-
-// Lazy loaded heavy components for optimal bundle splitting and fast initial page load
+const SubwayStationMapLazy = lazy(() => import('./components/SubwayStationMap'));
 const BusanItinerariesView = lazy(() => import('./components/BusanItinerariesView'));
 const BusanEventsCalendarView = lazy(() => import('./components/BusanEventsCalendarView'));
 
@@ -261,15 +260,35 @@ export default function App() {
   const [newRecCategory, setNewRecCategory] = useState<'FOOD' | 'CAFE' | 'ATTRACTION' | 'TRANSIT' | 'OTHER'>('FOOD');
   const [newRecStation, setNewRecStation] = useState('');
   const [newRecContent, setNewRecContent] = useState('');
+  // Auto remove initial HTML loading screen on React mount
+  useEffect(() => {
+    try {
+      const loader = document.getElementById('app-loading-screen');
+      if (loader) {
+        loader.remove();
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
   const [hasUpvoted, setHasUpvoted] = useState<Record<string, boolean>>(() => {
-    const saved = localStorage.getItem('busan_traveler_upvotes');
-    return saved ? JSON.parse(saved) : {};
+    try {
+      const saved = localStorage.getItem('busan_traveler_upvotes');
+      return saved ? JSON.parse(saved) : {};
+    } catch (e) {
+      return {};
+    }
   });
 
   // User's own written recommendation IDs
   const [myRecIds, setMyRecIds] = useState<string[]>(() => {
-    const saved = localStorage.getItem('busan_my_rec_ids');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('busan_my_rec_ids');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
   });
 
   // Operator (Admin) Mode states
@@ -639,8 +658,12 @@ export default function App() {
 
   // Automatic Translation States using server-side Gemini 3.5 Flash
   const [translatedRecs, setTranslatedRecs] = useState<Record<string, { topic: string; content: string; stationOrExit: string }>>(() => {
-    const saved = localStorage.getItem('busan_traveler_recs_en');
-    return saved ? JSON.parse(saved) : {};
+    try {
+      const saved = localStorage.getItem('busan_traveler_recs_en');
+      return saved ? JSON.parse(saved) : {};
+    } catch (e) {
+      return {};
+    }
   });
   const [translatingIds, setTranslatingIds] = useState<Record<string, boolean>>({});
 
@@ -1313,7 +1336,7 @@ export default function App() {
               {/* Station Map directly below station selection */}
               <div id="search-tab-map-container" className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
                 <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? '지도를 불러오는 중...' : 'Loading map...'} />}>
-                  <SubwayStationMap station={activeStation} language={language} focusedExitCoords={focusedExitCoords} />
+                  <SubwayStationMapLazy station={activeStation} language={language} focusedExitCoords={focusedExitCoords} />
                 </Suspense>
               </div>
 
