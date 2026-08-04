@@ -843,57 +843,6 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
 
   return (
     <div className="flex flex-col w-full bg-white overflow-hidden rounded-3xl border border-slate-100/80 transition-all duration-300">
-      {/* Top Map Engine Switcher Toolbar */}
-      <div className="bg-slate-900 text-white px-3.5 py-2 flex items-center justify-between border-b border-slate-800 text-xs">
-        <div className="flex items-center gap-2">
-          <span className="font-extrabold text-[12px] text-slate-200 flex items-center gap-1.5">
-            📍 {language === 'KR' ? '출구 & 엘리베이터 이동 지도' : 'Exit & Elevator Map'}
-          </span>
-          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-300">
-            {!useLeaflet ? 'Naver Maps API' : 'OpenStreetMap (Leaflet)'}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-1.5">
-          <button
-            onClick={() => {
-              setUseLeaflet(false);
-              setNaverAuthFailed(false);
-            }}
-            className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer flex items-center gap-1 ${
-              !useLeaflet
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'bg-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-700'
-            }`}
-            title="네이버 지도로 보기"
-          >
-            🗺️ 네이버 지도
-          </button>
-          
-          <button
-            onClick={() => {
-              setUseLeaflet(true);
-            }}
-            className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer flex items-center gap-1 ${
-              useLeaflet
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'bg-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-700'
-            }`}
-            title="OpenStreetMap 대체 지도로 보기"
-          >
-            🌐 대체 지도
-          </button>
-
-          <button
-            onClick={() => setShowSettings(true)}
-            className="p-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition cursor-pointer"
-            title="지도 API 설정"
-          >
-            ⚙️
-          </button>
-        </div>
-      </div>
-
       {/* Naver Authentication Warning Banner */}
       {naverAuthFailed && (
         <div className="bg-amber-500/10 border-b border-amber-500/20 px-3.5 py-2 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-amber-950 gap-2">
