@@ -894,6 +894,18 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
           </div>
         )}
 
+        {/* Floating Settings Button in top-right of map */}
+        <div className="absolute top-3 right-3 z-[1000]">
+          <button
+            onClick={() => setShowSettings(true)}
+            title={language === 'KR' ? '네이버 지도 API 설정' : 'Naver Maps API Settings'}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-white/90 hover:bg-white text-slate-800 shadow-md border border-slate-200 rounded-full text-xs font-bold transition-all cursor-pointer backdrop-blur-sm"
+          >
+            <span>⚙️</span>
+            <span>{language === 'KR' ? '지도 API 설정' : 'Map API Settings'}</span>
+          </button>
+        </div>
+
         {/* Settings & Authorization Overlay */}
         {(showSettings || (naverAuthFailed && !useLeaflet)) && (
           <div className="absolute inset-0 bg-slate-900/95 z-[1001] flex flex-col p-5 overflow-y-auto text-slate-100 animate-fade-in">

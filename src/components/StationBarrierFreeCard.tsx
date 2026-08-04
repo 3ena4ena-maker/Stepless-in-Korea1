@@ -4,16 +4,46 @@ import { VerificationBadge } from './VerificationBadge';
 import { Train, Clock, MapPin, AlertTriangle, ArrowRightLeft, ShieldCheck, CheckCircle2, Box, Compass } from 'lucide-react';
 import { renderLockerInfo } from '../data/lockers';
 import { getNearbyPlaces, NearbyExitBadge } from '../data/nearbyPlaces';
+import { translateDirectionItem } from '../utils';
 
 interface StationBarrierFreeCardProps {
   station: Station;
   language?: 'KR' | 'EN';
 }
 
+function translateRecommendedExits(text?: string): string {
+  if (!text) return 'Level elevator exits';
+  const nums = text.match(/\d+/g);
+  if (!nums || nums.length === 0) return text;
+  if (nums.length === 1) return `Exit ${nums[0]}`;
+  if (nums.length === 2) return `Exits ${nums[0]} & ${nums[1]}`;
+  return `Exits ${nums.slice(0, -1).join(', ')} & ${nums[nums.length - 1]}`;
+}
+
 export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarrierFreeCardProps) {
   const displayName = language === 'KR' ? station.name : (station.englishName || station.name);
   const lineLabels = station.lines.map(l => language === 'KR' ? `${l}호선` : `Line ${l}`).join(' · ');
   const nearbyPlaces = getNearbyPlaces(station.id, language);
+
+  const recommendedExitsText = language === 'KR'
+    ? station.recommendedExits
+    : (station.recommendedExitsEn || translateRecommendedExits(station.recommendedExits));
+
+  const elevatorLocationText = language === 'KR'
+    ? station.elevatorLocationDesc
+    : (station.elevatorLocationDescEn || station.elevatorLocationDesc);
+
+  const avgMovementTimeText = language === 'KR'
+    ? station.avgMovementTime
+    : (station.avgMovementTimeEn || station.avgMovementTime);
+
+  const transferRouteText = language === 'KR'
+    ? station.transferRouteDesc
+    : (station.transferRouteDescEn || station.transferRouteDesc);
+
+  const precautionsText = language === 'KR'
+    ? station.precautions
+    : (station.precautionsEn || station.precautions);
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md p-5 sm:p-7 space-y-6 text-left my-6" id={`station-summary-${station.id}`}>
@@ -76,7 +106,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                   </div>
                 </th>
                 <td className="py-2.5 px-3 sm:py-3 sm:px-4 text-slate-800 font-bold text-xs sm:text-sm">
-                  <p>{station.recommendedExits || (language === 'KR' ? '지상 엘리베이터 완비 출구' : 'Level elevator exits')}</p>
+                  <p>{recommendedExitsText}</p>
                 </td>
               </tr>
 
@@ -91,7 +121,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                 <td className="py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium space-y-1.5 text-xs sm:text-sm">
                   {/* Primary Summary Text */}
                   <p className="font-bold text-slate-900">
-                    {station.elevatorLocationDesc || (language === 'KR' ? '지상 ↔ 개찰구 직통 엘리베이터 구역' : 'Direct elevator zone connecting ground level to concourse')}
+                    {elevatorLocationText}
                   </p>
                   
                   {/* Detailed Elevator Exits from Station Exits Data */}
@@ -99,11 +129,11 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                     <div className="pt-1 flex flex-col gap-1 text-2xs sm:text-xs">
                       {station.exits.filter(e => e.hasElevator).map((exit, idx) => (
                         <div key={idx} className="flex items-start gap-1.5 text-slate-700 bg-white/80 px-2 py-1 rounded-lg border border-slate-200/70">
-                          <span className="font-extrabold text-[#004481] shrink-0">📍 Exit {exit.number}:</span>
+                          <span className="font-extrabold text-[#004481] shrink-0">📍 Exit {exit.number.replace(/번\s*출구/g, '')}:</span>
                           <span className="font-medium text-slate-800">
                             {language === 'KR' 
                               ? (exit.directionDesc || exit.tip || '지상 연결 엘리베이터 운행') 
-                              : (exit.directionDescEn || exit.tipEn || exit.directionDesc || 'Direct elevator operating to ground level')}
+                              : (exit.directionDescEn || (exit.directionDesc ? translateDirectionItem(exit.directionDesc, 'EN') : 'Direct elevator to ground level'))}
                           </span>
                         </div>
                       ))}
@@ -121,7 +151,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                   </div>
                 </th>
                 <td className="py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium text-xs sm:text-sm">
-                  <p>{station.avgMovementTime || (language === 'KR' ? '도보 약 2분 소요' : 'Approx. 2 mins walk')}</p>
+                  <p>{avgMovementTimeText}</p>
                 </td>
               </tr>
 
@@ -134,7 +164,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                   </div>
                 </th>
                 <td className="py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium text-xs sm:text-sm">
-                  <p>{station.transferRouteDesc || (language === 'KR' ? '개찰구에서 승강장까지 엘리베이터 무단차 연결' : 'Level elevator connection from gate to platform')}</p>
+                  <p>{transferRouteText}</p>
                 </td>
               </tr>
 
@@ -203,7 +233,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                   </div>
                 </th>
                 <td className="py-3 px-4 text-amber-900 font-medium">
-                  <p>{station.precautions || (language === 'KR' ? '혼잡 시간대 대기시간을 고려하여 여유 있게 이동하십시오.' : 'Allow extra travel time during peak rush hours.')}</p>
+                  <p>{precautionsText}</p>
                 </td>
               </tr>
             </tbody>

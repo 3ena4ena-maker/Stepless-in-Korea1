@@ -50,10 +50,15 @@ export interface Station {
   exits: ExitInfo[];
   alertNotice?: string; // "환승 통로 일시 정지" or something
   transferRouteDesc?: string; // 환승 동선
+  transferRouteDescEn?: string;
   recommendedExits?: string; // 추천 출구 번호
+  recommendedExitsEn?: string;
   elevatorLocationDesc?: string; // 엘리베이터 위치
+  elevatorLocationDescEn?: string;
   avgMovementTime?: string; // 평균 이동 시간
+  avgMovementTimeEn?: string;
   precautions?: string; // 주의사항
+  precautionsEn?: string;
   investigator?: string; // 조사자 (플로레르)
   officialSource?: string; // 공식 출처 (네이버지도)
 }

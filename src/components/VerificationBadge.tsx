@@ -1,6 +1,6 @@
 import React from 'react';
 import { CheckCircle2, ExternalLink, UserCheck, Calendar } from 'lucide-react';
-import { getTodayDateKR } from '../utils';
+import { getTodayDate } from '../utils';
 
 interface VerificationBadgeProps {
   language?: 'KR' | 'EN';
@@ -15,7 +15,7 @@ export function VerificationBadge({
   stationName,
   variant = 'card'
 }: VerificationBadgeProps) {
-  const todayStr = getTodayDateKR();
+  const todayStr = getTodayDate(language);
   const naverSearchUrl = stationName 
     ? `https://map.naver.com/v5/search/${encodeURIComponent(stationName)}`
     : 'https://map.naver.com';

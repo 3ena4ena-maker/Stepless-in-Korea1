@@ -225,12 +225,20 @@ export function translateTopicOrContentFallback(text: string): string {
   return translated;
 }
 
-export function getTodayDateKR(): string {
+export function getTodayDate(language: 'KR' | 'EN' = 'KR'): string {
   const now = new Date();
   const year = now.getFullYear();
-  const month = now.getMonth() + 1;
+  const month = now.getMonth();
   const day = now.getDate();
-  return `${year}년 ${month}월 ${day}일`;
+  if (language === 'EN') {
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${monthNames[month]} ${day}, ${year}`;
+  }
+  return `${year}년 ${month + 1}월 ${day}일`;
+}
+
+export function getTodayDateKR(): string {
+  return getTodayDate('KR');
 }
 
 export function translateRecommendation(
@@ -262,4 +270,56 @@ export function translateRecommendation(
     content: translateTopicOrContentFallback(rec.content),
     stationOrExit: translateTextFallback(rec.stationOrExit)
   };
+}
+
+export function translateDirectionItem(text: string, language: 'KR' | 'EN' = 'KR'): string {
+  if (!text || language === 'KR') return text || "";
+
+  let res = text.trim();
+  res = res.replace(/방면$/g, "").replace(/\s*방면,/g, ",").trim();
+
+  const termMap: Record<string, string> = {
+    '행정복지센터': 'Community Service Center',
+    '주민센터': 'Community Service Center',
+    '초등학교': 'Elementary School',
+    '중학교': 'Middle School',
+    '고등학교': 'High School',
+    '대학교': 'University',
+    '부산진소방서': 'Busanjin Fire Station',
+    '소방서': 'Fire Station',
+    '파출소': 'Police Substation',
+    '지구대': 'Police Station',
+    '치안센터': 'Police Safety Center',
+    '롯데백화점 부산본점': 'Lotte Department Store Main Branch',
+    '롯데백화점 광복점': 'Lotte Department Store Gwangbok Branch',
+    '롯데백화점': 'Lotte Dept. Store',
+    '롯데마트': 'Lotte Mart',
+    '부산진구청': 'Busanjin-gu Office',
+    '수영구청': 'Suyeong-gu Office',
+    '해운대구청': 'Haeundae-gu Office',
+    '중구청': 'Jung-gu Office',
+    '서구청': 'Seo-gu Office',
+    '영광도서': 'Yeongkwang Bookstore',
+    '시민공원': 'Citizen Park',
+    '해수욕장': 'Beach',
+    '광안리 해수욕장': 'Gwangalli Beach',
+    '해운대해수욕장': 'Haeundae Beach',
+    '신한은행': 'Shinhan Bank',
+    '부전시장': 'Bujeon Market',
+    '부전전통시장': 'Bujeon Traditional Market',
+    '자갈치시장': 'Jagalchi Market',
+    '팔도시장': 'Paldo Market',
+    '부평깡통시장': 'Bupyeong Kkangtong Market',
+    '지하상가': 'Underground Shopping Mall',
+    '아파트': 'Apartments',
+    '삼거리': 'Junction',
+    '사거리': 'Crossroad',
+    '교차로': 'Intersection',
+  };
+
+  Object.entries(termMap).forEach(([kr, en]) => {
+    res = res.replace(new RegExp(kr, 'g'), en);
+  });
+
+  return res;
 }
