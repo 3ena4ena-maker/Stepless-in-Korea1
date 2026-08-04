@@ -82,7 +82,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
 
     // Dynamic error hook in window to prevent default browser alert dialog
     window.navermaps_auth_error = () => {
-      console.warn("Naver Maps API Authentication failed. Automatically falling back to Leaflet Map.");
+      console.warn("Naver Maps API Authentication failed for origin:", window.location.origin);
       setNaverAuthFailed(true);
       setUseLeaflet(true); // Automatically switch to Leaflet map when domain is not authorized in NCP
     };
@@ -104,7 +104,8 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
 
     const script = document.createElement('script');
     script.id = scriptId;
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}&submodules=geocoder`;
+    // Pass both ncpClientId and ncpKeyId to support modern and legacy NCP API parameter specs
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}&ncpKeyId=${clientId}&submodules=geocoder`;
     script.async = true;
     script.onload = () => {
       setTimeout(() => {
@@ -120,6 +121,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
     };
     script.onerror = () => {
       console.warn("Naver Maps script failed to load. Auto switching to Leaflet.");
+      setNaverAuthFailed(true);
       setUseLeaflet(true);
     };
     document.head.appendChild(script);
@@ -716,16 +718,57 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
           iconAnchor: [crosswalkMarkerWidth * 0.5, crosswalkMarkerHeight * 0.5]
         });
 
-        const crosswalkMarker = L.marker([pt.lat, pt.lng], { icon: crosswalkIcon, title: titleText }).addTo(leafletMapInstance.current);
-        leafletMarkersRef.current.push(crosswalkMarker);
+        // Force map size invalidation after render to ensure 100% full container rendering
+        setTimeout(() => {
+          try {
+            leafletMapInstance.current?.invalidateSize();
+          } catch (e) {
+            // ignore
+          }
+        }, 100);
+        setTimeout(() => {
+          try {
+            leafletMapInstance.current?.invalidateSize();
+          } catch (e) {
+            // ignore
+          }
+        }, 350);
       });
     }
 
+    // Trigger map invalidation
+    const timer = setTimeout(() => {
+      try {
+        leafletMapInstance.current?.invalidateSize();
+      } catch (e) {
+        // ignore
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
+
   }, [station, leafletLoaded, useLeaflet, focusedExitCoords, language]);
 
-  // Clean-up logic on unmount to release resources safely
+  // Clean-up logic on unmount and window resize handler to ensure maps stay perfectly sized
   useEffect(() => {
+    const handleResize = () => {
+      try {
+        if (leafletMapInstance.current) {
+          leafletMapInstance.current.invalidateSize();
+        }
+        if (mapInstance.current && window.naver && window.naver.maps) {
+          window.naver.maps.Event.trigger(mapInstance.current, 'resize');
+        }
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
     return () => {
+      window.removeEventListener('resize', handleResize);
+
       try {
         markersRef.current.forEach(m => {
           if (m && typeof m.setMap === 'function') {
@@ -763,6 +806,90 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
 
   return (
     <div className="flex flex-col w-full bg-white overflow-hidden rounded-3xl border border-slate-100/80 transition-all duration-300">
+      {/* Top Map Engine Switcher Toolbar */}
+      <div className="bg-slate-900 text-white px-3.5 py-2 flex items-center justify-between border-b border-slate-800 text-xs">
+        <div className="flex items-center gap-2">
+          <span className="font-extrabold text-[12px] text-slate-200 flex items-center gap-1.5">
+            📍 {language === 'KR' ? '출구 & 엘리베이터 이동 지도' : 'Exit & Elevator Map'}
+          </span>
+          <span className="hidden sm:inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-300">
+            {!useLeaflet ? 'Naver Maps API' : 'OpenStreetMap (Leaflet)'}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => {
+              setUseLeaflet(false);
+              setNaverAuthFailed(false);
+            }}
+            className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer flex items-center gap-1 ${
+              !useLeaflet
+                ? 'bg-emerald-600 text-white shadow-sm'
+                : 'bg-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-700'
+            }`}
+            title="네이버 지도로 보기"
+          >
+            🗺️ 네이버 지도
+          </button>
+          
+          <button
+            onClick={() => {
+              setUseLeaflet(true);
+            }}
+            className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer flex items-center gap-1 ${
+              useLeaflet
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'bg-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-700'
+            }`}
+            title="OpenStreetMap 대체 지도로 보기"
+          >
+            🌐 대체 지도
+          </button>
+
+          <button
+            onClick={() => setShowSettings(true)}
+            className="p-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition cursor-pointer"
+            title="지도 API 설정"
+          >
+            ⚙️
+          </button>
+        </div>
+      </div>
+
+      {/* Naver Authentication Warning Banner */}
+      {naverAuthFailed && (
+        <div className="bg-amber-500/10 border-b border-amber-500/20 px-3.5 py-2 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-amber-950 gap-2">
+          <div className="flex items-center gap-2 overflow-hidden">
+            <span className="shrink-0 text-sm">⚠️</span>
+            <span className="font-semibold leading-tight text-[11.5px]">
+              {language === 'KR' 
+                ? '현재 접속 웹 주소가 네이버 지도 API에 등록되어 있지 않습니다. (대체 지도로 자동 전환됨)' 
+                : 'Current domain is pending Naver Maps approval. Auto-switched to OpenStreetMap.'}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-auto">
+            <button 
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.origin);
+                alert(language === 'KR' 
+                  ? `현재 주소가 복사되었습니다!\n\n${window.location.origin}\n\n네이버 클라우드 플랫폼 Web Service URL에 위 주소를 추가해 주세요.` 
+                  : `Copied domain URL:\n${window.location.origin}`);
+              }}
+              className="px-2 py-1 bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-white rounded-lg font-bold text-[10.5px] transition cursor-pointer"
+            >
+              {language === 'KR' ? '주소 복사' : 'Copy Domain'}
+            </button>
+            <button 
+              onClick={() => setShowSettings(true)}
+              className="px-2 py-1 bg-slate-800 hover:bg-slate-900 text-white rounded-lg font-bold text-[10.5px] transition cursor-pointer"
+            >
+              {language === 'KR' ? 'API 설정' : 'Settings'}
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Map display block */}
       <div className="w-full h-[320px] relative bg-slate-50 border-b border-slate-100 transition-all duration-300">
         

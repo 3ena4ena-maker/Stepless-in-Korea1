@@ -9,6 +9,12 @@
     </script>
 
     <!-- Resource hints for fast network connection -->
+    <script>
+      window.navermaps_auth_error = function() {
+        console.warn('Naver Maps authentication failed on domain:', window.location.origin);
+        window.NAVER_MAPS_AUTH_FAILED = true;
+      };
+    </script>
     <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://openapi.map.naver.com" />
