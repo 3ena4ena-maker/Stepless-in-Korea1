@@ -50,6 +50,11 @@ export class ErrorBoundary extends React.Component<Props, State> {
                 <br />
                 아래 버튼을 눌러 바로 다시 시도해 보세요.
               </p>
+              {this.state.error && (
+                <div className="mt-3 p-3 bg-red-50 text-red-700 rounded-xl text-xs text-left font-mono overflow-auto max-h-32 border border-red-200">
+                  {this.state.error.toString()}
+                </div>
+              )}
             </div>
 
             <div className="pt-2 flex flex-col gap-2.5">
