@@ -76,9 +76,9 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
         // ignore
       }
       mapInstance.current = null;
-    }
-    if (mapElement.current) {
-      mapElement.current.innerHTML = '';
+      if (mapElement.current) {
+        mapElement.current.innerHTML = '';
+      }
     }
   };
 
@@ -102,9 +102,9 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
         // ignore
       }
       leafletMapInstance.current = null;
-    }
-    if (mapElement.current) {
-      mapElement.current.innerHTML = '';
+      if (mapElement.current) {
+        mapElement.current.innerHTML = '';
+      }
     }
   };
 
@@ -223,8 +223,11 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
 
     const mapCenter = new window.naver.maps.LatLng(centerLat, centerLng);
 
-    // Initialise Naver Map instantiation if not built already
-    if (!mapInstance.current) {
+    // Initialise Naver Map instantiation if not built already or DOM container was emptied
+    if (!mapInstance.current || !mapElement.current.childElementCount) {
+      if (mapElement.current) {
+        mapElement.current.innerHTML = '';
+      }
       mapInstance.current = new window.naver.maps.Map(mapElement.current, {
         center: mapCenter,
         zoom: currentZoom,
@@ -244,6 +247,9 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
       // Update central zoom dynamically and move center with pan animation
       mapInstance.current.setCenter(mapCenter);
       mapInstance.current.setZoom(currentZoom);
+      if (window.naver && window.naver.maps && window.naver.maps.Event && window.naver.maps.Event.trigger) {
+        window.naver.maps.Event.trigger(mapInstance.current, 'resize');
+      }
     }
 
     // Reset previous loaded markers to avoid rendering duplication
@@ -556,8 +562,11 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
       currentZoom = 16;
     }
 
-    // Initialise Leaflet Map instantiation if not built already
-    if (!leafletMapInstance.current) {
+    // Initialise Leaflet Map instantiation if not built already or DOM container was emptied
+    if (!leafletMapInstance.current || !mapElement.current.childElementCount) {
+      if (mapElement.current) {
+        mapElement.current.innerHTML = '';
+      }
       leafletMapInstance.current = L.map(mapElement.current, {
         zoomControl: false,
         attributionControl: false
@@ -577,6 +586,11 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
     } else {
       // Update central zoom dynamically and move center smoothly
       leafletMapInstance.current.setView([centerLat, centerLng], currentZoom);
+      setTimeout(() => {
+        if (leafletMapInstance.current) {
+          leafletMapInstance.current.invalidateSize();
+        }
+      }, 50);
     }
 
     // Reset previous loaded markers to avoid rendering duplication
