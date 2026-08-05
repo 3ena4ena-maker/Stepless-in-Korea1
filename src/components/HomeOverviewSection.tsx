@@ -124,19 +124,19 @@ export function HomeOverviewSection({
     <div className="space-y-12 text-left font-sans text-slate-800" id="home-overview-section">
       
       {/* ==========================================
-          1. HERO HEADER BANNER (Reference Image Style Top Banner)
+          1. HERO HEADER BANNER (Navy Box with integrated feature cards)
          ========================================== */}
-      <section className="relative rounded-3xl overflow-hidden bg-[#0a192f] text-white p-6 sm:p-12 md:p-14 shadow-xl border border-slate-800">
+      <section className="relative rounded-3xl overflow-hidden bg-[#0a192f] text-white p-6 sm:p-8 md:p-10 shadow-xl border border-slate-800">
         <div className="absolute right-0 bottom-0 top-0 w-1/2 opacity-10 pointer-events-none hidden md:block bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-400 via-transparent to-transparent">
           <Train className="w-full h-full p-12 text-blue-200" />
         </div>
 
-        <div className="relative z-10 max-w-3xl space-y-5 sm:space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-300 text-xs font-mono font-bold tracking-wider uppercase">
+        <div className="relative z-10 max-w-3xl space-y-4 sm:space-y-5">
+          <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3 sm:py-1 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-300 text-[11px] sm:text-xs font-mono font-bold tracking-wider uppercase">
             <span>STEPLESS BUSAN TRANSIT</span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight leading-tight text-white">
+          <h1 className="text-xl sm:text-3xl md:text-4xl font-black font-heading tracking-tight leading-tight text-white">
             {language === 'KR' ? (
               <>
                 계단 없는 부산 도시철도 <br className="hidden sm:inline" />
@@ -150,18 +150,18 @@ export function HomeOverviewSection({
             )}
           </h1>
 
-          <p className="text-xs sm:text-base text-slate-300 font-medium leading-relaxed max-w-2xl">
+          <p className="hidden sm:block text-xs sm:text-sm text-slate-300/90 font-medium leading-relaxed max-w-2xl">
             {language === 'KR'
               ? '부산 도시철도를 이용하는 유모차, 휠체어, 대형 캐리어 이용자를 위해 엘리베이터 위치와 계단 없는 이동 경로를 정리합니다.'
               : 'Clear elevator locations and step-free transit routes for wheelchair users, families with strollers, and travelers with heavy luggage in Busan.'}
           </p>
 
           {/* Action Buttons */}
-          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
+          <div className="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
             {onNavigateToNearby && (
               <button
                 onClick={onNavigateToNearby}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs sm:text-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer min-h-[48px]"
+                className="w-full sm:w-auto px-5 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs sm:text-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
               >
                 <MapPin className="w-4 h-4 text-blue-200 shrink-0" />
                 <span>{language === 'KR' ? '내 주변 출구 찾기' : 'Find Exits Near Me'}</span>
@@ -170,63 +170,64 @@ export function HomeOverviewSection({
             )}
           </div>
         </div>
-      </section>
 
-
-      {/* ==========================================
-          2. COMPACT LIGHT ICON STRIP (주요 대상 및 특장점 - 박스 배경 없이 소형화)
-         ========================================== */}
-      <section className="py-2 px-1">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center divide-y md:divide-y-0 md:divide-x divide-slate-200/80">
-          
-          <div className="pt-2 md:pt-0 space-y-1 flex flex-col items-center">
-            <div className="p-2 rounded-full bg-amber-50 text-amber-600">
-              <Baby className="w-4 h-4" />
+        {/* Integrated 4 Feature Items inside the Navy Box */}
+        <div className="relative z-10 pt-4 sm:pt-5 mt-4 sm:mt-5 border-t border-slate-700/60 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-left">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-amber-500/20 text-amber-300 shrink-0">
+                <Baby className="w-4 h-4" />
+              </div>
+              <div className="font-extrabold text-xs sm:text-sm text-white">
+                {language === 'KR' ? '유모차 동반 승객' : 'Strollers & Families'}
+              </div>
             </div>
-            <div className="font-extrabold text-xs text-slate-900">
-              {language === 'KR' ? '유모차 동반 승객' : 'Strollers & Families'}
-            </div>
-            <p className="text-2xs text-slate-500 font-medium max-w-[160px]">
-              {language === 'KR' ? '경사로와 승강기 연계 출구를 우선 안내' : 'Ramp and elevator priority route guides'}
+            <p className="hidden sm:block text-[11px] text-slate-300/80 font-medium leading-snug pt-0.5">
+              {language === 'KR' ? '경사로와 승강기 연계 출구 우선 안내' : 'Ramp & elevator priority routes'}
             </p>
           </div>
 
-          <div className="pt-2 md:pt-0 space-y-1 flex flex-col items-center">
-            <div className="p-2 rounded-full bg-blue-50 text-blue-600">
-              <Accessibility className="w-4 h-4" />
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-blue-500/20 text-blue-300 shrink-0">
+                <Accessibility className="w-4 h-4" />
+              </div>
+              <div className="font-extrabold text-xs sm:text-sm text-white">
+                {language === 'KR' ? '휠체어·교통약자' : 'Wheelchair & Barrier-Free'}
+              </div>
             </div>
-            <div className="font-extrabold text-xs text-slate-900">
-              {language === 'KR' ? '휠체어·교통약자' : 'Wheelchair & Barrier-Free'}
-            </div>
-            <p className="text-2xs text-slate-500 font-medium max-w-[160px]">
-              {language === 'KR' ? '와이드 개찰구 및 단차 없는 직통 경로' : 'Wide turnstiles and step-free level paths'}
+            <p className="hidden sm:block text-[11px] text-slate-300/80 font-medium leading-snug pt-0.5">
+              {language === 'KR' ? '와이드 개찰구 및 단차 없는 직통 경로' : 'Wide turnstiles & level paths'}
             </p>
           </div>
 
-          <div className="pt-2 md:pt-0 space-y-1 flex flex-col items-center">
-            <div className="p-2 rounded-full bg-emerald-50 text-emerald-600">
-              <Luggage className="w-4 h-4" />
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 shrink-0">
+                <Luggage className="w-4 h-4" />
+              </div>
+              <div className="font-extrabold text-xs sm:text-sm text-white">
+                {language === 'KR' ? '대형 캐리어 소지자' : 'Heavy Luggage'}
+              </div>
             </div>
-            <div className="font-extrabold text-xs text-slate-900">
-              {language === 'KR' ? '대형 캐리어 소지자' : 'Heavy Luggage'}
-            </div>
-            <p className="text-2xs text-slate-500 font-medium max-w-[160px]">
+            <p className="hidden sm:block text-[11px] text-slate-300/80 font-medium leading-snug pt-0.5">
               {language === 'KR' ? '계단 없이 엘리베이터 이용 출구 안내' : 'Step-free elevator exit directions'}
             </p>
           </div>
 
-          <div className="pt-2 md:pt-0 space-y-1 flex flex-col items-center">
-            <div className="p-2 rounded-full bg-purple-50 text-purple-600">
-              <FileCheck className="w-4 h-4" />
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-purple-500/20 text-purple-300 shrink-0">
+                <FileCheck className="w-4 h-4" />
+              </div>
+              <div className="font-extrabold text-xs sm:text-sm text-white">
+                {language === 'KR' ? '현장 실측 검증' : 'Field-Verified Info'}
+              </div>
             </div>
-            <div className="font-extrabold text-xs text-slate-900">
-              {language === 'KR' ? '현장 실측 검증' : 'Field-Verified Info'}
-            </div>
-            <p className="text-2xs text-slate-500 font-medium max-w-[160px]">
-              {language === 'KR' ? '확인 날짜 및 상시 제보 정정 수용' : 'Audit dates and active issue reports'}
+            <p className="hidden sm:block text-[11px] text-slate-300/80 font-medium leading-snug pt-0.5">
+              {language === 'KR' ? '확인 날짜 및 상시 제보 정정 수용' : 'Audit dates & active reports'}
             </p>
           </div>
-
         </div>
       </section>
 

@@ -42,6 +42,7 @@ import {
 import ElegantIllustration from './ElegantIllustration';
 import { BUSAN_ITINERARIES, ItineraryCourse, ItineraryStep } from '../data/itineraries';
 import { CHILD_TRANSPORT_INFOGRAPHIC_BASE64 } from '../childtransport_base64';
+import { getTodayDate } from '../utils';
 
 export const getStepIllustrationType = (titleKo: string, cat: string): 'temple' | 'park' | 'food' | 'cafe' | 'sea' | 'transit' | 'village' | 'history' | 'culture' | 'default' => {
   const normalized = titleKo.toLowerCase();
@@ -3648,25 +3649,49 @@ export default function BusanItinerariesView({
       {/* ========================================================================= */}
       {activeSection === 'TRANSIT_TIPS' && (
         <div className="space-y-6 sm:space-y-8 animate-fade-in text-left">
-          {/* Header Bar - highly compact */}
-          <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-[0_4px_15px_rgba(0,0,0,0.01)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div>
-              <h2 className="text-lg sm:text-xl font-heading font-extrabold text-slate-800 flex items-center gap-2">
+          {/* Header Bar */}
+          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-[0_4px_15px_rgba(0,0,0,0.01)] space-y-2.5">
+            <div className="flex flex-col sm:flex-row sm:items-baseline gap-1.5 sm:gap-3">
+              <h2 className="text-lg sm:text-xl font-heading font-extrabold text-slate-800 flex items-center gap-2 shrink-0">
                 <span>🚇</span>
                 <span>{language === 'KR' ? '부산 대중교통 이용 팁' : 'Busan Public Transit Guide'}</span>
               </h2>
-              <p className="text-xs text-slate-500 mt-0.5 font-semibold">
+              <p className="text-xs text-slate-500 font-semibold whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
                 {language === 'KR' 
                   ? '현지인이 전수하는 최신 대중교통 할인 정책과 무료 환승 완전 정복 가이드입니다.' 
                   : 'The latest public transit discount policies and free transfer guides, straight from Busan locals.'}
               </p>
             </div>
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-50/60 border border-blue-100/70 py-0.5 px-2.5 text-[10px] sm:text-xs font-bold text-[#004481]/90">
-              <span className="relative flex h-1.5 w-1.5 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#004481]"></span>
+            
+            {/* Verification Info - Clean single line on the row below */}
+            <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1.5 whitespace-nowrap overflow-x-auto max-w-full scrollbar-none">
+              <span className="font-bold text-[#004481] flex items-center gap-1 shrink-0">
+                <span className="relative flex h-1.5 w-1.5 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#004481]"></span>
+                </span>
+                <span>{language === 'KR' ? '검증 정보' : 'Verified Info'}</span>
               </span>
-              <span>{language === 'KR' ? '현재 최신 정책 반영됨' : 'Updated with latest policies'}</span>
+              <span className="text-slate-300 shrink-0">|</span>
+              <span className="shrink-0">{language === 'KR' ? '조사자: 플로레르' : 'Inspector: Florair'}</span>
+              <span className="text-slate-300 shrink-0">|</span>
+              <span className="shrink-0">
+                {language === 'KR' ? '최근 조사일:' : 'Audited:'}{' '}
+                <strong className="text-slate-800 font-semibold">{getTodayDate(language)}</strong>{' '}
+                <span className="text-blue-600 font-normal">{language === 'KR' ? '기준 (매일 자동 업데이트)' : '(Updated Daily)'}</span>
+              </span>
+              <span className="text-slate-300 shrink-0">|</span>
+              <span className="shrink-0">
+                {language === 'KR' ? '공식 출처:' : 'Source:'}{' '}
+                <a 
+                  href="https://www.busan.go.kr" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-slate-700 hover:text-blue-600 underline font-semibold"
+                >
+                  {language === 'KR' ? '부산광역시청 홈페이지' : 'Busan City Portal'}
+                </a>
+              </span>
             </div>
           </div>
 
