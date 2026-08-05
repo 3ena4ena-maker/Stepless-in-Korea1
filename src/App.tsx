@@ -1815,7 +1815,25 @@ export default function App() {
 
           {/* New Tab 4: BUSAN MAJOR EVENTS CALENDAR VIEW */}
           {currentTab === 'schedule' && (
-            <BusanEventsCalendarView language={language} />
+            <BusanEventsCalendarView 
+              language={language} 
+              onSelectStation={(stationId, exitNum) => {
+                setSelectedStationId(stationId);
+                if (exitNum) {
+                  setExpandedExitNum(exitNum);
+                }
+                setCurrentTab('search');
+                setIsHomeLanding(false);
+                setTimeout(() => {
+                  const targetEl = document.getElementById('search-selected-station-details') || document.getElementById('search-tab-map-container');
+                  if (targetEl) {
+                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  } else {
+                    window.scrollTo(0, 0);
+                  }
+                }, 100);
+              }}
+            />
           )}
 
           {/* New Tab 5: ABOUT THE SITE */}

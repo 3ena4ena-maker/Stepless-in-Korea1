@@ -5,11 +5,13 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, MapPin, Tag, Shuffle, Info, Sparkles, CheckCircle2, ExternalLink, X } from 'lucide-react';
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, MapPin, Tag, Shuffle, Info, Sparkles, CheckCircle2, ExternalLink, X, Train, ArrowRight, Navigation } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { STATIONS } from '../data';
 
 interface BusanEventsCalendarViewProps {
   language: 'KR' | 'EN';
+  onSelectStation?: (stationId: string, exitNum?: string) => void;
 }
 
 export interface BusanEvent {
@@ -21,11 +23,15 @@ export interface BusanEvent {
   categoryEn: string;
   startDate: string; // YYYY-MM-DD
   endDate: string; // YYYY-MM-DD
+  stationId: string; // station ID matching STATIONS (e.g., 'dadaepo', 'centum', 'busan', 'gwangan', 'sasang', 'jagalchi')
+  exitNumber: string; // recommended exit (e.g., '1번 출구')
   stationKo: string;
   stationEn: string;
   metroLine: string; // e.g., "1호선", "2호선"
   accessibilityKo: string;
   accessibilityEn: string;
+  exitTipKo?: string;
+  exitTipEn?: string;
   descriptionKo: string;
   descriptionEn: string;
   locationKo: string;
@@ -45,11 +51,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Beach Festival',
     startDate: '2026-08-07',
     endDate: '2026-08-13',
+    stationId: 'dadaepo',
+    exitNumber: '1번 출구',
     stationKo: '다대포해수욕장역 (1호선)',
     stationEn: 'Dadaepo Beach Station',
     metroLine: 'Line 1',
     accessibilityKo: '다대포해수욕장 및 수변공원 평탄 구역에 시각 가이드 및 안내 부스가 배치됩니다. 바닷가 임시 매트 통로 구축으로 수변 평탄 도보 보행을 돕습니다.',
     accessibilityEn: 'Special flat synthetic pathways and temporary plastic beach mats are laid out toward the water at Dadaepo Beach to provide sturdy support for wheels.',
+    exitTipKo: '다대포해수욕장역 1번 출구 엘리베이터 이용 시 계단과 턱 없이 다대포 백사장 및 수변공원 무대까지 평탄하게 직결됩니다.',
+    exitTipEn: 'Dadaepo Beach Exit 1 elevator offers step-free access straight to the beach and waterfront stage.',
     descriptionKo: '뜨거운 한여름 밤 다대포해수욕장 일원에서 열리는 거대한 댄스 카니발, 대규모 버스킹, 나이트 풀파티, 수변 라이브 무대입니다.',
     descriptionEn: 'An epic mid-summer celebration spanning Dadaepo Beach, featuring live bands, street food stalls, and ocean parties engineered for universal entry.',
     locationKo: '다대포해수욕장 일원',
@@ -66,11 +76,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Exhibition & Expo',
     startDate: '2026-08-06',
     endDate: '2026-08-09',
-    stationKo: '센텀시티역 (2호선)',
-    stationEn: 'Centum City Station',
-    metroLine: 'Line 2',
+    stationId: 'bexco',
+    exitNumber: '7번 출구',
+    stationKo: '벡스코역 (2호선/동해선)',
+    stationEn: 'BEXCO Station',
+    metroLine: 'Line 2 / Donghae',
     accessibilityKo: '벡스코 제1전시장은 단차가 전혀 없고 수직 승강기 및 장애인 전용 화장실이 완비되어 휠체어 및 유모차 이용객이 안전하고 쾌적하게 관람할 수 있습니다.',
     accessibilityEn: 'BEXCO Exhibition Center I features 100% barrier-free flat floors, wide entrance aisles, and dedicated accessible facilities.',
+    exitTipKo: '벡스코역 7번 출구 엘리베이터 이용 시 벡스코 제1전시장 및 야외광장까지 수평 무단차로 이동하실 수 있습니다.',
+    exitTipEn: 'BEXCO Station Exit 7 elevator connects directly to BEXCO Exhibition Hall 1 with full step-free access.',
     descriptionKo: '한국 불교 문화 및 수행, 명상, 템플스테이, 불교 미술 및 전통 공예와 현대 웰니스 산업을 통합 선보이는 대표 박람회입니다.',
     descriptionEn: 'A major international expo displaying Korean Buddhist culture, meditation, temple stays, art crafts, and modern wellness industries.',
     locationKo: '벡스코 (BEXCO) 제1전시장 3홀',
@@ -87,11 +101,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Marine Sports',
     startDate: '2026-07-31',
     endDate: '2026-08-09',
+    stationId: 'busan',
+    exitNumber: '9번 출구',
     stationKo: '부산역 / 초량역 (1호선)',
     stationEn: 'Busan / Choryang Station',
     metroLine: 'Line 1',
     accessibilityKo: '북항 친수공원 보행 수변 도로는 무단차 평탄 블록으로 설계되어 유모차 및 휠체어 접근이 매우 편안합니다.',
     accessibilityEn: 'The North Port Waterfront Park walkways are entirely flat and barrier-free for smooth wheel navigation.',
+    exitTipKo: '부산역 9번 출구 (북항 친수공원 연결 보행데크) 이용 시 수변공원까지 경사나 계단 없이 안전하게 보행이 가능합니다.',
+    exitTipEn: 'Busan Station Exit 9 pedestrian deck provides step-free walkability straight to North Port Park.',
     descriptionKo: '부산 북항 재개발지 친수공원에서 펼쳐지는 패들보드(SUP) 체험, 수변 레저 스포츠 프로그램 및 온 가족이 즐기는 시원한 일상 탈출 축제입니다.',
     descriptionEn: 'Stand-up paddleboarding (SUP) and waterfront leisure sports festival held at the scenic North Port Waterfront Park.',
     locationKo: '북항 친수공원 일원',
@@ -108,11 +126,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Movie & Culture',
     startDate: '2026-08-14',
     endDate: '2026-08-16',
+    stationId: 'dadaepo',
+    exitNumber: '1번 출구',
     stationKo: '다대포해수욕장역 (1호선)',
     stationEn: 'Dadaepo Beach Station',
     metroLine: 'Line 1',
     accessibilityKo: '다대포 노을정원 및 수변 무대 관람 구역은 데크길과 평탄 잔디광장으로 연결되어 이동 편의성이 뛰어납니다.',
     accessibilityEn: 'Viewing lawns and sunset boardwalks at Dadaepo Beach provide wide, barrier-free access.',
+    exitTipKo: '다대포해수욕장역 1번 출구 엘리베이터 이용 시 다대포 노을정원 및 수변 무대까지 턱 없이 이동이 가능합니다.',
+    exitTipEn: 'Dadaepo Beach Exit 1 elevator offers step-free access straight to Dadaepo Sunset Garden and beach stage.',
     descriptionKo: '13:00~22:00 운영 (*부산 바다축제와 연계). 붉게 물드는 다대포 노을을 배경으로 야외 영화 상영, 감독/배우 토크쇼, 노을 버스킹이 함께하는 로맨틱 영화제입니다.',
     descriptionEn: 'Operating 13:00~22:00 in connection with Busan Sea Festival. Outdoor cinema, director talk shows, and sunset acoustics set against Dadaepo\'s famous golden sunset.',
     locationKo: '다대포해수욕장 일원',
@@ -129,11 +151,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Marine Sports',
     startDate: '2026-08-07',
     endDate: '2026-08-09',
+    stationId: 'gwangan',
+    exitNumber: '5번 출구',
     stationKo: '광안역 / 금련산역 (2호선)',
     stationEn: 'Gwangan / Geumnyeonsan Station',
     metroLine: 'Line 2',
     accessibilityKo: '광안리 해변 데크 통로 및 평탄 수변 공원에 무단차 관람 보도블록이 완비되어 휠체어 및 유모차로 안심 관람이 가능합니다.',
     accessibilityEn: 'Gwangalli seaside deck and flat waterfront park walkways provide smooth, barrier-free viewing locations.',
+    exitTipKo: '광안역 5번 출구 배리어프리 엘리베이터 이용 후 광안리 해변 방면으로 완만한 평탄 보도를 따라 진입할 수 있습니다.',
+    exitTipEn: 'Gwangan Station Exit 5 elevator leads to smooth level sidewalks heading straight to Gwangalli Beach.',
     descriptionKo: 'LED 조명을 밝힌 패들보드(SUP)와 윈드서핑이 광안대교 야경을 배경으로 수놓는 이색 해양 스포츠 축제 및 수변 라이브 버스킹 무대입니다.',
     descriptionEn: 'Unique night marine sports festival featuring LED paddleboards (SUP) and windsurfing against the backdrop of Gwangandaegyo Bridge.',
     locationKo: '광안리 해수욕장 및 수변 스탠드',
@@ -150,11 +176,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Drone Exhibition',
     startDate: '2026-08-08',
     endDate: '2026-08-08',
+    stationId: 'gwangan',
+    exitNumber: '5번 출구',
     stationKo: '광안역 (2호선)',
     stationEn: 'Gwangan Station',
     metroLine: 'Line 2',
     accessibilityKo: '광안해변 테마거리는 보행 장애물이 없는 완전 평탄 보도블록으로 구성되어 휠체어/유모차 전 구역 진입이 자유롭습니다.',
     accessibilityEn: 'The spacious Gwangalli Beach esplanade is paved with continuous non-slip flat bricks, allowing wheels and strollers to claim spectacular view spots easily.',
+    exitTipKo: '광안역 5번 출구 엘리베이터 이용 시 광안해변 테마거리 드론 관람구역까지 무단차 수평 연결됩니다.',
+    exitTipEn: 'Gwangan Exit 5 elevator provides step-free access to Gwangalli Beach drone view points.',
     descriptionKo: '8월 8일 토요일 (20:00 / 22:00 2회 공연) 진행. 클래식 명곡의 웅장한 선율에 맞춰 조율되는 빛의 오케스트라 퍼포먼스입니다.',
     descriptionEn: 'Saturday, August 8 (Two flights: 20:00 & 22:00). Light orchestra performance synchronized with grand classical music melodies.',
     locationKo: '광안리 해수욕장 생활체육공원 앞 해상',
@@ -171,11 +201,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Craft Beer & Food',
     startDate: '2026-08-13',
     endDate: '2026-08-17',
-    stationKo: '센텀시티역 (2호선)',
-    stationEn: 'Centum City Station',
-    metroLine: 'Line 2',
+    stationId: 'bexco',
+    exitNumber: '7번 출구',
+    stationKo: '벡스코역 (2호선/동해선)',
+    stationEn: 'BEXCO Station',
+    metroLine: 'Line 2 / Donghae',
     accessibilityKo: '벡스코 야외광장은 단차가 전혀 없는 완벽한 평탄 우레탄 바닥으로, 휠체어와 유모차가 야외 테이블 및 부스를 수월하게 이용할 수 있습니다.',
     accessibilityEn: 'The outdoor BEXCO plaza is paved completely flat, accommodating wheelchair users and stroller families with dedicated open tables.',
+    exitTipKo: '벡스코역 7번 출구 엘리베이터를 통해 지상 벡스코 야외광장 축제 무대로 턱 없이 직결됩니다.',
+    exitTipEn: 'BEXCO Station Exit 7 elevator connects directly to BEXCO Outdoor Beer Festival Plaza.',
     descriptionKo: '전국 유명 수제맥주 브루어리와 부산 대표 맛집 푸드트럭, 시원한 야외 라이브 버스킹 공연이 어우러지는 한여름 밤 야외 맥주 축제입니다.',
     descriptionEn: 'A midsummer outdoor beer festival combining renowned Korean craft breweries, gourmet food trucks, and live acoustic music under the stars.',
     locationKo: '벡스코 (BEXCO) 야외광장',
@@ -192,11 +226,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Drone Exhibition',
     startDate: '2026-08-15',
     endDate: '2026-08-15',
+    stationId: 'gwangan',
+    exitNumber: '5번 출구',
     stationKo: '광안역 (2호선)',
     stationEn: 'Gwangan Station',
     metroLine: 'Line 2',
     accessibilityKo: '광안해변 테마거리는 보행 장애물이 없는 완전 평탄 보도블록으로 구성되어 휠체어/유모차 전 구역 진입이 자유롭습니다.',
     accessibilityEn: 'The spacious Gwangalli Beach esplanade is paved with continuous non-slip flat bricks, allowing wheels and strollers to claim spectacular view spots easily.',
+    exitTipKo: '광안역 5번 출구 엘리베이터 이용 후 광안해변 테마거리 관람 구역까지 무단차 평탄 보도로 진입하실 수 있습니다.',
+    exitTipEn: 'Gwangan Exit 5 elevator provides direct level access to Gwangalli Beach promenade.',
     descriptionKo: '8월 15일 토요일 (20:00 / 22:00 2회 공연) 진행. 광복절 81주년을 기념하여 태극기와 빛의 서사시를 드론 아트워크로 연출하는 특별 라이트쇼입니다.',
     descriptionEn: 'Saturday, August 15 (Two flights: 20:00 & 22:00). Special Liberation Day commemorative light show featuring Taegeukgi flag patterns.',
     locationKo: '광안리 해수욕장 생활체육공원 앞 해상',
@@ -213,11 +251,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Comedy & Performance',
     startDate: '2026-08-21',
     endDate: '2026-08-30',
-    stationKo: '센텀시티역 (2호선) / 부산역 (1호선)',
-    stationEn: 'Centum City Station / Busan Station',
-    metroLine: 'Line 2 / Line 1',
+    stationId: 'bexco',
+    exitNumber: '7번 출구',
+    stationKo: '벡스코역 (2호선/동해선)',
+    stationEn: 'BEXCO Station',
+    metroLine: 'Line 2 / Donghae',
     accessibilityKo: '영화의전당 및 주요 공연장은 휠체어 전용 관람석 및 수직 승강기, 전용 화장실이 완비되어 교통약자의 접근성이 매우 우수합니다.',
     accessibilityEn: 'Venues including Busan Cinema Center feature elevators and accessible seating zones for smooth mobility access.',
+    exitTipKo: '벡스코역 7번 출구 이용 시 영화의전당 야외극장 및 실내 상영관으로 무단차 직결 진입이 가능합니다.',
+    exitTipEn: 'BEXCO Exit 7 provides direct step-free entrance to Busan Cinema Center.',
     descriptionKo: '아시아 최초이자 최대의 국제 코미디 페스티벌로, 국내외 최정상 코미디언들의 웃음 폭탄 스탠드업 코미디, 마임, 넌버벌 퍼포먼스가 펼쳐집니다.',
     descriptionEn: 'Asia\'s largest comedy festival bringing top international comedians, stand-up, mime, and non-verbal shows to Busan.',
     locationKo: '영화의전당, 부산시민회관, 봉오리 아트홀 등',
@@ -234,11 +276,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Drone Exhibition',
     startDate: '2026-08-22',
     endDate: '2026-08-22',
+    stationId: 'gwangan',
+    exitNumber: '5번 출구',
     stationKo: '광안역 (2호선)',
     stationEn: 'Gwangan Station',
     metroLine: 'Line 2',
     accessibilityKo: '광안해변 테마거리는 보행 장애물이 없는 완전 평탄 보도블록으로 구성되어 휠체어/유모차 전 구역 진입이 자유롭습니다.',
     accessibilityEn: 'The spacious Gwangalli Beach esplanade is paved with continuous non-slip flat bricks, allowing wheels and strollers to claim spectacular view spots easily.',
+    exitTipKo: '광안역 5번 출구 엘리베이터 이용 시 휠체어/유모차 전용 관람구역으로 턱 없이 안전 이동이 가능합니다.',
+    exitTipEn: 'Gwangan Exit 5 elevator leads smoothly to reserved stroller and wheelchair viewing zones.',
     descriptionKo: '8월 22일 토요일 (20:00 / 22:00 2회 공연) 진행. 신화 속 히어로와 현대 아이콘들이 결합된 역동적 시각 스펙터클 연출입니다.',
     descriptionEn: 'Saturday, August 22 (Two flights: 20:00 & 22:00). Dynamic spectacle merging mythical heroes and modern pop-culture icons.',
     locationKo: '광안리 해수욕장 생활체육공원 앞 해상',
@@ -255,11 +301,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Drone Exhibition',
     startDate: '2026-08-29',
     endDate: '2026-08-29',
+    stationId: 'gwangan',
+    exitNumber: '5번 출구',
     stationKo: '광안역 (2호선)',
     stationEn: 'Gwangan Station',
     metroLine: 'Line 2',
     accessibilityKo: '광안해변 테마거리는 보행 장애물이 없는 완전 평탄 보도블록으로 구성되어 휠체어/유모차 전 구역 진입이 자유롭습니다.',
     accessibilityEn: 'The spacious Gwangalli Beach esplanade is paved with continuous non-slip flat bricks, allowing wheels and strollers to claim spectacular view spots easily.',
+    exitTipKo: '광안역 5번 출구 엘리베이터 이용 후 광안해변 보행광장으로 수평 무단차 이동이 가능합니다.',
+    exitTipEn: 'Gwangan Exit 5 elevator connects to Gwangalli Beach esplanade without stairs.',
     descriptionKo: '8월 29일 토요일 (20:00 / 22:00 2회 공연) 진행. 여름의 마지막 밤을 아쉬워하며 가을의 서막을 여는 감성 드론 라이트쇼입니다.',
     descriptionEn: 'Saturday, August 29 (Two flights: 20:00 & 22:00). Emotional drone light performance saying farewell to summer and welcoming autumn.',
     locationKo: '광안리 해수욕장 생활체육공원 앞 해상',
@@ -276,11 +326,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Performance & Concert',
     startDate: '2026-10-03',
     endDate: '2026-10-04',
+    stationId: 'sasang',
+    exitNumber: '3번 출구',
     stationKo: '사상역 (2호선) / 괘법르네시떼역',
     stationEn: 'Sasang / Gwaebeop Renecite Station',
     metroLine: 'Line 2 & BGL',
     accessibilityKo: '삼락공원은 드넓은 평지 잔디밭공원입니다. 페스티벌 기간 내 휠체어 바퀴가 풀밭에 묻히지 않도록 대규모 고무 매트 선형 가이드가 마련됩니다.',
     accessibilityEn: 'Set inside the grand Samrak Park. Massive industrial rubber mats are temporarily paved over the grass path logic to provide firm rollway safety.',
+    exitTipKo: '사상역 3번 출구 또는 괘법르네시떼역 1번 출구 엘리베이터 보행교 이용 시 삼락생태공원 메인무대로 무단차 이동이 가능합니다.',
+    exitTipEn: 'Sasang Exit 3 or Gwaebeop Renecite Exit 1 elevator bridge provides step-free access to Samrak Park.',
     descriptionKo: '대한민국 최장수 록 페스티벌로, 국내외 최정상급 록, 인디 뮤지션들이 거대하고 흥겨운 스테이지들을 가르고 야간 불꽃 퍼포먼스를 추진합니다.',
     descriptionEn: 'Korea\'s longest-running legendary rock festival. Flat park grounds with solid temporary safety layouts that allow strollers and wheels to navigate.',
     locationKo: '삼락생태공원 중앙잔디무대',
@@ -297,11 +351,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Culture & Arts',
     startDate: '2026-10-07',
     endDate: '2026-10-16',
-    stationKo: '센텀시티역 (2호선)',
-    stationEn: 'Centum City Station',
-    metroLine: 'Line 2',
+    stationId: 'bexco',
+    exitNumber: '7번 출구',
+    stationKo: '벡스코역 (2호선/동해선)',
+    stationEn: 'BEXCO Station',
+    metroLine: 'Line 2 / Donghae',
     accessibilityKo: '세계적으로 인증받은 "영화의전당"은 보행 친화적 공간입니다. 전체 상영 전당에 점자 안내판, 단차 없는 엘리베이터, 자동문 및 휠체어 전용 상영 좌석이 내재되어 수준 높습니다.',
     accessibilityEn: 'The magnificent Cinema Center is fully certified step-free, featuring pristine elevators, wheelchair-only indoor theater rows, and digital helper pads.',
+    exitTipKo: '벡스코역 7번 출구 이용 시 영화의전당까지 신호등과 계단 없이 평탄 보도로 연결됩니다.',
+    exitTipEn: 'BEXCO Exit 7 offers a smooth 5-min flat walkway straight to Busan Cinema Center.',
     descriptionKo: '아시아 최고 권위의 국제 영화제로, 세계 각국의 엄선된 예술영화, 감독 전작 무비 상영 및 관객과의 대화(GV), 스타 야간 레드카펫 행사가 풍성하게 이어집니다.',
     descriptionEn: 'Asia\'s most prestigious films and red carpet spectacles. The Cinema Center is seamlessly connected to Centum City Subway Station via flat underpass paths.',
     locationKo: '해운대 센텀시티 영화의전당 등',
@@ -318,11 +376,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Traditional Festival',
     startDate: '2026-10-08',
     endDate: '2026-10-11',
+    stationId: 'jagalchi',
+    exitNumber: '10번 출구',
     stationKo: '자갈치역 / 남포역 (1호선)',
     stationEn: 'Jagalchi / Nampo Station',
     metroLine: 'Line 1',
     accessibilityKo: '새롭게 개조된 현대식 자갈치 크루즈 빌딩 및 주 관람거리는 시원하고 넓게 포장된 바닥으로 계단이 없으며, 내부 상가 엘리베이터 및 편의 화장실이 준비되어 있습니다.',
     accessibilityEn: 'The modern Jagalchi Center building has step-free elevators and dedicated handicap companion restrooms. Market pathways are flat concrete.',
+    exitTipKo: '자갈치역 10번 출구 이용 시 자갈치시장 신관 수변공간 및 크루즈선착장까지 수평 무단차 진입이 가능합니다.',
+    exitTipEn: 'Jagalchi Exit 10 offers flat step-free access to Jagalchi Market coastal plaza.',
     descriptionKo: '"오이소, 보이소, 사이소!" 정겨운 사투리와 한국 수산업의 최대 집결지로 싱싱한 수산물 무료 시식, 수산물 맨손 잡기 행사, 유람선 탑승 등 활기가 넘칩니다.',
     descriptionEn: 'Korea\'s largest coastal seafood festival. Fully flat modern market complex structures ensure Senior companions and wheelchair users dine safely.',
     locationKo: '자갈치시장 친수공간 일원',
@@ -339,11 +401,15 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     categoryEn: 'Performance & Concert',
     startDate: '2026-11-07',
     endDate: '2026-11-07',
+    stationId: 'gwangan',
+    exitNumber: '5번 출구',
     stationKo: '광안역 / 금련산역 (2호선)',
     stationEn: 'Gwangan / Geumnyeonsan Station',
     metroLine: 'Line 2',
     accessibilityKo: '매우 붐비기 때문에 교통 정리가 이루어집니다. 휠체어 탑승자와 배려자분을 위한 지정석 구역 및 특수 통행 게이트가 별도로 지정 통제 운영되므로 안심하십시오.',
     accessibilityEn: 'Due to large crowds, specialized barrier-free outdoor viewing zones with dynamic ramp entrances are dedicated for senior and disabled visitors.',
+    exitTipKo: '광안역 5번 출구 엘리베이터 이용 후 광안리해수욕장 배리어프리 전용 관람존으로 이동하실 수 있습니다.',
+    exitTipEn: 'Gwangan Exit 5 elevator connects directly to barrier-free viewing gates at Gwangalli Beach.',
     descriptionKo: '매년 가을 밤 광안대교를 배경으로 수만 발의 화려한 초대형 불꽃과 초대형 드론 군무, 감미로운 음악을 접목한 세계 최고 수준의 영상 불꽃 멀티미디어 쇼입니다.',
     descriptionEn: 'A breathtaking autumn night firework performance framed by Gwangandaegyo Bridge, using multi-dimensional visual laser shows and symphonies.',
     locationKo: '광안리 해수욕장 백사장 일대 및 수변공원',
@@ -354,6 +420,9 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
 ];
 
 export default function BusanEventsCalendarView({ language }: BusanEventsCalendarViewProps) {
+  // Set of station IDs registered in the 'Exit Info & Station Search' tab
+  const registeredStationIds = useMemo(() => new Set(STATIONS.map(s => s.id)), []);
+
   // Calculate today's date dynamically
   const todayObj = useMemo(() => new Date(), []);
   const todayYear = todayObj.getFullYear();
@@ -577,7 +646,17 @@ export default function BusanEventsCalendarView({ language }: BusanEventsCalenda
           <span className="text-slate-300">|</span>
           <span>조사자: <strong className="text-slate-700 font-medium">플로레르</strong></span>
           <span className="text-slate-300">|</span>
-          <span>최근 조사일: <strong className="text-slate-700 font-medium">2026년 8월 3일 기준</strong> <span className="text-blue-600">(매일 자동 업데이트)</span></span>
+          <span>
+            {language === 'KR' ? '최근 조사일: ' : 'Last Updated: '}
+            <strong className="text-slate-700 font-medium">
+              {language === 'KR' 
+                ? `${todayYear}년 ${todayMonth}월 ${todayDate}일 기준` 
+                : `As of ${todayYear}-${String(todayMonth).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`}
+            </strong>{' '}
+            <span className="text-blue-600">
+              {language === 'KR' ? '(매일 자동 업데이트)' : '(Updated Daily)'}
+            </span>
+          </span>
           <span className="text-slate-300">|</span>
           <span>
             공식 출처:{' '}
@@ -831,19 +910,69 @@ export default function BusanEventsCalendarView({ language }: BusanEventsCalenda
                     </div>
                   </div>
 
-                  {/* Nearest Subway Connection info */}
-                  <div className="bg-emerald-500/[0.02] p-4 rounded-2xl border border-dashed border-emerald-200">
-                    <div className="flex gap-2 items-center text-xs font-black text-emerald-800">
-                      <span>🚇</span>
-                      <span>{language === 'KR' ? '가장 인접한 엘리베이터 지하철역' : 'Nearest Accessible Transit Station'}</span>
+                  {/* Nearest Subway Connection info & Exit Details Link */}
+                  {registeredStationIds.has(activeEventDetail.stationId) && (
+                    <div className="bg-gradient-to-br from-blue-50/70 to-emerald-50/70 p-4 rounded-2xl border border-sky-200/80 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="p-1.5 bg-[#004481] text-white rounded-lg shadow-2xs shrink-0">
+                            <Train className="w-4 h-4" />
+                          </span>
+                          <div>
+                            <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wide">SUBWAY EXIT CONNECTION / 인접 지하철역 출구</span>
+                            <span className="text-xs font-black text-slate-800">
+                              {language === 'KR' ? '가장 가까운 무단차 엘리베이터 출구' : 'Nearest Accessible Subway Exit'}
+                            </span>
+                          </div>
+                        </div>
+                        <span className="text-[11px] font-black px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-200 shrink-0">
+                          {activeEventDetail.exitNumber}
+                        </span>
+                      </div>
+
+                      <div className="bg-white/90 p-3 rounded-xl border border-sky-100 text-xs font-semibold text-slate-700 leading-relaxed space-y-1.5">
+                        <div className="flex items-center gap-2 font-black text-slate-900">
+                          <span className="text-sm">🚇</span>
+                          <span>{language === 'KR' ? activeEventDetail.stationKo : activeEventDetail.stationEn}</span>
+                          <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-800">
+                            {activeEventDetail.metroLine}
+                          </span>
+                        </div>
+                        {activeEventDetail.exitTipKo && (
+                          <p className="text-[11.5px] text-slate-600 font-medium pl-1 border-l-2 border-emerald-400 my-1">
+                            💡 <span className="font-extrabold text-slate-800">{language === 'KR' ? '출구 무단차 동선 팁: ' : 'Exit Route Tip: '}</span>
+                            {language === 'KR' ? activeEventDetail.exitTipKo : activeEventDetail.exitTipEn}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Interactive Action Buttons to Jump to Station Exit Info */}
+                      <div className="flex flex-col sm:flex-row gap-2 pt-1">
+                        {onSelectStation && (
+                          <button
+                            onClick={() => onSelectStation(activeEventDetail.stationId, activeEventDetail.exitNumber)}
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#004481] hover:bg-[#003366] text-white font-black text-xs transition-colors shadow-sm cursor-pointer active:scale-98"
+                          >
+                            <Navigation className="w-3.5 h-3.5" />
+                            <span>
+                              {language === 'KR' 
+                                ? `${activeEventDetail.stationKo.split(' ')[0]} ${activeEventDetail.exitNumber} 상세 엘리베이터 동선 보기` 
+                                : `View ${activeEventDetail.stationEn} ${activeEventDetail.exitNumber} Guide`}
+                            </span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+
+                        <button
+                          onClick={() => window.open(`https://map.naver.com/v5/search/${encodeURIComponent(activeEventDetail.stationKo.split(' ')[0] + ' ' + activeEventDetail.exitNumber)}`, '_blank')}
+                          className="px-3 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-extrabold text-xs transition-colors flex items-center justify-center gap-1 shrink-0 cursor-pointer shadow-2xs"
+                        >
+                          <span>🗺️ Naver Map</span>
+                          <ExternalLink className="w-3 h-3 text-slate-400" />
+                        </button>
+                      </div>
                     </div>
-                    <p className="text-xs sm:text-sm text-stone-800 font-extrabold mt-1.5 pl-5">
-                      {language === 'KR' ? activeEventDetail.stationKo : activeEventDetail.stationEn} 
-                      <span className="ml-1.5 text-[10.5px] px-1.5 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-700">
-                        {activeEventDetail.metroLine}
-                      </span>
-                    </p>
-                  </div>
+                  )}
                 </div>
 
                 {/* Event Description */}
@@ -889,9 +1018,17 @@ export default function BusanEventsCalendarView({ language }: BusanEventsCalenda
                         }`}
                       >
                         <div className="space-y-1 flex-1">
-                          <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[9px] font-black ${evt.colorClass} border uppercase tracking-tight`}>
-                            {language === 'KR' ? evt.categoryKo : evt.categoryEn}
-                          </span>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[9px] font-black ${evt.colorClass} border uppercase tracking-tight`}>
+                              {language === 'KR' ? evt.categoryKo : evt.categoryEn}
+                            </span>
+                            {registeredStationIds.has(evt.stationId) && (
+                              <span className="text-[9.5px] font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100 flex items-center gap-1">
+                                <span>🚇</span>
+                                <span>{evt.stationKo.split(' ')[0]} {evt.exitNumber}</span>
+                              </span>
+                            )}
+                          </div>
                           <h5 className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-[#004481] transition-colors leading-snug">
                             {language === 'KR' ? evt.titleKo : evt.titleEn}
                           </h5>
@@ -914,7 +1051,7 @@ export default function BusanEventsCalendarView({ language }: BusanEventsCalenda
 
                 <div className="p-3.5 bg-slate-50 rounded-2xl border border-dotted border-slate-200">
                   <p className="text-[11px] font-bold text-slate-500 leading-normal">
-                    💡 <span className="font-extrabold text-[#004481]">{language === 'KR' ? '팁' : 'Tip'}:</span> {language === 'KR' ? '목록 중 축제를 클릭하면 달력이 해당 월로 즉시 우측에 표출됩니다!' : 'Click any list item to jump the calendar view directly to the event month with accessible details loaded.'}
+                    💡 <span className="font-extrabold text-[#004481]">{language === 'KR' ? '팁' : 'Tip'}:</span> {language === 'KR' ? '목록 중 축제를 클릭하면 달력이 해당 월로 이동하며 지하철 출구 연계 가이드가 표출됩니다!' : 'Click any list item to jump the calendar view directly to the event month with accessible details loaded.'}
                   </p>
                 </div>
               </motion.div>
@@ -983,10 +1120,13 @@ export default function BusanEventsCalendarView({ language }: BusanEventsCalenda
                       <h5 className="text-sm font-black text-slate-800 group-hover:text-[#004481] transition-colors leading-snug">
                         {language === 'KR' ? evt.titleKo : evt.titleEn}
                       </h5>
-                      <p className="text-[11px] font-bold text-slate-500 flex items-center gap-1 font-sans">
-                        <span>🚇</span>
-                        <span>{language === 'KR' ? evt.stationKo : evt.stationEn}</span>
-                      </p>
+                      {registeredStationIds.has(evt.stationId) && (
+                        <p className="text-[11px] font-bold text-slate-600 flex items-center gap-1.5 font-sans">
+                          <span>🚇</span>
+                          <span className="text-emerald-800 font-extrabold">{language === 'KR' ? evt.stationKo : evt.stationEn}</span>
+                          <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 text-[10px]">{evt.exitNumber}</span>
+                        </p>
+                      )}
                     </div>
                     <div className="shrink-0 text-slate-400 group-hover:text-[#004481] transition-transform group-hover:translate-x-1">
                       <ChevronRight className="w-4 h-4" />
