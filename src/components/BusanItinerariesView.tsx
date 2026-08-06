@@ -1299,8 +1299,18 @@ export default function BusanItinerariesView({
     { id: 'CULTURE', nameKo: '복합문화공간', nameEn: 'Cultural Spaces', icon: '🎬' }
   ];
 
+  const FOOD_SUBCATEGORY_TABS = [
+    { id: 'ALL', nameKo: '전체 카테고리', nameEn: 'All Categories', icon: '🍽️', descKo: '부산 로컬 대표 미식 전체' },
+    { id: 'restaurant', nameKo: '음식점', nameEn: 'Restaurant', icon: '弁当', descKo: '돼지국밥·밀면·돈카츠·피자 맛집' },
+    { id: 'cafe', nameKo: '카페', nameEn: 'Cafe', icon: '☕', descKo: '스페셜티 커피 & 감성 라운지' },
+    { id: 'bakery', nameKo: '베이커리', nameEn: 'Bakery', icon: '🥐', descKo: '부산 3대 빵집 & 명품 제과점' },
+    { id: 'brunch', nameKo: '브런치', nameEn: 'Brunch', icon: '🍳', descKo: '오션뷰 & 도심 스타일 브런치' },
+  ];
+
   const REGION_FILTER_TABS = [
-    { id: 'ALL', nameKo: '전체 지역', nameEn: 'All Regions', icon: '📍' },
+    { id: 'ALL', nameKo: '전체 카테고리', nameEn: 'All Categories', icon: '📍' },
+    { id: 'famous', nameKo: '부산 유명 맛집', nameEn: 'Famous Cuisines', icon: '🔥' },
+    { id: 'market', nameKo: '부산 전통시장', nameEn: 'Traditional Markets', icon: '🛍️' },
     { id: 'haeundae_gijang', nameKo: '해운대 · 기장', nameEn: 'Haeundae & Gijang', icon: '🌊' },
     { id: 'gwangalli_centum', nameKo: '광안리 · 센텀', nameEn: 'Gwangalli & Centum', icon: '🖼️' },
     { id: 'seomyeon_jeonpo', nameKo: '서면 · 전포', nameEn: 'Seomyeon & Jeonpo', icon: '☕' },
@@ -2103,7 +2113,7 @@ export default function BusanItinerariesView({
                               </div>
 
                               {/* Place Description */}
-                              <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                              <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed whitespace-pre-line">
                                 {language === 'KR' ? item.descKo : item.descEn}
                               </p>
 
@@ -2491,7 +2501,7 @@ export default function BusanItinerariesView({
                                       <ElegantIllustration type={illusType} size="sm" className="w-6 h-6 stroke-[1.8]" />
                                     </div>
                                   </div>
-                                  <p className="text-xs sm:text-sm text-stone-500 font-semibold leading-relaxed pt-1">
+                                  <p className="text-xs sm:text-sm text-stone-500 font-semibold leading-relaxed pt-1 whitespace-pre-line">
                                     {language === 'KR' ? st.descKo : st.descEn}
                                   </p>
                                   {st.stationInfoKo && (
@@ -3274,9 +3284,21 @@ export default function BusanItinerariesView({
               // PAGE 6: GOURMET (식도락) - Styled like a premium Michelin Guide Card layout
               // -------------------------------------------------------------
               case 'GOURMET': {
-                const filteredGourmetSteps = selectedGourmetRegion === 'ALL'
-                  ? course.steps
-                  : course.steps.filter(s => s.regionId === selectedGourmetRegion);
+                const filteredGourmetSteps = course.steps.filter((s) => {
+                  const matchesRegion = selectedGourmetRegion === 'ALL'
+                    ? true
+                    : (selectedGourmetRegion === 'famous' 
+                        ? (s.titleKo.includes('모모스') || s.titleKo.includes('이재모') || s.titleKo.includes('톤쇼우') || s.titleKo.includes('주문진막국수') || s.titleKo.includes('금수복국') || s.titleKo.includes('최뼈다귀'))
+                        : (selectedGourmetRegion === 'market'
+                            ? (s.foodCategory === 'market' || s.time === '전통시장' || s.titleKo.includes('시장') || s.titleKo.includes('깡통') || s.titleKo.includes('자갈치') || s.titleKo.includes('국제'))
+                            : s.regionId === selectedGourmetRegion));
+                  
+                  const matchesCategory = selectedGourmetFoodCat === 'ALL'
+                    ? true
+                    : (s.foodCategory === selectedGourmetFoodCat || (selectedGourmetFoodCat === 'bakery' && s.foodCategory === 'streetfood'));
+                  
+                  return matchesRegion && matchesCategory;
+                });
 
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
@@ -3307,22 +3329,24 @@ export default function BusanItinerariesView({
                       </h3>
                       <p className="text-xs sm:text-sm text-rose-50/80 mt-1 max-w-2xl font-semibold">
                         {language === 'KR' 
-                          ? '유모차나 소형 캐스터도 턱 없이 부드럽게 미끄러져 들어갑니다! 원조 부산 돼지국밥 노포부터 푹신하고 넓은 남포동 BIFF 야외 로드푸드 광장 씨앗호떡까지 입속 축제를 만나세요.' 
-                          : 'Saddle up near flat floor entrees for steaming pork broth soups and sweet seed pancakes.'}
+                          ? '유모차나 소형 캐스터도 턱 없이 부드럽게 미끄러져 들어갑니다! 원조 부산 돼지국밥 노포부터 감성 카페, 명품 베이커리, 브런치, 부산 전통시장까지 한눈에 만나보세요.' 
+                          : 'Saddle up near flat floor entrees for steaming pork broth soups, bakeries, cafes, and traditional markets.'}
                       </p>
                     </div>
 
-                    {/* Gourmet Regional Filter Tabs */}
-                    <div className="bg-white p-3.5 rounded-2xl border border-rose-100 shadow-sm space-y-2 text-left">
+                    {/* Gourmet Regional Filter Tabs (Primary) */}
+                    <div className="bg-white p-4 rounded-3xl border border-rose-100 shadow-sm space-y-3.5 text-left">
                       <div className="flex items-center justify-between text-xs font-black text-rose-950 px-1">
                         <span className="flex items-center gap-1.5">
                           <span>🗺️</span>
-                          <span>{language === 'KR' ? '권역별 로컬 맛집 선택' : 'Select Gourmet Region'}</span>
+                          <span>{language === 'KR' ? '권역별 맛집 필터' : 'Filter by Region'}</span>
                         </span>
                         <span className="text-[10.5px] font-bold text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-100">
                           {language === 'KR' ? `총 ${filteredGourmetSteps.length}곳 추천` : `${filteredGourmetSteps.length} spots`}
                         </span>
                       </div>
+
+                      {/* Primary Level 1: Region Selection */}
                       <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
                         {REGION_FILTER_TABS.map((tab) => {
                           const isSelected = selectedGourmetRegion === tab.id;
@@ -3333,7 +3357,7 @@ export default function BusanItinerariesView({
                               className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-black transition-all cursor-pointer shrink-0 border ${
                                 isSelected
                                   ? 'bg-rose-600 text-white border-rose-600 shadow-sm scale-[1.02]'
-                                  : 'bg-rose-50/40 hover:bg-rose-100/60 text-rose-900 border-rose-100'
+                                  : 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200'
                               }`}
                             >
                               <span>{tab.icon}</span>
@@ -3342,52 +3366,114 @@ export default function BusanItinerariesView({
                           );
                         })}
                       </div>
+
+                      {/* Secondary Level 2: Food Subcategory Sub-Page Navigation Tabs */}
+                      <div className="pt-3 border-t border-rose-50 space-y-2">
+                        <div className="flex items-center justify-between text-[11px] font-bold text-rose-900/80 px-1">
+                          <span className="flex items-center gap-1">
+                            <span>↳ 🍴</span>
+                            <span>{language === 'KR' ? '세부 업종별 카테고리 (음식점 · 카페 · 베이커리 · 브런치)' : 'Detailed Subcategories'}</span>
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                          {FOOD_SUBCATEGORY_TABS.map((tab) => {
+                            const isSelected = selectedGourmetFoodCat === tab.id;
+                            const tabCount = course.steps.filter((s) => {
+                              const matchesReg = selectedGourmetRegion === 'ALL'
+                                ? true
+                                : (selectedGourmetRegion === 'famous'
+                                    ? (s.titleKo.includes('모모스') || s.titleKo.includes('이재모') || s.titleKo.includes('톤쇼우') || s.titleKo.includes('주문진막국수') || s.titleKo.includes('금수복국') || s.titleKo.includes('최뼈다귀'))
+                                    : (selectedGourmetRegion === 'market'
+                                        ? (s.foodCategory === 'market' || s.time === '전통시장' || s.titleKo.includes('시장') || s.titleKo.includes('깡통') || s.titleKo.includes('자갈치') || s.titleKo.includes('국제'))
+                                        : s.regionId === selectedGourmetRegion));
+                              const matchesCat = tab.id === 'ALL'
+                                ? true
+                                : (s.foodCategory === tab.id || (tab.id === 'bakery' && s.foodCategory === 'streetfood'));
+                              return matchesReg && matchesCat;
+                            }).length;
+
+                            return (
+                              <button
+                                key={tab.id}
+                                onClick={() => setSelectedGourmetFoodCat(tab.id)}
+                                className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-black transition-all cursor-pointer border ${
+                                  isSelected
+                                    ? 'bg-rose-500 text-white border-rose-500 shadow-xs scale-[1.01]'
+                                    : 'bg-rose-50/40 hover:bg-rose-100/60 text-rose-950 border-rose-100/80'
+                                }`}
+                              >
+                                <span className="flex items-center gap-1.5">
+                                  <span className="text-sm">{tab.icon === '弁当' ? '🍱' : tab.icon}</span>
+                                  <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
+                                </span>
+                                <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                                  isSelected ? 'bg-white/25 text-white' : 'bg-rose-100/80 text-rose-800'
+                                }`}>
+                                  {tabCount}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
 
                     {/* Gourmet restaurant review catalog style! No dots or lines! */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5" id="gourmet-catalog">
-                      {filteredGourmetSteps.map((step, idx) => (
-                        <div 
-                          key={idx} 
-                          className="bg-white rounded-3xl border border-rose-100 hover:shadow-md transition-all duration-300 p-6 flex flex-col justify-between shadow-[0_2px_12px_rgba(244,63,94,0.01)] text-left"
-                        >
-                          <div className="space-y-3 text-left">
-                            <div className="flex items-center justify-between border-b border-rose-50 pb-2">
-                              {/* Michelin like star ranking & region tag */}
-                              <span className="text-xs font-black text-amber-500 flex items-center gap-1">
-                                ⭐⭐⭐⭐⭐ <span className="text-stone-400 font-black text-[10px] ml-1">5.0</span>
-                              </span>
-                              <span className="text-[10px] bg-rose-50 text-rose-800 font-extrabold px-2 py-0.5 rounded-lg border border-rose-100/60">
-                                📍 {language === 'KR' ? (step.regionNameKo || '부산') : (step.regionNameEn || 'Busan')}
-                              </span>
-                            </div>
+                      {filteredGourmetSteps.map((step, idx) => {
+                        const isStepWarning = step.hasStep || step.titleKo.includes('먼스커피바') || step.titleKo.includes('스트럿커피') || step.titleKo.includes('솔솥');
 
-                            <h4 className="text-base font-black text-stone-800 leading-snug">
-                              🍔 {language === 'KR' ? step.titleKo : step.titleEn}
-                            </h4>
-
-                            <p className="text-xs sm:text-sm text-stone-500 font-semibold leading-relaxed font-sans text-left">
-                              {language === 'KR' ? step.descKo : step.descEn}
-                            </p>
-                          </div>
-
-                          <div className="mt-5 pt-3.5 border-t border-slate-50 space-y-2">
-                            {/* Flat seating indicators checklist */}
-                            <div className="flex flex-wrap items-center gap-2 text-[10.5px] font-black text-rose-900 bg-rose-50/40 p-2 rounded-xl">
-                              <span>✅ {language === 'KR' ? '턱 없음 / 우회 경판 완비' : 'No doorsill doorstep'}</span>
-                              <span className="w-1 h-1 bg-rose-300 rounded-full"></span>
-                              <span>✅ {language === 'KR' ? '넓은 입식 의자테이블' : 'Seat tables provided'}</span>
-                            </div>
-
-                            {step.stationInfoKo && (
-                              <div className="text-[10.5px] font-bold text-slate-500 flex items-center gap-1">
-                                <span>🚇</span>
-                                <span className="font-semibold">{language === 'KR' ? step.stationInfoKo : step.stationInfoEn}</span>
+                        return (
+                          <div 
+                            key={idx} 
+                            className="bg-white rounded-3xl border border-rose-100 hover:shadow-md transition-all duration-300 p-6 flex flex-col justify-between shadow-[0_2px_12px_rgba(244,63,94,0.01)] text-left"
+                          >
+                            <div className="space-y-3 text-left">
+                              <div className="flex items-center justify-between border-b border-rose-50 pb-2">
+                                {/* Michelin like star ranking & region tag */}
+                                <span className="text-xs font-black text-amber-500 flex items-center gap-1">
+                                  ⭐⭐⭐⭐⭐ <span className="text-stone-400 font-black text-[10px] ml-1">5.0</span>
+                                </span>
+                                <span className="text-[10px] bg-rose-50 text-rose-800 font-extrabold px-2 py-0.5 rounded-lg border border-rose-100/60">
+                                  📍 {language === 'KR' ? (step.regionNameKo || '부산') : (step.regionNameEn || 'Busan')}
+                                </span>
                               </div>
-                            )}
+
+                              <h4 className="text-base font-black text-stone-800 leading-snug">
+                                🍔 {language === 'KR' ? step.titleKo : step.titleEn}
+                              </h4>
+
+                              <p className="text-xs sm:text-sm text-stone-500 font-semibold leading-relaxed font-sans text-left whitespace-pre-line">
+                                {language === 'KR' ? step.descKo : step.descEn}
+                              </p>
+                            </div>
+
+                            <div className="mt-5 pt-3.5 border-t border-slate-50 space-y-2">
+                              {/* Flat seating indicators checklist */}
+                              {isStepWarning ? (
+                                <div className="flex flex-wrap items-center gap-2 text-[10.5px] font-black text-amber-900 bg-amber-50 p-2.5 rounded-xl border border-amber-200/80">
+                                  <span>⚠️ {language === 'KR' ? '입구 턱 있음 (방문 전 미리 문의 추천)' : 'Step at entrance (Call ahead)'}</span>
+                                  <span className="w-1 h-1 bg-amber-300 rounded-full"></span>
+                                  <span>✅ {language === 'KR' ? '넓은 입식 의자테이블' : 'Seat tables provided'}</span>
+                                </div>
+                              ) : (
+                                <div className="flex flex-wrap items-center gap-2 text-[10.5px] font-black text-rose-900 bg-rose-50/40 p-2.5 rounded-xl border border-rose-100/60">
+                                  <span>✅ {language === 'KR' ? '턱 없음 / 우회 경판 완비' : 'No doorsill doorstep'}</span>
+                                  <span className="w-1 h-1 bg-rose-300 rounded-full"></span>
+                                  <span>✅ {language === 'KR' ? '넓은 입식 의자테이블' : 'Seat tables provided'}</span>
+                                </div>
+                              )}
+
+                              {step.stationInfoKo && (
+                                <div className="text-[10.5px] font-bold text-slate-500 flex items-center gap-1">
+                                  <span>🚇</span>
+                                  <span className="font-semibold">{language === 'KR' ? step.stationInfoKo : step.stationInfoEn}</span>
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
 
                     {/* Overall tip banner */}

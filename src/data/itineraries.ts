@@ -7,8 +7,9 @@ export interface ItineraryStep {
   icon?: string;
   stationInfoKo?: string;
   stationInfoEn?: string;
-  foodCategory?: 'cafe' | 'brunch' | 'restaurant' | 'streetfood';
+  foodCategory?: 'cafe' | 'brunch' | 'restaurant' | 'streetfood' | 'bakery';
   categoryType?: string;
+  hasStep?: boolean;
   regionId?: 'haeundae_gijang' | 'gwangalli_centum' | 'seomyeon_jeonpo' | 'nampo_yeongdo' | 'others';
   regionNameKo?: string;
   regionNameEn?: string;
@@ -608,9 +609,10 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         time: '음식점',
         titleKo: '솔솥',
         titleEn: 'Solsot (Seomyeon)',
-        descKo: '📍 주소: 부산 부산진구 동천로95번길 15 (전포동 687-14)',
-        descEn: '📍 Address: 15, Dongcheon-ro 95beon-gil, Busanjin-gu, Busan',
-        icon: 'Food'
+        descKo: '📍 주소: 부산 부산진구 동천로95번길 15 (전포동 687-14)\n⚠️ 여기에 입구 턱이 있으므로 방문 전 미리 문의 추천',
+        descEn: '📍 Address: 15, Dongcheon-ro 95beon-gil, Busanjin-gu, Busan\n⚠️ Has a step at entrance; contacting in advance is recommended.',
+        icon: 'Food',
+        hasStep: true
       },
       {
         regionId: 'seomyeon_jeonpo',
@@ -696,9 +698,10 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         time: '카페',
         titleKo: '먼스커피바',
         titleEn: 'Month Coffee Bar',
-        descKo: '📍 주소: 부산 부산진구 전포대로255번길 43 (전포동 309-32)',
-        descEn: '📍 Address: 43, Jeonpo-daero 255beon-gil, Busanjin-gu, Busan',
-        icon: 'Coffee'
+        descKo: '📍 주소: 부산 부산진구 전포대로255번길 43 (전포동 309-32)\n⚠️ 여기에 입구 턱이 있으므로 방문 전 미리 문의 추천',
+        descEn: '📍 Address: 43, Jeonpo-daero 255beon-gil, Busanjin-gu, Busan\n⚠️ Has a step at entrance; contacting in advance is recommended.',
+        icon: 'Coffee',
+        hasStep: true
       },
       {
         regionId: 'seomyeon_jeonpo',
@@ -720,9 +723,10 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         time: '카페',
         titleKo: '스트럿커피',
         titleEn: 'Strut Coffee',
-        descKo: '주소: 부산 부산진구 전포대로 186 1층',
-        descEn: 'Address: 1F, 186 Jeonpo-daero, Busanjin-gu, Busan',
+        descKo: '📍 주소: 부산 부산진구 전포대로 186 1층\n⚠️ 여기에 입구 턱이 있으므로 방문 전 미리 문의 추천',
+        descEn: 'Address: 1F, 186 Jeonpo-daero, Busanjin-gu, Busan\n⚠️ Has a step at entrance; contacting in advance is recommended.',
         icon: 'Coffee',
+        hasStep: true,
         stationInfoKo: '부산 부산진구 전포대로 186 1층',
         stationInfoEn: '186 Jeonpo-daero, Busanjin-gu, Busan'
       },
@@ -794,9 +798,164 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
     tagEn: 'Foodie Gourmet 🍕',
     difficultyKo: '쉬움',
     difficultyEn: 'Easy',
-    overallTipKo: '부산 구석구석 직접 발품 팔아 맛본 맛집들을 [해운대·기장 / 광안리·센텀 / 서면·전포 / 남포·영도 / 그 외 지역] 5개 주요 권역별로 정리했습니다. (개인적인 추천이니 가볍게 참고해 주세요!)',
-    overallTipEn: 'Personally tested Busan food spots divided into 5 main regions. (Note: These are subjective recommendations!)',
+    overallTipKo: '부산 구석구석 직접 발품 팔아 맛본 맛집들을 [부산 유명 맛집 / 해운대·기장 / 광안리·센텀 / 서면·전포 / 남포·영도 / 그 외 지역] 주요 카테고리 및 권역별로 정리했습니다. (개인적인 추천이니 가볍게 참고해 주세요!)',
+    overallTipEn: 'Personally tested Busan food spots divided into famous cuisines and 5 main regions. (Note: Subjective recommendations!)',
     steps: [
+      // --- 0. 부산 유명 맛집 ---
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'cafe',
+        time: '카페',
+        titleKo: '모모스커피 온천장 본점',
+        titleEn: 'Momos Coffee Oncheonjang Main',
+        descKo: '📍 주소: 부산 금정구 오시게로 20\n☕ 한국 최초 WBC 월드 바리스타 챔피언십 우승자를 배출한 부산 대표 스페셜티 커피 브랜드 본점.',
+        descEn: '📍 Address: 20 Osige-ro, Geumjeong-gu, Busan\n☕ Home of Korea’s first World Barista Champion, iconic specialty coffee roastery.',
+        icon: 'Coffee',
+        stationInfoKo: '부산 금정구 오시게로 20 (온천장역 2번 출구 바로 앞)',
+        stationInfoEn: '20 Osige-ro, Geumjeong-gu, Busan (Oncheonjang Station Exit 2)'
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'cafe',
+        time: '카페',
+        titleKo: '모모스 로스터리&커피바 (영도점)',
+        titleEn: 'Momos Roastery & Coffee Bar (Yeongdo)',
+        descKo: '📍 주소: 부산 영도구 봉래나루로 160\n☕ 영도 항구 창고를 개조해 만든 웅장한 로스터리 쇼룸 & 대형 오션 뷰 라운지.',
+        descEn: '📍 Address: 160 Bongraenaru-ro, Yeongdo-gu, Busan\n☕ Spectacular harbour warehouse conversion roastery showroom & ocean view lounge.',
+        icon: 'Coffee',
+        stationInfoKo: '부산 영도구 봉래나루로 160 (남포역 6번 출구 인근)',
+        stationInfoEn: '160 Bongraenaru-ro, Yeongdo-gu, Busan (Near Nampo Station Exit 6)'
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'cafe',
+        time: '카페',
+        titleKo: '모모스커피 마린시티점',
+        titleEn: 'Momos Coffee Marine City',
+        descKo: '📍 주소: 부산 해운대구 마린시티2로 33 제해운대두산위브더제니스 1층\n☕ 해운대 바다 바람과 함께 최고급 바리스타 핸드드립 커피를 즐기는 감성 라운지.',
+        descEn: '📍 Address: 1F, 33 Marine city 2-ro, Haeundae-gu, Busan\n☕ Elegant coastal venue for specialty hand-drip coffees in Marine City.',
+        icon: 'Coffee',
+        stationInfoKo: '부산 해운대구 마린시티2로 33 (동백역 1번 출구 인근)',
+        stationInfoEn: '33 Marine city 2-ro, Haeundae-gu, Busan (Near Dongbaek Station Exit 1)'
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'restaurant',
+        time: '음식점',
+        titleKo: '이재모피자 본점',
+        titleEn: 'Lee Jae Mo Pizza Main Branch',
+        descKo: '📍 주소: 부산 중구 광복로093번길 21\n🍕 고소하고 듬뿍 올라간 100% 임실 치즈 크러스트가 일품인 부산 전설의 원조 피자 맛집.',
+        descEn: '📍 Address: 21 Gwangbok-ro 093beon-gil, Jung-gu, Busan\n🍕 Legendary Busan pizza institution famous for its rich 100% Imsil cheese crust.',
+        icon: 'Food',
+        stationInfoKo: '부산 중구 광복로093번길 21 (남포역 1번 출구)',
+        stationInfoEn: '21 Gwangbok-ro 093beon-gil, Jung-gu, Busan (Nampo Station Exit 1)'
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'restaurant',
+        time: '음식점',
+        titleKo: '이재모피자 서면점',
+        titleEn: 'Lee Jae Mo Pizza Seomyeon',
+        descKo: '📍 주소: 부산 부산진구 전포대로209번길 21\n🍕 전포 카페거리 골목에서 즐기는 고소한 치즈 폭탄 명품 피자 매장.',
+        descEn: '📍 Address: 21 Jeonpo-daero 209beon-gil, Busanjin-gu, Busan\n🍕 Seomyeon branch serving the famous cheese-crust pizzas.',
+        icon: 'Food',
+        stationInfoKo: '부산 부산진구 전포대로209번길 21 (전포역 7번 출구)',
+        stationInfoEn: '21 Jeonpo-daero 209beon-gil, Busanjin-gu, Busan (Jeonpo Station Exit 7)'
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'restaurant',
+        time: '음식점',
+        titleKo: '이재모피자 부산역점',
+        titleEn: 'Lee Jae Mo Pizza Busan Station',
+        descKo: '📍 주소: 부산 동구 중앙대로 197\n🍕 부산역에서 내리자마자 바로 만나는 이재모피자 직영 매장.',
+        descEn: '📍 Address: 197 Jungang-daero, Dong-gu, Busan\n🍕 Conveniently located right outside Busan Station for travelers.',
+        icon: 'Food',
+        stationInfoKo: '부산 동구 중앙대로 197 (부산역 6번 출구 앞)',
+        stationInfoEn: '197 Jungang-daero, Dong-gu, Busan (Busan Station Exit 6)'
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'restaurant',
+        time: '음식점',
+        titleKo: '톤쇼우 광안리점',
+        titleEn: 'Tonshou Gwangalli',
+        descKo: '📍 주소: 부산 수영구 광안해변로279번길 13\n🥩 숯불 향이 베인 프리미엄 버크셔K 돈카츠로 오픈런 필수인 부산 대표 돈가스 성지.',
+        descEn: '📍 Address: 13 Gwanganhaebyeon-ro 279beon-gil, Suyeong-gu, Busan\n🥩 Premium charcoal-finished Berkshire K tonkatsu destination in Gwangalli.',
+        icon: 'Food',
+        stationInfoKo: '부산 수영구 광안해변로279번길 13 (민락동, 광안리 해변 인근)',
+        stationInfoEn: '13 Gwanganhaebyeon-ro 279beon-gil, Suyeong-gu, Busan'
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'restaurant',
+        time: '음식점',
+        titleKo: '톤쇼우 부산대점',
+        titleEn: 'Tonshou Pusan Nat’l Univ.',
+        descKo: '📍 주소: 부산 금정구 금정로68번길 18\n🥩 육즙 가득한 바삭한 튀김 옷과 최상급 돼지고기의 조화가 뛰어난 톤쇼우 본점.',
+        descEn: '📍 Address: 18 Geumjeong-ro 68beon-gil, Geumjeong-gu, Busan\n🥩 Original branch of Tonshou near Pusan National University.',
+        icon: 'Food',
+        stationInfoKo: '부산 금정구 금정로68번길 18 (부산대역 1번 출구)',
+        stationInfoEn: '18 Geumjeong-ro 68beon-gil, Geumjeong-gu, Busan (PNU Station Exit 1)'
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'restaurant',
+        time: '음식점',
+        titleKo: '소문난주문진막국수',
+        titleEn: 'Jumunjin Makguksu',
+        descKo: '📍 주소: 부산 동래구 사직로58번길 8\n🍜 살얼음 동동 시원한 메밀막국수와 부드러운 수육의 조화로 사직동을 사로잡은 전통 노포.',
+        descEn: '📍 Address: 8 Sajik-ro 58beon-gil, Dongnae-gu, Busan\n🍜 Iconic Sajik-dong restaurant renowned for icy buckwheat noodles and tender boiled pork.',
+        icon: 'Food',
+        stationInfoKo: '부산 동래구 사직로58번길 8 (사직역 1번 출구 / 사직야구장 인근)',
+        stationInfoEn: '8 Sajik-ro 58beon-gil, Dongnae-gu, Busan (Sajik Station Exit 1)'
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'restaurant',
+        time: '음식점',
+        titleKo: '금수복국 해운대본점',
+        titleEn: 'Geumsu Bokguk Haeundae',
+        descKo: '📍 주소: 부산 해운대구 중동1로43번길 23\n🍲 1970년부터 명맥을 이어온 뚝배기 복국 원조 본점으로 깊고 시원한 해장 국물의 대표 명소.',
+        descEn: '📍 Address: 23 Jungdong 1-ro 43beon-gil, Haeundae-gu, Busan\n🍲 Famous 1970 original blowfish soup restaurant served in hot earthenware pots.',
+        icon: 'Food',
+        stationInfoKo: '부산 해운대구 중동1로43번길 23 (해운대역 1번 출구)',
+        stationInfoEn: '23 Jungdong 1-ro 43beon-gil, Haeundae-gu, Busan (Haeundae Station Exit 1)'
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'restaurant',
+        time: '음식점',
+        titleKo: '최뼈다귀해장국 사상본점',
+        titleEn: 'Choi Bpyeodagwi Haejangguk',
+        descKo: '📍 주소: 부산 사상구 광장로 93\n🍲 뚝배기를 넘칠 듯 고아낸 압도적 고기 양과 얼큰하고 진한 육수의 사상 대표 해장국 노포.',
+        descEn: '📍 Address: 93 Gwangjang-ro, Sasang-gu, Busan\n🍲 Famous Sasang pork bone soup spot known for huge portions and rich flavorful broth.',
+        icon: 'Food',
+        stationInfoKo: '부산 사상구 광장로 93 (사상역 3번 출구 앞)',
+        stationInfoEn: '93 Gwangjang-ro, Sasang-gu, Busan (Sasang Station Exit 3)'
+      },
       // --- 1. 해운대 · 기장 ---
       // [음식점]
       {
@@ -826,6 +985,21 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         icon: 'Food',
         stationInfoKo: '부산 해운대구 달맞이길62번길 137 (해운대 엘시티 99층)',
         stationInfoEn: '99F, 137 Dalmaji-gil 62beon-gil, Haeundae-gu, Busan'
+      },
+      // [베이커리]
+      {
+        regionId: 'haeundae_gijang',
+        regionNameKo: '해운대 · 기장',
+        regionNameEn: 'Haeundae & Gijang',
+        foodCategory: 'bakery',
+        time: '베이커리',
+        titleKo: '옵스 (OPS) 해운대본점',
+        titleEn: 'OPS Bakery Haeundae',
+        descKo: '📍 주소: 부산 해운대구 중동1로 31\n🥐 부산 3대 빵집 중 하나로 명물 학원전 빵과 고소한 슈크림이 가득한 전통 명품 베이커리.',
+        descEn: '📍 Address: 31 Jungdong 1-ro, Haeundae-gu, Busan\n🥐 One of Busan’s famous top bakeries, renowned for Hakwonjeon and choux pastry.',
+        icon: 'Food',
+        stationInfoKo: '부산 해운대구 중동1로 31 (해운대역 1번 출구)',
+        stationInfoEn: '31 Jungdong 1-ro, Haeundae-gu, Busan'
       },
       // [카페]
       {
@@ -998,9 +1172,10 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         time: '음식점',
         titleKo: '솔솥 서면점',
         titleEn: 'Solsot Seomyeon',
-        descKo: '부산 부산진구 동천로 58 1층',
-        descEn: '58 Dongcheon-ro, Busanjin-gu, Busan',
+        descKo: '📍 주소: 부산 부산진구 동천로 58 1층\n⚠️ 여기에 입구 턱이 있으므로 방문 전 미리 문의 추천',
+        descEn: '58 Dongcheon-ro, Busanjin-gu, Busan\n⚠️ Has a step at entrance; contacting in advance is recommended.',
         icon: 'Food',
+        hasStep: true,
         stationInfoKo: '부산 부산진구 동천로 58 1층 (전포역 5번 출구)',
         stationInfoEn: '58 Dongcheon-ro, Busanjin-gu, Busan'
       },
@@ -1045,6 +1220,20 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         icon: 'Food',
         stationInfoKo: '부산 부산진구 서면문화로 48-1 (서면역 9번 출구)',
         stationInfoEn: '48-1 Seomyeonmunhwa-ro, Busanjin-gu, Busan'
+      },
+      {
+        regionId: 'seomyeon_jeonpo',
+        regionNameKo: '서면 · 전포',
+        regionNameEn: 'Seomyeon & Jeonpo',
+        foodCategory: 'restaurant',
+        time: '음식점',
+        titleKo: '우정돌솥비빔밥 서면점',
+        titleEn: 'Woojung Dolsot Bibimbap Seomyeon',
+        descKo: '📍 주소: 부산 부산진구 중앙대로692번길 45 1층',
+        descEn: '📍 Address: 1F, 45 Jungang-daero 692beon-gil, Busanjin-gu, Busan',
+        icon: 'Food',
+        stationInfoKo: '부산 부산진구 중앙대로692번길 45 1층 (서면역 2번 출구)',
+        stationInfoEn: '1F, 45 Jungang-daero 692beon-gil, Busanjin-gu, Busan'
       },
       {
         regionId: 'seomyeon_jeonpo',
@@ -1098,9 +1287,10 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         time: '카페',
         titleKo: '먼스커피바',
         titleEn: 'Month Coffee Bar',
-        descKo: '부산 부산진구 전포대로176번길 12.5 1층',
-        descEn: '1F, 12.5 Jeonpo-daero 176beongil, Busanjin-gu, Busan',
+        descKo: '📍 주소: 부산 부산진구 전포대로176번길 12.5 1층\n⚠️ 여기에 입구 턱이 있으므로 방문 전 미리 문의 추천',
+        descEn: '1F, 12.5 Jeonpo-daero 176beongil, Busanjin-gu, Busan\n⚠️ Has a step at entrance; contacting in advance is recommended.',
         icon: 'Coffee',
+        hasStep: true,
         stationInfoKo: '부산 부산진구 전포대로176번길 12.5 1층 (전포역 4번 출구)',
         stationInfoEn: '1F, 12.5 Jeonpo-daero 176beongil, Busanjin-gu, Busan'
       },
@@ -1126,29 +1316,60 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         time: '카페',
         titleKo: '스트럿커피',
         titleEn: 'Strut Coffee',
-        descKo: '부산 부산진구 전포대로 186 1층',
-        descEn: '1F, 186 Jeonpo-daero, Busanjin-gu, Busan',
+        descKo: '📍 주소: 부산 부산진구 전포대로 186 1층\n⚠️ 여기에 입구 턱이 있으므로 방문 전 미리 문의 추천',
+        descEn: '1F, 186 Jeonpo-daero, Busanjin-gu, Busan\n⚠️ Has a step at entrance; contacting in advance is recommended.',
         icon: 'Coffee',
+        hasStep: true,
         stationInfoKo: '부산 부산진구 전포대로 186 1층 (전포역 4번 출구)',
         stationInfoEn: '1F, 186 Jeonpo-daero, Busanjin-gu, Busan'
       },
-      // [로드푸드]
+      // [베이커리]
       {
         regionId: 'seomyeon_jeonpo',
         regionNameKo: '서면 · 전포',
         regionNameEn: 'Seomyeon & Jeonpo',
-        foodCategory: 'streetfood',
-        time: '로드푸드',
+        foodCategory: 'bakery',
+        time: '베이커리',
         titleKo: '종로복떡집',
         titleEn: 'Jongno Bok Tteokjip',
-        descKo: '부산 부산진구 신천대로62번길 42 1층',
+        descKo: '📍 주소: 부산 부산진구 신천대로62번길 42 1층\n🍡 쫄깃한 식감과 깊은 고소함이 매력적인 전통 떡 베이커리 맛집.',
         descEn: '1F, 42 Sincheon-daero 62beon-gil, Busanjin-gu, Busan',
         icon: 'Walk',
         stationInfoKo: '부산 부산진구 신천대로62번길 42 (서면역 7번 출구)',
         stationInfoEn: '42 Sincheon-daero 62beon-gil, Busanjin-gu, Busan'
       },
+      // [전통시장]
+      {
+        regionId: 'seomyeon_jeonpo',
+        regionNameKo: '서면 · 전포',
+        regionNameEn: 'Seomyeon & Jeonpo',
+        foodCategory: 'market',
+        time: '전통시장',
+        titleKo: '부전시장 (부전농수산물새벽시장)',
+        titleEn: 'Bujeon Market (Agricultural & Fish Market)',
+        descKo: '📍 주소: 부산 부산진구 중앙대로783번길 23\n🛍️ 동남권 최대 규모의 대표 전통시장! 싱싱한 제철 농수산물과 곰장어, 원조 어묵, 활기찬 새벽 장터 음식을 만끽할 수 있습니다.',
+        descEn: '📍 Address: 23 Jungang-daero 783beon-gil, Busanjin-gu, Busan\n🛍️ One of Busan’s largest traditional markets featuring fresh produce and market snacks.',
+        icon: 'Food',
+        stationInfoKo: '부산 부산진구 중앙대로783번길 23 (1호선/동해선 부전역 1번 출구)',
+        stationInfoEn: '23 Jungang-daero 783beon-gil, Busanjin-gu, Busan (Bujeon Station Exit 1)'
+      },
 
       // --- 4. 남포동 · 영도 ---
+      // [베이커리]
+      {
+        regionId: 'nampo_yeongdo',
+        regionNameKo: '남포동 · 영도',
+        regionNameEn: 'Nampo & Yeongdo',
+        foodCategory: 'bakery',
+        time: '베이커리',
+        titleKo: '비엔씨 (B&C) 광복본점',
+        titleEn: 'B&C Bakery Gwangbok Main',
+        descKo: '📍 주소: 부산 중구 구덕로 34-1\n🥐 1983년부터 시작된 부산 원도심 대표 명품 제과점으로 파이만주와 치퐁주가 대표 명물.',
+        descEn: '📍 Address: 34-1 Gudeok-ro, Jung-gu, Busan\n🥐 Iconic 1983 Busan bakery famous for pie manju and cheese bread.',
+        icon: 'Food',
+        stationInfoKo: '부산 중구 구덕로 34-1 (남포역 1번 출구)',
+        stationInfoEn: '34-1 Gudeok-ro, Jung-gu, Busan'
+      },
       // [음식점]
       {
         regionId: 'nampo_yeongdo',
@@ -1264,16 +1485,58 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         stationInfoKo: '부산 영도구 절영로 202 2층 (흰여울문화마을)',
         stationInfoEn: '2F, 202 Jeolyeong-ro, Yeongdo-gu, Busan'
       },
-      // [로드푸드]
+      // [전통시장 & 로드푸드]
       {
         regionId: 'nampo_yeongdo',
         regionNameKo: '남포동 · 영도',
         regionNameEn: 'Nampo & Yeongdo',
-        foodCategory: 'streetfood',
+        foodCategory: 'market',
+        time: '전통시장',
+        titleKo: '부평깡통시장',
+        titleEn: 'Bupyeong Kkangtong Market',
+        descKo: '📍 주소: 부산 중구 부평1길 48\n🍢 비빔당면, 원조 물떡, 유부전골, 씨앗호떡 등 부산 대표 길거리 미식의 성지이자 밤마다 화려한 야시장이 펼쳐지는 대표 전통시장.',
+        descEn: '📍 Address: 48 Bupyeong 1-gil, Jung-gu, Busan\n🍢 Iconic night market and traditional market famous for seed hotteok and fishcakes.',
+        icon: 'Food',
+        stationInfoKo: '부산 중구 부평1길 48 (자갈치역 3번 출구 / 남포역 1번 출구)',
+        stationInfoEn: '48 Bupyeong 1-gil, Jung-gu, Busan'
+      },
+      {
+        regionId: 'nampo_yeongdo',
+        regionNameKo: '남포동 · 영도',
+        regionNameEn: 'Nampo & Yeongdo',
+        foodCategory: 'market',
+        time: '전통시장',
+        titleKo: '자갈치시장',
+        titleEn: 'Jagalchi Fish Market',
+        descKo: '📍 주소: 부산 중구 자갈치해안로 52\n🐟 "오이소, 보이소, 사이소!" 정겨운 정취가 넘쳐나는 영남 최대 규모의 활기찬 한국 대표 수산물 시장.',
+        descEn: '📍 Address: 52 Jagalchihaean-ro, Jung-gu, Busan\n🐟 Korea’s premier coastal fish market famous for fresh seafood.',
+        icon: 'Food',
+        stationInfoKo: '부산 중구 자갈치해안로 52 (자갈치역 10번 출구)',
+        stationInfoEn: '52 Jagalchihaean-ro, Jung-gu, Busan'
+      },
+      {
+        regionId: 'nampo_yeongdo',
+        regionNameKo: '남포동 · 영도',
+        regionNameEn: 'Nampo & Yeongdo',
+        foodCategory: 'market',
+        time: '전통시장',
+        titleKo: '국제시장',
+        titleEn: 'Gukje Market',
+        descKo: '📍 주소: 부산 중구 중구로 36\n🎬 영화 《국제시장》의 배경! 수공예품, 구제 의류, 먹거리 골목이 어우러진 대형 역사 전통시장.',
+        descEn: '📍 Address: 36 Junggu-ro, Jung-gu, Busan\n🎬 Legendary traditional market known from the movie Gukje Market.',
+        icon: 'Food',
+        stationInfoKo: '부산 중구 중구로 36 (자갈치역 7번 출구 / 남포역 1번 출구)',
+        stationInfoEn: '36 Junggu-ro, Jung-gu, Busan'
+      },
+      {
+        regionId: 'nampo_yeongdo',
+        regionNameKo: '남포동 · 영도',
+        regionNameEn: 'Nampo & Yeongdo',
+        foodCategory: 'market',
         time: '로드푸드',
         titleKo: '이가네떡볶이',
         titleEn: 'Igane Tteokbokki',
-        descKo: '부산 중구 부평1길 48',
+        descKo: '📍 주소: 부산 중구 부평1길 48\n떡 무즙으로 만든 진하고 달콤 매콤한 양념이 매력적인 부평깡통시장 대표 떡볶이 맛집.',
         descEn: '48 Bupyeong 1-gil, Jung-gu, Busan',
         icon: 'Walk',
         stationInfoKo: '부산 중구 부평1길 48 (부평깡통시장 내, 자갈치역 3번 출구)',
@@ -1283,11 +1546,11 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         regionId: 'nampo_yeongdo',
         regionNameKo: '남포동 · 영도',
         regionNameEn: 'Nampo & Yeongdo',
-        foodCategory: 'streetfood',
+        foodCategory: 'market',
         time: '로드푸드',
         titleKo: 'BIFF광장 씨앗호떡',
         titleEn: 'BIFF Square Seed Hotteok',
-        descKo: '부산 중구 구덕로 58-1 BIFF광장',
+        descKo: '📍 주소: 부산 중구 구덕로 58-1 BIFF광장\n고소한 견과류와 마가린 향이 고소하게 퍼지는 남포동 원조 명물 씨앗호떡.',
         descEn: '58-1 Gudeok-ro, Jung-gu, Busan (BIFF Square)',
         icon: 'Walk',
         stationInfoKo: '부산 중구 구덕로 58-1 BIFF광장 (자갈치역 7번 출구)',
@@ -1366,16 +1629,30 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         stationInfoKo: '부산 사하구 다대동 1552-20 (다대포해수욕장역 1번 출구)',
         stationInfoEn: '1552-20 Dadae-dong, Saha-gu, Busan'
       },
-      // [로드푸드]
       {
         regionId: 'others',
         regionNameKo: '그 외 지역',
         regionNameEn: 'Other Regions',
-        foodCategory: 'streetfood',
-        time: '로드푸드',
+        foodCategory: 'restaurant',
+        time: '음식점',
+        titleKo: '냉수탕가든',
+        titleEn: 'Naengsutang Garden',
+        descKo: '📍 주소: 부산 부산진구 가야공원로 107 (가야동 471)\n🦆 부산 가야공원 계곡 자락에서 즐기는 오리불고기 & 오리백숙 대표 맛집.',
+        descEn: '📍 Address: 107 Gayagongwon-ro, Busanjin-gu, Busan\n🦆 Famous Gaya Park duck bulgogi and baeksuk garden restaurant.',
+        icon: 'Food',
+        stationInfoKo: '부산 부산진구 가야공원로 107 (가야역 2번 출구 / 가야공원 인근)',
+        stationInfoEn: '107 Gayagongwon-ro, Busanjin-gu, Busan'
+      },
+      // [베이커리]
+      {
+        regionId: 'others',
+        regionNameKo: '그 외 지역',
+        regionNameEn: 'Other Regions',
+        foodCategory: 'bakery',
+        time: '베이커리',
         titleKo: '제일떡방앗간',
         titleEn: 'Jeil Tteok Bangatgan',
-        descKo: '부산 북구 구포시장길 42',
+        descKo: '📍 주소: 부산 북구 구포시장길 42\n🍡 정성스럽게 빚은 따끈따끈 고소한 구포시장 전통 떡 제과점.',
         descEn: '42 Guposijang-gil, Buk-gu, Busan',
         icon: 'Walk',
         stationInfoKo: '부산 북구 구포시장길 42 (구포시장 내, 덕천역 3번 출구)',
