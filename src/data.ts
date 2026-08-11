@@ -2056,6 +2056,482 @@ const UNSORTED_STATIONS: Station[] = [
         ]
       }
     ]
+  },
+  {
+    id: 'jungang',
+    name: '중앙역',
+    englishName: 'Jung-ang Station',
+    lines: ['1'],
+    elevatorCount: 3,
+    escalatorCount: 0,
+    toiletLocation: '지하 1층 대합실 개찰구 외 (8번/12번 출구 통로 인근)',
+    isTransferStation: false,
+    accentColor: 'from-orange-500 to-amber-600',
+    recommendedExits: '8번, 12번, 13번 출구 (엘리베이터)',
+    recommendedExitsEn: 'Exits 8, 12, 13 (Elevators)',
+    elevatorLocationDesc: '중앙역 8번, 12번, 13번 출구 지상 직결 수직 엘리베이터 운영',
+    elevatorLocationDescEn: 'Ground elevators available at Exits 8, 12, and 13.',
+    avgMovementTime: '약 3분 30초 (승강장 ↔ 지상 출구)',
+    avgMovementTimeEn: 'Approx. 3.5 mins (Platform ↔ Exit)',
+    precautions: '중앙역 대합실은 지하상가와 연결되어 있습니다. 8번, 12번, 13번 출구 엘리베이터 이용 시 경사 없는 평탄 보도로 주요 목적지로 이동하실 수 있습니다.',
+    precautionsEn: 'The concourse connects to the underground shopping area. Exits 8, 12, and 13 elevators provide level pathways.',
+    officialSource: '부산교통공사(Humetro) 및 네이버지도',
+    exits: [
+      {
+        number: '8번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '8번 출구에 수직 엘리베이터가 설치되어 있어 중앙동 주민센터 및 주요 도로변으로 단차 없이 연결됩니다.',
+        status: 'OPERATIONAL',
+        directionDesc: '중앙동 주민센터, 중앙동 교차로, 부산 우체국',
+        latitude: 35.1025,
+        longitude: 129.0363,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/중앙역 8번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/중앙역 8번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'ja8-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '중앙역 플랫폼 중앙 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '승강장에서 B1F 대합실로 향하는 엘리베이터에 탑승합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'ja8-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '8번 출구 방면 와이드 케어 개찰구',
+            facilityType: 'GATE',
+            tip: '넓은 휠체어/유모차 전용 개찰구를 지난 후 8번 출구 안내표지를 따라 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'ja8-step3',
+            name: '지상 직통 엘리베이터 (B1F ↔ 1F)',
+            desc: '8번 출구 지상 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '지상 1층 출구로 바로 올라와 단차 없는 인도 보행을 시작합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '12번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '12번 출구에 수직 엘리베이터가 설치되어 있어 40계단 문화관광테마거리 및 부산무역회관 방면으로 편하게 진출할 수 있습니다.',
+        status: 'OPERATIONAL',
+        directionDesc: '40계단 문화관광테마거리, 부산무역회관, 중앙동 인쇄골목',
+        latitude: 35.1035,
+        longitude: 129.0366,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/중앙역 12번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/중앙역 12번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'ja12-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '중앙역 플랫폼 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '플랫폼 승강기를 이용해 B1F 대합실로 상행합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'ja12-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '12번 출구 연계 배리어프리 게이트',
+            facilityType: 'GATE',
+            tip: '와이드 개찰구를 통과한 후 12번 출구 엘리베이터로 전진합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'ja12-step3',
+            name: '지상 수직 엘리베이터 (B1F ↔ 1F)',
+            desc: '12번 출구 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '지상으로 진출하여 40계단 문화거리 보도길로 연결됩니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '13번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '13번 출구에 수직 엘리베이터가 운행되어 중구청 및 대청로 방면으로 계단 없이 이동할 수 있습니다.',
+        status: 'OPERATIONAL',
+        directionDesc: '중구청, 대청로 방면, 메리놀병원',
+        latitude: 35.1038,
+        longitude: 129.0368,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/중앙역 13번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/중앙역 13번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'ja13-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '승강장 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '승강장 엘리베이터로 B1F 대합실로 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'ja13-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '13번 출구 게이트',
+            facilityType: 'GATE',
+            tip: '개찰구 통과 후 13번 출구 엘리베이터로 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'ja13-step3',
+            name: '13번 출구 엘리베이터 (B1F ↔ 1F)',
+            desc: '지상 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '지상 도로변으로 올라와 편안하게 보행을 시작합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'dadaepo',
+    name: '다대포해수욕장역',
+    englishName: 'Dadaepo Beach Station',
+    lines: ['1'],
+    elevatorCount: 3,
+    escalatorCount: 6,
+    toiletLocation: '지하 1층 대합실 개찰구 내 및 외 양방향',
+    isTransferStation: false,
+    accentColor: 'from-orange-500 to-amber-600',
+    recommendedExits: '1번, 2번, 4번 출구 (에스컬레이터 상하행) / 2번, 3번, 4번 출구 (엘리베이터)',
+    recommendedExitsEn: 'Exits 1, 2, 4 (Escalators Up/Down) / Exits 2, 3, 4 (Elevators)',
+    elevatorLocationDesc: '2번, 3번, 4번 출구 수직 엘리베이터 & 1번, 2번, 4번 출구 상하행 에스컬레이터 운영',
+    elevatorLocationDescEn: 'Elevators at Exits 2, 3, 4 & Escalators (Up/Down) at Exits 1, 2, 4.',
+    avgMovementTime: '약 2분 50초 (종착역 평면 개찰구 최단 동선)',
+    avgMovementTimeEn: 'Approx. 2.8 mins (Shortest level route)',
+    precautions: '1호선 종착역으로 승강장과 대합실 간 깊이가 얕고 수직 동선이 매우 짧습니다. 1번, 2번 출구로 나오면 턱 없이 다대포 해변공원 및 꿈의 낙조분수로 연결됩니다.',
+    precautionsEn: 'Terminal station of Line 1 with shallow depth. Exits connect directly to Dadaepo Beach & Sunset Fountain.',
+    officialSource: '부산교통공사(Humetro) 및 네이버지도',
+    exits: [
+      {
+        number: '1번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: false,
+        hasEscalator: true,
+        facilityDirection: 'BOTH',
+        tip: '1번 출구에 상행 및 하행 에스컬레이터가 모두 구비되어 있어 다대포해수욕장 및 꿈의 낙조분수 방면으로 편리하게 이동할 수 있습니다.',
+        status: 'OPERATIONAL',
+        directionDesc: '다대포해수욕장, 꿈의 낙조분수, 몰운대 국지공원, 다대포 해변공원',
+        latitude: 35.04781,
+        longitude: 128.96342,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/다대포해수욕장역 1번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/다대포해수욕장역 1번출구',
+        pathwayTimeline: [
+          {
+            id: 'dd1-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '다대포해수욕장역 승강장 에스컬레이터',
+            facilityType: 'ESCALATOR',
+            tip: '승강장 에스컬레이터(상/하행)를 이용해 지하 1층 대합실로 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'dd1-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '1번 출구 연계 게이트',
+            facilityType: 'GATE',
+            tip: '게이트 통과 후 1번 출구 에스컬레이터 통로로 진입합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'dd1-step3',
+            name: '1번 출구 에스컬레이터 (B1F ↔ 1F)',
+            desc: '상행 및 하행 에스컬레이터',
+            facilityType: 'ESCALATOR',
+            tip: '상/하행 에스컬레이터를 타고 지상 출구로 진출입합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '2번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: true,
+        facilityDirection: 'BOTH',
+        tip: '2번 출구에 상행/하행 에스컬레이터와 지상 수직 엘리베이터가 모두 운영되어 교통약자 및 보행자에 최적입니다.',
+        status: 'OPERATIONAL',
+        directionDesc: '고우니 생태길, 다대포 해변공원 생태탐방로, 몰운대 보행로',
+        latitude: 35.04851,
+        longitude: 128.96395,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/다대포해수욕장역 2번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/다대포해수욕장역 2번출구',
+        pathwayTimeline: [
+          {
+            id: 'dd2-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '플랫폼 엘리베이터 및 에스컬레이터',
+            facilityType: 'ELEVATOR',
+            tip: '엘리베이터 또는 에스컬레이터를 이용해 B1F 대합실로 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'dd2-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '2번 출구 게이트',
+            facilityType: 'GATE',
+            tip: '개찰구 통과 후 2번 출구 엘리베이터 또는 에스컬레이터로 진입합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'dd2-step3',
+            name: '2번 출구 엘리베이터 및 에스컬레이터 (B1F ↔ 1F)',
+            desc: '수직 승강기 및 상/하행 에스컬레이터',
+            facilityType: 'ELEVATOR',
+            tip: '엘리베이터 또는 상/하행 에스컬레이터를 이용하여 고우니 생태길 데크 산책로로 이어집니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '3번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '3번 출구에 지상 수직 엘리베이터가 완비되어 계단 없이 도로변으로 수평 진출입이 가능합니다.',
+        status: 'OPERATIONAL',
+        directionDesc: '다대동 주거 단지 및 상가 방면',
+        latitude: 35.04885,
+        longitude: 128.96425,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/다대포해수욕장역 3번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/다대포해수욕장역 3번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'dd3-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '승강장 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '승강장 엘리베이터로 B1F 대합실로 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'dd3-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '3번 출구 게이트',
+            facilityType: 'GATE',
+            tip: '개찰구 통과 후 3번 출구 엘리베이터로 탑승합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'dd3-step3',
+            name: '지상 수직 엘리베이터 (B1F ↔ 1F)',
+            desc: '3번 출구 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '엘리베이터를 통해 지상 인도변으로 진출합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '4번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: true,
+        facilityDirection: 'BOTH',
+        tip: '4번 출구에 상행/하행 에스컬레이터와 수직 엘리베이터가 모두 설치되어 있어 편리하게 진출입할 수 있습니다.',
+        status: 'OPERATIONAL',
+        directionDesc: '다대1동 행정복지센터, 다대초등학교, 다대 푸르지오 아파트',
+        latitude: 35.04911,
+        longitude: 128.96455,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/다대포해수욕장역 4번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/다대포해수욕장역 4번출구',
+        pathwayTimeline: [
+          {
+            id: 'dd4-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '승강장 이동 통로 및 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '대합실로 탑승 및 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'dd4-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '4번 출구 게이트',
+            facilityType: 'GATE',
+            tip: '개찰구를 나와 4번 출구 에스컬레이터 또는 엘리베이터로 향합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'dd4-step3',
+            name: '4번 출구 에스컬레이터 및 엘리베이터 (B1F ↔ 1F)',
+            desc: '상/하행 에스컬레이터 및 수직 엘리베이터',
+            facilityType: 'ESCALATOR',
+            tip: '에스컬레이터 또는 엘리베이터를 이용하여 다대1동 상권 도로변에 진출합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'beomeosa',
+    name: '범어사역',
+    englishName: 'Beomeosa Station',
+    lines: ['1'],
+    elevatorCount: 2,
+    escalatorCount: 4,
+    toiletLocation: '지하 1층 대합실 개찰구 외 (중앙 통로)',
+    isTransferStation: false,
+    accentColor: 'from-orange-500 to-amber-600',
+    recommendedExits: '5번 출구, 7번 출구 (범어사 환승 버스 정류장 방면 엘리베이터)',
+    recommendedExitsEn: 'Exit 5, Exit 7 (Elevator to Beomeosa Transfer Bus Stop)',
+    elevatorLocationDesc: '범어사역 5번 및 7번 출구 사이 지상 직결 수직 엘리베이터 운영',
+    elevatorLocationDescEn: 'Ground elevator operating between Exits 5 and 7.',
+    avgMovementTime: '약 3분 10초 (승강장 ↔ 지상 출구)',
+    avgMovementTimeEn: 'Approx. 3.1 mins (Platform ↔ Exit)',
+    precautions: '범어사로 이동하기 위해 90번 시내버스로 환승하실 경우, 5번 출구 또는 7번 출구 엘리베이터로 나온 뒤 바로 인근 버스정류장을 이용하시면 단차 없이 연계됩니다.',
+    precautionsEn: 'To transfer to Bus 90 for Beomeosa Temple, take Exit 5 or 7 elevator to reach the level transfer bus stop.',
+    officialSource: '부산교통공사(Humetro) 및 네이버지도',
+    exits: [
+      {
+        number: '5번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '범어사행 90번 버스 환승정류장과 가장 가까운 핵심 배리어프리 출구입니다. 휠체어와 유모차가 쉽게 이동할 수 있는 평탄 보도입니다.',
+        status: 'OPERATIONAL',
+        directionDesc: '범어사 방면 버스 환승정류장 (90번 버스), 청룡동, 금정산 등산로 초입',
+        latitude: 35.27311,
+        longitude: 129.09215,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/범어사역 5번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/범어사역 5번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'bo5-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '범어사역 플랫폼 수직 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '승강장에서 B1F 대합실로 연결되는 승강기를 이용합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'bo5-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '5번 출구 방향 와이드 게이트',
+            facilityType: 'GATE',
+            tip: '휠체어 전용 게이트 통과 후 5번 출구 엘리베이터 통로로 전진합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'bo5-step3',
+            name: '지상 수직 엘리베이터 (B1F ↔ 1F)',
+            desc: '5번 출구 직통 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '지상 인도에 도착 후 바로 앞 90번 버스정류장으로 이동합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '7번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '청룡노포동 행정복지센터 및 금정구 청소년수련관 방면 지상 연결 수직 엘리베이터입니다.',
+        status: 'OPERATIONAL',
+        directionDesc: '청룡노포동 행정복지센터, 청룡초등학교, 금정구 청소년수련관',
+        latitude: 35.27381,
+        longitude: 129.09275,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/범어사역 7번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/범어사역 7번출구',
+        pathwayTimeline: [
+          {
+            id: 'bo7-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '플랫폼 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '대합실로 엘리베이터를 탑승하여 상행합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'bo7-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '7번 출구 게이트',
+            facilityType: 'GATE',
+            tip: '개찰구 통과 후 7번 출구 수직 승강기로 진입합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'bo7-step3',
+            name: '지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '7번 출구 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '지상 진출 후 청룡동 주민센터 및 보도길로 연결됩니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '1번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: false,
+        hasEscalator: true,
+        facilityDirection: 'UP',
+        tip: '금정구 남산동 방면 상행 에스컬레이터 출구입니다.',
+        status: 'OPERATIONAL',
+        directionDesc: '남산동 방면, 남산새마을금고, 금샘로 방향',
+        latitude: 35.27211,
+        longitude: 129.09155,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/범어사역 1번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/범어사역 1번출구',
+        pathwayTimeline: [
+          {
+            id: 'bo1-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '승강장 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '대합실로 승강기를 탑승합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'bo1-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '1번 출구 게이트',
+            facilityType: 'GATE',
+            tip: '개찰구를 지나 1번 출구 승강기로 향합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'bo1-step3',
+            name: '1번 출구 에스컬레이터 (B1F → 1F)',
+            desc: '상행 에스컬레이터',
+            facilityType: 'ESCALATOR',
+            tip: '에스컬레이터 탑승 후 남산동 방면 지상 도로로 올라옵니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      }
+    ]
   }
 ];
 

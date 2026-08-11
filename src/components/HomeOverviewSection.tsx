@@ -36,7 +36,7 @@ interface HomeOverviewSectionProps {
   onNavigateToSearch?: (query?: string) => void;
   onNavigateToReport?: () => void;
   onNavigateToNearby?: () => void;
-  onNavigateToItinerary?: (category?: 'GOURMET' | 'EXPERIENCE' | 'DAY') => void;
+  onNavigateToItinerary?: (category?: 'GOURMET' | 'EXPERIENCE' | 'DAY' | 'SUBWAY') => void;
   searchQuery?: string;
   setSearchQuery?: (q: string) => void;
 }
@@ -117,6 +117,18 @@ export function HomeOverviewSection({
       tagBg: 'bg-emerald-50',
       tagText: 'text-emerald-800 border border-emerald-200/60',
       buttonBg: 'bg-slate-900 hover:bg-emerald-800'
+    },
+    {
+      id: 'SUBWAY' as const,
+      title: language === 'KR' ? '부산 도시철도 1·2호선 코스' : 'Busan Metro Lines 1 & 2 Course',
+      tag: language === 'KR' ? '🚇 도시철도 코스' : '🚇 Metro Course',
+      desc: language === 'KR'
+        ? '부산 지하철 1호선과 2호선 노선축을 따라 편리하게 이동하는 대표 명소, 맛집, 카페, 문화공간 코스'
+        : 'Explore top attractions, gourmet spots, cafes, and museums conveniently connected along Lines 1 & 2.',
+      icon: <Train className="w-8 h-8 text-orange-600" />,
+      tagBg: 'bg-orange-50',
+      tagText: 'text-orange-800 border border-orange-200/60',
+      buttonBg: 'bg-slate-900 hover:bg-orange-800'
     },
   ];
 
@@ -371,7 +383,7 @@ export function HomeOverviewSection({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {recommendedCourses.map((course) => (
             <div 
               key={course.id}

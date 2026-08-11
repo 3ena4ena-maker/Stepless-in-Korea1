@@ -36,6 +36,7 @@ import {
   Shield,
   Sparkles,
   Calendar,
+  Landmark,
   UserCheck,
   ArrowRightLeft,
   Box
@@ -55,6 +56,7 @@ import { BUSAN_ITINERARIES } from './data/itineraries';
 import SubwayStationMap from './components/SubwayStationMap';
 import BusanItinerariesView from './components/BusanItinerariesView';
 import BusanEventsCalendarView from './components/BusanEventsCalendarView';
+import BarrierFreeTourApiView from './components/BarrierFreeTourApiView';
 import StationSearchBar, { searchStations } from './components/StationSearchBar';
 
 // Dynamic tab loading fallback component for code-split views
@@ -180,8 +182,8 @@ export default function App() {
   const [activePathFilter, setActivePathFilter] = useState<'ALL' | 'ACCESSIBLE' | 'CARRY'>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedItineraryCategory, setSelectedItineraryCategory] = useState<string | null>(null);
-  const [tipsSubPage, setTipsSubPage] = useState<'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi'>('index');
-  const [activeRegionPage, setActiveRegionPage] = useState<'EAST' | 'WEST' | 'SOUTH' | 'NORTH' | null>(null);
+  const [tipsSubPage, setTipsSubPage] = useState<'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule'>('index');
+  const [activeRegionPage, setActiveRegionPage] = useState<'LINE1' | 'LINE2' | null>(null);
   const [siteSubPage, setSiteSubPage] = useState<'about' | 'privacy' | 'terms' | 'contact' | 'data-source'>('about');
   
   // Geolocation states
@@ -306,7 +308,7 @@ export default function App() {
   const [filterCategory, setFilterCategory] = useState<string>('ALL');
 
   // Busan Travel Itinerary Curation States
-  const [activeItineraryCategory, setActiveItineraryCategory] = useState<'ALL' | 'TRANSIT' | 'EAST' | 'WEST' | 'SOUTH' | 'NORTH'>('ALL');
+  const [activeItineraryCategory, setActiveItineraryCategory] = useState<'ALL' | 'TRANSIT' | 'LINE1' | 'LINE2'>('ALL');
   const [expandedItineraries, setExpandedItineraries] = useState<Record<string, boolean>>({
     'transit-subway': true, // Auto-expand first item for instant engagement
   });
@@ -388,7 +390,7 @@ export default function App() {
           setIsHomeLanding(false);
           setCurrentTab('home');
         }
-      } else if (['home', 'search', 'schedule', 'tips', 'about', 'privacy', 'terms', 'contact', 'data-source'].includes(parts[1])) {
+      } else if (['home', 'search', 'schedule', 'tips', 'tourapi', 'about', 'privacy', 'terms', 'contact', 'data-source'].includes(parts[1])) {
         if (parts[1] === 'privacy') {
           setCurrentTab('about');
           setSiteSubPage('privacy');
@@ -1116,7 +1118,7 @@ export default function App() {
             document.documentElement.scrollTop = 0;
             document.body.scrollTop = 0;
 
-            const validTabs = ['home', 'search', 'schedule', 'tips', 'about'];
+            const validTabs = ['home', 'search', 'schedule', 'tourapi', 'tips', 'about'];
             const targetTab = validTabs.includes(tab) ? tab : 'home';
             setCurrentTab(targetTab);
             if (targetTab === 'home') {
@@ -1290,21 +1292,9 @@ export default function App() {
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5 sm:gap-3">
-                  {[
-                    { id: 'gwangan', name: '광안역', englishName: 'GWANGAN', line: '2호선' },
-                    { id: 'geumnyeonsan', name: '금련산역', englishName: 'GEUMNYEONSAN', line: '2호선' },
-                    { id: 'nampo', name: '남포역', englishName: 'NAMPO', line: '1호선' },
-                    { id: 'dongbaek', name: '동백역', englishName: 'DONGBAEK', line: '2호선' },
-                    { id: 'bexco', name: '벡스코역', englishName: 'BEXCO', line: '2호선·동해선' },
-                    { id: 'busan', name: '부산역', englishName: 'BUSAN', line: '1호선' },
-                    { id: 'bujeon', name: '부전역', englishName: 'BUJEON', line: '1호선·동해선' },
-                    { id: 'seomyeon', name: '서면역', englishName: 'SEOMYEON', line: '1호선·2호선' },
-                    { id: 'suyeong', name: '수영역', englishName: 'SUYEONG', line: '2호선·3호선' },
-                    { id: 'jagalchi', name: '자갈치역', englishName: 'JAGALCHI', line: '1호선' },
-                    { id: 'jeonpo', name: '전포역', englishName: 'JEONPO', line: '2호선' },
-                    { id: 'haeundae', name: '해운대역', englishName: 'HAEUNDAE', line: '2호선' },
-                  ].map((st) => {
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
+                  {STATIONS.map((st) => {
+                    const lineStr = st.lines.map(l => l.includes('선') ? l : l + '호선').join('·');
                     const isSelected = selectedStationId === st.id;
                     return (
                       <a
@@ -1322,10 +1312,10 @@ export default function App() {
                         }`}
                       >
                         <span className={`font-bold text-sm sm:text-base font-heading ${isSelected ? 'text-white' : 'text-slate-800'}`}>
-                          {st.name}
+                          {getTranslatedStationName(st.name, language)}
                         </span>
                         <div className="text-[11px] sm:text-xs font-semibold inline-flex items-center gap-0.5">
-                          {st.line.split('·').map((part, idx) => {
+                          {lineStr.split('·').map((part, idx) => {
                             let colorClass = isSelected ? 'text-blue-200 font-bold' : 'text-blue-600 font-bold';
                             if (part.includes('1')) {
                               colorClass = isSelected ? 'text-orange-300 font-bold' : 'text-orange-600 font-bold';
@@ -1795,28 +1785,28 @@ export default function App() {
             </div>
           )}
 
-          {/* Tab 3: TRAVEL TIPS VIEW */}
-          {currentTab === 'tips' && (
+          {/* Tab 3 & 4: TRAVEL TIPS & BUSAN MAJOR SCHEDULE VIEW & BARRIER FREE */}
+          {(currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') && (
             <BusanItinerariesView 
               language={language}
-              initialCategory={selectedItineraryCategory as any}
+              initialCategory={currentTab === 'tourapi' ? 'BARRIER_FREE' : (selectedItineraryCategory as any)}
               onBack={() => {
                 setSelectedItineraryCategory(null);
               }}
               onSelectCategory={(category) => {
                 setSelectedItineraryCategory(category);
               }}
-              tipsSubPage={tipsSubPage}
-              setTipsSubPage={setTipsSubPage}
+              tipsSubPage={currentTab === 'schedule' ? 'schedule' : tipsSubPage}
+              setTipsSubPage={(page) => {
+                if (page === 'schedule') {
+                  setCurrentTab('schedule');
+                } else if (currentTab === 'schedule') {
+                  setCurrentTab('tips');
+                }
+                setTipsSubPage(page);
+              }}
               activeRegionPage={activeRegionPage}
               setActiveRegionPage={setActiveRegionPage}
-            />
-          )}
-
-          {/* New Tab 4: BUSAN MAJOR EVENTS CALENDAR VIEW */}
-          {currentTab === 'schedule' && (
-            <BusanEventsCalendarView 
-              language={language} 
               onSelectStation={(stationId, exitNum) => {
                 setSelectedStationId(stationId);
                 if (exitNum) {
@@ -2188,7 +2178,6 @@ export default function App() {
         {[
           { id: 'home', label: language === 'KR' ? '홈' : 'Home', icon: Compass },
           { id: 'search', label: language === 'KR' ? '역 검색' : 'Stations', icon: Train },
-          { id: 'schedule', label: language === 'KR' ? '일정표' : 'Schedule', icon: Calendar },
           { id: 'tips', label: language === 'KR' ? '여행 팁' : 'Tips', icon: HelpCircle },
           { id: 'about', label: language === 'KR' ? '소개' : 'About', icon: Info },
         ].map(item => {
@@ -2203,7 +2192,7 @@ export default function App() {
                 document.documentElement.scrollTop = 0;
                 document.body.scrollTop = 0;
 
-                const validTabs = ['home', 'search', 'schedule', 'tips', 'about'];
+                const validTabs = ['home', 'search', 'schedule', 'tourapi', 'tips', 'about'];
                 const targetTab = validTabs.includes(item.id) ? item.id : 'home';
                 setCurrentTab(targetTab);
                 if (targetTab === 'home') {

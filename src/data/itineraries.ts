@@ -7,10 +7,10 @@ export interface ItineraryStep {
   icon?: string;
   stationInfoKo?: string;
   stationInfoEn?: string;
-  foodCategory?: 'cafe' | 'brunch' | 'restaurant' | 'streetfood' | 'bakery';
+  foodCategory?: 'cafe' | 'brunch' | 'restaurant' | 'streetfood' | 'bakery' | 'market';
   categoryType?: string;
   hasStep?: boolean;
-  regionId?: 'haeundae_gijang' | 'gwangalli_centum' | 'seomyeon_jeonpo' | 'nampo_yeongdo' | 'others';
+  regionId?: 'famous' | 'haeundae_gijang' | 'gwangalli_centum' | 'seomyeon_jeonpo' | 'nampo_yeongdo' | 'others';
   regionNameKo?: string;
   regionNameEn?: string;
 }
@@ -21,7 +21,7 @@ export interface ItineraryCourse {
   titleEn: string;
   subtitleKo: string;
   subtitleEn: string;
-  category: 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'EXPERIENCE';
+  category: 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'EXPERIENCE' | 'SUBWAY';
   durationKo: string;
   durationEn: string;
   tagKo: string;
@@ -1812,5 +1812,22 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         stationInfoEn: '295 Saessak-ro, Busanjin-gu, Busan'
       }
     ]
+  },
+  {
+    id: 'subway-course-master',
+    category: 'SUBWAY',
+    titleKo: '부산 도시철도 1호선·2호선 추천 코스',
+    titleEn: 'Busan Metro Lines 1 & 2 Course Guide',
+    subtitleKo: '지하철 1호선과 2호선 노선축을 따라 편리하게 이동할 수 있는 대표 명소, 맛집, 카페, 문화공간 코스',
+    subtitleEn: 'Seamless travel connecting top attractions, gourmet spots, cafes, and museums along Lines 1 & 2',
+    durationKo: '도시철도 연계',
+    durationEn: 'Subway Connected',
+    tagKo: '🚇 1·2호선 노선축',
+    tagEn: '🚇 Lines 1 & 2',
+    difficultyKo: '쉬움',
+    difficultyEn: 'Easy',
+    overallTipKo: '부산 도시철도 1호선과 2호선은 부산의 주요 관광지를 대부분 관통합니다. 역 출구의 엘리베이터/에스컬레이터와 바로 연결되는 동선으로 더욱 편리하게 여행하세요.',
+    overallTipEn: 'Busan Metro Lines 1 & 2 pass through almost all key sights in Busan. Use station elevators and escalators for step-free connections.',
+    steps: []
   }
 ];

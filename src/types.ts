@@ -91,6 +91,10 @@ const TRANSLATION_MAP: Record<string, string> = {
   '금련산역': 'Geumnyeonsan Station',
   '동백역': 'Dongbaek Station',
   '벡스코역': 'BEXCO Station',
+  '중앙역': 'Jung-ang Station',
+  '다대포해수욕장역': 'Dadaepo Beach Station',
+  '다대포역': 'Dadaepo Station',
+  '범어사역': 'Beomeosa Station',
 
   // Common landmarks
   '롯데백화점': 'Lotte Department Store',

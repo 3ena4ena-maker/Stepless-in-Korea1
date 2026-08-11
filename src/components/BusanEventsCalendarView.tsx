@@ -419,7 +419,7 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
   }
 ];
 
-export default function BusanEventsCalendarView({ language }: BusanEventsCalendarViewProps) {
+export default function BusanEventsCalendarView({ language, onSelectStation }: BusanEventsCalendarViewProps) {
   // Set of station IDs registered in the 'Exit Info & Station Search' tab
   const registeredStationIds = useMemo(() => new Set(STATIONS.map(s => s.id)), []);
 

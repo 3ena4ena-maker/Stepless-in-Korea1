@@ -30,7 +30,10 @@ export const STATION_LOCKER_DATA: Record<string, Record<string, LockerCount> | L
   bexco: {
     '2': { small: 32, large: 16, xlarge: 12 },
     '동해': { small: 10, large: 4, xlarge: 4 }
-  }
+  },
+  jungang: { small: 24, med: 30, large: 8, xlarge: 16 },
+  dadaepo: { small: 30, med: 20, large: 12, xlarge: 18 },
+  beomeosa: { small: 16, med: 12, xlarge: 6 }
 };
 
 export const formatLockerCount = (data: LockerCount, lang: 'KR' | 'EN'): string => {

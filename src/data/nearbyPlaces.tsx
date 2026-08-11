@@ -123,6 +123,36 @@ export const STATION_PLACES_DATA: Record<string, Record<'KR' | 'EN', NearbyPlace
       { name: '🏛️ BEXCO Exhibition & Convention Center', desc: 'Major international exhibition & event space', exits: [{ num: '7', type: 'elevator' }, { num: '9', type: 'elevator' }] },
       { name: '🖼️ Busan Museum of Art', desc: 'Contemporary art exhibitions & outdoor park', exits: [{ num: '5', type: 'elevator' }] }
     ]
+  },
+  jungang: {
+    KR: [
+      { name: '📜 40계단 문화관광테마거리', desc: '한국전쟁 피란민의 삶과 아련한 추억이 서린 역사 문화거리', exits: [{ num: '14', type: 'elevator' }] },
+      { name: '🏢 부산무역회관 & 중앙동 인쇄골목', desc: '고즈넉한 오피스 상권과 맛깔난 로컬 백반집 골목', exits: [{ num: '14', type: 'elevator' }, { num: '10', type: 'elevator' }] }
+    ],
+    EN: [
+      { name: '📜 40 Steps Cultural Street', desc: 'Historic street depicting Korean War refugee memories and cultural spots', exits: [{ num: '14', type: 'elevator' }] },
+      { name: '🏢 Busan Trade Center & Printing Alley', desc: 'Local office district with rich food alleys & historic print shops', exits: [{ num: '14', type: 'elevator' }, { num: '10', type: 'elevator' }] }
+    ]
+  },
+  dadaepo: {
+    KR: [
+      { name: '🌅 다대포해수욕장 & 꿈의 낙조분수', desc: '노을이 환상적인 백사장과 세계 최대 규모 음악 분수쇼', exits: [{ num: '1', type: 'elevator' }] },
+      { name: '🌾 고우니 생태길 & 몰운대', desc: '단차 없는 평탄 데크길 산책로와 원형 보존된 해안 산책길', exits: [{ num: '1', type: 'elevator' }, { num: '2', type: 'elevator' }] }
+    ],
+    EN: [
+      { name: '🌅 Dadaepo Beach & Sunset Fountain', desc: 'Breathtaking sunset views & world-renowned musical fountain show', exits: [{ num: '1', type: 'elevator' }] },
+      { name: '🌾 Gouni Ecological Trail & Morundae', desc: 'Barrier-free wooden boardwalks over coastal wetlands', exits: [{ num: '1', type: 'elevator' }, { num: '2', type: 'elevator' }] }
+    ]
+  },
+  beomeosa: {
+    KR: [
+      { name: '⛩️ 범어사 (금정산 천년고찰)', desc: '90번 버스 환승 연계로 이어지는 부산 대표 역사 사찰', exits: [{ num: '5', type: 'elevator' }, { num: '7', type: 'elevator' }] },
+      { name: '⛰️ 금정산 등산로 & 청룡동 먹거리마을', desc: '산뜻한 숲길 보도와 힐링 백숙 맛집 골목', exits: [{ num: '5', type: 'elevator' }] }
+    ],
+    EN: [
+      { name: '⛩️ Beomeosa Temple', desc: 'Ancient Thousand-Year Temple nestled in Mt. Geumjeongsan (Bus 90 Transfer)', exits: [{ num: '5', type: 'elevator' }, { num: '7', type: 'elevator' }] },
+      { name: '⛰️ Mt. Geumjeongsan Trails & Cheongryong Village', desc: 'Scenic mountain trails and traditional dining spots', exits: [{ num: '5', type: 'elevator' }] }
+    ]
   }
 };
 

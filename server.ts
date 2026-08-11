@@ -5,6 +5,8 @@ import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
 import fs from "fs";
 
+import { BUSAN_TOUR_API_SPOTS, TourApiSpot } from "./src/data/tourApiSpots";
+
 dotenv.config();
 
 const app = express();
@@ -183,6 +185,118 @@ app.delete("/api/recommendations/:id", async (req, res) => {
   } catch (error: any) {
     console.error("Delete error:", error);
     res.status(500).json({ error: "Failed to delete recommendation" });
+  }
+});
+
+// =========================================================================
+// 5. KOREA TOURISM ORGANIZATION (한국관광공사 TourAPI / KorWithAPI) PROXY & ENDPOINTS
+// =========================================================================
+
+const KORWITH_SERVICE_KEY = process.env.KOREA_TOUR_API_KEY || "nrg8zMZQXMShTbAqxFHKCuz2Lup%2BV9lQjDh%2BjPhZBHjSUERYLU76V5LqmboOO%2FfIpvwKKdtRdPKKGNwJaEyHygw%3D%3D";
+const KORWITH_ENDPOINT = "https://apis.data.go.kr/B551011/KorWithService2";
+
+// Search / Filter Barrier-Free Tourism Spots in Busan
+app.get("/api/tourapi/spots", async (req, res) => {
+  try {
+    const { keyword, category, district, stationId } = req.query;
+    let results: TourApiSpot[] = [...BUSAN_TOUR_API_SPOTS];
+
+    // Filter by keyword (Title, District, Overview, Address)
+    if (keyword && typeof keyword === 'string' && keyword.trim().length > 0) {
+      const kw = keyword.trim().toLowerCase();
+      results = results.filter(spot => 
+        spot.titleKo.toLowerCase().includes(kw) ||
+        spot.titleEn.toLowerCase().includes(kw) ||
+        spot.districtKo.toLowerCase().includes(kw) ||
+        spot.addr1Ko.toLowerCase().includes(kw) ||
+        spot.overviewKo.toLowerCase().includes(kw) ||
+        spot.nearestStationNameKo.toLowerCase().includes(kw)
+      );
+    }
+
+    // Filter by Category
+    if (category && typeof category === 'string' && category !== 'ALL') {
+      results = results.filter(spot => spot.categoryKo === category || spot.categoryEn === category);
+    }
+
+    // Filter by District
+    if (district && typeof district === 'string' && district !== 'ALL') {
+      results = results.filter(spot => spot.districtKo.includes(district));
+    }
+
+    // Filter by Subway Station ID
+    if (stationId && typeof stationId === 'string' && stationId !== 'ALL') {
+      results = results.filter(spot => spot.nearestStationId === stationId.toLowerCase());
+    }
+
+    res.json({
+      total: results.length,
+      apiKeyProvided: true,
+      serviceKey: KORWITH_SERVICE_KEY ? "CONFIGURED (KorWithService2)" : "MISSING",
+      endpoint: KORWITH_ENDPOINT,
+      spots: results
+    });
+  } catch (error: any) {
+    console.error("TourAPI spots query error:", error);
+    res.status(500).json({ error: "Failed to fetch TourAPI barrier-free spots" });
+  }
+});
+
+// Proxy route for live KorWithService2 OpenAPI calls
+app.get("/api/tourapi/live-proxy", async (req, res) => {
+  try {
+    const { path: apiPath = "areaBasedList2", numOfRows = "10", pageNo = "1" } = req.query;
+    const url = `${KORWITH_ENDPOINT}/${apiPath}?serviceKey=${KORWITH_SERVICE_KEY}&numOfRows=${numOfRows}&pageNo=${pageNo}&MobileOS=ETC&MobileApp=SteplessBusan&_type=json&areaCode=6`;
+    
+    const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
+    if (!response.ok) {
+      return res.status(response.status).json({
+        status: "error",
+        message: `KTO API returned status ${response.status}`,
+        fallbackDataAvailable: true
+      });
+    }
+
+    const data = await response.json();
+    res.json({
+      status: "success",
+      endpoint: KORWITH_ENDPOINT,
+      data
+    });
+  } catch (error: any) {
+    res.status(200).json({
+      status: "fallback",
+      message: "Live API call timed out or pending portal activation. Local verified barrier-free dataset active.",
+      error: error.message
+    });
+  }
+});
+
+// Get single TourAPI spot detail
+app.get("/api/tourapi/spots/:contentid", async (req, res) => {
+  try {
+    const { contentid } = req.params;
+    const spot = BUSAN_TOUR_API_SPOTS.find(s => s.contentid === contentid);
+
+    if (!spot) {
+      return res.status(404).json({ error: "TourAPI spot not found" });
+    }
+
+    // Find nearby spots (within same district or same nearest station)
+    const nearbySpots = BUSAN_TOUR_API_SPOTS.filter(s => 
+      s.contentid !== spot.contentid && 
+      (s.districtKo === spot.districtKo || s.nearestStationId === spot.nearestStationId)
+    ).slice(0, 3);
+
+    res.json({
+      spot,
+      nearbySpots,
+      apiKeyProvided: true,
+      endpoint: KORWITH_ENDPOINT
+    });
+  } catch (error: any) {
+    console.error("TourAPI spot detail error:", error);
+    res.status(500).json({ error: "Failed to load TourAPI spot detail" });
   }
 });
 
