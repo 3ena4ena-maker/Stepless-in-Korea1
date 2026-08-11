@@ -11,10 +11,14 @@ interface HeaderProps {
   setCurrentTab: (tab: string) => void;
   language: 'KR' | 'EN';
   toggleLanguage: () => void;
+  onToggleAdminMode?: () => void;
+  isAdminMode?: boolean;
 }
 
-export default function Header({ currentTab, setCurrentTab, language, toggleLanguage }: HeaderProps) {
+export default function Header({ currentTab, setCurrentTab, language, toggleLanguage, onToggleAdminMode, isAdminMode }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const clickCountRef = React.useRef(0);
+  const clickTimerRef = React.useRef<any>(null);
 
   const menuItems = [
     { id: 'home', label: language === 'KR' ? '홈' : 'Home', icon: Compass },
@@ -23,27 +27,55 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
     { id: 'about', label: language === 'KR' ? '사이트 소개' : 'About', icon: Info },
   ];
 
+  const handleLogoClick = () => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    setCurrentTab('home');
+
+    clickCountRef.current += 1;
+    if (clickTimerRef.current) {
+      clearTimeout(clickTimerRef.current);
+    }
+
+    if (clickCountRef.current >= 5) {
+      clickCountRef.current = 0;
+      if (onToggleAdminMode) {
+        onToggleAdminMode();
+      }
+    } else {
+      clickTimerRef.current = setTimeout(() => {
+        clickCountRef.current = 0;
+      }, 2000);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-xs transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div 
-            onClick={() => {
-              window.scrollTo(0, 0);
-              document.documentElement.scrollTop = 0;
-              document.body.scrollTop = 0;
-              setCurrentTab('home');
-            }} 
-            className="flex items-center gap-2.5 cursor-pointer group"
+            onClick={handleLogoClick} 
+            className="flex items-center gap-2.5 cursor-pointer group select-none"
             id="header-logo-container"
+            title={language === 'KR' ? '로고 5회 연속 클릭 시 좌표 측정 모드 토글' : 'Click 5 times to toggle coordinate measurement mode'}
           >
-            <div className="p-2 rounded-xl bg-gradient-to-tr from-[#004481] to-[#1b6d24] text-white group-hover:scale-105 transition-transform shadow-xs">
+            <div className={`p-2 rounded-xl transition-all shadow-xs ${
+              isAdminMode 
+                ? 'bg-gradient-to-tr from-rose-600 to-amber-600 text-white ring-2 ring-rose-400 animate-pulse' 
+                : 'bg-gradient-to-tr from-[#004481] to-[#1b6d24] text-white group-hover:scale-105'
+            }`}>
               <Train className="w-6 h-6" />
             </div>
             <div>
               <span className="text-xl font-bold font-heading tracking-tight text-slate-800 flex items-center gap-1.5">
                 Stepless <span className="text-xs bg-emerald-50 text-emerald-700 font-sans px-2 py-0.5 rounded-full font-bold">Busan</span>
+                {isAdminMode && (
+                  <span className="text-[10px] bg-rose-600 text-white font-mono px-1.5 py-0.5 rounded-full font-extrabold animate-pulse">
+                    ADMIN
+                  </span>
+                )}
               </span>
               <p className="text-[10px] text-slate-400 font-sans font-medium -mt-1">
                 {language === 'KR' ? '계단 없는 최적의 부산 지하철 길잡이' : 'Step-Free Busan Metro Guide'}

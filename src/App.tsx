@@ -300,6 +300,21 @@ export default function App() {
   const [isAdminMode, setIsAdminMode] = useState<boolean>(false);
   const [adminPasswordInput, setAdminPasswordInput] = useState<string>('');
   const [adminError, setAdminError] = useState<string>('');
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const toggleAdminMode = () => {
+    setIsAdminMode(prev => {
+      const next = !prev;
+      const msg = next 
+        ? (language === 'KR' ? '관리자/좌표 측정 모드가 활성화되었습니다' : 'Admin / Coordinate mode activated')
+        : (language === 'KR' ? '관리자/좌표 측정 모드가 비활성화되었습니다' : 'Admin / Coordinate mode deactivated');
+      setToastMessage(msg);
+      setTimeout(() => {
+        setToastMessage(null);
+      }, 3500);
+      return next;
+    });
+  };
 
   // Delete confirmation state to avoid window.confirm (iframe safety)
   const [deleteConfId, setDeleteConfId] = useState<string | null>(null);
@@ -1110,6 +1125,14 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-800 font-sans antialiased pb-24 md:pb-12 flex flex-col justify-between">
       <div>
+        {/* Toast Notification Banner */}
+        {toastMessage && (
+          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[9999] bg-slate-900/95 text-white border border-slate-700/80 px-5 py-3 rounded-2xl shadow-2xl backdrop-blur-md flex items-center gap-3 animate-fade-in transition-all">
+            <span className="text-xl shrink-0">🛠️</span>
+            <span className="text-xs sm:text-sm font-extrabold tracking-tight">{toastMessage}</span>
+          </div>
+        )}
+
         {/* Navigation Header */}
         <Header 
           currentTab={currentTab} 
@@ -1136,6 +1159,8 @@ export default function App() {
           }} 
           language={language} 
           toggleLanguage={toggleLanguage} 
+          onToggleAdminMode={toggleAdminMode}
+          isAdminMode={isAdminMode}
         />
 
         {/* Core Main Area */}
@@ -1348,7 +1373,7 @@ export default function App() {
 
               {/* Station Map directly below station selection */}
               <div id="search-tab-map-container" className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-                <SubwayStationMap station={activeStation} language={language} focusedExitCoords={focusedExitCoords} />
+                <SubwayStationMap station={activeStation} language={language} focusedExitCoords={focusedExitCoords} isAdminMode={isAdminMode} />
               </div>
 
               {/* 📋 Station Barrier-Free Movement Summary Table & Step-by-Step Info */}

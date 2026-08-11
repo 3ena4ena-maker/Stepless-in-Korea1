@@ -22,6 +22,7 @@ interface SubwayStationMapProps {
   station: Station;
   language: 'KR' | 'EN';
   focusedExitCoords?: { latitude: number; longitude: number } | null;
+  isAdminMode?: boolean;
 }
 
 declare global {
@@ -31,7 +32,7 @@ declare global {
   }
 }
 
-export default function SubwayStationMap({ station, language, focusedExitCoords }: SubwayStationMapProps) {
+export default function SubwayStationMap({ station, language, focusedExitCoords, isAdminMode = false }: SubwayStationMapProps) {
   const mapElement = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
@@ -58,6 +59,18 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
   const [clickedCoord, setClickedCoord] = useState<{ lat: number; lng: number } | null>(null);
   const tempMarkerRef = useRef<any>(null);
   const leafletTempMarkerRef = useRef<any>(null);
+
+  // Reset inspect mode if admin mode is disabled
+  useEffect(() => {
+    if (!isAdminMode) {
+      setInspectMode(false);
+      setClickedCoord(null);
+      if (tempMarkerRef.current) tempMarkerRef.current.setMap(null);
+      if (leafletTempMarkerRef.current && leafletMapInstance.current) {
+        leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current);
+      }
+    }
+  }, [isAdminMode]);
 
   // Safe map cleanup helpers to prevent memory leaks and API error cascades
   const destroyNaverMap = () => {
@@ -979,25 +992,27 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
             </button>
           )}
 
-          <button
-            onClick={() => {
-              setInspectMode(!inspectMode);
-              if (inspectMode) {
-                setClickedCoord(null);
-                if (tempMarkerRef.current) tempMarkerRef.current.setMap(null);
-                if (leafletTempMarkerRef.current && leafletMapInstance.current) {
-                  leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current);
+          {isAdminMode && (
+            <button
+              onClick={() => {
+                setInspectMode(!inspectMode);
+                if (inspectMode) {
+                  setClickedCoord(null);
+                  if (tempMarkerRef.current) tempMarkerRef.current.setMap(null);
+                  if (leafletTempMarkerRef.current && leafletMapInstance.current) {
+                    leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current);
+                  }
                 }
-              }
-            }}
-            className={`flex items-center gap-1 px-3 py-1.5 shadow-md rounded-full text-xs font-extrabold transition-all cursor-pointer ${
-              inspectMode 
-                ? 'bg-rose-600 text-white ring-2 ring-rose-300 animate-pulse' 
-                : 'bg-slate-900/90 hover:bg-slate-900 text-white backdrop-blur-sm'
-            }`}
-          >
-            {inspectMode ? '🎯 ' + (language === 'KR' ? '좌표 확인 감지 중 (클릭하세요)' : 'Inspecting Coordinates...') : '📍 ' + (language === 'KR' ? '좌표 확인 모드' : 'Inspect Coordinates')}
-          </button>
+              }}
+              className={`flex items-center gap-1 px-3 py-1.5 shadow-md rounded-full text-xs font-extrabold transition-all cursor-pointer ${
+                inspectMode 
+                  ? 'bg-rose-600 text-white ring-2 ring-rose-300 animate-pulse' 
+                  : 'bg-slate-900/90 hover:bg-slate-900 text-white backdrop-blur-sm'
+              }`}
+            >
+              {inspectMode ? '🎯 ' + (language === 'KR' ? '좌표 확인 감지 중 (클릭하세요)' : 'Inspecting Coordinates...') : '📍 ' + (language === 'KR' ? '좌표 확인 모드' : 'Inspect Coordinates')}
+            </button>
+          )}
         </div>
 
         {/* Clicked Coordinates Banner / Toast */}
