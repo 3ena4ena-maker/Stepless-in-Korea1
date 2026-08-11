@@ -2087,8 +2087,8 @@ const UNSORTED_STATIONS: Station[] = [
         tip: '8번 출구에 수직 엘리베이터가 설치되어 있어 중앙동 주민센터 및 주요 도로변으로 단차 없이 연결됩니다.',
         status: 'OPERATIONAL',
         directionDesc: '중앙동 주민센터, 중앙동 교차로, 부산 우체국',
-        latitude: 35.1025,
-        longitude: 129.0363,
+        latitude: 35.104385,
+        longitude: 129.036508,
         kakaoMapUrl: 'https://map.kakao.com/link/search/중앙역 8번출구 엘리베이터',
         naverMapUrl: 'https://map.naver.com/v5/search/중앙역 8번출구 엘리베이터',
         pathwayTimeline: [
@@ -2128,8 +2128,8 @@ const UNSORTED_STATIONS: Station[] = [
         tip: '12번 출구에 수직 엘리베이터가 설치되어 있어 40계단 문화관광테마거리 및 부산무역회관 방면으로 편하게 진출할 수 있습니다.',
         status: 'OPERATIONAL',
         directionDesc: '40계단 문화관광테마거리, 부산무역회관, 중앙동 인쇄골목',
-        latitude: 35.1035,
-        longitude: 129.0366,
+        latitude: 35.105465,
+        longitude: 129.036449,
         kakaoMapUrl: 'https://map.kakao.com/link/search/중앙역 12번출구 엘리베이터',
         naverMapUrl: 'https://map.naver.com/v5/search/중앙역 12번출구 엘리베이터',
         pathwayTimeline: [
@@ -2169,8 +2169,8 @@ const UNSORTED_STATIONS: Station[] = [
         tip: '13번 출구에 수직 엘리베이터가 운행되어 중구청 및 대청로 방면으로 계단 없이 이동할 수 있습니다.',
         status: 'OPERATIONAL',
         directionDesc: '중구청, 대청로 방면, 메리놀병원',
-        latitude: 35.1038,
-        longitude: 129.0368,
+        latitude: 35.104857,
+        longitude: 129.036133,
         kakaoMapUrl: 'https://map.kakao.com/link/search/중앙역 13번출구 엘리베이터',
         naverMapUrl: 'https://map.naver.com/v5/search/중앙역 13번출구 엘리베이터',
         pathwayTimeline: [
@@ -2394,139 +2394,98 @@ const UNSORTED_STATIONS: Station[] = [
     englishName: 'Beomeosa Station',
     lines: ['1'],
     elevatorCount: 2,
-    escalatorCount: 4,
+    escalatorCount: 0,
     toiletLocation: '지하 1층 대합실 개찰구 외 (중앙 통로)',
     isTransferStation: false,
     accentColor: 'from-orange-500 to-amber-600',
-    recommendedExits: '5번 출구, 7번 출구 (범어사 환승 버스 정류장 방면 엘리베이터)',
-    recommendedExitsEn: 'Exit 5, Exit 7 (Elevator to Beomeosa Transfer Bus Stop)',
-    elevatorLocationDesc: '범어사역 5번 및 7번 출구 사이 지상 직결 수직 엘리베이터 운영',
-    elevatorLocationDescEn: 'Ground elevator operating between Exits 5 and 7.',
+    recommendedExits: '3번 출구, 4번 출구 (지상 연결 수직 엘리베이터)',
+    recommendedExitsEn: 'Exit 3, Exit 4 (Ground Elevator)',
+    elevatorLocationDesc: '범어사역 3번 및 4번 출구 수직 엘리베이터 운영',
+    elevatorLocationDescEn: 'Ground elevator operating at Exits 3 and 4.',
     avgMovementTime: '약 3분 10초 (승강장 ↔ 지상 출구)',
     avgMovementTimeEn: 'Approx. 3.1 mins (Platform ↔ Exit)',
-    precautions: '범어사로 이동하기 위해 90번 시내버스로 환승하실 경우, 5번 출구 또는 7번 출구 엘리베이터로 나온 뒤 바로 인근 버스정류장을 이용하시면 단차 없이 연계됩니다.',
-    precautionsEn: 'To transfer to Bus 90 for Beomeosa Temple, take Exit 5 or 7 elevator to reach the level transfer bus stop.',
+    precautions: '3번 출구 또는 4번 출구 엘리베이터로 나오시면 계단 없이 편리하게 이동하실 수 있습니다.',
+    precautionsEn: 'Take Exit 3 or 4 elevator to reach ground level seamlessly without stairs.',
     officialSource: '부산교통공사(Humetro) 및 네이버지도',
     exits: [
       {
-        number: '5번 출구',
+        number: '3번 출구',
         isAccessible: true,
         isStrollerFriendly: true,
         hasElevator: true,
         hasEscalator: false,
-        facilityDirection: 'BOTH',
-        tip: '범어사행 90번 버스 환승정류장과 가장 가까운 핵심 배리어프리 출구입니다. 휠체어와 유모차가 쉽게 이동할 수 있는 평탄 보도입니다.',
-        status: 'OPERATIONAL',
-        directionDesc: '범어사 방면 버스 환승정류장 (90번 버스), 청룡동, 금정산 등산로 초입',
-        latitude: 35.27311,
-        longitude: 129.09215,
-        kakaoMapUrl: 'https://map.kakao.com/link/search/범어사역 5번출구 엘리베이터',
-        naverMapUrl: 'https://map.naver.com/v5/search/범어사역 5번출구 엘리베이터',
-        pathwayTimeline: [
-          {
-            id: 'bo5-step1',
-            name: '1호선 승강장 (B2F)',
-            desc: '범어사역 플랫폼 수직 엘리베이터',
-            facilityType: 'ELEVATOR',
-            tip: '승강장에서 B1F 대합실로 연결되는 승강기를 이용합니다.',
-            status: 'OPERATIONAL'
-          },
-          {
-            id: 'bo5-step2',
-            name: '대합실 개찰구 (B1F)',
-            desc: '5번 출구 방향 와이드 게이트',
-            facilityType: 'GATE',
-            tip: '휠체어 전용 게이트 통과 후 5번 출구 엘리베이터 통로로 전진합니다.',
-            status: 'OPERATIONAL'
-          },
-          {
-            id: 'bo5-step3',
-            name: '지상 수직 엘리베이터 (B1F ↔ 1F)',
-            desc: '5번 출구 직통 엘리베이터',
-            facilityType: 'ELEVATOR',
-            tip: '지상 인도에 도착 후 바로 앞 90번 버스정류장으로 이동합니다.',
-            status: 'OPERATIONAL'
-          }
-        ]
-      },
-      {
-        number: '7번 출구',
-        isAccessible: true,
-        isStrollerFriendly: true,
-        hasElevator: true,
-        hasEscalator: false,
-        facilityDirection: 'BOTH',
-        tip: '청룡노포동 행정복지센터 및 금정구 청소년수련관 방면 지상 연결 수직 엘리베이터입니다.',
-        status: 'OPERATIONAL',
-        directionDesc: '청룡노포동 행정복지센터, 청룡초등학교, 금정구 청소년수련관',
-        latitude: 35.27381,
-        longitude: 129.09275,
-        kakaoMapUrl: 'https://map.kakao.com/link/search/범어사역 7번출구',
-        naverMapUrl: 'https://map.naver.com/v5/search/범어사역 7번출구',
-        pathwayTimeline: [
-          {
-            id: 'bo7-step1',
-            name: '1호선 승강장 (B2F)',
-            desc: '플랫폼 승강기',
-            facilityType: 'ELEVATOR',
-            tip: '대합실로 엘리베이터를 탑승하여 상행합니다.',
-            status: 'OPERATIONAL'
-          },
-          {
-            id: 'bo7-step2',
-            name: '대합실 개찰구 (B1F)',
-            desc: '7번 출구 게이트',
-            facilityType: 'GATE',
-            tip: '개찰구 통과 후 7번 출구 수직 승강기로 진입합니다.',
-            status: 'OPERATIONAL'
-          },
-          {
-            id: 'bo7-step3',
-            name: '지상 엘리베이터 (B1F ↔ 1F)',
-            desc: '7번 출구 수직 승강기',
-            facilityType: 'ELEVATOR',
-            tip: '지상 진출 후 청룡동 주민센터 및 보도길로 연결됩니다.',
-            status: 'OPERATIONAL'
-          }
-        ]
-      },
-      {
-        number: '1번 출구',
-        isAccessible: true,
-        isStrollerFriendly: true,
-        hasElevator: false,
-        hasEscalator: true,
         facilityDirection: 'UP',
-        tip: '금정구 남산동 방면 상행 에스컬레이터 출구입니다.',
+        tip: '3번 출구에 수직 엘리베이터가 설치되어 있어 청룡동 및 범어사 환승정류장 방면으로 계단 없이 이동할 수 있습니다.',
         status: 'OPERATIONAL',
-        directionDesc: '남산동 방면, 남산새마을금고, 금샘로 방향',
-        latitude: 35.27211,
-        longitude: 129.09155,
-        kakaoMapUrl: 'https://map.kakao.com/link/search/범어사역 1번출구',
-        naverMapUrl: 'https://map.naver.com/v5/search/범어사역 1번출구',
+        directionDesc: '청룡동, 범어사 환승정류장 방면',
+        latitude: 35.272761,
+        longitude: 129.092536,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/범어사역 3번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/범어사역 3번출구 엘리베이터',
         pathwayTimeline: [
           {
-            id: 'bo1-step1',
+            id: 'bo3-step1',
             name: '1호선 승강장 (B2F)',
             desc: '승강장 승강기',
             facilityType: 'ELEVATOR',
-            tip: '대합실로 승강기를 탑승합니다.',
+            tip: '대합실로 연결되는 승강기를 탑승합니다.',
             status: 'OPERATIONAL'
           },
           {
-            id: 'bo1-step2',
+            id: 'bo3-step2',
             name: '대합실 개찰구 (B1F)',
-            desc: '1번 출구 게이트',
+            desc: '3번 출구 게이트',
             facilityType: 'GATE',
-            tip: '개찰구를 지나 1번 출구 승강기로 향합니다.',
+            tip: '개찰구를 지나 3번 출구 수직 승강기로 향합니다.',
             status: 'OPERATIONAL'
           },
           {
-            id: 'bo1-step3',
-            name: '1번 출구 에스컬레이터 (B1F → 1F)',
-            desc: '상행 에스컬레이터',
-            facilityType: 'ESCALATOR',
-            tip: '에스컬레이터 탑승 후 남산동 방면 지상 도로로 올라옵니다.',
+            id: 'bo3-step3',
+            name: '지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '3번 출구 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '3번 출구 엘리베이터를 탑승하여 지상 도로로 이동합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '4번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'UP',
+        tip: '4번 출구에 수직 엘리베이터가 설치되어 있어 청룡동 및 남산동 경계 방면으로 계단 없이 이동할 수 있습니다.',
+        status: 'OPERATIONAL',
+        directionDesc: '청룡동, 남산동 방면',
+        latitude: 35.272776,
+        longitude: 129.092812,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/범어사역 4번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/범어사역 4번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'bo4-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '승강장 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '대합실로 연결되는 승강기를 탑승합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'bo4-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '4번 출구 게이트',
+            facilityType: 'GATE',
+            tip: '개찰구를 지나 4번 출구 수직 승강기로 향합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'bo4-step3',
+            name: '지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '4번 출구 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '4번 출구 엘리베이터를 탑승하여 지상 도로로 이동합니다.',
             status: 'OPERATIONAL'
           }
         ]

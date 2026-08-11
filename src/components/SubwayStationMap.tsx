@@ -53,6 +53,12 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
   const leafletMapInstance = useRef<any>(null);
   const leafletMarkersRef = useRef<any[]>([]);
 
+  // Coordinate inspector mode state
+  const [inspectMode, setInspectMode] = useState<boolean>(false);
+  const [clickedCoord, setClickedCoord] = useState<{ lat: number; lng: number } | null>(null);
+  const tempMarkerRef = useRef<any>(null);
+  const leafletTempMarkerRef = useRef<any>(null);
+
   // Safe map cleanup helpers to prevent memory leaks and API error cascades
   const destroyNaverMap = () => {
     if (markersRef.current && markersRef.current.length > 0) {
@@ -370,7 +376,20 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
 
     // Add custom crosswalk indicators
     let crosswalkPoints: { lat: number; lng: number; nameKr: string; nameEn: string }[] = [];
-    if (station.id === 'seomyeon') {
+    if (station.id === 'beomeosa') {
+      crosswalkPoints = [
+        { lat: 35.272596, lng: 129.092851, nameKr: '범어사역 부근 횡단보도 1', nameEn: 'Beomeosa Station Crosswalk 1' }
+      ];
+    } else if (station.id === 'jungang') {
+      crosswalkPoints = [
+        { lat: 35.105193, lng: 129.036551, nameKr: '중앙역 부근 횡단보도 1', nameEn: 'Jung-ang Station Crosswalk 1' },
+        { lat: 35.105015, lng: 129.036294, nameKr: '중앙역 부근 횡단보도 2', nameEn: 'Jung-ang Station Crosswalk 2' },
+        { lat: 35.104127, lng: 129.036360, nameKr: '중앙역 부근 횡단보도 3', nameEn: 'Jung-ang Station Crosswalk 3' },
+        { lat: 35.103130, lng: 129.036403, nameKr: '중앙역 부근 횡단보도 4', nameEn: 'Jung-ang Station Crosswalk 4' },
+        { lat: 35.102924, lng: 129.036744, nameKr: '중앙역 부근 횡단보도 5', nameEn: 'Jung-ang Station Crosswalk 5' },
+        { lat: 35.102885, lng: 129.036176, nameKr: '중앙역 부근 횡단보도 6', nameEn: 'Jung-ang Station Crosswalk 6' }
+      ];
+    } else if (station.id === 'seomyeon') {
       crosswalkPoints = [
         { lat: 35.156981, lng: 129.057776, nameKr: '서면역 부근 횡단보도 1', nameEn: 'Seomyeon Station Crosswalk 1' },
         { lat: 35.157765, lng: 129.060084, nameKr: '서면역 부근 횡단보도 2', nameEn: 'Seomyeon Station Crosswalk 2' }
@@ -474,6 +493,33 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
         });
         
         markersRef.current.push(crosswalkMarker);
+      });
+    }
+
+    // Map Click Listener for inspect mode / coordinate check
+    if (mapInstance.current && window.naver && window.naver.maps) {
+      window.naver.maps.Event.clearListeners(mapInstance.current, 'click');
+      window.naver.maps.Event.addListener(mapInstance.current, 'click', (e: any) => {
+        const lat = e.coord.lat();
+        const lng = e.coord.lng();
+        setClickedCoord({ lat, lng });
+
+        if (tempMarkerRef.current) {
+          tempMarkerRef.current.setMap(null);
+        }
+
+        tempMarkerRef.current = new window.naver.maps.Marker({
+          position: new window.naver.maps.LatLng(lat, lng),
+          map: mapInstance.current,
+          icon: {
+            content: `
+              <div style="background: #ef4444; color: white; border: 2px solid white; border-radius: 9999px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); animation: bounce 0.6s infinite alternate;">
+                📍
+              </div>
+            `,
+            anchor: new window.naver.maps.Point(11, 11)
+          }
+        });
       });
     }
 
@@ -699,7 +745,20 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
 
     // Add custom crosswalk indicators for Leaflet fallback
     let crosswalkPoints: { lat: number; lng: number; nameKr: string; nameEn: string }[] = [];
-    if (station.id === 'seomyeon') {
+    if (station.id === 'beomeosa') {
+      crosswalkPoints = [
+        { lat: 35.272596, lng: 129.092851, nameKr: '범어사역 부근 횡단보도 1', nameEn: 'Beomeosa Station Crosswalk 1' }
+      ];
+    } else if (station.id === 'jungang') {
+      crosswalkPoints = [
+        { lat: 35.105193, lng: 129.036551, nameKr: '중앙역 부근 횡단보도 1', nameEn: 'Jung-ang Station Crosswalk 1' },
+        { lat: 35.105015, lng: 129.036294, nameKr: '중앙역 부근 횡단보도 2', nameEn: 'Jung-ang Station Crosswalk 2' },
+        { lat: 35.104127, lng: 129.036360, nameKr: '중앙역 부근 횡단보도 3', nameEn: 'Jung-ang Station Crosswalk 3' },
+        { lat: 35.103130, lng: 129.036403, nameKr: '중앙역 부근 횡단보도 4', nameEn: 'Jung-ang Station Crosswalk 4' },
+        { lat: 35.102924, lng: 129.036744, nameKr: '중앙역 부근 횡단보도 5', nameEn: 'Jung-ang Station Crosswalk 5' },
+        { lat: 35.102885, lng: 129.036176, nameKr: '중앙역 부근 횡단보도 6', nameEn: 'Jung-ang Station Crosswalk 6' }
+      ];
+    } else if (station.id === 'seomyeon') {
       crosswalkPoints = [
         { lat: 35.156981, lng: 129.057776, nameKr: '서면역 부근 횡단보도 1', nameEn: 'Seomyeon Station Crosswalk 1' },
         { lat: 35.157765, lng: 129.060084, nameKr: '서면역 부근 횡단보도 2', nameEn: 'Seomyeon Station Crosswalk 2' }
@@ -804,6 +863,33 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
       });
     }
 
+    // Leaflet Click Listener for inspect mode / coordinate check
+    if (leafletMapInstance.current) {
+      leafletMapInstance.current.off('click');
+      leafletMapInstance.current.on('click', (e: any) => {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+        setClickedCoord({ lat, lng });
+
+        if (leafletTempMarkerRef.current) {
+          leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current);
+        }
+
+        const tempIcon = L.divIcon({
+          html: `
+            <div style="background: #ef4444; color: white; border: 2px solid white; border-radius: 9999px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+              📍
+            </div>
+          `,
+          className: 'leaflet-custom-marker-wrapper',
+          iconSize: [22, 22],
+          iconAnchor: [11, 11]
+        });
+
+        leafletTempMarkerRef.current = L.marker([lat, lng], { icon: tempIcon }).addTo(leafletMapInstance.current);
+      });
+    }
+
     // Force map size invalidation after render to ensure 100% full container rendering
     const timer = setTimeout(() => {
       try {
@@ -880,8 +966,8 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
       <div className="w-full h-[320px] relative bg-slate-50 border-b border-slate-100 transition-all duration-300">
         
         {/* Floating Map Control Panel */}
-        {useLeaflet && (
-          <div className="absolute top-3 left-3 z-[1000] flex gap-2">
+        <div className="absolute top-3 left-3 z-[1000] flex flex-wrap gap-2">
+          {useLeaflet && (
             <button
               onClick={() => {
                 setUseLeaflet(false);
@@ -891,6 +977,68 @@ export default function SubwayStationMap({ station, language, focusedExitCoords 
             >
               🗺️ {language === 'KR' ? '네이버 지도로 변경' : 'Switch to Naver Map'}
             </button>
+          )}
+
+          <button
+            onClick={() => {
+              setInspectMode(!inspectMode);
+              if (inspectMode) {
+                setClickedCoord(null);
+                if (tempMarkerRef.current) tempMarkerRef.current.setMap(null);
+                if (leafletTempMarkerRef.current && leafletMapInstance.current) {
+                  leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current);
+                }
+              }
+            }}
+            className={`flex items-center gap-1 px-3 py-1.5 shadow-md rounded-full text-xs font-extrabold transition-all cursor-pointer ${
+              inspectMode 
+                ? 'bg-rose-600 text-white ring-2 ring-rose-300 animate-pulse' 
+                : 'bg-slate-900/90 hover:bg-slate-900 text-white backdrop-blur-sm'
+            }`}
+          >
+            {inspectMode ? '🎯 ' + (language === 'KR' ? '좌표 확인 감지 중 (클릭하세요)' : 'Inspecting Coordinates...') : '📍 ' + (language === 'KR' ? '좌표 확인 모드' : 'Inspect Coordinates')}
+          </button>
+        </div>
+
+        {/* Clicked Coordinates Banner / Toast */}
+        {clickedCoord && (
+          <div className="absolute bottom-3 left-3 right-3 z-[1000] bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-3 text-white shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 animate-slide-up">
+            <div className="flex items-center gap-2 overflow-hidden">
+              <span className="text-xl shrink-0">📍</span>
+              <div className="space-y-0.5">
+                <div className="text-[10px] font-extrabold text-blue-400 uppercase tracking-wider">
+                  {language === 'KR' ? '선택한 지점 좌표' : 'Selected Location Coordinates'}
+                </div>
+                <div className="text-xs font-mono font-bold text-slate-100 selection:bg-blue-500">
+                  latitude: {clickedCoord.lat.toFixed(6)}, longitude: {clickedCoord.lng.toFixed(6)}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end">
+              <button
+                onClick={() => {
+                  const text = `latitude: ${clickedCoord.lat.toFixed(6)},\nlongitude: ${clickedCoord.lng.toFixed(6)}`;
+                  navigator.clipboard.writeText(text);
+                  alert(language === 'KR' ? `복사되었습니다!\n\n${text}` : `Copied!\n\n${text}`);
+                }}
+                className="flex-1 sm:flex-initial px-3 py-1.5 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs font-black rounded-xl transition cursor-pointer shadow-sm"
+              >
+                📋 {language === 'KR' ? '좌표 복사' : 'Copy'}
+              </button>
+              <button
+                onClick={() => {
+                  setClickedCoord(null);
+                  if (tempMarkerRef.current) tempMarkerRef.current.setMap(null);
+                  if (leafletTempMarkerRef.current && leafletMapInstance.current) {
+                    leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current);
+                  }
+                }}
+                className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold rounded-xl transition cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
           </div>
         )}
 

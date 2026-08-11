@@ -305,7 +305,7 @@ export default function BarrierFreeTourApiView({
                       )}
                       {spot.barrierFree.elevator.hasElevator && (
                         <span className="bg-indigo-50 text-indigo-700 border border-indigo-200 px-1.5 py-0.5 rounded-md">
-                          🛗 엘리베이터
+                          엘리베이터
                         </span>
                       )}
                       {spot.barrierFree.wheelchair.hasRental && (
@@ -436,7 +436,7 @@ export default function BarrierFreeTourApiView({
 
                   <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-1">
                     <div className="flex items-center gap-1.5 font-black text-xs text-slate-900">
-                      <span>🛗 승강기 / 엘리베이터</span>
+                      <span>승강기 / 엘리베이터</span>
                       <span
                         className={`text-[10px] px-1.5 py-0.2 rounded-md ${
                           selectedSpot.barrierFree.elevator.hasElevator

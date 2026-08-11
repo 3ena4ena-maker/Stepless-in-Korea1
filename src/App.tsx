@@ -1483,7 +1483,7 @@ export default function App() {
                             <div className="text-sm font-bold text-slate-700 flex items-center gap-2 bg-slate-50/80 px-2.5 py-1.5 rounded-xl border border-slate-100/50">
                               <ElevatorIcon />
                               <span>
-                                {language === 'KR' ? '엘리베이터 🛗' : 'Elevator 🛗'}
+                                {language === 'KR' ? '엘리베이터' : 'Elevator'}
                               </span>
                             </div>
                           )}
