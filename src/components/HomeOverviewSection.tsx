@@ -168,19 +168,7 @@ export function HomeOverviewSection({
               : 'Clear elevator locations and step-free transit routes for wheelchair users, families with strollers, and travelers with heavy luggage in Busan.'}
           </p>
 
-          {/* Action Buttons */}
-          <div className="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
-            {onNavigateToNearby && (
-              <button
-                onClick={onNavigateToNearby}
-                className="w-full sm:w-auto px-5 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs sm:text-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
-              >
-                <MapPin className="w-4 h-4 text-blue-200 shrink-0" />
-                <span>{language === 'KR' ? '내 주변 출구 찾기' : 'Find Exits Near Me'}</span>
-                <ArrowRight className="w-4 h-4 ml-1 shrink-0" />
-              </button>
-            )}
-          </div>
+
         </div>
 
         {/* Integrated 4 Feature Items inside the Navy Box */}
@@ -247,11 +235,11 @@ export function HomeOverviewSection({
       {/* ==========================================
           3. FEATURED STATIONS ("Our Products" / "주요 역 가이드")
          ========================================== */}
-      <section className="space-y-6 scroll-mt-24" id="station-guides-section">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4">
+      <section className="space-y-4 sm:space-y-6 scroll-mt-24" id="station-guides-section">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3 sm:pb-4">
           <div>
             <span className="text-xs font-mono font-bold uppercase text-blue-600 tracking-wider">STATION GUIDES</span>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 font-heading mt-1">
+            <h2 className="text-xl sm:text-3xl font-black text-slate-900 font-heading mt-0.5 sm:mt-1">
               {language === 'KR' ? '주요 역 이동 경로 가이드' : 'Major Station Accessible Guides'}
             </h2>
           </div>
@@ -265,7 +253,7 @@ export function HomeOverviewSection({
                   onSelectStation('');
                 }
               }}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 text-[#004481] border border-blue-200/80 font-bold text-xs transition-colors cursor-pointer w-fit active:scale-98"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 text-[#004481] border border-blue-200/80 font-bold text-xs transition-colors cursor-pointer w-fit active:scale-98"
             >
               <span>{language === 'KR' ? '출구 정보 더 보기' : 'More Exit Info'}</span>
               <ChevronRight className="w-3.5 h-3.5 text-[#004481]" />
@@ -273,52 +261,56 @@ export function HomeOverviewSection({
           </div>
         </div>
 
-        {/* Clean Grid Cards matching reference image product cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* Clean Grid Cards - 3 columns in a single row on mobile, tablet & desktop */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-5">
           {featuredStations.map((st) => (
             <div 
               key={st.id}
-              className="group bg-slate-50/80 hover:bg-white border border-slate-200 rounded-2xl p-6 transition-all shadow-xs hover:shadow-lg flex flex-col justify-between space-y-4"
+              className="group bg-slate-50/80 hover:bg-white border border-slate-200 hover:border-blue-300 rounded-xl sm:rounded-2xl p-2.5 sm:p-5 md:p-6 transition-all shadow-2xs hover:shadow-lg flex flex-col justify-between space-y-2 sm:space-y-4"
             >
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {/* Station visual top badge */}
-                <div className="w-full h-32 bg-white rounded-xl border border-slate-100 flex items-center justify-center p-4 relative overflow-hidden group-hover:border-blue-200 transition-colors">
-                  <div className="text-center space-y-1">
-                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 text-blue-700 font-black text-lg">
-                      <Train className="w-5 h-5" />
+                <div className="w-full h-20 sm:h-28 md:h-32 bg-white rounded-lg sm:rounded-xl border border-slate-100 flex items-center justify-center p-2 sm:p-4 relative overflow-hidden group-hover:border-blue-200 transition-colors">
+                  <div className="text-center space-y-0.5 sm:space-y-1">
+                    <div className="inline-flex items-center justify-center w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-blue-50 text-blue-700 font-black text-xs sm:text-lg mx-auto">
+                      <Train className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
                     </div>
-                    <div className="font-extrabold text-slate-900 text-lg font-heading">{st.name}</div>
-                    <div className="flex justify-center gap-1">
+                    <div className="font-black text-slate-900 text-xs sm:text-base md:text-lg font-heading tracking-tight">{st.name}</div>
+                    <div className="flex justify-center gap-0.5 sm:gap-1 flex-wrap">
                       {st.lines.map((l) => (
-                        <span key={l} className="text-2xs font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
-                          {language === 'KR' ? `${l}호선` : `Line ${l}`}
+                        <span key={l} className="text-[9px] sm:text-2xs font-bold px-1.5 sm:px-2 py-0.2 sm:py-0.5 rounded-full bg-slate-100 text-slate-600">
+                          {language === 'KR' ? `${l}호선` : `L${l}`}
                         </span>
                       ))}
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-1">
-                  <h3 className="font-extrabold text-slate-900 text-base group-hover:text-blue-700 transition-colors">
-                    {language === 'KR' ? `${st.name} 이동 경로` : `${st.name} Route`}
+                <div className="space-y-0.5 sm:space-y-1">
+                  <h3 className="font-extrabold text-slate-900 text-xs sm:text-base group-hover:text-blue-700 transition-colors text-center sm:text-left truncate">
+                    {language === 'KR' ? `${st.name} 경로` : `${st.name} Route`}
                   </h3>
-                  <p className="text-xs text-slate-600 font-medium leading-relaxed line-clamp-2">
+                  <p className="text-[10px] sm:text-xs text-slate-600 font-medium leading-tight sm:leading-relaxed line-clamp-2">
                     {st.desc}
                   </p>
                 </div>
               </div>
 
-              {/* Action Button Pills matching reference image */}
+              {/* Action Button Pills */}
               <a
                 href={`/search/${st.id}`}
                 onClick={(e) => {
                   e.preventDefault();
                   onSelectStation(st.id);
                 }}
-                className="w-full py-2.5 px-4 rounded-full bg-slate-900 hover:bg-blue-600 text-white font-extrabold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs active:scale-98"
+                className="w-full py-2 sm:py-2.5 px-1.5 sm:px-4 rounded-lg sm:rounded-full bg-slate-900 hover:bg-blue-600 text-white font-extrabold text-[10px] sm:text-xs transition-colors flex items-center justify-center gap-1 sm:gap-2 cursor-pointer shadow-2xs active:scale-98 mt-1"
               >
-                <span>{language === 'KR' ? '상세 경로 확인' : 'View Detailed Route'}</span>
-                <ChevronRight className="w-4 h-4" />
+                <span>
+                  {language === 'KR' 
+                    ? <><span className="sm:hidden">상세 경로</span><span className="hidden sm:inline">상세 경로 확인</span></>
+                    : <><span className="sm:hidden">Route</span><span className="hidden sm:inline">View Detailed Route</span></>}
+                </span>
+                <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
               </a>
             </div>
           ))}
@@ -329,9 +321,9 @@ export function HomeOverviewSection({
       {/* ==========================================
           3.1 STATIONS SEARCH BAR (부산 지하철역 출구 정보 둘러보기 검색창)
          ========================================== */}
-      <section className="bg-slate-50 border border-slate-200/80 rounded-3xl p-6 shadow-2xs space-y-4">
+      <section className="bg-slate-50 border border-slate-200/80 rounded-3xl p-4 sm:p-6 shadow-2xs space-y-3.5">
         <div>
-          <h2 className="text-xl sm:text-2xl font-extrabold font-heading text-slate-900">
+          <h2 className="text-lg sm:text-2xl font-extrabold font-heading text-slate-900">
             {language === 'KR' ? '부산 지하철역 출구 정보 둘러보기' : 'Subway Exit Information Search'}
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
@@ -342,7 +334,7 @@ export function HomeOverviewSection({
         </div>
 
         {/* Search Bar Input Container */}
-        <div className="max-w-xl">
+        <div className="max-w-xl space-y-2.5">
           <StationSearchBar
             language={language}
             searchQuery={searchQuery || ''}
@@ -352,6 +344,26 @@ export function HomeOverviewSection({
             }}
             onNavigateToSearch={onNavigateToSearch}
           />
+
+          {/* Quick Station Select Buttons in 1 Single Line on Mobile */}
+          <div className="flex items-center gap-2 pt-0.5">
+            <span className="text-[11px] font-bold text-slate-400 shrink-0">
+              {language === 'KR' ? '주요역:' : 'Quick:'}
+            </span>
+            <div className="grid grid-cols-3 gap-1.5 w-full">
+              {featuredStations.map((st) => (
+                <button
+                  key={`quick-btn-${st.id}`}
+                  type="button"
+                  onClick={() => onSelectStation(st.id)}
+                  className="px-2 py-1.5 rounded-xl bg-white hover:bg-blue-50 border border-slate-200/90 hover:border-blue-300 text-slate-800 hover:text-blue-700 font-extrabold text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-all cursor-pointer shadow-2xs active:scale-95 truncate"
+                >
+                  <Train className="w-3 h-3 text-blue-600 shrink-0" />
+                  <span className="truncate">{st.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

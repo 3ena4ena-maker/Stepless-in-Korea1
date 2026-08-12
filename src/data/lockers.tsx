@@ -105,7 +105,7 @@ export const renderLockerBadges = (data: LockerCount, lang: 'KR' | 'EN'): React.
   ] as const;
 
   return (
-    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 justify-start sm:justify-end">
+    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 justify-start">
       {categories.map(({ key, labelKR, labelEN, badgeClass, numClass }) => {
         const val = data[key];
         if (!val) return null;
@@ -144,7 +144,7 @@ export const renderLockerInfo = (stationId: string, language: 'KR' | 'EN'): Reac
             ? (line === '동해' ? '동해선' : `${line}호선`) 
             : (line === '동해' ? 'Donghae' : `Line ${line}`);
           return (
-            <div key={line} className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 w-full pb-1.5 last:pb-0 border-b border-dashed border-slate-200/60 last:border-0">
+            <div key={line} className="flex flex-col sm:flex-row sm:items-center justify-start gap-2 sm:gap-3 w-full pb-1.5 last:pb-0 border-b border-dashed border-slate-200/60 last:border-0">
               <span className="text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[#004481] inline-self-start sm:self-center w-max shrink-0">
                 {lineStr}
               </span>
@@ -156,7 +156,7 @@ export const renderLockerInfo = (stationId: string, language: 'KR' | 'EN'): Reac
     );
   } else {
     return (
-      <div className="flex justify-start sm:justify-end w-full">
+      <div className="flex justify-start w-full">
         {renderLockerBadges(data as LockerCount, language)}
       </div>
     );

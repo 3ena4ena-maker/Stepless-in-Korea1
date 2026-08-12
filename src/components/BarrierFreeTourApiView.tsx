@@ -122,14 +122,14 @@ export default function BarrierFreeTourApiView({
         <div className="relative z-10 max-w-3xl space-y-3">
           <h1 className="text-xl sm:text-3xl font-black tracking-tight leading-tight">
             {language === 'KR'
-              ? '부산 무장애 관광지 & 휠체어 이동지수'
-              : 'Busan Barrier-Free Tourist Spots & Stepless Transit'}
+              ? '부산 편리한 무장애 관광지'
+              : 'Busan Convenient Barrier-Free Tourist Spots'}
           </h1>
 
           <p className="text-xs sm:text-sm text-slate-100/90 font-medium leading-relaxed">
             {language === 'KR'
-              ? '한국관광공사 TourAPI 4.0 무장애 데이터를 활용하여 경사로, 장애인 화장실, 엘리베이터, 점자 블록 정보와 Stepless 지하철 승강기 출구를 수평으로 연결합니다.'
-              : 'Integrating KTO KorWithAPI barrier-free tourism metrics (ramps, elevators, handicap toilets) with Stepless elevator exit data.'}
+              ? '모든 여행 코스에서 휠체어·유모차 이용이 편리한 무장애 관광 스팟만 엄선하여 모아둔 카테고리입니다.'
+              : 'A curated collection of accessible spots from all travel itineraries, optimized for wheelchairs and strollers.'}
           </p>
 
           {/* QUICK SUMMARY BADGES */}
@@ -216,6 +216,11 @@ export default function BarrierFreeTourApiView({
               {cat === 'ALL' ? (language === 'KR' ? '전체 카테고리' : 'All') : cat}
             </button>
           ))}
+        </div>
+
+        {/* Source Citation */}
+        <div className="text-[11px] sm:text-xs text-slate-500 font-bold pt-2 border-t border-slate-150 flex items-center gap-1">
+          <span>출처: ⓒ한국관광공사</span>
         </div>
       </div>
 

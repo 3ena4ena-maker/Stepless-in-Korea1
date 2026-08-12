@@ -1963,10 +1963,10 @@ export default function BusanItinerariesView({
                       <FoodieIllustration />
                     </div>
                     <div className="space-y-1">
-                      <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#004481] transition-colors">
-                        {language === 'KR' ? '식도락 (Foodie)' : 'Foodie'}
+                      <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#004481] transition-colors tracking-tight whitespace-nowrap">
+                        {language === 'KR' ? '식도락' : 'Foodie'}
                       </h3>
-                      <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                      <p className="text-xs text-slate-500 font-medium leading-relaxed break-keep">
                         {language === 'KR'
                           ? '부산의 진정한 맛을 찾아 떠나는 미식 여행'
                           : 'Explore authentic local flavors and culinary landmarks across Busan.'}
@@ -1997,10 +1997,10 @@ export default function BusanItinerariesView({
                       <ExperienceIllustration />
                     </div>
                     <div className="space-y-1">
-                      <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#004481] transition-colors">
-                        {language === 'KR' ? '체험 & 박물관 (Experience)' : 'Experience'}
+                      <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#004481] transition-colors tracking-tight whitespace-nowrap">
+                        {language === 'KR' ? '체험 & 박물관' : 'Experience'}
                       </h3>
-                      <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                      <p className="text-xs text-slate-500 font-medium leading-relaxed break-keep">
                         {language === 'KR'
                           ? '역사와 문화가 살아있는 부산의 다양한 체험 활동'
                           : 'Interactive arts, museums, and historical landmarks for all ages.'}
@@ -2031,10 +2031,10 @@ export default function BusanItinerariesView({
                       <ItineraryIllustration />
                     </div>
                     <div className="space-y-1">
-                      <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#004481] transition-colors">
-                        {language === 'KR' ? '일정별 여행 (Itinerary)' : 'Itinerary'}
+                      <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#004481] transition-colors tracking-tight whitespace-nowrap">
+                        {language === 'KR' ? '일정별 여행' : 'Itinerary'}
                       </h3>
-                      <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                      <p className="text-xs text-slate-500 font-medium leading-relaxed break-keep">
                         {language === 'KR'
                           ? '당일치기부터 4박까지, 당신의 일정에 딱 맞는 부산 여행'
                           : 'Carefully curated day trips and multi-night travel routes.'}
@@ -2065,10 +2065,10 @@ export default function BusanItinerariesView({
                       <SubwayCourseIllustration />
                     </div>
                     <div className="space-y-1">
-                      <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#004481] transition-colors">
+                      <h3 className="text-sm xs:text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#004481] transition-colors tracking-tighter sm:tracking-tight whitespace-nowrap">
                         {language === 'KR' ? '부산 도시철도 코스' : 'Subway Course'}
                       </h3>
-                      <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                      <p className="text-xs text-slate-500 font-medium leading-relaxed break-keep">
                         {language === 'KR'
                           ? '부산 지하철 1·2호선 노선축을 따라 편리하게 즐기는 코스'
                           : 'Scenic, accessible routes along Busan Metro Lines 1 & 2.'}
@@ -2100,12 +2100,12 @@ export default function BusanItinerariesView({
                     </div>
                     <div className="space-y-1">
                       <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-[#004481] transition-colors">
-                        {language === 'KR' ? '무장애 관광지 (TourAPI)' : 'Barrier-Free Spots'}
+                        {language === 'KR' ? '무장애 관광지' : 'Barrier-Free Spots'}
                       </h3>
-                      <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                      <p className="text-xs text-slate-500 font-medium leading-relaxed break-keep">
                         {language === 'KR'
-                          ? '휠체어·유모차·보행 약자를 위한 부산 대표 무장애 관광지 검색 및 지하철 연계 정보'
-                          : 'Accessible spots with ramp details, wheelchair access, and step-free exit links.'}
+                          ? '모든 여행 코스에서 무장애 관광 스팟만 엄선하여 한눈에 모아보는 카테고리'
+                          : 'A curated view of all accessible tourist spots gathered from all travel itineraries.'}
                       </p>
                     </div>
                   </div>
@@ -3040,17 +3040,9 @@ export default function BusanItinerariesView({
                       <div className="absolute right-1 top-1 text-8xl select-none opacity-5 transform translate-y-3">🍕</div>
                       
                       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="bg-white/20 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase border border-white/10">
-                            {language === 'KR' ? '🍴 침샘 가득 백년가게 정복' : '🍴 Genuine Local Cuisines'}
-                          </span>
-                          <span className="bg-rose-700 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
-                            {language === 'KR' ? '입식 테이블 & 경사용 경판 설치 완료' : 'Only flat doorways mapped'}
-                          </span>
-                        </div>
                         <button
                           onClick={() => setMapModalOpen(true)}
-                          className="flex items-center gap-1.5 text-xs font-black bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl border border-white/30 backdrop-blur-xs transition-all cursor-pointer active:scale-95 shadow-xs shrink-0 z-10"
+                          className="flex items-center gap-1.5 text-xs font-black bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl border border-white/30 backdrop-blur-xs transition-all cursor-pointer active:scale-95 shadow-xs shrink-0 z-10 ml-auto"
                         >
                           <span>🗺️</span>
                           <span>{language === 'KR' ? '관광 일러스트 지도' : 'Travel Map'}</span>
@@ -3058,11 +3050,11 @@ export default function BusanItinerariesView({
                       </div>
 
                       <h3 className="text-xl sm:text-2xl font-black font-heading text-white tracking-tight leading-tight">
-                        {language === 'KR' ? '❤️ 대가족 인생 꿀맛! 영양 만점 부산 로컬 미식 편한 길 지도' : '❤️ Delicious Local Cuisines in Busan: Zero-Step Gastronomy Guide'}
+                        {language === 'KR' ? '❤️ 부산 로컬이 인정한 맛집 지도' : '❤️ Delicious Local Cuisines in Busan: Zero-Step Gastronomy Guide'}
                       </h3>
                       <p className="text-xs sm:text-sm text-rose-50/80 mt-1 max-w-2xl font-semibold">
                         {language === 'KR' 
-                          ? '유모차나 소형 캐스터도 턱 없이 부드럽게 미끄러져 들어갑니다! 원조 부산 돼지국밥 노포부터 감성 카페, 명품 베이커리, 브런치, 부산 전통시장까지 한눈에 만나보세요.' 
+                          ? '노포부터 카페, 브런치, 전통시장까지 부산 로컬들이 자주가는 맛집을 한눈에!' 
                           : 'Saddle up near flat floor entrees for steaming pork broth soups, bakeries, cafes, and traditional markets.'}
                       </p>
                     </div>

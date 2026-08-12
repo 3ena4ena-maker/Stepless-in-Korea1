@@ -129,7 +129,11 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                     <div className="pt-1 flex flex-col gap-1 text-2xs sm:text-xs">
                       {station.exits.filter(e => e.hasElevator).map((exit, idx) => (
                         <div key={idx} className="flex items-start gap-1.5 text-slate-700 bg-white/80 px-2 py-1 rounded-lg border border-slate-200/70">
-                          <span className="font-extrabold text-[#004481] shrink-0">📍 Exit {exit.number.replace(/번\s*출구/g, '')}:</span>
+                          <span className="font-extrabold text-[#004481] shrink-0">
+                            {language === 'KR' 
+                              ? `📍 ${exit.number.includes('출구') ? exit.number : `${exit.number} 출구`}:` 
+                              : `📍 Exit ${exit.number.replace(/번\s*출구/g, '')}:`}
+                          </span>
                           <span className="font-medium text-slate-800">
                             {language === 'KR' 
                               ? (exit.directionDesc || exit.tip || '지상 연결 엘리베이터 운행') 
