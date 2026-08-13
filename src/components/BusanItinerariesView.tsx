@@ -2359,108 +2359,113 @@ export default function BusanItinerariesView({
                 case 'DAY':
                   return (
                     <div className="space-y-6 animate-fade-in text-left">
-                      {/* Day Trip Header */}
-                      <div className="bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 p-6 sm:p-8 rounded-3xl text-white relative overflow-hidden shadow-md text-left">
-                        <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-                          <span className="bg-white/20 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase">
-                            {language === 'KR' ? '☀️ 당일치기 알차게 즐기기' : '☀️ One Day Essential'}
-                          </span>
+                      {/* Editorial Header */}
+                      <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-4">
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
+                              {language === 'KR' ? '당일치기 코스' : 'ONE DAY ESSENTIAL'}
+                            </span>
+                            <span className="text-[#E5E2DC] text-xs font-mono">
+                              {language === 'KR' ? '추천 소요시간: 1일' : 'Duration: 1 Day'}
+                            </span>
+                          </div>
                           <button
                             onClick={() => setDetailMapModalOpen(true)}
-                            className="flex items-center gap-1.5 text-xs font-black bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl border border-white/30 backdrop-blur-xs transition-all cursor-pointer active:scale-95 shadow-xs shrink-0"
+                            className="flex items-center gap-1.5 text-xs font-bold bg-white text-[#0A2540] hover:bg-[#FBFBF9] px-3 py-1.5 rounded-md border border-white transition-colors cursor-pointer shrink-0"
                           >
-                            <span>🗺️</span>
-                            <span>{language === 'KR' ? '원도심 알짜배기 지도' : 'Central Guide Map'}</span>
+                            <Map className="w-4 h-4" />
+                            <span>{language === 'KR' ? '원도심 지도 보기' : 'View Guide Map'}</span>
                           </button>
                         </div>
-                        <h3 className="text-xl sm:text-2xl font-black font-heading text-white tracking-tight leading-tight">
-                          {language === 'KR' ? course.titleKo : course.titleEn}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-sky-100/90 mt-1 max-w-2xl font-semibold">
-                          {language === 'KR' ? (course.subtitleKo || course.titleKo) : (course.subtitleEn || course.titleEn)}
-                        </p>
+                        <div>
+                          <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
+                            {language === 'KR' ? course.titleKo : course.titleEn}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-[#E5E2DC] mt-2 font-normal leading-relaxed max-w-2xl">
+                            {language === 'KR' ? (course.subtitleKo || course.titleKo) : (course.subtitleEn || course.titleEn)}
+                          </p>
+                        </div>
                       </div>
 
-                      {/* Busan Central Travel Map Illustration Banner for Day Trip */}
-                      <div className="bg-white p-4 sm:p-6 rounded-3xl border border-slate-200/60 shadow-xs space-y-4 text-left">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                      {/* Map Illustration Feature Banner */}
+                      <div className="bg-white p-5 sm:p-6 rounded-lg border border-[#E5E2DC] space-y-4 text-left">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E5E2DC] pb-3">
                           <div className="space-y-0.5">
-                            <h4 className="text-sm sm:text-base font-extrabold text-slate-800 flex items-center gap-2">
-                              <span className="text-lg">🗺️</span>
-                              <span>{language === 'KR' ? '부산 원도심 알짜배기 가이드 지도' : 'Central Busan Essential Guide Map'}</span>
+                            <h4 className="text-sm sm:text-base font-bold text-[#11161B] flex items-center gap-2">
+                              <Compass className="w-4 h-4 text-[#0A2540]" />
+                              <span>{language === 'KR' ? '부산 원도심 주요 가이드 지도' : 'Central Busan Essential Guide Map'}</span>
                             </h4>
-                            <p className="text-xs text-slate-500 font-medium">
+                            <p className="text-xs text-[#4A5568]">
                               {language === 'KR' ? '이동 최소화! 당일치기 대표 동선(감천문화마을~남포동~영도~광안리)을 한눈에 확인하세요.' : 'Optimal zero-step route connecting top Central Busan landmarks.'}
                             </p>
                           </div>
                           <button
                             onClick={() => setDetailMapModalOpen(true)}
-                            className="flex items-center gap-1 text-xs font-black text-[#004481] bg-blue-50/80 hover:bg-blue-100 active:scale-95 px-3 py-2 rounded-xl transition-all cursor-pointer border border-blue-100/50 shrink-0 self-start sm:self-center"
+                            className="flex items-center gap-1.5 text-xs font-bold text-[#0A2540] bg-[#FBFBF9] hover:bg-[#E5E2DC]/50 px-3 py-2 rounded-md transition-colors cursor-pointer border border-[#E5E2DC] shrink-0 self-start sm:self-center"
                           >
-                            🔍 {language === 'KR' ? '지도 크게 보기' : 'Enlarge Map'}
+                            <Search className="w-3.5 h-3.5" />
+                            <span>{language === 'KR' ? '지도 크게 보기' : 'Enlarge Map'}</span>
                           </button>
                         </div>
 
                         <div 
                           onClick={() => setDetailMapModalOpen(true)}
-                          className="relative w-full rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs bg-amber-50/20 cursor-pointer group"
+                          className="relative w-full rounded-lg overflow-hidden border border-[#E5E2DC] bg-[#FBFBF9] cursor-pointer group"
                         >
                           <img 
                             src="/images/day_trip_b.png"
                             alt="Busan Central Essential Travel Map Illustration"
                             referrerPolicy="no-referrer"
-                            className="w-full h-auto block object-contain transition-transform duration-500 ease-out group-hover:scale-[1.008]"
+                            className="w-full h-auto block object-contain transition-transform duration-300 ease-out group-hover:scale-[1.005]"
                           />
                         </div>
                       </div>
 
-                      {/* Day Trip Route Flow */}
-                      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/60 shadow-xs space-y-6 text-left">
-                        <div className="border-b border-slate-100 pb-3.5 space-y-3">
-                          <div className="bg-sky-50/70 p-3 rounded-2xl border border-sky-100 flex items-center flex-wrap gap-2 text-xs font-bold text-sky-900">
-                            <span className="text-[10px] font-extrabold text-sky-700 bg-sky-100 px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0 flex items-center gap-1">
-                              <span>🗺️</span>
-                              <span>{language === 'KR' ? '추천 동선' : 'Route Flow'}</span>
-                            </span>
-                            <div className="flex items-center flex-wrap gap-1.5 text-slate-800">
-                              {course.steps.map((s, idx) => (
-                                <React.Fragment key={idx}>
-                                  {idx > 0 && <span className="text-sky-500 font-black text-xs">➔</span>}
-                                  <span className="bg-white px-2.5 py-1 rounded-lg border border-sky-100 shadow-2xs font-bold text-[11px] sm:text-xs">
-                                    {language === 'KR' ? s.titleKo.split(' ')[0] : s.titleEn.split(' ')[0]}
-                                  </span>
-                                </React.Fragment>
-                              ))}
-                            </div>
+                      {/* Day Trip Route Flow & Steps */}
+                      <div className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-6 text-left">
+                        <div className="bg-[#FBFBF9] p-3.5 rounded-lg border border-[#E5E2DC] flex items-center flex-wrap gap-2 text-xs font-bold text-[#11161B]">
+                          <span className="text-[10px] font-mono font-bold text-[#0A2540] bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC] uppercase tracking-wider shrink-0 flex items-center gap-1">
+                            <Compass className="w-3.5 h-3.5" />
+                            <span>{language === 'KR' ? '추천 동선' : 'Route Flow'}</span>
+                          </span>
+                          <div className="flex items-center flex-wrap gap-1.5 text-[#11161B]">
+                            {course.steps.map((s, idx) => (
+                              <React.Fragment key={idx}>
+                                {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-[#4A5568]" />}
+                                <span className="bg-white px-2.5 py-1 rounded-md border border-[#E5E2DC] font-medium text-xs text-[#11161B]">
+                                  {language === 'KR' ? s.titleKo.split(' ')[0] : s.titleEn.split(' ')[0]}
+                                </span>
+                              </React.Fragment>
+                            ))}
                           </div>
                         </div>
 
                         {/* Steps Timeline */}
-                        <div className="relative pl-6 sm:pl-8 space-y-6 text-left">
-                          <div className="absolute left-[11px] sm:left-[15px] top-3 bottom-3 w-0.5 border-l border-dashed border-sky-200"></div>
+                        <div className="relative pl-7 sm:pl-9 space-y-6 text-left">
+                          <div className="absolute left-[13px] sm:left-[17px] top-3 bottom-3 w-px bg-[#E5E2DC]"></div>
                           {course.steps.map((st, sidx) => {
                             const illusType = getStepIllustrationType(st.titleKo, 'DAY');
                             return (
                               <div key={sidx} className="relative group text-left space-y-2">
-                                <div className="absolute -left-[27px] sm:-left-[31px] top-1.5 w-6 h-6 rounded-full bg-slate-50 border border-slate-300 flex items-center justify-center text-[10px] font-black text-slate-700 shadow-3xs font-mono group-hover:bg-[#004481] group-hover:text-white group-hover:border-[#004481] transition-all">
+                                <div className="absolute -left-[28px] sm:-left-[32px] top-1 w-6 h-6 rounded-md bg-[#0A2540] text-white flex items-center justify-center text-xs font-mono font-bold shadow-2xs">
                                   {sidx + 1}
                                 </div>
-                                <div className="space-y-1 text-left">
+                                <div className="bg-white p-4 sm:p-5 rounded-lg border border-[#E5E2DC] space-y-2 text-left">
                                   <div className="flex items-center justify-between gap-3">
-                                    <h5 className="text-sm sm:text-base font-black text-stone-850 flex items-center gap-2 leading-snug">
-                                      <span className="text-blue-600 font-black text-sm">➔</span>
+                                    <h5 className="text-sm sm:text-base font-bold text-[#11161B] flex items-center gap-2 leading-snug">
                                       <span>{language === 'KR' ? st.titleKo : st.titleEn}</span>
                                     </h5>
-                                    <div className="bg-slate-50 p-1.5 rounded-xl border border-slate-100 shrink-0 text-slate-600">
-                                      <ElegantIllustration type={illusType} size="sm" className="w-6 h-6 stroke-[1.8]" />
+                                    <div className="p-1 rounded-md bg-[#FBFBF9] border border-[#E5E2DC] shrink-0 text-[#4A5568]">
+                                      <ElegantIllustration type={illusType} size="sm" className="w-5 h-5 stroke-[1.8]" />
                                     </div>
                                   </div>
-                                  <p className="text-xs sm:text-sm text-stone-500 font-semibold leading-relaxed pt-1 whitespace-pre-line">
+                                  <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed whitespace-pre-line">
                                     {language === 'KR' ? st.descKo : st.descEn}
                                   </p>
                                   {st.stationInfoKo && (
-                                    <div className="mt-2 text-[10px] sm:text-[10.5px] font-bold text-slate-700 bg-slate-50 px-3 py-1 rounded-xl border border-slate-200 max-w-max flex items-center gap-1">
-                                      <span>🚇</span>
+                                    <div className="mt-2 text-xs font-medium text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1 rounded-md border border-[#E5E2DC] max-w-max flex items-center gap-1.5">
+                                      <Train className="w-3.5 h-3.5 text-[#0A2540]" />
                                       <span>{language === 'KR' ? st.stationInfoKo : st.stationInfoEn}</span>
                                     </div>
                                   )}
@@ -2472,15 +2477,15 @@ export default function BusanItinerariesView({
                       </div>
 
                       {/* Overall Tip */}
-                      <div className="bg-sky-500/[0.03] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-2xl border border-sky-100">
-                        <div className="p-2 rounded-xl bg-sky-100 text-sky-700 shrink-0 mt-0.5">
-                          <Info className="w-4 h-4 text-sky-700 shrink-0" />
+                      <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
+                        <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                          <Info className="w-4 h-4" />
                         </div>
-                        <div className="space-y-1 select-none text-left">
-                          <span className="text-[10.5px] font-black text-sky-850 uppercase tracking-wide">
-                            {language === 'KR' ? '☀️ 당일치기 전용 이동 꿀팁!' : '☀️ ONE DAY TRIP TRAVEL TIP'}
+                        <div className="space-y-1 text-left">
+                          <span className="text-[11px] font-mono font-bold text-[#0A2540] uppercase tracking-wider block">
+                            {language === 'KR' ? '당일치기 여행 팁' : 'ONE DAY TRAVEL TIP'}
                           </span>
-                          <p className="text-xs sm:text-sm text-blue-900/80 leading-relaxed font-semibold">
+                          <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
                             {language === 'KR' ? course.overallTipKo : course.overallTipEn}
                           </p>
                         </div>
@@ -2489,70 +2494,67 @@ export default function BusanItinerariesView({
                   );
 
               // -------------------------------------------------------------
-              // PAGE 2: 1 NIGHT (1박) - Styled like a romantic twilight page
+              // PAGE 2: 1 NIGHT (1박)
               // -------------------------------------------------------------
               case '1NIGHT':
                 return (
-                  <div className="space-y-6 animate-fade-in">
-                    {/* Starry Night Sky Banner */}
-                    <div className="bg-gradient-to-r from-violet-950 via-indigo-950 to-slate-900 p-6 sm:p-8 rounded-3xl border border-indigo-950 text-white relative overflow-hidden shadow-lg">
-                      {/* Little glowing star indicators */}
-                      <div className="absolute top-4 right-12 w-1.5 h-1.5 bg-white rounded-full animate-ping"></div>
-                      <div className="absolute top-10 right-28 w-1 h-1 bg-white rounded-full opacity-60"></div>
-                      <div className="absolute bottom-6 right-8 w-1 h-1 bg-amber-200 rounded-full animate-pulse"></div>
-                      
-                      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                  <div className="space-y-6 animate-fade-in text-left">
+                    {/* Editorial Header */}
+                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-4">
+                      <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="bg-indigo-500/35 text-indigo-200 text-[10px] font-black px-2.5 py-1 rounded-full border border-indigo-400/20">
-                            {language === 'KR' ? '🌙 로맨틱 야경 1박 2일 수평선' : '🌙 Romantic Night Out'}
+                          <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
+                            {language === 'KR' ? '1박 2일 코스' : '1 NIGHT 2 DAYS'}
                           </span>
-                          <span className="bg-violet-500/30 text-violet-200 text-[10px] font-bold px-2.5 py-1 rounded-full">
-                            {language === 'KR' ? '동선: 쾌적한 평지 코스' : 'No steps beachfront paths'}
+                          <span className="text-[#E5E2DC] text-xs font-mono">
+                            {language === 'KR' ? '추천 소요시간: 1박 2일' : 'Duration: 1 Night 2 Days'}
                           </span>
                         </div>
                         <button
                           onClick={() => setMapModalOpen(true)}
-                          className="flex items-center gap-1.5 text-xs font-black bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl border border-white/30 backdrop-blur-xs transition-all cursor-pointer active:scale-95 shadow-xs shrink-0 z-10"
+                          className="flex items-center gap-1.5 text-xs font-bold bg-white text-[#0A2540] hover:bg-[#FBFBF9] px-3 py-1.5 rounded-md border border-white transition-colors cursor-pointer shrink-0"
                         >
-                          <span>🗺️</span>
-                          <span>{language === 'KR' ? '관광 일러스트 지도' : 'Travel Map'}</span>
+                          <Map className="w-4 h-4" />
+                          <span>{language === 'KR' ? '관광 지도 보기' : 'View Travel Map'}</span>
                         </button>
                       </div>
 
-                      <h3 className="text-xl sm:text-2xl font-black font-heading text-violet-100 tracking-tight leading-tight">
-                        {language === 'KR' ? '🌌 광안리 밤바다 & 트렌디 복합문화 쉼터 1박 2일 코스' : '🌌 Gwangalli Night Wave LED & Trendy Cultural Shelter'}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-violet-200/80 mt-1 max-w-2xl font-semibold">
-                        {language === 'KR' 
-                          ? '야간 LED 바다 산책로와 턱 없는 수변 공원, 예술 전시장까지! 보행 제약 없이 온가족이 밤바다 낭만을 만끽하는 감성 코스입니다.' 
-                          : 'Barrier-free ocean boardwalks, illuminated beach bridges, and cozy beachfront cultural spaces.'}
-                      </p>
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
+                          {language === 'KR' ? '광안리 밤바다 & 복합문화 쉼터 1박 2일 코스' : 'Gwangalli Night Wave & Cultural Shelter 1N2D'}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[#E5E2DC] mt-2 font-normal leading-relaxed max-w-2xl">
+                          {language === 'KR' 
+                            ? '야간 LED 바다 산책로와 턱 없는 수변 공원, 예술 전시장까지 보행 제약 없이 온가족이 밤바다 낭만을 만끽하는 코스입니다.' 
+                            : 'Barrier-free ocean boardwalks, illuminated beach bridges, and cozy beachfront cultural spaces.'}
+                        </p>
+                      </div>
                     </div>
 
                     {/* Timeline Container */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* Day 1 Section */}
-                      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-violet-100 shadow-[0_4px_20px_rgba(139,92,246,0.02)] space-y-5 text-left">
-                        <div className="border-b border-violet-100/70 pb-3.5 space-y-3">
-                          <h4 className="text-base sm:text-lg font-black text-violet-950 flex items-center gap-2">
-                            <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-violet-50 text-violet-700 font-sans font-black text-xs border border-violet-100 shadow-2xs">
-                              D1
+                      <div className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-5 text-left">
+                        <div className="border-b border-[#E5E2DC] pb-3.5 space-y-3">
+                          <h4 className="text-base font-bold text-[#11161B] flex items-center gap-2">
+                            <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0A2540] text-white font-mono font-bold text-xs">
+                              DAY 1
                             </span>
                             <span>{language === 'KR' ? 'Day 1 동선 안내' : 'Day 1 Itinerary'}</span>
                           </h4>
 
-                          <div className="bg-violet-50/70 p-3 rounded-2xl border border-violet-100/80 flex items-center flex-wrap gap-2 text-xs font-bold text-violet-900">
-                            <span className="text-[10px] font-extrabold text-violet-700 bg-violet-100 px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0 flex items-center gap-1">
-                              <span>🗺️</span>
+                          <div className="bg-[#FBFBF9] p-3 rounded-lg border border-[#E5E2DC] flex items-center flex-wrap gap-2 text-xs font-bold text-[#11161B]">
+                            <span className="text-[10px] font-mono font-bold text-[#0A2540] bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC] uppercase tracking-wider shrink-0 flex items-center gap-1">
+                              <Compass className="w-3.5 h-3.5" />
                               <span>{language === 'KR' ? '추천 동선' : 'Route Flow'}</span>
                             </span>
-                            <div className="flex items-center flex-wrap gap-1.5 text-slate-800">
+                            <div className="flex items-center flex-wrap gap-1.5 text-[#11161B]">
                               {course.steps
                                 .filter(st => st.time?.includes('Day 1'))
                                 .map((s, idx) => (
                                   <React.Fragment key={idx}>
-                                    {idx > 0 && <span className="text-violet-500 font-black text-xs">➔</span>}
-                                    <span className="bg-white px-2.5 py-1 rounded-lg border border-violet-100 shadow-2xs font-bold text-[11px] sm:text-xs">
+                                    {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-[#4A5568]" />}
+                                    <span className="bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC] font-medium text-xs text-[#11161B]">
                                       {language === 'KR' ? s.titleKo.split(' ')[0] : s.titleEn.split(' ')[0]}
                                     </span>
                                   </React.Fragment>
@@ -2561,8 +2563,8 @@ export default function BusanItinerariesView({
                           </div>
                         </div>
 
-                        <div className="relative pl-6 sm:pl-8 space-y-6 text-left">
-                          <div className="absolute left-[11px] sm:left-[15px] top-3 bottom-3 w-0.5 border-l border-dashed border-violet-200"></div>
+                        <div className="relative pl-7 sm:pl-9 space-y-6 text-left">
+                          <div className="absolute left-[13px] sm:left-[17px] top-3 bottom-3 w-px bg-[#E5E2DC]"></div>
 
                           {course.steps
                             .filter(st => st.time?.includes('Day 1'))
@@ -2570,28 +2572,27 @@ export default function BusanItinerariesView({
                               const illusType = getStepIllustrationType(st.titleKo, '1NIGHT');
                               return (
                                 <div key={sidx} className="relative group text-left space-y-2">
-                                  <div className="absolute -left-[27px] sm:-left-[31px] top-1.5 w-6 h-6 rounded-full bg-violet-50 border border-violet-200 flex items-center justify-center text-[10px] font-black text-violet-700 shadow-xs font-mono group-hover:bg-violet-600 group-hover:text-white group-hover:border-violet-600 transition-all">
+                                  <div className="absolute -left-[28px] sm:-left-[32px] top-1 w-6 h-6 rounded-md bg-[#0A2540] text-white flex items-center justify-center text-xs font-mono font-bold shadow-2xs">
                                     {sidx + 1}
                                   </div>
 
-                                  <div className="space-y-1 text-left">
+                                  <div className="bg-white p-4 rounded-lg border border-[#E5E2DC] space-y-2 text-left">
                                     <div className="flex items-center justify-between gap-3">
-                                      <h5 className="text-sm sm:text-base font-black text-stone-850 flex items-center gap-2 leading-snug">
-                                        <span className="text-violet-600 font-black text-sm">➔</span>
+                                      <h5 className="text-sm font-bold text-[#11161B] leading-snug">
                                         <span>{language === 'KR' ? st.titleKo : st.titleEn}</span>
                                       </h5>
-                                      <div className="bg-violet-50/70 p-1.5 rounded-xl border border-violet-100 shrink-0 text-violet-700">
-                                        <ElegantIllustration type={illusType} size="sm" className="w-6 h-6 stroke-[1.8]" />
+                                      <div className="p-1 rounded-md bg-[#FBFBF9] border border-[#E5E2DC] shrink-0 text-[#4A5568]">
+                                        <ElegantIllustration type={illusType} size="sm" className="w-5 h-5 stroke-[1.8]" />
                                       </div>
                                     </div>
 
-                                    <p className="text-xs sm:text-sm text-stone-500 font-semibold leading-relaxed pt-1">
+                                    <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
                                       {language === 'KR' ? st.descKo : st.descEn}
                                     </p>
 
                                     {st.stationInfoKo && (
-                                      <div className="mt-2 text-[10px] sm:text-[10.5px] font-bold text-violet-900 bg-violet-50/60 px-3 py-1 rounded-xl border border-violet-100 max-w-max flex items-center gap-1">
-                                        <span>🚇</span>
+                                      <div className="mt-2 text-xs font-medium text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1 rounded-md border border-[#E5E2DC] max-w-max flex items-center gap-1.5">
+                                        <Train className="w-3.5 h-3.5 text-[#0A2540]" />
                                         <span>{language === 'KR' ? st.stationInfoKo : st.stationInfoEn}</span>
                                       </div>
                                     )}
@@ -2603,27 +2604,27 @@ export default function BusanItinerariesView({
                       </div>
 
                       {/* Day 2 Section */}
-                      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-indigo-100 shadow-[0_4px_20px_rgba(79,70,229,0.02)] space-y-5 text-left">
-                        <div className="border-b border-indigo-100/70 pb-3.5 space-y-3">
-                          <h4 className="text-base sm:text-lg font-black text-indigo-950 flex items-center gap-2">
-                            <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-indigo-50 text-indigo-700 font-sans font-black text-xs border border-indigo-100 shadow-2xs">
-                              D2
+                      <div className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-5 text-left">
+                        <div className="border-b border-[#E5E2DC] pb-3.5 space-y-3">
+                          <h4 className="text-base font-bold text-[#11161B] flex items-center gap-2">
+                            <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0A2540] text-white font-mono font-bold text-xs">
+                              DAY 2
                             </span>
                             <span>{language === 'KR' ? 'Day 2 동선 안내' : 'Day 2 Itinerary'}</span>
                           </h4>
 
-                          <div className="bg-indigo-50/70 p-3 rounded-2xl border border-indigo-100/80 flex items-center flex-wrap gap-2 text-xs font-bold text-indigo-900">
-                            <span className="text-[10px] font-extrabold text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0 flex items-center gap-1">
-                              <span>🗺️</span>
+                          <div className="bg-[#FBFBF9] p-3 rounded-lg border border-[#E5E2DC] flex items-center flex-wrap gap-2 text-xs font-bold text-[#11161B]">
+                            <span className="text-[10px] font-mono font-bold text-[#0A2540] bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC] uppercase tracking-wider shrink-0 flex items-center gap-1">
+                              <Compass className="w-3.5 h-3.5" />
                               <span>{language === 'KR' ? '추천 동선' : 'Route Flow'}</span>
                             </span>
-                            <div className="flex items-center flex-wrap gap-1.5 text-slate-800">
+                            <div className="flex items-center flex-wrap gap-1.5 text-[#11161B]">
                               {course.steps
                                 .filter(st => st.time?.includes('Day 2'))
                                 .map((s, idx) => (
                                   <React.Fragment key={idx}>
-                                    {idx > 0 && <span className="text-indigo-500 font-black text-xs">➔</span>}
-                                    <span className="bg-white px-2.5 py-1 rounded-lg border border-indigo-100 shadow-2xs font-bold text-[11px] sm:text-xs">
+                                    {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-[#4A5568]" />}
+                                    <span className="bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC] font-medium text-xs text-[#11161B]">
                                       {language === 'KR' ? s.titleKo.split(' ')[0] : s.titleEn.split(' ')[0]}
                                     </span>
                                   </React.Fragment>
@@ -2632,8 +2633,8 @@ export default function BusanItinerariesView({
                           </div>
                         </div>
 
-                        <div className="relative pl-6 sm:pl-8 space-y-6 text-left">
-                          <div className="absolute left-[11px] sm:left-[15px] top-3 bottom-3 w-0.5 border-l border-dashed border-indigo-200"></div>
+                        <div className="relative pl-7 sm:pl-9 space-y-6 text-left">
+                          <div className="absolute left-[13px] sm:left-[17px] top-3 bottom-3 w-px bg-[#E5E2DC]"></div>
 
                           {course.steps
                             .filter(st => st.time?.includes('Day 2'))
@@ -2641,28 +2642,27 @@ export default function BusanItinerariesView({
                               const illusType = getStepIllustrationType(st.titleKo, '1NIGHT');
                               return (
                                 <div key={sidx} className="relative group text-left space-y-2">
-                                  <div className="absolute -left-[27px] sm:-left-[31px] top-1.5 w-6 h-6 rounded-full bg-indigo-50 border border-indigo-200 flex items-center justify-center text-[10px] font-black text-indigo-700 shadow-xs font-mono group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 transition-all">
+                                  <div className="absolute -left-[28px] sm:-left-[32px] top-1 w-6 h-6 rounded-md bg-[#0A2540] text-white flex items-center justify-center text-xs font-mono font-bold shadow-2xs">
                                     {sidx + 1}
                                   </div>
 
-                                  <div className="space-y-1 text-left">
+                                  <div className="bg-white p-4 rounded-lg border border-[#E5E2DC] space-y-2 text-left">
                                     <div className="flex items-center justify-between gap-3">
-                                      <h5 className="text-sm sm:text-base font-black text-stone-850 flex items-center gap-2 leading-snug">
-                                        <span className="text-indigo-600 font-black text-sm">➔</span>
+                                      <h5 className="text-sm font-bold text-[#11161B] leading-snug">
                                         <span>{language === 'KR' ? st.titleKo : st.titleEn}</span>
                                       </h5>
-                                      <div className="bg-indigo-50/70 p-1.5 rounded-xl border border-indigo-100 shrink-0 text-indigo-700">
-                                        <ElegantIllustration type={illusType} size="sm" className="w-6 h-6 stroke-[1.8]" />
+                                      <div className="p-1 rounded-md bg-[#FBFBF9] border border-[#E5E2DC] shrink-0 text-[#4A5568]">
+                                        <ElegantIllustration type={illusType} size="sm" className="w-5 h-5 stroke-[1.8]" />
                                       </div>
                                     </div>
 
-                                    <p className="text-xs sm:text-sm text-stone-500 font-semibold leading-relaxed pt-1">
+                                    <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
                                       {language === 'KR' ? st.descKo : st.descEn}
                                     </p>
 
                                     {st.stationInfoKo && (
-                                      <div className="mt-2 text-[10px] sm:text-[10.5px] font-bold text-indigo-900 bg-indigo-50/60 px-3 py-1 rounded-xl border border-indigo-100 max-w-max flex items-center gap-1">
-                                        <span>🚇</span>
+                                      <div className="mt-2 text-xs font-medium text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1 rounded-md border border-[#E5E2DC] max-w-max flex items-center gap-1.5">
+                                        <Train className="w-3.5 h-3.5 text-[#0A2540]" />
                                         <span>{language === 'KR' ? st.stationInfoKo : st.stationInfoEn}</span>
                                       </div>
                                     )}
@@ -2675,15 +2675,15 @@ export default function BusanItinerariesView({
                     </div>
 
                     {/* Overall tip banner */}
-                    <div className="bg-violet-500/[0.03] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-2xl border border-violet-100">
-                      <div className="p-2 rounded-xl bg-violet-100 text-violet-700 shrink-0 mt-0.5">
-                        <Info className="w-4 h-4 text-violet-700 shrink-0" />
+                    <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
+                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                        <Info className="w-4 h-4" />
                       </div>
-                      <div className="space-y-1 select-none text-left">
-                        <span className="text-[10.5px] font-black text-violet-850 uppercase tracking-wide">
-                          {language === 'KR' ? '🌙 바다야경 전용 보행 꿀팁!' : '🌙 NIGHT VIEW ROAD EXPERIENCE TIP'}
+                      <div className="space-y-1 text-left">
+                        <span className="text-[11px] font-mono font-bold text-[#0A2540] uppercase tracking-wider block">
+                          {language === 'KR' ? '1박 2일 여행 팁' : '1 NIGHT TRAVEL TIP'}
                         </span>
-                        <p className="text-xs sm:text-sm text-indigo-950/80 leading-relaxed font-semibold">
+                        <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
                           {language === 'KR' ? course.overallTipKo : course.overallTipEn}
                         </p>
                       </div>
@@ -2692,359 +2692,80 @@ export default function BusanItinerariesView({
                 );
 
               // -------------------------------------------------------------
-              // PAGE 3: 2 NIGHTS (2박) - Styled as a horizontal active tabbed layout
+              // PAGE 3: 2 NIGHTS (2박)
               // -------------------------------------------------------------
               case '2NIGHTS':
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Sunset Amber Glow Header */}
-                    <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 p-6 sm:p-8 rounded-3xl text-white relative overflow-hidden shadow-md text-left">
-                      <div className="absolute right-0 bottom-0 text-8xl select-none opacity-5 transform translate-y-6 translate-x-4">🌅</div>
-                      
-                      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    {/* Editorial Header */}
+                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-4">
+                      <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="bg-white/20 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase">
-                            {language === 'KR' ? '🌅 낙조 명당 2박 3일' : '🌅 Golden Sunset 2 Nights'}
+                          <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
+                            {language === 'KR' ? '2박 3일 코스' : '2 NIGHTS 3 DAYS'}
                           </span>
-                          <span className="bg-amber-400/35 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
-                            {language === 'KR' ? '난이도: 보통 (완만한 우회로 추천)' : 'Difficulty: Moderate (Asphalt ramps used)'}
+                          <span className="text-[#E5E2DC] text-xs font-mono">
+                            {language === 'KR' ? '추천 소요시간: 2박 3일' : 'Duration: 2 Nights 3 Days'}
                           </span>
                         </div>
                         <button
                           onClick={() => setMapModalOpen(true)}
-                          className="flex items-center gap-1.5 text-xs font-black bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl border border-white/30 backdrop-blur-xs transition-all cursor-pointer active:scale-95 shadow-xs shrink-0 z-10"
+                          className="flex items-center gap-1.5 text-xs font-bold bg-white text-[#0A2540] hover:bg-[#FBFBF9] px-3 py-1.5 rounded-md border border-white transition-colors cursor-pointer shrink-0"
                         >
-                          <span>🗺️</span>
-                          <span>{language === 'KR' ? '관광 일러스트 지도' : 'Travel Map'}</span>
+                          <Map className="w-4 h-4" />
+                          <span>{language === 'KR' ? '관광 지도 보기' : 'View Travel Map'}</span>
                         </button>
                       </div>
 
-                      <h3 className="text-xl sm:text-2xl font-black font-heading text-white tracking-tight leading-tight">
-                        {language === 'KR' ? '🌅 트렌디 감성과 바다 비경을 담은 2박 3일 낭만 코스' : '🌅 Trendy Cafe & Coastal Wonders 2N3D Route'}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-amber-50/80 mt-1 max-w-2xl font-semibold">
-                        {language === 'KR' 
-                          ? '전포카페거리, 해동용궁사부터 망미 골목까지 감성 넘치는 핫플레이스들을 경사 걱정 없이 평탄하고 편리한 길로 만나는 일주 코스예요.' 
-                          : 'Explore the high view ridges and beautiful coastlines of Busan without steps.'}
-                      </p>
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
+                          {language === 'KR' ? '감성과 바다 비경을 담은 2박 3일 코스' : 'Trendy Cafe & Coastal Wonders 2N3D Route'}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[#E5E2DC] mt-2 font-normal leading-relaxed max-w-2xl">
+                          {language === 'KR' 
+                            ? '전포카페거리, 해동용궁사부터 망미 골목까지 감성 넘치는 핫플레이스들을 경사 걱정 없이 평탄하고 편리한 길로 만나는 일주 코스입니다.' 
+                            : 'Explore the high view ridges and beautiful coastlines of Busan without steps.'}
+                        </p>
+                      </div>
                     </div>
 
                     {/* Vertical Day-by-Day Journey List */}
                     <div className="space-y-6">
-                      {/* Day 1 Section */}
-                      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-amber-100 shadow-[0_4px_20px_rgba(245,158,11,0.02)] space-y-5 text-left">
-                        <div className="border-b border-amber-100/70 pb-3.5 space-y-3">
-                          <h4 className="text-base sm:text-lg font-black text-amber-950 flex items-center gap-2">
-                            <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-amber-50 text-amber-700 font-sans font-black text-xs border border-amber-100 shadow-2xs">
-                              D1
-                            </span>
-                            <span>{language === 'KR' ? 'Day 1 (원도심 & 영도 권역)' : 'Day 1 (Historic Downtown & Yeongdo)'}</span>
-                          </h4>
-
-                          {/* Arrow Route Flow Overview Bar for Day 1 */}
-                          <div className="bg-amber-50/70 p-3 rounded-2xl border border-amber-100/80 flex items-center flex-wrap gap-2 text-xs font-bold text-amber-900">
-                            <span className="text-[10px] font-extrabold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0 flex items-center gap-1">
-                              <span>🗺️</span>
-                              <span>{language === 'KR' ? '추천 동선' : 'Route Flow'}</span>
-                            </span>
-                            <div className="flex items-center flex-wrap gap-1.5 text-slate-800">
-                              {course.steps
-                                .filter(st => st.time?.includes('Day 1'))
-                                .map((s, idx) => (
-                                  <React.Fragment key={idx}>
-                                    {idx > 0 && <span className="text-amber-500 font-black text-xs">➔</span>}
-                                    <span className="bg-white px-2.5 py-1 rounded-lg border border-amber-100 shadow-2xs font-bold text-[11px] sm:text-xs">
-                                      {language === 'KR' ? s.titleKo.split(' ')[0] : s.titleEn.split(' ')[0]}
-                                    </span>
-                                  </React.Fragment>
-                                ))}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="relative pl-6 sm:pl-8 space-y-6 text-left">
-                          {/* Vertical Track lines */}
-                          <div className="absolute left-[11px] sm:left-[15px] top-3 bottom-3 w-0.5 border-l border-dashed border-amber-200"></div>
-
-                          {course.steps
-                            .filter(st => st.time?.includes('Day 1'))
-                            .map((st, sidx) => {
-                              const illusType = getStepIllustrationType(st.titleKo, '2NIGHTS');
-                              return (
-                                <div key={sidx} className="relative group text-left space-y-2">
-                                  {/* bullet number */}
-                                  <div className="absolute -left-[27px] sm:-left-[31px] top-1.5 w-6 h-6 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-[10px] font-black text-amber-700 shadow-xs font-mono group-hover:bg-amber-600 group-hover:text-white group-hover:border-amber-600 transition-all">
-                                    {sidx + 1}
-                                  </div>
-
-                                  <div className="space-y-1 text-left">
-                                    <div className="flex items-center justify-between gap-3">
-                                      <h5 className="text-sm sm:text-base font-black text-stone-850 flex items-center gap-2 leading-snug">
-                                        <span className="text-amber-600 font-black text-sm">➔</span>
-                                        <span>{language === 'KR' ? st.titleKo : st.titleEn}</span>
-                                      </h5>
-                                      <div className="bg-amber-50/70 p-1.5 rounded-xl border border-amber-100 shrink-0 text-amber-700">
-                                        <ElegantIllustration type={illusType} size="sm" className="w-6 h-6 stroke-[1.8]" />
-                                      </div>
-                                    </div>
-
-                                    <p className="text-xs sm:text-sm text-stone-500 font-semibold leading-relaxed pt-1">
-                                      {language === 'KR' ? st.descKo : st.descEn}
-                                    </p>
-
-                                    {st.stationInfoKo && (
-                                      <div className="mt-2 text-[10px] sm:text-[10.5px] font-bold text-amber-900 bg-amber-50/60 px-3 py-1 rounded-xl border border-amber-100 max-w-max flex items-center gap-1">
-                                        <span>🚇</span>
-                                        <span>{language === 'KR' ? st.stationInfoKo : st.stationInfoEn}</span>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              );
-                            })}
-                        </div>
-
-                        {/* Accessibility Box Day 1 */}
-                        
-                      </div>
-
-                      {/* Day 2 Section */}
-                      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-amber-100 shadow-[0_4px_20px_rgba(245,158,11,0.02)] space-y-5 text-left">
-                        <div className="border-b border-amber-100/70 pb-3.5 space-y-3">
-                          <h4 className="text-base sm:text-lg font-black text-amber-950 flex items-center gap-2">
-                            <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-amber-50 text-amber-700 font-sans font-black text-xs border border-amber-100 shadow-2xs">
-                              D2
-                            </span>
-                            <span>{language === 'KR' ? 'Day 2 (서면 & 광안리 권역)' : 'Day 2 (Seomyeon & Gwangalli Beach)'}</span>
-                          </h4>
-
-                          {/* Arrow Route Flow Overview Bar for Day 2 */}
-                          <div className="bg-amber-50/70 p-3 rounded-2xl border border-amber-100/80 flex items-center flex-wrap gap-2 text-xs font-bold text-amber-900">
-                            <span className="text-[10px] font-extrabold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0 flex items-center gap-1">
-                              <span>🗺️</span>
-                              <span>{language === 'KR' ? '추천 동선' : 'Route Flow'}</span>
-                            </span>
-                            <div className="flex items-center flex-wrap gap-1.5 text-slate-800">
-                              {course.steps
-                                .filter(st => st.time?.includes('Day 2'))
-                                .map((s, idx) => (
-                                  <React.Fragment key={idx}>
-                                    {idx > 0 && <span className="text-amber-500 font-black text-xs">➔</span>}
-                                    <span className="bg-white px-2.5 py-1 rounded-lg border border-amber-100 shadow-2xs font-bold text-[11px] sm:text-xs">
-                                      {language === 'KR' ? s.titleKo.split(' ')[0] : s.titleEn.split(' ')[0]}
-                                    </span>
-                                  </React.Fragment>
-                                ))}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="relative pl-6 sm:pl-8 space-y-6 text-left">
-                          {/* Vertical Track lines */}
-                          <div className="absolute left-[11px] sm:left-[15px] top-3 bottom-3 w-0.5 border-l border-dashed border-amber-200"></div>
-
-                          {course.steps
-                            .filter(st => st.time?.includes('Day 2'))
-                            .map((st, sidx) => {
-                              const illusType = getStepIllustrationType(st.titleKo, '2NIGHTS');
-                              return (
-                                <div key={sidx} className="relative group text-left space-y-2">
-                                  {/* bullet number */}
-                                  <div className="absolute -left-[27px] sm:-left-[31px] top-1.5 w-6 h-6 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-[10px] font-black text-amber-700 shadow-xs font-mono group-hover:bg-amber-600 group-hover:text-white group-hover:border-amber-600 transition-all">
-                                    {sidx + 1}
-                                  </div>
-
-                                  <div className="space-y-1 text-left">
-                                    <div className="flex items-center justify-between gap-3">
-                                      <h5 className="text-sm sm:text-base font-black text-stone-850 flex items-center gap-2 leading-snug">
-                                        <span className="text-amber-600 font-black text-sm">➔</span>
-                                        <span>{language === 'KR' ? st.titleKo : st.titleEn}</span>
-                                      </h5>
-                                      <div className="bg-amber-50/70 p-1.5 rounded-xl border border-amber-100 shrink-0 text-amber-700">
-                                        <ElegantIllustration type={illusType} size="sm" className="w-6 h-6 stroke-[1.8]" />
-                                      </div>
-                                    </div>
-
-                                    <p className="text-xs sm:text-sm text-stone-500 font-semibold leading-relaxed pt-1">
-                                      {language === 'KR' ? st.descKo : st.descEn}
-                                    </p>
-
-                                    {st.stationInfoKo && (
-                                      <div className="mt-2 text-[10px] sm:text-[10.5px] font-bold text-amber-900 bg-amber-50/60 px-3 py-1 rounded-xl border border-amber-100 max-w-max flex items-center gap-1">
-                                        <span>🚇</span>
-                                        <span>{language === 'KR' ? st.stationInfoKo : st.stationInfoEn}</span>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              );
-                            })}
-                        </div>
-
-                        {/* Accessibility Box Day 2 */}
-                        
-                      </div>
-
-                      {/* Day 3 Section */}
-                      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-amber-100 shadow-[0_4px_20px_rgba(245,158,11,0.02)] space-y-5 text-left">
-                        <div className="border-b border-amber-100/70 pb-3.5 space-y-3">
-                          <h4 className="text-base sm:text-lg font-black text-amber-950 flex items-center gap-2">
-                            <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-amber-50 text-amber-700 font-sans font-black text-xs border border-amber-100 shadow-2xs">
-                              D3
-                            </span>
-                            <span>{language === 'KR' ? 'Day 3 (해운대 & 기장 오시리아 권역)' : 'Day 3 (Haeundae & Gijang Osiria)'}</span>
-                          </h4>
-
-                          {/* Arrow Route Flow Overview Bar for Day 3 */}
-                          <div className="bg-amber-50/70 p-3 rounded-2xl border border-amber-100/80 flex items-center flex-wrap gap-2 text-xs font-bold text-amber-900">
-                            <span className="text-[10px] font-extrabold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0 flex items-center gap-1">
-                              <span>🗺️</span>
-                              <span>{language === 'KR' ? '추천 동선' : 'Route Flow'}</span>
-                            </span>
-                            <div className="flex items-center flex-wrap gap-1.5 text-slate-800">
-                              {course.steps
-                                .filter(st => st.time?.includes('Day 3'))
-                                .map((s, idx) => (
-                                  <React.Fragment key={idx}>
-                                    {idx > 0 && <span className="text-amber-500 font-black text-xs">➔</span>}
-                                    <span className="bg-white px-2.5 py-1 rounded-lg border border-amber-100 shadow-2xs font-bold text-[11px] sm:text-xs">
-                                      {language === 'KR' ? s.titleKo.split(' ')[0] : s.titleEn.split(' ')[0]}
-                                    </span>
-                                  </React.Fragment>
-                                ))}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="relative pl-6 sm:pl-8 space-y-6 text-left">
-                          {/* Vertical Track lines */}
-                          <div className="absolute left-[11px] sm:left-[15px] top-3 bottom-3 w-0.5 border-l border-dashed border-amber-200"></div>
-
-                          {course.steps
-                            .filter(st => st.time?.includes('Day 3'))
-                            .map((st, sidx) => {
-                              const illusType = getStepIllustrationType(st.titleKo, '2NIGHTS');
-                              return (
-                                <div key={sidx} className="relative group text-left space-y-2">
-                                  {/* bullet number */}
-                                  <div className="absolute -left-[27px] sm:-left-[31px] top-1.5 w-6 h-6 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-[10px] font-black text-amber-700 shadow-xs font-mono group-hover:bg-amber-600 group-hover:text-white group-hover:border-amber-600 transition-all">
-                                    {sidx + 1}
-                                  </div>
-
-                                  <div className="space-y-1 text-left">
-                                    <div className="flex items-center justify-between gap-3">
-                                      <h5 className="text-sm sm:text-base font-black text-stone-850 flex items-center gap-2 leading-snug">
-                                        <span className="text-amber-600 font-black text-sm">➔</span>
-                                        <span>{language === 'KR' ? st.titleKo : st.titleEn}</span>
-                                      </h5>
-                                      <div className="bg-amber-50/70 p-1.5 rounded-xl border border-amber-100 shrink-0 text-amber-700">
-                                        <ElegantIllustration type={illusType} size="sm" className="w-6 h-6 stroke-[1.8]" />
-                                      </div>
-                                    </div>
-
-                                    <p className="text-xs sm:text-sm text-stone-500 font-semibold leading-relaxed pt-1">
-                                      {language === 'KR' ? st.descKo : st.descEn}
-                                    </p>
-
-                                    {st.stationInfoKo && (
-                                      <div className="mt-2 text-[10px] sm:text-[10.5px] font-bold text-amber-900 bg-amber-50/60 px-3 py-1 rounded-xl border border-amber-100 max-w-max flex items-center gap-1">
-                                        <span>🚇</span>
-                                        <span>{language === 'KR' ? st.stationInfoKo : st.stationInfoEn}</span>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              );
-                            })}
-                        </div>
-
-                        {/* Accessibility Box Day 3 */}
-                        
-                      </div>
-                    </div>
-
-                    {/* Overall tip banner */}
-                    <div className="bg-amber-500/[0.03] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-2xl border border-amber-100">
-                      <div className="p-2 rounded-xl bg-amber-100 text-amber-700 shrink-0 mt-0.5">
-                        <Info className="w-4 h-4 text-amber-700 shrink-0" />
-                      </div>
-                      <div className="space-y-1 select-none text-left">
-                        <span className="text-[10.5px] font-black text-amber-850 uppercase tracking-wide">
-                          {language === 'KR' ? '🌅 낙조 여행 전용 이동 꿀팁!' : '🌅 GOLDEN SUNSET PATHWAYS TIP'}
-                        </span>
-                        <p className="text-xs sm:text-sm text-amber-900/80 leading-relaxed font-semibold">
-                          {language === 'KR' ? course.overallTipKo : course.overallTipEn}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-
-              // -------------------------------------------------------------
-              // PAGE 4: 3 NIGHTS (3박) - Styled as an organic forest nature journal
-              // -------------------------------------------------------------
-              case '3NIGHTS':
-                return (
-                  <div className="space-y-6 animate-fade-in text-left">
-                    {/* Organic Green Journal Banner */}
-                    <div className="bg-gradient-to-br from-emerald-800 via-teal-800 to-emerald-900 p-6 sm:p-8 rounded-3xl text-emerald-50 relative overflow-hidden shadow-md text-left">
-                      <div className="absolute right-2 top-2 text-8xl select-none opacity-5 transform translate-y-2">🌿</div>
-                      
-                      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="bg-emerald-700 bg-opacity-50 text-emerald-150 text-[10px] font-black px-2.5 py-1 rounded-full uppercase border border-emerald-600/30">
-                            {language === 'KR' ? '🌿 자연 힐링 3박 4일' : '🌿 Organic Rest 3 Nights'}
-                          </span>
-                          <span className="bg-teal-700 bg-opacity-40 text-emerald-200 text-[10px] font-bold px-2.5 py-1 rounded-full">
-                            {language === 'KR' ? '테마: 온천천 강물 꽃길과 대숲' : 'Theme: Quiet waterway bamboo paths'}
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => setMapModalOpen(true)}
-                          className="flex items-center gap-1.5 text-xs font-black bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl border border-white/30 backdrop-blur-xs transition-all cursor-pointer active:scale-95 shadow-xs shrink-0 z-10"
-                        >
-                          <span>🗺️</span>
-                          <span>{language === 'KR' ? '관광 일러스트 지도' : 'Travel Map'}</span>
-                        </button>
-                      </div>
-
-                      <h3 className="text-xl sm:text-2xl font-black font-heading text-emerald-50 tracking-tight leading-tight">
-                        {language === 'KR' ? '🌿 영도 절벽 수평선 & 온천천 강변 꽃밭 3박 4일 완벽 휴식 코스' : '🌿 Yeongdo Horizon Blue & Oncheon Creek Flowy Spring 3N4D'}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-emerald-100/80 mt-1 max-w-2xl font-semibold">
-                        {language === 'KR' 
-                          ? '계단을 없앤 긴 전용 우회 램프(경사 스위치백)를 통해 동래역에서 강변 수변 공원으로 바로 사뿐히 하강하고, 수평선 너머로 배들이 오고 가는 온천천 물소리를 벗하는 완만한 사색의 여정입니다.' 
-                          : 'Descend smoothly along Switchback ramp lanes to stroll scenic bamboo canals and flower margins with modern flat amenities.'}
-                      </p>
-                    </div>
-
-                    {/* Vertically connected list of Days for 3 Nights Botanical Rest */}
-                    <div className="space-y-6">
-                      {[1, 2, 3, 4].map((dayNum) => {
+                      {[1, 2, 3].map((dayNum) => {
                         const daySteps = course.steps.filter(st => st.time?.includes(`Day ${dayNum}`));
                         if (daySteps.length === 0) return null;
 
+                        const dayTitlesKo = [
+                          'Day 1 (원도심 & 영도 권역)',
+                          'Day 2 (서면 & 광안리 권역)',
+                          'Day 3 (해운대 & 기장 오시리아 권역)'
+                        ];
+                        const dayTitlesEn = [
+                          'Day 1 (Historic Downtown & Yeongdo)',
+                          'Day 2 (Seomyeon & Gwangalli Beach)',
+                          'Day 3 (Haeundae & Gijang Osiria)'
+                        ];
+
                         return (
-                          <div key={dayNum} className="bg-white p-6 sm:p-8 rounded-3xl border border-emerald-100 shadow-[0_4px_20px_rgba(16,185,129,0.02)] space-y-5 text-left">
-                            <div className="border-b border-emerald-100/70 pb-3.5 space-y-3">
-                              <h4 className="text-base sm:text-lg font-black text-emerald-950 flex items-center gap-2">
-                                <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 font-sans font-black text-xs border border-emerald-100 shadow-2xs">
-                                  D{dayNum}
+                          <div key={dayNum} className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-5 text-left">
+                            <div className="border-b border-[#E5E2DC] pb-3.5 space-y-3">
+                              <h4 className="text-base font-bold text-[#11161B] flex items-center gap-2">
+                                <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0A2540] text-white font-mono font-bold text-xs">
+                                  DAY {dayNum}
                                 </span>
-                                <span>{language === 'KR' ? `Day ${dayNum} 일정` : `Day ${dayNum} Itinerary`}</span>
+                                <span>{language === 'KR' ? dayTitlesKo[dayNum - 1] : dayTitlesEn[dayNum - 1]}</span>
                               </h4>
 
-                              {/* Route Flow box */}
-                              <div className="bg-emerald-50/70 p-3 rounded-2xl border border-emerald-100/80 flex items-center flex-wrap gap-2 text-xs font-bold text-emerald-900">
-                                <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0 flex items-center gap-1">
-                                  <span>🗺️</span>
+                              <div className="bg-[#FBFBF9] p-3 rounded-lg border border-[#E5E2DC] flex items-center flex-wrap gap-2 text-xs font-bold text-[#11161B]">
+                                <span className="text-[10px] font-mono font-bold text-[#0A2540] bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC] uppercase tracking-wider shrink-0 flex items-center gap-1">
+                                  <Compass className="w-3.5 h-3.5" />
                                   <span>{language === 'KR' ? '추천 동선' : 'Route Flow'}</span>
                                 </span>
-                                <div className="flex items-center flex-wrap gap-1.5 text-slate-800">
+                                <div className="flex items-center flex-wrap gap-1.5 text-[#11161B]">
                                   {daySteps.map((s, idx) => (
                                     <React.Fragment key={idx}>
-                                      {idx > 0 && <span className="text-emerald-500 font-black text-xs">➔</span>}
-                                      <span className="bg-white px-2.5 py-1 rounded-lg border border-emerald-100 shadow-2xs font-bold text-[11px] sm:text-xs">
+                                      {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-[#4A5568]" />}
+                                      <span className="bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC] font-medium text-xs text-[#11161B]">
                                         {language === 'KR' ? s.titleKo.split(' ')[0] : s.titleEn.split(' ')[0]}
                                       </span>
                                     </React.Fragment>
@@ -3053,37 +2774,34 @@ export default function BusanItinerariesView({
                               </div>
                             </div>
 
-                            <div className="relative pl-6 sm:pl-8 space-y-6 text-left">
-                              {/* Vertical Track lines */}
-                              <div className="absolute left-[11px] sm:left-[15px] top-3 bottom-3 w-0.5 border-l border-dashed border-emerald-200"></div>
+                            <div className="relative pl-7 sm:pl-9 space-y-6 text-left">
+                              <div className="absolute left-[13px] sm:left-[17px] top-3 bottom-3 w-px bg-[#E5E2DC]"></div>
 
                               {daySteps.map((st, sidx) => {
-                                const illusType = getStepIllustrationType(st.titleKo, '3NIGHTS');
+                                const illusType = getStepIllustrationType(st.titleKo, '2NIGHTS');
                                 return (
                                   <div key={sidx} className="relative group text-left space-y-2">
-                                    {/* bullet number */}
-                                    <div className="absolute -left-[27px] sm:-left-[31px] top-1.5 w-6 h-6 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-[10px] font-black text-emerald-700 shadow-xs font-mono group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600 transition-all">
+                                    <div className="absolute -left-[28px] sm:-left-[32px] top-1 w-6 h-6 rounded-md bg-[#0A2540] text-white flex items-center justify-center text-xs font-mono font-bold shadow-2xs">
                                       {sidx + 1}
                                     </div>
 
-                                    <div className="space-y-1 text-left">
+                                    <div className="bg-white p-4 rounded-lg border border-[#E5E2DC] space-y-2 text-left">
                                       <div className="flex items-center justify-between gap-3">
-                                        <h5 className="text-sm sm:text-base font-black text-stone-850 flex items-center gap-2 leading-snug">
-                                          <span className="text-emerald-600 font-black text-sm">➔</span>
+                                        <h5 className="text-sm font-bold text-[#11161B] leading-snug">
                                           <span>{language === 'KR' ? st.titleKo : st.titleEn}</span>
                                         </h5>
-                                        <div className="bg-emerald-50/70 p-1.5 rounded-xl border border-emerald-100 shrink-0 text-emerald-700">
-                                          <ElegantIllustration type={illusType} size="sm" className="w-6 h-6 stroke-[1.8]" />
+                                        <div className="p-1 rounded-md bg-[#FBFBF9] border border-[#E5E2DC] shrink-0 text-[#4A5568]">
+                                          <ElegantIllustration type={illusType} size="sm" className="w-5 h-5 stroke-[1.8]" />
                                         </div>
                                       </div>
 
-                                      <p className="text-xs sm:text-sm text-stone-500 font-semibold leading-relaxed pt-1">
+                                      <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
                                         {language === 'KR' ? st.descKo : st.descEn}
                                       </p>
 
                                       {st.stationInfoKo && (
-                                        <div className="mt-2 text-[10px] sm:text-[10.5px] font-bold text-emerald-900 bg-emerald-50/60 px-3 py-1 rounded-xl border border-emerald-100 max-w-max flex items-center gap-1">
-                                          <span>🚇</span>
+                                        <div className="mt-2 text-xs font-medium text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1 rounded-md border border-[#E5E2DC] max-w-max flex items-center gap-1.5">
+                                          <Train className="w-3.5 h-3.5 text-[#0A2540]" />
                                           <span>{language === 'KR' ? st.stationInfoKo : st.stationInfoEn}</span>
                                         </div>
                                       )}
@@ -3097,16 +2815,16 @@ export default function BusanItinerariesView({
                       })}
                     </div>
 
-                    {/* Botanical Overall tip */}
-                    <div className="bg-emerald-500/[0.03] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-2xl border border-emerald-100">
-                      <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700 shrink-0 mt-0.5">
-                        <Info className="w-4 h-4 text-emerald-700 shrink-0" />
+                    {/* Overall tip banner */}
+                    <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
+                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                        <Info className="w-4 h-4" />
                       </div>
-                      <div className="space-y-1 select-none text-left">
-                        <span className="text-[10.5px] font-black text-emerald-850 uppercase tracking-wide">
-                          {language === 'KR' ? '🌿 자연 쉼터 전용 이동 꿀팁!' : '🌿 NATURAL ESCAPE MOVEMENT TIP'}
+                      <div className="space-y-1 text-left">
+                        <span className="text-[11px] font-mono font-bold text-[#0A2540] uppercase tracking-wider block">
+                          {language === 'KR' ? '2박 3일 여행 팁' : '2 NIGHTS TRAVEL TIP'}
                         </span>
-                        <p className="text-xs sm:text-sm text-emerald-900/80 leading-relaxed font-semibold">
+                        <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
                           {language === 'KR' ? course.overallTipKo : course.overallTipEn}
                         </p>
                       </div>
@@ -3115,41 +2833,171 @@ export default function BusanItinerariesView({
                 );
 
               // -------------------------------------------------------------
-              // PAGE 5: 4 NIGHTS (4박) - Compiled as an Interactive Travel Guide Catalog
+              // PAGE 4: 3 NIGHTS (3박)
               // -------------------------------------------------------------
-              case '4NIGHTS':
+              case '3NIGHTS':
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Sky Blue Guidebook Header */}
-                    <div className="bg-gradient-to-br from-sky-700 to-blue-800 p-6 sm:p-8 rounded-3xl text-white relative overflow-hidden shadow-md text-left">
-                      <div className="absolute right-2 top-2 text-7xl select-none opacity-5 transform translate-y-2">🏠</div>
-                      
-                      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    {/* Editorial Header */}
+                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-4">
+                      <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="bg-sky-600/50 text-sky-100 text-[10px] font-black px-2.5 py-1 rounded-full uppercase border border-sky-500/20">
-                            {language === 'KR' ? '🏠 4박 5일 장기 체류 종합 마스터' : '🏠 4N5D Long Stay Master'}
+                          <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
+                            {language === 'KR' ? '3박 4일 코스' : '3 NIGHTS 4 DAYS'}
                           </span>
-                          <span className="bg-sky-500/40 text-sky-200 text-[10px] font-bold px-2.5 py-1 rounded-full">
-                            {language === 'KR' ? '평크션: 실내 엘리베이터 정밀 조율' : 'Includes mall lift routes'}
+                          <span className="text-[#E5E2DC] text-xs font-mono">
+                            {language === 'KR' ? '추천 소요시간: 3박 4일' : 'Duration: 3 Nights 4 Days'}
                           </span>
                         </div>
                         <button
                           onClick={() => setMapModalOpen(true)}
-                          className="flex items-center gap-1.5 text-xs font-black bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl border border-white/30 backdrop-blur-xs transition-all cursor-pointer active:scale-95 shadow-xs shrink-0 z-10"
+                          className="flex items-center gap-1.5 text-xs font-bold bg-white text-[#0A2540] hover:bg-[#FBFBF9] px-3 py-1.5 rounded-md border border-white transition-colors cursor-pointer shrink-0"
                         >
-                          <span>🗺️</span>
-                          <span>{language === 'KR' ? '관광 일러스트 지도' : 'Travel Map'}</span>
+                          <Map className="w-4 h-4" />
+                          <span>{language === 'KR' ? '관광 지도 보기' : 'View Travel Map'}</span>
                         </button>
                       </div>
 
-                      <h3 className="text-xl sm:text-2xl font-black font-heading text-white tracking-tight leading-tight">
-                        {language === 'KR' ? '🏠 부산 편안한 보행 종합 선물세트: 4박 5일 실내외 쾌적 일주 코스' : '🏠 Comprehensive Barrier-Free Busan Layout: 4N5D Master Plan'}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-sky-100/80 mt-1 max-w-2xl font-semibold">
-                        {language === 'KR' 
-                          ? '대중교통 광장 엘리베이터 탐방부터 유모차 전용 와이드 쉘터 개찰구 위치 가이드, 센텀시티 초대형 패밀리 아케이드 수영 강변 산책로 완벽 가이드!' 
-                          : 'Deep long stays targeting air-conditioned indoor mega malls, custom accessible subway gate numbers, and flat garden links.'}
-                      </p>
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
+                          {language === 'KR' ? '자연 힐링 & 강변 휴식 3박 4일 코스' : 'Organic Rest & Scenic Waterways 3N4D'}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[#E5E2DC] mt-2 font-normal leading-relaxed max-w-2xl">
+                          {language === 'KR' 
+                            ? '동래역에서 강변 수변 공원으로 내려가는 우회 램프와 온천천 강물 소리를 벗하는 완만한 사색의 여정입니다.' 
+                            : 'Descend smoothly along ramp lanes to stroll scenic bamboo canals and flower margins.'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Vertically connected list of Days */}
+                    <div className="space-y-6">
+                      {[1, 2, 3, 4].map((dayNum) => {
+                        const daySteps = course.steps.filter(st => st.time?.includes(`Day ${dayNum}`));
+                        if (daySteps.length === 0) return null;
+
+                        return (
+                          <div key={dayNum} className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-5 text-left">
+                            <div className="border-b border-[#E5E2DC] pb-3.5 space-y-3">
+                              <h4 className="text-base font-bold text-[#11161B] flex items-center gap-2">
+                                <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0A2540] text-white font-mono font-bold text-xs">
+                                  DAY {dayNum}
+                                </span>
+                                <span>{language === 'KR' ? `Day ${dayNum} 일정` : `Day ${dayNum} Itinerary`}</span>
+                              </h4>
+
+                              <div className="bg-[#FBFBF9] p-3 rounded-lg border border-[#E5E2DC] flex items-center flex-wrap gap-2 text-xs font-bold text-[#11161B]">
+                                <span className="text-[10px] font-mono font-bold text-[#0A2540] bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC] uppercase tracking-wider shrink-0 flex items-center gap-1">
+                                  <Compass className="w-3.5 h-3.5" />
+                                  <span>{language === 'KR' ? '추천 동선' : 'Route Flow'}</span>
+                                </span>
+                                <div className="flex items-center flex-wrap gap-1.5 text-[#11161B]">
+                                  {daySteps.map((s, idx) => (
+                                    <React.Fragment key={idx}>
+                                      {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-[#4A5568]" />}
+                                      <span className="bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC] font-medium text-xs text-[#11161B]">
+                                        {language === 'KR' ? s.titleKo.split(' ')[0] : s.titleEn.split(' ')[0]}
+                                      </span>
+                                    </React.Fragment>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="relative pl-7 sm:pl-9 space-y-6 text-left">
+                              <div className="absolute left-[13px] sm:left-[17px] top-3 bottom-3 w-px bg-[#E5E2DC]"></div>
+
+                              {daySteps.map((st, sidx) => {
+                                const illusType = getStepIllustrationType(st.titleKo, '3NIGHTS');
+                                return (
+                                  <div key={sidx} className="relative group text-left space-y-2">
+                                    <div className="absolute -left-[28px] sm:-left-[32px] top-1 w-6 h-6 rounded-md bg-[#0A2540] text-white flex items-center justify-center text-xs font-mono font-bold shadow-2xs">
+                                      {sidx + 1}
+                                    </div>
+
+                                    <div className="bg-white p-4 rounded-lg border border-[#E5E2DC] space-y-2 text-left">
+                                      <div className="flex items-center justify-between gap-3">
+                                        <h5 className="text-sm font-bold text-[#11161B] leading-snug">
+                                          <span>{language === 'KR' ? st.titleKo : st.titleEn}</span>
+                                        </h5>
+                                        <div className="p-1 rounded-md bg-[#FBFBF9] border border-[#E5E2DC] shrink-0 text-[#4A5568]">
+                                          <ElegantIllustration type={illusType} size="sm" className="w-5 h-5 stroke-[1.8]" />
+                                        </div>
+                                      </div>
+
+                                      <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
+                                        {language === 'KR' ? st.descKo : st.descEn}
+                                      </p>
+
+                                      {st.stationInfoKo && (
+                                        <div className="mt-2 text-xs font-medium text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1 rounded-md border border-[#E5E2DC] max-w-max flex items-center gap-1.5">
+                                          <Train className="w-3.5 h-3.5 text-[#0A2540]" />
+                                          <span>{language === 'KR' ? st.stationInfoKo : st.stationInfoEn}</span>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Overall tip */}
+                    <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
+                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                        <Info className="w-4 h-4" />
+                      </div>
+                      <div className="space-y-1 text-left">
+                        <span className="text-[11px] font-mono font-bold text-[#0A2540] uppercase tracking-wider block">
+                          {language === 'KR' ? '3박 4일 여행 팁' : '3 NIGHTS TRAVEL TIP'}
+                        </span>
+                        <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
+                          {language === 'KR' ? course.overallTipKo : course.overallTipEn}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+
+              // -------------------------------------------------------------
+              // PAGE 5: 4 NIGHTS (4박)
+              // -------------------------------------------------------------
+              case '4NIGHTS':
+                return (
+                  <div className="space-y-6 animate-fade-in text-left">
+                    {/* Editorial Header */}
+                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-4">
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
+                            {language === 'KR' ? '4박 5일 코스' : '4 NIGHTS 5 DAYS'}
+                          </span>
+                          <span className="text-[#E5E2DC] text-xs font-mono">
+                            {language === 'KR' ? '추천 소요시간: 4박 5일' : 'Duration: 4 Nights 5 Days'}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => setMapModalOpen(true)}
+                          className="flex items-center gap-1.5 text-xs font-bold bg-white text-[#0A2540] hover:bg-[#FBFBF9] px-3 py-1.5 rounded-md border border-white transition-colors cursor-pointer shrink-0"
+                        >
+                          <Map className="w-4 h-4" />
+                          <span>{language === 'KR' ? '관광 지도 보기' : 'View Travel Map'}</span>
+                        </button>
+                      </div>
+
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
+                          {language === 'KR' ? '부산 보행 종합 선물세트 4박 5일 코스' : 'Comprehensive Barrier-Free Busan 4N5D Master Plan'}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[#E5E2DC] mt-2 font-normal leading-relaxed max-w-2xl">
+                          {language === 'KR' 
+                            ? '대중교통 광장 엘리베이터 탐방부터 유모차 전용 와이드 쉘터 개찰구 위치 가이드, 센텀시티 패밀리 아케이드 수영 강변 산책로 완벽 가이드입니다.' 
+                            : 'Targeting air-conditioned indoor mega malls, custom accessible subway gate numbers, and flat garden links.'}
+                        </p>
+                      </div>
                     </div>
 
                     {/* Vertical Day-by-Day Journey List */}
@@ -3174,43 +3022,53 @@ export default function BusanItinerariesView({
                         ];
 
                         return (
-                          <div key={dayNum} className="bg-white p-6 sm:p-8 rounded-3xl border border-sky-100 shadow-[0_4px_20px_rgba(14,165,233,0.02)] space-y-5 text-left">
-                            <h4 className="text-base sm:text-lg font-black text-sky-950 border-b border-sky-100/70 pb-3 flex items-center gap-2">
-                              <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-sky-50 text-sky-700 font-sans font-black text-xs">
-                                D{dayNum}
+                          <div key={dayNum} className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-5 text-left">
+                            <h4 className="text-base font-bold text-[#11161B] border-b border-[#E5E2DC] pb-3 flex items-center gap-2">
+                              <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0A2540] text-white font-mono font-bold text-xs">
+                                DAY {dayNum}
                               </span>
                               <span>
                                 {language === 'KR' 
-                                  ? `Day ${dayNum} (${dayTitlesKo[dayNum - 1]})` 
-                                  : `Day ${dayNum} (${dayTitlesEn[dayNum - 1]})`}
+                                  ? `${dayTitlesKo[dayNum - 1]}` 
+                                  : `${dayTitlesEn[dayNum - 1]}`}
                               </span>
                             </h4>
 
-                            <div className="relative pl-6 sm:pl-8 space-y-6 text-left">
-                              {/* Vertical Track lines */}
-                              <div className="absolute left-[11px] sm:left-[15px] top-3 bottom-3 w-0.5 border-l border-dashed border-sky-200"></div>
+                            <div className="relative pl-7 sm:pl-9 space-y-6 text-left">
+                              <div className="absolute left-[13px] sm:left-[17px] top-3 bottom-3 w-px bg-[#E5E2DC]"></div>
 
-                              {daySteps.map((st, sidx) => (
-                                <div key={sidx} className="relative group text-left">
-                                  {/* bullet number */}
-                                  <div className="absolute -left-[27px] sm:-left-[31px] top-0.5 w-6 h-6 rounded-full bg-sky-50 border border-sky-200 flex items-center justify-center text-[10px] font-black text-sky-700 shadow-xs font-mono group-hover:bg-sky-500 group-hover:text-white group-hover:border-sky-500 transition-all">
-                                    {sidx + 1}
-                                  </div>
+                              {daySteps.map((st, sidx) => {
+                                const illusType = getStepIllustrationType(st.titleKo, '4NIGHTS');
+                                return (
+                                  <div key={sidx} className="relative group text-left space-y-2">
+                                    <div className="absolute -left-[28px] sm:-left-[32px] top-1 w-6 h-6 rounded-md bg-[#0A2540] text-white flex items-center justify-center text-xs font-mono font-bold shadow-2xs">
+                                      {sidx + 1}
+                                    </div>
 
-                                  <div className="space-y-1">
-                                    <h5 className="text-sm font-black text-stone-850 flex flex-wrap items-center gap-1 leading-snug">
-                                      <span className="text-sky-600 font-extrabold mr-1">➔</span>
-                                      <span>{language === 'KR' ? st.titleKo : st.titleEn}</span>
-                                    </h5>
-                                    <p className="text-xs sm:text-sm text-stone-500 font-semibold leading-relaxed">{language === 'KR' ? st.descKo : st.descEn}</p>
-                                    {st.stationInfoKo && (
-                                      <div className="mt-1.5 text-[10px] font-bold text-sky-850 bg-sky-50/50 px-2.5 py-0.5 rounded border border-sky-100 max-w-max">
-                                        🚇 {language === 'KR' ? st.stationInfoKo : st.stationInfoEn}
+                                    <div className="bg-white p-4 rounded-lg border border-[#E5E2DC] space-y-2 text-left">
+                                      <div className="flex items-center justify-between gap-3">
+                                        <h5 className="text-sm font-bold text-[#11161B] leading-snug">
+                                          <span>{language === 'KR' ? st.titleKo : st.titleEn}</span>
+                                        </h5>
+                                        <div className="p-1 rounded-md bg-[#FBFBF9] border border-[#E5E2DC] shrink-0 text-[#4A5568]">
+                                          <ElegantIllustration type={illusType} size="sm" className="w-5 h-5 stroke-[1.8]" />
+                                        </div>
                                       </div>
-                                    )}
+
+                                      <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
+                                        {language === 'KR' ? st.descKo : st.descEn}
+                                      </p>
+
+                                      {st.stationInfoKo && (
+                                        <div className="mt-2 text-xs font-medium text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1 rounded-md border border-[#E5E2DC] max-w-max flex items-center gap-1.5">
+                                          <Train className="w-3.5 h-3.5 text-[#0A2540]" />
+                                          <span>{language === 'KR' ? st.stationInfoKo : st.stationInfoEn}</span>
+                                        </div>
+                                      )}
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
+                                );
+                              })}
                             </div>
                           </div>
                         );
@@ -3218,15 +3076,15 @@ export default function BusanItinerariesView({
                     </div>
 
                     {/* Overall tip banner */}
-                    <div className="bg-sky-500/[0.03] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-2xl border border-sky-100">
-                      <div className="p-2 rounded-xl bg-sky-100 text-sky-700 shrink-0 mt-0.5">
-                        <Info className="w-4 h-4 text-sky-700 shrink-0" />
+                    <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
+                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                        <Info className="w-4 h-4" />
                       </div>
-                      <div className="space-y-1 select-none text-left">
-                        <span className="text-[10.5px] font-black text-sky-850 uppercase tracking-wide">
-                          {language === 'KR' ? '🏠 장기 체류 전용 이동 꿀팁!' : '🏠 DEEP ACCESSIBLE STAY TRAVEL TIP'}
+                      <div className="space-y-1 text-left">
+                        <span className="text-[11px] font-mono font-bold text-[#0A2540] uppercase tracking-wider block">
+                          {language === 'KR' ? '4박 5일 여행 팁' : '4 NIGHTS TRAVEL TIP'}
                         </span>
-                        <p className="text-xs sm:text-sm text-blue-900/80 leading-relaxed font-semibold">
+                        <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
                           {language === 'KR' ? course.overallTipKo : course.overallTipEn}
                         </p>
                       </div>
