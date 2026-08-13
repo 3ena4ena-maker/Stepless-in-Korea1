@@ -182,7 +182,7 @@ export default function App() {
   const [activePathFilter, setActivePathFilter] = useState<'ALL' | 'ACCESSIBLE' | 'CARRY'>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedItineraryCategory, setSelectedItineraryCategory] = useState<string | null>(null);
-  const [tipsSubPage, setTipsSubPage] = useState<'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule'>('index');
+  const [tipsSubPage, setTipsSubPage] = useState<'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule' | 'community'>('index');
   const [activeRegionPage, setActiveRegionPage] = useState<'LINE1' | 'LINE2' | null>(null);
   const [siteSubPage, setSiteSubPage] = useState<'about' | 'privacy' | 'terms' | 'contact' | 'data-source'>('about');
   
@@ -1123,13 +1123,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-800 font-sans antialiased pb-24 md:pb-12 flex flex-col justify-between">
+    <div className="min-h-screen bg-[#FBFBF9] text-[#11161B] font-sans antialiased pb-24 md:pb-12 flex flex-col justify-between">
       <div>
         {/* Toast Notification Banner */}
         {toastMessage && (
-          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[9999] bg-slate-900/95 text-white border border-slate-700/80 px-5 py-3 rounded-2xl shadow-2xl backdrop-blur-md flex items-center gap-3 animate-fade-in transition-all">
+          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[9999] bg-[#11161B] text-white border border-slate-700/80 px-5 py-3 rounded-xl shadow-2xl backdrop-blur-md flex items-center gap-3 animate-fade-in transition-all">
             <span className="text-xl shrink-0">🛠️</span>
-            <span className="text-xs sm:text-sm font-extrabold tracking-tight">{toastMessage}</span>
+            <span className="text-xs sm:text-sm font-semibold tracking-tight">{toastMessage}</span>
           </div>
         )}
 

@@ -77,8 +77,8 @@ interface BusanItinerariesViewProps {
   initialCategory?: CategoryType | null;
   onBack?: () => void;
   onSelectCategory?: (category: CategoryType) => void;
-  tipsSubPage?: 'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule';
-  setTipsSubPage?: (page: 'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule') => void;
+  tipsSubPage?: 'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule' | 'community';
+  setTipsSubPage?: (page: 'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule' | 'community') => void;
   activeRegionPage?: 'LINE1' | 'LINE2' | null;
   setActiveRegionPage?: (region: 'LINE1' | 'LINE2' | null) => void;
   onSelectStation?: (stationId: string, exitNum?: string) => void;
@@ -1156,9 +1156,13 @@ export default function BusanItinerariesView({
   setActiveRegionPage: propSetActiveRegionPage,
   onSelectStation
 }: BusanItinerariesViewProps) {
-  // Navigation Section: 'SELECTION' (cute entry) | 'RECOMMENDATIONS' (itineraries list) | 'TRANSIT_TIPS' (transit guide) | 'SCHEDULE' (events)
-  const [activeSection, setActiveSection] = useState<'SELECTION' | 'RECOMMENDATIONS' | 'TRANSIT_TIPS' | 'SCHEDULE'>(
-    initialCategory ? 'RECOMMENDATIONS' : (tipsSubPage === 'schedule' ? 'SCHEDULE' : 'SELECTION')
+  // Navigation Section: 'SELECTION' (Travel Tips Hub) | 'TRANSIT_TIPS' (transit guide) | 'RECOMMENDATIONS' (itineraries list) | 'SCHEDULE' (events) | 'COMMUNITY' (live tips)
+  const [activeSection, setActiveSection] = useState<'SELECTION' | 'TRANSIT_TIPS' | 'RECOMMENDATIONS' | 'SCHEDULE' | 'COMMUNITY'>(
+    tipsSubPage === 'courses' ? 'RECOMMENDATIONS' :
+    tipsSubPage === 'schedule' ? 'SCHEDULE' :
+    tipsSubPage === 'community' ? 'COMMUNITY' :
+    (tipsSubPage === 'transit' || tipsSubPage === 'child-free' || tipsSubPage === 'taxi' || tipsSubPage === 'transfer') ? 'TRANSIT_TIPS' :
+    (initialCategory ? 'RECOMMENDATIONS' : 'SELECTION')
   );
 
   // Initially activeCategory defaults to initialCategory or null (Category Overview)
@@ -1168,30 +1172,33 @@ export default function BusanItinerariesView({
   const [selectedDurationFilter, setSelectedDurationFilter] = useState<'ALL' | 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS'>('ALL');
   const [overviewSearchQuery, setOverviewSearchQuery] = useState<string>('');
 
-  const navigateToSubPage = (page: 'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule') => {
+  const navigateToSubPage = (page: 'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule' | 'community') => {
     if (setTipsSubPage) {
       if (page === 'transfer') {
         setTipsSubPage('transit');
       } else {
         setTipsSubPage(page);
       }
-    } else {
-      if (page === 'index') {
-        setActiveSection('SELECTION');
-      } else if (page === 'courses') {
-        setActiveSection('RECOMMENDATIONS');
-      } else if (page === 'transit' || page === 'transfer') {
-        setActiveSection('TRANSIT_TIPS');
-        setTransitSection('SUBMENU');
-      } else if (page === 'child-free') {
-        setActiveSection('TRANSIT_TIPS');
-        setTransitSection('CHILD_FREE');
-      } else if (page === 'taxi') {
-        setActiveSection('TRANSIT_TIPS');
-        setTransitSection('TAXI');
-      } else if (page === 'schedule') {
-        setActiveSection('SCHEDULE');
-      }
+    }
+    
+    if (page === 'index') {
+      setActiveSection('SELECTION');
+      setActiveCategory(null);
+    } else if (page === 'courses') {
+      setActiveSection('RECOMMENDATIONS');
+    } else if (page === 'transit' || page === 'transfer') {
+      setActiveSection('TRANSIT_TIPS');
+      setTransitSection('SUBMENU');
+    } else if (page === 'child-free') {
+      setActiveSection('TRANSIT_TIPS');
+      setTransitSection('CHILD_FREE');
+    } else if (page === 'taxi') {
+      setActiveSection('TRANSIT_TIPS');
+      setTransitSection('TAXI');
+    } else if (page === 'schedule') {
+      setActiveSection('SCHEDULE');
+    } else if (page === 'community') {
+      setActiveSection('COMMUNITY');
     }
   };
 
@@ -1207,7 +1214,9 @@ export default function BusanItinerariesView({
     if (!tipsSubPage) return;
     if (tipsSubPage === 'index') {
       setActiveSection('SELECTION');
-      setActiveCategory(initialCategory || null);
+      if (!initialCategory) {
+        setActiveCategory(null);
+      }
     } else if (tipsSubPage === 'courses') {
       setActiveSection('RECOMMENDATIONS');
       setActiveCategory(prev => (prev !== undefined ? prev : (initialCategory || null)));
@@ -1225,6 +1234,8 @@ export default function BusanItinerariesView({
       setTransitSection('SUBMENU');
     } else if (tipsSubPage === 'schedule') {
       setActiveSection('SCHEDULE');
+    } else if (tipsSubPage === 'community') {
+      setActiveSection('COMMUNITY');
     }
   }, [tipsSubPage, initialCategory]);
 
@@ -1630,256 +1641,199 @@ export default function BusanItinerariesView({
         }
       `}</style>
 
-      {/* SUB-TABS PILLED TOGGLE CONTROLLER (Only visible when NOT in SELECTION view) */}
+      {/* Top Breadcrumb & Back Bar for Detailed Views */}
       {activeSection !== 'SELECTION' && (
-        <div className="bg-white p-2 sm:p-4 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-[0_4px_15px_rgba(0,0,0,0.02)] flex flex-row items-center justify-between gap-2 sm:gap-4 animate-fade-in">
-          {/* Back btn */}
+        <div className="flex items-center justify-between gap-4 pb-4 mb-6 border-b border-[#E5E2DC] font-sans text-left">
           <button
-            onClick={() => {
-              if (activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU') {
-                navigateToSubPage('transit');
-              } else {
-                navigateToSubPage('index');
-                if (onSelectCategory) {
-                  onSelectCategory(null);
-                } else {
-                  setActiveCategory(null);
-                }
-              }
-            }}
-            className="flex items-center gap-1 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-[10px] sm:text-xs font-black text-slate-500 hover:text-[#004481] hover:bg-slate-50 active:scale-95 transition-all shrink-0 cursor-pointer border border-slate-100"
+            type="button"
+            onClick={() => navigateToSubPage('index')}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#F1EFEC] hover:bg-[#E5E2DC] text-[#0A2540] font-bold text-xs sm:text-sm transition-all cursor-pointer border border-[#E5E2DC]"
           >
-            <span>◀</span>
-            <span className="hidden sm:inline">
-              {activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU'
-                ? (language === 'KR' ? '이용 팁 목록' : 'Back to Transit Tips')
-                : (language === 'KR' ? '추천/이용팁 메인' : 'Back to Main')}
-            </span>
-            <span className="sm:hidden">
-              {activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU'
-                ? (language === 'KR' ? '목록' : 'List')
-                : (language === 'KR' ? '메인' : 'Main')}
+            <ArrowLeft className="w-4 h-4" />
+            <span>
+              {language === 'KR' ? '여행 팁 허브로 돌아가기' : 'Back to Travel Tips Hub'}
             </span>
           </button>
 
-          {/* Triple Pill Sub-tab Controller */}
-          <div className="bg-slate-50/80 p-0.5 sm:p-1 rounded-xl sm:rounded-2xl border border-slate-100 flex gap-0.5 sm:gap-1 flex-1 max-w-[340px] sm:max-w-md">
-            <button
-              onClick={() => {
-                navigateToSubPage('transit');
-                if (onSelectCategory) {
-                  onSelectCategory(null);
-                } else {
-                  setActiveCategory(null);
-                }
-              }}
-              className={`flex-1 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-black transition-all duration-200 flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer ${
-                activeSection === 'TRANSIT_TIPS'
-                  ? 'bg-[#004481] text-white shadow-sm'
-                  : 'text-slate-500 hover:text-slate-850 hover:bg-slate-100/50'
-              }`}
-            >
-              <span>🚇</span>
-              <span className="text-[10px] sm:text-xs font-black">{language === 'KR' ? '교통 팁' : 'Transit'}</span>
-            </button>
-            <button
-              onClick={() => {
-                navigateToSubPage('courses');
-                if (onSelectCategory) {
-                  onSelectCategory(null);
-                } else {
-                  setActiveCategory(null);
-                }
-              }}
-              className={`flex-1 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-black transition-all duration-200 flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer ${
-                activeSection === 'RECOMMENDATIONS'
-                  ? 'bg-[#004481] text-white shadow-sm'
-                  : 'text-slate-500 hover:text-slate-850 hover:bg-slate-100/50'
-              }`}
-            >
-              <span>🏖️</span>
-              <span className="text-[10px] sm:text-xs font-black">{language === 'KR' ? '여행 추천' : 'Trip'}</span>
-            </button>
-            <button
-              onClick={() => {
-                navigateToSubPage('schedule');
-                if (onSelectCategory) {
-                  onSelectCategory(null);
-                } else {
-                  setActiveCategory(null);
-                }
-              }}
-              className={`flex-1 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-black transition-all duration-200 flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer ${
-                activeSection === 'SCHEDULE'
-                  ? 'bg-[#004481] text-white shadow-sm'
-                  : 'text-slate-500 hover:text-slate-850 hover:bg-slate-100/50'
-              }`}
-            >
-              <span>📅</span>
-              <span className="text-[10px] sm:text-xs font-black">{language === 'KR' ? '주요일정' : 'Schedule'}</span>
-            </button>
+          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-[#4A5568]">
+            <span>{language === 'KR' ? '여행 팁' : 'Travel Tips'}</span>
+            <span>/</span>
+            <span className="font-bold text-[#11161B]">
+              {activeSection === 'TRANSIT_TIPS' && (language === 'KR' ? '대중교통 이용 팁' : 'Public Transit Tips')}
+              {activeSection === 'RECOMMENDATIONS' && (language === 'KR' ? '여행 코스 추천' : 'Recommended Itineraries')}
+              {activeSection === 'SCHEDULE' && (language === 'KR' ? '부산 주요 일정표' : 'Busan Events & Schedule')}
+              {activeSection === 'COMMUNITY' && (language === 'KR' ? '실시간 부산 여행 팁 커뮤니티' : 'Live Busan Travel Tips')}
+            </span>
           </div>
         </div>
       )}
 
       {/* ========================================================================= */}
-      {/* VIEW 1: SELECTION DASHBOARD (Highly customized, adorable, dynamic entry)  */}
+      {/* VIEW 1: TRAVEL TIPS HUB OVERVIEW (부산 여행에 대한 모든 것)                 */}
       {/* ========================================================================= */}
       {activeSection === 'SELECTION' && (
-        <div className="space-y-2.5 sm:space-y-4 animate-fade-in text-center py-0.5">
-          {/* Extremely Clean, Professional & Playful Compact Header (No surrounding box container) */}
-          <div className="text-center max-w-2xl mx-auto space-y-0.5 sm:space-y-1.5 relative py-0.5">
-            <span className="bg-[#004481] text-white border border-slate-900 text-[8px] sm:text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest inline-block shadow-[1px_1px_0px_0px_rgba(15,23,42,1)]">
-              BUSAN TRAVEL PORTAL
-            </span>
-            <h2 className="text-base sm:text-lg font-black font-heading text-slate-900 tracking-tight leading-tight">
-               {language === 'KR' ? '부산 여행에 대한 모든 것' : 'All About Busan Travel'}
+        <div className="space-y-6 sm:space-y-8 animate-fade-in text-left font-sans">
+          {/* Header Banner */}
+          <div className="space-y-2 pt-1 pb-2 sm:pb-3">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#11161B] tracking-tight">
+              {language === 'KR' ? '부산 여행을 더 편하게' : 'Travel Busan More Comfortably'}
             </h2>
-            <p className="text-[10px] sm:text-xs font-semibold text-slate-500 max-w-lg mx-auto">
-               {language === 'KR' 
-                ? '네이버 지도를 기준으로 장소 정보를 제공합니다' 
-                : 'We provide place details based on Naver Map.'}
+            <p className="text-sm sm:text-base text-[#4A5568] leading-relaxed max-w-3xl break-keep">
+              {language === 'KR' 
+                ? '부산을 여행하기 전에 알아두면 좋은 정보부터 현지인이 추천하는 여행 코스까지 한곳에서 확인하세요.' 
+                : 'From useful tips to know before your trip to locally recommended itineraries, find everything you need for a more comfortable journey through Busan.'}
             </p>
-            
-            <div className="flex items-center justify-center gap-1.5 text-[9px] sm:text-[10px] font-bold text-slate-600 mx-auto pt-0.5">
-              <span className="relative flex h-1 w-1 sm:h-1.5 sm:w-1.5 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-1 w-1 sm:h-1.5 sm:w-1.5 bg-emerald-500"></span>
-              </span>
-              <span>{language === 'KR' ? '⚙️ 더 정확한 정보를 위해 업데이트 중' : '⚙️ Updating constantly for accurate tips'}</span>
-            </div>
           </div>
 
-          {/* MAIN MENU BUTTON CARDS in beautiful flat illustration style */}
-          <div className="space-y-3 sm:space-y-4 max-w-2xl mx-auto" id="tips-main-menu-selection">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 pt-0.5">
-              {/* Card 1: SUBWAY PUBLIC TRANSIT TIPS */}
-              <div
-                onClick={() => navigateToSubPage('transit')}
-                className="group bg-white p-4 sm:p-5 rounded-2xl border-2 border-slate-900 hover:bg-slate-50 cursor-pointer shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 flex flex-col justify-between text-left relative overflow-hidden"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 rounded-full bg-[#004481] border-2 border-slate-900 flex items-center justify-center text-white shadow-[1.5px_1.5px_0px_0px_rgba(15,23,42,1)] shrink-0 group-hover:scale-105 transition-transform">
-                        <Train className="w-5 h-5 stroke-[2.5]" />
-                      </div>
-                      <div>
-                        <span className="bg-slate-100 text-slate-700 border border-slate-200 text-[8px] font-black px-1.5 py-0.2 rounded-md uppercase tracking-wider block w-max mb-0.5">
-                          TRANSIT
-                        </span>
-                        <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-tight">
-                          {language === 'KR' ? '대중교통 이용 팁' : 'Public Transport Tips'}
-                        </h3>
-                      </div>
-                    </div>
-                    <div className="w-7 h-7 rounded-full bg-white border-2 border-slate-900 flex items-center justify-center font-black text-slate-900 text-xs shadow-[1.5px_1.5px_0px_0px_rgba(15,23,42,1)] shrink-0">
-                      ➔
-                    </div>
-                  </div>
-                  <p className="text-[11px] sm:text-xs text-slate-600 font-bold leading-normal pr-1">
-                    {language === 'KR'
-                      ? '부산 지하철 노선 요약부터 어린이 무료 대중교통 이용 방법, 30분 무료 환승 요령까지 완벽 정리'
-                      : 'Interactive charts, maps, and professional strategies for senior companions, strollers or wheelchair navigations.'}
-                  </p>
-                </div>
-              </div>
-
-              {/* Card 2: BUSAN TRAVEL RECOMMENDATIONS */}
-              <div
-                onClick={() => navigateToSubPage('courses')}
-                className="group bg-white p-4 sm:p-5 rounded-2xl border-2 border-slate-900 hover:bg-slate-50 cursor-pointer shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 flex flex-col justify-between text-left relative overflow-hidden"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 rounded-full bg-[#004481] border-2 border-slate-900 flex items-center justify-center text-white shadow-[1.5px_1.5px_0px_0px_rgba(15,23,42,1)] shrink-0 group-hover:scale-105 transition-transform">
-                        <Compass className="w-5 h-5 stroke-[2.5]" />
-                      </div>
-                      <div>
-                        <span className="bg-slate-100 text-slate-700 border border-slate-200 text-[8px] font-black px-1.5 py-0.2 rounded-md uppercase tracking-wider block w-max mb-0.5">
-                          COURSE
-                        </span>
-                        <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-tight">
-                          {language === 'KR' ? '여행 코스 추천' : 'Travel Course Recommendations'}
-                        </h3>
-                      </div>
-                    </div>
-                    <div className="w-7 h-7 rounded-full bg-white border-2 border-slate-900 flex items-center justify-center font-black text-slate-900 text-xs shadow-[1.5px_1.5px_0px_0px_rgba(15,23,42,1)] shrink-0">
-                      ➔
-                    </div>
-                  </div>
-                  <p className="text-[11px] sm:text-xs text-slate-600 font-bold leading-normal pr-1">
-                    {language === 'KR' 
-                      ? '현지인이 발로 뛰며 검증하고 설계한 힐링 및 테마 코스 추천'
-                      : 'Discover fine handcrafted day trips, scenic coastal walks, delicious gastronomy guides and historic viewpoints.'}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3: BUSAN MAJOR EVENTS CALENDAR - Placed directly below Transit Tips & Travel Course Recommendations */}
+          {/* 4 Category Entry Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            
+            {/* Card 1: 대중교통 이용 팁 */}
             <div
-              onClick={() => navigateToSubPage('schedule')}
-              className="group bg-white p-4 sm:p-5 rounded-2xl border-2 border-slate-900 hover:bg-slate-50 cursor-pointer shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 flex flex-col justify-between text-left relative overflow-hidden"
+              onClick={() => navigateToSubPage('transit')}
+              className="group bg-white p-6 rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left relative"
             >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
+              <div className="space-y-4">
+                <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-[#004481] border-2 border-slate-900 flex items-center justify-center text-white shadow-[1.5px_1.5px_0px_0px_rgba(15,23,42,1)] shrink-0 group-hover:scale-105 transition-transform">
-                      <Calendar className="w-5 h-5 stroke-[2.5]" />
+                    <div className="w-12 h-12 rounded-lg bg-[#0A2540] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                      <Train className="w-6 h-6" />
                     </div>
                     <div>
-                      <span className="bg-slate-100 text-slate-700 border border-slate-200 text-[8px] font-black px-1.5 py-0.2 rounded-md uppercase tracking-wider block w-max mb-0.5">
-                        SCHEDULE & EVENTS
+                      <span className="text-[10px] font-mono font-bold text-[#0A2540] uppercase tracking-wider block">
+                        TRANSIT GUIDE
                       </span>
-                      <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-tight">
-                        {language === 'KR' ? '부산 주요일정표' : 'Busan Major Schedule'}
+                      <h3 className="text-lg font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors">
+                        {language === 'KR' ? '대중교통 이용 팁' : 'Public Transit Tips'}
                       </h3>
                     </div>
                   </div>
-                  <div className="w-7 h-7 rounded-full bg-white border-2 border-slate-900 flex items-center justify-center font-black text-slate-900 text-xs shadow-[1.5px_1.5px_0px_0px_rgba(15,23,42,1)] shrink-0">
-                    ➔
-                  </div>
+                  <ArrowRight className="w-5 h-5 text-[#718096] group-hover:text-[#0A2540] group-hover:translate-x-1 transition-all shrink-0 mt-1" />
                 </div>
-                <p className="text-[11px] sm:text-xs text-slate-600 font-bold leading-normal pr-1">
+
+                <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
                   {language === 'KR'
-                    ? '부산 대표 불꽃축제, 드론쇼, 월별 축제 및 시즌별 주요일정표와 연계 지하철역 출구 정보'
-                    : 'Explore monthly major festivals, seasonal events calendar, and station exit connections.'}
+                    ? '부산 지하철 노선 요약부터 어린이 무료 대중교통 이용 방법, 30분 무료 환승 요령 등 여행에 필요한 교통 정보를 제공합니다.'
+                    : 'Subway line summaries, child-free transit rules, 30-minute transfer hacks, and essential transport tips for Busan.'}
                 </p>
               </div>
-            </div>
-          </div>
 
-          {/* Adorable Reddit Community Shortcut Banner - Styled matching flat design */}
-          <div className="max-w-2xl mx-auto pt-1">
+              <div className="mt-5 pt-3 border-t border-[#F1EFEC] flex items-center justify-between text-xs font-bold text-[#0A2540]">
+                <span>{language === 'KR' ? '교통가이드 보기' : 'View Transit Guide'}</span>
+                <span>➔</span>
+              </div>
+            </div>
+
+            {/* Card 2: 여행 코스 추천 */}
+            <div
+              onClick={() => navigateToSubPage('courses')}
+              className="group bg-white p-6 rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left relative"
+            >
+              <div className="space-y-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-lg bg-[#0A2540] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                      <Compass className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-mono font-bold text-[#0A2540] uppercase tracking-wider block">
+                        RECOMMENDED ITINERARIES
+                      </span>
+                      <h3 className="text-lg font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors">
+                        {language === 'KR' ? '여행 코스 추천' : 'Travel Course Recommendations'}
+                      </h3>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-[#718096] group-hover:text-[#0A2540] group-hover:translate-x-1 transition-all shrink-0 mt-1" />
+                </div>
+
+                <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
+                  {language === 'KR'
+                    ? '현지인이 직접 확인하고 설계한 힐링 및 테마 코스를 추천합니다.'
+                    : 'Handcrafted day trips, coastal walks, gourmet food trails, and scenic itineraries verified by locals.'}
+                </p>
+              </div>
+
+              <div className="mt-5 pt-3 border-t border-[#F1EFEC] flex items-center justify-between text-xs font-bold text-[#0A2540]">
+                <span>{language === 'KR' ? '추천 코스 탐색하기' : 'Explore Itineraries'}</span>
+                <span>➔</span>
+              </div>
+            </div>
+
+            {/* Card 3: 부산 주요 일정표 */}
+            <div
+              onClick={() => navigateToSubPage('schedule')}
+              className="group bg-white p-6 rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left relative"
+            >
+              <div className="space-y-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-lg bg-[#0A2540] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                      <Calendar className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-mono font-bold text-[#0A2540] uppercase tracking-wider block">
+                        EVENTS & FESTIVALS
+                      </span>
+                      <h3 className="text-lg font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors">
+                        {language === 'KR' ? '부산 주요 일정표' : 'Busan Major Schedule'}
+                      </h3>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-[#718096] group-hover:text-[#0A2540] group-hover:translate-x-1 transition-all shrink-0 mt-1" />
+                </div>
+
+                <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
+                  {language === 'KR'
+                    ? '부산의 주요 축제, 드론쇼, 불꽃축제 등 여행 일정과 연계할 수 있는 주요 행사를 안내합니다.'
+                    : 'Explore monthly major festivals, drone shows, fireworks calendar, and station exit connections.'}
+                </p>
+              </div>
+
+              <div className="mt-5 pt-3 border-t border-[#F1EFEC] flex items-center justify-between text-xs font-bold text-[#0A2540]">
+                <span>{language === 'KR' ? '일정표 확인하기' : 'View Event Schedule'}</span>
+                <span>➔</span>
+              </div>
+            </div>
+
+            {/* Card 4: 실시간 부산 여행 팁 커뮤니티 */}
             <a
               href="https://www.reddit.com/r/BusanTravelTips/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col sm:flex-row items-center justify-between gap-3 p-4 sm:px-6 sm:py-4 bg-white border-2 border-slate-900 rounded-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 cursor-pointer text-left"
+              className="group bg-white p-6 rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left relative block"
             >
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                <div className="w-11 h-11 rounded-full bg-[#004481] border-2 border-slate-900 flex items-center justify-center text-white shadow-[1.5px_1.5px_0px_0px_rgba(15,23,42,1)] shrink-0 group-hover:scale-105 transition-transform">
-                  <MessageSquare className="w-5.5 h-5.5 stroke-[2.5]" />
+              <div className="space-y-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-lg bg-[#0A2540] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                      <MessageSquare className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-mono font-bold text-[#0A2540] uppercase tracking-wider block">
+                        COMMUNITY & REDDIT
+                      </span>
+                      <h3 className="text-lg font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors">
+                        {language === 'KR' ? '실시간 부산 여행 팁 커뮤니티' : 'Live Busan Travel Tips & Q&A'}
+                      </h3>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-[#718096] group-hover:text-[#0A2540] group-hover:translate-x-1 transition-all shrink-0 mt-1" />
                 </div>
-                <div className="space-y-0.5">
-                  <h4 className="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2 leading-none">
-                    <span>{language === 'KR' ? '실시간 부산 여행 팁 커뮤니티' : 'Live Busan Travel Tips & Q&A'}</span>
-                    <span className="text-[9px] bg-slate-100 text-slate-700 border border-slate-200 font-black px-1.5 py-0.2 rounded-md uppercase tracking-wider select-none shrink-0">Reddit</span>
-                  </h4>
-                  <p className="text-[11px] text-slate-600 font-semibold leading-relaxed">
-                    {language === 'KR'
-                      ? 'r/BusanTravelTips 레딧 커뮤니티에서 유용한 현지 여행 이야기를 나누어보세요!'
-                      : 'Join our friendly r/BusanTravelTips community on Reddit to ask questions and read local tips.'}
-                  </p>
-                </div>
+
+                <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
+                  {language === 'KR'
+                    ? '레딧에서 부산 현지 여행자와 주민들이 실시간으로 주고받는 질문과 답변, 이동 꿀팁 및 현장 상황을 확인해 보세요.'
+                    : 'Check out real-time Q&As, local transport tips, and field updates shared by travelers and locals on Reddit.'}
+                </p>
               </div>
-              <div className="flex items-center gap-1 bg-[#004481] hover:bg-[#003566] text-white border-2 border-slate-900 text-xs font-black px-3.5 py-2 rounded-xl transition-all self-stretch sm:self-center justify-center shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] whitespace-nowrap">
-                <span>{language === 'KR' ? '레딧 바로가기' : 'Explore Reddit'}</span>
-                <span className="text-xs font-black">➔</span>
+
+              <div className="mt-5 pt-3 border-t border-[#F1EFEC] flex items-center justify-between text-xs font-bold text-[#0A2540]">
+                <span>{language === 'KR' ? '커뮤니티 이동하기' : 'Visit Community'}</span>
+                <span>➔</span>
               </div>
             </a>
+
           </div>
         </div>
       )}
@@ -5178,6 +5132,95 @@ export default function BusanItinerariesView({
             language={language} 
             onSelectStation={onSelectStation}
           />
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* VIEW 5: LIVE BUSAN TRAVEL TIPS COMMUNITY                                 */}
+      {/* ========================================================================= */}
+      {activeSection === 'COMMUNITY' && (
+        <div className="space-y-6 animate-fade-in text-left font-sans">
+          <div className="bg-white border border-[#E5E2DC] rounded-lg p-6 sm:p-8 space-y-6">
+            <div className="space-y-2">
+              <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
+                {language === 'KR' ? '실시간 커뮤니티' : 'LIVE TRAVEL COMMUNITY'}
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#11161B] tracking-tight">
+                {language === 'KR' ? '실시간 부산 여행 팁 & Q&A' : 'Live Busan Travel Tips & Q&A'}
+              </h2>
+              <p className="text-sm text-[#4A5568] leading-relaxed max-w-2xl">
+                {language === 'KR'
+                  ? '부산 현지 여행자와 주민들이 실시간으로 주고받는 질문과 답변, 이동 꿀팁 및 현장 상황을 확인해 보세요.'
+                  : 'Explore real-time questions, local travel advice, and field updates shared by Busan travelers and locals.'}
+              </p>
+            </div>
+
+            {/* Official Reddit Banner */}
+            <div className="border border-[#E5E2DC] rounded-lg p-6 bg-[#FBFBF9] hover:border-[#0A2540] transition-colors flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="space-y-2 max-w-xl">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-[#11161B] text-base">
+                    {language === 'KR' ? 'r/BusanTravelTips 레딧 커뮤니티' : 'r/BusanTravelTips Reddit Community'}
+                  </span>
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#E5E2DC] text-[#0A2540]">
+                    Official
+                  </span>
+                </div>
+                <p className="text-xs text-[#4A5568] leading-relaxed">
+                  {language === 'KR'
+                    ? '부산 지하철 엘리베이터 상태, 날씨별 추천 경로, 로컬 식도락 정보를 레딧 커뮤니티에서 자유롭게 이야기해 보세요.'
+                    : 'Ask questions about station accessibility, weather routes, and local food spots in our Reddit forum.'}
+                </p>
+              </div>
+
+              <a
+                href="https://www.reddit.com/r/BusanTravelTips/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-3 rounded-md bg-[#11161B] hover:bg-[#0A2540] text-white font-semibold text-xs transition-colors whitespace-nowrap cursor-pointer flex items-center gap-2 shrink-0"
+              >
+                <span>{language === 'KR' ? '레딧 커뮤니티 방문하기' : 'Visit Reddit Community'}</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+
+            {/* Live Tips Cards / Highlights */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-[#E5E2DC]">
+              <div className="p-5 rounded-lg border border-[#E5E2DC] space-y-2 bg-white">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-[#0A2540]">
+                    {language === 'KR' ? '현장 이동 팁' : 'Transit Hack'}
+                  </span>
+                  <span className="text-[10px] text-[#718096]">Updated Today</span>
+                </div>
+                <h3 className="font-bold text-[#11161B] text-sm">
+                  {language === 'KR' ? '서면역 환승 시 엘리베이터 직통 출구 활용법' : 'Seomyeon Station Elevator Transfer Direct Exit'}
+                </h3>
+                <p className="text-xs text-[#4A5568] leading-relaxed">
+                  {language === 'KR'
+                    ? '1호선과 2호선 환승 구역 중앙 게이트 부근 와이드 개찰구를 이용하시면 유모차 및 대형 캐리어 소지자도 계단 없이 편리하게 이동할 수 있습니다.'
+                    : 'Use the wide turnstiles near the central transfer gate for Lines 1 & 2 to move step-free with strollers and large suitcases.'}
+                </p>
+              </div>
+
+              <div className="p-5 rounded-lg border border-[#E5E2DC] space-y-2 bg-white">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-[#0A2540]">
+                    {language === 'KR' ? '우천 시 팁' : 'Rainy Day Route'}
+                  </span>
+                  <span className="text-[10px] text-[#718096]">Local Favorite</span>
+                </div>
+                <h3 className="font-bold text-[#11161B] text-sm">
+                  {language === 'KR' ? '비 오는 날 실내 무장애 코스' : 'Rainy Day Step-Free Indoor Experience'}
+                </h3>
+                <p className="text-xs text-[#4A5568] leading-relaxed">
+                  {language === 'KR'
+                    ? '비가 오는 날은 센텀시티 지하철 직통 연결 몰이나 영도 국립해양박물관의 실내 엘리베이터 동선을 활용하면 쾌적하게 여행할 수 있습니다.'
+                    : 'On rainy days, opt for Centum City direct subway mall connections or National Maritime Museum indoor elevators.'}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

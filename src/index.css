@@ -29,6 +29,7 @@ body {
   touch-action: manipulation;
   background-color: #f8fafc;
   color: #1e293b;
+  word-break: keep-all;
 }
 
 #root {

@@ -5,33 +5,24 @@ import {
   Luggage, 
   Compass, 
   ShieldCheck, 
-  MapPin, 
   Train, 
   ArrowRight, 
   AlertCircle,
   FileCheck,
   ChevronRight,
-  Utensils,
+  UtensilsCrossed,
   Building2,
-  Shield,
   CheckCircle2,
   UserCheck,
   Calendar,
-  ExternalLink,
-  FileText,
-  Lock,
-  Info,
-  Megaphone,
-  AlertTriangle,
-  Search,
-  X
+  AlertTriangle
 } from 'lucide-react';
-import { VerificationBadge } from './VerificationBadge';
 import { getTodayDateKR } from '../utils';
 import StationSearchBar from './StationSearchBar';
+import { DICTIONARY, Language } from '../i18n/dictionary';
 
 interface HomeOverviewSectionProps {
-  language?: 'KR' | 'EN';
+  language?: Language;
   onSelectStation: (stationId: string) => void;
   onNavigateToSearch?: (query?: string) => void;
   onNavigateToReport?: () => void;
@@ -52,7 +43,9 @@ export function HomeOverviewSection({
   setSearchQuery
 }: HomeOverviewSectionProps) {
   
-  // Highlight major stations for the "Station Guides" card carousel / grid
+  const d = DICTIONARY[language];
+
+  // Featured major stations
   const featuredStations = [
     { 
       id: 'seomyeon', 
@@ -80,172 +73,79 @@ export function HomeOverviewSection({
     },
   ];
 
-  // 3 Recommended Travel Courses directly linking to Gourmet, Experience & Museum, and Day Trip
+  // 4 Core Recommended Courses
   const recommendedCourses = [
     {
       id: 'GOURMET' as const,
-      title: language === 'KR' ? '식도락 로컬 미식 코스' : 'Gourmet Local Food Course',
-      tag: language === 'KR' ? '🍕 식도락 여행' : '🍕 Gourmet Travel',
-      desc: language === 'KR'
-        ? '원조 돼지국밥 노포부터 오션뷰 예쁜 카페, 씨앗호떡까지 입구가 평평하고 이동이 편리한 부산 미식 여행'
-        : 'Savor traditional pork soup, ocean view cafes, and sweet pancakes with barrier-free access.',
-      icon: <Utensils className="w-8 h-8 text-rose-600" />,
-      tagBg: 'bg-rose-50',
-      tagText: 'text-rose-700 border border-rose-200/60',
-      buttonBg: 'bg-slate-900 hover:bg-rose-700'
+      title: language === 'KR' ? '부산 맛집' : 'BUSAN FOOD GUIDE',
+      tag: d.categories.eat.tag,
+      desc: d.categories.eat.desc,
+      icon: <UtensilsCrossed className="w-6 h-6 text-[#0A2540]" />,
     },
     {
       id: 'EXPERIENCE' as const,
-      title: language === 'KR' ? '체험 & 박물관 문화 코스' : 'Experience & Museum Course',
-      tag: language === 'KR' ? '🏛️ 체험&박물관' : '🏛️ Culture & Museum',
+      title: language === 'KR' ? '체험 & 문화 공간' : 'CULTURE & MUSEUM',
+      tag: language === 'KR' ? '문화 체험' : 'CULTURE',
       desc: language === 'KR'
-        ? '국립해양박물관부터 부산시립미술관, F1963 복합문화공간까지 온 가족이 날씨 상관없이 엘리베이터로 즐기는 문화 체험'
+        ? '국립해양박물관부터 부산시립미술관까지 날씨 상관없이 엘리베이터로 편하게 즐기는 문화 공간'
         : 'Explore national maritime museums, art galleries, and cultural centers with step-free elevators.',
-      icon: <Building2 className="w-8 h-8 text-amber-600" />,
-      tagBg: 'bg-amber-50',
-      tagText: 'text-amber-800 border border-amber-200/60',
-      buttonBg: 'bg-slate-900 hover:bg-amber-800'
+      icon: <Building2 className="w-6 h-6 text-[#0A2540]" />,
     },
     {
       id: 'DAY' as const,
-      title: language === 'KR' ? '원스톱 당일치기 힐링 코스' : 'One-Day Essential Trip',
-      tag: language === 'KR' ? '🌿 당일치기' : '🌿 Day Trip',
-      desc: language === 'KR'
-        ? '부산역에서 출발해 원도심 감천문화마을·영도를 거쳐 광안리 야경까지 하루 만에 완벽하게 정복하는 알짜배기 코스'
-        : 'Cover historic downtown spots, Yeongdo cliffs, and Gwangalli night views in a single efficient day.',
-      icon: <Compass className="w-8 h-8 text-emerald-600" />,
-      tagBg: 'bg-emerald-50',
-      tagText: 'text-emerald-800 border border-emerald-200/60',
-      buttonBg: 'bg-slate-900 hover:bg-emerald-800'
+      title: language === 'KR' ? '추천 여행 코스' : 'RECOMMENDED ITINERARY',
+      tag: d.categories.explore.tag,
+      desc: d.categories.explore.desc,
+      icon: <Compass className="w-6 h-6 text-[#0A2540]" />,
     },
     {
       id: 'SUBWAY' as const,
-      title: language === 'KR' ? '부산 도시철도 1·2호선 코스' : 'Busan Metro Lines 1 & 2 Course',
-      tag: language === 'KR' ? '🚇 도시철도 코스' : '🚇 Metro Course',
-      desc: language === 'KR'
-        ? '부산 지하철 1호선과 2호선 노선축을 따라 편리하게 이동하는 대표 명소, 맛집, 카페, 문화공간 코스'
-        : 'Explore top attractions, gourmet spots, cafes, and museums conveniently connected along Lines 1 & 2.',
-      icon: <Train className="w-8 h-8 text-orange-600" />,
-      tagBg: 'bg-orange-50',
-      tagText: 'text-orange-800 border border-orange-200/60',
-      buttonBg: 'bg-slate-900 hover:bg-orange-800'
+      title: language === 'KR' ? '지하철 무장애 코스' : 'METRO STEP-FREE ROUTE',
+      tag: d.categories.transit.tag,
+      desc: d.categories.transit.desc,
+      icon: <Train className="w-6 h-6 text-[#0A2540]" />,
     },
   ];
 
   return (
-    <div className="space-y-12 text-left font-sans text-slate-800" id="home-overview-section">
+    <div className="space-y-12 sm:space-y-16 text-left font-sans text-[#11161B]" id="home-overview-section">
       
       {/* ==========================================
-          1. HERO HEADER BANNER (Navy Box with integrated feature cards)
+          1. HERO SECTION (Editorial Layout)
          ========================================== */}
-      <section className="relative rounded-3xl overflow-hidden bg-[#0a192f] text-white p-6 sm:p-8 md:p-10 shadow-xl border border-slate-800">
-        <div className="absolute right-0 bottom-0 top-0 w-1/2 opacity-10 pointer-events-none hidden md:block bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-400 via-transparent to-transparent">
-          <Train className="w-full h-full p-12 text-blue-200" />
-        </div>
-
-        <div className="relative z-10 max-w-3xl space-y-4 sm:space-y-5">
-          <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3 sm:py-1 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-300 text-[11px] sm:text-xs font-mono font-bold tracking-wider uppercase">
-            <span>STEPLESS BUSAN TRANSIT</span>
+      <section className="relative pt-6 sm:pt-10 pb-10 sm:pb-16 border-b border-[#E5E2DC]">
+        <div className="max-w-4xl space-y-4 sm:space-y-6">
+          
+          {/* Eyebrow caption */}
+          <div className="inline-block text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
+            {d.hero.eyebrow}
           </div>
 
-          <h1 className="text-xl sm:text-3xl md:text-4xl font-black font-heading tracking-tight leading-tight text-white">
-            {language === 'KR' ? (
-              <>
-                계단 없는 부산 도시철도 <br className="hidden sm:inline" />
-                <span className="text-blue-400">스탭리스</span> 길잡이
-              </>
-            ) : (
-              <>
-                Step-Free Busan Metro <br className="hidden sm:inline" />
-                <span className="text-blue-400">Stepless</span> Travel Guide
-              </>
-            )}
+          {/* Main Title - Language Specific Typography Scale */}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-[#11161B] leading-[1.15]">
+            {d.hero.title}
           </h1>
 
-          <p className="hidden sm:block text-xs sm:text-sm text-slate-300/90 font-medium leading-relaxed max-w-2xl">
-            {language === 'KR'
-              ? '부산 도시철도를 이용하는 유모차, 휠체어, 대형 캐리어 이용자를 위해 엘리베이터 위치와 계단 없는 이동 경로를 정리합니다.'
-              : 'Clear elevator locations and step-free transit routes for wheelchair users, families with strollers, and travelers with heavy luggage in Busan.'}
+          {/* Subtitle */}
+          <p className="text-base sm:text-xl text-[#4A5568] font-normal leading-relaxed max-w-3xl pt-1 break-keep">
+            {d.hero.subtitle}
           </p>
 
-
-        </div>
-
-        {/* Integrated 4 Feature Items inside the Navy Box */}
-        <div className="relative z-10 pt-4 sm:pt-5 mt-4 sm:mt-5 border-t border-slate-700/60 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-left">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-amber-500/20 text-amber-300 shrink-0">
-                <Baby className="w-4 h-4" />
-              </div>
-              <div className="font-extrabold text-xs sm:text-sm text-white">
-                {language === 'KR' ? '유모차 동반 승객' : 'Strollers & Families'}
-              </div>
-            </div>
-            <p className="hidden sm:block text-[11px] text-slate-300/80 font-medium leading-snug pt-0.5">
-              {language === 'KR' ? '경사로와 승강기 연계 출구 우선 안내' : 'Ramp & elevator priority routes'}
-            </p>
-          </div>
-
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-blue-500/20 text-blue-300 shrink-0">
-                <Accessibility className="w-4 h-4" />
-              </div>
-              <div className="font-extrabold text-xs sm:text-sm text-white">
-                {language === 'KR' ? '휠체어·교통약자' : 'Wheelchair & Barrier-Free'}
-              </div>
-            </div>
-            <p className="hidden sm:block text-[11px] text-slate-300/80 font-medium leading-snug pt-0.5">
-              {language === 'KR' ? '와이드 개찰구 및 단차 없는 직통 경로' : 'Wide turnstiles & level paths'}
-            </p>
-          </div>
-
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 shrink-0">
-                <Luggage className="w-4 h-4" />
-              </div>
-              <div className="font-extrabold text-xs sm:text-sm text-white">
-                {language === 'KR' ? '대형 캐리어 소지자' : 'Heavy Luggage'}
-              </div>
-            </div>
-            <p className="hidden sm:block text-[11px] text-slate-300/80 font-medium leading-snug pt-0.5">
-              {language === 'KR' ? '계단 없이 엘리베이터 이용 출구 안내' : 'Step-free elevator exit directions'}
-            </p>
-          </div>
-
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-purple-500/20 text-purple-300 shrink-0">
-                <FileCheck className="w-4 h-4" />
-              </div>
-              <div className="font-extrabold text-xs sm:text-sm text-white">
-                {language === 'KR' ? '현장 실측 검증' : 'Field-Verified Info'}
-              </div>
-            </div>
-            <p className="hidden sm:block text-[11px] text-slate-300/80 font-medium leading-snug pt-0.5">
-              {language === 'KR' ? '확인 날짜 및 상시 제보 정정 수용' : 'Audit dates & active reports'}
-            </p>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ==========================================
-          3. FEATURED STATIONS ("Our Products" / "주요 역 가이드")
-         ========================================== */}
-      <section className="space-y-4 sm:space-y-6 scroll-mt-24" id="station-guides-section">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3 sm:pb-4">
-          <div>
-            <span className="text-xs font-mono font-bold uppercase text-blue-600 tracking-wider">STATION GUIDES</span>
-            <h2 className="text-xl sm:text-3xl font-black text-slate-900 font-heading mt-0.5 sm:mt-1">
-              {language === 'KR' ? '주요 역 이동 경로 가이드' : 'Major Station Accessible Guides'}
-            </h2>
-          </div>
-          <div className="flex flex-col sm:items-end justify-center">
+          {/* Call to action buttons */}
+          <div className="pt-4 flex flex-wrap items-center gap-3">
             <button
-              id="btn-go-to-station-search"
+              onClick={() => {
+                if (onNavigateToItinerary) {
+                  onNavigateToItinerary('GOURMET');
+                }
+              }}
+              className="bg-[#11161B] hover:bg-[#0A2540] text-white px-6 py-3.5 rounded-lg font-semibold text-xs sm:text-sm tracking-wider uppercase transition-colors cursor-pointer flex items-center gap-2"
+            >
+              <span>{d.hero.primaryBtn}</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
               onClick={() => {
                 if (onNavigateToSearch) {
                   onNavigateToSearch();
@@ -253,65 +153,121 @@ export function HomeOverviewSection({
                   onSelectStation('');
                 }
               }}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 text-[#004481] border border-blue-200/80 font-bold text-xs transition-colors cursor-pointer w-fit active:scale-98"
+              className="border border-[#11161B] text-[#11161B] hover:bg-[#F1EFEC] px-6 py-3.5 rounded-lg font-semibold text-xs sm:text-sm tracking-wider transition-colors cursor-pointer"
             >
-              <span>{language === 'KR' ? '출구 정보 더 보기' : 'More Exit Info'}</span>
-              <ChevronRight className="w-3.5 h-3.5 text-[#004481]" />
+              <span>{d.hero.secondaryBtn}</span>
             </button>
           </div>
         </div>
 
-        {/* Clean Grid Cards - 3 columns in a single row on mobile, tablet & desktop */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-5">
-          {featuredStations.map((st) => (
+        {/* 4 Feature Key Highlights (Minimalist 4-Column Grid) */}
+        <div className="pt-10 sm:pt-14 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 border-t border-[#E5E2DC] mt-10">
+          <div className="space-y-1.5 p-4 rounded-lg bg-white border border-[#E5E2DC]">
+            <div className="flex items-center gap-2 text-[#0A2540]">
+              <Baby className="w-4 h-4" />
+              <span className="font-bold text-xs sm:text-sm text-[#11161B]">
+                {language === 'KR' ? '유모차 동반 승객' : 'Strollers & Families'}
+              </span>
+            </div>
+            <p className="text-xs text-[#4A5568] leading-snug">
+              {language === 'KR' ? '경사로와 엘리베이터 직통 출구' : 'Ramp & elevator direct exits'}
+            </p>
+          </div>
+
+          <div className="space-y-1.5 p-4 rounded-lg bg-white border border-[#E5E2DC]">
+            <div className="flex items-center gap-2 text-[#0A2540]">
+              <Accessibility className="w-4 h-4" />
+              <span className="font-bold text-xs sm:text-sm text-[#11161B]">
+                {language === 'KR' ? '휠체어·교통약자' : 'Wheelchair Friendly'}
+              </span>
+            </div>
+            <p className="text-xs text-[#4A5568] leading-snug">
+              {language === 'KR' ? '와이드 개찰구 및 단차 없는 경로' : 'Wide turnstiles & level routes'}
+            </p>
+          </div>
+
+          <div className="space-y-1.5 p-4 rounded-lg bg-white border border-[#E5E2DC]">
+            <div className="flex items-center gap-2 text-[#0A2540]">
+              <Luggage className="w-4 h-4" />
+              <span className="font-bold text-xs sm:text-sm text-[#11161B]">
+                {language === 'KR' ? '대형 캐리어 소지자' : 'Heavy Luggage'}
+              </span>
+            </div>
+            <p className="text-xs text-[#4A5568] leading-snug">
+              {language === 'KR' ? '계단 없이 엘리베이터 이용 출구' : 'Step-free elevator exit guide'}
+            </p>
+          </div>
+
+          <div className="space-y-1.5 p-4 rounded-lg bg-white border border-[#E5E2DC]">
+            <div className="flex items-center gap-2 text-[#0A2540]">
+              <FileCheck className="w-4 h-4" />
+              <span className="font-bold text-xs sm:text-sm text-[#11161B]">
+                {language === 'KR' ? '현장 직접 검증' : 'Field Verified'}
+              </span>
+            </div>
+            <p className="text-xs text-[#4A5568] leading-snug">
+              {language === 'KR' ? '직접 이동 실측 및 정기 검증' : 'Directly audited on-site'}
+            </p>
+          </div>
+        </div>
+      </section>
+
+
+      {/* ==========================================
+          2. CATEGORY INDEX (Where do you want to go?)
+         ========================================== */}
+      <section className="space-y-6 sm:space-y-8">
+        <div className="space-y-2">
+          <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
+            {language === 'KR' ? '카테고리 안내' : 'CATEGORY INDEX'}
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#11161B] tracking-tight">
+            {d.categories.sectionTitle}
+          </h2>
+          <p className="text-sm text-[#4A5568]">
+            {d.categories.sectionSubtitle}
+          </p>
+        </div>
+
+        {/* 4 Category Grid Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {recommendedCourses.map((course) => (
             <div 
-              key={st.id}
-              className="group bg-slate-50/80 hover:bg-white border border-slate-200 hover:border-blue-300 rounded-xl sm:rounded-2xl p-2.5 sm:p-5 md:p-6 transition-all shadow-2xs hover:shadow-lg flex flex-col justify-between space-y-2 sm:space-y-4"
+              key={course.id}
+              className="bg-white border border-[#E5E2DC] rounded-lg p-6 hover:border-[#0A2540] transition-colors flex flex-col justify-between space-y-4 group"
             >
-              <div className="space-y-2 sm:space-y-3">
-                {/* Station visual top badge */}
-                <div className="w-full h-20 sm:h-28 md:h-32 bg-white rounded-lg sm:rounded-xl border border-slate-100 flex items-center justify-center p-2 sm:p-4 relative overflow-hidden group-hover:border-blue-200 transition-colors">
-                  <div className="text-center space-y-0.5 sm:space-y-1">
-                    <div className="inline-flex items-center justify-center w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-blue-50 text-blue-700 font-black text-xs sm:text-lg mx-auto">
-                      <Train className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
-                    </div>
-                    <div className="font-black text-slate-900 text-xs sm:text-base md:text-lg font-heading tracking-tight">{st.name}</div>
-                    <div className="flex justify-center gap-0.5 sm:gap-1 flex-wrap">
-                      {st.lines.map((l) => (
-                        <span key={l} className="text-[9px] sm:text-2xs font-bold px-1.5 sm:px-2 py-0.2 sm:py-0.5 rounded-full bg-slate-100 text-slate-600">
-                          {language === 'KR' ? `${l}호선` : `L${l}`}
-                        </span>
-                      ))}
-                    </div>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="p-2 rounded-md bg-[#F1EFEC] text-[#0A2540]">
+                    {course.icon}
                   </div>
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#0A2540] bg-[#F1EFEC] px-2.5 py-1 rounded-md border border-[#E5E2DC]">
+                    {course.tag}
+                  </span>
                 </div>
 
-                <div className="space-y-0.5 sm:space-y-1">
-                  <h3 className="font-extrabold text-slate-900 text-xs sm:text-base group-hover:text-blue-700 transition-colors text-center sm:text-left truncate">
-                    {language === 'KR' ? `${st.name} 경로` : `${st.name} Route`}
+                <div className="space-y-1">
+                  <h3 className="font-bold text-[#11161B] text-base group-hover:text-[#0A2540] transition-colors">
+                    {course.title}
                   </h3>
-                  <p className="text-[10px] sm:text-xs text-slate-600 font-medium leading-tight sm:leading-relaxed line-clamp-2">
-                    {st.desc}
+                  <p className="text-xs text-[#4A5568] leading-relaxed line-clamp-3">
+                    {course.desc}
                   </p>
                 </div>
               </div>
 
-              {/* Action Button Pills */}
-              <a
-                href={`/search/${st.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  onSelectStation(st.id);
+              <button
+                type="button"
+                onClick={() => {
+                  if (onNavigateToItinerary) {
+                    onNavigateToItinerary(course.id);
+                  }
                 }}
-                className="w-full py-2 sm:py-2.5 px-1.5 sm:px-4 rounded-lg sm:rounded-full bg-slate-900 hover:bg-blue-600 text-white font-extrabold text-[10px] sm:text-xs transition-colors flex items-center justify-center gap-1 sm:gap-2 cursor-pointer shadow-2xs active:scale-98 mt-1"
+                className="w-full py-2.5 px-4 rounded-md border border-[#11161B] hover:bg-[#11161B] hover:text-white text-[#11161B] font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer mt-2"
               >
-                <span>
-                  {language === 'KR' 
-                    ? <><span className="sm:hidden">상세 경로</span><span className="hidden sm:inline">상세 경로 확인</span></>
-                    : <><span className="sm:hidden">Route</span><span className="hidden sm:inline">View Detailed Route</span></>}
-                </span>
-                <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
-              </a>
+                <span>{d.buttons.seeAll}</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
             </div>
           ))}
         </div>
@@ -319,47 +275,110 @@ export function HomeOverviewSection({
 
 
       {/* ==========================================
-          3.1 STATIONS SEARCH BAR (부산 지하철역 출구 정보 둘러보기 검색창)
+          3. FEATURED STATIONS (Station Guides)
          ========================================== */}
-      <section className="bg-slate-50 border border-slate-200/80 rounded-3xl p-4 sm:p-6 shadow-2xs space-y-3.5">
-        <div>
-          <h2 className="text-lg sm:text-2xl font-extrabold font-heading text-slate-900">
-            {language === 'KR' ? '부산 지하철역 출구 정보 둘러보기' : 'Subway Exit Information Search'}
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
-            {language === 'KR' 
-              ? '부산 핵심 주요역의 총 엘리베이터 수, 에스컬레이터 대수를 한눈에 비교하고 탐색해보세요.' 
-              : 'Compare and explore elevator and escalator counts across major Busan subway stations.'}
-          </p>
+      <section className="space-y-6 pt-6 border-t border-[#E5E2DC]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-[#E5E2DC] pb-4">
+          <div>
+            <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
+              {language === 'KR' ? '주요역 안내' : 'FEATURED STATIONS'}
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#11161B] tracking-tight mt-1">
+              {language === 'KR' ? '부산 주요역 출구 & 이동 경로' : 'Major Accessible Metro Hubs'}
+            </h2>
+          </div>
+          
+          <button
+            onClick={() => {
+              if (onNavigateToSearch) {
+                onNavigateToSearch();
+              } else {
+                onSelectStation('');
+              }
+            }}
+            className="text-xs font-bold text-[#0A2540] hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            <span>{d.buttons.seeAll}</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
         </div>
 
-        {/* Search Bar Input Container */}
-        <div className="max-w-xl space-y-2.5">
+        {/* 3 Featured Station Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          {featuredStations.map((st) => (
+            <div 
+              key={st.id}
+              className="bg-white border border-[#E5E2DC] hover:border-[#0A2540] rounded-lg p-5 transition-colors flex flex-col justify-between space-y-4"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between border-b border-[#E5E2DC] pb-3">
+                  <div className="flex items-center gap-2">
+                    <Train className="w-5 h-5 text-[#0A2540]" />
+                    <span className="font-bold text-[#11161B] text-base">{st.name}</span>
+                  </div>
+                  <div className="flex gap-1">
+                    {st.lines.map((l) => (
+                      <span key={l} className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#F1EFEC] text-[#0A2540]">
+                        {language === 'KR' ? `${l}호선` : `Line ${l}`}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <p className="text-xs text-[#4A5568] leading-relaxed">
+                  {st.desc}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => onSelectStation(st.id)}
+                className="w-full py-2.5 px-3 rounded-md bg-[#11161B] hover:bg-[#0A2540] text-white font-medium text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>{d.buttons.viewRoute}</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+
+      {/* ==========================================
+          4. UTILITY & SEARCH BAR SECTION
+         ========================================== */}
+      <section className="bg-white border border-[#E5E2DC] rounded-lg p-6 sm:p-8 space-y-4">
+        <div className="space-y-1">
+          <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
+            {language === 'KR' ? '스마트 검색' : 'SMART TRANSIT SEARCH'}
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold text-[#11161B]">
+            {d.utility.sectionTitle}
+          </h2>
+        </div>
+
+        <div className="max-w-xl space-y-3">
           <StationSearchBar
             language={language}
             searchQuery={searchQuery || ''}
             setSearchQuery={(q) => setSearchQuery?.(q)}
-            onSelectStation={(stId) => {
-              onSelectStation(stId);
-            }}
+            onSelectStation={(stId) => onSelectStation(stId)}
             onNavigateToSearch={onNavigateToSearch}
           />
 
-          {/* Quick Station Select Buttons in 1 Single Line on Mobile */}
-          <div className="flex items-center gap-2 pt-0.5">
-            <span className="text-[11px] font-bold text-slate-400 shrink-0">
-              {language === 'KR' ? '주요역:' : 'Quick:'}
+          <div className="flex items-center gap-2 pt-1 text-xs">
+            <span className="font-mono text-[#0A2540] font-bold shrink-0">
+              {language === 'KR' ? '주요역 바로가기:' : 'Quick Select:'}
             </span>
-            <div className="grid grid-cols-3 gap-1.5 w-full">
+            <div className="flex gap-2 overflow-x-auto pb-1">
               {featuredStations.map((st) => (
                 <button
-                  key={`quick-btn-${st.id}`}
+                  key={`quick-${st.id}`}
                   type="button"
                   onClick={() => onSelectStation(st.id)}
-                  className="px-2 py-1.5 rounded-xl bg-white hover:bg-blue-50 border border-slate-200/90 hover:border-blue-300 text-slate-800 hover:text-blue-700 font-extrabold text-[11px] sm:text-xs flex items-center justify-center gap-1 transition-all cursor-pointer shadow-2xs active:scale-95 truncate"
+                  className="px-2.5 py-1 rounded bg-[#F1EFEC] hover:bg-[#E5E2DC] text-[#11161B] font-semibold text-xs transition-colors whitespace-nowrap"
                 >
-                  <Train className="w-3 h-3 text-blue-600 shrink-0" />
-                  <span className="truncate">{st.name}</span>
+                  {st.name}
                 </button>
               ))}
             </div>
@@ -369,251 +388,50 @@ export function HomeOverviewSection({
 
 
       {/* ==========================================
-          3.5 RECOMMENDED TRAVEL COURSES (추천 여행 코스 3선: 식도락, 체험&박물관, 당일치기)
+          5. SERVICE INFORMATION & VERIFICATION CENTER
          ========================================== */}
-      <section className="space-y-6 scroll-mt-24" id="recommended-itineraries-section">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4">
-          <div>
-            <span className="text-xs font-mono font-bold uppercase text-blue-600 tracking-wider">RECOMMENDED TRAVEL COURSES</span>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 font-heading mt-1">
-              {language === 'KR' ? '추천 무장애 여행 코스' : 'Recommended Accessible Tours'}
-            </h2>
-          </div>
-          <div className="flex flex-col sm:items-end justify-center">
-            <button
-              id="btn-go-to-travel-courses"
-              onClick={() => {
-                if (onNavigateToItinerary) {
-                  onNavigateToItinerary('GOURMET');
-                }
-              }}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/80 font-bold text-xs transition-colors cursor-pointer w-fit active:scale-98"
-            >
-              <span>{language === 'KR' ? '여행 코스 추천 페이지 바로가기' : 'Go to Recommended Courses'}</span>
-              <ChevronRight className="w-3.5 h-3.5 text-emerald-800" />
-            </button>
-          </div>
+      <section className="pt-8 border-t border-[#E5E2DC] space-y-6">
+        <div className="flex items-center gap-2 text-[#0A2540]">
+          <ShieldCheck className="w-5 h-5" />
+          <h2 className="text-lg font-bold text-[#11161B]">
+            {language === 'KR' ? '정보 신뢰성 및 검증 안내' : 'Information Reliability & Verification'}
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {recommendedCourses.map((course) => (
-            <div 
-              key={course.id}
-              className="group bg-slate-50/80 hover:bg-white border border-slate-200 hover:border-blue-200 rounded-2xl p-6 transition-all shadow-xs hover:shadow-lg flex flex-col justify-between space-y-4"
-            >
-              <div className="space-y-3">
-                {/* Simple Illustration & Tag - No background box */}
-                <div className="flex items-center justify-between gap-3 pt-1 pb-1">
-                  <div className="p-2 rounded-2xl group-hover:scale-110 transition-transform">
-                    {course.icon}
-                  </div>
-                  <span className={`text-xs font-extrabold px-3 py-1 rounded-full ${course.tagBg} ${course.tagText}`}>
-                    {course.tag}
-                  </span>
-                </div>
-
-                <div className="space-y-1.5">
-                  <h3 className="font-extrabold text-slate-900 text-base sm:text-lg group-hover:text-blue-700 transition-colors font-heading">
-                    {course.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 font-medium leading-relaxed line-clamp-2">
-                    {course.desc}
-                  </p>
-                </div>
-              </div>
-
-              {/* Action Button Link */}
-              <a
-                href={`/itinerary-${course.id.toLowerCase()}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (onNavigateToItinerary) {
-                    onNavigateToItinerary(course.id);
-                  }
-                }}
-                className={`w-full py-2.5 px-4 rounded-full ${course.buttonBg} text-white font-extrabold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs active:scale-98`}
-              >
-                <span>{language === 'KR' ? '추천 코스 보기' : 'Explore Course'}</span>
-                <ChevronRight className="w-4 h-4" />
-              </a>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-[#4A5568]">
+          <div className="p-5 rounded-lg bg-white border border-[#E5E2DC] space-y-2">
+            <div className="flex items-center gap-2 font-bold text-[#11161B]">
+              <UserCheck className="w-4 h-4 text-[#0A2540]" />
+              <span>{language === 'KR' ? '현장 직접 실측 조사' : 'Direct Field Audits'}</span>
             </div>
-          ))}
-        </div>
-      </section>
-
-
-      {/* ==========================================
-          5. SERVICE INFORMATION & RELIABILITY CENTER (페이지 최하단)
-         ========================================== */}
-      <section className="space-y-8 pt-6 border-t border-slate-200/80" id="service-info-section">
-        {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 pb-4">
-          <div>
-            <span className="text-xs font-mono font-bold uppercase text-blue-600 tracking-wider">SERVICE & RELIABILITY CENTER</span>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 font-heading mt-1 flex items-center gap-2">
-              <ShieldCheck className="w-7 h-7 text-[#004481]" />
-              <span>{language === 'KR' ? '스탭리스 안내 및 검증 센터' : 'Stepless Info & Verification Center'}</span>
-            </h2>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium">
-            {language === 'KR' ? '정보 신뢰성, 조사 방법, 안전 가이드 및 오류 제보' : 'Data reliability, field methodology, safety tips, and reporting'}
-          </p>
-        </div>
-
-        {/* 1. 조사 방법과 정보 신뢰성 & 오류 제보 (Top Spotlight Row - Clean Borderless Layout) */}
-        <div className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-7 space-y-6 shadow-2xs">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
-            <div className="flex items-center gap-2.5">
-              <span className="p-2.5 rounded-2xl bg-blue-50 text-[#004481]">
-                <FileCheck className="w-6 h-6" />
-              </span>
-              <div>
-                <h3 className="text-lg font-extrabold text-slate-900 font-heading">
-                  {language === 'KR' ? '조사 방법 및 정보 신뢰성 안내' : 'Field Methodology & Data Reliability'}
-                </h3>
-                <p className="text-2xs sm:text-xs text-slate-500 font-medium">
-                  {language === 'KR' 
-                    ? '부산 도시철도 교통약자 이동 동선 직접 계측 및 다각도 검증' 
-                    : 'Direct physical measurement & multi-angle verification of accessible Busan metro routes'}
-                </p>
-              </div>
-            </div>
-
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>{language === 'KR' ? '현장 직접 검증 완료' : 'Verified On-Site'}</span>
-            </span>
-          </div>
-
-          {/* 4-Column Micro Details Grid (No Box Borders, No Background Colors) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-2 border-b border-slate-100">
-            {/* Item 1: 조사 담당자 */}
-            <div className="space-y-1 flex flex-col justify-center">
-              <span className="text-2xs font-bold text-slate-400 uppercase tracking-wider block">
-                {language === 'KR' ? '조사 담당자' : 'Lead Auditor'}
-              </span>
-              <span className="text-sm font-black text-slate-800 flex items-center gap-1.5">
-                <UserCheck className="w-4 h-4 text-blue-600 shrink-0" />
-                <span>{language === 'KR' ? '플로레르' : 'Florair (Stepless)'}</span>
-              </span>
-            </div>
-
-            {/* Item 2: 조사 방법 & 출처 */}
-            <div className="space-y-1 flex flex-col justify-center">
-              <span className="text-2xs font-bold text-slate-400 uppercase tracking-wider block">
-                {language === 'KR' ? '조사 방법 & 출처' : 'Source & Method'}
-              </span>
-              <span className="text-xs font-extrabold text-slate-800 flex items-center gap-1">
-                <Train className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span>{language === 'KR' ? '현장 실측 + 부산교통공사 연계' : 'On-site audit + Busan Transit Corp'}</span>
-              </span>
-            </div>
-
-            {/* Item 3: 최근 검증 현황 */}
-            <div className="space-y-1 flex flex-col justify-center">
-              <span className="text-2xs font-bold text-slate-400 uppercase tracking-wider block">
-                {language === 'KR' ? '최근 검증 현황' : 'Latest Verification'}
-              </span>
-              <span className="text-xs font-extrabold text-[#004481] flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 shrink-0" />
-                <span>{getTodayDateKR()} {language === 'KR' ? '기준 (매일 현행화)' : '(Updated Daily)'}</span>
-              </span>
-            </div>
-
-            {/* Item 4: 오류 & 고장 신속 제보 */}
-            <div className="space-y-1 flex flex-col justify-center">
-              <span className="text-2xs font-bold text-amber-600 uppercase tracking-wider block flex items-center gap-1">
-                <AlertTriangle className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                <span>{language === 'KR' ? '오류 & 고장 신속 제보' : 'Report Issue / Breakage'}</span>
-              </span>
-              {onNavigateToReport ? (
-                <button
-                  id="btn-report-issue-inline"
-                  onClick={onNavigateToReport}
-                  className="py-1.5 px-3.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs active:scale-98 group w-fit mt-0.5"
-                >
-                  <AlertCircle className="w-3.5 h-3.5 text-white group-hover:scale-110 transition-transform" />
-                  <span>{language === 'KR' ? '오류 / 고장 제보하기' : 'Report Issue'}</span>
-                  <ArrowRight className="w-3 h-3 text-amber-100 group-hover:translate-x-0.5 transition-transform" />
-                </button>
-              ) : (
-                <span className="text-xs font-bold text-amber-700">
-                  {language === 'KR' ? '잘못된 정보/고장 발견 시 제보' : 'Report inaccuracies or outages'}
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* Deep Explanation text (Clean, Borderless, No Background Fill) */}
-          <div className="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-1.5 pt-1">
-            <p className="font-semibold text-slate-800 flex items-center gap-1.5">
-              <span>🔍</span>
-              <strong>{language === 'KR' ? '스탭리스(Stepless)의 정밀 수동 검증 원칙:' : 'Stepless Manual Verification Principle:'}</strong>
-            </p>
-            <p className="text-slate-600 sm:pl-5">
+            <p className="leading-relaxed">
               {language === 'KR'
-                ? '저희 조사팀은 지도 API에 등록된 출구 정보에만 의존하지 않고 벡스코역, 서면역, 수영역 등 주요 연결 지점의 보도 블록 단차와 엘리베이터 동선을 현장에서 직접 확인하고 계측합니다. 공공데이터의 일시적 불일치나 엘리베이터 보수 점검으로 인한 중단을 발견하셨다면 제보 버튼을 통해 언제든 알려주세요.'
-                : 'Our audit team goes beyond standard map APIs by physically measuring curb steps, elevator paths, and turnstile widths at major hubs such as BEXCO, Seomyeon, and Suyeong. If you encounter temporary data discrepancies or elevator maintenance, please let us know via the report button.'}
+                ? '공공데이터에 그치지 않고 서면, 부산역, 해운대 등 주요역의 출구 단차와 엘리베이터 동선을 현장에서 직접 계측하여 제공합니다.'
+                : 'Beyond open data, our team physically measures platform gaps, elevator pathways, and exit steps at major stations.'}
             </p>
           </div>
-        </div>
 
-        {/* 2. 교통약자 대중교통 이용 가이드 (2-Column Grid) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* Card A: 유모차·휠체어 안전 탑승 수칙 */}
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3 text-left">
-            <div className="flex items-center gap-2">
-              <span className="p-2 rounded-xl bg-blue-50 text-[#004481]">
-                <Baby className="w-5 h-5" />
-              </span>
-              <h3 className="text-base font-extrabold text-slate-900 font-heading">
-                {language === 'KR' ? '유모차·휠체어 동반 전철 안전 탑승 수칙' : 'Boarding Safety Rules for Wheelchairs & Strollers'}
-              </h3>
+          <div className="p-5 rounded-lg bg-white border border-[#E5E2DC] space-y-2">
+            <div className="flex items-center gap-2 font-bold text-[#11161B]">
+              <AlertTriangle className="w-4 h-4 text-[#0A2540]" />
+              <span>{language === 'KR' ? '오류 제보 및 현행화' : 'Issue Reporting & Updates'}</span>
             </div>
-            <ul className="text-xs sm:text-sm text-slate-600 space-y-2 leading-relaxed">
-              <li className="flex items-start gap-2">
-                <span className="font-extrabold text-blue-600 shrink-0">1.</span>
-                <span>
-                  {language === 'KR' ? (
-                    <><strong>승강장 간격 유의:</strong> 1호선·2호선 일부 곡선 승강장은 간격이 넓어 고무발판이 설치되어 있습니다. 이동 시 바퀴가 끼이지 않도록 상향 각도를 유지하며 진입하십시오.</>
-                  ) : (
-                    <><strong>Mind Platform Gap:</strong> Certain curved platforms on Lines 1 & 2 have wider platform gaps. Lift front wheels slightly when entering to prevent small wheels from getting stuck.</>
-                  )}
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="font-extrabold text-blue-600 shrink-0">2.</span>
-                <span>
-                  {language === 'KR' ? (
-                    <><strong>휠체어 전용 구역 안착:</strong> 차량 내부 전용 휠체어 공간에 정차한 후, 급출발 및 급제동에 대비해 반드시 브레이크 잠금 장치를 채워 고정해 주십시오.</>
-                  ) : (
-                    <><strong>Secure Wheel Brakes:</strong> Once inside designated wheelchair areas in train cars, always engage wheel brakes to prepare for sudden acceleration or stops.</>
-                  )}
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Card B: 엘리베이터 고장 대처 기법 */}
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3 text-left">
-            <div className="flex items-center gap-2">
-              <span className="p-2 rounded-xl bg-emerald-50 text-emerald-700">
-                <Train className="w-5 h-5" />
-              </span>
-              <h3 className="text-base font-extrabold text-slate-900 font-heading">
-                {language === 'KR' ? '엘리베이터 및 리프트 고장 대처 기법' : 'Handling Elevator Outages & Maintenance'}
-              </h3>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              {language === 'KR' ? (
-                <>역내 엘리베이터가 보수 점검으로 중단된 경우, 당황하지 마시고 각층 개찰구 주변의 <strong>빨간 비상호출 장치</strong> 또는 역무실 번호를 이용해 직원과 직접 소통하십시오. 필요 시 경사로 간이 휠체어 리프트를 통한 수동 지원이 제공됩니다.</>
-              ) : (
-                <>If a station elevator is temporarily under maintenance, press the <strong>red emergency call button</strong> near the turnstiles or contact station staff. On-duty staff will guide you to alternative wheelchair lifts or accessible exits.</>
-              )}
+            <p className="leading-relaxed">
+              {language === 'KR'
+                ? '엘리베이터 보수 점검이나 공사로 인한 단차가 발생할 경우 유저 제보를 반영하여 매일 정정하고 업데이트합니다.'
+                : 'Station elevator maintenance or route changes are updated daily based on user field reports.'}
             </p>
+            {onNavigateToReport && (
+              <button
+                onClick={onNavigateToReport}
+                className="mt-2 text-xs font-bold text-[#0A2540] hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                <AlertCircle className="w-3.5 h-3.5" />
+                <span>{language === 'KR' ? '오류/고장 제보하기' : 'Report an Issue'}</span>
+              </button>
+            )}
           </div>
         </div>
-
       </section>
 
     </div>
