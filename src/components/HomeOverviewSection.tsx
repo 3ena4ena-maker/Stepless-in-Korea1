@@ -214,70 +214,9 @@ export function HomeOverviewSection({
 
 
       {/* ==========================================
-          2. CATEGORY INDEX (Where do you want to go?)
+          2. FEATURED STATIONS (Station Guides)
          ========================================== */}
-      <section className="space-y-6 sm:space-y-8">
-        <div className="space-y-2">
-          <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
-            {language === 'KR' ? '카테고리 안내' : 'CATEGORY INDEX'}
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#11161B] tracking-tight">
-            {d.categories.sectionTitle}
-          </h2>
-          <p className="text-sm text-[#4A5568]">
-            {d.categories.sectionSubtitle}
-          </p>
-        </div>
-
-        {/* 4 Category Grid Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {recommendedCourses.map((course) => (
-            <div 
-              key={course.id}
-              className="bg-white border border-[#E5E2DC] rounded-lg p-6 hover:border-[#0A2540] transition-colors flex flex-col justify-between space-y-4 group"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="p-2 rounded-md bg-[#F1EFEC] text-[#0A2540]">
-                    {course.icon}
-                  </div>
-                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#0A2540] bg-[#F1EFEC] px-2.5 py-1 rounded-md border border-[#E5E2DC]">
-                    {course.tag}
-                  </span>
-                </div>
-
-                <div className="space-y-1">
-                  <h3 className="font-bold text-[#11161B] text-base group-hover:text-[#0A2540] transition-colors">
-                    {course.title}
-                  </h3>
-                  <p className="text-xs text-[#4A5568] leading-relaxed line-clamp-3">
-                    {course.desc}
-                  </p>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  if (onNavigateToItinerary) {
-                    onNavigateToItinerary(course.id);
-                  }
-                }}
-                className="w-full py-2.5 px-4 rounded-md border border-[#11161B] hover:bg-[#11161B] hover:text-white text-[#11161B] font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer mt-2"
-              >
-                <span>{d.buttons.seeAll}</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
-
-
-      {/* ==========================================
-          3. FEATURED STATIONS (Station Guides)
-         ========================================== */}
-      <section className="space-y-6 pt-6 border-t border-[#E5E2DC]">
+      <section className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-[#E5E2DC] pb-4">
           <div>
             <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
@@ -345,6 +284,67 @@ export function HomeOverviewSection({
 
 
       {/* ==========================================
+          3. CATEGORY INDEX (Where do you want to go?)
+         ========================================== */}
+      <section className="space-y-6 sm:space-y-8 pt-6 border-t border-[#E5E2DC]">
+        <div className="space-y-2">
+          <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
+            {language === 'KR' ? '카테고리 안내' : 'CATEGORY INDEX'}
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#11161B] tracking-tight">
+            {d.categories.sectionTitle}
+          </h2>
+          <p className="text-sm text-[#4A5568]">
+            {d.categories.sectionSubtitle}
+          </p>
+        </div>
+
+        {/* 4 Category Grid Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {recommendedCourses.map((course) => (
+            <div 
+              key={course.id}
+              className="bg-white border border-[#E5E2DC] rounded-lg p-6 hover:border-[#0A2540] transition-colors flex flex-col justify-between space-y-4 group"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="p-2 rounded-md bg-[#F1EFEC] text-[#0A2540]">
+                    {course.icon}
+                  </div>
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#0A2540] bg-[#F1EFEC] px-2.5 py-1 rounded-md border border-[#E5E2DC]">
+                    {course.tag}
+                  </span>
+                </div>
+
+                <div className="space-y-1">
+                  <h3 className="font-bold text-[#11161B] text-base group-hover:text-[#0A2540] transition-colors">
+                    {course.title}
+                  </h3>
+                  <p className="text-xs text-[#4A5568] leading-relaxed line-clamp-3">
+                    {course.desc}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  if (onNavigateToItinerary) {
+                    onNavigateToItinerary(course.id);
+                  }
+                }}
+                className="w-full py-2.5 px-4 rounded-md border border-[#11161B] hover:bg-[#11161B] hover:text-white text-[#11161B] font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer mt-2"
+              >
+                <span>{d.buttons.seeAll}</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+
+      {/* ==========================================
           4. UTILITY & SEARCH BAR SECTION
          ========================================== */}
       <section className="bg-white border border-[#E5E2DC] rounded-lg p-6 sm:p-8 space-y-4">
@@ -391,44 +391,58 @@ export function HomeOverviewSection({
           5. SERVICE INFORMATION & VERIFICATION CENTER
          ========================================== */}
       <section className="pt-8 border-t border-[#E5E2DC] space-y-6">
-        <div className="flex items-center gap-2 text-[#0A2540]">
-          <ShieldCheck className="w-5 h-5" />
-          <h2 className="text-lg font-bold text-[#11161B]">
-            {language === 'KR' ? '정보 신뢰성 및 검증 안내' : 'Information Reliability & Verification'}
-          </h2>
+        <div className="space-y-1">
+          <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
+            {language === 'KR' ? '검증 세부 안내' : 'VERIFICATION DETAILS'}
+          </div>
+          <div className="flex items-center gap-2 text-[#0A2540]">
+            <ShieldCheck className="w-5 h-5 text-[#0A2540] shrink-0" />
+            <h2 className="text-xl sm:text-2xl font-bold text-[#11161B]">
+              {language === 'KR' ? '정보 신뢰성 및 검증 안내' : 'Information Reliability & Verification'}
+            </h2>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-[#4A5568]">
-          <div className="p-5 rounded-lg bg-white border border-[#E5E2DC] space-y-2">
-            <div className="flex items-center gap-2 font-bold text-[#11161B]">
-              <UserCheck className="w-4 h-4 text-[#0A2540]" />
-              <span>{language === 'KR' ? '현장 직접 실측 조사' : 'Direct Field Audits'}</span>
+          {/* 현장 직접 실측 조사 */}
+          <div className="p-6 rounded-lg bg-white border border-[#E5E2DC] space-y-3">
+            <div className="flex items-center gap-2 font-bold text-sm text-[#11161B]">
+              <UserCheck className="w-4 h-4 text-[#0A2540] shrink-0" />
+              <span>{language === 'KR' ? '현장 직접 실측 조사' : 'Direct Field Verification'}</span>
             </div>
-            <p className="leading-relaxed">
+            <p className="leading-relaxed text-[#4A5568]">
               {language === 'KR'
-                ? '공공데이터에 그치지 않고 서면, 부산역, 해운대 등 주요역의 출구 단차와 엘리베이터 동선을 현장에서 직접 계측하여 제공합니다.'
-                : 'Beyond open data, our team physically measures platform gaps, elevator pathways, and exit steps at major stations.'}
+                ? '공공데이터에만 의존하지 않고 서면, 부산역, 해운대 등 주요역의 출구 단차와 엘리베이터 동선을 현장에서 직접 확인하여 제공합니다.'
+                : 'Beyond public open data, our team directly verifies exit steps, platform gaps, and elevator routes on-site at major transit hubs including Seomyeon, Busan Station, and Haeundae.'}
             </p>
           </div>
 
-          <div className="p-5 rounded-lg bg-white border border-[#E5E2DC] space-y-2">
-            <div className="flex items-center gap-2 font-bold text-[#11161B]">
-              <AlertTriangle className="w-4 h-4 text-[#0A2540]" />
-              <span>{language === 'KR' ? '오류 제보 및 현행화' : 'Issue Reporting & Updates'}</span>
+          {/* 오류 제보 및 지속 업데이트 */}
+          <div className="p-6 rounded-lg bg-white border border-[#E5E2DC] space-y-3 flex flex-col justify-between">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 font-bold text-sm text-[#11161B]">
+                <AlertTriangle className="w-4 h-4 text-[#0A2540] shrink-0" />
+                <span>{language === 'KR' ? '오류 제보 및 지속 업데이트' : 'Issue Reporting & Continuous Updates'}</span>
+              </div>
+              <p className="leading-relaxed text-[#4A5568]">
+                {language === 'KR'
+                  ? '엘리베이터 보수 점검이나 공사 등으로 정보가 변경될 경우 이용자 제보를 반영하여 지속적으로 정정하고 업데이트합니다.'
+                  : 'When elevator maintenance, construction, or route conditions change, we continuously refine and update the data based on user reports.'}
+              </p>
             </div>
-            <p className="leading-relaxed">
-              {language === 'KR'
-                ? '엘리베이터 보수 점검이나 공사로 인한 단차가 발생할 경우 유저 제보를 반영하여 매일 정정하고 업데이트합니다.'
-                : 'Station elevator maintenance or route changes are updated daily based on user field reports.'}
-            </p>
+
             {onNavigateToReport && (
-              <button
-                onClick={onNavigateToReport}
-                className="mt-2 text-xs font-bold text-[#0A2540] hover:underline flex items-center gap-1 cursor-pointer"
-              >
-                <AlertCircle className="w-3.5 h-3.5" />
-                <span>{language === 'KR' ? '오류/고장 제보하기' : 'Report an Issue'}</span>
-              </button>
+              <div className="pt-2 border-t border-[#E5E2DC] mt-2">
+                <button
+                  type="button"
+                  onClick={onNavigateToReport}
+                  className="text-xs font-bold text-[#0A2540] hover:underline flex items-center gap-1.5 cursor-pointer"
+                >
+                  <AlertCircle className="w-3.5 h-3.5 text-[#0A2540]" />
+                  <span>{language === 'KR' ? '오류/고장 제보하기' : 'Report an Issue / Outage'}</span>
+                  <ChevronRight className="w-3.5 h-3.5 text-[#0A2540]" />
+                </button>
+              </div>
             )}
           </div>
         </div>

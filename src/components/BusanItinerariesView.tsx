@@ -251,7 +251,10 @@ interface RegionDetail {
     nameEn: string;
     descKo: string;
     descEn: string;
-    category: 'LANDMARK' | 'FOOD' | 'CAFE' | 'CULTURE';
+    category?: 'LANDMARK' | 'FOOD' | 'CAFE' | 'CULTURE';
+    stationGroup: string;
+    stationGroupNameKo: string;
+    stationGroupNameEn: string;
     tagKo: string;
     tagEn: string;
     addressKo?: string;
@@ -273,16 +276,99 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
     landmarks: [
       {
         nameKo: '흰여울문화마을',
-        nameEn: 'Huinnyeoul Culture Village (Yeongdo)',
-        descKo: '영도 해안 절벽을 마주한 파스텔톤 가옥과 예쁜 카페들이 늘어서 산책하며 푸른 바다를 내려다볼 수 있습니다.',
-        descEn: 'A gorgeous cliffside alleyway on Yeongdo Island overlooking beautiful blue oceanic channels.',
+        nameEn: 'Huinnyeoul Culture Village',
+        descKo: '영도 해안 절벽을 마주한 파스텔톤 가옥과 예쁜 카페들이 늘어서 산책하며 푸른 바다를 내려다볼 수 있습니다. (남포역 또는 자갈치역에서 시내버스로 환승)',
+        descEn: 'A gorgeous cliffside alleyway on Yeongdo Island overlooking beautiful blue oceanic channels. (Transfer to bus from Nampo or Jagalchi Stn).',
         category: 'LANDMARK',
-        tagKo: '해안 절벽 골목',
-        tagEn: 'Cliff Alleyway',
+        stationGroup: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+        stationGroupNameKo: '중앙역 · 남포역 · 자갈치역',
+        stationGroupNameEn: 'Jungang · Nampo · Jagalchi',
+        tagKo: '남포/자갈치역 → 버스 환승',
+        tagEn: 'Bus Transfer via Nampo/Jagalchi',
         addressKo: '부산 영도구 영선동4가',
         addressEn: 'Yeongseon-dong 4-ga, Yeongdo-gu, Busan',
-        tipKo: '휠체어/유모차는 위쪽 큰 도로변 흰여울전망대 데크 산책로를 걸으면 계단 없이 훌륭한 해안 뷰를 즐길 수 있습니다.',
-        tipEn: 'Stick to the top-level road and observatory boardwalk to avoid steep coastal stone steps.'
+        tipKo: '남포역 7번 출구 또는 자갈치역 3번 출구 정류장에서 영도 방향 시내버스(7, 71, 508번 등)로 환승하세요.',
+        tipEn: 'Transfer to city bus (#7, #71, or #508) heading to Yeongdo from Nampo Station Exit 7 or Jagalchi Station Exit 3.'
+      },
+      {
+        nameKo: '부산영화체험박물관',
+        nameEn: 'Busan Museum of Movies',
+        descKo: '영화의 도시 부산에 세워진 국내 최초의 체험형 영화 박물관으로 영화 원리와 제작 체험, 영화 트릭아트를 흥미롭게 관람할 수 있습니다.',
+        descEn: 'Korea’s first interactive film museum featuring hands-on movie production tricks, green screen dubbing, and exhibits.',
+        category: 'CULTURE',
+        stationGroup: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+        stationGroupNameKo: '중앙역 · 남포역 · 자갈치역',
+        stationGroupNameEn: 'Jungang · Nampo · Jagalchi',
+        tagKo: '중앙역 5번출구 : 계단',
+        tagEn: 'Jungang Stn Exit 5 (Stairs)',
+        addressKo: '부산 중구 대청로126번길 12',
+        addressEn: '12, Daecheong-ro 126beon-gil, Jung-gu, Busan',
+        tipKo: '중앙역 5번 출구(계단)에서 도보 약 5분 거리에 위치하고 있으며 트릭아이 뮤지엄과 함께 관람하기 좋습니다.',
+        tipEn: '5-minute walk from Jungang Station Exit 5 (stairs).'
+      },
+      {
+        nameKo: '부산근현대역사관',
+        nameEn: 'Busan Museum of Modern History',
+        descKo: '근대 및 현대 부산의 일상 문화와 역사적 흐름을 감각적인 전시와 라운지 도서관 형식으로 살려낸 복합 문화 공간입니다.',
+        descEn: 'A dynamic cultural venue housed in a historical building displaying Busan’s modern history and lifestyle.',
+        category: 'CULTURE',
+        stationGroup: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+        stationGroupNameKo: '중앙역 · 남포역 · 자갈치역',
+        stationGroupNameEn: 'Jungang · Nampo · Jagalchi',
+        tagKo: '중앙역 5번출구 : 계단',
+        tagEn: 'Jungang Stn Exit 5 (Stairs)',
+        addressKo: '부산 중구 대청로 104',
+        addressEn: '104, Daecheong-ro, Jung-gu, Busan',
+        tipKo: '중앙역 5번 출구(계단)에서 직진하여 대청로 사거리 방향으로 올라오시면 편리하게 방문 가능합니다.',
+        tipEn: 'Accessible straight from Jungang Station Exit 5 (stairs).'
+      },
+      {
+        nameKo: '용두산공원',
+        nameEn: 'Yongdusan Park',
+        descKo: '부산 도심 중심부에 우뚝 솟은 산상 공원으로, 부산타워와 함께 남포동 및 부산항 전경을 한눈에 내려다볼 수 있습니다.',
+        descEn: 'An iconic hill park centering Busan Tower with sweeping views of Busan Port and Nampo district.',
+        category: 'LANDMARK',
+        stationGroup: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+        stationGroupNameKo: '중앙역 · 남포역 · 자갈치역',
+        stationGroupNameEn: 'Jungang · Nampo · Jagalchi',
+        tagKo: '중앙역 5번출구 / 남포역 7번출구',
+        tagEn: 'Jungang Exit 5 / Nampo Exit 7',
+        addressKo: '부산 중구 용두산길 37',
+        addressEn: '37, Yongdusan-gil, Jung-gu, Busan',
+        tipKo: '중앙역 5번 출구 이용 시 계단 산책로로 올라가며, 남포역 7번 출구 이용 시 광복로 에스컬레이터/엘리베이터로 편하게 진입 가능합니다.',
+        tipEn: 'Use Jungang Stn Exit 5 for stairs, or Nampo Stn Exit 7 for the Gwangbok-ro covered escalator & elevator.'
+      },
+      {
+        nameKo: 'BIFF광장 길거리음식',
+        nameEn: 'BIFF Square Street Food',
+        descKo: '부산 국제영화제의 모태이자 명물 씨앗호떡, 비빔당면, 물떡 등 다채로운 로컬 길거리 음식이 가득한 거리입니다.',
+        descEn: 'The birthplace of Busan International Film Festival, world-famous for seed hotteok and street food stalls.',
+        category: 'FOOD',
+        stationGroup: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+        stationGroupNameKo: '중앙역 · 남포역 · 자갈치역',
+        stationGroupNameEn: 'Jungang · Nampo · Jagalchi',
+        tagKo: '자갈치역 3번출구',
+        tagEn: 'Jagalchi Stn Exit 3',
+        addressKo: '부산 중구 구덕로 58-1',
+        addressEn: '58-1, Gudeok-ro, Jung-gu, Busan',
+        tipKo: '자갈치역 3번 출구로 나오면 도보 1분 거리에서 따끈한 씨앗호떡과 다양한 핑거 푸드를 바로 만나볼 수 있습니다.',
+        tipEn: 'Located 1 minute walk from Jagalchi Station Exit 3.'
+      },
+      {
+        nameKo: '국제시장 & 부평깡통시장',
+        nameEn: 'Gukje Market & Bupyeong Market',
+        descKo: '한국전쟁의 역사를 품은 전통 대형 시장으로 아기자기한 수입 잡화 및 밤마다 열리는 부평깡통야시장 먹거리가 유명합니다.',
+        descEn: 'Historic sprawling market precinct brimming with vintage goods, local clothing, and night market food stalls.',
+        category: 'LANDMARK',
+        stationGroup: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+        stationGroupNameKo: '중앙역 · 남포역 · 자갈치역',
+        stationGroupNameEn: 'Jungang · Nampo · Jagalchi',
+        tagKo: '자갈치역 3번출구',
+        tagEn: 'Jagalchi Stn Exit 3',
+        addressKo: '부산 중구 중구로 36',
+        addressEn: '36, Junggu-ro, Jung-gu, Busan',
+        tipKo: '자갈치역 3번 출구에서 진입 가능하며, 저녁 시간대 부평깡통야시장의 이색 먹거리를 꼭 맛보세요.',
+        tipEn: 'Accessible via Jagalchi Stn Exit 3. Night market opens every evening.'
       },
       {
         nameKo: '자갈치시장',
@@ -290,38 +376,31 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         descKo: '대한민국 최대 규모의 수산시장으로 활기찬 부산 어민들의 삶과 갓 잡은 싱싱한 수산물을 만날 수 있는 곳입니다.',
         descEn: 'Korea’s largest seafood market, showcasing bustling traditional stalls and delicious fresh fish.',
         category: 'LANDMARK',
-        tagKo: '수산물 전통시장',
-        tagEn: 'Fish Market',
+        stationGroup: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+        stationGroupNameKo: '중앙역 · 남포역 · 자갈치역',
+        stationGroupNameEn: 'Jungang · Nampo · Jagalchi',
+        tagKo: '자갈치역 3번출구',
+        tagEn: 'Jagalchi Stn Exit 3',
         addressKo: '부산 중구 자갈치해안로 52',
         addressEn: '52, Jagalchihaean-ro, Jung-gu, Busan',
-        tipKo: '현대식 본관 7층 테라스에 올라가면 남항대교와 영도 대교 일대를 무료로 시원하게 한눈에 담을 수 있습니다.',
-        tipEn: 'Take the main building elevator to the 7F observatory deck for free scenic harbor views.'
+        tipKo: '자갈치역 3번 출구에서 해안가 방향으로 도보 3분. 현대식 본관 7층 테라스 오션뷰도 무료로 관람해 보세요.',
+        tipEn: '3 mins walk towards the harbor from Jagalchi Stn Exit 3. Visit 7F observatory deck for free.'
       },
       {
-        nameKo: '금정산 범어사',
-        nameEn: 'Beomeosa Temple',
-        descKo: '금정산 자락 울창한 소나무 숲에 안긴 천년의 고찰로, 은은한 기와 처마 아래로 사시사철 맑은 기운이 흐릅니다.',
-        descEn: 'A tranquil Buddhist sanctuary cradled in a dense pine forest on Geumjeong Mountain.',
+        nameKo: '광복로 차없는 거리',
+        nameEn: 'Gwangbok-ro Pedestrian Street',
+        descKo: '남포동의 대표 패션, 쇼핑, 이색 카페 및 트렌디한 브랜드 상점들이 한곳에 모여 있는 활기찬 문화 거리입니다.',
+        descEn: 'Vibrant main shopping avenue packed with fashion boutiques, flagship stores, and cafes.',
         category: 'LANDMARK',
-        tagKo: '천년 고찰',
-        tagEn: 'Pine Forest Temple',
-        addressKo: '부산 금정구 범어사로 250',
-        addressEn: '250, Beomeosa-ro, Geumjeong-gu, Busan',
-        tipKo: '등산로 대신 주차장 위 대웅전 방면 평탄한 지상 진입 통로를 걸으면 계단 한 칸 없이 대웅전 앞마당에 다다릅니다.',
-        tipEn: 'Skip the steep walking paths and follow the rear wheelchair-friendly temple approach road.'
-      },
-      {
-        nameKo: '온천천 시민공원',
-        nameEn: 'Oncheoncheon Stream Park',
-        descKo: '도심 속을 길게 관통하는 온천천 변에 양옆으로 조성된 생태 산책로로, 하천과 아기자기한 동네 카페 거리가 이어집니다.',
-        descEn: 'A beautiful riverside path winding through Dongnae, lined with charming local cafes and flowers.',
-        category: 'LANDMARK',
-        tagKo: '벚꽃 수변 산책',
-        tagEn: 'River Park',
-        addressKo: '부산 동래구 온천천로',
-        addressEn: 'Oncheoncheon-ro, Dongnae-gu, Busan',
-        tipKo: '봄철 벚꽃과 가을 억새 산책로는 완전 평지로 포장되어 노약자가 유모차나 휠체어로 산책하기에 최상의 환경입니다.',
-        tipEn: 'The entire cherry-blossom paved boardwalk is flat and easily walkable for elderly.'
+        stationGroup: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+        stationGroupNameKo: '중앙역 · 남포역 · 자갈치역',
+        stationGroupNameEn: 'Jungang · Nampo · Jagalchi',
+        tagKo: '남포역 7번출구',
+        tagEn: 'Nampo Stn Exit 7',
+        addressKo: '부산 중구 광복로',
+        addressEn: 'Gwangbok-ro, Jung-gu, Busan',
+        tipKo: '남포역 7번 출구로 나오면 바로 연결되며, 주말 및 공휴일에는 차없는 거리로 여유롭게 도보 쇼핑을 즐길 수 있습니다.',
+        tipEn: 'Directly outside Nampo Station Exit 7. Car-free pedestrian street on weekends.'
       },
       {
         nameKo: '이재모피자 남포본점',
@@ -329,12 +408,15 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         descKo: '부산 여행 필수 코스로 고소하고 부드러운 순수 임실 치즈를 크러스트와 토핑에 폭탄처럼 가득 얹어 굽는 명품 피자입니다.',
         descEn: 'The undisputed pizza capital of Busan, heavily stacked with premium domestic elastic cheese.',
         category: 'FOOD',
-        tagKo: '임실치즈 폭탄',
-        tagEn: 'Iconic Pizza',
+        stationGroup: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+        stationGroupNameKo: '중앙역 · 남포역 · 자갈치역',
+        stationGroupNameEn: 'Jungang · Nampo · Jagalchi',
+        tagKo: '남포역 7번출구',
+        tagEn: 'Nampo Stn Exit 7',
         addressKo: '부산 중구 광복중앙로 31',
         addressEn: '31, Gwangbokjungang-ro, Jung-gu, Busan',
-        tipKo: '매장 내 키오스크와 서빙 로봇 시스템이 잘 갖춰져 있으며 통로가 넓어 편리하게 식사할 수 있습니다.',
-        tipEn: 'Equipped with spacious paths, smart kiosk ordering, and helpful robotic food runners.'
+        tipKo: '남포역 7번 출구에서 광복로를 따라 신창동 방면으로 도보 7분 거리입니다.',
+        tipEn: '7 mins walk from Nampo Station Exit 7.'
       },
       {
         nameKo: '백화양곱창',
@@ -342,51 +424,47 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         descKo: '자갈치시장 뒤편에 위치한 노포 연탄구이 곱창 성지로, 뿌연 연기 속에서 숙련된 마스터들이 직접 양념 구이를 구워냅니다.',
         descEn: 'An ultra-authentic, nostalgic warehouse filled with legendary coal-grilled tripe counters.',
         category: 'FOOD',
-        tagKo: '자갈치 노포 구이',
-        tagEn: 'Coal Grilled Tripe',
+        stationGroup: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+        stationGroupNameKo: '중앙역 · 남포역 · 자갈치역',
+        stationGroupNameEn: 'Jungang · Nampo · Jagalchi',
+        tagKo: '자갈치역 3번출구',
+        tagEn: 'Jagalchi Stn Exit 3',
         addressKo: '부산 중구 자갈치로23번길 6',
         addressEn: '6, Jagalchi-ro 23beon-gil, Jung-gu, Busan',
-        tipKo: '양곱창을 거의 다 구워 먹은 뒤 철판 볶음밥과 바삭한 구운 김을 추가해 함께 싸 드시는 것은 국룰입니다.',
-        tipEn: 'Save room for the iron-plate fried rice wrapped in freshly toasted seaweed sheets.'
+        tipKo: '자갈치역 3번 출구에서 골목으로 들어가면 연탄구이 골목에 바로 도달합니다.',
+        tipEn: 'Accessible via Jagalchi Stn Exit 3.'
       },
       {
-        nameKo: '동래할매파전',
-        nameEn: 'Dongnae Halmae Pajeon',
-        descKo: '조선시대 동래 부사령관이 왕에게 진상하던 파전법을 이어온 식당으로 부드러운 쪽파와 조개, 신선한 굴이 듬뿍 얹어져 나옵니다.',
-        descEn: 'A historic royal delicacy. Incredibly soft green onion savory pancake with clams and fresh oysters.',
-        category: 'FOOD',
-        tagKo: '조선 진상품 파전',
-        tagEn: 'Dongnae Pajeon',
-        addressKo: '부산 동래구 명륜로94번길 43-10',
-        addressEn: '43-10, Myeongnyun-ro 94beon-gil, Dongnae-gu, Busan',
-        tipKo: '바삭한 일반 부침개와 달리 계란과 해물 즙으로 촉촉하고 부드럽게 쪄낸 고유 식감으로 겨자 초간장에 찍어 드세요.',
-        tipEn: 'Served traditionally soft, moist, and steamed rather than crispy. Dip in local mustard soy sauce.'
+        nameKo: '젬스톤 영도점',
+        nameEn: 'Gemstone Yeongdo',
+        descKo: '수십 년 동안 방치되었던 대형 수영장을 감각적인 이색 온수 카페 구조로 개조하여 넓은 휴식과 톡톡 튀는 인테리어를 선사합니다.',
+        descEn: 'An incredibly unique and spacious cafe converted from an old large indoor swimming pool.',
+        category: 'CAFE',
+        stationGroup: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+        stationGroupNameKo: '중앙역 · 남포역 · 자갈치역',
+        stationGroupNameEn: 'Jungang · Nampo · Jagalchi',
+        tagKo: '남포역 7번출구 → 영도 진입',
+        tagEn: 'Nampo Stn Exit 7 → Yeongdo',
+        addressKo: '부산 영도구 대교로6번길 33',
+        addressEn: '33, Daegyo-ro 6beon-gil, Yeongdo-gu, Busan',
+        tipKo: '남포역 7번 출구에서 영도대교를 건너거나 버스를 타면 쉽게 이동할 수 있습니다.',
+        tipEn: 'Cross Yeongdo Bridge from Nampo Stn Exit 7 or take a short bus ride.'
       },
       {
-        nameKo: '구포시장',
-        nameEn: 'Gupo Traditional Market',
-        descKo: '낙동강 물길을 따라 형성된 400년 역사의 영남권 최대 전통시장으로, 쫄깃한 구포국수와 어묵, 각종 시장 먹거리가 가득한 활기찬 미식의 천국입니다.',
-        descEn: 'A vibrant, 400-year-old historic market near the Nakdong River, famous for its legendary chewy Gupo noodles, fish cakes, and diverse street food delicacies.',
-        category: 'FOOD',
-        tagKo: '400년 역사 미식 시장',
-        tagEn: 'Historic Street Food Market',
-        addressKo: '부산 북구 구포시장1길 17',
-        addressEn: '17, Guposijang 1-gil, Buk-gu, Busan',
-        tipKo: '장날(매월 3, 8, 13, 18, 23, 28일)에 방문하면 길거리 간식과 활기 넘치는 전통 오일장의 진수를 만날 수 있으며, 대부분 평지로 다닐 수 있습니다.',
-        tipEn: 'Visit on five-day market dates (ending in 3 or 8) to experience the ultimate bustling local street food and fresh vendors.'
-      },
-      {
-        nameKo: '이원화구포국시',
-        nameEn: 'Yi Won-hwa Gupo Guksi',
-        descKo: '60년 전통 구포국수의 명맥을 잇는 백년가게로, 낙동강 해풍에 말려 쫄깃함이 남다른 명품 면발과 깊고 진한 남해안 멸치 육수의 진한 조화를 선보입니다.',
-        descEn: 'A designated historic "Hundred-Year Store" preserving the 60-year Gupo noodle legacy, boasting wind-dried chewy noodles in deeply savory anchovy broth.',
-        category: 'FOOD',
-        tagKo: '60년 전통 백년가게 국수',
-        tagEn: '60-Year Anchovy Noodles',
-        addressKo: '부산 북구 낙동대로1776번길 4',
-        addressEn: '4, Nakdong-daero 1776beon-gil, Buk-gu, Busan',
-        tipKo: '주문 즉시 삶아내는 생면 비빔국수와 뜨끈한 온국수가 시그니처이며, 구포시장 바로 인근이라 시장 투어 전후 든든한 한 끼로 제격입니다.',
-        tipEn: 'The warm anchovy soup noodles and chewy spicy cold mixed noodles are made to order. Perfect stop next to Gupo Market.'
+        nameKo: '허심청 (동래온천)',
+        nameEn: 'Heosimcheong Spa (Oncheonjang)',
+        descKo: '이름이 곧 목적인 곳, 사계절 내내 목욕 덕후들의 천국! 동양 최대 규모의 온천 휴양 시설에서 피로를 시원하게 풀 수 있습니다.',
+        descEn: 'The ultimate hot spring paradise for bath lovers year-round! One of Asia’s largest natural hot spring spa complexes.',
+        category: 'LANDMARK',
+        stationGroup: 'LINE1_ONCHEONJANG',
+        stationGroupNameKo: '온천장역',
+        stationGroupNameEn: 'Oncheonjang Stn',
+        tagKo: '사계절 목욕 덕후 천국',
+        tagEn: 'Hot Spring Spa',
+        addressKo: '부산 동래구 온천장로107번길 32',
+        addressEn: '32, Oncheonjang-ro 107beon-gil, Dongnae-gu, Busan',
+        tipKo: '온천장역 1번 출구에서 도보 약 7분 거리, 농심호텔 단지 내에 위치해 있습니다.',
+        tipEn: '7 mins walk from Oncheonjang Stn Exit 1, located inside Hotel Nongshim complex.'
       },
       {
         nameKo: '모모스커피 온천장본점',
@@ -394,6 +472,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         descKo: '한국 최초의 세계 바리스타 챔피언을 배출한 전설적인 커피 성지로, 대나무 숲을 연상케 하는 도심 속 기와 한옥 정원이 평화롭습니다.',
         descEn: 'A world-famous specialty coffee sanctuary with a beautiful bamboo garden and Hanok courtyard.',
         category: 'CAFE',
+        stationGroup: 'LINE1_ONCHEONJANG',
+        stationGroupNameKo: '온천장역',
+        stationGroupNameEn: 'Oncheonjang Stn',
         tagKo: '바리스타 챔피언',
         tagEn: 'Specialty Coffee',
         addressKo: '부산 금정구 오시게로 20',
@@ -402,30 +483,84 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         tipEn: 'Located right outside Oncheonjang Subway Station. Try the award-winning hand-dripped signature blends.'
       },
       {
-        nameKo: '신기산업',
-        nameEn: 'Singi Industry',
-        descKo: '영도 산복도로 높은 곳에 위치한 카페로, 통창 너머로 부산항대교의 일곱빛깔 무지개 조명 야경을 완벽히 감상합니다.',
-        descEn: 'A high-perched scenic cafe on Yeongdo hills with a brilliant panoramic view of Busan Port Bridge.',
-        category: 'CAFE',
-        tagKo: '부산항대교 야경',
-        tagEn: 'Port Bridge View',
-        addressKo: '부산 영도구 와치로 51',
-        addressEn: '51, Wachi-ro, Yeongdo-gu, Busan',
-        tipKo: '오르막 경사가 심해 대중교통 이용 시 부산역이나 남포역에서 영도 영선동 방향 9번 버스를 타시면 바로 정류장 앞 하차합니다.',
-        tipEn: 'The hill is steep; take local bus #9 from Busan Station to drop off directly outside the entrance.'
+        nameKo: '온천천 (벚꽃시즌)',
+        nameEn: 'Oncheoncheon Stream (Cherry Blossom)',
+        descKo: '도심 속을 길게 관통하는 생태 수변 산책로로, 봄철 벚꽃 터널과 아기자기한 동네 카페 거리가 늘어서 사계절 산책하기 좋습니다.',
+        descEn: 'A beautiful riverside path winding through Dongnae, lined with charming local cafes and cherry blossom trees.',
+        category: 'LANDMARK',
+        stationGroup: 'LINE1_ONCHEONJANG',
+        stationGroupNameKo: '온천장역',
+        stationGroupNameEn: 'Oncheonjang Stn',
+        tagKo: '벚꽃시즌 수변 산책',
+        tagEn: 'Cherry Blossom Stream',
+        addressKo: '부산 동래구 온천천로',
+        addressEn: 'Oncheoncheon-ro, Dongnae-gu, Busan',
+        tipKo: '봄철 벚꽃 산책로는 완전 평지로 포장되어 여유롭게 도보 산책이나 자전거 라이딩을 즐기기에 최고입니다.',
+        tipEn: 'Flat and easily walkable paved boardwalk ideal for cherry blossom strolls.'
       },
       {
-        nameKo: '젬스톤 영도점',
-        nameEn: 'Gemstone Yeongdo',
-        descKo: '수십 년 동안 방치되었던 대형 수영장을 감각적인 이색 온수 카페 구조로 개조하여 넓은 휴식과 톡톡 튀는 인테리어를 선사합니다.',
-        descEn: 'An incredibly unique and spacious cafe converted from an old large indoor swimming pool.',
-        category: 'CAFE',
-        tagKo: '이색 수영장 카페',
-        tagEn: 'Converted Pool Cafe',
-        addressKo: '부산 영도구 대교로6번길 33',
-        addressEn: '33, Daegyo-ro 6beon-gil, Yeongdo-gu, Busan',
-        tipKo: '실제 수영장 바닥 구역에 다채로운 쇼파와 베드가 마련되어 있어 이색적이고 편안하게 음료를 즐길 수 있습니다.',
-        tipEn: 'Grab cozy sofa seats directly inside the deep-end dry pool floor.'
+        nameKo: '동래할매파전',
+        nameEn: 'Dongnae Halmae Pajeon',
+        descKo: '조선시대 동래 부사령관이 왕에게 진상하던 파전법을 이어온 식당으로 부드러운 쪽파와 조개, 신선한 굴이 듬뿍 얹어져 나옵니다.',
+        descEn: 'A historic royal delicacy. Incredibly soft green onion savory pancake with clams and fresh oysters.',
+        category: 'FOOD',
+        stationGroup: 'LINE1_ONCHEONJANG',
+        stationGroupNameKo: '온천장역',
+        stationGroupNameEn: 'Oncheonjang Stn',
+        tagKo: '조선 진상품 파전',
+        tagEn: 'Dongnae Pajeon',
+        addressKo: '부산 동래구 명륜로94번길 43-10',
+        addressEn: '43-10, Myeongnyun-ro 94beon-gil, Dongnae-gu, Busan',
+        tipKo: '바삭한 일반 부침개와 달리 계란과 해물 즙으로 촉촉하고 부드럽게 쪄낸 고유 식감으로 겨자 초간장에 찍어 드세요.',
+        tipEn: 'Served traditionally soft, moist, and steamed rather than crispy. Dip in local mustard soy sauce.'
+      },
+      {
+        nameKo: '동래문화회관',
+        nameEn: 'Dongnae Cultural Center',
+        descKo: '금정산 밑자락에 위치한 다채로운 야외 마당극 공연과 전통 동래야류 탈춤 보존, 클래식 독주회가 주기적으로 열리는 공공 극장입니다.',
+        descEn: 'Dongnae’s regional public arts center preserving historic folk folk arts, hosting plays and concerts.',
+        category: 'CULTURE',
+        stationGroup: 'LINE1_ONCHEONJANG',
+        stationGroupNameKo: '온천장역',
+        stationGroupNameEn: 'Oncheonjang Stn',
+        tagKo: '전통 탈춤·공연',
+        tagEn: 'Performing Arts',
+        addressKo: '부산 동래구 문화로 80',
+        addressEn: '80, Munhwa-ro, Dongnae-gu, Busan',
+        tipKo: '회관 뒤편의 편안하게 이어진 숲속 산책 데크길이 있으며 인조 연못과 야외 공연장이 있어 휴식을 취하기 편리합니다.',
+        tipEn: 'Has a peaceful pine boardwalk trail and outdoor amphitheater behind the main building.'
+      },
+      {
+        nameKo: '범어사',
+        nameEn: 'Beomeosa Temple',
+        descKo: '계곡물 소리와 피톤치드 향이 가득한 힐링 천년 고찰로, 금정산 자락 울창한 소나무 숲속에서 맑은 기운을 만끽할 수 있습니다.',
+        descEn: 'A tranquil thousand-year-old Buddhist sanctuary cradled in a dense pine forest with peaceful mountain streams.',
+        category: 'LANDMARK',
+        stationGroup: 'LINE1_BEOMEOSA',
+        stationGroupNameKo: '범어사역',
+        stationGroupNameEn: 'Beomeosa Stn',
+        tagKo: '범어사역 5번출구 → 버스 90번',
+        tagEn: 'Beomeosa Stn Exit 5 → Bus #90',
+        addressKo: '부산 금정구 범어사로 250',
+        addressEn: '250, Beomeosa-ro, Geumjeong-gu, Busan',
+        tipKo: '범어사역 5번 출구로 나와 90번 버스로 환승하면 범어사 입구까지 편리하게 올라갈 수 있습니다.',
+        tipEn: 'Take Bus #90 from Beomeosa Station Exit 5 directly to the temple entrance.'
+      },
+      {
+        nameKo: '범어사 성보박물관',
+        nameEn: 'Beomeosa Seongbo Museum',
+        descKo: '범어사가 소장한 국보 및 보물급 불교 문화재와 역사 유물을 보존 및 전시하는 전문 불교 박물관입니다.',
+        descEn: 'A Buddhist museum displaying precious national treasures, buddhist paintings, and relics.',
+        category: 'CULTURE',
+        stationGroup: 'LINE1_BEOMEOSA',
+        stationGroupNameKo: '범어사역',
+        stationGroupNameEn: 'Beomeosa Stn',
+        tagKo: '범어사역 5번출구 → 버스 90번',
+        tagEn: 'Beomeosa Stn Exit 5 → Bus #90',
+        addressKo: '부산 금정구 범어사로 250',
+        addressEn: '250, Beomeosa-ro, Geumjeong-gu, Busan',
+        tipKo: '범어사 진입로에 위치하여 90번 버스 이용 시 범어사 참배와 함께 함께 둘러보기 좋습니다.',
+        tipEn: 'Located along the main approach road to Beomeosa Temple.'
       },
       {
         nameKo: '헤이든 신씨어',
@@ -433,6 +568,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         descKo: '금정산 산자락 호수 옆에 위치한 미니멀하고 기하학적인 현대식 카페로 푸른 산 배경의 호수 징검다리 뷰가 시그니처입니다.',
         descEn: 'A high-concept, geometric architectural lakeside cafe surrounded by lush green mountain views.',
         category: 'CAFE',
+        stationGroup: 'LINE1_BEOMEOSA',
+        stationGroupNameKo: '범어사역',
+        stationGroupNameEn: 'Beomeosa Stn',
         tagKo: '마운틴·레이크뷰',
         tagEn: 'Geometric Lake Cafe',
         addressKo: '부산 금정구 금성동 산9-1',
@@ -441,11 +579,78 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         tipEn: 'The floating orange triangle logo in the center pond is the absolute best backdrop for photos.'
       },
       {
+        nameKo: '금정문화회관',
+        nameEn: 'Geumjeong Cultural Center',
+        descKo: '금정구 지역 예술 문화의 거점으로 국내외 우수 연주단체의 클래식 오케스트라와 지역 작가들의 시각 미술 전시가 다채롭게 펼쳐집니다.',
+        descEn: 'The cultural heartbeat of Geumjeong, staging world-class classic concerts and monthly local art exhibitions.',
+        category: 'CULTURE',
+        stationGroup: 'LINE1_BEOMEOSA',
+        stationGroupNameKo: '범어사역',
+        stationGroupNameEn: 'Beomeosa Stn',
+        tagKo: '오케스트라·미술전',
+        tagEn: 'Fine Art Gallery',
+        addressKo: '부산 금정구 체육공원로 7',
+        addressEn: '7, Cheyukgongwon-ro, Geumjeong-gu, Busan',
+        tipKo: '차량 이용 시 주차 정산 시스템이 잘 되어 있고, 금정구청 바로 옆이라 대중교통 노선 연계성도 아주 양호합니다.',
+        tipEn: 'Conveniently located near Geumjeong-gu Office with superb accessibility by city buses.'
+      },
+      {
+        nameKo: '다대포 해수욕장 & 고우니 생태길',
+        nameEn: 'Dadaepo Beach & Gouny Eco Trail',
+        descKo: '끝없는 모래사장과 완벽한 평지 데크 보도가 어우러진 해질녘 최고의 노을 명소입니다.',
+        descEn: 'One of Koreas absolute best sunset spots featuring barrier-free wooden wetland boardwalks.',
+        category: 'LANDMARK',
+        stationGroup: 'LINE1_DADAEPO',
+        stationGroupNameKo: '다대포해수욕장역',
+        stationGroupNameEn: 'Dadaepo Beach Stn',
+        tagKo: '일몰·낙조',
+        tagEn: 'Sunset',
+        addressKo: '부산 사하구 다대동 (다대포해수욕장역 1번 출구)',
+        addressEn: 'Dadae-dong, Saha-gu, Busan (Exit 1)',
+        tipKo: '해 질 무렵 생태길 중간 전망대에 서면 바다와 억새가 노을에 붉게 물드는 장관을 찍을 수 있습니다.',
+        tipEn: 'Arrive 30 minutes before sunset to capture the reeds turning crimson red.'
+      },
+      {
+        nameKo: '다대포 꿈의 낙조분수',
+        nameEn: 'Dadaepo Sunset Fountain of Dreams',
+        descKo: '지름 60m에 달하는 초대형 원형 바닥 음악 분수로, 밤마다 화려한 레이저 조명과 고압 물줄기가 음악에 맞춰 춤을 춥니다.',
+        descEn: 'The world-famous massive musical fountain dancing to dynamic lasers and water pressure under night skies.',
+        category: 'CULTURE',
+        stationGroup: 'LINE1_DADAEPO',
+        stationGroupNameKo: '다대포해수욕장역',
+        stationGroupNameEn: 'Dadaepo Beach Stn',
+        tagKo: '화려한 분수 쇼',
+        tagEn: 'Music Fountain',
+        addressKo: '부산 사하구 다대강변대로 14 (다대포해수욕장역 1,2번 출구)',
+        addressEn: '14, Dadaegangbyun-daero, Saha-gu, Busan',
+        tipKo: '봄부터 가을까지 매일 저녁 상설 무료 분수 공연이 펼쳐지니 정확한 회차 시간을 확인하세요.',
+        tipEn: 'Shows run nightly from spring to autumn for free. Check weekly show schedules online.'
+      },
+      {
+        nameKo: '신기산업',
+        nameEn: 'Singi Industry',
+        descKo: '영도 산복도로 높은 곳에 위치한 카페로, 통창 너머로 부산항대교의 일곱빛깔 무지개 조명 야경을 완벽히 감상합니다.',
+        descEn: 'A high-perched scenic cafe on Yeongdo hills with a brilliant panoramic view of Busan Port Bridge.',
+        category: 'CAFE',
+        stationGroup: 'LINE1_BUSAN_STN',
+        stationGroupNameKo: '부산역',
+        stationGroupNameEn: 'Busan Station',
+        tagKo: '부산항대교 야경',
+        tagEn: 'Port Bridge View',
+        addressKo: '부산 영도구 와치로 51',
+        addressEn: '51, Wachi-ro, Yeongdo-gu, Busan',
+        tipKo: '오르막 경사가 심해 대중교통 이용 시 부산역이나 남포역에서 영도 영선동 방향 9번 버스를 타시면 바로 정류장 앞 하차합니다.',
+        tipEn: 'The hill is steep; take local bus #9 from Busan Station to drop off directly outside the entrance.'
+      },
+      {
         nameKo: '국립해양박물관',
         nameEn: 'National Maritime Museum',
         descKo: '영도 해안가에 세워진 거대한 물방울 모양의 국립 박물관으로, 해양 역사 전시와 원통형 대형 아쿠아리움을 무료 관람합니다.',
         descEn: 'A free-entry iconic maritime museum shaped like a water droplet, complete with a beautiful cylindrical fish tank.',
         category: 'CULTURE',
+        stationGroup: 'LINE1_BUSAN_STN',
+        stationGroupNameKo: '부산역',
+        stationGroupNameEn: 'Busan Station',
         tagKo: '해양 박물관',
         tagEn: 'Ocean Museum',
         addressKo: '부산 영도구 해양로301번길 45',
@@ -459,6 +664,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         descKo: '부산 최대 규모의 크루즈선을 형상화한 초대형 문화복합공간으로 기획 현대미술전, 도서전, 디자인 마켓이 상시 개최됩니다.',
         descEn: 'A mega cultural complex designed like a cruise ship, hosting high-profile art and design pop-ups.',
         category: 'CULTURE',
+        stationGroup: 'LINE1_BUSAN_STN',
+        stationGroupNameKo: '부산역',
+        stationGroupNameEn: 'Busan Station',
         tagKo: '기획 아트 전시',
         tagEn: 'Creative Hub',
         addressKo: '부산 영도구 해양로195번길 180',
@@ -467,30 +675,36 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         tipEn: 'Enjoy the ocean harbor breeze on the massive outdoor synthetic grass plaza.'
       },
       {
-        nameKo: '동래문화회관',
-        nameEn: 'Dongnae Cultural Center',
-        descKo: '금정산 밑자락에 위치한 다채로운 야외 마당극 공연과 전통 동래야류 탈춤 보존, 클래식 독주회가 주기적으로 열리는 공공 극장입니다.',
-        descEn: 'Dongnae’s regional public arts center preserving historic folk folk arts, hosting plays and concerts.',
-        category: 'CULTURE',
-        tagKo: '전통 탈춤·공연',
-        tagEn: 'Performing Arts',
-        addressKo: '부산 동래구 문화로 80',
-        addressEn: '80, Munhwa-ro, Dongnae-gu, Busan',
-        tipKo: '회관 뒤편의 편안하게 이어진 숲속 산책 데크길이 있으며 인조 연못과 야외 공연장이 있어 휴식을 취하기 편리합니다.',
-        tipEn: 'Has a peaceful pine boardwalk trail and outdoor amphitheater behind the main building.'
+        nameKo: '구포시장',
+        nameEn: 'Gupo Traditional Market',
+        descKo: '낙동강 물길을 따라 형성된 400년 역사의 영남권 최대 전통시장으로, 쫄깃한 구포국수와 어묵, 각종 시장 먹거리가 가득한 활기찬 미식의 천국입니다.',
+        descEn: 'A vibrant, 400-year-old historic market near the Nakdong River, famous for its legendary chewy Gupo noodles, fish cakes, and diverse street food delicacies.',
+        category: 'FOOD',
+        stationGroup: 'LINE1_SEOMYEON_BUJEON',
+        stationGroupNameKo: '서면역 · 부전역',
+        stationGroupNameEn: 'Seomyeon · Bujeon',
+        tagKo: '400년 역사 미식 시장',
+        tagEn: 'Historic Street Food Market',
+        addressKo: '부산 북구 구포시장1길 17',
+        addressEn: '17, Guposijang 1-gil, Buk-gu, Busan',
+        tipKo: '장날(매월 3, 8, 13, 18, 23, 28일)에 방문하면 길거리 간식과 활기 넘치는 전통 오일장의 진수를 만날 수 있습니다.',
+        tipEn: 'Visit on five-day market dates (ending in 3 or 8) to experience the ultimate bustling local street food.'
       },
       {
-        nameKo: '금정문화회관',
-        nameEn: 'Geumjeong Cultural Center',
-        descKo: '금정구 지역 예술 문화의 거점으로 국내외 우수 연주단체의 클래식 오케스트라와 지역 작가들의 시각 미술 전시가 다채롭게 펼쳐집니다.',
-        descEn: 'The cultural heartbeat of Geumjeong, staging world-class classic concerts and monthly local art exhibitions.',
-        category: 'CULTURE',
-        tagKo: '오케스트라·미술전',
-        tagEn: 'Fine Art Gallery',
-        addressKo: '부산 금정구 체육공원로 7',
-        addressEn: '7, Cheyukgongwon-ro, Geumjeong-gu, Busan',
-        tipKo: '차량 이용 시 주차 정산 시스템이 잘 되어 있고, 금정구청 바로 옆이라 대중교통 노선 연계성도 아주 양호합니다.',
-        tipEn: 'Conveniently located near Geumjeong-gu Office with superb accessibility by city buses.'
+        nameKo: '이원화구포국시',
+        nameEn: 'Yi Won-hwa Gupo Guksi',
+        descKo: '60년 전통 구포국수의 명맥을 잇는 백년가게로, 낙동강 해풍에 말려 쫄깃함이 남다른 명품 면발과 깊고 진한 남해안 멸치 육수의 진한 조화를 선보입니다.',
+        descEn: 'A designated historic "Hundred-Year Store" preserving the 60-year Gupo noodle legacy, boasting wind-dried chewy noodles in deeply savory anchovy broth.',
+        category: 'FOOD',
+        stationGroup: 'LINE1_SEOMYEON_BUJEON',
+        stationGroupNameKo: '서면역 · 부전역',
+        stationGroupNameEn: 'Seomyeon · Bujeon',
+        tagKo: '60년 전통 백년가게 국수',
+        tagEn: '60-Year Anchovy Noodles',
+        addressKo: '부산 북구 낙동대로1776번길 4',
+        addressEn: '4, Nakdong-daero 1776beon-gil, Buk-gu, Busan',
+        tipKo: '주문 즉시 삶아내는 생면 비빔국수와 뜨끈한 온국수가 시그니처입니다.',
+        tipEn: 'The warm anchovy soup noodles and chewy spicy cold mixed noodles are made to order.'
       }
     ]
   },
@@ -500,106 +714,18 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
     nameEn: 'Line 2 Line (Jangsan Stn ↔ Yangsan Stn)',
     color: 'bg-emerald-600',
     badgeColor: 'bg-emerald-100 text-emerald-900 border-emerald-200',
-    descKo: '2호선(장산역 ↔ 양산역, 총 43개 역 45.2km 축)을 따라 펼쳐지는 부산 대표 여행 스팟 (해운대 블루라인파크, 해동용궁사, 다대포 해수욕장, 감천문화마을, 수변최고돼지국밥, 명지 갈삼구이, 웨이브온, 밀락더마켓, 부산현대미술관 등).',
-    descEn: 'Connecting Busan east-to-west along Line 2 (43 stations, 45.2km): Haeundae Blue Line Park, Haedong Yonggungsa, Dadaepo Beach, Gamcheon Village, Subyeon Pork Soup, Myeongji Galsamgui, Waveon Coffee, Millac the Market, Museum of Contemporary Art, etc.',
+    descKo: '2호선(장산역 ↔ 양산역, 총 43개 역 45.2km 축)을 따라 펼쳐지는 부산 대표 여행 스팟 (해운대 블루라인파크, 해동용궁사, 수변최고돼지국밥, 명지 갈삼구이, 웨이브온, 밀락더마켓, 부산현대미술관 등).',
+    descEn: 'Connecting Busan east-to-west along Line 2 (43 stations, 45.2km): Haeundae Blue Line Park, Haedong Yonggungsa, Subyeon Pork Soup, Myeongji Galsamgui, Waveon Coffee, Millac the Market, Museum of Contemporary Art, etc.',
     landmarks: [
-      {
-        nameKo: '해운대 블루라인파크 & 그린레일웨이',
-        nameEn: 'Haeundae Blue Line Park & Green Railway',
-        descKo: '폐선된 동해남부선 철로를 리모델링하여 해안 절경을 감상하며 걷거나 열차를 탈 수 있는 바다 도보길입니다.',
-        descEn: 'A scenic coastline walk and sightseeing train utilizing the recycled historic seaside railway.',
-        category: 'LANDMARK',
-        tagKo: '바다 도보·기차',
-        tagEn: 'Ocean Railway',
-        addressKo: '부산 해운대구 청사포로 116',
-        addressEn: '116, Cheongsapo-ro, Haeundae-gu, Busan',
-        tipKo: '휠체어/유모차 전 구간 진입 가능한 나무 데크 산책로가 조성되어 있습니다.',
-        tipEn: 'All sections are equipped with barrier-free flat boardwalks.'
-      },
-      {
-        nameKo: '해동용궁사',
-        nameEn: 'Haedong Yonggungsa Temple',
-        descKo: '바다 절벽 바로 위에 세워진 사찰로, 파도가 불상 발밑에 부서지는 이색적이고 웅장한 사찰입니다.',
-        descEn: 'A beautiful temple built right on the coastal cliffs, offering serene ocean waves crashing under your feet.',
-        category: 'LANDMARK',
-        tagKo: '해안 사찰',
-        tagEn: 'Cliffside Temple',
-        addressKo: '부산 기장군 기장읍 용궁사로 86',
-        addressEn: '86, Yonggungsa-ro, Gijang-eup, Gijang-gun, Busan',
-        tipKo: '메인 계단 대신 완만 우회로(교통약자 진입로)를 이용하시면 편하게 참배할 수 있습니다.',
-        tipEn: 'Use the gentle bypass ramp to access the temple grounds easily.'
-      },
-      {
-        nameKo: '다대포 해수욕장 & 고우니 생태길',
-        nameEn: 'Dadaepo Beach & Gouny Eco Trail',
-        descKo: '끝없는 모래사장과 완벽한 평지 데크 보도가 어우러진 해질녘 최고의 노을 명소입니다.',
-        descEn: 'One of Koreas absolute best sunset spots featuring barrier-free wooden wetland boardwalks.',
-        category: 'LANDMARK',
-        tagKo: '일몰·낙조',
-        tagEn: 'Sunset',
-        addressKo: '부산 사하구 다대동',
-        addressEn: 'Dadae-dong, Saha-gu, Busan',
-        tipKo: '해 질 무렵 생태길 중간 전망대에 서면 바다와 억새가 노을에 붉게 물드는 장관을 찍을 수 있습니다.',
-        tipEn: 'Arrive 30 minutes before sunset to capture the reeds turning crimson red.'
-      },
-      {
-        nameKo: '감천문화마을',
-        nameEn: 'Gamcheon Culture Village',
-        descKo: '부산의 산토리니로 불리는 알록달록한 계단식 마을로, 입구 전망대 평지 구역에서 경관을 한눈에 담을 수 있습니다.',
-        descEn: 'The Santorini of Busan, showcasing whimsical pastel-colored houses with magnificent viewpoint terraces.',
-        category: 'LANDMARK',
-        tagKo: '예술 마을',
-        tagEn: 'Art Village',
-        addressKo: '부산 사하구 감내2로 203',
-        addressEn: '203, Gamnae 2-ro, Saha-gu, Busan',
-        tipKo: '마을 안쪽은 가파른 경사가 많으므로, 입구 안내소 부근 평지 전망대에서 경관을 즐기는 편이 좋습니다.',
-        tipEn: 'The village core has steep hills; enjoy the sweeping views from the flat entrance observatory.'
-      },
-      {
-        nameKo: '수변최고돼지국밥 민락본점',
-        nameEn: 'Subyeon Choego Pork Soup (Millak)',
-        descKo: '현지인들이 늘 줄을 서는 대표 국밥집으로 부드럽고 가득 찬 고기와 잡내 없이 진한 국물이 특징입니다.',
-        descEn: 'Local-favorite pork soup restaurant offering rich savory broth with tender pork.',
-        category: 'FOOD',
-        tagKo: '인생 국밥',
-        tagEn: 'Pork Soup',
-        addressKo: '부산 수영구 광안해변로370번길 9-32',
-        addressEn: '9-32, Gwanganhaebyeon-ro 370beon-gil, Suyeong-gu, Busan',
-        tipKo: '테이블링 앱으로 출발 전 온라인 대기 신청을 미리 해두시는 것을 추천합니다.',
-        tipEn: 'Highly recommend checking queue status and booking online in advance via Tabling app.'
-      },
-      {
-        nameKo: '해운대 소문난 암소갈비집',
-        nameEn: 'Haeundae Famous Beef Ribs',
-        descKo: '전통 있는 소갈비 명소로, 구수한 한우 고기와 갈비 양념 베이스에 끓여 먹는 쫄깃한 감자사리가 예술입니다.',
-        descEn: 'A highly historic beef ribs restaurant, legendary for its unique tender cut and sweet potato starch noodles.',
-        category: 'FOOD',
-        tagKo: '한우 양념갈비',
-        tagEn: 'K-BBQ Ribs',
-        addressKo: '부산 해운대구 중동2로10번길 32-10',
-        addressEn: '32-10, Jungdong 2-ro 10beon-gil, Haeundae-gu, Busan',
-        tipKo: '감자사리는 고기를 구운 불판 가장자리에 꼭 추가해서 함께 끓여 드세요!',
-        tipEn: 'Must order the potato noodles to simmer in the beef glaze along the grill edges!'
-      },
-      {
-        nameKo: '합천일류돼지국밥',
-        nameEn: 'Hapcheon Pork Soup (Sasang)',
-        descKo: '알싸한 마늘 다대기가 아낌없이 들어가 감칠맛이 폭발하는 사상구 최고의 로컬 대기 맛집입니다.',
-        descEn: 'Local favorite pork soup characterized by a generous spoonful of rich garlic paste and robust broth.',
-        category: 'FOOD',
-        tagKo: '돼지국밥 맛집',
-        tagEn: 'Garlic Pork Soup',
-        addressKo: '부산 사상구 광장로 97',
-        addressEn: '97, Gwangjang-ro, Sasang-gu, Busan',
-        tipKo: '국밥 안에 밥이 토렴되어 나오며, 셀프 코너에서 무한으로 신선한 부추와 밥을 덜어갈 수 있습니다.',
-        tipEn: 'Rice is served pre-soaked in the hot broth; fresh chives and extra rice are free at the self-bar.'
-      },
       {
         nameKo: '명지 갈삼구이',
         nameEn: 'Myeongji Galsamgui',
         descKo: '낙동강 하구 특산물 갈미조개와 삼겹살을 불판에 구워 쌈 무에 싸 먹는 강서 특산 별미입니다.',
         descEn: 'A unique local specialty pairing sweet river clams with savory thin pork belly on a hot grill.',
         category: 'FOOD',
+        stationGroup: 'LINE2_HWAMYEONG',
+        stationGroupNameKo: '화명역',
+        stationGroupNameEn: 'Hwamyeong Stn',
         tagKo: '갈미조개 별미',
         tagEn: 'Clam & Pork',
         addressKo: '부산 강서구 명지오션시티1로 173',
@@ -608,37 +734,14 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         tipEn: 'Wrap a slice of pork belly, clam, and grilled bean sprouts in dry seaweed and pickled radish.'
       },
       {
-        nameKo: '웨이브온 커피',
-        nameEn: 'Waveon Coffee',
-        descKo: '세계적인 건축가가 설계한 기장의 오션뷰 초대형 카페로, 계단식 야외 빈백에 누워 기장 푸른 바다를 만끽할 수 있습니다.',
-        descEn: 'World-renowned architecturally designed massive cafe in Gijang with beautiful terrace view beanbags.',
-        category: 'CAFE',
-        tagKo: '건축미·오션뷰',
-        tagEn: 'Architectural Café',
-        addressKo: '부산 기장군 장안읍 해맞이로 286',
-        addressEn: '286, Haemaji-ro, Jangan-eup, Gijang-gun, Busan',
-        tipKo: '야외 방갈로 스타일의 독채 별채 공간은 카운터에 요청하면 선착순 무료 이용 가능합니다.',
-        tipEn: 'Ask the counter for a free private sea-shack pod (available on first-come-first-serve basis).'
-      },
-      {
-        nameKo: '랑데자뷰 광안리점',
-        nameEn: 'Rendezja-vous Gwangalli',
-        descKo: '제주도 돌담 감성을 살린 세련된 내부 공간과 통유리창 너머로 광안리 백사장과 광안대교가 완벽한 비율로 담깁니다.',
-        descEn: 'A Jeju-themed forest cafe featuring spectacular wide views of Gwangan Beach and Bridge.',
-        category: 'CAFE',
-        tagKo: '광안대교 뷰',
-        tagEn: 'Gwangan Bridge View',
-        addressKo: '부산 수영구 광안해변로 165 2층',
-        addressEn: '2F, 165, Gwanganhaebyeon-ro, Suyeong-gu, Busan',
-        tipKo: '포토존 거울 앞에서 사진을 찍으면 통유리로 광안대교가 등 뒤로 멋지게 연출됩니다.',
-        tipEn: 'Stand at the mirror photo zone to capture yourself with the perfect bridge reflection.'
-      },
-      {
         nameKo: 'VSANT 비상',
         nameEn: 'Vsant Coffee',
         descKo: '엄궁동 낙동강변에 위치한 대형 빈티지 공장형 카페로, 앤틱카 전시와 낙동강 노을 뷰 테라스가 완비되어 있습니다.',
         descEn: 'Industrial chic riverside cafe in Saha-gu, showcasing classic cars and stunning sunset viewpoints.',
         category: 'CAFE',
+        stationGroup: 'LINE2_HWAMYEONG',
+        stationGroupNameKo: '화명역',
+        stationGroupNameEn: 'Hwamyeong Stn',
         tagKo: '낙동강 노을 뷰',
         tagEn: 'Riverside View',
         addressKo: '부산 사하구 강변대로 420',
@@ -647,11 +750,46 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         tipEn: 'Classic vintage cars are displayed on the 1st floor; an elevator serves all floors.'
       },
       {
+        nameKo: '부산현대미술관',
+        nameEn: 'Museum of Contemporary Art Busan',
+        descKo: '을숙도 철새 도래지 한가운데 세워진 공공 미술관으로 외벽이 온통 초록 식물로 뒤덮인 아름다운 에코 미술관입니다.',
+        descEn: 'A state-of-the-art public museum on Eulsukdo Island featuring an eye-catching living plant facade.',
+        category: 'CULTURE',
+        stationGroup: 'LINE2_HWAMYEONG',
+        stationGroupNameKo: '화명역',
+        stationGroupNameEn: 'Hwamyeong Stn',
+        tagKo: '에코 미디어 아트',
+        tagEn: 'Contemporary Art',
+        addressKo: '부산 강서구 낙동남로 1191',
+        addressEn: '1191, Nakdongnam-ro, Gangseo-gu, Busan',
+        tipKo: '장애인 및 노약자를 위해 입구와 전시실 전체에 계단 없는 이동용 슬로프와 휠체어 대여가 완비되어 있습니다.',
+        tipEn: 'Equipped with barrier-free slopes, automatic doors, and free wheelchair rentals.'
+      },
+      {
+        nameKo: '합천일류돼지국밥',
+        nameEn: 'Hapcheon Pork Soup (Sasang)',
+        descKo: '알싸한 마늘 다대기가 아낌없이 들어가 감칠맛이 폭발하는 사상구 최고의 로컬 대기 맛집입니다.',
+        descEn: 'Local favorite pork soup characterized by a generous spoonful of rich garlic paste and robust broth.',
+        category: 'FOOD',
+        stationGroup: 'LINE2_DEOKCHEON',
+        stationGroupNameKo: '덕천역',
+        stationGroupNameEn: 'Deokcheon Stn',
+        tagKo: '돼지국밥 맛집',
+        tagEn: 'Garlic Pork Soup',
+        addressKo: '부산 사상구 광장로 97',
+        addressEn: '97, Gwangjang-ro, Sasang-gu, Busan',
+        tipKo: '국밥 안에 밥이 토렴되어 나오며, 셀프 코너에서 무한으로 신선한 부추와 밥을 덜어갈 수 있습니다.',
+        tipEn: 'Rice is served pre-soaked in the hot broth; fresh chives and extra rice are free at the self-bar.'
+      },
+      {
         nameKo: '숲속의 요정',
         nameEn: 'Fairy in the Forest',
         descKo: '사상구 숲속 골짜기에 한적하게 자리한 가든 카페로, 피톤치드 가득한 야외 정원과 나무 그늘 아래서 휴식을 취합니다.',
         descEn: 'A cozy forest garden cafe in Sasang, offering healing pine-wood breezes and shady outdoor decks.',
         category: 'CAFE',
+        stationGroup: 'LINE2_DEOKCHEON',
+        stationGroupNameKo: '덕천역',
+        stationGroupNameEn: 'Deokcheon Stn',
         tagKo: '숲 속 힐링 정원',
         tagEn: 'Forest Garden',
         addressKo: '부산 사상구 백양대로 320-10',
@@ -660,11 +798,78 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         tipEn: 'Pet-friendly outdoor decks make it ideal for relaxing with your dogs.'
       },
       {
+        nameKo: '감천문화마을',
+        nameEn: 'Gamcheon Culture Village',
+        descKo: '부산의 산토리니로 불리는 알록달록한 계단식 마을로, 입구 전망대 평지 구역에서 경관을 한눈에 담을 수 있습니다.',
+        descEn: 'The Santorini of Busan, showcasing whimsical pastel-colored houses with magnificent viewpoint terraces.',
+        category: 'LANDMARK',
+        stationGroup: 'LINE2_DEOKCHEON',
+        stationGroupNameKo: '덕천역',
+        stationGroupNameEn: 'Deokcheon Stn',
+        tagKo: '예술 마을',
+        tagEn: 'Art Village',
+        addressKo: '부산 사하구 감내2로 203',
+        addressEn: '203, Gamnae 2-ro, Saha-gu, Busan',
+        tipKo: '마을 안쪽은 가파른 경사가 많으므로, 입구 안내소 부근 평지 전망대에서 경관을 즐기는 편이 좋습니다.',
+        tipEn: 'The village core has steep hills; enjoy the sweeping views from the flat entrance observatory.'
+      },
+      {
+        nameKo: '전포 카페거리 & 전포 사잇길',
+        nameEn: 'Jeonpo Cafe Street & Alley',
+        descKo: '세계적으로 주목받는 감성 커피거리로, 개성 넘치는 로스터리 카페와 아기자기한 디저트 숍이 골목마다 이어집니다.',
+        descEn: 'A world-famous trendy coffee street lined with vibrant specialty roasteries and cozy dessert bakeries.',
+        category: 'CAFE',
+        stationGroup: 'LINE2_JEONPO',
+        stationGroupNameKo: '전포역',
+        stationGroupNameEn: 'Jeonpo Stn',
+        tagKo: '글로벌 커피거리',
+        tagEn: 'Specialty Cafe Street',
+        addressKo: '부산 부산진구 전포대로 210 (전포역 7번 출구)',
+        addressEn: '210 Jeonpo-daero, Busanjin-gu, Busan (Exit 7)',
+        tipKo: '전포역 7번 출구로 나오면 평지 골목을 따라 감성 카페들이 펼쳐져 편안하게 카페 투어를 즐길 수 있습니다.',
+        tipEn: 'Step directly out from Jeonpo Station Exit 7 for convenient flat alleyway cafe walking.'
+      },
+      {
+        nameKo: '수변최고돼지국밥 민락본점',
+        nameEn: 'Subyeon Choego Pork Soup (Millak)',
+        descKo: '현지인들이 늘 줄을 서는 대표 국밥집으로 부드럽고 가득 찬 고기와 잡내 없이 진한 국물이 특징입니다.',
+        descEn: 'Local-favorite pork soup restaurant offering rich savory broth with tender pork.',
+        category: 'FOOD',
+        stationGroup: 'LINE2_GEUMRYEONSAN_GWANGALLI',
+        stationGroupNameKo: '금련산역 · 광안리역',
+        stationGroupNameEn: 'Geumryeonsan · Gwangalli',
+        tagKo: '인생 국밥',
+        tagEn: 'Pork Soup',
+        addressKo: '부산 수영구 광안해변로370번길 9-32',
+        addressEn: '9-32, Gwanganhaebyeon-ro 370beon-gil, Suyeong-gu, Busan',
+        tipKo: '테이블링 앱으로 출발 전 온라인 대기 신청을 미리 해두시는 것을 추천합니다.',
+        tipEn: 'Highly recommend checking queue status and booking online in advance via Tabling app.'
+      },
+      {
+        nameKo: '랑데자뷰 광안리점',
+        nameEn: 'Rendezja-vous Gwangalli',
+        descKo: '제주도 돌담 감성을 살린 세련된 내부 공간과 통유리창 너머로 광안리 백사장과 광안대교가 완벽한 비율로 담깁니다.',
+        descEn: 'A Jeju-themed forest cafe featuring spectacular wide views of Gwangan Beach and Bridge.',
+        category: 'CAFE',
+        stationGroup: 'LINE2_GEUMRYEONSAN_GWANGALLI',
+        stationGroupNameKo: '금련산역 · 광안리역',
+        stationGroupNameEn: 'Geumryeonsan · Gwangalli',
+        tagKo: '광안대교 뷰',
+        tagEn: 'Gwangan Bridge View',
+        addressKo: '부산 수영구 광안해변로 165 2층 (금련산역 5번 출구)',
+        addressEn: '2F, 165, Gwanganhaebyeon-ro, Suyeong-gu, Busan',
+        tipKo: '포토존 거울 앞에서 사진을 찍으면 통유리로 광안대교가 등 뒤로 멋지게 연출됩니다.',
+        tipEn: 'Stand at the mirror photo zone to capture yourself with the perfect bridge reflection.'
+      },
+      {
         nameKo: '밀락더마켓',
         nameEn: 'Millac the Market',
         descKo: '민락동에 세워진 거대한 복합문화공간으로, 중앙 계단 광장에서 버스킹 공연과 푸드홀을 동시에 즐길 수 있습니다.',
         descEn: 'An incredibly popular cultural complex in Millak-dong, hosting trendy pop-ups and live busking.',
         category: 'CULTURE',
+        stationGroup: 'LINE2_GEUMRYEONSAN_GWANGALLI',
+        stationGroupNameKo: '금련산역 · 광안리역',
+        stationGroupNameEn: 'Geumryeonsan · Gwangalli',
         tagKo: '문화 복합공간',
         tagEn: 'Art Complex',
         addressKo: '부산 수영구 민락수변로 17번길 56',
@@ -678,38 +883,79 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         descKo: '해운대 센텀시티에 펼쳐진 초대형 LED 미디어 아트 현대미술관으로 바닥과 벽면 전체가 살아 움직이는 빛의 세계입니다.',
         descEn: 'A vast immersive LED media art playground in Haeundae Centum City where floor and wall panels shift dynamically.',
         category: 'CULTURE',
+        stationGroup: 'LINE2_CENTUM_CITY',
+        stationGroupNameKo: '센텀시티역',
+        stationGroupNameEn: 'Centum City Stn',
         tagKo: '미디어 아트',
         tagEn: 'Media Art',
-        addressKo: '부산 해운대구 센텀서로 20',
+        addressKo: '부산 해운대구 센텀서로 20 (센텀시티역 6번 출구)',
         addressEn: '20, Centumseo-ro, Haeundae-gu, Busan',
         tipKo: '내부가 평탄하여 유모차나 휠체어도 수월하게 관람 가능합니다. 편안하게 앉아 빛의 흐름을 즐기세요.',
         tipEn: 'The entire layout is flat and barrier-free, allowing comfortable strollers or wheelchair visits.'
       },
       {
-        nameKo: '부산현대미술관',
-        nameEn: 'Museum of Contemporary Art Busan',
-        descKo: '을숙도 철새 도래지 한가운데 세워진 공공 미술관으로 외벽이 온통 초록 식물로 뒤덮인 아름다운 에코 미술관입니다.',
-        descEn: 'A state-of-the-art public museum on Eulsukdo Island featuring an eye-catching living plant facade.',
-        category: 'CULTURE',
-        tagKo: '에코 미디어 아트',
-        tagEn: 'Contemporary Art',
-        addressKo: '부산 강서구 낙동남로 1191',
-        addressEn: '1191, Nakdongnam-ro, Gangseo-gu, Busan',
-        tipKo: '장애인 및 노약자를 위해 입구와 전시실 전체에 계단 없는 이동용 슬로프와 휠체어 대여가 완비되어 있습니다.',
-        tipEn: 'Equipped with barrier-free slopes, automatic doors, and free wheelchair rentals.'
+        nameKo: '해운대 블루라인파크 & 그린레일웨이',
+        nameEn: 'Haeundae Blue Line Park & Green Railway',
+        descKo: '폐선된 동해남부선 철로를 리모델링하여 해안 절경을 감상하며 걷거나 열차를 탈 수 있는 바다 도보길입니다.',
+        descEn: 'A scenic coastline walk and sightseeing train utilizing the recycled historic seaside railway.',
+        category: 'LANDMARK',
+        stationGroup: 'LINE2_HAEUNDAE_DONGBAEK',
+        stationGroupNameKo: '해운대역 · 동백역',
+        stationGroupNameEn: 'Haeundae · Dongbaek',
+        tagKo: '바다 도보·기차',
+        tagEn: 'Ocean Railway',
+        addressKo: '부산 해운대구 청사포로 116 (해운대역 3번 출구 / 동백역)',
+        addressEn: '116, Cheongsapo-ro, Haeundae-gu, Busan',
+        tipKo: '휠체어/유모차 전 구간 진입 가능한 나무 데크 산책로가 조성되어 있습니다.',
+        tipEn: 'All sections are equipped with barrier-free flat boardwalks.'
       },
       {
-        nameKo: '다대포 꿈의 낙조분수',
-        nameEn: 'Dadaepo Sunset Fountain of Dreams',
-        descKo: '지름 60m에 달하는 초대형 원형 바닥 음악 분수로, 밤마다 화려한 레이저 조명과 고압 물줄기가 음악에 맞춰 춤을 춥니다.',
-        descEn: 'The world-famous massive musical fountain dancing to dynamic lasers and water pressure under night skies.',
-        category: 'CULTURE',
-        tagKo: '화려한 분수 쇼',
-        tagEn: 'Music Fountain',
-        addressKo: '부산 사하구 다대강변대로 14',
-        addressEn: '14, Dadaegangbyun-daero, Saha-gu, Busan',
-        tipKo: '봄부터 가을까지 매일 저녁 상설 무료 분수 공연이 펼쳐지니 홈페이지에서 정확한 회차 시간을 확인하세요.',
-        tipEn: 'Shows run nightly from spring to autumn for free. Check weekly show schedules online.'
+        nameKo: '해동용궁사',
+        nameEn: 'Haedong Yonggungsa Temple',
+        descKo: '바다 절벽 바로 위에 세워진 사찰로, 파도가 불상 발밑에 부서지는 이색적이고 웅장한 사찰입니다.',
+        descEn: 'A beautiful temple built right on the coastal cliffs, offering serene ocean waves crashing under your feet.',
+        category: 'LANDMARK',
+        stationGroup: 'LINE2_HAEUNDAE_DONGBAEK',
+        stationGroupNameKo: '해운대역 · 동백역',
+        stationGroupNameEn: 'Haeundae · Dongbaek',
+        tagKo: '해안 사찰',
+        tagEn: 'Cliffside Temple',
+        addressKo: '부산 기장군 기장읍 용궁사로 86 (해운대역 7번 출구 버스 연계)',
+        addressEn: '86, Yonggungsa-ro, Gijang-eup, Gijang-gun, Busan',
+        tipKo: '메인 계단 대신 완만 우회로(교통약자 진입로)를 이용하시면 편하게 참배할 수 있습니다.',
+        tipEn: 'Use the gentle bypass ramp to access the temple grounds easily.'
+      },
+      {
+        nameKo: '해운대 소문난 암소갈비집',
+        nameEn: 'Haeundae Famous Beef Ribs',
+        descKo: '전통 있는 소갈비 명소로, 구수한 한우 고기와 갈비 양념 베이스에 끓여 먹는 쫄깃한 감자사리가 예술입니다.',
+        descEn: 'A highly historic beef ribs restaurant, legendary for its unique tender cut and sweet potato starch noodles.',
+        category: 'FOOD',
+        stationGroup: 'LINE2_HAEUNDAE_DONGBAEK',
+        stationGroupNameKo: '해운대역 · 동백역',
+        stationGroupNameEn: 'Haeundae · Dongbaek',
+        tagKo: '한우 양념갈비',
+        tagEn: 'K-BBQ Ribs',
+        addressKo: '부산 해운대구 중동2로10번길 32-10 (해운대역/중동역)',
+        addressEn: '32-10, Jungdong 2-ro 10beon-gil, Haeundae-gu, Busan',
+        tipKo: '감자사리는 고기를 구운 불판 가장자리에 꼭 추가해서 함께 끓여 드세요!',
+        tipEn: 'Must order the potato noodles to simmer in the beef glaze along the grill edges!'
+      },
+      {
+        nameKo: '웨이브온 커피',
+        nameEn: 'Waveon Coffee',
+        descKo: '세계적인 건축가가 설계한 기장의 오션뷰 초대형 카페로, 계단식 야외 빈백에 누워 기장 푸른 바다를 만끽할 수 있습니다.',
+        descEn: 'World-renowned architecturally designed massive cafe in Gijang with beautiful terrace view beanbags.',
+        category: 'CAFE',
+        stationGroup: 'LINE2_HAEUNDAE_DONGBAEK',
+        stationGroupNameKo: '해운대역 · 동백역',
+        stationGroupNameEn: 'Haeundae · Dongbaek',
+        tagKo: '건축미·오션뷰',
+        tagEn: 'Architectural Café',
+        addressKo: '부산 기장군 장안읍 해맞이로 286',
+        addressEn: '286, Haemaji-ro, Jangan-eup, Gijang-gun, Busan',
+        tipKo: '야외 방갈로 스타일의 독채 별채 공간은 카운터에 요청하면 선착순 무료 이용 가능합니다.',
+        tipEn: 'Ask the counter for a free private sea-shack pod (available on first-come-first-serve basis).'
       }
     ]
   }
@@ -1328,9 +1574,30 @@ export default function BusanItinerariesView({
   ];
 
   const [activeRegionCategory, setActiveRegionCategory] = useState<'LANDMARK' | 'FOOD' | 'CAFE' | 'CULTURE'>('LANDMARK');
+  const [selectedStationGroup, setSelectedStationGroup] = useState<string>('ALL');
   const [selectedLine, setSelectedLine] = useState<'LINE1' | 'LINE2'>('LINE1');
   const [copiedIndex, setCopiedIndex] = useState<string | null>(null);
   const [showRealPoster, setShowRealPoster] = useState(false);
+
+  const LINE1_STATION_TABS = [
+    { id: 'ALL', nameKo: '전체 역 보기 🚇', nameEn: 'All Line 1 Stations 🚇' },
+    { id: 'LINE1_JUNGANG_NAMPO_JAGALCHI', nameKo: '중앙역 · 남포역 · 자갈치역', nameEn: 'Jungang · Nampo · Jagalchi' },
+    { id: 'LINE1_ONCHEONJANG', nameKo: '온천장역', nameEn: 'Oncheonjang Stn' },
+    { id: 'LINE1_BEOMEOSA', nameKo: '범어사역', nameEn: 'Beomeosa Stn' },
+    { id: 'LINE1_DADAEPO', nameKo: '다대포해수욕장역', nameEn: 'Dadaepo Beach Stn' },
+    { id: 'LINE1_BUSAN_STN', nameKo: '부산역', nameEn: 'Busan Station' },
+    { id: 'LINE1_SEOMYEON_BUJEON', nameKo: '서면역 · 부전역', nameEn: 'Seomyeon · Bujeon' },
+  ];
+
+  const LINE2_STATION_TABS = [
+    { id: 'ALL', nameKo: '전체 역 보기 🚇', nameEn: 'All Line 2 Stations 🚇' },
+    { id: 'LINE2_HWAMYEONG', nameKo: '화명역', nameEn: 'Hwamyeong Stn' },
+    { id: 'LINE2_DEOKCHEON', nameKo: '덕천역', nameEn: 'Deokcheon Stn' },
+    { id: 'LINE2_JEONPO', nameKo: '전포역', nameEn: 'Jeonpo Stn' },
+    { id: 'LINE2_GEUMRYEONSAN_GWANGALLI', nameKo: '금련산역 · 광안리역', nameEn: 'Geumryeonsan · Gwangalli' },
+    { id: 'LINE2_CENTUM_CITY', nameKo: '센텀시티역', nameEn: 'Centum City Stn' },
+    { id: 'LINE2_HAEUNDAE_DONGBAEK', nameKo: '해운대역 · 동백역', nameEn: 'Haeundae · Dongbaek' },
+  ];
 
   const handleAnswerSelect = (optionType: 'A' | 'B') => {
     const nextAnswers = [...answers, optionType];
@@ -3604,6 +3871,7 @@ export default function BusanItinerariesView({
                             if (setActiveRegionPage) {
                               setActiveRegionPage('LINE1');
                             }
+                            setSelectedStationGroup('ALL');
                             setCopiedIndex(null);
                           }}
                           className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between ${
@@ -3622,7 +3890,7 @@ export default function BusanItinerariesView({
                               )}
                             </div>
                             <p className="text-xs font-bold text-slate-600">
-                              {language === 'KR' ? '부산역 · 남포동 · 서면 · 동래 (역사와 대표 먹거리 축)' : 'Busan Stn · Nampo · Seomyeon · Dongnae'}
+                              {language === 'KR' ? '중앙·남포·자갈치 · 온천장 · 범어사 · 다대포 · 부산역 · 서면·부전' : 'Jungang · Nampo · Oncheonjang · Beomeosa · Dadaepo · Busan Stn'}
                             </p>
                           </div>
                           <span className="text-xl">🍊</span>
@@ -3633,6 +3901,7 @@ export default function BusanItinerariesView({
                             if (setActiveRegionPage) {
                               setActiveRegionPage('LINE2');
                             }
+                            setSelectedStationGroup('ALL');
                             setCopiedIndex(null);
                           }}
                           className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between ${
@@ -3651,53 +3920,270 @@ export default function BusanItinerariesView({
                               )}
                             </div>
                             <p className="text-xs font-bold text-slate-600">
-                              {language === 'KR' ? '해운대 · 광안리 · 센텀시티 · 전포 (바다와 문화 쇼핑 축)' : 'Haeundae · Gwangalli · Centum · Jeonpo'}
+                              {language === 'KR' ? '화명 · 덕천 · 전포 · 금련산·광안리 · 센텀시티 · 해운대·동백' : 'Hwamyeong · Deokcheon · Jeonpo · Gwangalli · Centum · Haeundae'}
                             </p>
                           </div>
                           <span className="text-xl">🌿</span>
                         </button>
                       </div>
 
-                      {/* Sub-categories selector tabs */}
+                      {/* Station category selector tabs */}
                       <div className="flex flex-wrap gap-2 bg-slate-50/80 p-1.5 rounded-2xl border border-slate-200/50 pt-2">
-                        {([
-                          { id: 'LANDMARK', labelKo: '명소 🏖️', labelEn: 'Attractions 🏖️' },
-                          { id: 'FOOD', labelKo: '맛집 🍱', labelEn: 'Restaurants 🍱' },
-                          { id: 'CAFE', labelKo: '카페 ☕', labelEn: 'Cafes ☕' },
-                          { id: 'CULTURE', labelKo: '공연 및 전시 🎭', labelEn: 'Performances & Exhibitions 🎭' }
-                        ] as const).map((tab) => {
-                          const isActive = activeRegionCategory === tab.id;
+                        {(currentLine === 'LINE1' ? LINE1_STATION_TABS : LINE2_STATION_TABS).map((tab) => {
+                          const isActive = selectedStationGroup === tab.id;
                           const activeColorClass = currentLine === 'LINE1' ? 'bg-orange-500 text-white shadow-sm' : 'bg-emerald-600 text-white shadow-sm';
                           
                           return (
                             <button
                               key={tab.id}
                               onClick={() => {
-                                setActiveRegionCategory(tab.id);
+                                setSelectedStationGroup(tab.id);
                                 setCopiedIndex(null);
                               }}
-                              className={`flex-1 min-w-[120px] py-2.5 text-xs sm:text-sm font-black rounded-xl transition-all cursor-pointer text-center active:scale-95 ${
+                              className={`px-3 py-2 text-xs sm:text-sm font-black rounded-xl transition-all cursor-pointer text-center active:scale-95 ${
                                 isActive 
                                   ? activeColorClass 
                                   : 'text-slate-600 hover:text-slate-950 bg-transparent hover:bg-white'
                               }`}
                             >
-                              {language === 'KR' ? tab.labelKo : tab.labelEn}
+                              {language === 'KR' ? tab.nameKo : tab.nameEn}
                             </button>
                           );
                         })}
                       </div>
 
-                      {/* Display items for the selected subway line & category */}
+                      {/* Station Exit Guide Card for 중앙역 · 남포역 · 자갈치역 */}
+                      {(selectedStationGroup === 'LINE1_JUNGANG_NAMPO_JAGALCHI' || (selectedStationGroup === 'ALL' && currentLine === 'LINE1')) && (
+                        <div id="jungang-nampo-jagalchi-guide" className="bg-gradient-to-br from-orange-50 via-amber-50/60 to-orange-100/50 border border-orange-200/90 p-5 sm:p-6 rounded-3xl shadow-xs space-y-4 pt-4 text-left animate-fade-in">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-orange-200/70 pb-3">
+                            <div className="flex items-center gap-2">
+                              <span className="bg-orange-500 text-white font-black text-xs px-2.5 py-1 rounded-full shadow-2xs">
+                                1호선
+                              </span>
+                              <h3 className="font-extrabold text-slate-900 text-base sm:text-lg">
+                                🚇 중앙역 · 남포역 · 자갈치역
+                              </h3>
+                            </div>
+                            <span className="text-xs font-bold text-orange-900/90 bg-orange-200/60 px-2.5 py-1 rounded-lg self-start sm:self-auto">
+                              🛍️ 지하상가 연결 코스
+                            </span>
+                          </div>
+
+                          <div className="bg-white/90 backdrop-blur-xs p-3.5 rounded-2xl border border-orange-200/60 text-xs sm:text-sm text-slate-800 font-bold flex items-start gap-2 shadow-2xs">
+                            <span className="text-base leading-none">✨</span>
+                            <p className="leading-relaxed">
+                              {language === 'KR' 
+                                ? '중앙역에서 자갈치역까지 지하상가가 연결되어 있어 구경하는 것만으로도 시간 순삭!' 
+                                : 'An underground shopping mall connects Jungang Station to Jagalchi Station, making walking between them a fun & quick spree!'}
+                            </p>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
+                            {/* 중앙역 5번출구 */}
+                            <div className="bg-white p-4 rounded-2xl border border-orange-200/60 shadow-2xs space-y-2.5">
+                              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                                <span className="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">
+                                  📍 중앙역 5번출구
+                                </span>
+                                <span className="text-[11px] font-extrabold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md">
+                                  계단
+                                </span>
+                              </div>
+                              <ul className="text-xs text-slate-700 space-y-2 font-medium pt-0.5">
+                                <li className="flex items-center gap-1.5">
+                                  <span className="text-orange-500 font-black">•</span>
+                                  <span className="font-bold text-slate-800">부산영화체험박물관</span>
+                                </li>
+                                <li className="flex items-center gap-1.5">
+                                  <span className="text-orange-500 font-black">•</span>
+                                  <span className="font-bold text-slate-800">부산근현대역사관</span>
+                                </li>
+                                <li className="flex items-start gap-1.5">
+                                  <span className="text-orange-500 font-black">•</span>
+                                  <div>
+                                    <span className="font-bold text-slate-800">용두산공원</span>
+                                    <span className="text-[10px] text-slate-500 font-semibold block">(중앙역 5번출구 : 계단)</span>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+
+                            {/* 자갈치역 3번출구 */}
+                            <div className="bg-white p-4 rounded-2xl border border-orange-200/60 shadow-2xs space-y-2.5">
+                              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                                <span className="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">
+                                  📍 자갈치역 3번출구
+                                </span>
+                              </div>
+                              <ul className="text-xs text-slate-700 space-y-2 font-medium pt-0.5">
+                                <li className="flex items-center gap-1.5">
+                                  <span className="text-orange-500 font-black">•</span>
+                                  <span className="font-bold text-slate-800">BIFF광장 길거리음식</span>
+                                </li>
+                                <li className="flex items-center gap-1.5">
+                                  <span className="text-orange-500 font-black">•</span>
+                                  <span className="font-bold text-slate-800">국제시장</span>
+                                </li>
+                                <li className="flex items-center gap-1.5">
+                                  <span className="text-orange-500 font-black">•</span>
+                                  <span className="font-bold text-slate-800">부평깡통시장</span>
+                                </li>
+                                <li className="flex items-center gap-1.5">
+                                  <span className="text-orange-500 font-black">•</span>
+                                  <span className="font-bold text-slate-800">자갈치시장</span>
+                                </li>
+                              </ul>
+                            </div>
+
+                            {/* 남포역 7번출구 */}
+                            <div className="bg-white p-4 rounded-2xl border border-orange-200/60 shadow-2xs space-y-2.5">
+                              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                                <span className="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">
+                                  📍 남포역 7번출구
+                                </span>
+                              </div>
+                              <ul className="text-xs text-slate-700 space-y-2 font-medium pt-0.5">
+                                <li className="flex items-start gap-1.5">
+                                  <span className="text-orange-500 font-black">•</span>
+                                  <div>
+                                    <span className="font-bold text-slate-800">용두산 공원</span>
+                                    <span className="text-[10px] text-slate-500 font-semibold block">(엘리베이터)</span>
+                                  </div>
+                                </li>
+                                <li className="flex items-center gap-1.5">
+                                  <span className="text-orange-500 font-black">•</span>
+                                  <span className="font-bold text-slate-800">광복로 차없는 거리</span>
+                                </li>
+                                <li className="flex items-start gap-1.5">
+                                  <span className="text-orange-500 font-black">•</span>
+                                  <div>
+                                    <span className="font-bold text-slate-800">흰여울문화마을</span>
+                                    <span className="text-[10px] text-slate-500 font-semibold block">→ 남포 OR 자갈치에서 버스로 환승</span>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Station Exit Guide Card for 온천장역 */}
+                      {(selectedStationGroup === 'LINE1_ONCHEONJANG' || (selectedStationGroup === 'ALL' && currentLine === 'LINE1')) && (
+                        <div id="oncheonjang-guide" className="bg-gradient-to-br from-amber-50 via-orange-50/70 to-rose-50/60 border border-orange-200/90 p-5 sm:p-6 rounded-3xl shadow-xs space-y-4 pt-4 text-left animate-fade-in">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-orange-200/70 pb-3">
+                            <div className="flex items-center gap-2">
+                              <span className="bg-orange-500 text-white font-black text-xs px-2.5 py-1 rounded-full shadow-2xs">
+                                1호선
+                              </span>
+                              <h3 className="font-extrabold text-slate-900 text-base sm:text-lg">
+                                🚇 온천장역
+                              </h3>
+                            </div>
+                            <span className="text-xs font-bold text-orange-900/90 bg-orange-200/60 px-2.5 py-1 rounded-lg self-start sm:self-auto">
+                              ♨️ 목욕 & 벚꽃 힐링
+                            </span>
+                          </div>
+
+                          <div className="bg-white/90 backdrop-blur-xs p-3.5 rounded-2xl border border-orange-200/60 text-xs sm:text-sm text-slate-800 font-bold flex items-start gap-2 shadow-2xs">
+                            <span className="text-base leading-none">♨️</span>
+                            <p className="leading-relaxed">
+                              {language === 'KR' 
+                                ? '이름이 곧 목적인 곳, 사계절 내내 목욕 덕후들의 천국!' 
+                                : 'A sanctuary where the name says it all—paradise for hot spring lovers year-round!'}
+                            </p>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+                            <div className="bg-white p-4 rounded-2xl border border-orange-200/60 shadow-2xs space-y-2">
+                              <span className="font-extrabold text-slate-900 text-sm block border-b border-slate-100 pb-2">
+                                ♨️ 허심청 (동래온천)
+                              </span>
+                              <p className="text-xs text-slate-600 font-medium">
+                                {language === 'KR' ? '사계절 내내 피로를 날려버리는 온천 휴양 스팟' : 'Asia’s iconic hot spring spa resort'}
+                              </p>
+                            </div>
+                            <div className="bg-white p-4 rounded-2xl border border-orange-200/60 shadow-2xs space-y-2">
+                              <span className="font-extrabold text-slate-900 text-sm block border-b border-slate-100 pb-2">
+                                🌸 온천천 (벚꽃시즌)
+                              </span>
+                              <p className="text-xs text-slate-600 font-medium">
+                                {language === 'KR' ? '봄철 화사한 벚꽃 터널과 수변 산책로' : 'Lush riverside stroll & spring cherry blossoms'}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Station Exit Guide Card for 범어사역 */}
+                      {(selectedStationGroup === 'LINE1_BEOMEOSA' || (selectedStationGroup === 'ALL' && currentLine === 'LINE1')) && (
+                        <div id="beomeosa-guide" className="bg-gradient-to-br from-emerald-50 via-teal-50/60 to-emerald-100/50 border border-emerald-200/90 p-5 sm:p-6 rounded-3xl shadow-xs space-y-4 pt-4 text-left animate-fade-in">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-emerald-200/70 pb-3">
+                            <div className="flex items-center gap-2">
+                              <span className="bg-orange-500 text-white font-black text-xs px-2.5 py-1 rounded-full shadow-2xs">
+                                1호선
+                              </span>
+                              <h3 className="font-extrabold text-slate-900 text-base sm:text-lg">
+                                🚇 범어사역
+                              </h3>
+                            </div>
+                            <span className="text-xs font-bold text-emerald-900/90 bg-emerald-200/60 px-2.5 py-1 rounded-lg self-start sm:self-auto">
+                              🌲 계곡 & 피톤치드 힐링
+                            </span>
+                          </div>
+
+                          <div className="bg-white/90 backdrop-blur-xs p-3.5 rounded-2xl border border-emerald-200/60 text-xs sm:text-sm text-slate-800 font-bold flex items-start gap-2 shadow-2xs">
+                            <span className="text-base leading-none">🍃</span>
+                            <p className="leading-relaxed">
+                              {language === 'KR' 
+                                ? '계곡물 소리와 피톤치드와 함께하는 힐링' 
+                                : 'Healing sanctuary with soothing stream sounds & mountain phytoncides'}
+                            </p>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+                            <div className="bg-white p-4 rounded-2xl border border-emerald-200/60 shadow-2xs space-y-2">
+                              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                                <span className="font-extrabold text-slate-900 text-sm">
+                                  🛕 범어사
+                                </span>
+                                <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">
+                                  5번출구 → 버스 90번
+                                </span>
+                              </div>
+                              <p className="text-xs text-slate-600 font-medium">
+                                {language === 'KR' ? '범어사역 5번출구에서 90번 버스 환승' : 'Transfer to Bus #90 from Exit 5'}
+                              </p>
+                            </div>
+                            <div className="bg-white p-4 rounded-2xl border border-emerald-200/60 shadow-2xs space-y-2">
+                              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                                <span className="font-extrabold text-slate-900 text-sm">
+                                  🏛️ 성보박물관
+                                </span>
+                                <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md">
+                                  불교 유물 전관
+                                </span>
+                              </div>
+                              <p className="text-xs text-slate-600 font-medium">
+                                {language === 'KR' ? '국보·보물급 불교 문화재 및 귀중한 유물 전시' : 'Exhibition of Buddhist national treasures'}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Display items for the selected subway line & station category */}
                       <div className="space-y-6 pt-2">
                         {REGION_RECOMMENDATIONS.filter(r => r.id === currentLine).map((r) => {
-                          const filteredItems = r.landmarks.filter(item => item.category === activeRegionCategory);
+                          const filteredItems = r.landmarks.filter(item => {
+                            if (selectedStationGroup === 'ALL') return true;
+                            return item.stationGroup === selectedStationGroup;
+                          });
                           const regionBgColor = r.id === 'LINE1' ? 'bg-orange-50/45 text-orange-900 border-orange-100/50' : 'bg-emerald-50/45 text-emerald-900 border-emerald-100/50';
 
                           if (filteredItems.length === 0) {
                             return (
                               <div key={r.id} className="text-center py-12 text-slate-400 font-semibold text-sm">
-                                {language === 'KR' ? '해당 카테고리의 추천 정보가 아직 준비 중입니다.' : 'No recommendations available for this category.'}
+                                {language === 'KR' ? '해당 역 카테고리의 추천 정보가 아직 준비 중입니다.' : 'No recommendations available for this station.'}
                               </div>
                             );
                           }
@@ -3715,14 +4201,19 @@ export default function BusanItinerariesView({
                                       <div className="flex items-start justify-between gap-2 border-b border-slate-50 pb-2.5">
                                         <div className="space-y-1">
                                           <h4 className="font-extrabold text-slate-800 text-base sm:text-lg flex items-center gap-1.5 leading-snug">
-                                            {activeRegionCategory === 'FOOD' ? '🍱' : 
-                                             activeRegionCategory === 'CAFE' ? '☕' : 
-                                             activeRegionCategory === 'LANDMARK' ? '🏖️' : '🎭'}
+                                            {item.category === 'FOOD' ? '🍱' : 
+                                             item.category === 'CAFE' ? '☕' : 
+                                             item.category === 'LANDMARK' ? '🏖️' : '🎭'}
                                             <span>{language === 'KR' ? item.nameKo : item.nameEn}</span>
                                           </h4>
-                                          <span className="inline-block text-[10px] font-black px-2 py-0.5 rounded-md border bg-slate-50 text-slate-600 border-slate-200/50">
-                                            {language === 'KR' ? item.tagKo : item.tagEn}
-                                          </span>
+                                          <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                                            <span className="inline-block text-[10px] font-black px-2 py-0.5 rounded-md border bg-slate-100 text-slate-700 border-slate-200/70">
+                                              🚇 {language === 'KR' ? item.stationGroupNameKo : item.stationGroupNameEn}
+                                            </span>
+                                            <span className="inline-block text-[10px] font-black px-2 py-0.5 rounded-md border bg-slate-50 text-slate-600 border-slate-200/50">
+                                              {language === 'KR' ? item.tagKo : item.tagEn}
+                                            </span>
+                                          </div>
                                         </div>
                                       </div>
 
