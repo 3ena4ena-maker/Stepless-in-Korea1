@@ -39,11 +39,13 @@ import {
   Landmark,
   UserCheck,
   ArrowRightLeft,
-  Box
+  Box,
+  Layers
 } from 'lucide-react';
 import Header from './components/Header';
 import TimelineVisualizer from './components/TimelineVisualizer';
 import { StationBarrierFreeCard } from './components/StationBarrierFreeCard';
+import { StationTravelGuideView } from './components/StationTravelGuideView';
 import { SiteIntroductionView } from './components/SiteIntroductionView';
 import { HomeOverviewSection } from './components/HomeOverviewSection';
 import { getLockerInfoText, renderLockerInfo } from './data/lockers';
@@ -213,6 +215,9 @@ export default function App() {
 
   // Active expanded exit details
   const [expandedExitNum, setExpandedExitNum] = useState<string | null>(null);
+
+  // Station Detail Tab: Standard (기본 역정보) vs Stepless Travel Guide (Stepless 여행안내)
+  const [stationDetailTab, setStationDetailTab] = useState<'STANDARD' | 'TRAVEL_GUIDE'>('STANDARD');
 
   // Toggle for showing the all station summary cards section in Search tab
   const [showAllStationCards, setShowAllStationCards] = useState<boolean>(false);
@@ -1387,201 +1392,255 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Station Map directly below station selection */}
-              <div id="search-tab-map-container" className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-                <SubwayStationMap station={activeStation} language={language} focusedExitCoords={focusedExitCoords} isAdminMode={isAdminMode} />
-              </div>
+              {/* 🧭 Station Detail View Mode Tab: [ 기본 역정보 ] vs [ Stepless 여행안내 ] */}
+              <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-3 sm:p-4 rounded-2xl border border-slate-200 shadow-2xs">
+                <div className="flex items-center gap-2">
+                  <button
+                    id="station-tab-standard-btn"
+                    type="button"
+                    onClick={() => setStationDetailTab('STANDARD')}
+                    className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center gap-2 cursor-pointer border min-h-[42px] ${
+                      stationDetailTab === 'STANDARD'
+                        ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
+                    }`}
+                  >
+                    <Layers className="w-4 h-4" />
+                    <span>{language === 'KR' ? '기본 역정보' : 'Standard Station Info'}</span>
+                  </button>
 
-              {/* 📋 Station Barrier-Free Movement Summary Table & Step-by-Step Info */}
-              <StationBarrierFreeCard station={activeStation} language={language} />
-
-              {/* 🚪 Selected Station Exit Filters & Exit Detail Cards */}
-              <div className="space-y-6">
-                {/* Sub-Tabs selection representing companion types */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-3 gap-3">
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    <button
-                      id="search-filter-all-btn"
-                      onClick={() => setActivePathFilter('ALL')}
-                      className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1 border cursor-pointer min-h-[42px] ${
-                        activePathFilter === 'ALL'
-                          ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
-                          : 'bg-white text-slate-600 border-slate-200 hover:text-slate-900 hover:bg-slate-50'
-                      }`}
-                    >
-                      <span>{language === 'KR' ? '전체 보기' : 'Show All Exits'}</span>
-                    </button>
-                    <button
-                      id="search-filter-accessible-btn"
-                      onClick={() => {
-                        setActivePathFilter('ACCESSIBLE');
-                        setExpandedExitNum(null);
-                      }}
-                      className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer min-h-[42px] ${
-                        activePathFilter === 'ACCESSIBLE'
-                          ? 'bg-emerald-700 text-white border-emerald-700 shadow-2xs'
-                          : 'bg-white text-slate-600 border-slate-200 hover:text-emerald-700 hover:bg-emerald-50/50'
-                      }`}
-                    >
-                      <ElevatorIcon className="w-4 h-4 shrink-0" />
-                      <span>
-                        {language === 'KR' ? (
-                          <>
-                            <span className="hidden sm:inline">엘리베이터 (유모차/휠체어/캐리어)</span>
-                            <span className="inline sm:hidden">엘리베이터 (유모차·휠체어)</span>
-                          </>
-                        ) : 'Elevator'}
+                  <button
+                    id="station-tab-travel-guide-btn"
+                    type="button"
+                    onClick={() => setStationDetailTab('TRAVEL_GUIDE')}
+                    className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center gap-2 cursor-pointer border min-h-[42px] ${
+                      stationDetailTab === 'TRAVEL_GUIDE'
+                        ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
+                    }`}
+                  >
+                    <Compass className="w-4 h-4 text-amber-400" />
+                    <span>{language === 'KR' ? 'Stepless 여행안내' : 'Stepless Travel Guide'}</span>
+                    {['busan', 'seomyeon', 'haeundae', 'nampo', 'bexco'].includes(activeStation.id) && (
+                      <span className="px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-300 text-2xs font-black">
+                        {language === 'KR' ? '추천' : 'NEW'}
                       </span>
-                    </button>
-                    <button
-                      id="search-filter-carry-btn"
-                      onClick={() => {
-                        setActivePathFilter('CARRY');
-                        setExpandedExitNum(null);
-                      }}
-                      className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer min-h-[42px] ${
-                        activePathFilter === 'CARRY'
-                          ? 'bg-indigo-700 text-white border-indigo-700 shadow-2xs'
-                          : 'bg-white text-slate-600 border-slate-200 hover:text-indigo-700 hover:bg-indigo-50/50'
-                      }`}
-                    >
-                      <EscalatorIcon className="w-4 h-4 shrink-0" />
-                      <span>
-                        {language === 'KR' ? (
-                          <>
-                            <span className="hidden sm:inline">에스컬레이터 (캐리어/도보 가능)</span>
-                            <span className="inline sm:hidden">에스컬레이터 (캐리어)</span>
-                          </>
-                        ) : 'Escalator'}
-                      </span>
-                    </button>
-                  </div>
-
-                  <div className="text-xs text-slate-500">
-                    {language === 'KR' 
-                      ? `총 ${getFilteredExits(activeStation).length}개 출구 표시 중` 
-                      : `${getFilteredExits(activeStation).length} matching exits`}
-                  </div>
+                    )}
+                  </button>
                 </div>
 
-                {/* Exits list layout - Unified single Column with Inline Timeline Details */}
-                <div className="max-w-4xl mx-auto space-y-5">
-                  {getFilteredExits(activeStation).map(exit => {
-                    const isExpanded = expandedExitNum === exit.number;
+                <div className="text-2xs sm:text-xs font-semibold text-slate-500">
+                  {stationDetailTab === 'STANDARD' 
+                    ? (language === 'KR' ? '공공데이터 기반 시설 및 출구 정보' : 'Public & Field Infrastructure Data')
+                    : (language === 'KR' ? '여행자 관점 큐레이션 및 추천 동선' : 'Traveler-Centric Pathway Curation')}
+                </div>
+              </div>
 
-                    return (
-                      <div
-                        key={exit.number}
-                        id={`search-exit-item-${exit.number}`}
-                        className={`bg-white rounded-3xl border p-5 sm:p-6 transition-all shadow-[0_2px_12px_rgb(0,0,0,0.01)] hover:shadow-[0_12px_32px_rgb(0,0,0,0.03)] text-left ${
-                          isExpanded 
-                            ? 'border-[#004481] ring-2 ring-[#004481]/5 bg-slate-50/10' 
-                            : 'border-slate-100 hover:border-slate-300'
-                        }`}
-                      >
-                        {/* Header Details row */}
-                        <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-100 flex-wrap sm:flex-nowrap">
-                          <h3 className="text-lg sm:text-lg font-extrabold text-slate-800 font-heading flex items-center gap-2">
-                            <span>{getExitDisplayName(activeStation.name, exit.number, language)}</span>
-                          </h3>
+              {stationDetailTab === 'TRAVEL_GUIDE' ? (
+                <StationTravelGuideView 
+                  station={activeStation} 
+                  language={language} 
+                  onSwitchToStandard={() => setStationDetailTab('STANDARD')} 
+                />
+              ) : (
+                <>
+                  {/* Station Map directly below station selection */}
+                  <div id="search-tab-map-container" className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+                    <SubwayStationMap station={activeStation} language={language} focusedExitCoords={focusedExitCoords} isAdminMode={isAdminMode} />
+                  </div>
 
-                          {/* Action to expand Timeline Details Inline */}
-                          <button
-                            id={`search-expand-exit-btn-${exit.number}`}
-                            onClick={() => setExpandedExitNum(isExpanded ? null : exit.number)}
-                            className={`text-xs font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer whitespace-nowrap ${
-                              isExpanded
-                                ? 'bg-[#004481] text-white shadow-sm'
-                                : 'bg-slate-100 hover:bg-slate-200 text-[#004481]'
+                  {/* 📋 Station Barrier-Free Movement Summary Table & Step-by-Step Info */}
+                  <StationBarrierFreeCard station={activeStation} language={language} />
+
+                  {/* 🚪 Selected Station Exit Filters & Exit Detail Cards */}
+                  <div className="space-y-6">
+                    {/* Sub-Tabs selection representing companion types */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-3 gap-3">
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                        <button
+                          id="search-filter-all-btn"
+                          onClick={() => setActivePathFilter('ALL')}
+                          className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1 border cursor-pointer min-h-[42px] ${
+                            activePathFilter === 'ALL'
+                              ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                              : 'bg-white text-slate-600 border-slate-200 hover:text-slate-900 hover:bg-slate-50'
+                          }`}
+                        >
+                          <span>{language === 'KR' ? '전체 보기' : 'Show All Exits'}</span>
+                        </button>
+                        <button
+                          id="search-filter-accessible-btn"
+                          onClick={() => {
+                            setActivePathFilter('ACCESSIBLE');
+                            setExpandedExitNum(null);
+                          }}
+                          className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer min-h-[42px] ${
+                            activePathFilter === 'ACCESSIBLE'
+                              ? 'bg-emerald-700 text-white border-emerald-700 shadow-2xs'
+                              : 'bg-white text-slate-600 border-slate-200 hover:text-emerald-700 hover:bg-emerald-50/50'
+                          }`}
+                        >
+                          <ElevatorIcon className="w-4 h-4 shrink-0" />
+                          <span>
+                            {language === 'KR' ? (
+                              <>
+                                <span className="hidden sm:inline">엘리베이터 (유모차/휠체어/캐리어)</span>
+                                <span className="inline sm:hidden">엘리베이터 (유모차·휠체어)</span>
+                              </>
+                            ) : 'Elevator'}
+                          </span>
+                        </button>
+                        <button
+                          id="search-filter-carry-btn"
+                          onClick={() => {
+                            setActivePathFilter('CARRY');
+                            setExpandedExitNum(null);
+                          }}
+                          className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 border cursor-pointer min-h-[42px] ${
+                            activePathFilter === 'CARRY'
+                              ? 'bg-indigo-700 text-white border-indigo-700 shadow-2xs'
+                              : 'bg-white text-slate-600 border-slate-200 hover:text-indigo-700 hover:bg-indigo-50/50'
+                          }`}
+                        >
+                          <EscalatorIcon className="w-4 h-4 shrink-0" />
+                          <span>
+                            {language === 'KR' ? (
+                              <>
+                                <span className="hidden sm:inline">에스컬레이터 (캐리어/도보 가능)</span>
+                                <span className="inline sm:hidden">에스컬레이터 (캐리어)</span>
+                              </>
+                            ) : 'Escalator'}
+                          </span>
+                        </button>
+                      </div>
+
+                      <div className="text-xs text-slate-500">
+                        {language === 'KR' 
+                          ? `총 ${getFilteredExits(activeStation).length}개 출구 표시 중` 
+                          : `${getFilteredExits(activeStation).length} matching exits`}
+                      </div>
+                    </div>
+
+                    {/* Exits list layout - Unified single Column with Inline Timeline Details */}
+                    <div className="max-w-4xl mx-auto space-y-5">
+                      {getFilteredExits(activeStation).map(exit => {
+                        const isExpanded = expandedExitNum === exit.number;
+
+                        return (
+                          <div
+                            key={exit.number}
+                            id={`search-exit-item-${exit.number}`}
+                            className={`bg-white rounded-3xl border p-5 sm:p-6 transition-all shadow-[0_2px_12px_rgb(0,0,0,0.01)] hover:shadow-[0_12px_32px_rgb(0,0,0,0.03)] text-left ${
+                              isExpanded 
+                                ? 'border-[#004481] ring-2 ring-[#004481]/5 bg-slate-50/10' 
+                                : 'border-slate-100 hover:border-slate-300'
                             }`}
                           >
-                            {isExpanded 
-                              ? (language === 'KR' ? '상세 동선 접기' : 'Close Details')
-                              : (language === 'KR' ? '상세 동선 지도 보기' : 'Show Details & Map')}
-                          </button>
-                        </div>
+                            {/* Header Details row */}
+                            <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-100 flex-wrap sm:flex-nowrap">
+                              <h3 className="text-lg sm:text-lg font-extrabold text-slate-800 font-heading flex items-center gap-2">
+                                <span>{getExitDisplayName(activeStation.name, exit.number, language)}</span>
+                              </h3>
 
-                        {/* Simple facilities details directly matching user request */}
-                        <div className="space-y-2 mt-3">
-                          {exit.hasEscalator && (
-                            <div className="text-sm font-bold text-slate-700 flex items-center gap-2 bg-slate-50/80 px-2.5 py-1.5 rounded-xl border border-slate-100/50">
-                              <EscalatorIcon />
-                              <span>
-                                {language === 'KR' 
-                                  ? `에스컬레이터 (${
-                                      exit.facilityDirection === 'BOTH' ? '상행 ⬆️ · 하행 ⬇️' :
-                                      exit.facilityDirection === 'UP' ? '상행 ⬆️' : '하행 ⬇️'
-                                    })` 
-                                  : `Escalator (${
-                                      exit.facilityDirection === 'BOTH' ? 'Up ⬆️ · Down ⬇️' :
-                                      exit.facilityDirection === 'UP' ? 'Upward ⬆️' : 'Downward ⬇️'
-                                    })`
-                                }
-                              </span>
+                              {/* Action to expand Timeline Details Inline */}
+                              <button
+                                id={`search-expand-exit-btn-${exit.number}`}
+                                onClick={() => setExpandedExitNum(isExpanded ? null : exit.number)}
+                                className={`text-xs font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer whitespace-nowrap ${
+                                  isExpanded
+                                    ? 'bg-[#004481] text-white shadow-sm'
+                                    : 'bg-slate-100 hover:bg-slate-200 text-[#004481]'
+                                }`}
+                              >
+                                {isExpanded 
+                                  ? (language === 'KR' ? '상세 동선 접기' : 'Close Details')
+                                  : (language === 'KR' ? '상세 동선 지도 보기' : 'Show Details & Map')}
+                              </button>
                             </div>
-                          )}
-                          {exit.hasElevator && (
-                            <div className="text-sm font-bold text-slate-700 flex items-center gap-2 bg-slate-50/80 px-2.5 py-1.5 rounded-xl border border-slate-100/50">
-                              <ElevatorIcon />
-                              <span>
-                                {language === 'KR' ? '엘리베이터' : 'Elevator'}
-                              </span>
-                            </div>
-                          )}
-                          {!exit.hasElevator && !exit.hasEscalator && (
-                            <div className="text-sm font-bold text-slate-500 flex items-center gap-2 bg-slate-50/80 px-2.5 py-1.5 rounded-xl border border-slate-100/50">
-                              <StairsIcon />
-                              <span>
-                                {language === 'KR' ? '계단 전용 👟' : 'Stairs Only 👟'}
-                              </span>
-                            </div>
-                          )}
-                        </div>
 
-                        {/* Status banner - only if not OPERATIONAL */}
-                        {exit.status !== 'OPERATIONAL' && (
-                          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-                            <div className="flex items-center gap-1.5">
-                              <span className={`w-2.5 h-2.5 rounded-full ${
-                                exit.status === 'MAINTENANCE'
-                                  ? 'bg-amber-500'
-                                  : 'bg-rose-500'
-                              }`} />
-                              <span className="text-xs font-bold text-slate-500">
-                                {getExitStatusText(exit.status)}
-                              </span>
+                            {/* Simple facilities details directly matching user request */}
+                            <div className="space-y-2 mt-3">
+                              {exit.hasEscalator && (
+                                <div className="text-sm font-bold text-slate-700 flex items-center gap-2 bg-slate-50/80 px-2.5 py-1.5 rounded-xl border border-slate-100/50">
+                                  <EscalatorIcon />
+                                  <span>
+                                    {language === 'KR' 
+                                      ? `에스컬레이터 (${
+                                          exit.facilityDirection === 'BOTH' ? '상행 ⬆️ · 하행 ⬇️' :
+                                          exit.facilityDirection === 'UP' ? '상행 ⬆️' : '하행 ⬇️'
+                                        })` 
+                                      : `Escalator (${
+                                          exit.facilityDirection === 'BOTH' ? 'Up ⬆️ · Down ⬇️' :
+                                          exit.facilityDirection === 'UP' ? 'Upward ⬆️' : 'Downward ⬇️'
+                                        })`
+                                      }
+                                  </span>
+                                </div>
+                              )}
+                              {exit.hasElevator && (
+                                <div className="text-sm font-bold text-slate-700 flex items-center gap-2 bg-slate-50/80 px-2.5 py-1.5 rounded-xl border border-slate-100/50">
+                                  <ElevatorIcon />
+                                  <span>
+                                    {language === 'KR' ? '엘리베이터' : 'Elevator'}
+                                  </span>
+                                </div>
+                              )}
+                              {!exit.hasElevator && !exit.hasEscalator && (
+                                <div className="text-sm font-bold text-slate-500 flex items-center gap-2 bg-slate-50/80 px-2.5 py-1.5 rounded-xl border border-slate-100/50">
+                                  <StairsIcon />
+                                  <span>
+                                    {language === 'KR' ? '계단 전용 👟' : 'Stairs Only 👟'}
+                                  </span>
+                                </div>
+                              )}
                             </div>
+
+                            {/* Status banner - only if not OPERATIONAL */}
+                            {exit.status !== 'OPERATIONAL' && (
+                              <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-1.5">
+                                  <span className={`w-2.5 h-2.5 rounded-full ${
+                                    exit.status === 'MAINTENANCE'
+                                      ? 'bg-amber-500'
+                                      : 'bg-rose-500'
+                                  }`} />
+                                  <span className="text-xs font-bold text-slate-500">
+                                    {getExitStatusText(exit.status)}
+                                  </span>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Inline Timeline Map Visualization - Perfectly mobile-first */}
+                            {isExpanded && (
+                              <div className="mt-6 pt-6 border-t border-slate-150 animate-slide-up">
+                                <TimelineVisualizer
+                                  directionDesc={exit.directionDesc}
+                                  exitNumber={exit.number}
+                                  stationName={activeStation.name}
+                                  googleMapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getExitDisplayName(activeStation.name, exit.number, language))}`}
+                                  naverMapUrl={exit.naverMapUrl}
+                                  language={language}
+                                />
+                              </div>
+                            )}
                           </div>
-                        )}
+                        );
+                      })}
 
-                        {/* Inline Timeline Map Visualization - Perfectly mobile-first */}
-                        {isExpanded && (
-                          <div className="mt-6 pt-6 border-t border-slate-150 animate-slide-up">
-                            <TimelineVisualizer
-                              directionDesc={exit.directionDesc}
-                              exitNumber={exit.number}
-                              stationName={activeStation.name}
-                              googleMapUrl={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(getExitDisplayName(activeStation.name, exit.number, language))}`}
-                              naverMapUrl={exit.naverMapUrl}
-                              language={language}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-
-                  {getFilteredExits(activeStation).length === 0 && (
-                    <div className="p-16 text-center bg-white rounded-3xl border border-dashed border-slate-200">
-                      <Search className="w-12 h-12 text-slate-300 mx-auto" />
-                      <h4 className="font-bold text-slate-700 mt-4">{language === 'KR' ? '알맞는 통과 출구가 없습니다.' : 'No direct exits matched criteria'}</h4>
-                      <p className="text-xs text-slate-400 mt-1">
-                        {language === 'KR' ? '검색 필터를 전체 보기로 변경하여 계단이나 일반 요소를 찾아보세요.' : 'Try changing status to see alternative travel paths.'}
-                      </p>
+                      {getFilteredExits(activeStation).length === 0 && (
+                        <div className="p-16 text-center bg-white rounded-3xl border border-dashed border-slate-200">
+                          <Search className="w-12 h-12 text-slate-300 mx-auto" />
+                          <h4 className="font-bold text-slate-700 mt-4">{language === 'KR' ? '알맞는 통과 출구가 없습니다.' : 'No direct exits matched criteria'}</h4>
+                          <p className="text-xs text-slate-400 mt-1">
+                            {language === 'KR' ? '검색 필터를 전체 보기로 변경하여 계단이나 일반 요소를 찾아보세요.' : 'Try changing status to see alternative travel paths.'}
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </div>
+                  </div>
+                </>
+              )}
 
               {/* Collapsible Bento Grid Section for All Station Cards */}
               <div className="bg-white rounded-3xl border border-slate-200/80 p-5 sm:p-6 shadow-xs space-y-4">

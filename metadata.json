@@ -1,6 +1,6 @@
 {
   "name": "Stepless | Busan in Korea",
-  "description": "지하철역(서면, 전포, 부전)의 엘리베이터 및 에스컬레이터 출구 위치와 유모차, 캐리어 동선 가이드를 제공하는 편의 서비스",
+  "description": "부산 주요 15개 지하철역의 엘리베이터·에스컬레이터 출구 위치와 유모차, 캐리어, 휠체어 보행자를 위한 계단 없는 여행 동선 가이드",
   "requestFramePermissions": [
     "geolocation"
   ],

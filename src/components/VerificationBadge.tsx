@@ -42,14 +42,14 @@ export function VerificationBadge({
       <div className={`flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] sm:text-xs text-slate-500 ${className}`}>
         <span className="font-bold text-slate-700 flex items-center gap-1">
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-          <span>{language === 'KR' ? '현장 검증 완료' : 'Field Verified'}</span>
+          <span>{language === 'KR' ? '현장 중심 안내' : 'Field-Oriented Guide'}</span>
         </span>
         <span className="text-slate-300">|</span>
-        <span>{language === 'KR' ? '조사자:' : 'Inspector:'} <strong className="text-slate-700 font-medium">{language === 'KR' ? '플로레르' : 'Florair'}</strong></span>
+        <span>{language === 'KR' ? '에디터:' : 'Editor:'} <strong className="text-slate-700 font-medium">{language === 'KR' ? 'Florer (로컬 에디터)' : 'Florer (Local Editor)'}</strong></span>
         <span className="text-slate-300">|</span>
-        <span>{language === 'KR' ? '조사일:' : 'Audit Date:'} <strong className="text-slate-700 font-medium">2026.08.01</strong></span>
+        <span>{language === 'KR' ? '점검 기준:' : 'Review Standard:'} <strong className="text-slate-700 font-medium">2026.08</strong></span>
         <span className="text-slate-300">|</span>
-        <span>{language === 'KR' ? '최종 수정일:' : 'Updated:'} <strong className="text-slate-700 font-medium">{todayStr}</strong></span>
+        <span>{language === 'KR' ? '현행화:' : 'Sync:'} <strong className="text-slate-700 font-medium">{language === 'KR' ? '정기 검토' : 'Regular Review'}</strong></span>
         <span className="text-slate-300">|</span>
         <span>
           {language === 'KR' ? '출처:' : 'Source:'}{' '}
@@ -82,24 +82,24 @@ export function VerificationBadge({
           <div className="flex items-center gap-2 shrink-0">
             <span className="inline-flex items-center gap-1.5 font-extrabold text-emerald-900 bg-emerald-100/90 px-3 py-1 rounded-xl border border-emerald-300/80 shadow-2xs text-xs">
               <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
-              <span>{language === 'KR' ? '현장 실측 검증 완료' : 'Directly Visited & Field Verified'}</span>
+              <span>{language === 'KR' ? '현장 중심 동선 가이드' : 'Field-Oriented Route Guide'}</span>
             </span>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-xs text-slate-700">
             <span className="inline-flex items-center gap-1">
               <UserCheck className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-              <span>{language === 'KR' ? '조사자:' : 'Auditor:'} <strong className="text-slate-900 font-bold">{language === 'KR' ? '플로레르' : 'Florair'}</strong></span>
+              <span>{language === 'KR' ? '에디터:' : 'Editor:'} <strong className="text-slate-900 font-bold">{language === 'KR' ? 'Florer' : 'Florer'}</strong></span>
             </span>
             <span className="text-slate-300">|</span>
             <span className="inline-flex items-center gap-1">
               <Calendar className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-              <span>{language === 'KR' ? '조사일:' : 'Audit Date:'} <strong className="text-slate-900 font-bold">2026.08.01</strong></span>
+              <span>{language === 'KR' ? '점검 기준:' : 'Review Basis:'} <strong className="text-slate-900 font-bold">2026.08</strong></span>
             </span>
             <span className="text-slate-300">|</span>
             <span className="inline-flex items-center gap-1">
-              <span>{language === 'KR' ? '최종 수정일:' : 'Last Modified:'} <strong className="text-slate-900 font-bold">{todayStr}</strong></span>
-              <span className="text-2xs text-[#004481] font-bold">{language === 'KR' ? '(상시 현행화)' : '(Daily Sync)'}</span>
+              <span>{language === 'KR' ? '운영 관리:' : 'Management:'} <strong className="text-slate-900 font-bold">{language === 'KR' ? '정기 현행화' : 'Periodic Review'}</strong></span>
+              <span className="text-2xs text-[#004481] font-bold">{language === 'KR' ? '(상시 검토)' : '(Active)'}</span>
             </span>
             <span className="text-slate-300">|</span>
             <span>

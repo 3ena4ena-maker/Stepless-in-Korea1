@@ -75,7 +75,7 @@ export function SiteIntroductionView({
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-2/3 space-y-4">
               <span className="inline-block px-3 py-1 bg-blue-50 text-[#004481] border border-blue-100 rounded-full text-xs font-black">
-                {language === 'KR' ? '조사자 & 서비스 운영자' : 'Field Auditor & Publisher'}
+                {language === 'KR' ? '로컬 에디터 & 서비스 운영자' : 'Local Editor & Publisher'}
               </span>
               <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
                 {language === 'KR' ? '플로레르 (Florer)' : 'Florer'}
@@ -87,8 +87,8 @@ export function SiteIntroductionView({
               </p>
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-medium">
                 {language === 'KR'
-                  ? '바로 옆 출구에 편리한 엘리베이터가 이미 마련되어 있음에도, 명확한 안내 정보가 없어 이용하지 못하는 안타까운 상황을 개선하고자 직접 수동 실측하고 기획·제작했습니다.'
-                  : 'Despite nearby step-free vertical elevators, lacking navigation often forces detour. We personally inspect, map, and publish verified barrier-free exit pathways.'}
+                  ? '바로 옆 출구에 편리한 엘리베이터가 이미 마련되어 있음에도, 명확한 안내 정보가 없어 이용하지 못하는 안타까운 상황을 개선하고자 현장 보행 동선을 직접 점검하고 기획·제작했습니다.'
+                  : 'Despite nearby step-free vertical elevators, lacking navigation often forces detours. We review accessible routes, map key exits, and publish practical step-free transit guides.'}
               </p>
 
               {/* Explicit Plain-Text Contact Box on About Page for E-E-A-T */}
@@ -135,18 +135,18 @@ export function SiteIntroductionView({
 
           <div className="border-t border-slate-100 pt-8 space-y-4">
             <h3 className="text-xl font-bold text-slate-900 font-heading">
-              {language === 'KR' ? '운영 철학 및 현장 실측 원칙' : 'Publishing Philosophy & Verification'}
+              {language === 'KR' ? '운영 철학 및 현장 중심 가이드 원칙' : 'Publishing Philosophy & Field-Oriented Standard'}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
               <div className="bg-slate-50 p-5 rounded-2xl border border-slate-150 space-y-2">
                 <h4 className="font-extrabold text-[#004481] text-sm flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>{language === 'KR' ? '100% 현장 검증 데이터' : '100% On-Site Audited'}</span>
+                  <span>{language === 'KR' ? '현장 중심 동선 큐레이션' : 'Field-Oriented Route Curation'}</span>
                 </h4>
                 <p className="text-slate-600 leading-relaxed font-medium">
                   {language === 'KR'
-                    ? '공공 데이터 기본 정보에 안주하지 않고, 현장 조사자 플로레르가 부산 주요 핵심 역을 직접 방문하여 보도 단차, 횡단보도 유무, 실제 엘리베이터 가동 여부를 확인합니다.'
-                    : 'We do not rely solely on raw open data. We physically inspect major Busan hubs to audit sidewalk curb heights, crossing ramps, and vertical elevator operations.'}
+                    ? '공공 데이터 기본 정보에 머무르지 않고, 로컬 에디터 플로레르(Florer)가 부산 주요 거점 역을 직접 탐방하여 보도 단차, 횡단보도 유무, 엘리베이터 동선을 종합적으로 확인하고 안내합니다.'
+                    : 'We do not rely solely on raw open data. We review major Busan transit hubs on-site to understand pedestrian paths, curb ramps, and vertical elevator connections.'}
                 </p>
               </div>
 
@@ -157,7 +157,7 @@ export function SiteIntroductionView({
                 </h4>
                 <p className="text-slate-600 leading-relaxed font-medium">
                   {language === 'KR'
-                    ? '휠체어 이용 장애인, 유모차 동반 부모, 무거운 짐을 가진 여행객 모두가 조건 없이 100% 무료로 이용할 수 있는 열린 배리어프리 플랫폼을 지향합니다.'
+                    ? '휠체어 이용 장애인, 유모차 동반 부모, 무거운 짐을 가진 여행객 모두가 조건 없이 무료로 이용할 수 있는 열린 배리어프리 플랫폼을 지향합니다.'
                     : 'Stepless is a completely free, open community resource dedicated to accessible mobility for wheelchair users, stroller parents, and luggage travelers alike.'}
                 </p>
               </div>

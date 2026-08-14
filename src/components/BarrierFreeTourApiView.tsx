@@ -16,9 +16,11 @@ import {
   Navigation,
   ChevronRight,
   ShieldCheck,
-  Check
+  Check,
+  Sparkles
 } from 'lucide-react';
 import { BUSAN_TOUR_API_SPOTS, TourApiSpot } from '../data/tourApiSpots';
+import TourTravelGuideView from './TourTravelGuideView';
 
 interface BarrierFreeTourApiViewProps {
   language: 'KR' | 'EN';
@@ -31,6 +33,7 @@ export default function BarrierFreeTourApiView({
   initialSpotId,
   onSelectStation
 }: BarrierFreeTourApiViewProps) {
+  const [tourTab, setTourTab] = useState<'STANDARD' | 'TRAVEL_GUIDE'>('STANDARD');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
   const [selectedDistrict, setSelectedDistrict] = useState<string>('ALL');
@@ -116,43 +119,87 @@ export default function BarrierFreeTourApiView({
 
   return (
     <div className="space-y-6 sm:space-y-8 max-w-6xl mx-auto px-4 sm:px-6 animate-fade-in text-left">
-      {/* HERO HEADER BANNER */}
-      <div className="bg-gradient-to-br from-[#003366] via-[#004481] to-[#0066b2] rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-white shadow-xl relative overflow-hidden border-2 border-slate-900">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative z-10 max-w-3xl space-y-3">
-          <h1 className="text-xl sm:text-3xl font-black tracking-tight leading-tight">
-            {language === 'KR'
-              ? '부산 편리한 무장애 관광지'
-              : 'Busan Convenient Barrier-Free Tourist Spots'}
-          </h1>
+      {/* 0. TOP TAB CONTROLLER: STANDARD VS STEPLESS TRAVEL GUIDE */}
+      <div className="flex flex-col sm:flex-row items-stretch gap-2 p-1.5 bg-slate-200/90 rounded-2xl border-2 border-slate-900 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]">
+        <button
+          onClick={() => setTourTab('STANDARD')}
+          className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
+            tourTab === 'STANDARD'
+              ? 'bg-[#004481] text-white shadow-sm border border-slate-900'
+              : 'text-slate-700 hover:text-slate-950 hover:bg-slate-300/60'
+          }`}
+        >
+          <Building2 className="w-4 h-4" />
+          <span>{language === 'KR' ? '기본 관광지 정보 (공공데이터)' : 'Basic Tourism Info (Public Data)'}</span>
+        </button>
 
-          <p className="text-xs sm:text-sm text-slate-100/90 font-medium leading-relaxed">
-            {language === 'KR'
-              ? '모든 여행 코스에서 휠체어·유모차 이용이 편리한 무장애 관광 스팟만 엄선하여 모아둔 카테고리입니다.'
-              : 'A curated collection of accessible spots from all travel itineraries, optimized for wheelchairs and strollers.'}
-          </p>
+        <button
+          onClick={() => setTourTab('TRAVEL_GUIDE')}
+          className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
+            tourTab === 'TRAVEL_GUIDE'
+              ? 'bg-indigo-900 text-white shadow-sm border border-slate-900'
+              : 'text-slate-700 hover:text-slate-950 hover:bg-slate-300/60'
+          }`}
+        >
+          <Sparkles className="w-4 h-4 text-amber-400" />
+          <span>{language === 'KR' ? 'Stepless 여행안내 (여행자 큐레이션)' : 'Stepless Travel Guide (Curated)'}</span>
+          <span className="px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[10px] font-black shadow-xs">
+            NEW
+          </span>
+        </button>
+      </div>
 
-          {/* QUICK SUMMARY BADGES */}
-          <div className="pt-2 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-slate-900 font-black text-[11px] sm:text-xs">
-            <div className="bg-white/95 p-2 rounded-xl border border-slate-200 shadow-xs">
-              <span className="block text-[#004481] text-base font-black">100%</span>
-              <span>무단차/경사로 검증</span>
-            </div>
-            <div className="bg-white/95 p-2 rounded-xl border border-slate-200 shadow-xs">
-              <span className="block text-[#004481] text-base font-black">장애인전용</span>
-              <span>화장실 & 주차구역</span>
-            </div>
-            <div className="bg-white/95 p-2 rounded-xl border border-slate-200 shadow-xs">
-              <span className="block text-[#004481] text-base font-black">지하철 승강기</span>
-              <span>최단 출구 연계</span>
-            </div>
-            <div className="bg-white/95 p-2 rounded-xl border border-slate-200 shadow-xs">
-              <span className="block text-[#004481] text-base font-black">무료 대여</span>
-              <span>휠체어 & 유모차</span>
+      {/* RENDER STEPLESS TRAVEL GUIDE IF ACTIVE */}
+      {tourTab === 'TRAVEL_GUIDE' ? (
+        <TourTravelGuideView
+          language={language}
+          selectedSpotId={selectedSpot?.contentid}
+          onSelectSpot={(spotId) => {
+            const found = BUSAN_TOUR_API_SPOTS.find((s) => s.contentid === spotId);
+            if (found) setSelectedSpot(found);
+          }}
+          onSelectStation={onSelectStation}
+          onSwitchToStandard={() => setTourTab('STANDARD')}
+        />
+      ) : (
+        <>
+          {/* HERO HEADER BANNER */}
+          <div className="bg-gradient-to-br from-[#003366] via-[#004481] to-[#0066b2] rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-white shadow-xl relative overflow-hidden border-2 border-slate-900">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative z-10 max-w-3xl space-y-3">
+              <h1 className="text-xl sm:text-3xl font-black tracking-tight leading-tight">
+                {language === 'KR'
+                  ? '부산 편리한 무장애 관광지'
+                  : 'Busan Convenient Barrier-Free Tourist Spots'}
+              </h1>
+
+              <p className="text-xs sm:text-sm text-slate-100/90 font-medium leading-relaxed">
+                {language === 'KR'
+                  ? '모든 여행 코스에서 휠체어·유모차 이용이 편리한 무장애 관광 스팟만 엄선하여 모아둔 카테고리입니다.'
+                  : 'A curated collection of accessible spots from all travel itineraries, optimized for wheelchairs and strollers.'}
+              </p>
+
+              {/* QUICK SUMMARY BADGES */}
+              <div className="pt-2 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-slate-900 font-black text-[11px] sm:text-xs">
+                <div className="bg-white/95 p-2 rounded-xl border border-slate-200 shadow-xs">
+                  <span className="block text-[#004481] text-base font-black">100%</span>
+                  <span>무단차/경사로 검증</span>
+                </div>
+                <div className="bg-white/95 p-2 rounded-xl border border-slate-200 shadow-xs">
+                  <span className="block text-[#004481] text-base font-black">장애인전용</span>
+                  <span>화장실 & 주차구역</span>
+                </div>
+                <div className="bg-white/95 p-2 rounded-xl border border-slate-200 shadow-xs">
+                  <span className="block text-[#004481] text-base font-black">지하철 승강기</span>
+                  <span>최단 출구 연계</span>
+                </div>
+                <div className="bg-white/95 p-2 rounded-xl border border-slate-200 shadow-xs">
+                  <span className="block text-[#004481] text-base font-black">무료 대여</span>
+                  <span>휠체어 & 유모차</span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
       {/* FILTER & SEARCH CONTROL BAR */}
       <div className="bg-white p-4 sm:p-5 rounded-2xl border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] space-y-4">
@@ -376,6 +423,20 @@ export default function BarrierFreeTourApiView({
                   <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
                   {selectedSpot.addr1Ko}
                 </p>
+
+                {/* Quick Switch Button to Stepless Travel Guide */}
+                <div className="pt-2">
+                  <button
+                    onClick={() => {
+                      setTourTab('TRAVEL_GUIDE');
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 text-xs font-black hover:bg-amber-300 transition-colors shadow-xs cursor-pointer"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
+                    <span>{language === 'KR' ? '이 관광지의 Stepless 여행안내 보기' : 'View Stepless Curated Guide'}</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -638,6 +699,8 @@ export default function BarrierFreeTourApiView({
             </div>
           </div>
         </div>
+      )}
+        </>
       )}
     </div>
   );

@@ -210,11 +210,11 @@ export function HomeOverviewSection({
             <div className="flex items-center gap-2 text-[#0A2540]">
               <FileCheck className="w-4 h-4" />
               <span className="font-bold text-xs sm:text-sm text-[#11161B]">
-                {language === 'KR' ? '현장 직접 검증' : 'Field Verified'}
+                {language === 'KR' ? '현장 중심 점검' : 'Field-Oriented Check'}
               </span>
             </div>
             <p className="text-xs text-[#4A5568] leading-snug">
-              {language === 'KR' ? '직접 이동 실측 및 정기 검증' : 'Directly audited on-site'}
+              {language === 'KR' ? '현장 이동성 점검 및 정기 확인' : 'On-site mobility review & regular checks'}
             </p>
           </div>
         </div>
@@ -585,16 +585,16 @@ export function HomeOverviewSection({
               </p>
             </div>
 
-            {/* ③ 현장 직접 확인 */}
+            {/* ③ 현장 중심 동선 확인 */}
             <div className="p-5 rounded bg-white border border-[#E5E2DC] space-y-2">
               <div className="flex items-center gap-2 font-bold text-sm text-[#11161B]">
                 <UserCheck className="w-4 h-4 text-[#0A2540] shrink-0" />
-                <span>{language === 'KR' ? '현장 직접 확인' : 'On-Site Field Verification'}</span>
+                <span>{language === 'KR' ? '현장 중심 동선 확인' : 'Field-Oriented Route Review'}</span>
               </div>
               <p className="leading-relaxed">
                 {language === 'KR'
                   ? '공공데이터에만 의존하지 않고 서면, 부산역, 해운대 등 이동량이 많은 주요 거점 지역의 출구 단차와 엘리베이터 실제 동선을 현장에서 확인하여 실질적인 정보를 보완합니다.'
-                  : 'Beyond open datasets, our team conducts physical field audits at high-traffic hubs like Seomyeon, Busan Station, and Haeundae to double-check step heights and elevator pathways.'}
+                  : 'Beyond open datasets, our team reviews high-traffic hubs like Seomyeon, Busan Station, and Haeundae to confirm curb ramps and elevator pathways.'}
               </p>
             </div>
 
@@ -732,8 +732,8 @@ export function HomeOverviewSection({
               </h4>
               <p className="text-xs text-[#4A5568] leading-relaxed pl-5">
                 {language === 'KR'
-                  ? '부산교통공사 공식 데이터 및 한국관광공사 TourAPI를 기반으로 체계화하며, 서면·부산역·해운대 등 주요 거점 역사와 관광지 진입로는 현장 실측을 통해 보도 단차 및 승강기 가동 상태를 지속적으로 확인하고 있습니다.'
-                  : 'We combine official Busan Transportation Corporation records with Korea Tourism Organization data, supplemented by on-site physical audits of step heights and elevator operations at high-traffic transit hubs.'}
+                  ? '부산교통공사 공식 데이터 및 한국관광공사 TourAPI를 기반으로 체계화하며, 서면·부산역·해운대 등 주요 거점 역사와 관광지 진입로는 현장 점검 및 조사를 통해 보도 접근성과 승강기 연결 동선을 확인하고 있습니다.'
+                  : 'We combine official Busan Transportation Corporation records with Korea Tourism Organization data, supplemented by on-site field reviews of pedestrian accessibility and elevator connections at high-traffic transit hubs.'}
               </p>
             </div>
 
@@ -766,8 +766,8 @@ export function HomeOverviewSection({
               </h4>
               <p className="text-xs text-[#4A5568] leading-relaxed pl-5">
                 {language === 'KR'
-                  ? '상단 언어 선택 버튼을 통해 한국어(KR)와 영어(EN)를 즉시 전환할 수 있으며, 주요 역명, 출구 번호, 수하물 보관소, 여행 코스 설명이 영문으로 완벽하게 번역되어 외국인 여행자도 편리하게 이용할 수 있습니다.'
-                  : 'You can switch between Korean (KR) and English (EN) instantly using the header toggle. Station names, exit numbers, luggage storage facilities, and curated itineraries are fully localized in English.'}
+                  ? '상단 언어 선택 버튼을 통해 한국어(KR)와 영어(EN)를 즉시 전환할 수 있으며, 주요 역명, 출구 번호, 수하물 보관소, 여행 코스 설명이 영문으로 체계적으로 제공되어 외국인 여행자도 편리하게 이용할 수 있습니다.'
+                  : 'You can switch between Korean (KR) and English (EN) instantly using the header toggle. Station names, exit numbers, luggage storage facilities, and curated itineraries are systematically provided in English.'}
               </p>
             </div>
           </div>

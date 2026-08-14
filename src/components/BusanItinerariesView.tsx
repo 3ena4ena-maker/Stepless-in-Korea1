@@ -48,6 +48,8 @@ import { CHILD_TRANSPORT_INFOGRAPHIC_BASE64 } from '../childtransport_base64';
 import { getTodayDate } from '../utils';
 import BusanEventsCalendarView from './BusanEventsCalendarView';
 import BarrierFreeTourApiView from './BarrierFreeTourApiView';
+import ItineraryTravelGuideSection from './ItineraryTravelGuideSection';
+import { CommunityTravelGuideSection } from './CommunityTravelGuideSection';
 
 export const getStepIllustrationType = (titleKo: string, cat: string): 'temple' | 'park' | 'food' | 'cafe' | 'sea' | 'transit' | 'village' | 'history' | 'culture' | 'default' => {
   const normalized = titleKo.toLowerCase();
@@ -1492,6 +1494,8 @@ export default function BusanItinerariesView({
   const [activeTab2Nights, setActiveTab2Nights] = useState<number>(0);
   const [activeTab4Nights, setActiveTab4Nights] = useState<number>(0);
   const [activeDayCourseIndex, setActiveDayCourseIndex] = useState<number>(0);
+  const [itineraryTab, setItineraryTab] = useState<'STANDARD' | 'STEPLESS_GUIDE'>('STANDARD');
+  const [communityTab, setCommunityTab] = useState<'STANDARD' | 'STEPLESS_GUIDE'>('STANDARD');
 
   const [selectedGourmetRegion, setSelectedGourmetRegion] = useState<string>('ALL');
   const [selectedGourmetFoodCat, setSelectedGourmetFoodCat] = useState<string>('ALL');
@@ -1506,7 +1510,6 @@ export default function BusanItinerariesView({
   const [quizStep, setQuizStep] = useState(0); // 0: Landing inside card, 1~7: Questions 1~7, 8: Result
   const [answers, setAnswers] = useState<('A' | 'B')[]>([]);
   const [mapModalOpen, setMapModalOpen] = useState(false);
-  const [detailMapModalOpen, setDetailMapModalOpen] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState<'LINE1' | 'LINE2'>('LINE1');
   
   const [localActiveRegionPage, setLocalActiveRegionPage] = useState<'LINE1' | 'LINE2' | null>(null);
@@ -2334,11 +2337,52 @@ export default function BusanItinerariesView({
                   />
                 </div>
               ) : (
-                (() => {
-                  const course = filteredCourses[0];
-                  if (!course) return null;
+                <div className="space-y-6 animate-fade-in text-left">
+                  {/* Sub-tab navigation: [ 🗓️ 기본 일정표 ] VS [ ✨ Stepless 여행안내 ] */}
+                  <div className="flex items-center gap-2 border-b border-[#E5E2DC] pb-3" id="itinerary-view-mode-tabs">
+                    <button
+                      type="button"
+                      onClick={() => setItineraryTab('STANDARD')}
+                      className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer border ${
+                        itineraryTab === 'STANDARD'
+                          ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
+                          : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
+                      }`}
+                    >
+                      <span>🗓️</span>
+                      <span>{language === 'KR' ? '기본 일정표' : 'Standard Schedule'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setItineraryTab('STEPLESS_GUIDE')}
+                      className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer border ${
+                        itineraryTab === 'STEPLESS_GUIDE'
+                          ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
+                          : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
+                      }`}
+                    >
+                      <Sparkles className="w-4 h-4 text-amber-500" />
+                      <span>{language === 'KR' ? 'Stepless 여행안내' : 'Stepless Travel Guide'}</span>
+                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-200">
+                        NEW
+                      </span>
+                    </button>
+                  </div>
 
-                  switch (activeCategory) {
+                  {itineraryTab === 'STEPLESS_GUIDE' ? (
+                    <ItineraryTravelGuideSection
+                      language={language}
+                      category={activeCategory}
+                      course={filteredCourses[0]}
+                      onSwitchToStandard={() => setItineraryTab('STANDARD')}
+                      onSelectStation={onSelectStation}
+                    />
+                  ) : (
+                    (() => {
+                      const course = filteredCourses[0];
+                      if (!course) return null;
+
+                      switch (activeCategory) {
                 case 'DAY':
                   return (
                     <div className="space-y-6 animate-fade-in text-left">
@@ -2353,13 +2397,6 @@ export default function BusanItinerariesView({
                               {language === 'KR' ? '추천 소요시간: 1일' : 'Duration: 1 Day'}
                             </span>
                           </div>
-                          <button
-                            onClick={() => setDetailMapModalOpen(true)}
-                            className="flex items-center gap-1.5 text-xs font-bold bg-white text-[#0A2540] hover:bg-[#FBFBF9] px-3 py-1.5 rounded-md border border-white transition-colors cursor-pointer shrink-0"
-                          >
-                            <Map className="w-4 h-4" />
-                            <span>{language === 'KR' ? '원도심 지도 보기' : 'View Guide Map'}</span>
-                          </button>
                         </div>
                         <div>
                           <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
@@ -2368,40 +2405,6 @@ export default function BusanItinerariesView({
                           <p className="text-xs sm:text-sm text-[#E5E2DC] mt-2 font-normal leading-relaxed max-w-2xl">
                             {language === 'KR' ? (course.subtitleKo || course.titleKo) : (course.subtitleEn || course.titleEn)}
                           </p>
-                        </div>
-                      </div>
-
-                      {/* Map Illustration Feature Banner */}
-                      <div className="bg-white p-5 sm:p-6 rounded-lg border border-[#E5E2DC] space-y-4 text-left">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E5E2DC] pb-3">
-                          <div className="space-y-0.5">
-                            <h4 className="text-sm sm:text-base font-bold text-[#11161B] flex items-center gap-2">
-                              <Compass className="w-4 h-4 text-[#0A2540]" />
-                              <span>{language === 'KR' ? '부산 원도심 주요 가이드 지도' : 'Central Busan Essential Guide Map'}</span>
-                            </h4>
-                            <p className="text-xs text-[#4A5568]">
-                              {language === 'KR' ? '이동 최소화! 당일치기 대표 동선(감천문화마을~남포동~영도~광안리)을 한눈에 확인하세요.' : 'Optimal zero-step route connecting top Central Busan landmarks.'}
-                            </p>
-                          </div>
-                          <button
-                            onClick={() => setDetailMapModalOpen(true)}
-                            className="flex items-center gap-1.5 text-xs font-bold text-[#0A2540] bg-[#FBFBF9] hover:bg-[#E5E2DC]/50 px-3 py-2 rounded-md transition-colors cursor-pointer border border-[#E5E2DC] shrink-0 self-start sm:self-center"
-                          >
-                            <Search className="w-3.5 h-3.5" />
-                            <span>{language === 'KR' ? '지도 크게 보기' : 'Enlarge Map'}</span>
-                          </button>
-                        </div>
-
-                        <div 
-                          onClick={() => setDetailMapModalOpen(true)}
-                          className="relative w-full rounded-lg overflow-hidden border border-[#E5E2DC] bg-[#FBFBF9] cursor-pointer group"
-                        >
-                          <img 
-                            src="/images/day_trip_b.png"
-                            alt="Busan Central Essential Travel Map Illustration"
-                            referrerPolicy="no-referrer"
-                            className="w-full h-auto block object-contain transition-transform duration-300 ease-out group-hover:scale-[1.005]"
-                          />
                         </div>
                       </div>
 
@@ -4034,6 +4037,8 @@ export default function BusanItinerariesView({
                 return null;
             }
           })())}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -4976,8 +4981,8 @@ export default function BusanItinerariesView({
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 font-bold">
                   {language === 'KR' 
-                    ? '기본 요금 체계부터 카카오T / k.ride / 우버 호출 앱 활용법, 대형 캐리어 적재 및 분실물 예방 영수증 팁까지 완벽 안내' 
-                    : 'Complete guide covering base fares, Kakao T / k.ride / Uber app usage, luggage loading, and receipt safety tips'}
+                    ? '기본 요금 체계부터 카카오T / k.ride / 우버 호출 앱 활용법, 대형 캐리어 적재 및 분실물 예방 영수증 팁까지 상세 안내' 
+                    : 'Practical guide covering base fares, Kakao T / k.ride / Uber app usage, luggage loading, and receipt safety tips'}
                 </p>
               </div>
 
@@ -5082,8 +5087,8 @@ export default function BusanItinerariesView({
                     <span className="text-emerald-700 font-black text-xs block">{language === 'KR' ? '대형 캐리어 트렁크 무상 적재' : 'Free Trunk Luggage Space'}</span>
                     <p className="text-xs sm:text-[13px] text-slate-500 font-bold leading-relaxed">
                       {language === 'KR' 
-                        ? '28인치 이상 캐리어도 추가 비용 없이 트렁크 이용. 인원이 많을 땐 카카오 벤티(대형) 추천' 
-                        : 'Suitcases & strollers fit in trunk without extra fees. Book Venti vans for groups.'}
+                        ? '28인치 캐리어도 트렁크에 무상 적재 가능하나 차량 구조(LPG 탱크 등)에 따라 공간이 상이할 수 있으므로, 짐이 많을 땐 대형 밴을 추천합니다.' 
+                        : 'Suitcases & strollers fit in trunk without extra fees. Consider large vans for large luggage.'}
                     </p>
                   </div>
                 </div>
@@ -5372,142 +5377,137 @@ export default function BusanItinerariesView({
       {/* VIEW 5: LIVE BUSAN TRAVEL TIPS COMMUNITY                                 */}
       {/* ========================================================================= */}
       {activeSection === 'COMMUNITY' && (
-        <div className="space-y-6 animate-fade-in text-left font-sans">
-          <div className="bg-white border border-[#E5E2DC] rounded-lg p-6 sm:p-8 space-y-6">
-            <div className="space-y-2">
-              <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
-                {language === 'KR' ? '실시간 커뮤니티' : 'LIVE TRAVEL COMMUNITY'}
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#11161B] tracking-tight">
-                {language === 'KR' ? '실시간 부산 여행 팁 & Q&A' : 'Live Busan Travel Tips & Q&A'}
-              </h2>
-              <p className="text-sm text-[#4A5568] leading-relaxed max-w-2xl">
-                {language === 'KR'
-                  ? '부산 현지 여행자와 주민들이 실시간으로 주고받는 질문과 답변, 이동 꿀팁 및 현장 상황을 확인해 보세요.'
-                  : 'Explore real-time questions, local travel advice, and field updates shared by Busan travelers and locals.'}
-              </p>
-            </div>
-
-            {/* Official Reddit Banner */}
-            <div className="border border-[#E5E2DC] rounded-lg p-6 bg-[#FBFBF9] hover:border-[#0A2540] transition-colors flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="space-y-2 max-w-xl">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-[#11161B] text-base">
-                    {language === 'KR' ? 'r/BusanTravelTips 레딧 커뮤니티' : 'r/BusanTravelTips Reddit Community'}
-                  </span>
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#E5E2DC] text-[#0A2540]">
-                    Official
-                  </span>
-                </div>
-                <p className="text-xs text-[#4A5568] leading-relaxed">
-                  {language === 'KR'
-                    ? '부산 지하철 엘리베이터 상태, 날씨별 추천 경로, 로컬 식도락 정보를 레딧 커뮤니티에서 자유롭게 이야기해 보세요.'
-                    : 'Ask questions about station accessibility, weather routes, and local food spots in our Reddit forum.'}
-                </p>
-              </div>
-
-              <a
-                href="https://www.reddit.com/r/BusanTravelTips/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-3 rounded-md bg-[#11161B] hover:bg-[#0A2540] text-white font-semibold text-xs transition-colors whitespace-nowrap cursor-pointer flex items-center gap-2 shrink-0"
-              >
-                <span>{language === 'KR' ? '레딧 커뮤니티 방문하기' : 'Visit Reddit Community'}</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            </div>
-
-            {/* Live Tips Cards / Highlights */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-[#E5E2DC]">
-              <div className="p-5 rounded-lg border border-[#E5E2DC] space-y-2 bg-white">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-bold text-[#0A2540]">
-                    {language === 'KR' ? '현장 이동 팁' : 'Transit Hack'}
-                  </span>
-                  <span className="text-[10px] text-[#718096]">Updated Today</span>
-                </div>
-                <h3 className="font-bold text-[#11161B] text-sm">
-                  {language === 'KR' ? '서면역 환승 시 엘리베이터 직통 출구 활용법' : 'Seomyeon Station Elevator Transfer Direct Exit'}
-                </h3>
-                <p className="text-xs text-[#4A5568] leading-relaxed">
-                  {language === 'KR'
-                    ? '1호선과 2호선 환승 구역 중앙 게이트 부근 와이드 개찰구를 이용하시면 유모차 및 대형 캐리어 소지자도 계단 없이 편리하게 이동할 수 있습니다.'
-                    : 'Use the wide turnstiles near the central transfer gate for Lines 1 & 2 to move step-free with strollers and large suitcases.'}
-                </p>
-              </div>
-
-              <div className="p-5 rounded-lg border border-[#E5E2DC] space-y-2 bg-white">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-bold text-[#0A2540]">
-                    {language === 'KR' ? '우천 시 팁' : 'Rainy Day Route'}
-                  </span>
-                  <span className="text-[10px] text-[#718096]">Local Favorite</span>
-                </div>
-                <h3 className="font-bold text-[#11161B] text-sm">
-                  {language === 'KR' ? '비 오는 날 실내 무장애 코스' : 'Rainy Day Step-Free Indoor Experience'}
-                </h3>
-                <p className="text-xs text-[#4A5568] leading-relaxed">
-                  {language === 'KR'
-                    ? '비가 오는 날은 센텀시티 지하철 직통 연결 몰이나 영도 국립해양박물관의 실내 엘리베이터 동선을 활용하면 쾌적하게 여행할 수 있습니다.'
-                    : 'On rainy days, opt for Centum City direct subway mall connections or National Maritime Museum indoor elevators.'}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* DETAIL MAP LIGHTBOX MODAL */}
-      {detailMapModalOpen && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md animate-fade-in"
-          onClick={() => setDetailMapModalOpen(false)}
-        >
-          <div 
-            className="relative max-w-7xl w-full bg-[#fdfbf7] rounded-3xl overflow-hidden shadow-2xl border border-amber-100 flex flex-col max-h-[95vh] animate-scale-up"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 sm:px-6 border-b border-amber-100/50 bg-[#fdfbf7] shrink-0">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">🗺️</span>
-                <h4 className="font-extrabold text-stone-800 text-sm sm:text-base">
-                  {language === 'KR' ? '원도심 알짜배기 가이드 지도 (원본 해상도)' : 'Central Busan Guide Map (Original Resolution)'}
-                </h4>
-              </div>
-              <button 
-                onClick={() => setDetailMapModalOpen(false)}
-                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-900 flex items-center justify-center transition-all cursor-pointer text-sm font-bold border border-stone-200/50"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Modal Body (Scrollable Image container) */}
-            <div className="flex-1 overflow-auto bg-[#faf6f0] p-4 sm:p-6 flex items-center justify-center min-h-0">
-              <img 
-                src="/images/day_trip_b.png"
-                alt="Busan Central Map Original Enlarged"
-                referrerPolicy="no-referrer"
-                className="max-w-full max-h-[75vh] sm:max-h-[80vh] object-contain rounded-2xl shadow-xl border border-amber-200/40"
-              />
-            </div>
-
-            {/* Modal Footer */}
-            <div className="p-4 bg-[#fdfbf7] border-t border-amber-100/50 text-center shrink-0 flex flex-col sm:flex-row items-center justify-between gap-2 px-6">
-              <p className="text-xs text-stone-500 font-bold">
-                {language === 'KR'
-                  ? '※ 이동 최소화! 대표 명소 동선을 원본 그대로 최적화하여 보여줍니다.'
-                  : '* Displays the original optimal route of major attractions with zero visual modifications.'}
-              </p>
+        <div className="space-y-6 animate-fade-in text-left font-sans" id="community-section-container">
+          {/* Main 2-Tab Switcher: [ 💬 기본 여행 팁 ] vs [ ✨ Stepless 여행안내 ] */}
+          <div className="bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200/90 shadow-2xs">
+            <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => setDetailMapModalOpen(false)}
-                className="text-xs bg-stone-900 hover:bg-stone-800 text-white font-extrabold px-4 py-1.5 rounded-full shadow transition-all cursor-pointer"
+                type="button"
+                id="community-tab-standard"
+                onClick={() => setCommunityTab('STANDARD')}
+                className={`py-3 px-3 sm:px-5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 cursor-pointer border min-h-[44px] ${
+                  communityTab === 'STANDARD'
+                    ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+                }`}
               >
-                {language === 'KR' ? '닫기' : 'Close'}
+                <MessageSquare className="w-4 h-4" />
+                <span>{language === 'KR' ? '💬 기본 여행 팁 & 커뮤니티' : '💬 Standard Community Tips'}</span>
+              </button>
+
+              <button
+                type="button"
+                id="community-tab-stepless-guide"
+                onClick={() => setCommunityTab('STEPLESS_GUIDE')}
+                className={`py-3 px-3 sm:px-5 rounded-xl font-black text-xs sm:text-sm transition-all flex items-center justify-center gap-2 cursor-pointer border min-h-[44px] ${
+                  communityTab === 'STEPLESS_GUIDE'
+                    ? 'bg-[#004481] text-white border-[#004481] shadow-2xs ring-2 ring-blue-100'
+                    : 'bg-gradient-to-r from-amber-50 to-blue-50 hover:from-amber-100 hover:to-blue-100 text-blue-950 border-amber-200/80 shadow-2xs'
+                }`}
+              >
+                <Sparkles className={`w-4 h-4 ${communityTab === 'STEPLESS_GUIDE' ? 'text-amber-300' : 'text-amber-600'}`} />
+                <span className="font-extrabold">{language === 'KR' ? '✨ Stepless 큐레이션 여행안내' : '✨ Stepless Curated Guide'}</span>
               </button>
             </div>
           </div>
+
+          {/* TAB 1: STANDARD COMMUNITY VIEW */}
+          {communityTab === 'STANDARD' && (
+            <div className="bg-white border border-[#E5E2DC] rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xs animate-fade-in">
+              <div className="space-y-2">
+                <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
+                  {language === 'KR' ? '실시간 커뮤니티' : 'LIVE TRAVEL COMMUNITY'}
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-[#11161B] tracking-tight">
+                  {language === 'KR' ? '실시간 부산 여행 팁 & Q&A' : 'Live Busan Travel Tips & Q&A'}
+                </h2>
+                <p className="text-sm text-[#4A5568] leading-relaxed max-w-2xl">
+                  {language === 'KR'
+                    ? '부산 현지 여행자와 주민들이 실시간으로 주고받는 질문과 답변, 이동 꿀팁 및 현장 상황을 확인해 보세요.'
+                    : 'Explore real-time questions, local travel advice, and field updates shared by Busan travelers and locals.'}
+                </p>
+              </div>
+
+              {/* Official Reddit Banner */}
+              <div className="border border-[#E5E2DC] rounded-xl p-6 bg-[#FBFBF9] hover:border-[#0A2540] transition-colors flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="space-y-2 max-w-xl">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-[#11161B] text-base">
+                      {language === 'KR' ? 'r/BusanTravelTips 레딧 커뮤니티' : 'r/BusanTravelTips Reddit Community'}
+                    </span>
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#E5E2DC] text-[#0A2540]">
+                      Official
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#4A5568] leading-relaxed">
+                    {language === 'KR'
+                      ? '부산 지하철 엘리베이터 상태, 날씨별 추천 경로, 로컬 식도락 정보를 레딧 커뮤니티에서 자유롭게 이야기해 보세요.'
+                      : 'Ask questions about station accessibility, weather routes, and local food spots in our Reddit forum.'}
+                  </p>
+                </div>
+
+                <a
+                  href="https://www.reddit.com/r/BusanTravelTips/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-5 py-3 rounded-xl bg-[#11161B] hover:bg-[#0A2540] text-white font-semibold text-xs transition-colors whitespace-nowrap cursor-pointer flex items-center gap-2 shrink-0 shadow-2xs"
+                >
+                  <span>{language === 'KR' ? '레딧 커뮤니티 방문하기' : 'Visit Reddit Community'}</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              {/* Live Tips Cards / Highlights */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-[#E5E2DC]">
+                <div className="p-5 rounded-xl border border-[#E5E2DC] space-y-2 bg-white shadow-3xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono font-bold text-[#0A2540]">
+                      {language === 'KR' ? '현장 이동 팁' : 'Transit Hack'}
+                    </span>
+                    <span className="text-[10px] text-[#718096]">Updated Today</span>
+                  </div>
+                  <h3 className="font-bold text-[#11161B] text-sm">
+                    {language === 'KR' ? '서면역 환승 시 엘리베이터 직통 출구 활용법' : 'Seomyeon Station Elevator Transfer Direct Exit'}
+                  </h3>
+                  <p className="text-xs text-[#4A5568] leading-relaxed">
+                    {language === 'KR'
+                      ? '1호선과 2호선 환승 구역 중앙 게이트 부근 와이드 개찰구를 이용하시면 유모차 및 대형 캐리어 소지자도 계단 없이 편리하게 이동할 수 있습니다.'
+                      : 'Use the wide turnstiles near the central transfer gate for Lines 1 & 2 to move step-free with strollers and large suitcases.'}
+                  </p>
+                </div>
+
+                <div className="p-5 rounded-xl border border-[#E5E2DC] space-y-2 bg-white shadow-3xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono font-bold text-[#0A2540]">
+                      {language === 'KR' ? '우천 시 팁' : 'Rainy Day Route'}
+                    </span>
+                    <span className="text-[10px] text-[#718096]">Local Favorite</span>
+                  </div>
+                  <h3 className="font-bold text-[#11161B] text-sm">
+                    {language === 'KR' ? '비 오는 날 실내 무장애 코스' : 'Rainy Day Step-Free Indoor Experience'}
+                  </h3>
+                  <p className="text-xs text-[#4A5568] leading-relaxed">
+                    {language === 'KR'
+                      ? '비가 오는 날은 센텀시티 지하철 직통 연결 몰이나 영도 국립해양박물관의 실내 엘리베이터 동선을 활용하면 쾌적하게 여행할 수 있습니다.'
+                      : 'On rainy days, opt for Centum City direct subway mall connections or National Maritime Museum indoor elevators.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 2: STEPLESS EXCLUSIVE CURATED TRAVEL GUIDE */}
+          {communityTab === 'STEPLESS_GUIDE' && (
+            <CommunityTravelGuideSection
+              language={language}
+              onSelectStation={(stationId) => {
+                if (onSelectStation) {
+                  onSelectStation(stationId);
+                }
+              }}
+              onSwitchToStandard={() => setCommunityTab('STANDARD')}
+            />
+          )}
         </div>
       )}
 
