@@ -58,6 +58,7 @@ import BusanItinerariesView from './components/BusanItinerariesView';
 import BusanEventsCalendarView from './components/BusanEventsCalendarView';
 import BarrierFreeTourApiView from './components/BarrierFreeTourApiView';
 import StationSearchBar, { searchStations } from './components/StationSearchBar';
+import { AdSenseUnit, AdEligibilityParams } from './components/AdSenseManager';
 
 // Dynamic tab loading fallback component for code-split views
 const TabLoadingFallback = ({ text = "정보를 신속하게 불러오는 중..." }: { text?: string }) => (
@@ -1122,6 +1123,19 @@ export default function App() {
     });
   };
 
+  const adParams: AdEligibilityParams = {
+    currentTab,
+    tipsSubPage,
+    siteSubPage,
+    showPrivacyModal,
+    showTermsModal,
+    submittingReport,
+    reportSuccess,
+    geoLoading,
+    isAdminMode,
+    searchQuery
+  };
+
   return (
     <div className="min-h-screen bg-[#FBFBF9] text-[#11161B] font-sans antialiased pb-24 md:pb-12 flex flex-col justify-between">
       <div>
@@ -1260,6 +1274,8 @@ export default function App() {
                       }
                     }}
                   />
+                  {/* Google AdSense Isolated Banner on Rich Editorial Overview */}
+                  <AdSenseUnit currentParams={adParams} />
                 </>
               )}
 
@@ -1268,7 +1284,7 @@ export default function App() {
 
           {/* Tab 2: SEARCH / BENTO GRID VIEW */}
           {currentTab === 'search' && (
-            <div className="space-y-8 text-left">
+            <div className="space-y-8 text-left google-anno-skip" data-ad-exclude="true">
               {/* Search Header */}
               <div>
                 <h2 className="text-2xl font-extrabold font-heading text-slate-800">
@@ -1851,6 +1867,11 @@ export default function App() {
             />
           )}
 
+          {/* Google AdSense Unit for Verified Guides / Magazine / Content Hub */}
+          {(currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') && (
+            <AdSenseUnit currentParams={adParams} />
+          )}
+
           {/* New Tab 5: ABOUT THE SITE */}
           {currentTab === 'about' && (
             <SiteIntroductionView 
@@ -2027,7 +2048,7 @@ export default function App() {
 
       {/* Terms of Service Modal */}
       {showTermsModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in google-anno-skip" data-ad-exclude="true">
           <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-100 flex flex-col max-h-[85vh] animate-slide-up">
             {/* Header */}
             <div className="p-6 border-b border-slate-100 flex items-center justify-between">
@@ -2098,7 +2119,7 @@ export default function App() {
 
       {/* Privacy Policy Modal */}
       {showPrivacyModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in google-anno-skip" data-ad-exclude="true">
           <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-100 flex flex-col max-h-[85vh] animate-slide-up">
             {/* Header */}
             <div className="p-6 border-b border-slate-100 flex items-center justify-between">
@@ -2173,11 +2194,11 @@ export default function App() {
               </div>
 
               <div>
-                <h4 className="font-bold text-slate-850 text-sm mb-1">{language === 'KR' ? '4. 문의 및 보안 의견 접수' : '4. Inquiries'}</h4>
+                <h4 className="font-bold text-slate-850 text-sm mb-1">{language === 'KR' ? '4. 문의 및 보안 의견 접수' : '4. Inquiries & User Rights'}</h4>
                 <p>
                   {language === 'KR'
-                    ? '구글 광고 정책 위반 의심 사례, 리포트 불충분 문의, 기타 개인정보 보호 정책에 관한 고견은floreur88@gmail.com 으로 연락 주시면 신속하게 조처하겠습니다.'
-                    : 'For visual layout policies or GDPR inquiries, mail us at floreur88@gmail.com.'}
+                    ? '구글 광고 정책 위반 의심 사례, 리포트 불충분 문의, 기타 개인정보 보호 정책에 관한 고견은 floreur88@gmail.com 으로 연락 주시면 신속하게 조처하겠습니다.'
+                    : 'For privacy inquiries, cookie preferences, or data corrections, please contact us at floreur88@gmail.com.'}
                 </p>
               </div>
             </div>

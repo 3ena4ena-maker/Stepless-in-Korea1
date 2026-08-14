@@ -635,7 +635,145 @@ export function HomeOverviewSection({
           </div>
         </div>
 
-        {/* 5. Field Conditions May Change & Issue Reporting */}
+        {/* 5. Step-by-Step Movement Guide */}
+        <div className="bg-white border border-[#E5E2DC] rounded-lg p-6 sm:p-8 space-y-5">
+          <div className="space-y-1.5">
+            <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
+              {language === 'KR' ? '단계별 이용 가이드' : 'STEP-BY-STEP TRANSIT GUIDE'}
+            </div>
+            <div className="flex items-center gap-2 text-[#0A2540]">
+              <Compass className="w-5 h-5 text-[#0A2540] shrink-0" />
+              <h3 className="text-lg sm:text-xl font-bold text-[#11161B]">
+                {language === 'KR' ? '부산 지하철 무단차 3단계 이동 방법' : '3-Step Step-Free Metro Navigation'}
+              </h3>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+            <div className="p-5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+              <div className="flex items-center gap-2 font-mono font-bold text-sm text-[#0A2540]">
+                <span className="w-6 h-6 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs">1</span>
+                <span>{language === 'KR' ? '역 및 출구 조회' : 'Find Station & Exit'}</span>
+              </div>
+              <p className="text-xs text-[#4A5568] leading-relaxed">
+                {language === 'KR'
+                  ? '목적지 지하철역을 검색하고, 휠체어 및 유모차가 이용 가능한 지정 엘리베이터 출구 번호를 확인합니다.'
+                  : 'Search your destination station and confirm the designated elevator exit numbers optimized for strollers and wheelchairs.'}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+              <div className="flex items-center gap-2 font-mono font-bold text-sm text-[#0A2540]">
+                <span className="w-6 h-6 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs">2</span>
+                <span>{language === 'KR' ? '지상 보도 무단차 이동' : 'Level Ground Pathway'}</span>
+              </div>
+              <p className="text-xs text-[#4A5568] leading-relaxed">
+                {language === 'KR'
+                  ? '단차가 없는 평탄한 보도를 따라 수직 엘리베이터 탑승구로 진입하여 계단 우회 없이 바로 이동합니다.'
+                  : 'Follow step-free, paved sidewalks directly to the street-level vertical elevator entrance.'}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+              <div className="flex items-center gap-2 font-mono font-bold text-sm text-[#0A2540]">
+                <span className="w-6 h-6 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs">3</span>
+                <span>{language === 'KR' ? '개찰구 및 승강장 진입' : 'Gate & Platform Access'}</span>
+              </div>
+              <p className="text-xs text-[#4A5568] leading-relaxed">
+                {language === 'KR'
+                  ? '엘리베이터를 타고 지하 개찰구층으로 하강한 후, 와이드 통행 게이트를 이용해 안전하게 열차 승강장으로 이동합니다.'
+                  : 'Descend to the concourse via elevator and pass through wide barrier-free fare gates to board your train safely.'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 6. Visible Service FAQ Section */}
+        <div className="bg-white border border-[#E5E2DC] rounded-lg p-6 sm:p-8 space-y-6">
+          <div className="space-y-1.5 border-b border-[#E5E2DC] pb-4">
+            <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
+              {language === 'KR' ? '자주 묻는 질문' : 'FREQUENTLY ASKED QUESTIONS'}
+            </div>
+            <div className="flex items-center gap-2 text-[#0A2540]">
+              <HelpCircle className="w-5 h-5 text-[#0A2540] shrink-0" />
+              <h3 className="text-lg sm:text-xl font-bold text-[#11161B]">
+                {language === 'KR' ? '스탭리스 서비스 이용 FAQ' : 'Stepless Service FAQ'}
+              </h3>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {/* FAQ 1 */}
+            <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+              <h4 className="text-sm font-bold text-[#11161B] flex items-start gap-2">
+                <span className="text-[#0A2540] font-mono">Q.</span>
+                <span>
+                  {language === 'KR' 
+                    ? '스탭리스는 휠체어 이용자만을 위한 서비스인가요?' 
+                    : 'Is Stepless designed only for wheelchair users?'}
+                </span>
+              </h4>
+              <p className="text-xs text-[#4A5568] leading-relaxed pl-5">
+                {language === 'KR'
+                  ? '아닙니다. 휠체어 이용자뿐만 아니라 유모차를 동반한 가족 여행객, 무거운 캐리어를 소지한 관광객, 무릎이 불편하여 계단 보행을 피하고 싶은 어르신 등 부산을 이동하는 모든 여행자를 위한 무장애 이동 안내 서비스입니다.'
+                  : 'No. While comprehensive for wheelchair travelers, Stepless is equally built for parents with strollers, tourists rolling heavy luggage, seniors, and anyone wanting to bypass steep stairs in Busan.'}
+              </p>
+            </div>
+
+            {/* FAQ 2 */}
+            <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+              <h4 className="text-sm font-bold text-[#11161B] flex items-start gap-2">
+                <span className="text-[#0A2540] font-mono">Q.</span>
+                <span>
+                  {language === 'KR' 
+                    ? '지하철역 출구 및 엘리베이터 정보의 신뢰성은 어떻게 확인하나요?' 
+                    : 'How is the station exit and elevator data verified?'}
+                </span>
+              </h4>
+              <p className="text-xs text-[#4A5568] leading-relaxed pl-5">
+                {language === 'KR'
+                  ? '부산교통공사 공식 데이터 및 한국관광공사 TourAPI를 기반으로 체계화하며, 서면·부산역·해운대 등 주요 거점 역사와 관광지 진입로는 현장 실측을 통해 보도 단차 및 승강기 가동 상태를 지속적으로 확인하고 있습니다.'
+                  : 'We combine official Busan Transportation Corporation records with Korea Tourism Organization data, supplemented by on-site physical audits of step heights and elevator operations at high-traffic transit hubs.'}
+              </p>
+            </div>
+
+            {/* FAQ 3 */}
+            <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+              <h4 className="text-sm font-bold text-[#11161B] flex items-start gap-2">
+                <span className="text-[#0A2540] font-mono">Q.</span>
+                <span>
+                  {language === 'KR' 
+                    ? '현장 공사나 엘리베이터 점검 시 정보는 어떻게 갱신되나요?' 
+                    : 'How do you handle temporary elevator maintenance or construction?'}
+                </span>
+              </h4>
+              <p className="text-xs text-[#4A5568] leading-relaxed pl-5">
+                {language === 'KR'
+                  ? '정기적인 현장 모니터링과 함께 이용자 실시간 제보 시스템을 운영합니다. 현장에서 공사나 고장 등을 발견하여 제보해 주시면 확인 후 신속하게 데이터베이스에 반영하여 다른 여행자에게 최신 대체 동선을 안내합니다.'
+                  : 'Alongside periodic reviews, we maintain an active user reporting system. When travelers submit field reports regarding out-of-order elevators or detours, we quickly verify and update the database.'}
+              </p>
+            </div>
+
+            {/* FAQ 4 */}
+            <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+              <h4 className="text-sm font-bold text-[#11161B] flex items-start gap-2">
+                <span className="text-[#0A2540] font-mono">Q.</span>
+                <span>
+                  {language === 'KR' 
+                    ? '외국인 여행자를 위한 다국어 지원은 어떻게 제공되나요?' 
+                    : 'How does Stepless support international visitors?'}
+                </span>
+              </h4>
+              <p className="text-xs text-[#4A5568] leading-relaxed pl-5">
+                {language === 'KR'
+                  ? '상단 언어 선택 버튼을 통해 한국어(KR)와 영어(EN)를 즉시 전환할 수 있으며, 주요 역명, 출구 번호, 수하물 보관소, 여행 코스 설명이 영문으로 완벽하게 번역되어 외국인 여행자도 편리하게 이용할 수 있습니다.'
+                  : 'You can switch between Korean (KR) and English (EN) instantly using the header toggle. Station names, exit numbers, luggage storage facilities, and curated itineraries are fully localized in English.'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 7. Field Conditions May Change & Issue Reporting */}
         <div className="p-6 rounded-lg bg-white border border-[#E5E2DC] space-y-4">
           <div className="flex items-center gap-2 text-[#0A2540]">
             <AlertTriangle className="w-5 h-5 text-[#0A2540] shrink-0" />
