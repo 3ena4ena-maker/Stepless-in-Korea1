@@ -222,7 +222,7 @@ export function HomeOverviewSection({
 
 
       {/* ==========================================
-          2. FEATURED STATIONS (Station Guides)
+          2. FEATURED STATIONS & SMART SEARCH
          ========================================== */}
       <section className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-[#E5E2DC] pb-4">
@@ -248,6 +248,17 @@ export function HomeOverviewSection({
             <span>{d.buttons.seeAll}</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
+        </div>
+
+        {/* Search Bar */}
+        <div className="max-w-2xl">
+          <StationSearchBar
+            language={language}
+            searchQuery={searchQuery || ''}
+            setSearchQuery={(q) => setSearchQuery?.(q)}
+            onSelectStation={(stId) => onSelectStation(stId)}
+            onNavigateToSearch={onNavigateToSearch}
+          />
         </div>
 
         {/* 3 Featured Station Cards */}
@@ -315,13 +326,10 @@ export function HomeOverviewSection({
               className="bg-white border border-[#E5E2DC] rounded-lg p-6 hover:border-[#0A2540] transition-colors flex flex-col justify-between space-y-4 group"
             >
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center">
                   <div className="p-2 rounded-md bg-[#F1EFEC] text-[#0A2540]">
                     {course.icon}
                   </div>
-                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#0A2540] bg-[#F1EFEC] px-2.5 py-1 rounded-md border border-[#E5E2DC]">
-                    {course.tag}
-                  </span>
                 </div>
 
                 <div className="space-y-1">
@@ -348,49 +356,6 @@ export function HomeOverviewSection({
               </button>
             </div>
           ))}
-        </div>
-      </section>
-
-
-      {/* ==========================================
-          4. UTILITY & SEARCH BAR SECTION
-         ========================================== */}
-      <section className="bg-white border border-[#E5E2DC] rounded-lg p-6 sm:p-8 space-y-4">
-        <div className="space-y-1">
-          <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
-            {language === 'KR' ? '스마트 검색' : 'SMART TRANSIT SEARCH'}
-          </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#11161B]">
-            {d.utility.sectionTitle}
-          </h2>
-        </div>
-
-        <div className="max-w-xl space-y-3">
-          <StationSearchBar
-            language={language}
-            searchQuery={searchQuery || ''}
-            setSearchQuery={(q) => setSearchQuery?.(q)}
-            onSelectStation={(stId) => onSelectStation(stId)}
-            onNavigateToSearch={onNavigateToSearch}
-          />
-
-          <div className="flex items-center gap-2 pt-1 text-xs">
-            <span className="font-mono text-[#0A2540] font-bold shrink-0">
-              {language === 'KR' ? '주요역 바로가기:' : 'Quick Select:'}
-            </span>
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {featuredStations.map((st) => (
-                <button
-                  key={`quick-${st.id}`}
-                  type="button"
-                  onClick={() => onSelectStation(st.id)}
-                  className="px-2.5 py-1 rounded bg-[#F1EFEC] hover:bg-[#E5E2DC] text-[#11161B] font-semibold text-xs transition-colors whitespace-nowrap"
-                >
-                  {st.name}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
