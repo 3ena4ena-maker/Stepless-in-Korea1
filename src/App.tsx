@@ -2308,8 +2308,8 @@ export default function App() {
                   setIsHomeLanding(false);
                 }
                 if (targetTab === 'tips') {
-                  setSelectedItineraryCategory('DAY');
-                  setTipsSubPage('transit');
+                  setSelectedItineraryCategory(null);
+                  setTipsSubPage('index');
                   setActiveRegionPage(null);
                 }
               }}
