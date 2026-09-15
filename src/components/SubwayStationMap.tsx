@@ -89,11 +89,15 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     return true;
   };
 
+  // Do NOT preemptively set useLeaflet to true in EN mode.
+  // We allow the Google Maps loading effect to execute and attempt loading first.
   const [useLeaflet, setUseLeaflet] = useState<boolean>(() => {
     if (language === 'EN') {
-      const env = (import.meta as any).env || {};
-      const key = ((env.VITE_GOOGLE_MAPS_API_KEY || '') as string).trim();
-      if (!key || (window as any).GOOGLE_MAPS_AUTH_FAILED || !isOriginAuthorizedForGoogleMaps()) {
+      if ((window as any).GOOGLE_MAPS_AUTH_FAILED) {
+        return true;
+      }
+      if (!isOriginAuthorizedForGoogleMaps()) {
+        console.warn('[Stepless Map] Current origin is not an authorized Google Maps domain. Using Leaflet fallback.');
         return true;
       }
     }
@@ -103,12 +107,14 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
   const leafletMapInstance = useRef<any>(null);
   const leafletMarkersRef = useRef<any[]>([]);
 
-  // Auto fallback to Leaflet if switching to EN and no valid Google Maps API Key exists or domain is not authorized
+  // When switching to EN, if auth previously failed or origin is unauthorized, switch to Leaflet.
+  // Otherwise, keep useLeaflet false so Google Maps script loading can proceed.
   useEffect(() => {
     if (language === 'EN') {
-      const env = (import.meta as any).env || {};
-      const key = ((env.VITE_GOOGLE_MAPS_API_KEY || '') as string).trim();
-      if (!key || !isOriginAuthorizedForGoogleMaps()) {
+      if ((window as any).GOOGLE_MAPS_AUTH_FAILED) {
+        setUseLeaflet(true);
+      } else if (!isOriginAuthorizedForGoogleMaps()) {
+        console.warn('[Stepless Map] Current origin is not an authorized Google Maps domain. Using Leaflet fallback.');
         setUseLeaflet(true);
       }
     }
@@ -316,20 +322,41 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       return;
     }
 
-    const env = (import.meta as any).env || {};
-    const apiKey = ((env.VITE_GOOGLE_MAPS_API_KEY || '') as string).trim();
+    const apiKey = (import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '').trim();
 
-    // 1. If VITE_GOOGLE_MAPS_API_KEY is missing, auth previously failed, or origin is not authorized for this API key,
-    // fallback to Leaflet cleanly without requesting maps.googleapis.com
-    if (!apiKey || (window as any).GOOGLE_MAPS_AUTH_FAILED || googleMapsFailed || !isOriginAuthorizedForGoogleMaps()) {
+    // 1. Check prerequisites before attempting Google Maps script loading
+    if (!apiKey) {
+      console.warn('[Stepless Map] Google Maps API key missing (import.meta.env.VITE_GOOGLE_MAPS_API_KEY is empty). Falling back to Leaflet.');
       destroyGoogleMap();
       setGoogleMapsFailed(true);
       setUseLeaflet(true);
       return;
     }
 
-    const handleAuthFailure = () => {
-      console.warn("[Stepless Map] Google Maps could not be initialized. Falling back to Leaflet.");
+    if ((window as any).GOOGLE_MAPS_AUTH_FAILED) {
+      console.warn('[Stepless Map] Google Maps authentication previously failed on this session. Using Leaflet fallback.');
+      destroyGoogleMap();
+      setGoogleMapsFailed(true);
+      setUseLeaflet(true);
+      return;
+    }
+
+    if (!isOriginAuthorizedForGoogleMaps()) {
+      console.warn('[Stepless Map] Current origin is unauthorized for Google Maps. Falling back to Leaflet.');
+      destroyGoogleMap();
+      setGoogleMapsFailed(true);
+      setUseLeaflet(true);
+      return;
+    }
+
+    if (googleMapsFailed) {
+      destroyGoogleMap();
+      setUseLeaflet(true);
+      return;
+    }
+
+    const handleAuthFailure = (reason?: string) => {
+      console.warn(`[Stepless Map] Google Maps authentication failure (${reason || 'unspecified'}). Falling back to Leaflet.`);
       (window as any).GOOGLE_MAPS_AUTH_FAILED = true;
       destroyGoogleMap();
       const existingScript = document.getElementById('google-maps-script');
@@ -341,8 +368,8 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     };
 
     // 4 & 2. Handle gm_authFailure callback (invalid key or auth issue)
-    window.gm_authFailure = handleAuthFailure;
-    (window as any).onGoogleMapsAuthFailed = handleAuthFailure;
+    window.gm_authFailure = () => handleAuthFailure('gm_authFailure');
+    (window as any).onGoogleMapsAuthFailed = () => handleAuthFailure('onGoogleMapsAuthFailed');
 
     // 3. Handle RefererNotAllowedMapError or other maps error events
     const handleErrorEvent = (event: ErrorEvent) => {
@@ -356,7 +383,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
           event.preventDefault();
           event.stopImmediatePropagation?.();
         } catch (e) {}
-        handleAuthFailure();
+        handleAuthFailure('RefererNotAllowed or script error event');
       }
     };
     window.addEventListener('error', handleErrorEvent);
@@ -364,11 +391,13 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     const scriptId = 'google-maps-script';
     let existingScript = document.getElementById(scriptId) as HTMLScriptElement;
     if (existingScript) {
+      console.info('[Stepless Map] Reusing existing Google Maps script tag...');
       const interval = setInterval(() => {
         if ((window as any).GOOGLE_MAPS_AUTH_FAILED) {
-          handleAuthFailure();
+          handleAuthFailure('existing script auth failed');
           clearInterval(interval);
         } else if (window.google && window.google.maps) {
+          console.info('[Stepless Map] Google Maps script loaded successfully.');
           setGoogleMapsLoaded(true);
           setGoogleMapsFailed(false);
           clearInterval(interval);
@@ -381,6 +410,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     }
 
     // 5. Script creation and load failure (onerror)
+    console.info('[Stepless Map] Google Maps script loading initiated for EN mode.');
     const script = document.createElement('script');
     script.id = scriptId;
     script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&language=en`;
@@ -388,16 +418,18 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     script.onload = () => {
       setTimeout(() => {
         if (window.google && window.google.maps && !(window as any).GOOGLE_MAPS_AUTH_FAILED) {
+          console.info('[Stepless Map] Google Maps script loaded and initialized successfully.');
           setGoogleMapsLoaded(true);
           setGoogleMapsFailed(false);
         } else {
-          handleAuthFailure();
+          handleAuthFailure('loaded but window.google.maps missing or auth failed');
         }
       }, 300);
     };
     script.onerror = () => {
       // Script failed to load (network error, blocked, 404)
-      handleAuthFailure();
+      console.warn('[Stepless Map] Google Maps script load error (network error or blocked). Falling back to Leaflet.');
+      handleAuthFailure('script.onerror');
     };
     document.head.appendChild(script);
 
