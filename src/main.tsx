@@ -7,6 +7,27 @@ import './index.css';
 // Global error handler to suppress third-party cross-origin "Script error."
 // and any errors originating from Naver Maps or Leaflet scripts. This prevents platform error overlays and test failures.
 if (typeof window !== 'undefined') {
+  const originalConsoleError = console.error;
+  console.error = function (...args: any[]) {
+    try {
+      const msgStr = args.map(a => {
+        if (!a) return '';
+        if (typeof a === 'object') return (a.message || a.stack || String(a));
+        return String(a);
+      }).join(' ');
+
+      if (
+        msgStr.includes('RefererNotAllowedMapError') ||
+        msgStr.includes('Google Maps JavaScript API error') ||
+        msgStr.includes('maps.googleapis.com')
+      ) {
+        console.warn('[Handled Google Maps Notice]:', ...args);
+        return;
+      }
+    } catch (e) {}
+    return originalConsoleError.apply(console, args);
+  };
+
   const originalOnError = window.onerror;
   window.onerror = function (message, source, lineno, colno, error) {
     const msgStr = String(message || '');

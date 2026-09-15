@@ -60,11 +60,40 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
   const [tempClientId, setTempClientId] = useState<string>('');
 
   // Leaflet fallback states & refs
+  // Helper to determine whether Google Maps is authorized on the current origin.
+  // In Google Cloud Console, HTTP Referrer restriction is configured for:
+  // - https://stepless.kr/*
+  // - https://steplessinkorea.pages.dev/*
+  // Development environments (*.run.app, localhost) are not registered in GCP Referrers
+  // and will trigger RefererNotAllowedMapError from Google's servers.
+  const isOriginAuthorizedForGoogleMaps = () => {
+    if (typeof window === 'undefined') return false;
+    if ((window as any).GOOGLE_MAPS_AUTH_FAILED) return false;
+    const host = window.location.hostname.toLowerCase();
+    
+    // Explicitly registered production domains in GCP Console
+    if (
+      host === 'stepless.kr' ||
+      host.endsWith('.stepless.kr') ||
+      host === 'steplessinkorea.pages.dev' ||
+      host.endsWith('.steplessinkorea.pages.dev')
+    ) {
+      return true;
+    }
+    
+    // Cloud Run dev/preview sandboxes and local testing are not in GCP HTTP Referrers
+    if (host.includes('.run.app') || host === 'localhost' || host === '127.0.0.1') {
+      return false;
+    }
+
+    return true;
+  };
+
   const [useLeaflet, setUseLeaflet] = useState<boolean>(() => {
     if (language === 'EN') {
       const env = (import.meta as any).env || {};
       const key = ((env.VITE_GOOGLE_MAPS_API_KEY || '') as string).trim();
-      if (!key || (window as any).GOOGLE_MAPS_AUTH_FAILED) {
+      if (!key || (window as any).GOOGLE_MAPS_AUTH_FAILED || !isOriginAuthorizedForGoogleMaps()) {
         return true;
       }
     }
@@ -74,12 +103,12 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
   const leafletMapInstance = useRef<any>(null);
   const leafletMarkersRef = useRef<any[]>([]);
 
-  // Auto fallback to Leaflet if switching to EN and no valid Google Maps API Key exists
+  // Auto fallback to Leaflet if switching to EN and no valid Google Maps API Key exists or domain is not authorized
   useEffect(() => {
     if (language === 'EN') {
       const env = (import.meta as any).env || {};
       const key = ((env.VITE_GOOGLE_MAPS_API_KEY || '') as string).trim();
-      if (!key) {
+      if (!key || !isOriginAuthorizedForGoogleMaps()) {
         setUseLeaflet(true);
       }
     }
@@ -290,8 +319,9 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     const env = (import.meta as any).env || {};
     const apiKey = ((env.VITE_GOOGLE_MAPS_API_KEY || '') as string).trim();
 
-    // 1. If VITE_GOOGLE_MAPS_API_KEY is missing or if auth previously failed, fallback to Leaflet immediately without creating script tag
-    if (!apiKey || (window as any).GOOGLE_MAPS_AUTH_FAILED || googleMapsFailed) {
+    // 1. If VITE_GOOGLE_MAPS_API_KEY is missing, auth previously failed, or origin is not authorized for this API key,
+    // fallback to Leaflet cleanly without requesting maps.googleapis.com
+    if (!apiKey || (window as any).GOOGLE_MAPS_AUTH_FAILED || googleMapsFailed || !isOriginAuthorizedForGoogleMaps()) {
       destroyGoogleMap();
       setGoogleMapsFailed(true);
       setUseLeaflet(true);
@@ -322,6 +352,10 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
           event.message?.includes?.('RefererNotAllowed') ||
           event.filename?.includes?.('maps.googleapis.com'))
       ) {
+        try {
+          event.preventDefault();
+          event.stopImmediatePropagation?.();
+        } catch (e) {}
         handleAuthFailure();
       }
     };
@@ -1121,7 +1155,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
         
         {/* Floating Map Control Panel - ONLY show retry in fallback Leaflet mode */}
         <div className="absolute top-3 left-3 z-[1000] flex flex-wrap gap-2">
-          {useLeaflet && (
+          {useLeaflet && (language === 'KR' || isOriginAuthorizedForGoogleMaps()) && (
             <button
               onClick={() => {
                 setUseLeaflet(false);
