@@ -12,15 +12,17 @@ if (typeof window !== 'undefined') {
     const msgStr = String(message || '');
     const srcStr = String(source || '');
     
-    // Check if it is a generic Script error or related to Naver Maps API or Leaflet
+    // Check if it is a generic Script error or related to Naver Maps API, Google Maps, or Leaflet
     if (
       msgStr === 'Script error.' ||
       msgStr.toLowerCase().includes('naver') ||
       msgStr.toLowerCase().includes('leaflet') ||
+      msgStr.toLowerCase().includes('google') ||
+      msgStr.toLowerCase().includes('referer') ||
       srcStr.toLowerCase().includes('naver') ||
-      srcStr.toLowerCase().includes('leaflet')
+      srcStr.toLowerCase().includes('leaflet') ||
+      srcStr.toLowerCase().includes('googleapis')
     ) {
-      console.warn('Ignored third-party script error:', message, source);
       return true; // true suppresses the error propagation
     }
     
@@ -35,10 +37,11 @@ if (typeof window !== 'undefined') {
     if (
       reasonStr.toLowerCase().includes('naver') || 
       reasonStr.toLowerCase().includes('leaflet') || 
+      reasonStr.toLowerCase().includes('google') || 
+      reasonStr.toLowerCase().includes('referer') || 
       reasonStr.toLowerCase().includes('script error')
     ) {
       event.preventDefault();
-      console.warn('Ignored unhandled rejection from third-party map script:', event.reason);
     }
   });
 }

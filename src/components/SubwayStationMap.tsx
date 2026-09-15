@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Station, translateExitNumber } from '../types';
+import { getStationCrosswalkPoints } from '../utils/crosswalkData';
+import { createGoogleMapExitMarker, createGoogleMapCrosswalkMarker } from '../utils/googleMapsHelper';
 
 export function CrosswalkIcon({ size = 18, className = '' }: { size?: number; className?: string }) {
   return (
@@ -29,6 +31,8 @@ declare global {
   interface Window {
     naver?: any;
     navermaps_auth_error?: () => void;
+    google?: any;
+    gm_authFailure?: () => void;
   }
 }
 
@@ -40,6 +44,13 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
   const [scriptLoaded, setScriptLoaded] = useState<boolean>(false);
   const [loadError, setLoadError] = useState<boolean>(false);
 
+  // Google Maps state & refs
+  const [googleMapsLoaded, setGoogleMapsLoaded] = useState<boolean>(false);
+  const [googleMapsFailed, setGoogleMapsFailed] = useState<boolean>(false);
+  const googleMapInstance = useRef<any>(null);
+  const googleMarkersRef = useRef<any[]>([]);
+  const googleTempMarkerRef = useRef<any>(null);
+
   // Naver Map custom client config
   const [naverClientId, setNaverClientId] = useState<string>(() => {
     return localStorage.getItem('custom_naver_client_id') || '';
@@ -49,10 +60,30 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
   const [tempClientId, setTempClientId] = useState<string>('');
 
   // Leaflet fallback states & refs
-  const [useLeaflet, setUseLeaflet] = useState<boolean>(false);
+  const [useLeaflet, setUseLeaflet] = useState<boolean>(() => {
+    if (language === 'EN') {
+      const env = (import.meta as any).env || {};
+      const key = ((env.VITE_GOOGLE_MAPS_API_KEY || '') as string).trim();
+      if (!key || (window as any).GOOGLE_MAPS_AUTH_FAILED) {
+        return true;
+      }
+    }
+    return false;
+  });
   const [leafletLoaded, setLeafletLoaded] = useState<boolean>(false);
   const leafletMapInstance = useRef<any>(null);
   const leafletMarkersRef = useRef<any[]>([]);
+
+  // Auto fallback to Leaflet if switching to EN and no valid Google Maps API Key exists
+  useEffect(() => {
+    if (language === 'EN') {
+      const env = (import.meta as any).env || {};
+      const key = ((env.VITE_GOOGLE_MAPS_API_KEY || '') as string).trim();
+      if (!key) {
+        setUseLeaflet(true);
+      }
+    }
+  }, [language]);
 
   // Coordinate inspector mode state
   const [inspectMode, setInspectMode] = useState<boolean>(false);
@@ -66,6 +97,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       setInspectMode(false);
       setClickedCoord(null);
       if (tempMarkerRef.current) tempMarkerRef.current.setMap(null);
+      if (googleTempMarkerRef.current) googleTempMarkerRef.current.setMap(null);
       if (leafletTempMarkerRef.current && leafletMapInstance.current) {
         leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current);
       }
@@ -73,6 +105,42 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
   }, [isAdminMode]);
 
   // Safe map cleanup helpers to prevent memory leaks and API error cascades
+  const destroyGoogleMap = () => {
+    if (googleMarkersRef.current && googleMarkersRef.current.length > 0) {
+      googleMarkersRef.current.forEach(m => {
+        try {
+          if (m && typeof m.setMap === 'function') {
+            m.setMap(null);
+          }
+        } catch (e) {
+          // ignore
+        }
+      });
+      googleMarkersRef.current = [];
+    }
+    if (googleTempMarkerRef.current) {
+      try {
+        googleTempMarkerRef.current.setMap(null);
+      } catch (e) {
+        // ignore
+      }
+      googleTempMarkerRef.current = null;
+    }
+    if (googleMapInstance.current) {
+      try {
+        if (window.google && window.google.maps && window.google.maps.event) {
+          window.google.maps.event.clearInstanceListeners(googleMapInstance.current);
+        }
+      } catch (e) {
+        // ignore
+      }
+      googleMapInstance.current = null;
+      if (mapElement.current) {
+        mapElement.current.innerHTML = '';
+      }
+    }
+  };
+
   const destroyNaverMap = () => {
     if (markersRef.current && markersRef.current.length > 0) {
       markersRef.current.forEach(m => {
@@ -206,15 +274,114 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     };
   }, [naverClientId]);
 
+  // 1-B. Asynchronously Load Google Maps API script when language === 'EN'
+  useEffect(() => {
+    if (language !== 'EN' || useLeaflet) {
+      return;
+    }
+
+    // Check if Google Maps is already loaded and functioning
+    if (window.google && window.google.maps) {
+      setGoogleMapsLoaded(true);
+      setGoogleMapsFailed(false);
+      return;
+    }
+
+    const env = (import.meta as any).env || {};
+    const apiKey = ((env.VITE_GOOGLE_MAPS_API_KEY || '') as string).trim();
+
+    // 1. If VITE_GOOGLE_MAPS_API_KEY is missing or if auth previously failed, fallback to Leaflet immediately without creating script tag
+    if (!apiKey || (window as any).GOOGLE_MAPS_AUTH_FAILED || googleMapsFailed) {
+      destroyGoogleMap();
+      setGoogleMapsFailed(true);
+      setUseLeaflet(true);
+      return;
+    }
+
+    const handleAuthFailure = () => {
+      console.warn("[Stepless Map] Google Maps could not be initialized. Falling back to Leaflet.");
+      (window as any).GOOGLE_MAPS_AUTH_FAILED = true;
+      destroyGoogleMap();
+      const existingScript = document.getElementById('google-maps-script');
+      if (existingScript && existingScript.parentNode) {
+        existingScript.parentNode.removeChild(existingScript);
+      }
+      setGoogleMapsFailed(true);
+      setUseLeaflet(true);
+    };
+
+    // 4 & 2. Handle gm_authFailure callback (invalid key or auth issue)
+    window.gm_authFailure = handleAuthFailure;
+    (window as any).onGoogleMapsAuthFailed = handleAuthFailure;
+
+    // 3. Handle RefererNotAllowedMapError or other maps error events
+    const handleErrorEvent = (event: ErrorEvent) => {
+      if (
+        event &&
+        (event.message?.includes?.('Google Maps') ||
+          event.message?.includes?.('RefererNotAllowed') ||
+          event.filename?.includes?.('maps.googleapis.com'))
+      ) {
+        handleAuthFailure();
+      }
+    };
+    window.addEventListener('error', handleErrorEvent);
+
+    const scriptId = 'google-maps-script';
+    let existingScript = document.getElementById(scriptId) as HTMLScriptElement;
+    if (existingScript) {
+      const interval = setInterval(() => {
+        if ((window as any).GOOGLE_MAPS_AUTH_FAILED) {
+          handleAuthFailure();
+          clearInterval(interval);
+        } else if (window.google && window.google.maps) {
+          setGoogleMapsLoaded(true);
+          setGoogleMapsFailed(false);
+          clearInterval(interval);
+        }
+      }, 100);
+      return () => {
+        clearInterval(interval);
+        window.removeEventListener('error', handleErrorEvent);
+      };
+    }
+
+    // 5. Script creation and load failure (onerror)
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&language=en`;
+    script.async = true;
+    script.onload = () => {
+      setTimeout(() => {
+        if (window.google && window.google.maps && !(window as any).GOOGLE_MAPS_AUTH_FAILED) {
+          setGoogleMapsLoaded(true);
+          setGoogleMapsFailed(false);
+        } else {
+          handleAuthFailure();
+        }
+      }, 300);
+    };
+    script.onerror = () => {
+      // Script failed to load (network error, blocked, 404)
+      handleAuthFailure();
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      window.removeEventListener('error', handleErrorEvent);
+    };
+  }, [language, useLeaflet, googleMapsFailed]);
+
   // 2. Initialize or Update Map and Markers on Station / Script loaded changes
   useEffect(() => {
-    if (useLeaflet) {
+    if (language !== 'KR' || useLeaflet) {
       destroyNaverMap();
       return;
     }
     if (!scriptLoaded || !window.naver || !window.naver.maps || !mapElement.current) return;
 
     destroyLeafletMap();
+    destroyGoogleMap();
 
     const exits = station.exits || [];
     if (exits.length === 0) return;
@@ -388,89 +555,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     });
 
     // Add custom crosswalk indicators
-    let crosswalkPoints: { lat: number; lng: number; nameKr: string; nameEn: string }[] = [];
-    if (station.id === 'beomeosa') {
-      crosswalkPoints = [
-        { lat: 35.272596, lng: 129.092851, nameKr: '범어사역 부근 횡단보도 1', nameEn: 'Beomeosa Station Crosswalk 1' }
-      ];
-    } else if (station.id === 'jungang') {
-      crosswalkPoints = [
-        { lat: 35.105193, lng: 129.036551, nameKr: '중앙역 부근 횡단보도 1', nameEn: 'Jung-ang Station Crosswalk 1' },
-        { lat: 35.105015, lng: 129.036294, nameKr: '중앙역 부근 횡단보도 2', nameEn: 'Jung-ang Station Crosswalk 2' },
-        { lat: 35.104127, lng: 129.036360, nameKr: '중앙역 부근 횡단보도 3', nameEn: 'Jung-ang Station Crosswalk 3' },
-        { lat: 35.103130, lng: 129.036403, nameKr: '중앙역 부근 횡단보도 4', nameEn: 'Jung-ang Station Crosswalk 4' },
-        { lat: 35.102924, lng: 129.036744, nameKr: '중앙역 부근 횡단보도 5', nameEn: 'Jung-ang Station Crosswalk 5' },
-        { lat: 35.102885, lng: 129.036176, nameKr: '중앙역 부근 횡단보도 6', nameEn: 'Jung-ang Station Crosswalk 6' }
-      ];
-    } else if (station.id === 'seomyeon') {
-      crosswalkPoints = [
-        { lat: 35.156981, lng: 129.057776, nameKr: '서면역 부근 횡단보도 1', nameEn: 'Seomyeon Station Crosswalk 1' },
-        { lat: 35.157765, lng: 129.060084, nameKr: '서면역 부근 횡단보도 2', nameEn: 'Seomyeon Station Crosswalk 2' }
-      ];
-    } else if (station.id === 'bujeon') {
-      crosswalkPoints = [
-        { lat: 35.160072, lng: 129.060950, nameKr: '부전역 부근 횡단보도 1', nameEn: 'Bujeon Station Crosswalk 1' },
-        { lat: 35.162038, lng: 129.062340, nameKr: '부전역 부근 횡단보도 2', nameEn: 'Bujeon Station Crosswalk 2' },
-        { lat: 35.162808, lng: 129.063141, nameKr: '부전역 부근 횡단보도 3', nameEn: 'Bujeon Station Crosswalk 3' },
-        { lat: 35.163751, lng: 129.064201, nameKr: '부전역 부근 횡단보도 4', nameEn: 'Bujeon Station Crosswalk 4' }
-      ];
-    } else if (station.id === 'gwangan') {
-      crosswalkPoints = [
-        { lat: 35.157177, lng: 129.112880, nameKr: '광안역 부근 횡단보도 1', nameEn: 'Gwangan Station Crosswalk 1' },
-        { lat: 35.157072, lng: 129.113787, nameKr: '광안역 부근 횡단보도 2', nameEn: 'Gwangan Station Crosswalk 2' }
-      ];
-    } else if (station.id === 'suyeong') {
-      crosswalkPoints = [
-        { lat: 35.164779, lng: 129.114637, nameKr: '수영역 부근 횡단보도 1', nameEn: 'Suyeong Station Crosswalk 1' },
-        { lat: 35.168071, lng: 129.114190, nameKr: '수영역 부근 횡단보도 2', nameEn: 'Suyeong Station Crosswalk 2' },
-        { lat: 35.167906, lng: 129.116710, nameKr: '수영역 부근 횡단보도 3', nameEn: 'Suyeong Station Crosswalk 3' }
-      ];
-    } else if (station.id === 'haeundae') {
-      crosswalkPoints = [
-        { lat: 35.163103, lng: 129.159348, nameKr: '해운대역 부근 횡단보도 1', nameEn: 'Haeundae Station Crosswalk 1' },
-        { lat: 35.163592, lng: 129.159008, nameKr: '해운대역 부근 횡단보도 2', nameEn: 'Haeundae Station Crosswalk 2' },
-        { lat: 35.163422, lng: 129.158462, nameKr: '해운대역 부근 횡단보도 3', nameEn: 'Haeundae Station Crosswalk 3' }
-      ];
-    } else if (station.id === 'jagalchi') {
-      crosswalkPoints = [
-        { lat: 35.097792, lng: 129.028350, nameKr: '자갈치역 부근 횡단보도 1', nameEn: 'Jagalchi Station Crosswalk 1' },
-        { lat: 35.097107, lng: 129.025660, nameKr: '자갈치역 부근 횡단보도 2', nameEn: 'Jagalchi Station Crosswalk 2' },
-        { lat: 35.098024, lng: 129.029357, nameKr: '자갈치역 부근 횡단보도 3', nameEn: 'Jagalchi Station Crosswalk 3' }
-      ];
-    } else if (station.id === 'nampo') {
-      crosswalkPoints = [
-        { lat: 35.097890, lng: 129.032372, nameKr: '남포역 부근 횡단보도 1', nameEn: 'Nampo Station Crosswalk 1' },
-        { lat: 35.098062, lng: 129.035629, nameKr: '남포역 부근 횡단보도 2', nameEn: 'Nampo Station Crosswalk 2' },
-        { lat: 35.098347, lng: 129.035651, nameKr: '남포역 부근 횡단보도 3', nameEn: 'Nampo Station Crosswalk 3' },
-        { lat: 35.098099, lng: 129.035297, nameKr: '남포역 부근 횡단보도 4', nameEn: 'Nampo Station Crosswalk 4' }
-      ];
-    } else if (station.id === 'jeonpo') {
-      crosswalkPoints = [
-        { lat: 35.154631, lng: 129.065389, nameKr: '전포역 부근 횡단보도 1', nameEn: 'Jeonpo Station Crosswalk 1' }
-      ];
-    } else if (station.id === 'busan') {
-      crosswalkPoints = [
-        { lat: 35.114853, lng: 129.039498, nameKr: '부산역 부근 횡단보도 1', nameEn: 'Busan Station Crosswalk 1' },
-        { lat: 35.115799, lng: 129.039960, nameKr: '부산역 부근 횡단보도 2', nameEn: 'Busan Station Crosswalk 2' }
-      ];
-    } else if (station.id === 'geumnyeonsan') {
-      crosswalkPoints = [
-        { lat: 35.150313, lng: 129.111266, nameKr: '금련산역 부근 횡단보도 1', nameEn: 'Geumnyeonsan Station Crosswalk 1' },
-        { lat: 35.150413, lng: 129.110984, nameKr: '금련산역 부근 횡단보도 2', nameEn: 'Geumnyeonsan Station Crosswalk 2' }
-      ];
-    } else if (station.id === 'dongbaek') {
-      crosswalkPoints = [
-        { lat: 35.161513, lng: 129.147828, nameKr: '동백역 부근 횡단보도', nameEn: 'Dongbaek Station Crosswalk' }
-      ];
-    } else if (station.id === 'bexco') {
-      crosswalkPoints = [
-        { lat: 35.168088, lng: 129.137516, nameKr: '벡스코역 서측 횡단보도', nameEn: 'Bexco Station West Crosswalk' },
-        { lat: 35.168937, lng: 129.138359, nameKr: '벡스코역 7번 출구 방면 횡단보도', nameEn: 'Bexco Station Exit 7 Crosswalk' },
-        { lat: 35.168538, lng: 129.138828, nameKr: '벡스코역 남측 올림픽교차로 횡단보도', nameEn: 'Bexco Station South Intersection Crosswalk' },
-        { lat: 35.168988, lng: 129.139266, nameKr: '벡스코역 2·4번 출구 삼거리 횡단보도', nameEn: 'Bexco Station Exit 2/4 Intersection Crosswalk' },
-        { lat: 35.169338, lng: 129.138922, nameKr: '올림픽교차로 북측 횡단보도', nameEn: 'Olympic Intersection North Crosswalk' }
-      ];
-    }
+    const crosswalkPoints = getStationCrosswalkPoints(station.id);
     
     if (crosswalkPoints.length > 0) {
       const crosswalkMarkerWidth = 32;
@@ -536,7 +621,141 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       });
     }
 
-  }, [station, scriptLoaded, focusedExitCoords, language]);
+  }, [station, scriptLoaded, focusedExitCoords, language, useLeaflet]);
+
+  // 2-B. Initialize or Update Google Maps and Markers when language === 'EN'
+  useEffect(() => {
+    if (language !== 'EN' || useLeaflet) {
+      destroyGoogleMap();
+      return;
+    }
+    if (!googleMapsLoaded || !window.google || !window.google.maps || !mapElement.current) return;
+
+    destroyNaverMap();
+    destroyLeafletMap();
+
+    const exits = station.exits || [];
+    if (exits.length === 0) return;
+
+    let centerLat = 0;
+    let centerLng = 0;
+    let currentZoom = 16;
+
+    if (focusedExitCoords) {
+      centerLat = focusedExitCoords.latitude;
+      centerLng = focusedExitCoords.longitude;
+      currentZoom = 18;
+    } else {
+      let totalLat = 0;
+      let totalLng = 0;
+      exits.forEach(exit => {
+        totalLat += exit.latitude;
+        totalLng += exit.longitude;
+      });
+      centerLat = totalLat / exits.length;
+      centerLng = totalLng / exits.length;
+      currentZoom = 16;
+    }
+
+    const mapCenter = new window.google.maps.LatLng(centerLat, centerLng);
+
+    if (!googleMapInstance.current || !mapElement.current.childElementCount) {
+      if (mapElement.current) {
+        mapElement.current.innerHTML = '';
+      }
+      googleMapInstance.current = new window.google.maps.Map(mapElement.current, {
+        center: mapCenter,
+        zoom: currentZoom,
+        mapTypeId: window.google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: false,
+        zoomControl: true,
+        styles: [
+          {
+            featureType: 'poi',
+            elementType: 'labels',
+            stylers: [{ visibility: 'on' }]
+          }
+        ]
+      });
+    } else {
+      googleMapInstance.current.setCenter(mapCenter);
+      googleMapInstance.current.setZoom(currentZoom);
+    }
+
+    // Clear existing google markers
+    if (googleMarkersRef.current && googleMarkersRef.current.length > 0) {
+      googleMarkersRef.current.forEach(m => {
+        try {
+          if (m && typeof m.setMap === 'function') {
+            m.setMap(null);
+          }
+        } catch (e) {
+          // ignore
+        }
+      });
+      googleMarkersRef.current = [];
+    }
+
+    // Determine line color accent
+    const firstLine = station.lines[0];
+    let mapAccentColor = '#F06A00'; // default Line 1 주황
+    if (firstLine === '2') mapAccentColor = '#1b6d24'; // 초록
+    else if (firstLine === '3') mapAccentColor = '#906A3B'; // 브라운
+    else if (firstLine === '동해') mapAccentColor = '#004960'; // 동해 블루
+    else if (firstLine === '4') mapAccentColor = '#3b82f6';
+    else if (firstLine === '부산김해') mapAccentColor = '#8b5cf6';
+
+    // Create exit markers
+    exits.forEach(exit => {
+      const marker = createGoogleMapExitMarker(
+        googleMapInstance.current,
+        exit,
+        language,
+        mapAccentColor
+      );
+      googleMarkersRef.current.push(marker);
+    });
+
+    // Add crosswalk points
+    const crosswalkPoints = getStationCrosswalkPoints(station.id);
+    crosswalkPoints.forEach(pt => {
+      const marker = createGoogleMapCrosswalkMarker(
+        googleMapInstance.current,
+        pt,
+        language
+      );
+      googleMarkersRef.current.push(marker);
+    });
+
+    // Inspect mode click listener
+    if (googleMapInstance.current && window.google && window.google.maps) {
+      window.google.maps.event.clearListeners(googleMapInstance.current, 'click');
+      googleMapInstance.current.addListener('click', (e: any) => {
+        const lat = e.latLng.lat();
+        const lng = e.latLng.lng();
+        setClickedCoord({ lat, lng });
+
+        if (googleTempMarkerRef.current) {
+          googleTempMarkerRef.current.setMap(null);
+        }
+
+        googleTempMarkerRef.current = new window.google.maps.Marker({
+          position: new window.google.maps.LatLng(lat, lng),
+          map: googleMapInstance.current,
+          icon: {
+            path: window.google.maps.SymbolPath.CIRCLE,
+            fillColor: '#ef4444',
+            fillOpacity: 1,
+            strokeColor: '#ffffff',
+            strokeWeight: 2,
+            scale: 8
+          }
+        });
+      });
+    }
+  }, [station, googleMapsLoaded, focusedExitCoords, language, useLeaflet]);
 
   // 3. Dynamic Leaflet CSS & Script loader
   useEffect(() => {
@@ -596,6 +815,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     if (!L) return;
 
     destroyNaverMap();
+    destroyGoogleMap();
 
     const exits = station.exits || [];
     if (exits.length === 0) return;
@@ -636,11 +856,10 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
         position: 'topright'
       }).addTo(leafletMapInstance.current);
 
-      // Add extremely high quality clean Voyager tiles
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '© OpenStreetMap contributors © CARTO',
-        subdomains: 'abcd',
-        maxZoom: 20
+      // Add standard clean OpenStreetMap tiles (100% free, no API key required, no watermarks)
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
       }).addTo(leafletMapInstance.current);
     } else {
       // Update central zoom dynamically and move center smoothly
@@ -757,89 +976,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     });
 
     // Add custom crosswalk indicators for Leaflet fallback
-    let crosswalkPoints: { lat: number; lng: number; nameKr: string; nameEn: string }[] = [];
-    if (station.id === 'beomeosa') {
-      crosswalkPoints = [
-        { lat: 35.272596, lng: 129.092851, nameKr: '범어사역 부근 횡단보도 1', nameEn: 'Beomeosa Station Crosswalk 1' }
-      ];
-    } else if (station.id === 'jungang') {
-      crosswalkPoints = [
-        { lat: 35.105193, lng: 129.036551, nameKr: '중앙역 부근 횡단보도 1', nameEn: 'Jung-ang Station Crosswalk 1' },
-        { lat: 35.105015, lng: 129.036294, nameKr: '중앙역 부근 횡단보도 2', nameEn: 'Jung-ang Station Crosswalk 2' },
-        { lat: 35.104127, lng: 129.036360, nameKr: '중앙역 부근 횡단보도 3', nameEn: 'Jung-ang Station Crosswalk 3' },
-        { lat: 35.103130, lng: 129.036403, nameKr: '중앙역 부근 횡단보도 4', nameEn: 'Jung-ang Station Crosswalk 4' },
-        { lat: 35.102924, lng: 129.036744, nameKr: '중앙역 부근 횡단보도 5', nameEn: 'Jung-ang Station Crosswalk 5' },
-        { lat: 35.102885, lng: 129.036176, nameKr: '중앙역 부근 횡단보도 6', nameEn: 'Jung-ang Station Crosswalk 6' }
-      ];
-    } else if (station.id === 'seomyeon') {
-      crosswalkPoints = [
-        { lat: 35.156981, lng: 129.057776, nameKr: '서면역 부근 횡단보도 1', nameEn: 'Seomyeon Station Crosswalk 1' },
-        { lat: 35.157765, lng: 129.060084, nameKr: '서면역 부근 횡단보도 2', nameEn: 'Seomyeon Station Crosswalk 2' }
-      ];
-    } else if (station.id === 'bujeon') {
-      crosswalkPoints = [
-        { lat: 35.160072, lng: 129.060950, nameKr: '부전역 부근 횡단보도 1', nameEn: 'Bujeon Station Crosswalk 1' },
-        { lat: 35.162038, lng: 129.062340, nameKr: '부전역 부근 횡단보도 2', nameEn: 'Bujeon Station Crosswalk 2' },
-        { lat: 35.162808, lng: 129.063141, nameKr: '부전역 부근 횡단보도 3', nameEn: 'Bujeon Station Crosswalk 3' },
-        { lat: 35.163751, lng: 129.064201, nameKr: '부전역 부근 횡단보도 4', nameEn: 'Bujeon Station Crosswalk 4' }
-      ];
-    } else if (station.id === 'gwangan') {
-      crosswalkPoints = [
-        { lat: 35.157177, lng: 129.112880, nameKr: '광안역 부근 횡단보도 1', nameEn: 'Gwangan Station Crosswalk 1' },
-        { lat: 35.157072, lng: 129.113787, nameKr: '광안역 부근 횡단보도 2', nameEn: 'Gwangan Station Crosswalk 2' }
-      ];
-    } else if (station.id === 'suyeong') {
-      crosswalkPoints = [
-        { lat: 35.164779, lng: 129.114637, nameKr: '수영역 부근 횡단보도 1', nameEn: 'Suyeong Station Crosswalk 1' },
-        { lat: 35.168071, lng: 129.114190, nameKr: '수영역 부근 횡단보도 2', nameEn: 'Suyeong Station Crosswalk 2' },
-        { lat: 35.167906, lng: 129.116710, nameKr: '수영역 부근 횡단보도 3', nameEn: 'Suyeong Station Crosswalk 3' }
-      ];
-    } else if (station.id === 'haeundae') {
-      crosswalkPoints = [
-        { lat: 35.163103, lng: 129.159348, nameKr: '해운대역 부근 횡단보도 1', nameEn: 'Haeundae Station Crosswalk 1' },
-        { lat: 35.163592, lng: 129.159008, nameKr: '해운대역 부근 횡단보도 2', nameEn: 'Haeundae Station Crosswalk 2' },
-        { lat: 35.163422, lng: 129.158462, nameKr: '해운대역 부근 횡단보도 3', nameEn: 'Haeundae Station Crosswalk 3' }
-      ];
-    } else if (station.id === 'jagalchi') {
-      crosswalkPoints = [
-        { lat: 35.097792, lng: 129.028350, nameKr: '자갈치역 부근 횡단보도 1', nameEn: 'Jagalchi Station Crosswalk 1' },
-        { lat: 35.097107, lng: 129.025660, nameKr: '자갈치역 부근 횡단보도 2', nameEn: 'Jagalchi Station Crosswalk 2' },
-        { lat: 35.098024, lng: 129.029357, nameKr: '자갈치역 부근 횡단보도 3', nameEn: 'Jagalchi Station Crosswalk 3' }
-      ];
-    } else if (station.id === 'nampo') {
-      crosswalkPoints = [
-        { lat: 35.097890, lng: 129.032372, nameKr: '남포역 부근 횡단보도 1', nameEn: 'Nampo Station Crosswalk 1' },
-        { lat: 35.098062, lng: 129.035629, nameKr: '남포역 부근 횡단보도 2', nameEn: 'Nampo Station Crosswalk 2' },
-        { lat: 35.098347, lng: 129.035651, nameKr: '남포역 부근 횡단보도 3', nameEn: 'Nampo Station Crosswalk 3' },
-        { lat: 35.098099, lng: 129.035297, nameKr: '남포역 부근 횡단보도 4', nameEn: 'Nampo Station Crosswalk 4' }
-      ];
-    } else if (station.id === 'jeonpo') {
-      crosswalkPoints = [
-        { lat: 35.154631, lng: 129.065389, nameKr: '전포역 부근 횡단보도 1', nameEn: 'Jeonpo Station Crosswalk 1' }
-      ];
-    } else if (station.id === 'busan') {
-      crosswalkPoints = [
-        { lat: 35.114853, lng: 129.039498, nameKr: '부산역 부근 횡단보도 1', nameEn: 'Busan Station Crosswalk 1' },
-        { lat: 35.115799, lng: 129.039960, nameKr: '부산역 부근 횡단보도 2', nameEn: 'Busan Station Crosswalk 2' }
-      ];
-    } else if (station.id === 'geumnyeonsan') {
-      crosswalkPoints = [
-        { lat: 35.150313, lng: 129.111266, nameKr: '금련산역 부근 횡단보도 1', nameEn: 'Geumnyeonsan Station Crosswalk 1' },
-        { lat: 35.150413, lng: 129.110984, nameKr: '금련산역 부근 횡단보도 2', nameEn: 'Geumnyeonsan Station Crosswalk 2' }
-      ];
-    } else if (station.id === 'dongbaek') {
-      crosswalkPoints = [
-        { lat: 35.161513, lng: 129.147828, nameKr: '동백역 부근 횡단보도', nameEn: 'Dongbaek Station Crosswalk' }
-      ];
-    } else if (station.id === 'bexco') {
-      crosswalkPoints = [
-        { lat: 35.168088, lng: 129.137516, nameKr: '벡스코역 서측 횡단보도', nameEn: 'Bexco Station West Crosswalk' },
-        { lat: 35.168937, lng: 129.138359, nameKr: '벡스코역 7번 출구 방면 횡단보도', nameEn: 'Bexco Station Exit 7 Crosswalk' },
-        { lat: 35.168538, lng: 129.138828, nameKr: '벡스코역 남측 올림픽교차로 횡단보도', nameEn: 'Bexco Station South Intersection Crosswalk' },
-        { lat: 35.168988, lng: 129.139266, nameKr: '벡스코역 2·4번 출구 삼거리 횡단보도', nameEn: 'Bexco Station Exit 2/4 Intersection Crosswalk' },
-        { lat: 35.169338, lng: 129.138922, nameKr: '올림픽교차로 북측 횡단보도', nameEn: 'Olympic Intersection North Crosswalk' }
-      ];
-    }
+    const crosswalkPoints = getStationCrosswalkPoints(station.id);
     
     if (crosswalkPoints.length > 0) {
       const crosswalkMarkerWidth = 32;
@@ -926,6 +1063,9 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
         if (mapInstance.current && window.naver && window.naver.maps) {
           window.naver.maps.Event.trigger(mapInstance.current, 'resize');
         }
+        if (googleMapInstance.current && window.google && window.google.maps) {
+          window.google.maps.event.trigger(googleMapInstance.current, 'resize');
+        }
       } catch (e) {
         // ignore
       }
@@ -937,6 +1077,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       window.removeEventListener('resize', handleResize);
       destroyNaverMap();
       destroyLeafletMap();
+      destroyGoogleMap();
     };
   }, []);
 
@@ -978,17 +1119,19 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       {/* Map display block */}
       <div className="w-full h-[320px] relative bg-slate-50 border-b border-slate-100 transition-all duration-300">
         
-        {/* Floating Map Control Panel */}
+        {/* Floating Map Control Panel - ONLY show retry in fallback Leaflet mode */}
         <div className="absolute top-3 left-3 z-[1000] flex flex-wrap gap-2">
           {useLeaflet && (
             <button
               onClick={() => {
                 setUseLeaflet(false);
                 setNaverAuthFailed(false);
+                setGoogleMapsFailed(false);
+                (window as any).GOOGLE_MAPS_AUTH_FAILED = false;
               }}
               className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white shadow-md hover:bg-blue-700 rounded-full text-xs font-bold transition-all cursor-pointer"
             >
-              🗺️ {language === 'KR' ? '네이버 지도로 변경' : 'Switch to Naver Map'}
+              🗺️ {language === 'KR' ? '네이버 지도로 다시 시도' : 'Retry Google Maps'}
             </button>
           )}
 
@@ -1154,6 +1297,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
                     setUseLeaflet(true);
                     setShowSettings(false);
                     setNaverAuthFailed(false);
+                    setGoogleMapsFailed(true);
                   }}
                   className="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold py-2 px-3 rounded-xl transition text-center text-[11px] cursor-pointer"
                 >
@@ -1194,11 +1338,18 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
               {language === 'KR' ? '실시간 인터랙티브 지도 준비 중...' : 'Initializing fallback maps...'}
             </p>
           </div>
-        ) : !useLeaflet && !scriptLoaded ? (
+        ) : !useLeaflet && language === 'KR' && !scriptLoaded ? (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-3 bg-slate-50">
             <div className="w-8 h-8 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin" />
             <p className="text-xs font-bold text-slate-400">
-              {language === 'KR' ? '실시간 지하철역 지도 데이터 로딩 중...' : 'Streaming maps telemetry...'}
+              실시간 지하철역 지도 데이터 로딩 중...
+            </p>
+          </div>
+        ) : !useLeaflet && language === 'EN' && !googleMapsLoaded ? (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-3 bg-slate-50">
+            <div className="w-8 h-8 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin" />
+            <p className="text-xs font-bold text-slate-400">
+              Loading Google Maps...
             </p>
           </div>
         ) : null}

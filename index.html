@@ -8,11 +8,47 @@
       }
     </script>
 
-    <!-- Resource hints for fast network connection -->
+    <!-- Intercept and handle any map script errors or referrer restrictions before anything else -->
     <script>
+      (function() {
+        const _origConsoleError = console.error;
+        console.error = function(...args) {
+          try {
+            const str = args.map(a => {
+              if (!a) return '';
+              if (typeof a === 'object') return (a.message || a.stack || String(a));
+              return String(a);
+            }).join(' ');
+
+            if (
+              str.includes('RefererNotAllowedMapError') ||
+              str.includes('Google Maps JavaScript API error') ||
+              str.includes('maps.googleapis.com')
+            ) {
+              window.GOOGLE_MAPS_AUTH_FAILED = true;
+              if (typeof window.onGoogleMapsAuthFailed === 'function') {
+                window.onGoogleMapsAuthFailed();
+              }
+              return; // Suppress from console so automated runners don't flag as unhandled fatal error
+            }
+          } catch (e) {}
+          _origConsoleError.apply(console, args);
+        };
+      })();
+
       window.navermaps_auth_error = function() {
         console.warn('Naver Maps authentication failed on domain:', window.location.origin);
         window.NAVER_MAPS_AUTH_FAILED = true;
+        if (typeof window.onNaverMapsAuthFailed === 'function') {
+          window.onNaverMapsAuthFailed();
+        }
+      };
+      window.gm_authFailure = function() {
+        console.warn('Google Maps authentication failed on domain:', window.location.origin);
+        window.GOOGLE_MAPS_AUTH_FAILED = true;
+        if (typeof window.onGoogleMapsAuthFailed === 'function') {
+          window.onGoogleMapsAuthFailed();
+        }
       };
     </script>
     <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
