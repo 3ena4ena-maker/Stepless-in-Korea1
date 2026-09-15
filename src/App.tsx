@@ -188,6 +188,8 @@ export default function App() {
   const [tipsSubPage, setTipsSubPage] = useState<'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule' | 'community'>('index');
   const [activeRegionPage, setActiveRegionPage] = useState<'LINE1' | 'LINE2' | null>(null);
   const [siteSubPage, setSiteSubPage] = useState<'about' | 'privacy' | 'terms' | 'contact' | 'data-source'>('about');
+  const [barrierFreeCourseId, setBarrierFreeCourseId] = useState<string | null>(null);
+  const [barrierFreePlaceId, setBarrierFreePlaceId] = useState<string | null>(null);
   
   // Geolocation states
   const [geoLoading, setGeoLoading] = useState<boolean>(false);
@@ -403,6 +405,19 @@ export default function App() {
           setActiveRegionPage(null);
         }
         setIsHomeLanding(false);
+      } else if (parts[1] === 'barrier-free') {
+        setCurrentTab('tourapi');
+        setIsHomeLanding(false);
+        if (parts[2] === 'course' && parts[3]) {
+          setBarrierFreeCourseId(parts[3]);
+          setBarrierFreePlaceId(null);
+        } else if (parts[2] === 'place' && parts[3]) {
+          setBarrierFreePlaceId(parts[3]);
+          setBarrierFreeCourseId(null);
+        } else {
+          setBarrierFreeCourseId(null);
+          setBarrierFreePlaceId(null);
+        }
       } else if (parts[1] === 'station' && parts[2]) {
         const stationId = parts[2].toLowerCase();
         const exists = STATIONS.some(s => s.id === stationId);
@@ -1890,8 +1905,12 @@ export default function App() {
             <BusanItinerariesView 
               language={language}
               initialCategory={currentTab === 'tourapi' ? 'BARRIER_FREE' : (selectedItineraryCategory as any)}
+              initialBarrierFreeCourseId={barrierFreeCourseId}
+              initialBarrierFreePlaceId={barrierFreePlaceId}
               onBack={() => {
                 setSelectedItineraryCategory(null);
+                setBarrierFreeCourseId(null);
+                setBarrierFreePlaceId(null);
               }}
               onSelectCategory={(category) => {
                 setSelectedItineraryCategory(category);

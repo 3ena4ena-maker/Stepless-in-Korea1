@@ -86,6 +86,8 @@ interface BusanItinerariesViewProps {
   activeRegionPage?: 'LINE1' | 'LINE2' | null;
   setActiveRegionPage?: (region: 'LINE1' | 'LINE2' | null) => void;
   onSelectStation?: (stationId: string, exitNum?: string) => void;
+  initialBarrierFreeCourseId?: string | null;
+  initialBarrierFreePlaceId?: string | null;
 }
 
 interface CategoryConfig {
@@ -1404,7 +1406,9 @@ export default function BusanItinerariesView({
   setTipsSubPage,
   activeRegionPage: propActiveRegionPage,
   setActiveRegionPage: propSetActiveRegionPage,
-  onSelectStation
+  onSelectStation,
+  initialBarrierFreeCourseId,
+  initialBarrierFreePlaceId,
 }: BusanItinerariesViewProps) {
   // Navigation Section: 'SELECTION' (Travel Tips Hub) | 'TRANSIT_TIPS' (transit guide) | 'RECOMMENDATIONS' (itineraries list) | 'SCHEDULE' (events) | 'COMMUNITY' (live tips)
   const [activeSection, setActiveSection] = useState<'SELECTION' | 'TRANSIT_TIPS' | 'RECOMMENDATIONS' | 'SCHEDULE' | 'COMMUNITY'>(
@@ -2333,7 +2337,10 @@ export default function BusanItinerariesView({
                 <div className="space-y-6 animate-fade-in text-left">
                   <BarrierFreeTourApiView 
                     language={language}
+                    initialCourseId={initialBarrierFreeCourseId}
+                    initialPlaceId={initialBarrierFreePlaceId}
                     onSelectStation={onSelectStation}
+                    onNavigateHome={() => setActiveCategory(null)}
                   />
                 </div>
               ) : (
