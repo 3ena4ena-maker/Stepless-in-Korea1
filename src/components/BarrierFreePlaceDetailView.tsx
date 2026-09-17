@@ -177,10 +177,18 @@ export default function BarrierFreePlaceDetailView({
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight drop-shadow-sm">
               {language === 'KR' ? place.nameKo : place.nameEn}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-200 font-medium flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-red-400 shrink-0" />
-              <span>{language === 'KR' ? place.addressKo : place.addressEn}</span>
-            </p>
+            <div className="flex flex-wrap items-center gap-2 pt-0.5">
+              <p className="text-xs sm:text-sm text-slate-200 font-medium flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-red-400 shrink-0" />
+                <span>{language === 'KR' ? place.addressKo : place.addressEn}</span>
+              </p>
+              {place.subwayLine && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-black bg-white/20 backdrop-blur-md text-white border border-white/30">
+                  <Train className="w-3.5 h-3.5 text-emerald-300" />
+                  <span>{place.subwayLine}</span>
+                </span>
+              )}
+            </div>
           </div>
         </div>
 

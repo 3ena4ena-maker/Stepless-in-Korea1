@@ -17,6 +17,7 @@ import {
   ArrowRight,
   ShieldCheck,
   Check,
+  Train,
 } from 'lucide-react';
 import {
   UserType,
@@ -32,7 +33,6 @@ import {
   getRecommendedCourses,
   getRecommendedPlaces,
 } from '../utils/barrierFreeRecommendation';
-import TourApiImage from './TourApiImage';
 
 interface BarrierFreeMainViewProps {
   selectedUserType: UserType;
@@ -94,10 +94,29 @@ export default function BarrierFreeMainView({
     selectedUserTypes.length > 0 ? selectedUserTypes[selectedUserTypes.length - 1] : selectedUserType;
 
   const recommendedCourses = getRecommendedCourses(activeSortUserType);
-  const recommendedPlaces = useMemo(
-    () => getRecommendedPlaces(activeSortUserType, selectedExperiences, selectedCompanions),
-    [activeSortUserType, selectedExperiences, selectedCompanions]
+
+  // 신규 8개 무장애 관광지 ID 목록
+  // (해운대 해수욕장, SEA LIFE 부산아쿠아리움, 부산 엑스더스카이 전망대, 다대포 해수욕장, 송정 해수욕장, 자갈치시장, 부평 깡통 국제 시장, 부산 시티투어버스)
+  const TARGET_PLACE_IDS = useMemo(
+    () => [
+      'spot-101',
+      'spot-aquarium',
+      'spot-xthesky',
+      'spot-106',
+      'spot-songjeong',
+      'spot-jagalchi-rooftop',
+      'spot-bupyeong-market',
+      'spot-city-tour-bus',
+    ],
+    []
   );
+
+  // 8개 신규 관광지만 정확히 선별하되, 여행자 유형/경험/동행자 기준 점수 계산 및 정렬 로직은 100% 온전히 유지
+  const recommendedPlaces = useMemo(() => {
+    const allSorted = getRecommendedPlaces(activeSortUserType, selectedExperiences, selectedCompanions);
+    return allSorted.filter(({ place }) => TARGET_PLACE_IDS.includes(place.id));
+  }, [activeSortUserType, selectedExperiences, selectedCompanions, TARGET_PLACE_IDS]);
+
   const activeUserMeta = USER_TYPES.find((t) => t.id === activeSortUserType);
 
   return (
@@ -348,108 +367,45 @@ export default function BarrierFreeMainView({
         </div>
 
         {/* 2열 카드 그리드 (모바일 1열, 태블릿 이상 2열) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {recommendedPlaces.map(({ place, score, highlightKo, highlightEn }) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          {recommendedPlaces.map(({ place, highlightKo, highlightEn }) => (
             <div
               key={place.id}
-              className="bg-white rounded-2xl border-2 border-slate-900 overflow-hidden shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] flex flex-col justify-between"
+              className="bg-white rounded-2xl border-2 border-slate-900 p-4 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] flex flex-col justify-between hover:translate-y-[-2px] transition-all"
             >
-              <div>
-                {/* 썸네일 */}
-                <div className="relative h-44 w-full bg-slate-900 overflow-hidden">
-                  <TourApiImage
-                    contentId={place.contentId}
-                    src={place.image}
-                    alt={language === 'KR' ? place.nameKo : place.nameEn}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <span className="px-2 py-0.5 rounded-md bg-[#0A2540] text-white text-[10px] font-bold shadow-xs">
-                      {language === 'KR' ? place.districtKo : place.districtEn}
+              <div className="space-y-2">
+                {/* 상단: 구/지역 배지 + 지하철 호선 */}
+                <div className="flex items-center justify-between gap-2">
+                  <span className="px-2.5 py-0.5 rounded-md bg-[#0A2540] text-white text-[11px] font-bold shadow-xs">
+                    {language === 'KR' ? place.districtKo : place.districtEn}
+                  </span>
+                  {place.subwayLine && (
+                    <span className="shrink-0 text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 border border-slate-300 flex items-center gap-1">
+                      <Train className="w-3 h-3 text-emerald-600" />
+                      <span>{place.subwayLine}</span>
                     </span>
-                  </div>
-                  <div className="absolute top-3 right-3">
-                    <span className="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-bold shadow-xs">
-                      {language === 'KR'
-                        ? (place.accessibilityGrade === 'COMFORTABLE' ? '🟢 편안한 이동' : '🟡 일부 주의')
-                        : (place.accessibilityGrade === 'COMFORTABLE' ? '🟢 Easy Step-Free' : '🟡 Caution Advised')}
-                    </span>
-                  </div>
+                  )}
                 </div>
 
-                {/* 관광지 정보 */}
-                <div className="p-4 space-y-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-base font-black text-slate-900 leading-snug">
-                      {language === 'KR' ? place.nameKo : place.nameEn}
-                    </h3>
-                  </div>
+                {/* 관광지 타이틀 */}
+                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-snug">
+                  {language === 'KR' ? place.nameKo : place.nameEn}
+                </h3>
 
-                  <p className="text-xs text-slate-500 font-medium flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
-                    <span className="line-clamp-1">{language === 'KR' ? place.addressKo : place.addressEn}</span>
-                  </p>
+                {/* 주소 정보 */}
+                <p className="text-xs text-slate-500 font-medium flex items-center gap-1">
+                  <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                  <span className="line-clamp-1">{language === 'KR' ? place.addressKo : place.addressEn}</span>
+                </p>
 
-                  <p className="text-xs text-slate-700 font-medium leading-relaxed line-clamp-2">
-                    {language === 'KR' ? highlightKo : highlightEn}
-                  </p>
-
-                  {/* 3가지 맞춤 기준 매칭 태그 (경험 및 동행자 성향 자동 매칭 정보) */}
-                  <div className="flex flex-wrap gap-1 pt-0.5">
-                    {place.experienceTraits?.map((expId) => {
-                      const expMeta = BUSAN_EXPERIENCES.find((e) => e.id === expId);
-                      if (!expMeta) return null;
-                      return (
-                        <span
-                          key={expId}
-                          className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-blue-50/80 text-blue-900 border border-blue-200"
-                        >
-                          {expMeta.icon} {language === 'KR' ? expMeta.titleKo : expMeta.titleEn}
-                        </span>
-                      );
-                    })}
-                    {place.companionTraits?.map((compId) => {
-                      const compMeta = TRAVEL_COMPANIONS.find((c) => c.id === compId);
-                      if (!compMeta) return null;
-                      return (
-                        <span
-                          key={compId}
-                          className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50/80 text-emerald-900 border border-emerald-200"
-                        >
-                          {compMeta.icon} {language === 'KR' ? compMeta.titleKo : compMeta.titleEn}
-                        </span>
-                      );
-                    })}
-                  </div>
-
-                  {/* 핵심 무장애 정보 (실제 확인된 데이터) */}
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {!place.accessibility.stairs && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
-                        {language === 'KR' ? '🟢 계단 없음' : '🟢 Step-Free'}
-                      </span>
-                    )}
-                    {place.accessibility.elevator && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-blue-50 text-blue-800 border border-blue-200">
-                        {language === 'KR' ? '🛗 엘리베이터' : '🛗 Elevator'}
-                      </span>
-                    )}
-                    {place.accessibility.accessibleRestroom && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 border border-slate-200">
-                        {language === 'KR' ? '🚻 전용 화장실' : '🚻 Accessible WC'}
-                      </span>
-                    )}
-                    {place.accessibility.wheelchair && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-purple-50 text-purple-800 border border-purple-200">
-                        {language === 'KR' ? '♿ 휠체어 가능' : '♿ Wheelchair'}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                {/* 맞춤 하이라이트 요약 설명 (태그 대신 직관적인 설명 텍스트 노출) */}
+                <p className="text-xs text-slate-700 font-medium leading-relaxed line-clamp-2 pt-0.5">
+                  {language === 'KR' ? highlightKo : highlightEn}
+                </p>
               </div>
 
               {/* ‘상세 보기 →’ 버튼 */}
-              <div className="p-4 pt-0">
+              <div className="pt-3">
                 <button
                   type="button"
                   onClick={() => onNavigateToPlace(place.id)}
