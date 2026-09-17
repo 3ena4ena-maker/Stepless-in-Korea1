@@ -85,22 +85,46 @@ export default function BarrierFreePlaceDetailView({
   // 확인된 무장애 편의시설 목록 (실제 확인된 데이터만 필터링)
   const verifiedAccessibilityItems: { label: string; verified: boolean; icon: string }[] = [];
   if (!place.accessibility.stairs) {
-    verifiedAccessibilityItems.push({ label: '계단 없음 (무단차)', verified: true, icon: '🟢' });
+    verifiedAccessibilityItems.push({
+      label: language === 'KR' ? '계단 없음 (무단차)' : 'Step-Free (Level Path)',
+      verified: true,
+      icon: '🟢',
+    });
   }
   if (place.accessibility.wheelchair) {
-    verifiedAccessibilityItems.push({ label: '휠체어 접근 가능', verified: true, icon: '🟢' });
+    verifiedAccessibilityItems.push({
+      label: language === 'KR' ? '휠체어 접근 가능' : 'Wheelchair Accessible',
+      verified: true,
+      icon: '🟢',
+    });
   }
   if (place.accessibility.elevator) {
-    verifiedAccessibilityItems.push({ label: '엘리베이터 설치', verified: true, icon: '🟢' });
+    verifiedAccessibilityItems.push({
+      label: language === 'KR' ? '엘리베이터 설치' : 'Elevator Available',
+      verified: true,
+      icon: '🟢',
+    });
   }
   if (place.accessibility.accessibleRestroom) {
-    verifiedAccessibilityItems.push({ label: '장애인 전용 화장실', verified: true, icon: '🟢' });
+    verifiedAccessibilityItems.push({
+      label: language === 'KR' ? '장애인 전용 화장실' : 'Accessible Restroom',
+      verified: true,
+      icon: '🟢',
+    });
   }
   if (place.accessibility.accessibleParking) {
-    verifiedAccessibilityItems.push({ label: '장애인 전용 주차구역', verified: true, icon: '🟢' });
+    verifiedAccessibilityItems.push({
+      label: language === 'KR' ? '장애인 전용 주차구역' : 'Accessible Parking',
+      verified: true,
+      icon: '🟢',
+    });
   }
   if (place.accessibility.stroller) {
-    verifiedAccessibilityItems.push({ label: '유아차 이용 가능', verified: true, icon: '🟢' });
+    verifiedAccessibilityItems.push({
+      label: language === 'KR' ? '유아차 이용 가능' : 'Stroller Accessible',
+      verified: true,
+      icon: '🟢',
+    });
   }
 
   return (
@@ -137,10 +161,12 @@ export default function BarrierFreePlaceDetailView({
           {/* 지역구 및 카테고리 */}
           <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
             <span className="px-3 py-1 rounded-lg bg-[#0A2540] text-white text-xs font-bold shadow-xs">
-              {place.districtKo}
+              {language === 'KR' ? place.districtKo : place.districtEn}
             </span>
             <span className="px-3 py-1 rounded-lg bg-emerald-500 text-white text-xs font-bold shadow-xs">
-              {place.accessibilityGrade === 'COMFORTABLE' ? '🟢 편안한 이동' : '🟡 일부 주의'}
+              {language === 'KR'
+                ? (place.accessibilityGrade === 'COMFORTABLE' ? '🟢 편안한 이동' : '🟡 일부 주의')
+                : (place.accessibilityGrade === 'COMFORTABLE' ? '🟢 Easy Step-Free' : '🟡 Caution Advised')}
             </span>
           </div>
 

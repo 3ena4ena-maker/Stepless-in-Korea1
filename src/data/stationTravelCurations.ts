@@ -207,6 +207,20 @@ export const STATION_CURATIONS: Record<string, StationCurationData> = {
         reason: '도로 중앙 화단형 수직 엘리베이터로 서면 북측 방면을 단차 없이 이동할 수 있습니다.',
         hasElevator: true,
         hasEscalator: false
+      },
+      {
+        exitNum: '12번 출구',
+        targetTitle: '대현프리몰 지하상가, 신한은행 금융골목 방면',
+        reason: '수직형 배리어프리 엘리베이터가 설치되어 있어 대현프리몰 지하상가 초입 및 금융골목 방면으로 안전하고 쾌적하게 무단차 이동이 가능합니다.',
+        hasElevator: true,
+        hasEscalator: false
+      },
+      {
+        exitNum: '13번 출구',
+        targetTitle: '신한은행 서면지점, 부전시장 방면',
+        reason: '지상 엘리베이터와 상향 에스컬레이터가 모두 완비되어 신한은행 및 부전시장 방면으로 수월하게 이동할 수 있습니다.',
+        hasElevator: true,
+        hasEscalator: true
       }
     ],
     recommendedExitsExplanationEn: [
@@ -223,6 +237,20 @@ export const STATION_CURATIONS: Record<string, StationCurationData> = {
         reason: 'Street median elevator offering seamless, step-free access to the northern business corridor.',
         hasElevator: true,
         hasEscalator: false
+      },
+      {
+        exitNum: 'Exit 12',
+        targetTitle: 'Daehyeon Free Mall Underground Shopping, Shinhan Bank Financial Alley',
+        reason: 'Dedicated vertical elevator providing direct step-free access to Daehyeon underground arcade and banking alley.',
+        hasElevator: true,
+        hasEscalator: false
+      },
+      {
+        exitNum: 'Exit 13',
+        targetTitle: 'Shinhan Bank Seomyeon Branch, Bujeon Market',
+        reason: 'Equipped with ground elevator and upward escalator for effortless access toward Bujeon Market.',
+        hasElevator: true,
+        hasEscalator: true
       }
     ],
     movementStepsKo: [

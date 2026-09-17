@@ -483,6 +483,19 @@ export default function App() {
               } else if (parts[2] === 'transit') {
                 setTipsSubPage('transit');
                 setActiveRegionPage(null);
+              } else if (parts[2] === 'barrier-free' || parts[2] === 'tourapi') {
+                setSelectedItineraryCategory('BARRIER_FREE');
+                setActiveRegionPage(null);
+                if (parts[3] === 'course' && parts[4]) {
+                  setBarrierFreeCourseId(parts[4]);
+                  setBarrierFreePlaceId(null);
+                } else if (parts[3] === 'place' && parts[4]) {
+                  setBarrierFreePlaceId(parts[4]);
+                  setBarrierFreeCourseId(null);
+                } else {
+                  setBarrierFreeCourseId(null);
+                  setBarrierFreePlaceId(null);
+                }
               } else if (parts[2] === 'child-free') {
                 setTipsSubPage('child-free');
                 setActiveRegionPage(null);
@@ -1553,9 +1566,21 @@ export default function App() {
                           >
                             {/* Header Details row */}
                             <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-100 flex-wrap sm:flex-nowrap">
-                              <h3 className="text-lg sm:text-lg font-extrabold text-slate-800 font-heading flex items-center gap-2">
-                                <span>{getExitDisplayName(activeStation.name, exit.number, language)}</span>
-                              </h3>
+                              <div className="space-y-1">
+                                <h3 className="text-lg sm:text-lg font-extrabold text-slate-800 font-heading flex items-center gap-2">
+                                  <span>{getExitDisplayName(activeStation.name, exit.number, language)}</span>
+                                </h3>
+                                {exit.directionDesc && (
+                                  <p className="text-xs sm:text-sm text-slate-600 font-medium flex items-center gap-1.5">
+                                    <MapPin className="w-3.5 h-3.5 text-[#004481] shrink-0" />
+                                    <span>
+                                      {language === 'KR' 
+                                        ? exit.directionDesc 
+                                        : (exit.directionDescEn || exit.directionDesc)}
+                                    </span>
+                                  </p>
+                                )}
+                              </div>
 
                               {/* Action to expand Timeline Details Inline */}
                               <button

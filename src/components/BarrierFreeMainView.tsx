@@ -67,9 +67,11 @@ export default function BarrierFreeMainView({
       <section className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
-            <span>여행자 유형 선택</span>
+            <span>{language === 'KR' ? '여행자 유형 선택' : 'Select Traveler Type'}</span>
             <span className="text-xs text-slate-500 font-medium">
-              (유형에 따라 코스와 관광지가 맞춤 정렬됩니다)
+              {language === 'KR'
+                ? '(유형에 따라 코스와 관광지가 맞춤 정렬됩니다)'
+                : '(Courses and attractions are sorted by your needs)'}
             </span>
           </h2>
         </div>
@@ -114,10 +116,12 @@ export default function BarrierFreeMainView({
           <div>
             <h2 className="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-amber-500" />
-              <span>추천 여행 코스</span>
+              <span>{language === 'KR' ? '추천 여행 코스' : 'Recommended Travel Courses'}</span>
               {activeUserMeta && (
                 <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md">
-                  {activeUserMeta.titleKo} 맞춤 순
+                  {language === 'KR'
+                    ? `${activeUserMeta.titleKo} 맞춤 순`
+                    : `Tailored for ${activeUserMeta.titleEn}`}
                 </span>
               )}
             </h2>
@@ -128,7 +132,7 @@ export default function BarrierFreeMainView({
             </p>
           </div>
           <span className="text-xs text-slate-400 font-medium hidden sm:inline">
-            가로 스크롤 가능 ➔
+            {language === 'KR' ? '가로 스크롤 가능 ➔' : 'Scroll horizontally ➔'}
           </span>
         </div>
 
@@ -159,7 +163,7 @@ export default function BarrierFreeMainView({
                     </div>
                     <div className="absolute top-3 right-3">
                       <span className="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-bold shadow-xs">
-                        {course.difficultyTextKo}
+                        {language === 'KR' ? course.difficultyTextKo : course.difficultyTextEn}
                       </span>
                     </div>
                   </div>
@@ -183,7 +187,7 @@ export default function BarrierFreeMainView({
                     {/* 주요 장소 2~3개 (예: 해운대해수욕장 → 동백섬 → 더베이101) */}
                     <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
                       <span className="text-[10px] font-bold text-slate-500 uppercase block mb-1">
-                        주요 코스 경로
+                        {language === 'KR' ? '주요 코스 경로' : 'Key Route Spots'}
                       </span>
                       <p className="text-xs font-bold text-[#0A2540] leading-relaxed line-clamp-2">
                         {placesSummary}
@@ -213,9 +217,9 @@ export default function BarrierFreeMainView({
       <section className="space-y-4">
         <div>
           <h2 className="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
-            <span>추천 무장애 관광지</span>
+            <span>{language === 'KR' ? '추천 무장애 관광지' : 'Recommended Barrier-Free Spots'}</span>
             <span className="text-xs text-slate-500 font-medium">
-              (총 {recommendedPlaces.length}곳)
+              {language === 'KR' ? `(총 ${recommendedPlaces.length}곳)` : `(${recommendedPlaces.length} spots)`}
             </span>
           </h2>
           <p className="text-xs text-slate-600 font-medium">
@@ -243,12 +247,14 @@ export default function BarrierFreeMainView({
                   />
                   <div className="absolute top-3 left-3">
                     <span className="px-2 py-0.5 rounded-md bg-[#0A2540] text-white text-[10px] font-bold shadow-xs">
-                      {place.districtKo}
+                      {language === 'KR' ? place.districtKo : place.districtEn}
                     </span>
                   </div>
                   <div className="absolute top-3 right-3">
                     <span className="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-bold shadow-xs">
-                      {place.accessibilityGrade === 'COMFORTABLE' ? '🟢 편안한 이동' : '🟡 일부 주의'}
+                      {language === 'KR'
+                        ? (place.accessibilityGrade === 'COMFORTABLE' ? '🟢 편안한 이동' : '🟡 일부 주의')
+                        : (place.accessibilityGrade === 'COMFORTABLE' ? '🟢 Easy Step-Free' : '🟡 Caution Advised')}
                     </span>
                   </div>
                 </div>
@@ -263,7 +269,7 @@ export default function BarrierFreeMainView({
 
                   <p className="text-xs text-slate-500 font-medium flex items-center gap-1">
                     <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
-                    <span className="line-clamp-1">{place.addressKo}</span>
+                    <span className="line-clamp-1">{language === 'KR' ? place.addressKo : place.addressEn}</span>
                   </p>
 
                   <p className="text-xs text-slate-700 font-medium leading-relaxed line-clamp-2">
@@ -274,22 +280,22 @@ export default function BarrierFreeMainView({
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {!place.accessibility.stairs && (
                       <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
-                        🟢 계단 없음
+                        {language === 'KR' ? '🟢 계단 없음' : '🟢 Step-Free'}
                       </span>
                     )}
                     {place.accessibility.elevator && (
                       <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-blue-50 text-blue-800 border border-blue-200">
-                        🛗 엘리베이터
+                        {language === 'KR' ? '🛗 엘리베이터' : '🛗 Elevator'}
                       </span>
                     )}
                     {place.accessibility.accessibleRestroom && (
                       <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 border border-slate-200">
-                        🚻 전용 화장실
+                        {language === 'KR' ? '🚻 전용 화장실' : '🚻 Accessible WC'}
                       </span>
                     )}
                     {place.accessibility.wheelchair && (
                       <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-purple-50 text-purple-800 border border-purple-200">
-                        ♿ 휠체어 가능
+                        {language === 'KR' ? '♿ 휠체어 가능' : '♿ Wheelchair'}
                       </span>
                     )}
                   </div>
