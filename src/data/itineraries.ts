@@ -21,7 +21,7 @@ export interface ItineraryCourse {
   titleEn: string;
   subtitleKo: string;
   subtitleEn: string;
-  category: 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'EXPERIENCE' | 'SUBWAY';
+  category: 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'MARKET' | 'EXPERIENCE' | 'SUBWAY';
   durationKo: string;
   durationEn: string;
   tagKo: string;
@@ -1822,12 +1822,142 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
     subtitleEn: 'Seamless travel connecting top attractions, gourmet spots, cafes, and museums along Lines 1 & 2',
     durationKo: '도시철도 연계',
     durationEn: 'Subway Connected',
-    tagKo: '🚇 1·2호선 노선축',
-    tagEn: '🚇 Lines 1 & 2',
+    tagKo: '1·2호선 노선축',
+    tagEn: 'Lines 1 & 2',
     difficultyKo: '쉬움',
     difficultyEn: 'Easy',
     overallTipKo: '부산 도시철도 1호선과 2호선은 부산의 주요 관광지를 대부분 관통합니다. 역 출구의 엘리베이터/에스컬레이터와 바로 연결되는 동선으로 더욱 편리하게 여행하세요.',
     overallTipEn: 'Busan Metro Lines 1 & 2 pass through almost all key sights in Busan. Use station elevators and escalators for step-free connections.',
     steps: []
+  },
+  {
+    id: 'itinerary-market',
+    category: 'MARKET',
+    titleKo: '정겨운 활기와 먹거리 가득! 부산 대표 전통시장 & 명물 야시장 투어',
+    titleEn: 'Busan Iconic Traditional Markets & Night Market Tour',
+    subtitleKo: '신선한 제철 해산물과 농수산물, 오랜 골목 노포와 활기찬 야시장까지! 부산의 진짜 매력과 인심을 오감으로 경험하는 전통시장 추천 가이드입니다.',
+    subtitleEn: 'Experience the authentic hospitality of Busan through its vibrant traditional markets, fresh seafood, and lively street food alleys.',
+    durationKo: '전통시장 코스',
+    durationEn: 'Traditional Markets',
+    tagKo: '전통시장 투어',
+    tagEn: 'Traditional Market Tour',
+    difficultyKo: '쉬움',
+    difficultyEn: 'Easy',
+    overallTipKo: '부산의 대표 전통시장인 부전시장, 자갈치시장, 부평깡통시장, 국제시장은 모두 지하철 1호선(부전역, 자갈치역, 남포역)과 바로 연결되어 있어 대중교통으로 방문하기 매우 편리합니다. 주요 통로는 평지로 정비되어 휠체어나 유모차도 편안하게 둘러보실 수 있습니다.',
+    overallTipEn: 'Major traditional markets including Bujeon, Jagalchi, Bupyeong Kkangtong, and Gukje are directly connected to Subway Line 1 stations with flat, accessible main passages.',
+    steps: [
+      {
+        regionId: 'seomyeon_jeonpo',
+        regionNameKo: '서면 · 부전',
+        regionNameEn: 'Seomyeon & Bujeon',
+        foodCategory: 'market',
+        time: '전통시장',
+        titleKo: '부전시장 (부전농수산물새벽시장)',
+        titleEn: 'Bujeon Market (Agricultural & Fish Market)',
+        descKo: '📍 주소: 부산 부산진구 중앙대로783번길 23\n동남권 최대 규모의 대표 전통시장! 싱싱한 제철 농수산물과 곰장어 골목, 원조 어묵, 활기찬 새벽 장터 음식을 만끽할 수 있습니다.',
+        descEn: '📍 Address: 23 Jungang-daero 783beon-gil, Busanjin-gu, Busan\nOne of Busan’s largest traditional markets featuring fresh produce, eel alleys, and authentic market snacks.',
+        icon: 'Food',
+        stationInfoKo: '부산 부산진구 중앙대로783번길 23 (1호선/동해선 부전역 1번 출구)',
+        stationInfoEn: '23 Jungang-daero 783beon-gil, Busanjin-gu, Busan (Bujeon Station Exit 1)'
+      },
+      {
+        regionId: 'nampo_yeongdo',
+        regionNameKo: '남포동 · 자갈치',
+        regionNameEn: 'Nampo & Jagalchi',
+        foodCategory: 'market',
+        time: '전통시장',
+        titleKo: '자갈치시장',
+        titleEn: 'Jagalchi Fish Market',
+        descKo: '📍 주소: 부산 중구 자갈치해안로 52\n"오이소, 보이소, 사이소!" 정겨운 정취가 넘쳐나는 영남 최대 규모의 활기찬 한국 대표 수산물 시장.',
+        descEn: '📍 Address: 52 Jagalchihaean-ro, Jung-gu, Busan\nKorea’s premier coastal fish market famous for fresh seafood and oceanfront views.',
+        icon: 'Food',
+        stationInfoKo: '부산 중구 자갈치해안로 52 (1호선 자갈치역 10번 출구)',
+        stationInfoEn: '52 Jagalchihaean-ro, Jung-gu, Busan (Jagalchi Station Exit 10)'
+      },
+      {
+        regionId: 'nampo_yeongdo',
+        regionNameKo: '남포동 · 부평',
+        regionNameEn: 'Nampo & Bupyeong',
+        foodCategory: 'market',
+        time: '전통시장',
+        titleKo: '부평깡통시장',
+        titleEn: 'Bupyeong Kkangtong Market',
+        descKo: '📍 주소: 부산 중구 부평1길 48\n비빔당면, 원조 물떡, 유부전골, 씨앗호떡 등 부산 대표 길거리 미식의 성지이자 밤마다 화려한 야시장이 펼쳐지는 대표 전통시장.',
+        descEn: '📍 Address: 48 Bupyeong 1-gil, Jung-gu, Busan\nIconic market famous for bibim dangmyeon, rice cake skewers, and night market culinary street booths.',
+        icon: 'Food',
+        stationInfoKo: '부산 중구 부평1길 48 (1호선 자갈치역 3번 출구 / 남포역 1번 출구)',
+        stationInfoEn: '48 Bupyeong 1-gil, Jung-gu, Busan (Jagalchi Station Exit 3)'
+      },
+      {
+        regionId: 'nampo_yeongdo',
+        regionNameKo: '남포동 · 국제시장',
+        regionNameEn: 'Nampo & Gukje',
+        foodCategory: 'market',
+        time: '전통시장',
+        titleKo: '국제시장',
+        titleEn: 'Gukje Market',
+        descKo: '📍 주소: 부산 중구 중구로 36\n영화 《국제시장》의 배경! 수공예품, 구제 의류, 먹거리 골목이 어우러진 대형 역사 전통시장.',
+        descEn: '📍 Address: 36 Junggu-ro, Jung-gu, Busan\nLegendary traditional market known from the movie Gukje Market with crafts and vintage goods.',
+        icon: 'Food',
+        stationInfoKo: '부산 중구 중구로 36 (1호선 자갈치역 7번 출구 / 남포역 1번 출구)',
+        stationInfoEn: '36 Junggu-ro, Jung-gu, Busan (Jagalchi Station Exit 7)'
+      },
+      {
+        regionId: 'nampo_yeongdo',
+        regionNameKo: '남포동 · 부평',
+        regionNameEn: 'Nampo & Bupyeong',
+        foodCategory: 'market',
+        time: '시장 먹거리',
+        titleKo: '이가네떡볶이 (부평깡통시장)',
+        titleEn: 'Igane Tteokbokki (Bupyeong Market)',
+        descKo: '📍 주소: 부산 중구 부평1길 48\n물 대신 떡 무즙으로 만든 진하고 달콤 매콤한 양념이 매력적인 부평깡통시장 대표 떡볶이 맛집.',
+        descEn: '📍 Address: 48 Bupyeong 1-gil, Jung-gu, Busan\nIconic tteokbokki spot using radish juice for its signature thick, flavorful sauce.',
+        icon: 'Walk',
+        stationInfoKo: '부산 중구 부평1길 48 (부평깡통시장 내, 1호선 자갈치역 3번 출구)',
+        stationInfoEn: '48 Bupyeong 1-gil, Jung-gu, Busan (Jagalchi Station Exit 3)'
+      },
+      {
+        regionId: 'nampo_yeongdo',
+        regionNameKo: '남포동 · BIFF광장',
+        regionNameEn: 'Nampo & BIFF Square',
+        foodCategory: 'market',
+        time: '시장 먹거리',
+        titleKo: 'BIFF광장 씨앗호떡',
+        titleEn: 'BIFF Square Seed Hotteok',
+        descKo: '📍 주소: 부산 중구 구덕로 58-1 BIFF광장\n고소한 견과류와 마가린 향이 고소하게 퍼지는 남포동 원조 명물 씨앗호떡.',
+        descEn: '📍 Address: 58-1 Gudeok-ro, Jung-gu, Busan (BIFF Square)\nBusan’s famous hotteok packed with roasted seeds and brown sugar.',
+        icon: 'Walk',
+        stationInfoKo: '부산 중구 구덕로 58-1 BIFF광장 (1호선 자갈치역 7번 출구)',
+        stationInfoEn: '58-1 Gudeok-ro, Jung-gu, Busan (Jagalchi Station Exit 7)'
+      },
+      {
+        regionId: 'gwangalli_centum',
+        regionNameKo: '광안리 · 민락',
+        regionNameEn: 'Gwangalli & Millac',
+        foodCategory: 'market',
+        time: '복합문화마켓',
+        titleKo: '밀락더마켓 (Millac the Market)',
+        titleEn: 'Millac the Market',
+        descKo: '📍 주소: 부산 수영구 민락수변로17번길 56\n광안대교 오션뷰를 계단형 스탠드에서 한눈에 조망하며 로컬 미식과 트렌디한 팝업스토어를 즐기는 수변 복합문화마켓입니다.',
+        descEn: '📍 Address: 56 Millaksubyeon-ro 17beon-gil, Suyeong-gu, Busan\nTrendy waterfront lifestyle and food market facing Gwangan Bridge.',
+        icon: 'Food',
+        stationInfoKo: '부산 수영구 민락수변로17번길 56 (2호선 광안역 / 민락역 인근)',
+        stationInfoEn: '56 Millaksubyeon-ro 17beon-gil, Suyeong-gu, Busan'
+      },
+      {
+        regionId: 'others',
+        regionNameKo: '북구 · 구포',
+        regionNameEn: 'Buk-gu & Gupo',
+        foodCategory: 'market',
+        time: '전통시장',
+        titleKo: '구포시장 (구포만세길)',
+        titleEn: 'Gupo Market',
+        descKo: '📍 주소: 부산 북구 구포시장1길 17\n낙동강 수운 교통의 중심지로 400년 역사를 자랑하는 부산 대표 상설 및 5일장 전통시장. 원조 구포국수와 정겨운 먹거리가 풍성합니다.',
+        descEn: '📍 Address: 17 Guposijang 1-gil, Buk-gu, Busan\nA historic 400-year-old traditional market along the Nakdong River famous for Gupo noodles.',
+        icon: 'Food',
+        stationInfoKo: '부산 북구 구포시장1길 17 (2호선/3호선 덕천역 3번 출구 / 3호선 구포역)',
+        stationInfoEn: '17 Guposijang 1-gil, Buk-gu, Busan (Deokcheon Station Exit 3)'
+      }
+    ]
   }
 ];

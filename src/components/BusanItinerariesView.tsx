@@ -74,7 +74,10 @@ export const getStepIllustrationType = (titleKo: string, cat: string): 'temple' 
 
 
 
-type CategoryType = 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'EXPERIENCE' | 'SUBWAY' | 'BARRIER_FREE';
+type CategoryType = 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'MARKET' | 'SCHEDULE' | 'EXPERIENCE' | 'SUBWAY' | 'BARRIER_FREE';
+
+export type TopCategoryType = 'GOURMET' | 'MARKET' | 'SCHEDULE' | 'EXPERIENCE' | 'SUBWAY' | 'BARRIER_FREE';
+export type ScheduleDurationType = 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS';
 
 interface BusanItinerariesViewProps {
   language: 'KR' | 'EN';

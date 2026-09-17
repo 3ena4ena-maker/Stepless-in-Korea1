@@ -32,7 +32,7 @@ import { ItineraryCourse } from '../data/itineraries';
 
 interface ItineraryTravelGuideSectionProps {
   language: 'KR' | 'EN';
-  category: 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'EXPERIENCE' | 'SUBWAY';
+  category: 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'MARKET' | 'SCHEDULE' | 'EXPERIENCE' | 'SUBWAY' | string;
   course?: ItineraryCourse;
   onSwitchToStandard?: () => void;
   onSelectStation?: (stationId: string, exitNum?: string) => void;

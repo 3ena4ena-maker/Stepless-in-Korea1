@@ -827,29 +827,29 @@ app.get("/api/tourapi/detail/:id", async (req, res) => {
       ...(liveDetail?.operatingInfo?.useFee ? { feeKo: liveDetail.operatingInfo.useFee } : {}),
     };
 
-    // 무장애 시설 정보 실시간 보강 (API detailWithTour2 항목이 있을 경우)
+    // 무장애 시설 정보 실시간 보강 (API detailWithTour2 항목이 있을 경우 원문 그대로 반영)
     if (liveDetail?.barrierFree && mergedData.barrierFree) {
       const bf = liveDetail.barrierFree;
       if (bf.wheelchair) {
-        mergedData.barrierFree.wheelchair.descKo = `[한국관광공사] ${bf.wheelchair}`;
+        mergedData.barrierFree.wheelchair.descKo = bf.wheelchair;
       }
       if (bf.parking) {
-        mergedData.barrierFree.parking.descKo = `[한국관광공사] ${bf.parking}`;
+        mergedData.barrierFree.parking.descKo = bf.parking;
       }
       if (bf.restroom) {
-        mergedData.barrierFree.restroom.descKo = `[한국관광공사] ${bf.restroom}`;
+        mergedData.barrierFree.restroom.descKo = bf.restroom;
       }
-      if (bf.route) {
-        mergedData.barrierFree.route.descKo = `[한국관광공사] ${bf.route}`;
+      if (bf.route || bf.exit) {
+        mergedData.barrierFree.route.descKo = [bf.route, bf.exit].filter(Boolean).join(' / ');
       }
       if (bf.elevator) {
-        mergedData.barrierFree.elevator.descKo = `[한국관광공사] ${bf.elevator}`;
+        mergedData.barrierFree.elevator.descKo = bf.elevator;
       }
       if (bf.braileblock || bf.brailepromotion) {
-        mergedData.barrierFree.tactilePaving.descKo = `[한국관광공사] ${[bf.braileblock, bf.brailepromotion].filter(Boolean).join(' / ')}`;
+        mergedData.barrierFree.tactilePaving.descKo = [bf.braileblock, bf.brailepromotion].filter(Boolean).join(' / ');
       }
-      if (bf.stroller) {
-        mergedData.barrierFree.stroller.descKo = `[한국관광공사] ${bf.stroller}`;
+      if (bf.stroller || bf.lactationroom || bf.babysparechair) {
+        mergedData.barrierFree.stroller.descKo = [bf.stroller, bf.lactationroom, bf.babysparechair].filter(Boolean).join(' / ');
       }
     }
 
@@ -861,6 +861,7 @@ app.get("/api/tourapi/detail/:id", async (req, res) => {
         ? "한국관광공사 공공데이터포털 KorWithService2 실시간 OpenAPI"
         : "한국관광공사 공공데이터포털 KorWithService2 무장애 관광정보",
       liveApiDetail: liveDetail,
+      liveBarrierFree: liveDetail?.barrierFree || null,
       data: mergedData,
     });
   } catch (error: any) {

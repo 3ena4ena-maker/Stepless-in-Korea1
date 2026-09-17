@@ -15,6 +15,7 @@ export interface TourApiDetailResponse {
   isLiveApi: boolean;
   source: string;
   data: OpenApiPlaceDetail | null;
+  liveBarrierFree?: any;
   error?: string;
 }
 
@@ -46,6 +47,7 @@ export async function fetchTourApiPlaceDetail(placeId: string): Promise<TourApiD
           isLiveApi: !!json.isLiveApi,
           source: json.source || '한국관광공사 공공데이터포털 KorWithService2 OpenAPI',
           data: json.data,
+          liveBarrierFree: json.liveBarrierFree || null,
         };
       }
     }

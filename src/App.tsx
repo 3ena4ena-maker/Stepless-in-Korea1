@@ -363,7 +363,7 @@ export default function App() {
       // Look for /itinerary-[category]
       if (parts[1] && parts[1].startsWith('itinerary-')) {
         const categorySuffix = parts[1].replace('itinerary-', '').toUpperCase();
-        const validCategories = ['DAY', '1NIGHT', '2NIGHTS', '3NIGHTS', '4NIGHTS', 'GOURMET', 'HISTORY'];
+        const validCategories = ['DAY', '1NIGHT', '2NIGHTS', '3NIGHTS', '4NIGHTS', 'GOURMET', 'MARKET', 'SCHEDULE', 'EXPERIENCE', 'SUBWAY', 'BARRIER_FREE', 'HISTORY'];
         if (validCategories.includes(categorySuffix)) {
           setSelectedItineraryCategory(categorySuffix);
           setCurrentTab('tips');
