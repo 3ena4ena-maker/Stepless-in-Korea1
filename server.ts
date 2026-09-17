@@ -574,10 +574,16 @@ async function fetchKorWithSpotFullDetail(contentId: string, serviceKey: string)
 
   const phone = {
     tel: commonItem?.tel || null,
-    infocenter: introItem?.infocenter || introItem?.infocenterfood || introItem?.infocentershopping || introItem?.infocenterleports || null,
+    infocenter: introItem?.infocenter || introItem?.infocentershopping || introItem?.infocenterfood || introItem?.infocenterleports || introItem?.infocenterlodging || null,
   };
 
   const overview = commonItem?.overview || null;
+
+  const operatingInfo = {
+    useTime: introItem?.usetime || introItem?.usetimeculture || introItem?.opentime || introItem?.opentimefood || null,
+    restDate: introItem?.restdate || introItem?.restdateculture || introItem?.restdateshopping || introItem?.restdatefood || null,
+    useFee: introItem?.usefeeculture || introItem?.usefee || null,
+  };
 
   const barrierFree = withItem ? {
     parking: withItem.parking || null,
@@ -609,6 +615,7 @@ async function fetchKorWithSpotFullDetail(contentId: string, serviceKey: string)
     coordinates,
     phone,
     overview,
+    operatingInfo,
     barrierFree,
     rawHeaderCommon: cJson?.response?.header || null,
     rawHeaderWithTour: wJson?.response?.header || null,
@@ -746,6 +753,24 @@ app.get("/api/tourapi/live-proxy", async (req, res) => {
   }
 });
 
+// Stepless 장소 ID -> 한국관광공사 KorWithService2 실제 공식 contentId 매핑
+const KTO_SPOT_CONTENT_ID_MAP: Record<string, string | null> = {
+  'spot-101': '126081', // 해운대해수욕장
+  'spot-aquarium': '229912', // 씨라이프부산아쿠아리움
+  'spot-xthesky': '2668973', // 부산엑스더스카이
+  'spot-106': '126079', // 다대포해수욕장
+  'spot-songjeong': '126080', // 송정해수욕장
+  'spot-jagalchi-rooftop': '132190', // 부산 자갈치시장
+  'spot-107': '132190', // 부산 자갈치시장
+  'spot-bupyeong-market': '1878218', // 부평깡통시장
+  'spot-108': '1918263', // 누리마루 APEC하우스
+  'spot-111': '2350092', // 더베이101
+  'spot-103': '130668', // 벡스코(BEXCO)
+  'spot-112': '130166', // 부산시립미술관
+  'spot-104': '1825843', // 국립해양박물관
+  'spot-city-tour-bus': null, // 한국관광공사 무장애 관광정보 API 미등록 (대중교통/시티투어버스 프로그램)
+};
+
 // Get comprehensive Korea TourAPI barrier-free detail for recommended spots
 app.get("/api/tourapi/detail/:id", async (req, res) => {
   try {
@@ -759,34 +784,79 @@ app.get("/api/tourapi/detail/:id", async (req, res) => {
       });
     }
 
-    // Attempt live API update if key is configured and contentId is numeric
+    // 실제 공식 contentId 확인
+    const targetContentId = KTO_SPOT_CONTENT_ID_MAP[id] !== undefined
+      ? KTO_SPOT_CONTENT_ID_MAP[id]
+      : (/^\d+$/.test(detail.contentId) ? detail.contentId : null);
+
     let isLiveApi = false;
     let liveDetail: any = null;
 
-    if (KORWITH_SERVICE_KEY && /^\d+$/.test(detail.contentId)) {
+    if (KORWITH_SERVICE_KEY && targetContentId) {
       try {
-        const liveRes = await fetchKorWithSpotFullDetail(detail.contentId, KORWITH_SERVICE_KEY);
+        const liveRes = await fetchKorWithSpotFullDetail(targetContentId, KORWITH_SERVICE_KEY);
         if (liveRes && liveRes.title) {
           liveDetail = liveRes;
           isLiveApi = true;
         }
       } catch (err) {
-        // Fallback safely to verified dataset
+        console.warn(`[KTO Live API] Failed to fetch for ${id} (contentId: ${targetContentId}):`, err);
       }
     }
 
+    // API firstimage 우선 적용 (없으면 빈 문자열로 처리하여 가짜 이미지 배제)
+    const apiFirstImage = liveDetail?.representativeImage?.firstimage || "";
+
     const mergedData = {
       ...detail,
+      contentId: targetContentId || detail.contentId,
+      nameKo: liveDetail?.title || detail.nameKo,
+      firstImage: apiFirstImage,
+      additionalImages: [], // 기존 AI 임의 이미지 완전 제거
       ...(liveDetail?.overview ? { overviewKo: liveDetail.overview } : {}),
-      ...(liveDetail?.representativeImage?.firstimage ? { firstImage: liveDetail.representativeImage.firstimage } : {}),
       ...(liveDetail?.phone?.infocenter || liveDetail?.phone?.tel ? { tel: liveDetail.phone.infocenter || liveDetail.phone.tel } : {}),
       ...(liveDetail?.address?.addr1 ? { addressRoadKo: liveDetail.address.addr1 } : {}),
-      ...(liveDetail?.coordinates?.latitude ? { latitude: liveDetail.coordinates.latitude, longitude: liveDetail.coordinates.longitude } : {}),
+      ...(liveDetail?.address?.addr2 ? { addressLotKo: liveDetail.address.addr2 } : {}),
+      ...(liveDetail?.address?.zipcode ? { zipcode: liveDetail.address.zipcode } : {}),
+      ...(liveDetail?.coordinates?.latitude ? {
+        latitude: liveDetail.coordinates.latitude,
+        longitude: liveDetail.coordinates.longitude,
+      } : {}),
+      ...(liveDetail?.operatingInfo?.useTime ? { useTimeKo: liveDetail.operatingInfo.useTime } : {}),
+      ...(liveDetail?.operatingInfo?.restDate ? { restDateKo: liveDetail.operatingInfo.restDate } : {}),
+      ...(liveDetail?.operatingInfo?.useFee ? { feeKo: liveDetail.operatingInfo.useFee } : {}),
     };
+
+    // 무장애 시설 정보 실시간 보강 (API detailWithTour2 항목이 있을 경우)
+    if (liveDetail?.barrierFree && mergedData.barrierFree) {
+      const bf = liveDetail.barrierFree;
+      if (bf.wheelchair) {
+        mergedData.barrierFree.wheelchair.descKo = `[한국관광공사] ${bf.wheelchair}`;
+      }
+      if (bf.parking) {
+        mergedData.barrierFree.parking.descKo = `[한국관광공사] ${bf.parking}`;
+      }
+      if (bf.restroom) {
+        mergedData.barrierFree.restroom.descKo = `[한국관광공사] ${bf.restroom}`;
+      }
+      if (bf.route) {
+        mergedData.barrierFree.route.descKo = `[한국관광공사] ${bf.route}`;
+      }
+      if (bf.elevator) {
+        mergedData.barrierFree.elevator.descKo = `[한국관광공사] ${bf.elevator}`;
+      }
+      if (bf.braileblock || bf.brailepromotion) {
+        mergedData.barrierFree.tactilePaving.descKo = `[한국관광공사] ${[bf.braileblock, bf.brailepromotion].filter(Boolean).join(' / ')}`;
+      }
+      if (bf.stroller) {
+        mergedData.barrierFree.stroller.descKo = `[한국관광공사] ${bf.stroller}`;
+      }
+    }
 
     res.json({
       success: true,
       isLiveApi,
+      apiMatched: targetContentId !== null,
       source: isLiveApi
         ? "한국관광공사 공공데이터포털 KorWithService2 실시간 OpenAPI"
         : "한국관광공사 공공데이터포털 KorWithService2 무장애 관광정보",

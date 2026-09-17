@@ -77,13 +77,18 @@ export default function BarrierFreePlaceDetailView({
   const [isLiveApi, setIsLiveApi] = useState(false);
   const [apiSource, setApiSource] = useState('한국관광공사 KorWithService2 무장애 관광정보');
   const [copiedField, setCopiedField] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(() => {
+    const init = getKoreaTourApiPlaceDetail(placeId);
+    return init?.firstImage || null;
+  });
+  const [imageLoadError, setImageLoadError] = useState(false);
   const [shareToast, setShareToast] = useState(false);
 
   // 비동기 OpenAPI 데이터 동기화
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
+    setImageLoadError(false);
 
     fetchTourApiPlaceDetail(placeId).then((res) => {
       if (!isMounted) return;
@@ -92,9 +97,8 @@ export default function BarrierFreePlaceDetailView({
         setDetail(res.data);
         setIsLiveApi(res.isLiveApi);
         setApiSource(res.source);
-        if (!selectedImage) {
-          setSelectedImage(res.data.firstImage);
-        }
+        // KTO API의 firstImage가 있으면 설정, 없으면 null로 설정하여 이미지 미표시
+        setSelectedImage(res.data.firstImage || null);
       }
     });
 
@@ -208,50 +212,83 @@ export default function BarrierFreePlaceDetailView({
         </div>
       )}
 
-      {/* 2. 대표 이미지 & 헤더 카드 */}
+      {/* 2. 대표 이미지 & 헤더 카드 (한국관광공사 API firstimage가 있는 경우에만 이미지 표시) */}
       <section className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
-        <div className="relative w-full h-64 sm:h-80 md:h-96 bg-slate-900 overflow-hidden">
-          <img
-            src={displayImage}
-            alt={language === 'KR' ? currentPlace.nameKo : currentPlace.nameEn}
-            className="w-full h-full object-cover transition-all duration-300"
-            loading="eager"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-transparent" />
+        {displayImage && !imageLoadError ? (
+          <div className="relative w-full h-64 sm:h-80 md:h-96 bg-slate-900 overflow-hidden">
+            <img
+              src={displayImage}
+              alt={language === 'KR' ? currentPlace.nameKo : currentPlace.nameEn}
+              className="w-full h-full object-cover transition-all duration-300"
+              loading="eager"
+              referrerPolicy="no-referrer"
+              onError={() => setImageLoadError(true)}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-transparent" />
 
-          {/* 상단 뱃지 그룹: 지역구, 카테고리, 지하철 호선 고유 색상 */}
-          <div className="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between gap-2">
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-xs font-bold border border-white/20">
-                {language === 'KR' ? currentPlace.districtKo : currentPlace.districtEn}
-              </span>
-              <span className="px-2.5 py-1 rounded-lg bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold shadow-2xs">
-                {language === 'KR' ? currentPlace.categoryKo : currentPlace.categoryEn}
+            {/* 상단 뱃지 그룹: 지역구, 카테고리, 지하철 호선 고유 색상 */}
+            <div className="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-xs font-bold border border-white/20">
+                  {language === 'KR' ? currentPlace.districtKo : currentPlace.districtEn}
+                </span>
+                <span className="px-2.5 py-1 rounded-lg bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold shadow-2xs">
+                  {language === 'KR' ? currentPlace.categoryKo : currentPlace.categoryEn}
+                </span>
+              </div>
+
+              {/* 부산 지하철 공식 노선 고유 색상 뱃지 */}
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-black shadow-sm flex items-center gap-1.5 ${subwayStyle.bg} ${subwayStyle.text}`}
+              >
+                <Train className="w-3.5 h-3.5" />
+                <span>{subwayStyle.label}</span>
               </span>
             </div>
 
-            {/* 부산 지하철 공식 노선 고유 색상 뱃지 */}
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-black shadow-sm flex items-center gap-1.5 ${subwayStyle.bg} ${subwayStyle.text}`}
-            >
-              <Train className="w-3.5 h-3.5" />
-              <span>{subwayStyle.label}</span>
-            </span>
+            {/* 하단 장소명 타이틀 */}
+            <div className="absolute bottom-3 sm:bottom-5 left-3 sm:left-5 right-3 sm:right-5 text-white space-y-1">
+              <span className="text-[11px] font-bold text-emerald-300 tracking-wider uppercase block">
+                Korea Tourism Organization · Barrier-Free Spot
+              </span>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight drop-shadow-md">
+                {language === 'KR' ? currentPlace.nameKo : currentPlace.nameEn}
+              </h1>
+            </div>
           </div>
+        ) : (
+          /* API에 firstimage가 없거나 로드되지 않을 때: 임의 이미지를 띄우지 않고 깔끔한 텍스트 헤더로 단정하게 렌더링 */
+          <div className="p-5 sm:p-7 bg-[#0A2540] text-white space-y-4">
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-1 rounded-lg bg-white/10 text-white text-xs font-bold border border-white/20">
+                  {language === 'KR' ? currentPlace.districtKo : currentPlace.districtEn}
+                </span>
+                <span className="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30">
+                  {language === 'KR' ? currentPlace.categoryKo : currentPlace.categoryEn}
+                </span>
+              </div>
 
-          {/* 하단 장소명 타이틀 */}
-          <div className="absolute bottom-3 sm:bottom-5 left-3 sm:left-5 right-3 sm:right-5 text-white space-y-1">
-            <span className="text-[11px] font-bold text-emerald-300 tracking-wider uppercase block">
-              Korea Tourism Organization · Barrier-Free Spot
-            </span>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight drop-shadow-md">
-              {language === 'KR' ? currentPlace.nameKo : currentPlace.nameEn}
-            </h1>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-black shadow-sm flex items-center gap-1.5 ${subwayStyle.bg} ${subwayStyle.text}`}
+              >
+                <Train className="w-3.5 h-3.5" />
+                <span>{subwayStyle.label}</span>
+              </span>
+            </div>
+
+            <div className="space-y-1 pt-1">
+              <span className="text-[11px] font-bold text-emerald-300 tracking-wider uppercase block">
+                Korea Tourism Organization · Barrier-Free Spot
+              </span>
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
+                {language === 'KR' ? currentPlace.nameKo : currentPlace.nameEn}
+              </h1>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* 추가 갤러리 이미지 썸네일 (한국관광공사 detailImage2 정보) */}
+        {/* 추가 갤러리 이미지 썸네일 (한국관광공사 공식 detailImage2가 여러 개 있는 경우에만 표시) */}
         {allImages.length > 1 && (
           <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center gap-2 overflow-x-auto scrollbar-none">
             <span className="text-[11px] font-bold text-slate-500 shrink-0 ml-1">
@@ -261,7 +298,10 @@ export default function BarrierFreePlaceDetailView({
               <button
                 key={idx}
                 type="button"
-                onClick={() => setSelectedImage(imgUrl)}
+                onClick={() => {
+                  setSelectedImage(imgUrl);
+                  setImageLoadError(false);
+                }}
                 className={`relative w-14 h-12 rounded-lg overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${
                   displayImage === imgUrl ? 'border-[#0A2540] ring-2 ring-blue-300' : 'border-transparent opacity-70 hover:opacity-100'
                 }`}
