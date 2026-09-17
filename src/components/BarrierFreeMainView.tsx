@@ -119,6 +119,51 @@ export default function BarrierFreeMainView({
 
   const activeUserMeta = USER_TYPES.find((t) => t.id === activeSortUserType);
 
+  // 부산 지하철/전철 공식 노선별 고유 컬러 뱃지 렌더러
+  const renderSubwayBadge = (line?: string) => {
+    if (!line) return null;
+    const parts = line.split('/').map((s) => s.trim());
+    return (
+      <div className="flex flex-wrap items-center gap-1 shrink-0">
+        {parts.map((part) => {
+          let badgeBg = '#0A2540';
+          let badgeBorder = '#071A2E';
+
+          if (part.includes('1호선')) {
+            badgeBg = '#F06A00';
+            badgeBorder = '#D85F00';
+          } else if (part.includes('2호선')) {
+            badgeBg = '#8DBF41';
+            badgeBorder = '#7AA837';
+          } else if (part.includes('3호선')) {
+            badgeBg = '#BB8C4B';
+            badgeBorder = '#A3783E';
+          } else if (part.includes('4호선')) {
+            badgeBg = '#2471A3';
+            badgeBorder = '#1C5982';
+          } else if (part.includes('동해선')) {
+            badgeBg = '#003DA5';
+            badgeBorder = '#002D7A';
+          } else if (part.includes('김해') || part.includes('경전철')) {
+            badgeBg = '#782F84';
+            badgeBorder = '#61246B';
+          }
+
+          return (
+            <span
+              key={part}
+              style={{ backgroundColor: badgeBg, borderColor: badgeBorder }}
+              className="text-[11px] font-black px-2.5 py-0.5 rounded-full text-white shadow-xs border flex items-center gap-1"
+            >
+              <Train className="w-3 h-3 text-white shrink-0" />
+              <span>{part}</span>
+            </span>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-10 text-left pb-24">
       {/* 1. 페이지 소개 헤더 */}
@@ -368,7 +413,7 @@ export default function BarrierFreeMainView({
 
         {/* 2열 카드 그리드 (모바일 1열, 태블릿 이상 2열) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-          {recommendedPlaces.map(({ place, highlightKo, highlightEn }) => (
+          {recommendedPlaces.map(({ place }) => (
             <div
               key={place.id}
               className="bg-white rounded-2xl border-2 border-slate-900 p-4 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] flex flex-col justify-between hover:translate-y-[-2px] transition-all"
@@ -379,12 +424,7 @@ export default function BarrierFreeMainView({
                   <span className="px-2.5 py-0.5 rounded-md bg-[#0A2540] text-white text-[11px] font-bold shadow-xs">
                     {language === 'KR' ? place.districtKo : place.districtEn}
                   </span>
-                  {place.subwayLine && (
-                    <span className="shrink-0 text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 border border-slate-300 flex items-center gap-1">
-                      <Train className="w-3 h-3 text-emerald-600" />
-                      <span>{place.subwayLine}</span>
-                    </span>
-                  )}
+                  {renderSubwayBadge(place.subwayLine)}
                 </div>
 
                 {/* 관광지 타이틀 */}
@@ -396,11 +436,6 @@ export default function BarrierFreeMainView({
                 <p className="text-xs text-slate-500 font-medium flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
                   <span className="line-clamp-1">{language === 'KR' ? place.addressKo : place.addressEn}</span>
-                </p>
-
-                {/* 맞춤 하이라이트 요약 설명 (태그 대신 직관적인 설명 텍스트 노출) */}
-                <p className="text-xs text-slate-700 font-medium leading-relaxed line-clamp-2 pt-0.5">
-                  {language === 'KR' ? highlightKo : highlightEn}
                 </p>
               </div>
 
