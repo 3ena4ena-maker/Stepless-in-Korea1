@@ -8,6 +8,84 @@
 
 export type UserType = 'wheelchair' | 'stroller' | 'luggage' | 'senior';
 
+// 부산 여행 경험 타입 정의 (첫 방문 vs 다회차 재방문)
+export type BusanExperienceType = 'first' | 'revisit';
+
+export interface BusanExperienceMeta {
+  id: BusanExperienceType;
+  icon: string;
+  titleKo: string;
+  titleEn: string;
+  descKo: string;
+  descEn: string;
+}
+
+export const BUSAN_EXPERIENCES: BusanExperienceMeta[] = [
+  {
+    id: 'first',
+    icon: '🌊',
+    titleKo: '부산이 처음이에요',
+    titleEn: 'First Time in Busan',
+    descKo: '부산 대표 랜드마크와 바다 필수 명소',
+    descEn: 'Must-visit scenic ocean landmarks',
+  },
+  {
+    id: 'revisit',
+    icon: '✨',
+    titleKo: '부산을 여러 번 방문했어요',
+    titleEn: 'Visited Multiple Times',
+    descKo: '골목과 감성, 여유로운 숨은 명소 탐방',
+    descEn: 'Hidden gems and relaxed local spots',
+  },
+];
+
+// 함께하는 여행 타입 정의 (혼자, 가족, 연인, 친구)
+export type TravelCompanionType = 'solo' | 'family' | 'couple' | 'friends';
+
+export interface TravelCompanionMeta {
+  id: TravelCompanionType;
+  icon: string;
+  titleKo: string;
+  titleEn: string;
+  descKo: string;
+  descEn: string;
+}
+
+export const TRAVEL_COMPANIONS: TravelCompanionMeta[] = [
+  {
+    id: 'solo',
+    icon: '🎒',
+    titleKo: '혼자 여행',
+    titleEn: 'Solo Travel',
+    descKo: '나만의 속도로 여유롭게 즐기는 여행',
+    descEn: 'Travel at your own pace',
+  },
+  {
+    id: 'family',
+    icon: '👨‍👩‍👧‍👦',
+    titleKo: '가족과 함께',
+    titleEn: 'With Family',
+    descKo: '남녀노소 누구나 안전하고 편안한 이동',
+    descEn: 'Safe and comfortable for all ages',
+  },
+  {
+    id: 'couple',
+    icon: '💑',
+    titleKo: '연인과 함께',
+    titleEn: 'With Partner',
+    descKo: '로맨틱한 오션뷰와 분위기 있는 코스',
+    descEn: 'Romantic ocean views and vibes',
+  },
+  {
+    id: 'friends',
+    icon: '👯',
+    titleKo: '친구와 함께',
+    titleEn: 'With Friends',
+    descKo: '핫플레이스와 활기찬 문화 탐방',
+    descEn: 'Hot spots and vibrant culture',
+  },
+];
+
 export interface UserTypeMeta {
   id: UserType;
   icon: string;
@@ -141,6 +219,139 @@ export interface TouristPlace {
   transit: TransitGuide;
   recommendationReasons: Record<UserType, { ko: string; en: string }>;
   bestFor: UserType[];
+  
+  // 3가지 기준(여행자 유형, 부산 여행 경험, 함께하는 여행) 매칭 태그 및 성향 정보
+  experienceTraits?: BusanExperienceType[]; // ['first', 'revisit']
+  companionTraits?: TravelCompanionType[];  // ['solo', 'family', 'couple', 'friends']
+  criteriaTags?: {
+    userTypes: UserType[];
+    experiences: BusanExperienceType[];
+    companions: TravelCompanionType[];
+  };
+}
+
+/**
+ * 관광 장소 데이터 등록/수정 시 3가지 기준에 맞는 태그 및 성향 정보를 자동으로 추론 및 매칭 생성하는 함수
+ * @param place 기본 관광지 정보 (필수 필드 + 접근성 및 위치 정보)
+ * @returns 3가지 기준 태그와 성향 정보가 자동으로 포함된 TouristPlace 객체
+ */
+export function derivePlaceCriteriaTags(place: Partial<TouristPlace> & {
+  categoryKo?: string;
+  districtKo?: string;
+  nameKo?: string;
+  descriptionKo?: string;
+  accessibility?: Partial<AccessibilitySpec>;
+  bestFor?: UserType[];
+  experienceTraits?: BusanExperienceType[];
+  companionTraits?: TravelCompanionType[];
+}): {
+  userTypes: UserType[];
+  experiences: BusanExperienceType[];
+  companions: TravelCompanionType[];
+} {
+  // 1. 여행자 유형 자동 매칭 (bestFor 우선 또는 accessibility 기반 자동 추론)
+  let userTypes: UserType[] = place.bestFor ? [...place.bestFor] : [];
+  if (userTypes.length === 0) {
+    const acc = place.accessibility;
+    // 무단차 및 휠체어 가능 시 휠체어/유아차/캐리어 자동 추천
+    if (!acc?.stairs && (acc?.wheelchair || acc?.elevator)) {
+      userTypes.push('wheelchair', 'stroller', 'luggage');
+    } else {
+      if (acc?.wheelchair) userTypes.push('wheelchair');
+      if (acc?.stroller) userTypes.push('stroller');
+    }
+    // 평지이거나 쉼터가 있으면 어르신(천천히 걷기) 자동 추가
+    if (!acc?.steepSlope || acc?.restAreas) {
+      userTypes.push('senior');
+    }
+    // 기본 안전값
+    if (userTypes.length === 0) {
+      userTypes = ['wheelchair', 'stroller', 'luggage', 'senior'];
+    }
+  }
+
+  // 2. 부산 여행 경험 자동 매칭 (부산이 처음이에요 vs 여러 번 방문했어요)
+  let experiences: BusanExperienceType[] = place.experienceTraits ? [...place.experienceTraits] : [];
+  if (experiences.length === 0) {
+    const name = place.nameKo || '';
+    const desc = place.descriptionKo || '';
+    const cat = place.categoryKo || '';
+
+    // 부산 대표 필수 랜드마크 키워드
+    const isMustVisitFirst =
+      /해운대|광안리|자갈치|태종대|용두산|부산타워|감천|흰여울|송도|오륙도|해동용궁사|센텀|더베이|누리마루|남포동|서면/i.test(
+        name + ' ' + desc
+      ) || cat.includes('해변') || cat.includes('랜드마크');
+
+    // 숨은 명소/감성/문화 골목 키워드
+    const isRevisitGem =
+      /문화|골목|역사|생태|공원|전시|미술관|산책로|숲|도서관|카페|전통/i.test(
+        name + ' ' + desc
+      );
+
+    if (isMustVisitFirst) experiences.push('first');
+    if (isRevisitGem || !isMustVisitFirst) experiences.push('revisit');
+
+    // 최소 1개 이상 항상 매칭 보장
+    if (experiences.length === 0) {
+      experiences = ['first', 'revisit'];
+    }
+  }
+
+  // 3. 함께하는 여행 자동 매칭 (혼자 여행, 가족과 함께, 연인과 함께, 친구와 함께)
+  let companions: TravelCompanionType[] = place.companionTraits ? [...place.companionTraits] : [];
+  if (companions.length === 0) {
+    const name = place.nameKo || '';
+    const desc = place.descriptionKo || '';
+    const cat = place.categoryKo || '';
+
+    // 연인: 바다, 야경, 오션뷰, 감성, 산책
+    if (/바다|해변|야경|선셋|노을|카페|영화|요트|브릿지|데이트/i.test(name + ' ' + desc) || cat.includes('해변')) {
+      companions.push('couple');
+    }
+    // 가족: 박물관, 공원, 수목원, 아쿠아리움, 안전, 수유실, 체험, 광장
+    if (/박물관|공원|광장|수족관|체험|어린이|전통|생태|역사/i.test(name + ' ' + desc) || cat.includes('문화') || cat.includes('공원')) {
+      companions.push('family');
+    }
+    // 친구: 핫플, 마켓, 시장, 쇼핑, 활기, 포토존, 액티비티
+    if (/시장|거리|마켓|광장|포토|문화|축제|해수욕장|타운/i.test(name + ' ' + desc)) {
+      companions.push('friends');
+    }
+    // 혼자: 조용, 힐링, 사색, 산책, 미술관, 도서관, 도보
+    if (/힐링|산책|자연|생태|조용|사색|숲|둘레길|전망/i.test(name + ' ' + desc)) {
+      companions.push('solo');
+    }
+
+    // 기본 매칭이 부족할 경우 관광 편의성 기준으로 고르게 자동 매칭
+    if (companions.length === 0) {
+      companions = ['solo', 'family', 'couple', 'friends'];
+    }
+  }
+
+  return {
+    userTypes,
+    experiences,
+    companions,
+  };
+}
+
+/**
+ * 신규 관광 장소 생성 또는 기존 장소 업데이트 시 3가지 기준 태그가 자동으로 포함되도록 빌드하는 함수
+ * 장소를 등록하면서 동시에 3가지 기준(여행자 유형, 부산 여행 경험, 함께하는 여행) 태그가 자동으로 매칭됩니다.
+ */
+export function buildTouristPlaceWithCriteria(placeData: TouristPlace): TouristPlace {
+  const derived = derivePlaceCriteriaTags(placeData);
+  return {
+    ...placeData,
+    bestFor: placeData.bestFor && placeData.bestFor.length > 0 ? placeData.bestFor : derived.userTypes,
+    experienceTraits: placeData.experienceTraits || derived.experiences,
+    companionTraits: placeData.companionTraits || derived.companions,
+    criteriaTags: placeData.criteriaTags || {
+      userTypes: derived.userTypes,
+      experiences: derived.experiences,
+      companions: derived.companions,
+    },
+  };
 }
 
 export interface TravelCourse {
@@ -184,7 +395,7 @@ export interface TravelCourse {
 }
 
 // 1. 관광지 상세 데이터 (한국관광공사 TourAPI 표준 스키마 및 검증된 무장애 데이터)
-export const BARRIER_FREE_PLACES: TouristPlace[] = [
+const RAW_BARRIER_FREE_PLACES: TouristPlace[] = [
   {
     id: 'spot-101',
     contentId: 'tour-101',
@@ -1030,6 +1241,9 @@ export const BARRIER_FREE_PLACES: TouristPlace[] = [
     bestFor: ['wheelchair', 'stroller', 'luggage', 'senior'],
   },
 ];
+
+// 모든 관광 장소에 대해 3가지 기준(여행자 유형, 부산 여행 경험, 함께하는 여행) 매칭 태그를 자동으로 부여하여 export
+export const BARRIER_FREE_PLACES: TouristPlace[] = RAW_BARRIER_FREE_PLACES.map(buildTouristPlaceWithCriteria);
 
 // 2. 맞춤형 여행 코스 데이터 (최소 3개 코스 정의 및 여행자 유형별 최적화)
 export const BARRIER_FREE_COURSES: TravelCourse[] = [

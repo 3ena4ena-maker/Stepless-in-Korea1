@@ -13,6 +13,8 @@ import {
   TransitStep,
   BARRIER_FREE_PLACES,
   BARRIER_FREE_COURSES,
+  BusanExperienceType,
+  TravelCompanionType,
 } from '../data/barrierFreeData';
 
 export interface PlaceRecommendationResult {
@@ -217,13 +219,29 @@ export function getRecommendedCourses(userType: UserType): TravelCourse[] {
 }
 
 /**
- * 4. 여행자 유형에 맞게 정렬된 개별 추천 관광지 목록
+ * 4. 여행자 유형 및 선택된 여행 성향에 맞게 정렬된 개별 추천 관광지 목록
+ * 기존의 userType만 넘기는 호출도 완벽하게 지원하며, experiences/companions 전달 시 매칭 부스팅 적용
  */
 export function getRecommendedPlaces(
-  userType: UserType
+  userType: UserType,
+  selectedExperiences: BusanExperienceType[] = [],
+  selectedCompanions: TravelCompanionType[] = []
 ): PlaceRecommendationResult[] {
   return BARRIER_FREE_PLACES.map((place) => {
-    const score = calculateAccessibilityScore(place, userType);
+    let score = calculateAccessibilityScore(place, userType);
+
+    // 부산 여행 경험 매칭 가산점
+    if (selectedExperiences.length > 0 && place.experienceTraits) {
+      const matchExp = selectedExperiences.some((exp) => place.experienceTraits?.includes(exp));
+      if (matchExp) score += 15;
+    }
+
+    // 함께하는 여행 매칭 가산점
+    if (selectedCompanions.length > 0 && place.companionTraits) {
+      const matchComp = selectedCompanions.some((comp) => place.companionTraits?.includes(comp));
+      if (matchComp) score += 15;
+    }
+
     const highlight = place.recommendationReasons[userType];
     return {
       place,

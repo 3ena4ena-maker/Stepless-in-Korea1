@@ -30,6 +30,8 @@ import {
   UserType,
   BARRIER_FREE_PLACES,
   USER_TYPES,
+  BUSAN_EXPERIENCES,
+  TRAVEL_COMPANIONS,
 } from '../data/barrierFreeData';
 import { calculateAccessibleRoute } from '../utils/barrierFreeRecommendation';
 import TourApiImage from './TourApiImage';
@@ -184,6 +186,51 @@ export default function BarrierFreePlaceDetailView({
 
         {/* 관광지 소개 */}
         <div className="p-5 sm:p-6 space-y-4">
+          {/* 3가지 맞춤 기준 매칭 성향 태그 (여행자 유형, 부산 여행 경험, 함께하는 여행) */}
+          <div className="space-y-1.5 pb-2 border-b border-slate-100">
+            <span className="text-[11px] font-bold text-slate-400 block">
+              {language === 'KR' ? '여행 맞춤 기준 매칭' : 'Matched Travel Preferences'}
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {place.bestFor?.map((typeId) => {
+                const uMeta = USER_TYPES.find((u) => u.id === typeId);
+                if (!uMeta) return null;
+                return (
+                  <span
+                    key={typeId}
+                    className="text-xs font-bold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 border border-slate-200"
+                  >
+                    {uMeta.icon} {language === 'KR' ? uMeta.titleKo : uMeta.titleEn}
+                  </span>
+                );
+              })}
+              {place.experienceTraits?.map((expId) => {
+                const expMeta = BUSAN_EXPERIENCES.find((e) => e.id === expId);
+                if (!expMeta) return null;
+                return (
+                  <span
+                    key={expId}
+                    className="text-xs font-bold px-2.5 py-1 rounded-lg bg-blue-50 text-blue-900 border border-blue-200"
+                  >
+                    {expMeta.icon} {language === 'KR' ? expMeta.titleKo : expMeta.titleEn}
+                  </span>
+                );
+              })}
+              {place.companionTraits?.map((compId) => {
+                const compMeta = TRAVEL_COMPANIONS.find((c) => c.id === compId);
+                if (!compMeta) return null;
+                return (
+                  <span
+                    key={compId}
+                    className="text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200"
+                  >
+                    {compMeta.icon} {language === 'KR' ? compMeta.titleKo : compMeta.titleEn}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+
           <div>
             <h2 className="text-sm font-black text-slate-900 mb-1">관광지 소개</h2>
             <p className="text-sm text-slate-700 font-medium leading-relaxed">

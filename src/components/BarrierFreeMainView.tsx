@@ -8,7 +8,7 @@
  * 3. 추천 무장애 관광지 (깔끔한 2열 카드 그리드) -> 상세 보기 클릭 시 /barrier-free/place/:placeId
  */
 
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Clock,
   MapPin,
@@ -16,12 +16,17 @@ import {
   Sparkles,
   ArrowRight,
   ShieldCheck,
+  Check,
 } from 'lucide-react';
 import {
   UserType,
   USER_TYPES,
   TravelCourse,
   TouristPlace,
+  BusanExperienceType,
+  BUSAN_EXPERIENCES,
+  TravelCompanionType,
+  TRAVEL_COMPANIONS,
 } from '../data/barrierFreeData';
 import {
   getRecommendedCourses,
@@ -44,10 +49,56 @@ export default function BarrierFreeMainView({
   onNavigateToCourse,
   onNavigateToPlace,
 }: BarrierFreeMainViewProps) {
-  // 현재 선택된 여행자 유형에 맞춘 코스 및 관광지 추천 목록
-  const recommendedCourses = getRecommendedCourses(selectedUserType);
-  const recommendedPlaces = getRecommendedPlaces(selectedUserType);
-  const activeUserMeta = USER_TYPES.find((t) => t.id === selectedUserType);
+  // 1. 여행자 유형 다중 선택 상태 (복수 선택 및 토글 해제 허용)
+  const [selectedUserTypes, setSelectedUserTypes] = useState<UserType[]>([selectedUserType]);
+
+  // 2. 부산 여행 경험 다중 선택 상태 (초기 상태: 미선택/선택 해제 허용)
+  const [selectedExperiences, setSelectedExperiences] = useState<BusanExperienceType[]>([]);
+
+  // 3. 함께하는 여행 다중 선택 상태 (초기 상태: 미선택/선택 해제 허용)
+  const [selectedCompanions, setSelectedCompanions] = useState<TravelCompanionType[]>([]);
+
+  // 여행자 유형 토글 핸들러 (기존 단일 선택 콜백 연동 유지로 추천/정렬 기능 완벽 보존)
+  const handleToggleUserType = (typeId: UserType) => {
+    setSelectedUserTypes((prev) => {
+      const exists = prev.includes(typeId);
+      const updated = exists ? prev.filter((id) => id !== typeId) : [...prev, typeId];
+      
+      // 기존 추천 정렬 로직과의 호환성 유지:
+      // 선택된 항목이 남아있으면 가장 마지막에 선택된 항목(또는 첫번째 항목)을 기존 정렬 기준으로 동기화
+      if (updated.length > 0) {
+        const nextActive = exists ? updated[updated.length - 1] : typeId;
+        onSelectUserType(nextActive);
+      }
+      return updated;
+    });
+  };
+
+  // 부산 여행 경험 토글 핸들러
+  const handleToggleExperience = (expId: BusanExperienceType) => {
+    setSelectedExperiences((prev) =>
+      prev.includes(expId) ? prev.filter((id) => id !== expId) : [...prev, expId]
+    );
+  };
+
+  // 함께하는 여행 토글 핸들러
+  const handleToggleCompanion = (compId: TravelCompanionType) => {
+    setSelectedCompanions((prev) =>
+      prev.includes(compId) ? prev.filter((id) => id !== compId) : [...prev, compId]
+    );
+  };
+
+  // 기존 추천/정렬 로직 완벽 유지
+  // (아무것도 선택되지 않은 경우 기본 wheelchair 기준으로 안전하게 정렬 fallback)
+  const activeSortUserType: UserType =
+    selectedUserTypes.length > 0 ? selectedUserTypes[selectedUserTypes.length - 1] : selectedUserType;
+
+  const recommendedCourses = getRecommendedCourses(activeSortUserType);
+  const recommendedPlaces = useMemo(
+    () => getRecommendedPlaces(activeSortUserType, selectedExperiences, selectedCompanions),
+    [activeSortUserType, selectedExperiences, selectedCompanions]
+  );
+  const activeUserMeta = USER_TYPES.find((t) => t.id === activeSortUserType);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-10 text-left pb-24">
@@ -63,62 +114,145 @@ export default function BarrierFreeMainView({
         </p>
       </div>
 
-      {/* 2. 여행자 유형 선택 섹션 */}
+      {/* 2. 여행 맞춤 기준 선택 섹션 (모던하고 컴팩트한 칩/토글 레이아웃) */}
       <section className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
-            <span>{language === 'KR' ? '여행자 유형 선택' : 'Select Traveler Type'}</span>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
+            <span>{language === 'KR' ? '여행 맞춤 기준 선택' : 'Travel Preference Filters'}</span>
             <span className="text-xs text-slate-500 font-medium">
               {language === 'KR'
-                ? '(유형에 따라 코스와 관광지가 맞춤 정렬됩니다)'
-                : '(Courses and attractions are sorted by your needs)'}
+                ? '(복수 선택 가능 · 선택값에 따라 맞춤 정렬)'
+                : '(Multi-select · Instant personalized sorting)'}
             </span>
           </h2>
         </div>
 
-        {/* 4개 유형 선택 버튼 */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
-          {USER_TYPES.map((type) => {
-            const isSelected = selectedUserType === type.id;
-            return (
-              <button
-                key={type.id}
-                type="button"
-                onClick={() => onSelectUserType(type.id)}
-                className={`p-3.5 sm:p-4 rounded-2xl border-2 transition-all flex flex-col items-center sm:items-start text-center sm:text-left gap-1.5 cursor-pointer select-none ${
-                  isSelected
-                    ? 'border-[#0A2540] bg-blue-50/70 shadow-[3px_3px_0px_0px_rgba(10,37,64,1)]'
-                    : 'border-slate-300 bg-white hover:border-slate-400 hover:bg-slate-50/80 shadow-2xs'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="text-xl sm:text-2xl">{type.icon}</span>
-                  <span
-                    className={`text-xs sm:text-sm font-black ${
-                      isSelected ? 'text-[#0A2540]' : 'text-slate-800'
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+          {/* 기준 1: 여행자 유형 */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black text-slate-700 flex items-center gap-1.5">
+                <span className="w-1.5 h-3 bg-[#0A2540] rounded-xs inline-block"></span>
+                <span>{language === 'KR' ? '여행자 유형' : 'Traveler Type'}</span>
+                {selectedUserTypes.length > 0 && (
+                  <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-1.5 py-0.2 rounded-full border border-blue-200">
+                    {selectedUserTypes.length}
+                  </span>
+                )}
+              </span>
+              <span className="text-[11px] text-slate-400 font-medium">
+                {language === 'KR' ? '다중 선택 및 해제 가능' : 'Multi-select & toggleable'}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {USER_TYPES.map((type) => {
+                const isSelected = selectedUserTypes.includes(type.id);
+                return (
+                  <button
+                    key={type.id}
+                    type="button"
+                    onClick={() => handleToggleUserType(type.id)}
+                    className={`px-3 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center text-center cursor-pointer select-none border ${
+                      isSelected
+                        ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-xs'
+                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
                     }`}
                   >
-                    {language === 'KR' ? type.titleKo : type.titleEn}
+                    <span className="truncate">{language === 'KR' ? type.titleKo : type.titleEn}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 기준 2: 부산 여행 경험 */}
+          <div className="space-y-2 pt-3 border-t border-slate-100">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black text-slate-700 flex items-center gap-1.5">
+                <span className="w-1.5 h-3 bg-blue-600 rounded-xs inline-block"></span>
+                <span>{language === 'KR' ? '부산 여행 경험' : 'Busan Travel Experience'}</span>
+                {selectedExperiences.length > 0 && (
+                  <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-1.5 py-0.2 rounded-full border border-blue-200">
+                    {selectedExperiences.length}
                   </span>
-                </div>
-                <p className="text-[11px] text-slate-500 font-medium line-clamp-1 hidden sm:block">
-                  {language === 'KR' ? type.descKo : type.descEn}
-                </p>
-              </button>
-            );
-          })}
+                )}
+              </span>
+              <span className="text-[11px] text-slate-400 font-medium">
+                {language === 'KR' ? '선택 해제 가능' : 'Optional'}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              {BUSAN_EXPERIENCES.map((exp) => {
+                const isSelected = selectedExperiences.includes(exp.id);
+                return (
+                  <button
+                    key={exp.id}
+                    type="button"
+                    onClick={() => handleToggleExperience(exp.id)}
+                    className={`px-3 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center text-center cursor-pointer select-none border ${
+                      isSelected
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
+                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
+                    }`}
+                  >
+                    <span className="truncate">{language === 'KR' ? exp.titleKo : exp.titleEn}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 기준 3: 함께하는 여행 */}
+          <div className="space-y-2 pt-3 border-t border-slate-100">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black text-slate-700 flex items-center gap-1.5">
+                <span className="w-1.5 h-3 bg-emerald-600 rounded-xs inline-block"></span>
+                <span>{language === 'KR' ? '함께하는 여행' : 'Travel Companions'}</span>
+                {selectedCompanions.length > 0 && (
+                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded-full border border-emerald-200">
+                    {selectedCompanions.length}
+                  </span>
+                )}
+              </span>
+              <span className="text-[11px] text-slate-400 font-medium">
+                {language === 'KR' ? '다중 선택 가능' : 'Multi-select available'}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {TRAVEL_COMPANIONS.map((comp) => {
+                const isSelected = selectedCompanions.includes(comp.id);
+                return (
+                  <button
+                    key={comp.id}
+                    type="button"
+                    onClick={() => handleToggleCompanion(comp.id)}
+                    className={`px-3 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center text-center cursor-pointer select-none border ${
+                      isSelected
+                        ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs'
+                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
+                    }`}
+                  >
+                    <span className="truncate">{language === 'KR' ? comp.titleKo : comp.titleEn}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* 3. 추천 여행 코스 (가로 스크롤 카드 형태) */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
+      {/* 3. 추천 여행 코스 (컴팩트 반응형 리스트/그리드) */}
+      <section className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 className="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-amber-500" />
+            <h2 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-500" />
               <span>{language === 'KR' ? '추천 여행 코스' : 'Recommended Travel Courses'}</span>
               {activeUserMeta && (
-                <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md">
+                <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
                   {language === 'KR'
                     ? `${activeUserMeta.titleKo} 맞춤 순`
                     : `Tailored for ${activeUserMeta.titleEn}`}
@@ -131,13 +265,10 @@ export default function BarrierFreeMainView({
                 : 'Curated step-free itineraries through Busan top scenic sights.'}
             </p>
           </div>
-          <span className="text-xs text-slate-400 font-medium hidden sm:inline">
-            {language === 'KR' ? '가로 스크롤 가능 ➔' : 'Scroll horizontally ➔'}
-          </span>
         </div>
 
-        {/* 가로 스크롤 컨테이너 */}
-        <div className="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x scrollbar-thin scrollbar-thumb-slate-200">
+        {/* 세로형 반응형 그리드 리스트 (모바일 1열, 태블릿/데스크톱 2열 또는 3열) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {recommendedCourses.map((course) => {
             const placesSummary = course.places
               .map((p) => (language === 'KR' ? p.nameKo : p.nameEn))
@@ -146,67 +277,54 @@ export default function BarrierFreeMainView({
             return (
               <div
                 key={course.id}
-                className="w-72 sm:w-80 shrink-0 snap-start bg-white rounded-2xl border-2 border-slate-900 overflow-hidden shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] flex flex-col justify-between"
+                className="bg-white rounded-xl border border-slate-200 shadow-xs hover:border-slate-300 transition-all p-3.5 sm:p-4 flex flex-col justify-between gap-3"
               >
-                <div>
-                  {/* 대표 사진 */}
-                  <div className="relative h-44 w-full bg-slate-900 overflow-hidden">
-                    <TourApiImage
-                      src={course.image}
-                      alt={language === 'KR' ? course.titleKo : course.titleEn}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute top-3 left-3">
-                      <span className="px-2 py-0.5 rounded-md bg-[#0A2540] text-white text-[10px] font-bold shadow-xs">
-                        {language === 'KR' ? course.tagKo : course.tagEn}
-                      </span>
-                    </div>
-                    <div className="absolute top-3 right-3">
-                      <span className="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-bold shadow-xs">
-                        {language === 'KR' ? course.difficultyTextKo : course.difficultyTextEn}
-                      </span>
-                    </div>
+                <div className="space-y-2">
+                  {/* 상단 태그 & 난이도 뱃지 */}
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2 py-0.5 rounded-md bg-[#0A2540] text-white text-[10px] font-bold">
+                      {language === 'KR' ? course.tagKo : course.tagEn}
+                    </span>
+                    <span className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">
+                      {language === 'KR' ? course.difficultyTextKo : course.difficultyTextEn}
+                    </span>
                   </div>
 
-                  {/* 코스 본문 */}
-                  <div className="p-4 space-y-2.5">
-                    <h3 className="text-base font-black text-slate-900 leading-snug">
-                      {language === 'KR' ? course.titleKo : course.titleEn}
-                    </h3>
+                  {/* 코스 타이틀 */}
+                  <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug">
+                    {language === 'KR' ? course.titleKo : course.titleEn}
+                  </h3>
 
-                    {/* 소요 시간 & 이동 거리 */}
-                    <div className="flex items-center gap-2 text-xs text-slate-600 font-bold">
-                      <span className="flex items-center gap-1 text-slate-800">
-                        <Clock className="w-3.5 h-3.5 text-slate-500" />
-                        <span>{language === 'KR' ? course.durationKo : course.durationEn}</span>
-                      </span>
-                      <span>·</span>
-                      <span>{language === 'KR' ? course.distanceTextKo : course.distanceTextEn}</span>
-                    </div>
+                  {/* 소요 시간 & 이동 거리 */}
+                  <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
+                    <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                    <span className="font-bold text-slate-800">
+                      {language === 'KR' ? course.durationKo : course.durationEn}
+                    </span>
+                    <span>·</span>
+                    <span>{language === 'KR' ? course.distanceTextKo : course.distanceTextEn}</span>
+                  </div>
 
-                    {/* 주요 장소 2~3개 (예: 해운대해수욕장 → 동백섬 → 더베이101) */}
-                    <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                      <span className="text-[10px] font-bold text-slate-500 uppercase block mb-1">
-                        {language === 'KR' ? '주요 코스 경로' : 'Key Route Spots'}
-                      </span>
-                      <p className="text-xs font-bold text-[#0A2540] leading-relaxed line-clamp-2">
-                        {placesSummary}
-                      </p>
-                    </div>
+                  {/* 주요 코스 경로 */}
+                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100 text-xs">
+                    <span className="text-[10px] font-bold text-slate-400 block mb-0.5">
+                      {language === 'KR' ? '주요 코스 경로' : 'Key Route Spots'}
+                    </span>
+                    <p className="font-bold text-[#0A2540] line-clamp-2 leading-relaxed">
+                      {placesSummary}
+                    </p>
                   </div>
                 </div>
 
-                {/* ‘코스 자세히 보기 →’ 버튼 */}
-                <div className="p-4 pt-0">
-                  <button
-                    type="button"
-                    onClick={() => onNavigateToCourse(course.id)}
-                    className="w-full py-2.5 rounded-xl bg-[#0A2540] hover:bg-[#11161B] text-white text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer shadow-xs"
-                  >
-                    <span>{language === 'KR' ? '코스 자세히 보기' : 'View Course Details'}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
+                {/* ‘코스 자세히 보기’ 버튼 */}
+                <button
+                  type="button"
+                  onClick={() => onNavigateToCourse(course.id)}
+                  className="w-full py-2 rounded-lg bg-[#0A2540] hover:bg-[#11161B] text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                >
+                  <span>{language === 'KR' ? '코스 자세히 보기' : 'View Course Details'}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             );
           })}
@@ -275,6 +393,34 @@ export default function BarrierFreeMainView({
                   <p className="text-xs text-slate-700 font-medium leading-relaxed line-clamp-2">
                     {language === 'KR' ? highlightKo : highlightEn}
                   </p>
+
+                  {/* 3가지 맞춤 기준 매칭 태그 (경험 및 동행자 성향 자동 매칭 정보) */}
+                  <div className="flex flex-wrap gap-1 pt-0.5">
+                    {place.experienceTraits?.map((expId) => {
+                      const expMeta = BUSAN_EXPERIENCES.find((e) => e.id === expId);
+                      if (!expMeta) return null;
+                      return (
+                        <span
+                          key={expId}
+                          className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-blue-50/80 text-blue-900 border border-blue-200"
+                        >
+                          {expMeta.icon} {language === 'KR' ? expMeta.titleKo : expMeta.titleEn}
+                        </span>
+                      );
+                    })}
+                    {place.companionTraits?.map((compId) => {
+                      const compMeta = TRAVEL_COMPANIONS.find((c) => c.id === compId);
+                      if (!compMeta) return null;
+                      return (
+                        <span
+                          key={compId}
+                          className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50/80 text-emerald-900 border border-emerald-200"
+                        >
+                          {compMeta.icon} {language === 'KR' ? compMeta.titleKo : compMeta.titleEn}
+                        </span>
+                      );
+                    })}
+                  </div>
 
                   {/* 핵심 무장애 정보 (실제 확인된 데이터) */}
                   <div className="flex flex-wrap gap-1.5 pt-1">
