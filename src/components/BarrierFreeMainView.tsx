@@ -147,6 +147,9 @@ export default function BarrierFreeMainView({
           } else if (part.includes('김해') || part.includes('경전철')) {
             badgeBg = '#782F84';
             badgeBorder = '#61246B';
+          } else if (part.includes('KTX')) {
+            badgeBg = '#034EA2';
+            badgeBorder = '#023877';
           }
 
           return (

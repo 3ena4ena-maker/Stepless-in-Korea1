@@ -39,10 +39,10 @@ export default function BarrierFreeTourApiView({
     if (initialPlaceId) return 'place';
     if (initialCourseId) return 'course';
 
-    // URL path 체크
+    // URL path 체크 (/place/:id 및 /barrier-free/place/:id 모두 지원)
     const path = window.location.pathname;
     if (path.includes('/barrier-free/course/')) return 'course';
-    if (path.includes('/barrier-free/place/')) return 'place';
+    if (path.includes('/place/') || path.includes('/barrier-free/place/')) return 'place';
     return 'main';
   });
 
@@ -59,6 +59,10 @@ export default function BarrierFreeTourApiView({
   const [activePlaceId, setActivePlaceId] = useState<string | null>(() => {
     if (initialPlaceId) return initialPlaceId;
     const path = window.location.pathname;
+    if (path.includes('/place/')) {
+      const parts = path.split('/place/');
+      return parts[1] ? parts[1].split('/')[0] : 'spot-101';
+    }
     if (path.includes('/barrier-free/place/')) {
       const parts = path.split('/barrier-free/place/');
       return parts[1] ? parts[1].split('/')[0] : 'spot-101';
@@ -85,12 +89,12 @@ export default function BarrierFreeTourApiView({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // 네비게이션: 개별 관광지 상세 페이지로 이동
+  // 네비게이션: 개별 관광지 상세 페이지로 이동 (/place/:placeId 로 직관적인 상세 URL 라우팅)
   const handleNavigateToPlace = (placeId: string) => {
     setActivePlaceId(placeId);
     setNavHistory((prev) => [...prev, currentView]);
     setCurrentView('place');
-    syncUrl(`/barrier-free/place/${placeId}`);
+    syncUrl(`/place/${placeId}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -127,6 +131,13 @@ export default function BarrierFreeTourApiView({
         if (cId) {
           setActiveCourseId(cId);
           setCurrentView('course');
+        }
+      } else if (path.startsWith('/place/')) {
+        const parts = path.split('/place/');
+        const pId = parts[1]?.split('/')[0];
+        if (pId) {
+          setActivePlaceId(pId);
+          setCurrentView('place');
         }
       } else if (path.startsWith('/barrier-free/place/')) {
         const parts = path.split('/barrier-free/place/');

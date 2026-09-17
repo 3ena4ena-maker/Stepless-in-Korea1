@@ -418,6 +418,11 @@ export default function App() {
           setBarrierFreeCourseId(null);
           setBarrierFreePlaceId(null);
         }
+      } else if (parts[1] === 'place' && parts[2]) {
+        setCurrentTab('tourapi');
+        setIsHomeLanding(false);
+        setBarrierFreePlaceId(parts[2]);
+        setBarrierFreeCourseId(null);
       } else if (parts[1] === 'station' && parts[2]) {
         const stationId = parts[2].toLowerCase();
         const exists = STATIONS.some(s => s.id === stationId);
@@ -604,6 +609,14 @@ export default function App() {
             } else {
               expectedPath = '/tips';
             }
+          }
+        } else if (currentTab === 'tourapi') {
+          if (barrierFreePlaceId) {
+            expectedPath = `/place/${barrierFreePlaceId}`;
+          } else if (barrierFreeCourseId) {
+            expectedPath = `/barrier-free/course/${barrierFreeCourseId}`;
+          } else {
+            expectedPath = '/barrier-free';
           }
         } else if (currentTab === 'about') {
           if (siteSubPage === 'privacy') {
