@@ -9,7 +9,7 @@
 
 export interface ItineraryTravelGuideItem {
   courseId: string;
-  category: 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'EXPERIENCE' | 'SUBWAY';
+  category: 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'EXPERIENCE' | 'SUBWAY' | 'MARKET';
   dayTitleKo: string;
   dayTitleEn: string;
   oneLineSummaryKo: string;
@@ -29,7 +29,7 @@ export interface ItineraryTravelGuideItem {
   
   // 추천 여행자 유형
   targetAudiences: {
-    type: 'CARRIER' | 'STROLLER' | 'WHEELCHAIR' | 'SENIOR' | 'RAIN' | 'MIN_WALK';
+    type: 'CARRIER' | 'STROLLER' | 'WHEELCHAIR' | 'SENIOR' | 'RAIN' | 'MIN_WALK' | 'FOODIE';
     labelKo: string;
     labelEn: string;
     icon: string;
@@ -1028,7 +1028,99 @@ export const ITINERARY_TRAVEL_GUIDE_DATA: Record<string, ItineraryTravelGuideIte
   },
 
   // ---------------------------------------------------------------------------
-  // 9. SUBWAY METRO COURSE (도시철도 코스)
+  // 9. TRADITIONAL MARKET COURSE (전통시장 코스)
+  // ---------------------------------------------------------------------------
+  'itinerary-market': {
+    courseId: 'itinerary-market',
+    category: 'MARKET',
+    dayTitleKo: '전통시장 코스 · 정겨운 활기와 먹거리 가득! 부산 대표 전통시장 & 명물 야시장 투어',
+    dayTitleEn: 'Traditional Market · Vibrant Street Food & Iconic Local Markets Tour',
+    oneLineSummaryKo: '부전시장, 자갈치시장, 부평깡통시장, 국제시장 등 지하철역과 바로 이어지는 평지 중심의 부산 대표 전통시장 모음',
+    oneLineSummaryEn: 'A curated market tour directly linked to metro exits with flat walking corridors.',
+    recommendedDurationKo: '반나절 ~ 하루 (도보 탐방)',
+    recommendedDurationEn: 'Half to 1 Day (Walking Tour)',
+    mainRegionsKo: '서면·부전 (1호선 부전역) · 남포·자갈치 (1호선 자갈치·남포역) · 구포 (2호선 덕천역)',
+    mainRegionsEn: 'Bujeon (Line 1) · Nampo & Jagalchi (Line 1) · Gupo (Line 2)',
+    transitMethodKo: '지하철 1호선 & 2호선 역 출구 직결',
+    transitMethodEn: 'Direct Metro Line 1 & Line 2 station exits',
+    difficultyLevel: 'EASY',
+    difficultyLabelKo: '쉬움 (지하철 역세권 평지 시장)',
+    difficultyLabelEn: 'Easy (Flat market passages near metro exits)',
+    difficultyScore: 1,
+    difficultyDescKo: '주요 전통시장 통로가 평지로 정비되어 유모차와 보행 약자도 편안하게 둘러볼 수 있으며 지하철역과 매우 가깝습니다.',
+    difficultyDescEn: 'Main market passages are well-paved and flat, located right next to subway stations.',
+    
+    targetAudiences: [
+      {
+        type: 'FOODIE',
+        labelKo: '로컬 미식 & 먹거리 탐방객',
+        labelEn: 'Street Food Lovers',
+        icon: '🥢',
+        reasonKo: '물떡, 비빔당면, 유부전골, 씨앗호떡 등 부산의 소울푸드를 한곳에서 즐길 수 있습니다.',
+        reasonEn: 'Taste authentic local snacks including fishcakes, seed hotteok, and noodles.'
+      },
+      {
+        type: 'MIN_WALK',
+        labelKo: '대중교통 여행자',
+        labelEn: 'Transit Travelers',
+        icon: '🚇',
+        reasonKo: '부전역, 자갈치역, 남포역 출구에서 도보 1~3분 거리로 접근성이 매우 뛰어납니다.',
+        reasonEn: 'Only 1-3 minutes walk from Bujeon, Jagalchi, and Nampo stations.'
+      }
+    ],
+
+    whyThisOrderKo: {
+      titleKo: '전통시장 추천 동선',
+      descriptionKo: '오전에는 동남권 최대 부전시장에서 신선한 장터 활기를 느끼고, 오후에는 바닷가 자갈치시장에서 싱싱한 해산물을 구경한 후, 저녁에는 부평깡통시장과 국제시장의 야시장 골목에서 다채로운 길거리 미식을 즐기는 것을 추천합니다.',
+      flowStepsKo: [
+        '1단계 (오전): 1호선 부전역 1번 출구 ➔ 부전농수산물새벽시장 장터 구경',
+        '2단계 (오후): 1호선 자갈치역 10번 출구 ➔ 자갈치시장 수산물 센터 및 친수공간',
+        '3단계 (저녁): 1호선 자갈치역 3번 출구 / 남포역 1번 출구 ➔ 부평깡통 야시장 & 국제시장 먹거리'
+      ]
+    },
+    whyThisOrderEn: {
+      titleEn: 'Recommended Market Route',
+      descriptionEn: 'Start morning at Bujeon Market, visit coastal Jagalchi Fish Market in the afternoon, and end evening at Bupyeong Kkangtong Night Market.',
+      flowStepsEn: [
+        'Morning: Line 1 Bujeon Station Exit 1 ➔ Bujeon Agricultural Market',
+        'Afternoon: Line 1 Jagalchi Station Exit 10 ➔ Jagalchi Fish Market waterfront',
+        'Evening: Line 1 Jagalchi Station Exit 3 ➔ Bupyeong Kkangtong Night Market'
+      ]
+    },
+
+    steplessPoints: [
+      {
+        icon: 'Train',
+        titleKo: '자갈치역 10번 출구 엘리베이터 직결',
+        titleEn: 'Jagalchi Station Exit 10 Elevator',
+        descKo: '자갈치역 10번 출구의 옥외 엘리베이터를 이용하면 자갈치시장 정문까지 완만한 평지로 이동할 수 있습니다.',
+        descEn: 'Outdoor elevator at Exit 10 provides flat, step-free access towards Jagalchi Market.'
+      }
+    ],
+
+    highlights: [
+      {
+        titleKo: '부평깡통야시장 (매일 19:30~23:30)',
+        titleEn: 'Bupyeong Kkangtong Night Market',
+        descKo: '밤마다 중앙 통로에 수십 개의 다국적 야식 부스가 열려 환상적인 야식을 만끽할 수 있습니다.',
+        descEn: 'Dozens of lively international food carts open every evening along the central aisle.'
+      }
+    ],
+
+    connectedPlaces: [
+      {
+        nameKo: '용두산공원 & 부산타워 (남포역)',
+        nameEn: 'Yongdusan Park & Busan Tower',
+        connectionReasonKo: '남포동 먹자골목 및 국제시장에서 에스컬레이터(상행)를 타고 바로 연결됩니다.',
+        connectionReasonEn: 'Accessible via the upward outdoor escalators directly from Gwangbok-ro fashion street.',
+        transitTipKo: '광복로 상행 에스컬레이터 완비',
+        transitTipEn: 'Upward escalator available from Gwangbok-ro.'
+      }
+    ]
+  },
+
+  // ---------------------------------------------------------------------------
+  // 10. SUBWAY METRO COURSE (도시철도 코스)
   // ---------------------------------------------------------------------------
   'subway-course-master': {
     courseId: 'subway-course-master',

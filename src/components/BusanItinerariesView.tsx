@@ -40,7 +40,8 @@ import {
   Search,
   Calendar,
   AlertTriangle,
-  CheckCircle2
+  CheckCircle2,
+  ShieldCheck
 } from 'lucide-react';
 import ElegantIllustration from './ElegantIllustration';
 import { BUSAN_ITINERARIES, ItineraryCourse, ItineraryStep } from '../data/itineraries';
@@ -83,7 +84,7 @@ interface BusanItinerariesViewProps {
   language: 'KR' | 'EN';
   initialCategory?: CategoryType | null;
   onBack?: () => void;
-  onSelectCategory?: (category: CategoryType) => void;
+  onSelectCategory?: (category: CategoryType | null) => void;
   tipsSubPage?: 'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule' | 'community';
   setTipsSubPage?: (page: 'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule' | 'community') => void;
   activeRegionPage?: 'LINE1' | 'LINE2' | null;
@@ -1400,6 +1401,32 @@ const BarrierFreeIllustration = () => (
   </svg>
 );
 
+const TraditionalMarketIllustration = () => (
+  <svg viewBox="0 0 200 140" className="w-full h-24 sm:h-28 max-w-[150px] mx-auto" fill="none">
+    {/* Market Stall Canopy / Awning */}
+    <path d="M 25 45 L 175 45 L 165 72 L 35 72 Z" fill="#0A2540" stroke="#1e293b" strokeWidth="2.5" strokeLinejoin="round" />
+    {/* Striped Canopy segments */}
+    <path d="M 45 45 L 52 72 L 72 72 L 65 45 Z" fill="#d97706" opacity="0.8" />
+    <path d="M 85 45 L 92 72 L 112 72 L 105 45 Z" fill="#d97706" opacity="0.8" />
+    <path d="M 125 45 L 132 72 L 152 72 L 145 45 Z" fill="#d97706" opacity="0.8" />
+    {/* Stall counter table */}
+    <rect x="35" y="72" width="130" height="36" rx="3" fill="#ffffff" stroke="#1e293b" strokeWidth="2.5" />
+    {/* Market Produce / Crates */}
+    <rect x="45" y="80" width="32" height="20" rx="2" fill="#f8fafc" stroke="#1e293b" strokeWidth="1.5" />
+    <circle cx="55" cy="88" r="4" fill="#ef4444" />
+    <circle cx="67" cy="88" r="4" fill="#ef4444" />
+    <rect x="85" y="80" width="32" height="20" rx="2" fill="#f8fafc" stroke="#1e293b" strokeWidth="1.5" />
+    <ellipse cx="101" cy="90" rx="10" ry="5" fill="#0284c7" />
+    {/* Traditional Lantern */}
+    <line x1="160" y1="20" x2="160" y2="45" stroke="#1e293b" strokeWidth="2" />
+    <rect x="152" y="30" width="16" height="20" rx="4" fill="#dc2626" stroke="#1e293b" strokeWidth="1.5" />
+    <line x1="160" y1="50" x2="160" y2="58" stroke="#dc2626" strokeWidth="2" />
+    {/* Signboard */}
+    <rect x="70" y="24" width="60" height="18" rx="3" fill="#ffffff" stroke="#1e293b" strokeWidth="2" />
+    <text x="100" y="37" textAnchor="middle" fill="#0A2540" fontSize="10" fontWeight="bold" fontFamily="sans-serif">전통시장</text>
+  </svg>
+);
+
 export default function BusanItinerariesView({ 
   language, 
   initialCategory = null, 
@@ -1424,6 +1451,12 @@ export default function BusanItinerariesView({
 
   // Initially activeCategory defaults to initialCategory or null (Category Overview)
   const [activeCategory, setActiveCategory] = useState<CategoryType | null>(initialCategory || null);
+  const [selectedScheduleDuration, setSelectedScheduleDuration] = useState<'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS'>(() => {
+    if (initialCategory === '1NIGHT' || initialCategory === '2NIGHTS' || initialCategory === '3NIGHTS' || initialCategory === '4NIGHTS') {
+      return initialCategory;
+    }
+    return 'DAY';
+  });
 
   const [selectedThemeFilter, setSelectedThemeFilter] = useState<'ALL' | 'GOURMET' | 'EXPERIENCE'>('ALL');
   const [selectedDurationFilter, setSelectedDurationFilter] = useState<'ALL' | 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS'>('ALL');
@@ -1463,6 +1496,9 @@ export default function BusanItinerariesView({
   React.useEffect(() => {
     if (initialCategory) {
       setActiveCategory(initialCategory);
+      if (initialCategory === 'DAY' || initialCategory === '1NIGHT' || initialCategory === '2NIGHTS' || initialCategory === '3NIGHTS' || initialCategory === '4NIGHTS') {
+        setSelectedScheduleDuration(initialCategory);
+      }
       setActiveSection('RECOMMENDATIONS');
     } else if (tipsSubPage === 'index') {
       setActiveSection('SELECTION');
@@ -1538,6 +1574,7 @@ export default function BusanItinerariesView({
 
   const [selectedExperienceRegion, setSelectedExperienceRegion] = useState<string>('ALL');
   const [selectedExperienceTheme, setSelectedExperienceTheme] = useState<string>('ALL');
+  const [selectedMarketRegion, setSelectedMarketRegion] = useState<string>('ALL');
 
   const EXPERIENCE_THEME_TABS = [
     { id: 'ALL', nameKo: '전체 테마', nameEn: 'All Themes', icon: '✨' },
@@ -1558,7 +1595,6 @@ export default function BusanItinerariesView({
   const REGION_FILTER_TABS = [
     { id: 'ALL', nameKo: '전체 카테고리', nameEn: 'All Categories', icon: '📍' },
     { id: 'famous', nameKo: '부산 유명 맛집', nameEn: 'Famous Cuisines', icon: '🔥' },
-    { id: 'market', nameKo: '부산 전통시장', nameEn: 'Traditional Markets', icon: '🛍️' },
     { id: 'haeundae_gijang', nameKo: '해운대 · 기장', nameEn: 'Haeundae & Gijang', icon: '🌊' },
     { id: 'gwangalli_centum', nameKo: '광안리 · 센텀', nameEn: 'Gwangalli & Centum', icon: '🖼️' },
     { id: 'seomyeon_jeonpo', nameKo: '서면 · 전포', nameEn: 'Seomyeon & Jeonpo', icon: '☕' },
@@ -1748,7 +1784,7 @@ export default function BusanItinerariesView({
   const categoriesConfig: CategoryConfig[] = [
     {
       id: 'GOURMET',
-      icon: '🍕',
+      icon: '',
       tagKo: '침샘 가득',
       tagEn: 'Delicious',
       titleKo: '식도락',
@@ -1761,7 +1797,7 @@ export default function BusanItinerariesView({
     },
     {
       id: 'EXPERIENCE',
-      icon: '🏛️',
+      icon: '',
       tagKo: '다채로운 체험',
       tagEn: 'Interactive',
       titleKo: '체험&박물관',
@@ -1773,8 +1809,21 @@ export default function BusanItinerariesView({
       textClass: 'text-amber-950'
     },
     {
+      id: 'MARKET',
+      icon: '',
+      tagKo: '정겨운 장터',
+      tagEn: 'Local Market',
+      titleKo: '전통시장',
+      titleEn: 'Traditional Market',
+      descKo: '부전시장, 자갈치시장, 부평깡통시장, 국제시장 등 지하철역과 바로 이어지는 정겨운 부산 대표 전통시장과 명물 야시장 탐방 코스예요.',
+      descEn: 'Explore vibrant local markets including Bujeon, Jagalchi, Bupyeong Kkangtong, and Gukje Market.',
+      bgClass: 'bg-amber-50/70 hover:bg-amber-50',
+      borderClass: 'border-amber-100 hover:border-amber-200',
+      textClass: 'text-amber-950'
+    },
+    {
       id: 'SUBWAY',
-      icon: '🚇',
+      icon: '',
       tagKo: '1·2호선 노선축',
       tagEn: 'Subway Route',
       titleKo: '부산 도시철도 코스',
@@ -1787,7 +1836,7 @@ export default function BusanItinerariesView({
     },
     {
       id: 'BARRIER_FREE',
-      icon: '♿',
+      icon: '',
       tagKo: '검증된 편의 시설',
       tagEn: 'TourAPI 4.0',
       titleKo: '무장애 관광지',
@@ -1800,7 +1849,7 @@ export default function BusanItinerariesView({
     },
     {
       id: 'DAY',
-      icon: '🌿',
+      icon: '',
       tagKo: '싱그러운 디톡스',
       tagEn: 'Eco Detox',
       titleKo: '당일치기',
@@ -1813,7 +1862,7 @@ export default function BusanItinerariesView({
     },
     {
       id: '1NIGHT',
-      icon: '🌙',
+      icon: '',
       tagKo: '로맨틱 야경',
       tagEn: 'Night Out',
       titleKo: '1박',
@@ -1826,7 +1875,7 @@ export default function BusanItinerariesView({
     },
     {
       id: '2NIGHTS',
-      icon: '🌅',
+      icon: '',
       tagKo: '감성 골목 & 바다',
       tagEn: 'Art & Marine',
       titleKo: '2박',
@@ -1839,7 +1888,7 @@ export default function BusanItinerariesView({
     },
     {
       id: '3NIGHTS',
-      icon: '🌿',
+      icon: '',
       tagKo: '에코 에코',
       tagEn: 'Eco Rest',
       titleKo: '3박',
@@ -1852,7 +1901,7 @@ export default function BusanItinerariesView({
     },
     {
       id: '4NIGHTS',
-      icon: '🏠',
+      icon: '',
       tagKo: '내 집처럼',
       tagEn: 'Deep Stay',
       titleKo: '4박',
@@ -1865,8 +1914,30 @@ export default function BusanItinerariesView({
     }
   ];
 
+  const isScheduleActive = 
+    activeCategory === 'SCHEDULE' || 
+    activeCategory === 'DAY' || 
+    activeCategory === '1NIGHT' || 
+    activeCategory === '2NIGHTS' || 
+    activeCategory === '3NIGHTS' || 
+    activeCategory === '4NIGHTS';
+
   const filteredCourses = activeCategory 
-    ? BUSAN_ITINERARIES.filter((course) => course.category === activeCategory)
+    ? BUSAN_ITINERARIES.filter((course) => {
+        if (activeCategory === 'MARKET') {
+          return course.category === 'MARKET';
+        }
+        if (activeCategory === '2NIGHTS' || activeCategory === '3NIGHTS') {
+          return course.category === '2NIGHTS' || course.category === '3NIGHTS';
+        }
+        if (activeCategory === 'SCHEDULE') {
+          if (selectedScheduleDuration === '2NIGHTS' || selectedScheduleDuration === '3NIGHTS') {
+            return course.category === '2NIGHTS' || course.category === '3NIGHTS';
+          }
+          return course.category === (selectedScheduleDuration || 'DAY');
+        }
+        return course.category === activeCategory;
+      })
     : [];
 
   const activeCategoryConfig = categoriesConfig.find(c => c.id === activeCategory);
@@ -2100,67 +2171,223 @@ export default function BusanItinerariesView({
 
       {activeSection === 'RECOMMENDATIONS' && (
         <div className="space-y-4 sm:space-y-6">
-          {/* Quick Category Selector Tabs (Only visible when a specific category is selected) */}
-          {activeCategory !== null && (
-            <div className="bg-white p-2.5 sm:p-3.5 rounded-2xl border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.03)] space-y-2 animate-fade-in text-left">
-              <div className="flex items-center justify-between px-1">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm">🏖️</span>
-                  <span className="text-xs sm:text-sm font-extrabold text-slate-800">
-                    {language === 'KR' ? '카테고리 전환' : 'Switch Category'}
-                  </span>
-                </div>
+          {/* Top Primary Category Navigation Bar (Single line, horizontal scrollable, zero emojis) */}
+          <div className="bg-white p-2.5 sm:p-3.5 rounded-xl border border-[#E5E2DC] shadow-[0_1px_4px_rgba(0,0,0,0.03)] space-y-2.5 animate-fade-in text-left">
+            <div 
+              ref={quickPillsRef}
+              className="flex items-center gap-1.5 sm:gap-2 w-full overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap flex-nowrap py-0.5"
+              id="main-categories-nav-bar"
+            >
+              {/* 1. 전체 */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSelectCategory) {
+                    onSelectCategory(null);
+                  }
+                  setActiveCategory(null);
+                }}
+                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  activeCategory === null
+                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
+                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                }`}
+              >
+                {language === 'KR' ? '전체' : 'All'}
+              </button>
+
+              {/* 2. 식도락 */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSelectCategory) {
+                    onSelectCategory('GOURMET');
+                  }
+                  setActiveCategory('GOURMET');
+                }}
+                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  activeCategory === 'GOURMET'
+                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
+                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                }`}
+              >
+                {language === 'KR' ? '식도락' : 'Gourmet'}
+              </button>
+
+              {/* 3. 체험&박물관 */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSelectCategory) {
+                    onSelectCategory('EXPERIENCE');
+                  }
+                  setActiveCategory('EXPERIENCE');
+                }}
+                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  activeCategory === 'EXPERIENCE'
+                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
+                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                }`}
+              >
+                {language === 'KR' ? '체험&박물관' : 'Experience & Museum'}
+              </button>
+
+              {/* 4. 전통시장 */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSelectCategory) {
+                    onSelectCategory('MARKET');
+                  }
+                  setActiveCategory('MARKET');
+                }}
+                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  activeCategory === 'MARKET'
+                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
+                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                }`}
+              >
+                {language === 'KR' ? '전통시장' : 'Traditional Market'}
+              </button>
+
+              {/* 5. 일정별 여행 */}
+              <button
+                type="button"
+                onClick={() => {
+                  const targetDuration = selectedScheduleDuration || 'DAY';
+                  if (onSelectCategory) {
+                    onSelectCategory(targetDuration);
+                  }
+                  setActiveCategory(targetDuration);
+                }}
+                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  isScheduleActive
+                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
+                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                }`}
+              >
+                {language === 'KR' ? '일정별 여행' : 'Itinerary by Duration'}
+              </button>
+
+              {/* 6. 부산 도시철도 코스 */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSelectCategory) {
+                    onSelectCategory('SUBWAY');
+                  }
+                  setActiveCategory('SUBWAY');
+                }}
+                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  activeCategory === 'SUBWAY'
+                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
+                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                }`}
+              >
+                {language === 'KR' ? '부산 도시철도 코스' : 'Subway Course'}
+              </button>
+
+              {/* 7. 무장애 관광지 */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (onSelectCategory) {
+                    onSelectCategory('BARRIER_FREE');
+                  }
+                  setActiveCategory('BARRIER_FREE');
+                }}
+                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  activeCategory === 'BARRIER_FREE'
+                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
+                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                }`}
+              >
+                {language === 'KR' ? '무장애 관광지' : 'Barrier-Free Spots'}
+              </button>
+            </div>
+
+            {/* Sub-duration row for "일정별 여행": 당일치기 | 1박 | 2박 3박 | 4박 (Horizontal, no emojis) */}
+            {isScheduleActive && (
+              <div className="pt-2 border-t border-[#F1EFEC] flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap flex-nowrap">
+                <span className="text-xs font-semibold text-[#4A5568] shrink-0 mr-1 hidden sm:inline">
+                  {language === 'KR' ? '일정 선택:' : 'Duration:'}
+                </span>
+
+                {/* 당일치기 */}
                 <button
+                  type="button"
                   onClick={() => {
-                    if (onSelectCategory) {
-                      onSelectCategory(null);
-                    } else {
-                      setActiveCategory(null);
-                    }
+                    setSelectedScheduleDuration('DAY');
+                    setActiveCategory('DAY');
+                    if (onSelectCategory) onSelectCategory('DAY');
                   }}
-                  className="text-[11px] font-bold text-[#004481] hover:underline flex items-center gap-1 bg-blue-50/60 hover:bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100 transition-colors cursor-pointer"
+                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
+                    activeCategory === 'DAY'
+                      ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                      : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
+                  }`}
                 >
-                  <span>📋</span>
-                  <span>{language === 'KR' ? '전체 카테고리 목록으로' : 'All Categories'}</span>
+                  {language === 'KR' ? '당일치기' : 'Day Trip'}
+                </button>
+
+                {/* 1박 */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedScheduleDuration('1NIGHT');
+                    setActiveCategory('1NIGHT');
+                    if (onSelectCategory) onSelectCategory('1NIGHT');
+                  }}
+                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
+                    activeCategory === '1NIGHT'
+                      ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                      : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
+                  }`}
+                >
+                  {language === 'KR' ? '1박' : '1 Night'}
+                </button>
+
+                {/* 2박 3박 */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedScheduleDuration('2NIGHTS');
+                    setActiveCategory('2NIGHTS');
+                    if (onSelectCategory) onSelectCategory('2NIGHTS');
+                  }}
+                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
+                    activeCategory === '2NIGHTS' || activeCategory === '3NIGHTS'
+                      ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                      : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
+                  }`}
+                >
+                  {language === 'KR' ? '2박 3박' : '2-3 Nights'}
+                </button>
+
+                {/* 4박 */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedScheduleDuration('4NIGHTS');
+                    setActiveCategory('4NIGHTS');
+                    if (onSelectCategory) onSelectCategory('4NIGHTS');
+                  }}
+                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
+                    activeCategory === '4NIGHTS'
+                      ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                      : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
+                  }`}
+                >
+                  {language === 'KR' ? '4박' : '4 Nights'}
                 </button>
               </div>
-
-              <div 
-                ref={quickPillsRef}
-                className="flex items-center gap-1.5 sm:gap-2 w-full pt-0.5 overflow-x-auto no-scrollbar py-1"
-                id="quick-categories-pills"
-              >
-                {categoriesConfig.map((cat) => {
-                  const isSelected = activeCategory === cat.id;
-                  return (
-                    <button
-                      key={cat.id}
-                      onClick={() => {
-                        if (onSelectCategory) {
-                          onSelectCategory(cat.id);
-                        } else {
-                          setActiveCategory(cat.id);
-                        }
-                      }}
-                      className={`flex items-center justify-center gap-1 sm:gap-1.5 px-3 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-bold transition-colors duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
-                        isSelected
-                          ? 'bg-[#0A2540] text-white border-[#0A2540]'
-                          : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
-                      }`}
-                    >
-                      <span className="shrink-0 text-xs sm:text-sm">{cat.icon}</span>
-                      <span className="whitespace-nowrap">{language === 'KR' ? cat.titleKo : cat.titleEn}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Main Container Switching: Categories Grid VS Category Detailed Itinerary */}
           {activeCategory === null && (
             <div className="space-y-6 sm:space-y-8 animate-fade-in py-2">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 w-full mx-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full mx-auto">
                 {/* Card 1: Foodie / 식도락 */}
                 <div
                   onClick={() => {
@@ -2229,13 +2456,48 @@ export default function BusanItinerariesView({
                   </div>
                 </div>
 
-                {/* Card 3: Itinerary / 일정별 여행 */}
+                {/* Card 3: Traditional Market / 전통시장 */}
                 <div
                   onClick={() => {
                     if (onSelectCategory) {
-                      onSelectCategory('DAY');
+                      onSelectCategory('MARKET');
                     } else {
-                      setActiveCategory('DAY');
+                      setActiveCategory('MARKET');
+                    }
+                  }}
+                  className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#0A2540] transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-5 text-left"
+                >
+                  <div className="space-y-3.5 sm:space-y-4">
+                    <div className="bg-[#FBFBF9] rounded-md p-3.5 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC]">
+                      <TraditionalMarketIllustration />
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="text-base font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap">
+                        {language === 'KR' ? '전통시장' : 'Traditional Market'}
+                      </h3>
+                      <p className="text-xs text-[#4A5568] font-normal leading-relaxed break-keep">
+                        {language === 'KR'
+                          ? '부전·자갈치·깡통·국제시장 등 정겨운 장터와 먹거리 투어'
+                          : 'Explore Busan’s iconic traditional markets and lively street food alleys.'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="pt-4 flex justify-end items-center">
+                    <span className="text-xs font-bold text-[#0A2540] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                      <span>{language === 'KR' ? '자세히 보기' : 'Explore'}</span>
+                      <ChevronRight className="w-4 h-4 text-[#0A2540]" />
+                    </span>
+                  </div>
+                </div>
+
+                {/* Card 4: Itinerary / 일정별 여행 */}
+                <div
+                  onClick={() => {
+                    const targetDuration = selectedScheduleDuration || 'DAY';
+                    if (onSelectCategory) {
+                      onSelectCategory(targetDuration);
+                    } else {
+                      setActiveCategory(targetDuration);
                     }
                   }}
                   className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#0A2540] transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-5 text-left"
@@ -2263,7 +2525,7 @@ export default function BusanItinerariesView({
                   </div>
                 </div>
 
-                {/* Card 4: Subway Course / 부산 도시철도 코스 */}
+                {/* Card 5: Subway Course / 부산 도시철도 코스 */}
                 <div
                   onClick={() => {
                     if (onSelectCategory) {
@@ -2297,7 +2559,7 @@ export default function BusanItinerariesView({
                   </div>
                 </div>
 
-                {/* Card 5: Barrier-Free Tourist Spots / 무장애 관광지 */}
+                {/* Card 6: Barrier-Free Tourist Spots / 무장애 관광지 */}
                 <div
                   onClick={() => {
                     if (onSelectCategory) {
@@ -3504,6 +3766,164 @@ export default function BusanItinerariesView({
                       <div className="space-y-1 select-none text-left">
                         <span className="text-[11px] font-mono font-bold text-[#0A2540] uppercase tracking-wider">
                           {language === 'KR' ? '체험 & 박물관 방문 무장애 팁' : 'ACCESSIBLE MUSEUM TIP'}
+                        </span>
+                        <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed font-normal">
+                          {language === 'KR' ? course.overallTipKo : course.overallTipEn}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              // -------------------------------------------------------------
+              // PAGE: MARKET (전통시장 코스) - Editorial Travel Magazine
+              // -------------------------------------------------------------
+              case 'MARKET': {
+                const marketSteps = course.steps || [];
+                const filteredMarketSteps = selectedMarketRegion === 'ALL'
+                  ? marketSteps
+                  : marketSteps.filter(s => s.regionId === selectedMarketRegion);
+
+                return (
+                  <div className="space-y-6 animate-fade-in text-left">
+                    {/* Header Banner */}
+                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-4">
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
+                            {language === 'KR' ? '부산 전통시장 가이드' : 'BUSAN TRADITIONAL MARKET GUIDE'}
+                          </span>
+                          <span className="text-[#E5E2DC] text-xs font-mono">
+                            {language === 'KR' ? '지하철 역세권 평지 시장 코스' : 'Subway-Linked Flat Walking Markets'}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => setMapModalOpen(true)}
+                          className="flex items-center gap-1.5 text-xs font-bold bg-white text-[#0A2540] hover:bg-[#FBFBF9] px-3 py-1.5 rounded-md border border-white transition-colors cursor-pointer shrink-0"
+                        >
+                          <Map className="w-4 h-4" />
+                          <span>{language === 'KR' ? '관광 일러스트 지도' : 'Travel Map'}</span>
+                        </button>
+                      </div>
+
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
+                          {language === 'KR' ? course.titleKo : course.titleEn}
+                        </h3>
+                        <p className="text-sm text-[#E5E2DC] mt-2 font-normal leading-relaxed break-keep max-w-3xl">
+                          {language === 'KR' ? course.subtitleKo : course.subtitleEn}
+                        </p>
+                      </div>
+
+                      <div className="pt-2 flex flex-wrap gap-4 text-xs text-[#E5E2DC] border-t border-white/10 font-mono">
+                        <div className="flex items-center gap-1.5">
+                          <Clock className="w-4 h-4 text-amber-400" />
+                          <span>{language === 'KR' ? course.durationKo : course.durationEn}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                          <span>{language === 'KR' ? `난이도: ${course.difficultyKo}` : `Difficulty: ${course.difficultyEn}`}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <Train className="w-4 h-4 text-sky-400" />
+                          <span>{language === 'KR' ? '1·2호선 지하철역 출구 직결' : 'Direct Metro Station Exits'}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Regional Sub-filter Tabs */}
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap flex-nowrap py-1">
+                        {[
+                          { id: 'ALL', nameKo: '전체 보기', nameEn: 'All Markets' },
+                          { id: 'seomyeon_jeonpo', nameKo: '서면 · 부전 (부전시장)', nameEn: 'Seomyeon · Bujeon' },
+                          { id: 'nampo_yeongdo', nameKo: '남포동 · 자갈치 / 깡통 / 국제시장', nameEn: 'Nampo · Jagalchi / Bupyeong' },
+                          { id: 'gwangalli_centum', nameKo: '광안리 · 민락 (밀락더마켓)', nameEn: 'Gwangalli · Millac' },
+                          { id: 'others', nameKo: '북구 · 구포 (구포시장)', nameEn: 'Buk-gu · Gupo' },
+                        ].map(tab => (
+                          <button
+                            key={tab.id}
+                            type="button"
+                            onClick={() => setSelectedMarketRegion(tab.id)}
+                            className={`px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
+                              selectedMarketRegion === tab.id
+                                ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                                : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
+                            }`}
+                          >
+                            {language === 'KR' ? tab.nameKo : tab.nameEn}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Market Cards Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {filteredMarketSteps.map((step, idx) => (
+                        <div
+                          key={idx}
+                          className="bg-white rounded-lg border border-[#E5E2DC] p-5 hover:border-[#0A2540] transition-colors duration-200 flex flex-col justify-between text-left space-y-4"
+                        >
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-[#F1EFEC] text-[#0A2540]">
+                                {step.regionNameKo}
+                              </span>
+                              <span className="text-xs text-[#718096] font-medium">
+                                {step.time}
+                              </span>
+                            </div>
+
+                            <div className="space-y-1">
+                              <h4 className="text-base font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors">
+                                {language === 'KR' ? step.titleKo : step.titleEn}
+                              </h4>
+                              <p className="text-xs text-[#4A5568] font-normal leading-relaxed whitespace-pre-line">
+                                {language === 'KR' ? step.descKo : step.descEn}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="pt-3 border-t border-[#E5E2DC] space-y-2">
+                            <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-[#11161B] bg-[#FBFBF9] p-2.5 rounded-md border border-[#E5E2DC]">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
+                              <span>{language === 'KR' ? '평지 보행로 정비 · 지하철역 엘리베이터 접근 용이' : 'Flat pedestrian passage & metro elevator access'}</span>
+                            </div>
+
+                            {step.stationInfoKo && (
+                              <div className="flex items-center justify-between gap-2 pt-0.5 text-[11px] text-[#0A2540]">
+                                <div className="flex items-center gap-1.5 font-mono truncate">
+                                  <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
+                                  <span className="truncate">{language === 'KR' ? step.stationInfoKo : step.stationInfoEn}</span>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const addr = step.stationInfoKo.split('(')[0].trim();
+                                    navigator.clipboard.writeText(addr);
+                                    setCopiedIndex(`market-${idx}`);
+                                    setTimeout(() => setCopiedIndex(null), 2000);
+                                  }}
+                                  className="text-[10px] font-bold px-2 py-0.5 rounded border border-[#E5E2DC] bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#0A2540] shrink-0 transition-colors cursor-pointer"
+                                >
+                                  {copiedIndex === `market-${idx}` ? (language === 'KR' ? '복사됨' : 'Copied') : (language === 'KR' ? '주소 복사' : 'Copy')}
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Overall tip block */}
+                    <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
+                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                        <Info className="w-4 h-4 text-white shrink-0" />
+                      </div>
+                      <div className="space-y-1 select-none text-left">
+                        <span className="text-[11px] font-mono font-bold text-[#0A2540] uppercase tracking-wider">
+                          {language === 'KR' ? '전통시장 방문 여행 팁' : 'TRADITIONAL MARKET VISIT TIP'}
                         </span>
                         <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed font-normal">
                           {language === 'KR' ? course.overallTipKo : course.overallTipEn}

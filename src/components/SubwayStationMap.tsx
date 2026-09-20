@@ -69,23 +69,6 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
   const isOriginAuthorizedForGoogleMaps = () => {
     if (typeof window === 'undefined') return false;
     if ((window as any).GOOGLE_MAPS_AUTH_FAILED) return false;
-    const host = window.location.hostname.toLowerCase();
-    
-    // Explicitly registered production domains in GCP Console
-    if (
-      host === 'stepless.kr' ||
-      host.endsWith('.stepless.kr') ||
-      host === 'steplessinkorea.pages.dev' ||
-      host.endsWith('.steplessinkorea.pages.dev')
-    ) {
-      return true;
-    }
-    
-    // Cloud Run dev/preview sandboxes and local testing are not in GCP HTTP Referrers
-    if (host.includes('.run.app') || host === 'localhost' || host === '127.0.0.1') {
-      return false;
-    }
-
     return true;
   };
 
@@ -322,7 +305,8 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       return;
     }
 
-    const apiKey = (import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '').trim();
+    const defaultKey = 'AIzaSyDEKgT4EZLHN5agdtkadl7q8NHaeO_g4DE';
+    const apiKey = (import.meta.env.VITE_GOOGLE_MAPS_API_KEY || defaultKey).trim();
 
     // 1. Check prerequisites before attempting Google Maps script loading
     if (!apiKey) {
@@ -413,7 +397,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     console.info('[Stepless Map] Google Maps script loading initiated for EN mode.');
     const script = document.createElement('script');
     script.id = scriptId;
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&language=en`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&hl=en&language=en`;
     script.async = true;
     script.onload = () => {
       setTimeout(() => {

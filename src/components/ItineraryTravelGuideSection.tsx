@@ -62,6 +62,8 @@ export default function ItineraryTravelGuideSection({
     activeGuideKey = 'itinerary-4nights';
   } else if (category === 'GOURMET') {
     activeGuideKey = 'itinerary-gourmet';
+  } else if (category === 'MARKET') {
+    activeGuideKey = 'itinerary-market';
   } else if (category === 'EXPERIENCE') {
     activeGuideKey = 'itinerary-experience';
   } else if (category === 'SUBWAY') {

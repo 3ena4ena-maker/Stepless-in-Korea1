@@ -5,7 +5,7 @@ import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const googleMapsApiKey = process.env.VITE_GOOGLE_MAPS_API_KEY || env.VITE_GOOGLE_MAPS_API_KEY || '';
+  const googleMapsApiKey = process.env.VITE_GOOGLE_MAPS_API_KEY || env.VITE_GOOGLE_MAPS_API_KEY || 'AIzaSyDEKgT4EZLHN5agdtkadl7q8NHaeO_g4DE';
 
   return {
     base: './',
