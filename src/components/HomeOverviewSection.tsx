@@ -6,7 +6,6 @@ import {
   Compass, 
   ShieldCheck, 
   Train, 
-  ArrowRight, 
   AlertCircle,
   FileCheck,
   ChevronRight,
@@ -53,76 +52,124 @@ export function HomeOverviewSection({
   
   const d = DICTIONARY[language];
 
-  // Featured major stations
+  // Helper for metro line specific styles
+  const getMetroLineTheme = (lineNum: number) => {
+    switch (lineNum) {
+      case 1:
+        return {
+          bg: 'bg-[#F06A00]',
+          bgLight: 'bg-[#FFF4EC]',
+          border: 'border-[#F06A00]/30',
+          text: 'text-[#F06A00]',
+          badgeBg: 'bg-[#F06A00]',
+          badgeText: 'text-white',
+        };
+      case 2:
+        return {
+          bg: 'bg-[#1b6d24]',
+          bgLight: 'bg-[#EDF7EE]',
+          border: 'border-[#1b6d24]/30',
+          text: 'text-[#1b6d24]',
+          badgeBg: 'bg-[#1b6d24]',
+          badgeText: 'text-white',
+        };
+      case 3:
+        return {
+          bg: 'bg-[#906A3B]',
+          bgLight: 'bg-[#F8F3EC]',
+          border: 'border-[#906A3B]/30',
+          text: 'text-[#906A3B]',
+          badgeBg: 'bg-[#906A3B]',
+          badgeText: 'text-white',
+        };
+      case 4:
+        return {
+          bg: 'bg-[#2B60BA]',
+          bgLight: 'bg-[#EEF4FD]',
+          border: 'border-[#2B60BA]/30',
+          text: 'text-[#2B60BA]',
+          badgeBg: 'bg-[#2B60BA]',
+          badgeText: 'text-white',
+        };
+      default:
+        return {
+          bg: 'bg-[#0A2540]',
+          bgLight: 'bg-[#F1EFEC]',
+          border: 'border-[#E5E2DC]',
+          text: 'text-[#0A2540]',
+          badgeBg: 'bg-[#0A2540]',
+          badgeText: 'text-white',
+        };
+    }
+  };
+
+  // Featured major stations (compact without bulky descriptions)
   const featuredStations = [
     { 
       id: 'seomyeon', 
       name: language === 'KR' ? '서면역' : 'Seomyeon Station', 
       lines: [1, 2], 
-      desc: language === 'KR' 
-        ? '1·2호선 환승 중심역, 승강기 직통 출구 및 와이드 개찰구 연계 가이드' 
-        : 'Major transfer hub for Lines 1 & 2 with direct elevator exits and wide barrier-free turnstiles.' 
     },
     { 
       id: 'busan-stn', 
       name: language === 'KR' ? '부산역' : 'Busan Station', 
       lines: [1], 
-      desc: language === 'KR' 
-        ? 'KTX·SRT 연계 핵심역, 대형 캐리어 및 유모차 이동에 최적화된 동선' 
-        : 'Main KTX/SRT high-speed rail hub with optimized step-free routes for strollers and heavy luggage.' 
     },
     { 
       id: 'haeundae', 
       name: language === 'KR' ? '해운대역' : 'Haeundae Station', 
       lines: [2], 
-      desc: language === 'KR' 
-        ? '구남로 및 해수욕장 방향 엘리베이터 출구 및 휠체어 단차 없는 경로' 
-        : 'Elevator exit directly connecting Gunam-ro beach main street with level wheelchair pathways.' 
     },
   ];
 
-  // 4 Core Recommended Courses
+  // 4 Core Recommended Courses: [추천 여행 코스] -> [무장애 관광지/지하철 무장애 코스] -> [식도락(부산 맛집)] -> [체험 & 문화 공간]
   const recommendedCourses = [
     {
+      id: 'DAY' as const,
+      title: language === 'KR' ? '추천 여행 코스' : 'RECOMMENDED ITINERARY',
+      tag: d.categories.explore.tag,
+      desc: language === 'KR'
+        ? '원도심·해운대·기장 등 일정별 맞춤 코스'
+        : 'Curated itineraries for Haeundae, Nampo, and Gijang.',
+      icon: <Compass className="w-5 h-5 text-[#0A2540]" />,
+    },
+    {
+      id: 'SUBWAY' as const,
+      title: language === 'KR' ? '지하철 무장애 코스' : 'STEP-FREE METRO ROUTE',
+      tag: d.categories.transit.tag,
+      desc: language === 'KR'
+        ? '엘리베이터 출구 및 단차 없는 무장애 동선'
+        : 'Elevator exits and step-free travel paths.',
+      icon: <Train className="w-5 h-5 text-[#0A2540]" />,
+    },
+    {
       id: 'GOURMET' as const,
-      title: language === 'KR' ? '부산 맛집' : 'BUSAN FOOD GUIDE',
+      title: language === 'KR' ? '식도락 (부산 맛집)' : 'BUSAN FOOD GUIDE',
       tag: d.categories.eat.tag,
-      desc: d.categories.eat.desc,
-      icon: <UtensilsCrossed className="w-6 h-6 text-[#0A2540]" />,
+      desc: language === 'KR'
+        ? '원조 돼지국밥 노포부터 감성 오션뷰 카페'
+        : 'Authentic pork soup eateries and oceanfront cafes.',
+      icon: <UtensilsCrossed className="w-5 h-5 text-[#0A2540]" />,
     },
     {
       id: 'EXPERIENCE' as const,
       title: language === 'KR' ? '체험 & 문화 공간' : 'CULTURE & MUSEUM',
       tag: language === 'KR' ? '문화 체험' : 'CULTURE',
       desc: language === 'KR'
-        ? '국립해양박물관부터 부산시립미술관까지 날씨 상관없이 엘리베이터로 편하게 즐기는 문화 공간'
-        : 'Explore national maritime museums, art galleries, and cultural centers with step-free elevators.',
-      icon: <Building2 className="w-6 h-6 text-[#0A2540]" />,
-    },
-    {
-      id: 'DAY' as const,
-      title: language === 'KR' ? '추천 여행 코스' : 'RECOMMENDED ITINERARY',
-      tag: d.categories.explore.tag,
-      desc: d.categories.explore.desc,
-      icon: <Compass className="w-6 h-6 text-[#0A2540]" />,
-    },
-    {
-      id: 'SUBWAY' as const,
-      title: language === 'KR' ? '지하철 무장애 코스' : 'METRO STEP-FREE ROUTE',
-      tag: d.categories.transit.tag,
-      desc: d.categories.transit.desc,
-      icon: <Train className="w-6 h-6 text-[#0A2540]" />,
+        ? '국립해양박물관 등 쾌적한 실내 문화 명소'
+        : 'Maritime museums, art galleries, and cultural centers.',
+      icon: <Building2 className="w-5 h-5 text-[#0A2540]" />,
     },
   ];
 
   return (
-    <div className="space-y-12 sm:space-y-16 text-left font-sans text-[#11161B]" id="home-overview-section">
+    <div className="space-y-6 sm:space-y-8 text-left font-sans text-[#11161B]" id="home-overview-section">
       
       {/* ==========================================
           1. HERO SECTION (Editorial Layout)
          ========================================== */}
-      <section className="relative pt-6 sm:pt-10 pb-10 sm:pb-16 border-b border-[#E5E2DC]">
-        <div className="max-w-4xl space-y-4 sm:space-y-6">
+      <section className="relative pt-2 sm:pt-4 pb-4 sm:pb-6 border-b border-[#E5E2DC]">
+        <div className="max-w-4xl space-y-2 sm:space-y-2.5">
           
           {/* Eyebrow caption */}
           <div className="inline-block text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
@@ -135,42 +182,14 @@ export function HomeOverviewSection({
           </h1>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-xl text-[#4A5568] font-normal leading-relaxed max-w-3xl pt-1 break-keep">
+          <p className="text-base sm:text-lg text-[#4A5568] font-normal leading-relaxed max-w-3xl pt-0.5 break-keep">
             {d.hero.subtitle}
           </p>
-
-          {/* Call to action buttons */}
-          <div className="pt-4 flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => {
-                if (onNavigateToItinerary) {
-                  onNavigateToItinerary('GOURMET');
-                }
-              }}
-              className="bg-[#11161B] hover:bg-[#0A2540] text-white px-6 py-3.5 rounded-lg font-semibold text-xs sm:text-sm tracking-wider uppercase transition-colors cursor-pointer flex items-center gap-2"
-            >
-              <span>{d.hero.primaryBtn}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => {
-                if (onNavigateToSearch) {
-                  onNavigateToSearch();
-                } else {
-                  onSelectStation('');
-                }
-              }}
-              className="border border-[#11161B] text-[#11161B] hover:bg-[#F1EFEC] px-6 py-3.5 rounded-lg font-semibold text-xs sm:text-sm tracking-wider transition-colors cursor-pointer"
-            >
-              <span>{d.hero.secondaryBtn}</span>
-            </button>
-          </div>
         </div>
 
         {/* 4 Feature Key Highlights (Minimalist 4-Column Grid) */}
-        <div className="pt-10 sm:pt-14 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 border-t border-[#E5E2DC] mt-10">
-          <div className="space-y-1.5 p-4 rounded-lg bg-white border border-[#E5E2DC]">
+        <div className="pt-4 sm:pt-5 grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3.5 border-t border-[#E5E2DC] mt-4 sm:mt-5">
+          <div className="space-y-1.5 p-3 sm:p-3.5 rounded-lg bg-white border border-[#E5E2DC]">
             <div className="flex items-center gap-2 text-[#0A2540]">
               <Baby className="w-4 h-4" />
               <span className="font-bold text-xs sm:text-sm text-[#11161B]">
@@ -182,7 +201,7 @@ export function HomeOverviewSection({
             </p>
           </div>
 
-          <div className="space-y-1.5 p-4 rounded-lg bg-white border border-[#E5E2DC]">
+          <div className="space-y-1.5 p-3 sm:p-3.5 rounded-lg bg-white border border-[#E5E2DC]">
             <div className="flex items-center gap-2 text-[#0A2540]">
               <Accessibility className="w-4 h-4" />
               <span className="font-bold text-xs sm:text-sm text-[#11161B]">
@@ -194,7 +213,7 @@ export function HomeOverviewSection({
             </p>
           </div>
 
-          <div className="space-y-1.5 p-4 rounded-lg bg-white border border-[#E5E2DC]">
+          <div className="space-y-1.5 p-3 sm:p-3.5 rounded-lg bg-white border border-[#E5E2DC]">
             <div className="flex items-center gap-2 text-[#0A2540]">
               <Luggage className="w-4 h-4" />
               <span className="font-bold text-xs sm:text-sm text-[#11161B]">
@@ -206,7 +225,7 @@ export function HomeOverviewSection({
             </p>
           </div>
 
-          <div className="space-y-1.5 p-4 rounded-lg bg-white border border-[#E5E2DC]">
+          <div className="space-y-1.5 p-3 sm:p-3.5 rounded-lg bg-white border border-[#E5E2DC]">
             <div className="flex items-center gap-2 text-[#0A2540]">
               <FileCheck className="w-4 h-4" />
               <span className="font-bold text-xs sm:text-sm text-[#11161B]">
@@ -224,13 +243,13 @@ export function HomeOverviewSection({
       {/* ==========================================
           2. FEATURED STATIONS & SMART SEARCH
          ========================================== */}
-      <section className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-[#E5E2DC] pb-4">
+      <section className="space-y-3.5 sm:space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-[#E5E2DC] pb-3">
           <div>
             <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
               {language === 'KR' ? '주요역 안내' : 'FEATURED STATIONS'}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#11161B] tracking-tight mt-1">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#11161B] tracking-tight mt-0.5">
               {language === 'KR' ? '부산 주요역 출구 & 이동 경로' : 'Major Accessible Metro Hubs'}
             </h2>
           </div>
@@ -261,43 +280,56 @@ export function HomeOverviewSection({
           />
         </div>
 
-        {/* 3 Featured Station Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-          {featuredStations.map((st) => (
-            <div 
-              key={st.id}
-              className="bg-white border border-[#E5E2DC] hover:border-[#0A2540] rounded-lg p-5 transition-colors flex flex-col justify-between space-y-4"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between border-b border-[#E5E2DC] pb-3">
+        {/* 3 Featured Station Cards (Compact with Metro Line Colors) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+          {featuredStations.map((st) => {
+            const primaryLineTheme = getMetroLineTheme(st.lines[0]);
+            const isMultiLine = st.lines.length > 1;
+
+            return (
+              <div 
+                key={st.id}
+                className="bg-white border border-[#E5E2DC] hover:border-[#0A2540] rounded-lg p-3.5 sm:p-4 transition-colors flex flex-col justify-between space-y-3 shadow-xs"
+              >
+                <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Train className="w-5 h-5 text-[#0A2540]" />
-                    <span className="font-bold text-[#11161B] text-base">{st.name}</span>
+                    <div 
+                      className={`p-1.5 rounded ${
+                        isMultiLine 
+                          ? 'bg-[#F1EFEC] text-[#0A2540]' 
+                          : `${primaryLineTheme.bgLight} ${primaryLineTheme.text}`
+                      }`}
+                    >
+                      <Train className="w-4 h-4" />
+                    </div>
+                    <span className="font-bold text-[#11161B] text-sm sm:text-base">{st.name}</span>
                   </div>
                   <div className="flex gap-1">
-                    {st.lines.map((l) => (
-                      <span key={l} className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#F1EFEC] text-[#0A2540]">
-                        {language === 'KR' ? `${l}호선` : `Line ${l}`}
-                      </span>
-                    ))}
+                    {st.lines.map((l) => {
+                      const lineTheme = getMetroLineTheme(l);
+                      return (
+                        <span 
+                          key={l} 
+                          className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded shadow-2xs ${lineTheme.badgeBg} ${lineTheme.badgeText}`}
+                        >
+                          {language === 'KR' ? `${l}호선` : `Line ${l}`}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
 
-                <p className="text-xs text-[#4A5568] leading-relaxed">
-                  {st.desc}
-                </p>
+                <button
+                  type="button"
+                  onClick={() => onSelectStation(st.id)}
+                  className="w-full py-2 px-3 rounded-md bg-[#11161B] hover:bg-[#0A2540] text-white font-medium text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <span>{d.buttons.viewRoute}</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
               </div>
-
-              <button
-                type="button"
-                onClick={() => onSelectStation(st.id)}
-                className="w-full py-2.5 px-3 rounded-md bg-[#11161B] hover:bg-[#0A2540] text-white font-medium text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <span>{d.buttons.viewRoute}</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -305,40 +337,40 @@ export function HomeOverviewSection({
       {/* ==========================================
           3. CATEGORY INDEX (Where do you want to go?)
          ========================================== */}
-      <section className="space-y-6 sm:space-y-8 pt-6 border-t border-[#E5E2DC]">
-        <div className="space-y-2">
+      <section className="space-y-4 pt-4 sm:pt-6 border-t border-[#E5E2DC]">
+        <div className="space-y-1">
           <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
             {language === 'KR' ? '카테고리 안내' : 'CATEGORY INDEX'}
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#11161B] tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#11161B] tracking-tight">
             {d.categories.sectionTitle}
           </h2>
-          <p className="text-sm text-[#4A5568]">
+          <p className="text-xs sm:text-sm text-[#4A5568]">
             {d.categories.sectionSubtitle}
           </p>
         </div>
 
-        {/* 4 Category Grid Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* 4 Category Grid Cards: [추천 여행 코스] -> [지하철 무장애 코스] -> [식도락(부산 맛집)] -> [체험 & 문화 공간] */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {recommendedCourses.map((course) => (
             <div 
               key={course.id}
-              className="bg-white border border-[#E5E2DC] rounded-lg p-6 hover:border-[#0A2540] transition-colors flex flex-col justify-between space-y-4 group"
+              className="bg-white border border-[#E5E2DC] rounded-lg p-3.5 sm:p-4 hover:border-[#0A2540] transition-colors flex flex-col justify-between space-y-3 group shadow-xs"
             >
-              <div className="space-y-3">
-                <div className="flex items-center">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
                   <div className="p-2 rounded-md bg-[#F1EFEC] text-[#0A2540]">
                     {course.icon}
                   </div>
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#F1EFEC] text-[#0A2540]">
+                    {course.tag}
+                  </span>
                 </div>
 
-                <div className="space-y-1">
-                  <h3 className="font-bold text-[#11161B] text-base group-hover:text-[#0A2540] transition-colors">
+                <div>
+                  <h3 className="font-bold text-[#11161B] text-sm sm:text-base group-hover:text-[#0A2540] transition-colors">
                     {course.title}
                   </h3>
-                  <p className="text-xs text-[#4A5568] leading-relaxed line-clamp-3">
-                    {course.desc}
-                  </p>
                 </div>
               </div>
 
@@ -349,7 +381,7 @@ export function HomeOverviewSection({
                     onNavigateToItinerary(course.id);
                   }
                 }}
-                className="w-full py-2.5 px-4 rounded-md border border-[#11161B] hover:bg-[#11161B] hover:text-white text-[#11161B] font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer mt-2"
+                className="w-full py-1.5 px-3 rounded-md border border-[#11161B] hover:bg-[#11161B] hover:text-white text-[#11161B] font-semibold text-xs transition-colors flex items-center justify-center gap-1 cursor-pointer"
               >
                 <span>{d.buttons.seeAll}</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -363,29 +395,29 @@ export function HomeOverviewSection({
       {/* ==========================================
           5. SERVICE INFORMATION & VERIFICATION CENTER
          ========================================== */}
-      <section className="pt-10 border-t border-[#E5E2DC] space-y-10">
+      <section className="pt-6 sm:pt-8 border-t border-[#E5E2DC] space-y-6 sm:space-y-8">
         {/* Section Header */}
-        <div className="space-y-1.5 border-b border-[#E5E2DC] pb-4">
+        <div className="space-y-1 border-b border-[#E5E2DC] pb-3">
           <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
             {language === 'KR' ? '서비스 안내 · 정보 검증' : 'SERVICE & RELIABILITY'}
           </div>
-          <div className="flex items-center gap-2.5 text-[#0A2540]">
-            <ShieldCheck className="w-6 h-6 text-[#0A2540] shrink-0" />
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#11161B] tracking-tight">
+          <div className="flex items-center gap-2 text-[#0A2540]">
+            <ShieldCheck className="w-5 h-5 text-[#0A2540] shrink-0" />
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#11161B] tracking-tight">
               {language === 'KR' ? '스탭리스 안내 및 정보 검증' : 'About Stepless in Korea & Verification'}
             </h2>
           </div>
         </div>
 
         {/* 1. What is Stepless in Korea? */}
-        <div className="bg-white border border-[#E5E2DC] rounded-lg p-6 sm:p-8 space-y-4">
+        <div className="bg-white border border-[#E5E2DC] rounded-lg p-5 sm:p-6 space-y-3">
           <div className="flex items-center gap-2 text-[#0A2540]">
-            <Info className="w-5 h-5 text-[#0A2540] shrink-0" />
-            <h3 className="text-lg sm:text-xl font-bold text-[#11161B]">
+            <Info className="w-4 h-4 text-[#0A2540] shrink-0" />
+            <h3 className="text-base sm:text-lg font-bold text-[#11161B]">
               {language === 'KR' ? '스탭리스 인 코리아는 어떤 서비스인가요?' : 'What is Stepless in Korea?'}
             </h3>
           </div>
-          <div className="space-y-3 text-sm text-[#4A5568] leading-relaxed">
+          <div className="space-y-2.5 text-xs sm:text-sm text-[#4A5568] leading-relaxed">
             <p>
               {language === 'KR'
                 ? '스탭리스 인 코리아(STEPLESS IN KOREA)는 부산을 여행하는 누구나 보다 편하고 안전하게 이동할 수 있도록 여행지, 대중교통, 지하철역 출구, 엘리베이터 동선, 수하물 보관 및 여행 코스 등의 정보를 한곳에서 제공하는 종합 여행 안내 서비스입니다.'
@@ -398,8 +430,8 @@ export function HomeOverviewSection({
             </p>
           </div>
 
-          <div className="pt-4 border-t border-[#E5E2DC] grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-medium text-[#11161B]">
-            <div className="flex items-start gap-2.5 p-3 rounded bg-[#FBFBF9] border border-[#E5E2DC]">
+          <div className="pt-3 border-t border-[#E5E2DC] grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-medium text-[#11161B]">
+            <div className="flex items-start gap-2 p-2.5 rounded bg-[#FBFBF9] border border-[#E5E2DC]">
               <CheckCircle2 className="w-4 h-4 text-[#0A2540] shrink-0 mt-0.5" />
               <div>
                 <span className="font-bold block text-[#11161B]">
@@ -410,7 +442,7 @@ export function HomeOverviewSection({
                 </span>
               </div>
             </div>
-            <div className="flex items-start gap-2.5 p-3 rounded bg-[#FBFBF9] border border-[#E5E2DC]">
+            <div className="flex items-start gap-2 p-2.5 rounded bg-[#FBFBF9] border border-[#E5E2DC]">
               <CheckCircle2 className="w-4 h-4 text-[#0A2540] shrink-0 mt-0.5" />
               <div>
                 <span className="font-bold block text-[#11161B]">
@@ -421,7 +453,7 @@ export function HomeOverviewSection({
                 </span>
               </div>
             </div>
-            <div className="flex items-start gap-2.5 p-3 rounded bg-[#FBFBF9] border border-[#E5E2DC]">
+            <div className="flex items-start gap-2 p-2.5 rounded bg-[#FBFBF9] border border-[#E5E2DC]">
               <CheckCircle2 className="w-4 h-4 text-[#0A2540] shrink-0 mt-0.5" />
               <div>
                 <span className="font-bold block text-[#11161B]">
@@ -436,18 +468,18 @@ export function HomeOverviewSection({
         </div>
 
         {/* 2. Comprehensive Busan Travel Information */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           <div className="flex items-center gap-2 text-[#0A2540]">
             <Layers className="w-5 h-5 text-[#0A2540] shrink-0" />
-            <h3 className="text-lg sm:text-xl font-bold text-[#11161B]">
+            <h3 className="text-base sm:text-lg font-bold text-[#11161B]">
               {language === 'KR' ? '부산 여행에 필요한 정보를 한곳에서' : 'Comprehensive Busan Travel Information'}
             </h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
             {/* ① 지하철역 및 출구 정보 */}
-            <div className="p-5 rounded-lg bg-white border border-[#E5E2DC] space-y-2.5 flex flex-col justify-between">
-              <div className="space-y-2">
+            <div className="p-4 rounded-lg bg-white border border-[#E5E2DC] space-y-2 flex flex-col justify-between">
+              <div className="space-y-1.5">
                 <div className="flex items-center gap-2 font-bold text-sm text-[#11161B]">
                   <Train className="w-4 h-4 text-[#0A2540] shrink-0" />
                   <span>{language === 'KR' ? '지하철역 및 출구 정보' : 'Subway Stations & Exit Details'}</span>
@@ -461,8 +493,8 @@ export function HomeOverviewSection({
             </div>
 
             {/* ② 무장애 여행 정보 */}
-            <div className="p-5 rounded-lg bg-white border border-[#E5E2DC] space-y-2.5 flex flex-col justify-between">
-              <div className="space-y-2">
+            <div className="p-4 rounded-lg bg-white border border-[#E5E2DC] space-y-2 flex flex-col justify-between">
+              <div className="space-y-1.5">
                 <div className="flex items-center gap-2 font-bold text-sm text-[#11161B]">
                   <Accessibility className="w-4 h-4 text-[#0A2540] shrink-0" />
                   <span>{language === 'KR' ? '무장애 여행 정보' : 'Barrier-Free Travel Insights'}</span>
@@ -476,8 +508,8 @@ export function HomeOverviewSection({
             </div>
 
             {/* ③ 여행 코스 및 지역 정보 */}
-            <div className="p-5 rounded-lg bg-white border border-[#E5E2DC] space-y-2.5 flex flex-col justify-between">
-              <div className="space-y-2">
+            <div className="p-4 rounded-lg bg-white border border-[#E5E2DC] space-y-2 flex flex-col justify-between">
+              <div className="space-y-1.5">
                 <div className="flex items-center gap-2 font-bold text-sm text-[#11161B]">
                   <Route className="w-4 h-4 text-[#0A2540] shrink-0" />
                   <span>{language === 'KR' ? '여행 코스 및 지역 정보' : 'Itineraries & Regional Guides'}</span>
@@ -491,8 +523,8 @@ export function HomeOverviewSection({
             </div>
 
             {/* ④ 대중교통 및 여행 팁 */}
-            <div className="p-5 rounded-lg bg-white border border-[#E5E2DC] space-y-2.5 flex flex-col justify-between">
-              <div className="space-y-2">
+            <div className="p-4 rounded-lg bg-white border border-[#E5E2DC] space-y-2 flex flex-col justify-between">
+              <div className="space-y-1.5">
                 <div className="flex items-center gap-2 font-bold text-sm text-[#11161B]">
                   <Compass className="w-4 h-4 text-[#0A2540] shrink-0" />
                   <span>{language === 'KR' ? '대중교통 및 여행 팁' : 'Transit & Practical Travel Tips'}</span>
@@ -508,24 +540,24 @@ export function HomeOverviewSection({
         </div>
 
         {/* 3. How We Verify Information */}
-        <div className="bg-[#FBFBF9] border border-[#E5E2DC] rounded-lg p-6 sm:p-8 space-y-5">
-          <div className="space-y-2">
+        <div className="bg-[#FBFBF9] border border-[#E5E2DC] rounded-lg p-5 sm:p-6 space-y-4">
+          <div className="space-y-1.5">
             <div className="flex items-center gap-2 text-[#0A2540]">
               <FileCheck className="w-5 h-5 text-[#0A2540] shrink-0" />
-              <h3 className="text-lg sm:text-xl font-bold text-[#11161B]">
+              <h3 className="text-base sm:text-lg font-bold text-[#11161B]">
                 {language === 'KR' ? '정보는 어떻게 확인하나요?' : 'How We Verify Information'}
               </h3>
             </div>
-            <p className="text-sm text-[#4A5568] leading-relaxed max-w-4xl">
+            <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed max-w-4xl">
               {language === 'KR'
                 ? '스탭리스 인 코리아는 공공 관광 데이터와 교통 관련 정보를 활용하는 동시에, 여행자가 실제 현장에서 활용할 수 있는 이동 정보를 제공하기 위해 주요 장소와 지하철역의 정보를 지속적으로 확인하고 관리합니다.'
                 : 'STEPLESS IN KOREA combines public open tourism data and transit records with continuous field verification and management to ensure reliable, movement-focused information for real-world travelers.'}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-[#4A5568] pt-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-[#4A5568] pt-1">
             {/* ① 공공 관광 데이터 활용 */}
-            <div className="p-5 rounded bg-white border border-[#E5E2DC] space-y-2">
+            <div className="p-4 rounded bg-white border border-[#E5E2DC] space-y-1.5">
               <div className="flex items-center gap-2 font-bold text-sm text-[#11161B]">
                 <CheckCircle2 className="w-4 h-4 text-[#0A2540] shrink-0" />
                 <span>{language === 'KR' ? '공공 관광 데이터 활용' : 'Public Tourism Data Integration'}</span>
@@ -538,7 +570,7 @@ export function HomeOverviewSection({
             </div>
 
             {/* ② 교통 정보 확인 */}
-            <div className="p-5 rounded bg-white border border-[#E5E2DC] space-y-2">
+            <div className="p-4 rounded bg-white border border-[#E5E2DC] space-y-1.5">
               <div className="flex items-center gap-2 font-bold text-sm text-[#11161B]">
                 <Train className="w-4 h-4 text-[#0A2540] shrink-0" />
                 <span>{language === 'KR' ? '교통 정보 확인' : 'Transit System Audit'}</span>
@@ -551,7 +583,7 @@ export function HomeOverviewSection({
             </div>
 
             {/* ③ 현장 중심 동선 확인 */}
-            <div className="p-5 rounded bg-white border border-[#E5E2DC] space-y-2">
+            <div className="p-4 rounded bg-white border border-[#E5E2DC] space-y-1.5">
               <div className="flex items-center gap-2 font-bold text-sm text-[#11161B]">
                 <UserCheck className="w-4 h-4 text-[#0A2540] shrink-0" />
                 <span>{language === 'KR' ? '현장 중심 동선 확인' : 'Field-Oriented Route Review'}</span>
@@ -564,7 +596,7 @@ export function HomeOverviewSection({
             </div>
 
             {/* ④ 지속적인 업데이트 */}
-            <div className="p-5 rounded bg-white border border-[#E5E2DC] space-y-2">
+            <div className="p-4 rounded bg-white border border-[#E5E2DC] space-y-1.5">
               <div className="flex items-center gap-2 font-bold text-sm text-[#11161B]">
                 <RefreshCw className="w-4 h-4 text-[#0A2540] shrink-0" />
                 <span>{language === 'KR' ? '지속적인 정정 및 업데이트' : 'Continuous Updates'}</span>
@@ -579,14 +611,14 @@ export function HomeOverviewSection({
         </div>
 
         {/* 4. Why Stepless in Korea */}
-        <div className="bg-white border border-[#E5E2DC] rounded-lg p-6 sm:p-8 space-y-3">
+        <div className="bg-white border border-[#E5E2DC] rounded-lg p-5 sm:p-6 space-y-2.5">
           <div className="flex items-center gap-2 text-[#0A2540]">
             <Sparkles className="w-5 h-5 text-[#0A2540] shrink-0" />
-            <h3 className="text-lg sm:text-xl font-bold text-[#11161B]">
+            <h3 className="text-base sm:text-lg font-bold text-[#11161B]">
               {language === 'KR' ? 'STEPLESS IN KOREA가 다른 여행 정보와 다른 점' : 'Why Stepless in Korea?'}
             </h3>
           </div>
-          <div className="space-y-2 text-sm text-[#4A5568] leading-relaxed">
+          <div className="space-y-2 text-xs sm:text-sm text-[#4A5568] leading-relaxed">
             <p className="font-semibold text-[#11161B]">
               {language === 'KR'
                 ? "일반적인 여행 정보가 '어디에 갈 것인가'에 집중한다면, STEPLESS IN KOREA는 '어떻게 편하게 이동할 것인가'까지 함께 안내합니다."
@@ -601,23 +633,23 @@ export function HomeOverviewSection({
         </div>
 
         {/* 5. Step-by-Step Movement Guide */}
-        <div className="bg-white border border-[#E5E2DC] rounded-lg p-6 sm:p-8 space-y-5">
-          <div className="space-y-1.5">
+        <div className="bg-white border border-[#E5E2DC] rounded-lg p-5 sm:p-6 space-y-4">
+          <div className="space-y-1">
             <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
               {language === 'KR' ? '단계별 이용 가이드' : 'STEP-BY-STEP TRANSIT GUIDE'}
             </div>
             <div className="flex items-center gap-2 text-[#0A2540]">
               <Compass className="w-5 h-5 text-[#0A2540] shrink-0" />
-              <h3 className="text-lg sm:text-xl font-bold text-[#11161B]">
+              <h3 className="text-base sm:text-lg font-bold text-[#11161B]">
                 {language === 'KR' ? '부산 지하철 무단차 3단계 이동 방법' : '3-Step Step-Free Metro Navigation'}
               </h3>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-            <div className="p-5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+            <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-1.5">
               <div className="flex items-center gap-2 font-mono font-bold text-sm text-[#0A2540]">
-                <span className="w-6 h-6 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs">1</span>
+                <span className="w-5 h-5 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs">1</span>
                 <span>{language === 'KR' ? '역 및 출구 조회' : 'Find Station & Exit'}</span>
               </div>
               <p className="text-xs text-[#4A5568] leading-relaxed">
@@ -627,9 +659,9 @@ export function HomeOverviewSection({
               </p>
             </div>
 
-            <div className="p-5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+            <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-1.5">
               <div className="flex items-center gap-2 font-mono font-bold text-sm text-[#0A2540]">
-                <span className="w-6 h-6 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs">2</span>
+                <span className="w-5 h-5 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs">2</span>
                 <span>{language === 'KR' ? '지상 보도 무단차 이동' : 'Level Ground Pathway'}</span>
               </div>
               <p className="text-xs text-[#4A5568] leading-relaxed">
@@ -639,9 +671,9 @@ export function HomeOverviewSection({
               </p>
             </div>
 
-            <div className="p-5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+            <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-1.5">
               <div className="flex items-center gap-2 font-mono font-bold text-sm text-[#0A2540]">
-                <span className="w-6 h-6 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs">3</span>
+                <span className="w-5 h-5 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs">3</span>
                 <span>{language === 'KR' ? '개찰구 및 승강장 진입' : 'Gate & Platform Access'}</span>
               </div>
               <p className="text-xs text-[#4A5568] leading-relaxed">
@@ -654,22 +686,22 @@ export function HomeOverviewSection({
         </div>
 
         {/* 6. Visible Service FAQ Section */}
-        <div className="bg-white border border-[#E5E2DC] rounded-lg p-6 sm:p-8 space-y-6">
-          <div className="space-y-1.5 border-b border-[#E5E2DC] pb-4">
+        <div className="bg-white border border-[#E5E2DC] rounded-lg p-5 sm:p-6 space-y-4">
+          <div className="space-y-1 border-b border-[#E5E2DC] pb-3">
             <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
               {language === 'KR' ? '자주 묻는 질문' : 'FREQUENTLY ASKED QUESTIONS'}
             </div>
             <div className="flex items-center gap-2 text-[#0A2540]">
               <HelpCircle className="w-5 h-5 text-[#0A2540] shrink-0" />
-              <h3 className="text-lg sm:text-xl font-bold text-[#11161B]">
+              <h3 className="text-base sm:text-lg font-bold text-[#11161B]">
                 {language === 'KR' ? '스탭리스 서비스 이용 FAQ' : 'Stepless Service FAQ'}
               </h3>
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {/* FAQ 1 */}
-            <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+            <div className="p-3.5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-1.5">
               <h4 className="text-sm font-bold text-[#11161B] flex items-start gap-2">
                 <span className="text-[#0A2540] font-mono">Q.</span>
                 <span>
@@ -686,7 +718,7 @@ export function HomeOverviewSection({
             </div>
 
             {/* FAQ 2 */}
-            <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+            <div className="p-3.5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-1.5">
               <h4 className="text-sm font-bold text-[#11161B] flex items-start gap-2">
                 <span className="text-[#0A2540] font-mono">Q.</span>
                 <span>
@@ -703,7 +735,7 @@ export function HomeOverviewSection({
             </div>
 
             {/* FAQ 3 */}
-            <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+            <div className="p-3.5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-1.5">
               <h4 className="text-sm font-bold text-[#11161B] flex items-start gap-2">
                 <span className="text-[#0A2540] font-mono">Q.</span>
                 <span>
@@ -720,7 +752,7 @@ export function HomeOverviewSection({
             </div>
 
             {/* FAQ 4 */}
-            <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-2">
+            <div className="p-3.5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-1.5">
               <h4 className="text-sm font-bold text-[#11161B] flex items-start gap-2">
                 <span className="text-[#0A2540] font-mono">Q.</span>
                 <span>
@@ -739,7 +771,7 @@ export function HomeOverviewSection({
         </div>
 
         {/* 7. Field Conditions May Change & Issue Reporting */}
-        <div className="p-6 rounded-lg bg-white border border-[#E5E2DC] space-y-4">
+        <div className="p-5 sm:p-6 rounded-lg bg-white border border-[#E5E2DC] space-y-3">
           <div className="flex items-center gap-2 text-[#0A2540]">
             <AlertTriangle className="w-5 h-5 text-[#0A2540] shrink-0" />
             <h3 className="text-base sm:text-lg font-bold text-[#11161B]">
