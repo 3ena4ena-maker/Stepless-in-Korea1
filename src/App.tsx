@@ -305,14 +305,44 @@ export default function App() {
   });
 
   // Operator (Admin) Mode states
-  const [isAdminMode, setIsAdminMode] = useState<boolean>(false);
+  const [isAdminMode, setIsAdminMode] = useState<boolean>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        return localStorage.getItem('isAdmin') === 'true' || 
+               localStorage.getItem('isAdminMode') === 'true' ||
+               sessionStorage.getItem('isAdmin') === 'true' ||
+               sessionStorage.getItem('isAdminMode') === 'true';
+      }
+    } catch {}
+    return false;
+  });
   const [adminPasswordInput, setAdminPasswordInput] = useState<string>('');
   const [adminError, setAdminError] = useState<string>('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Keep window global in sync for emergency access and map handlers
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).isAdmin = isAdminMode;
+      (window as any).isAdminMode = isAdminMode;
+    }
+  }, [isAdminMode]);
+
   const toggleAdminMode = () => {
     setIsAdminMode(prev => {
       const next = !prev;
+      try {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('isAdmin', String(next));
+          localStorage.setItem('isAdminMode', String(next));
+          sessionStorage.setItem('isAdmin', String(next));
+          sessionStorage.setItem('isAdminMode', String(next));
+          (window as any).isAdmin = next;
+          (window as any).isAdminMode = next;
+        }
+      } catch (e) {
+        // ignore storage quota errors
+      }
       const msg = next 
         ? (language === 'KR' ? '관리자/좌표 측정 모드가 활성화되었습니다' : 'Admin / Coordinate mode activated')
         : (language === 'KR' ? '관리자/좌표 측정 모드가 비활성화되었습니다' : 'Admin / Coordinate mode deactivated');

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Station, translateExitNumber } from '../types';
+import { Station, ExitInfo, translateExitNumber } from '../types';
 import { getStationCrosswalkPoints } from '../utils/crosswalkData';
 import { createGoogleMapExitMarker, createGoogleMapCrosswalkMarker } from '../utils/googleMapsHelper';
 
@@ -103,24 +103,296 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     }
   }, [language]);
 
+  // Coordinate inspector & Admin mode detection (props, localStorage, sessionStorage, or window global)
+  const [sessionAdmin, setSessionAdmin] = useState<boolean>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        return localStorage.getItem('isAdmin') === 'true' ||
+               localStorage.getItem('isAdminMode') === 'true' ||
+               sessionStorage.getItem('isAdmin') === 'true' ||
+               sessionStorage.getItem('isAdminMode') === 'true' ||
+               (window as any).isAdmin === true ||
+               (window as any).isAdminMode === true;
+      }
+    } catch {}
+    return false;
+  });
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      try {
+        const val = localStorage.getItem('isAdmin') === 'true' ||
+                    localStorage.getItem('isAdminMode') === 'true' ||
+                    sessionStorage.getItem('isAdmin') === 'true' ||
+                    sessionStorage.getItem('isAdminMode') === 'true' ||
+                    (window as any).isAdmin === true ||
+                    (window as any).isAdminMode === true;
+        setSessionAdmin(val);
+      } catch {}
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  const effectiveAdmin = Boolean(isAdminMode || sessionAdmin);
+
+  // Editable station exits state for admin live modification & marker moving
+  const [stationExits, setStationExits] = useState<ExitInfo[]>(() => {
+    try {
+      const saved = localStorage.getItem(`admin_station_override_${station.id}`);
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return station.exits || [];
+  });
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(`admin_station_override_${station.id}`);
+      if (saved) {
+        setStationExits(JSON.parse(saved));
+        return;
+      }
+    } catch {}
+    setStationExits(station.exits || []);
+  }, [station.id]);
+
   // Coordinate inspector mode state
   const [inspectMode, setInspectMode] = useState<boolean>(false);
   const [clickedCoord, setClickedCoord] = useState<{ lat: number; lng: number } | null>(null);
   const tempMarkerRef = useRef<any>(null);
   const leafletTempMarkerRef = useRef<any>(null);
 
-  // Reset inspect mode if admin mode is disabled
+  // Admin location edit form states
+  const [isEditPanelOpen, setIsEditPanelOpen] = useState<boolean>(false);
+  const [selectedExitForEdit, setSelectedExitForEdit] = useState<string>('');
+  const [editLat, setEditLat] = useState<string>('');
+  const [editLng, setEditLng] = useState<string>('');
+  const [editExitNumber, setEditExitNumber] = useState<string>('');
+  const [editDirectionDesc, setEditDirectionDesc] = useState<string>('');
+  const [editHasElevator, setEditHasElevator] = useState<boolean>(false);
+  const [editHasEscalator, setEditHasEscalator] = useState<boolean>(false);
+  const [editIsAccessible, setEditIsAccessible] = useState<boolean>(true);
+  const [adminToast, setAdminToast] = useState<string | null>(null);
+
+  // Reset inspect mode and markers if admin mode is disabled
   useEffect(() => {
-    if (!isAdminMode) {
+    if (!effectiveAdmin) {
       setInspectMode(false);
       setClickedCoord(null);
-      if (tempMarkerRef.current) tempMarkerRef.current.setMap(null);
-      if (googleTempMarkerRef.current) googleTempMarkerRef.current.setMap(null);
+      setIsEditPanelOpen(false);
+      if (tempMarkerRef.current) {
+        try { tempMarkerRef.current.setMap(null); } catch {}
+        tempMarkerRef.current = null;
+      }
+      if (googleTempMarkerRef.current) {
+        try { googleTempMarkerRef.current.setMap(null); } catch {}
+        googleTempMarkerRef.current = null;
+      }
       if (leafletTempMarkerRef.current && leafletMapInstance.current) {
-        leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current);
+        try { leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current); } catch {}
+        leafletTempMarkerRef.current = null;
       }
     }
-  }, [isAdminMode]);
+  }, [effectiveAdmin]);
+
+  // Helper to place/move the admin coordinate marker and populate edit form
+  const handleMapCoordinateClick = (lat: number, lng: number, mapType: 'naver' | 'google' | 'leaflet') => {
+    if (!effectiveAdmin) return;
+
+    setClickedCoord({ lat, lng });
+    setEditLat(lat.toFixed(6));
+    setEditLng(lng.toFixed(6));
+
+    if (mapType === 'naver' && mapInstance.current && window.naver?.maps) {
+      if (tempMarkerRef.current) {
+        tempMarkerRef.current.setPosition(new window.naver.maps.LatLng(lat, lng));
+      } else {
+        tempMarkerRef.current = new window.naver.maps.Marker({
+          position: new window.naver.maps.LatLng(lat, lng),
+          map: mapInstance.current,
+          draggable: true,
+          icon: {
+            content: `
+              <div style="background: #ef4444; color: white; border: 2.5px solid white; border-radius: 9999px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; box-shadow: 0 4px 14px rgba(239,68,68,0.6); cursor: grab; user-select: none;">
+                📍
+              </div>
+            `,
+            anchor: new window.naver.maps.Point(14, 14)
+          }
+        });
+        window.naver.maps.Event.addListener(tempMarkerRef.current, 'dragend', (e: any) => {
+          const dLat = e.coord.lat();
+          const dLng = e.coord.lng();
+          handleMapCoordinateClick(dLat, dLng, 'naver');
+        });
+      }
+    } else if (mapType === 'google' && googleMapInstance.current && window.google?.maps) {
+      if (googleTempMarkerRef.current) {
+        googleTempMarkerRef.current.setPosition(new window.google.maps.LatLng(lat, lng));
+      } else {
+        googleTempMarkerRef.current = new window.google.maps.Marker({
+          position: new window.google.maps.LatLng(lat, lng),
+          map: googleMapInstance.current,
+          draggable: true,
+          title: language === 'KR' ? '관리자 지정 위치 (드래그 가능)' : 'Admin Location (Draggable)',
+          icon: {
+            path: window.google.maps.SymbolPath.CIRCLE,
+            fillColor: '#ef4444',
+            fillOpacity: 1,
+            strokeColor: '#ffffff',
+            strokeWeight: 2.5,
+            scale: 9
+          }
+        });
+        googleTempMarkerRef.current.addListener('dragend', (e: any) => {
+          const dLat = e.latLng.lat();
+          const dLng = e.latLng.lng();
+          handleMapCoordinateClick(dLat, dLng, 'google');
+        });
+      }
+    } else if (mapType === 'leaflet' && leafletMapInstance.current && (window as any).L) {
+      const L = (window as any).L;
+      if (leafletTempMarkerRef.current) {
+        leafletTempMarkerRef.current.setLatLng([lat, lng]);
+      } else {
+        const tempIcon = L.divIcon({
+          html: `
+            <div style="background: #ef4444; color: white; border: 2.5px solid white; border-radius: 9999px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; box-shadow: 0 4px 14px rgba(239,68,68,0.6); cursor: grab;">
+              📍
+            </div>
+          `,
+          className: 'leaflet-custom-marker-wrapper',
+          iconSize: [28, 28],
+          iconAnchor: [14, 14]
+        });
+        leafletTempMarkerRef.current = L.marker([lat, lng], { icon: tempIcon, draggable: true }).addTo(leafletMapInstance.current);
+        leafletTempMarkerRef.current.on('dragend', (e: any) => {
+          const pos = e.target.getLatLng();
+          handleMapCoordinateClick(pos.lat, pos.lng, 'leaflet');
+        });
+      }
+    }
+  };
+
+  // Pre-fill exit info when dropdown selects an exit
+  const handleSelectExitForEdit = (exitNumber: string) => {
+    setSelectedExitForEdit(exitNumber);
+    if (!exitNumber || exitNumber === '__NEW__') {
+      setEditExitNumber('');
+      setEditDirectionDesc('');
+      setEditHasElevator(false);
+      setEditHasEscalator(false);
+      setEditIsAccessible(true);
+      return;
+    }
+    const target = stationExits.find(e => e.number === exitNumber);
+    if (target) {
+      setEditExitNumber(target.number);
+      setEditDirectionDesc(target.directionDesc || '');
+      setEditHasElevator(Boolean(target.hasElevator));
+      setEditHasEscalator(Boolean(target.hasEscalator));
+      setEditIsAccessible(Boolean(target.isAccessible));
+    }
+  };
+
+  // Apply coordinates to the selected exit and refresh map
+  const handleApplyCoordinatesToExit = () => {
+    const lat = parseFloat(editLat);
+    const lng = parseFloat(editLng);
+    if (isNaN(lat) || isNaN(lng)) {
+      alert(language === 'KR' ? '유효한 위도와 경도를 입력해 주세요.' : 'Please enter valid coordinates.');
+      return;
+    }
+
+    if (!selectedExitForEdit || selectedExitForEdit === '__NEW__') {
+      const newExitNum = editExitNumber.trim() || `${stationExits.length + 1}`;
+      const newExit: ExitInfo = {
+        number: newExitNum,
+        isAccessible: editIsAccessible,
+        hasElevator: editHasElevator,
+        hasEscalator: editHasEscalator,
+        isStrollerFriendly: editIsAccessible,
+        tip: `${station.name} ${newExitNum}번 출구`,
+        tipEn: `${station.englishName} Exit ${newExitNum}`,
+        status: 'OPERATIONAL',
+        directionDesc: editDirectionDesc.trim() || `${station.name} 방면`,
+        directionDescEn: `${station.englishName} area`,
+        latitude: lat,
+        longitude: lng,
+        kakaoMapUrl: `https://map.kakao.com/link/map/${encodeURIComponent(station.name + ' ' + newExitNum + '번 출구')},${lat},${lng}`,
+        naverMapUrl: `https://map.naver.com/v5/search/${encodeURIComponent(station.name + ' ' + newExitNum + '번 출구')}`,
+        pathwayTimeline: []
+      };
+      const updated = [...stationExits, newExit];
+      setStationExits(updated);
+      try {
+        localStorage.setItem(`admin_station_override_${station.id}`, JSON.stringify(updated));
+      } catch {}
+      setAdminToast(language === 'KR' ? `새로운 [${newExitNum}번 출구] 마커가 등록되었습니다.` : `New Exit ${newExitNum} marker registered.`);
+      setSelectedExitForEdit(newExitNum);
+    } else {
+      const updated = stationExits.map(ex => {
+        if (ex.number === selectedExitForEdit) {
+          return {
+            ...ex,
+            latitude: lat,
+            longitude: lng,
+            directionDesc: editDirectionDesc.trim() || ex.directionDesc,
+            hasElevator: editHasElevator,
+            hasEscalator: editHasEscalator,
+            isAccessible: editIsAccessible,
+          };
+        }
+        return ex;
+      });
+      setStationExits(updated);
+      try {
+        localStorage.setItem(`admin_station_override_${station.id}`, JSON.stringify(updated));
+      } catch {}
+      setAdminToast(language === 'KR' ? `[${selectedExitForEdit}번 출구] 좌표가 성공적으로 수정되었습니다.` : `Exit ${selectedExitForEdit} coordinates updated.`);
+    }
+
+    setTimeout(() => setAdminToast(null), 3500);
+  };
+
+  // Reset station exits to default data
+  const handleResetExits = () => {
+    try {
+      localStorage.removeItem(`admin_station_override_${station.id}`);
+    } catch {}
+    setStationExits(station.exits || []);
+    setSelectedExitForEdit('');
+    setAdminToast(language === 'KR' ? '출구 데이터가 기본 데이터로 초기화되었습니다.' : 'Restored to default station exits.');
+    setTimeout(() => setAdminToast(null), 3500);
+  };
+
+  // Pan and center map to coordinates
+  const handleCenterOnCoord = () => {
+    const lat = parseFloat(editLat);
+    const lng = parseFloat(editLng);
+    if (isNaN(lat) || isNaN(lng)) return;
+
+    if (mapInstance.current && window.naver?.maps) {
+      mapInstance.current.panTo(new window.naver.maps.LatLng(lat, lng));
+    } else if (googleMapInstance.current && window.google?.maps) {
+      googleMapInstance.current.panTo(new window.google.maps.LatLng(lat, lng));
+    } else if (leafletMapInstance.current) {
+      leafletMapInstance.current.panTo([lat, lng]);
+    }
+  };
+
+  // Manually move admin marker to coordinates in editLat/editLng inputs
+  const handleManualMoveMarker = () => {
+    const lat = parseFloat(editLat);
+    const lng = parseFloat(editLng);
+    if (isNaN(lat) || isNaN(lng)) {
+      alert(language === 'KR' ? '유효한 위도와 경도를 입력해 주세요.' : 'Please enter valid coordinates.');
+      return;
+    }
+    const currentEngine = language === 'EN' && !useLeaflet ? 'google' : useLeaflet ? 'leaflet' : 'naver';
+    handleMapCoordinateClick(lat, lng, currentEngine);
+    handleCenterOnCoord();
+  };
 
   // Safe map cleanup helpers to prevent memory leaks and API error cascades
   const destroyGoogleMap = () => {
@@ -433,7 +705,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     destroyLeafletMap();
     destroyGoogleMap();
 
-    const exits = station.exits || [];
+    const exits = stationExits;
     if (exits.length === 0) return;
 
     // Calculate map focus center dynamically using mathematical average coordinate of all exits or focused override
@@ -644,34 +916,18 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       });
     }
 
-    // Map Click Listener for inspect mode / coordinate check
+    // Map Click Listener for admin inspect mode / coordinate check
     if (mapInstance.current && window.naver && window.naver.maps) {
       window.naver.maps.Event.clearListeners(mapInstance.current, 'click');
       window.naver.maps.Event.addListener(mapInstance.current, 'click', (e: any) => {
+        if (!effectiveAdmin) return;
         const lat = e.coord.lat();
         const lng = e.coord.lng();
-        setClickedCoord({ lat, lng });
-
-        if (tempMarkerRef.current) {
-          tempMarkerRef.current.setMap(null);
-        }
-
-        tempMarkerRef.current = new window.naver.maps.Marker({
-          position: new window.naver.maps.LatLng(lat, lng),
-          map: mapInstance.current,
-          icon: {
-            content: `
-              <div style="background: #ef4444; color: white; border: 2px solid white; border-radius: 9999px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); animation: bounce 0.6s infinite alternate;">
-                📍
-              </div>
-            `,
-            anchor: new window.naver.maps.Point(11, 11)
-          }
-        });
+        handleMapCoordinateClick(lat, lng, 'naver');
       });
     }
 
-  }, [station, scriptLoaded, focusedExitCoords, language, useLeaflet]);
+  }, [station, scriptLoaded, focusedExitCoords, language, useLeaflet, stationExits, effectiveAdmin]);
 
   // 2-B. Initialize or Update Google Maps and Markers when language === 'EN'
   useEffect(() => {
@@ -684,7 +940,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     destroyNaverMap();
     destroyLeafletMap();
 
-    const exits = station.exits || [];
+    const exits = stationExits;
     if (exits.length === 0) return;
 
     let centerLat = 0;
@@ -721,6 +977,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
         streetViewControl: false,
         fullscreenControl: false,
         zoomControl: true,
+        gestureHandling: 'greedy',
         styles: [
           {
             featureType: 'poi',
@@ -783,29 +1040,13 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     if (googleMapInstance.current && window.google && window.google.maps) {
       window.google.maps.event.clearListeners(googleMapInstance.current, 'click');
       googleMapInstance.current.addListener('click', (e: any) => {
+        if (!effectiveAdmin) return;
         const lat = e.latLng.lat();
         const lng = e.latLng.lng();
-        setClickedCoord({ lat, lng });
-
-        if (googleTempMarkerRef.current) {
-          googleTempMarkerRef.current.setMap(null);
-        }
-
-        googleTempMarkerRef.current = new window.google.maps.Marker({
-          position: new window.google.maps.LatLng(lat, lng),
-          map: googleMapInstance.current,
-          icon: {
-            path: window.google.maps.SymbolPath.CIRCLE,
-            fillColor: '#ef4444',
-            fillOpacity: 1,
-            strokeColor: '#ffffff',
-            strokeWeight: 2,
-            scale: 8
-          }
-        });
+        handleMapCoordinateClick(lat, lng, 'google');
       });
     }
-  }, [station, googleMapsLoaded, focusedExitCoords, language, useLeaflet]);
+  }, [station, googleMapsLoaded, focusedExitCoords, language, useLeaflet, stationExits, effectiveAdmin]);
 
   // 3. Dynamic Leaflet CSS & Script loader
   useEffect(() => {
@@ -867,7 +1108,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     destroyNaverMap();
     destroyGoogleMap();
 
-    const exits = station.exits || [];
+    const exits = stationExits;
     if (exits.length === 0) return;
 
     // Calculate map focus center dynamically using mathematical average coordinate of all exits or focused override
@@ -1067,26 +1308,10 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     if (leafletMapInstance.current) {
       leafletMapInstance.current.off('click');
       leafletMapInstance.current.on('click', (e: any) => {
+        if (!effectiveAdmin) return;
         const lat = e.latlng.lat;
         const lng = e.latlng.lng;
-        setClickedCoord({ lat, lng });
-
-        if (leafletTempMarkerRef.current) {
-          leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current);
-        }
-
-        const tempIcon = L.divIcon({
-          html: `
-            <div style="background: #ef4444; color: white; border: 2px solid white; border-radius: 9999px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-              📍
-            </div>
-          `,
-          className: 'leaflet-custom-marker-wrapper',
-          iconSize: [22, 22],
-          iconAnchor: [11, 11]
-        });
-
-        leafletTempMarkerRef.current = L.marker([lat, lng], { icon: tempIcon }).addTo(leafletMapInstance.current);
+        handleMapCoordinateClick(lat, lng, 'leaflet');
       });
     }
 
@@ -1101,7 +1326,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
 
     return () => clearTimeout(timer);
 
-  }, [station, leafletLoaded, useLeaflet, focusedExitCoords, language]);
+  }, [station, leafletLoaded, useLeaflet, focusedExitCoords, language, stationExits, effectiveAdmin]);
 
   // Clean-up logic on unmount and window resize handler to ensure maps stay perfectly sized
   useEffect(() => {
@@ -1185,68 +1410,291 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
             </button>
           )}
 
-          {isAdminMode && (
+          {effectiveAdmin && (
             <button
               onClick={() => {
                 setInspectMode(!inspectMode);
                 if (inspectMode) {
                   setClickedCoord(null);
-                  if (tempMarkerRef.current) tempMarkerRef.current.setMap(null);
+                  setIsEditPanelOpen(false);
+                  if (tempMarkerRef.current) {
+                    try { tempMarkerRef.current.setMap(null); } catch {}
+                    tempMarkerRef.current = null;
+                  }
+                  if (googleTempMarkerRef.current) {
+                    try { googleTempMarkerRef.current.setMap(null); } catch {}
+                    googleTempMarkerRef.current = null;
+                  }
                   if (leafletTempMarkerRef.current && leafletMapInstance.current) {
-                    leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current);
+                    try { leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current); } catch {}
+                    leafletTempMarkerRef.current = null;
                   }
                 }
               }}
-              className={`flex items-center gap-1 px-3 py-1.5 shadow-md rounded-full text-xs font-extrabold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 shadow-md rounded-full text-xs font-black transition-all cursor-pointer ${
                 inspectMode 
                   ? 'bg-rose-600 text-white ring-2 ring-rose-300 animate-pulse' 
                   : 'bg-slate-900/90 hover:bg-slate-900 text-white backdrop-blur-sm'
               }`}
             >
-              {inspectMode ? '🎯 ' + (language === 'KR' ? '좌표 확인 감지 중 (클릭하세요)' : 'Inspecting Coordinates...') : '📍 ' + (language === 'KR' ? '좌표 확인 모드' : 'Inspect Coordinates')}
+              {inspectMode ? '🎯 ' + (language === 'KR' ? '좌표 측정/수정 모드 (지도 클릭)' : 'Inspect/Edit Mode Active') : '🛠️ ' + (language === 'KR' ? '관리자 좌표/위치 수정' : 'Admin Coordinates')}
             </button>
           )}
         </div>
 
-        {/* Clicked Coordinates Banner / Toast */}
-        {clickedCoord && (
-          <div className="absolute bottom-3 left-3 right-3 z-[1000] bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-3 text-white shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 animate-slide-up">
-            <div className="flex items-center gap-2 overflow-hidden">
-              <span className="text-xl shrink-0">📍</span>
-              <div className="space-y-0.5">
-                <div className="text-[10px] font-extrabold text-blue-400 uppercase tracking-wider">
-                  {language === 'KR' ? '선택한 지점 좌표' : 'Selected Location Coordinates'}
+        {/* Admin Coordinate Inspector & Location Edit Panel - Strictly rendered for Admins only */}
+        {effectiveAdmin && clickedCoord && (
+          <div className="absolute bottom-3 left-3 right-3 z-[1000] bg-slate-900/95 backdrop-blur-md border border-slate-700/90 rounded-2xl p-3.5 text-white shadow-2xl flex flex-col gap-3 animate-slide-up max-h-[82vh] overflow-y-auto">
+            {/* Header & Quick Action Row */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 pb-2 border-b border-slate-800">
+              <div className="flex items-center gap-2.5 overflow-hidden">
+                <span className="text-xl shrink-0 p-1.5 bg-rose-600/30 border border-rose-500/50 rounded-xl">📍</span>
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-extrabold text-blue-400 uppercase tracking-wider">
+                      {language === 'KR' ? '선택한 지점 좌표 (관리자)' : 'Selected Coordinates (Admin)'}
+                    </span>
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 bg-amber-500/20 text-amber-300 rounded border border-amber-500/40">
+                      {language === 'KR' ? '드래그 가능' : 'Draggable'}
+                    </span>
+                  </div>
+                  <div className="text-xs font-mono font-bold text-slate-100 selection:bg-blue-500">
+                    Lat: <span className="text-emerald-400">{clickedCoord.lat.toFixed(6)}</span> | Lng: <span className="text-emerald-400">{clickedCoord.lng.toFixed(6)}</span>
+                  </div>
                 </div>
-                <div className="text-xs font-mono font-bold text-slate-100 selection:bg-blue-500">
-                  latitude: {clickedCoord.lat.toFixed(6)}, longitude: {clickedCoord.lng.toFixed(6)}
-                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5 shrink-0 w-full sm:w-auto justify-end flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const text = `latitude: ${clickedCoord.lat.toFixed(6)},\nlongitude: ${clickedCoord.lng.toFixed(6)}`;
+                    navigator.clipboard.writeText(text);
+                    setAdminToast(language === 'KR' ? '좌표가 클립보드에 복사되었습니다.' : 'Coordinates copied to clipboard.');
+                    setTimeout(() => setAdminToast(null), 3000);
+                  }}
+                  className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-bold rounded-xl transition cursor-pointer border border-slate-700"
+                >
+                  📋 {language === 'KR' ? '좌표 복사' : 'Copy'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsEditPanelOpen(prev => !prev)}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-xl transition cursor-pointer border shadow-sm ${
+                    isEditPanelOpen 
+                      ? 'bg-blue-600 hover:bg-blue-500 text-white border-blue-400' 
+                      : 'bg-emerald-600 hover:bg-emerald-500 text-white border-emerald-400'
+                  }`}
+                >
+                  ✏️ {isEditPanelOpen ? (language === 'KR' ? '수정 폼 접기' : 'Hide Form') : (language === 'KR' ? '출구 위치 연동 수정' : 'Edit Station Exit')}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleCenterOnCoord}
+                  className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-bold rounded-xl transition cursor-pointer border border-slate-700"
+                  title={language === 'KR' ? '해당 좌표를 지도의 중심으로 이동합니다.' : 'Center map on coordinates'}
+                >
+                  🎯 {language === 'KR' ? '중심 이동' : 'Center'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setClickedCoord(null);
+                    setIsEditPanelOpen(false);
+                    if (tempMarkerRef.current) {
+                      try { tempMarkerRef.current.setMap(null); } catch {}
+                      tempMarkerRef.current = null;
+                    }
+                    if (googleTempMarkerRef.current) {
+                      try { googleTempMarkerRef.current.setMap(null); } catch {}
+                      googleTempMarkerRef.current = null;
+                    }
+                    if (leafletTempMarkerRef.current && leafletMapInstance.current) {
+                      try { leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current); } catch {}
+                      leafletTempMarkerRef.current = null;
+                    }
+                  }}
+                  className="px-2.5 py-1.5 bg-slate-800 hover:bg-rose-900 text-slate-300 hover:text-white text-xs font-bold rounded-xl transition cursor-pointer border border-slate-700"
+                >
+                  ✕
+                </button>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end">
-              <button
-                onClick={() => {
-                  const text = `latitude: ${clickedCoord.lat.toFixed(6)},\nlongitude: ${clickedCoord.lng.toFixed(6)}`;
-                  navigator.clipboard.writeText(text);
-                  alert(language === 'KR' ? `복사되었습니다!\n\n${text}` : `Copied!\n\n${text}`);
-                }}
-                className="flex-1 sm:flex-initial px-3 py-1.5 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs font-black rounded-xl transition cursor-pointer shadow-sm"
-              >
-                📋 {language === 'KR' ? '좌표 복사' : 'Copy'}
-              </button>
-              <button
-                onClick={() => {
-                  setClickedCoord(null);
-                  if (tempMarkerRef.current) tempMarkerRef.current.setMap(null);
-                  if (leafletTempMarkerRef.current && leafletMapInstance.current) {
-                    leafletMapInstance.current.removeLayer(leafletTempMarkerRef.current);
-                  }
-                }}
-                className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold rounded-xl transition cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
+            {/* Admin Toast Feedback */}
+            {adminToast && (
+              <div className="bg-emerald-500/20 border border-emerald-500/50 text-emerald-200 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center justify-between animate-fade-in">
+                <span>✅ {adminToast}</span>
+                <button type="button" onClick={() => setAdminToast(null)} className="text-emerald-300 hover:text-white font-bold ml-2">✕</button>
+              </div>
+            )}
+
+            {/* Expanded Location Info Edit Form */}
+            {isEditPanelOpen && (
+              <div className="space-y-3 pt-1 text-slate-200 text-xs">
+                <div className="p-2.5 bg-slate-950/60 rounded-xl border border-slate-800 space-y-2.5">
+                  <div className="font-extrabold text-slate-100 flex items-center justify-between">
+                    <span>⚙️ {language === 'KR' ? '출구 위치 및 시설 정보 수정 / 등록' : 'Edit / Register Station Exit Info'}</span>
+                    <span className="text-[11px] text-slate-400 font-normal">
+                      {station.name} ({stationExits.length} {language === 'KR' ? '개 출구 등록됨' : 'exits registered'})
+                    </span>
+                  </div>
+
+                  {/* 1. Target Exit Selector */}
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-400 mb-1">
+                      {language === 'KR' ? '1. 수정할 출구 선택 (선택 시 해당 정보가 자동 로드됩니다)' : '1. Select Target Exit'}
+                    </label>
+                    <select
+                      value={selectedExitForEdit}
+                      onChange={e => handleSelectExitForEdit(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-medium"
+                    >
+                      <option value="">-- {language === 'KR' ? '기존 출구 선택' : 'Select existing exit'} --</option>
+                      {stationExits.map(ex => (
+                        <option key={ex.number} value={ex.number}>
+                          {ex.number}번 출구 ({ex.latitude.toFixed(5)}, {ex.longitude.toFixed(5)}) {ex.hasElevator ? '🛗' : ''} {ex.hasEscalator ? '⚡' : ''} - {ex.directionDesc || '방면 안내'}
+                        </option>
+                      ))}
+                      <option value="__NEW__">➕ {language === 'KR' ? '새로운 출구/시설 신규 추가' : 'Register as new exit'}</option>
+                    </select>
+                  </div>
+
+                  {/* 2. Coordinate Adjustment Inputs */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-400 mb-0.5">
+                        {language === 'KR' ? '위도 (Latitude)' : 'Latitude'}
+                      </label>
+                      <input
+                        type="number"
+                        step="0.000001"
+                        value={editLat}
+                        onChange={e => setEditLat(e.target.value)}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-400 mb-0.5">
+                        {language === 'KR' ? '경도 (Longitude)' : 'Longitude'}
+                      </label>
+                      <input
+                        type="number"
+                        step="0.000001"
+                        value={editLng}
+                        onChange={e => setEditLng(e.target.value)}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Manual Coordinate Apply Button */}
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      onClick={handleManualMoveMarker}
+                      className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-[11px] font-bold transition flex items-center gap-1 cursor-pointer border border-slate-700"
+                    >
+                      📍 {language === 'KR' ? '직접 수정한 좌표로 핀 이동' : 'Move Pin to Inputs'}
+                    </button>
+                  </div>
+
+                  {/* 3. Exit Metadata Inputs */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-400 mb-0.5">
+                        {language === 'KR' ? '출구 번호 / 시설 명칭' : 'Exit Number / Name'}
+                      </label>
+                      <input
+                        type="text"
+                        value={editExitNumber}
+                        onChange={e => setEditExitNumber(e.target.value)}
+                        placeholder={language === 'KR' ? '예: 7 또는 엘리베이터 1호기' : 'e.g. 7 or Elevator 1'}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-400 mb-0.5">
+                        {language === 'KR' ? '방면 안내 (주요 시설)' : 'Direction / Landmark'}
+                      </label>
+                      <input
+                        type="text"
+                        value={editDirectionDesc}
+                        onChange={e => setEditDirectionDesc(e.target.value)}
+                        placeholder={language === 'KR' ? '예: 롯데백화점, 서면지하상가 방면' : 'e.g. Lotte Dept Store'}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* 4. Accessibility Options */}
+                  <div className="flex items-center gap-4 flex-wrap pt-1">
+                    <label className="inline-flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white">
+                      <input
+                        type="checkbox"
+                        checked={editHasElevator}
+                        onChange={e => setEditHasElevator(e.target.checked)}
+                        className="rounded border-slate-700 text-blue-600 focus:ring-0 bg-slate-900 w-4 h-4 cursor-pointer"
+                      />
+                      <span>🛗 {language === 'KR' ? '엘리베이터 있음' : 'Elevator'}</span>
+                    </label>
+
+                    <label className="inline-flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white">
+                      <input
+                        type="checkbox"
+                        checked={editHasEscalator}
+                        onChange={e => setEditHasEscalator(e.target.checked)}
+                        className="rounded border-slate-700 text-blue-600 focus:ring-0 bg-slate-900 w-4 h-4 cursor-pointer"
+                      />
+                      <span>⚡ {language === 'KR' ? '에스컬레이터 있음' : 'Escalator'}</span>
+                    </label>
+
+                    <label className="inline-flex items-center gap-1.5 cursor-pointer text-slate-300 hover:text-white">
+                      <input
+                        type="checkbox"
+                        checked={editIsAccessible}
+                        onChange={e => setEditIsAccessible(e.target.checked)}
+                        className="rounded border-slate-700 text-blue-600 focus:ring-0 bg-slate-900 w-4 h-4 cursor-pointer"
+                      />
+                      <span>♿ {language === 'KR' ? '유모차/휠체어 이동 가능' : 'Accessible'}</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Form Action Buttons */}
+                <div className="flex items-center justify-between gap-2 flex-wrap pt-1">
+                  <button
+                    type="button"
+                    onClick={handleResetExits}
+                    className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold rounded-xl transition cursor-pointer border border-slate-700"
+                  >
+                    ↺ {language === 'KR' ? '기본 데이터로 초기화' : 'Reset to Default'}
+                  </button>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsEditPanelOpen(false)}
+                      className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold rounded-xl transition cursor-pointer border border-slate-700"
+                    >
+                      {language === 'KR' ? '취소' : 'Cancel'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleApplyCoordinatesToExit}
+                      className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white text-xs font-black rounded-xl transition cursor-pointer shadow-md flex items-center gap-1.5"
+                    >
+                      💾 {selectedExitForEdit && selectedExitForEdit !== '__NEW__' 
+                        ? (language === 'KR' ? `[${selectedExitForEdit}번 출구]에 이 좌표 적용 및 지도 반영` : `Apply Coordinates to Exit ${selectedExitForEdit}`) 
+                        : (language === 'KR' ? '신규 출구로 마커 등록 및 지도 반영' : 'Save as New Exit Marker')}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 

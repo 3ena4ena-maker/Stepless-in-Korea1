@@ -209,6 +209,7 @@ export default function PlaceLocationMap({
         streetViewControl: false,
         fullscreenControl: false,
         zoomControl: true,
+        gestureHandling: 'greedy',
       });
       googleMapRef.current = map;
 
