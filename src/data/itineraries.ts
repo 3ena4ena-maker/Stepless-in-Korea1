@@ -1,4 +1,12 @@
 export interface ItineraryStep {
+  id?: string;
+  /**
+   * 한국관광공사 (TourAPI / KorWithService2) 공공데이터 고유 콘텐츠 식별자 (선택적)
+   * 식도락(GOURMET), 전통시장(MARKET), 체험(EXPERIENCE) 등 모든 카테고리에서 동일하게 사용
+   * 예: '126079' (자갈치시장), '126080' (부평깡통시장), '132190' (국제시장)
+   * 실제 contentId가 확인된 장소에만 부여하며, 미확인 장소는 undefined 유지
+   */
+  contentId?: string;
   time?: string;
   titleKo: string;
   titleEn: string;
@@ -1726,6 +1734,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         regionNameKo: '광안리 · 센텀',
         regionNameEn: 'Gwangalli & Centum',
         categoryType: 'CULTURE',
+        contentId: '2496738',
         time: '복합문화',
         titleKo: 'F1963',
         titleEn: 'F1963 Cultural Center',
@@ -1786,6 +1795,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         regionNameKo: '남포동 · 영도',
         regionNameEn: 'Nampo & Yeongdo',
         categoryType: 'MUSEUM',
+        contentId: '1350616',
         time: '해양박물관',
         titleKo: '국립해양박물관',
         titleEn: 'National Maritime Museum',
@@ -1865,6 +1875,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         regionNameKo: '남포동 · 자갈치',
         regionNameEn: 'Nampo & Jagalchi',
         foodCategory: 'market',
+        contentId: '126079',
         time: '전통시장',
         titleKo: '자갈치시장',
         titleEn: 'Jagalchi Fish Market',
@@ -1879,6 +1890,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         regionNameKo: '남포동 · 부평',
         regionNameEn: 'Nampo & Bupyeong',
         foodCategory: 'market',
+        contentId: '126080',
         time: '전통시장',
         titleKo: '부평깡통시장',
         titleEn: 'Bupyeong Kkangtong Market',
@@ -1893,6 +1905,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         regionNameKo: '남포동 · 국제시장',
         regionNameEn: 'Nampo & Gukje',
         foodCategory: 'market',
+        contentId: '132190',
         time: '전통시장',
         titleKo: '국제시장',
         titleEn: 'Gukje Market',

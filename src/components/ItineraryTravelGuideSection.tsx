@@ -29,6 +29,8 @@ import {
 } from 'lucide-react';
 import { ITINERARY_TRAVEL_GUIDE_DATA, ItineraryTravelGuideItem } from '../data/itineraryTravelGuideData';
 import { ItineraryCourse } from '../data/itineraries';
+import { resolvePlaceTargetId } from '../services/tourApiCommon';
+import { navigateToSpa } from '../utils';
 
 interface ItineraryTravelGuideSectionProps {
   language: 'KR' | 'EN';
@@ -36,6 +38,7 @@ interface ItineraryTravelGuideSectionProps {
   course?: ItineraryCourse;
   onSwitchToStandard?: () => void;
   onSelectStation?: (stationId: string, exitNum?: string) => void;
+  onOpenBarrierFreeDetail?: (placeId: string) => void;
 }
 
 export default function ItineraryTravelGuideSection({
@@ -43,7 +46,8 @@ export default function ItineraryTravelGuideSection({
   category,
   course,
   onSwitchToStandard,
-  onSelectStation
+  onSelectStation,
+  onOpenBarrierFreeDetail
 }: ItineraryTravelGuideSectionProps) {
   // For 'DAY' category, support toggling between course 1 (원도심) and course 2 (생태공원)
   const [selectedDayCourseId, setSelectedDayCourseId] = useState<string>('itinerary-day-first-time');
@@ -443,9 +447,11 @@ export default function ItineraryTravelGuideSection({
                 <p className="text-xs text-[#4A5568] leading-relaxed">
                   {language === 'KR' ? conn.connectionReasonKo : conn.connectionReasonEn}
                 </p>
-                <div className="text-xs font-medium text-[#0A2540] bg-white px-2.5 py-1 rounded-md border border-[#E5E2DC] flex items-center gap-1.5">
-                  <Train className="w-3.5 h-3.5" />
-                  <span>{language === 'KR' ? conn.transitTipKo : conn.transitTipEn}</span>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1 border-t border-[#E5E2DC]/60">
+                  <div className="text-xs font-medium text-[#0A2540] bg-white px-2.5 py-1 rounded-md border border-[#E5E2DC] flex items-center gap-1.5 max-w-max">
+                    <Train className="w-3.5 h-3.5" />
+                    <span>{language === 'KR' ? conn.transitTipKo : conn.transitTipEn}</span>
+                  </div>
                 </div>
               </div>
             ))}

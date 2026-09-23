@@ -9,24 +9,22 @@
 
 import React, { useState } from 'react';
 import { 
-  ShieldCheck, 
   MapPin, 
   Train, 
   ExternalLink, 
   Copy, 
   Check, 
-  Sparkles,
   Info
 } from 'lucide-react';
 import { ItineraryStep } from '../data/itineraries';
-import { useTourApiSpot } from '../services/tourApiCommon';
+import { useTourApiSpot, resolvePlaceTargetId } from '../services/tourApiCommon';
 import ElegantIllustration from './ElegantIllustration';
 
 interface TourApiItineraryStepCardProps {
   stepNumber: number;
   step: ItineraryStep;
   language: 'KR' | 'EN';
-  onOpenDetail: (placeId: string) => void;
+  onOpenDetail?: (placeId: string) => void;
   onSelectStation?: (stationName: string) => void;
 }
 
@@ -51,7 +49,13 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
   onSelectStation,
 }) => {
   const [copied, setCopied] = useState(false);
-  const { matchedSpotId, hasKtoData, detail, isLiveApi } = useTourApiSpot(step.titleKo);
+  const { matchedSpotId, hasKtoData, detail } = useTourApiSpot(step.titleKo);
+  const effectiveTargetId = resolvePlaceTargetId({
+    id: step.id,
+    contentId: step.contentId,
+    titleKo: step.titleKo,
+    titleEn: step.titleEn,
+  }) || matchedSpotId || 'spot-101';
 
   const handleCopy = (e: React.MouseEvent, text: string) => {
     e.stopPropagation();
@@ -65,19 +69,12 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
 
   return (
     <div className="relative group text-left space-y-2">
-      {/* 타임라인 인덱스 및 시간 */}
+      {/* 타임라인 인덱스 및 시간 (복잡한 인증 뱃지 삭제 및 정갈한 여백) */}
       <div className="flex items-center gap-2 text-xs font-bold text-[#0A2540]">
         <span className="w-5 h-5 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-[10px] shrink-0">
           {stepNumber}
         </span>
         <span className="font-mono text-[11px] text-[#4A5568]">{step.time}</span>
-        {hasKtoData && (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200/80 text-[10px] font-bold">
-            <ShieldCheck className="w-3 h-3 text-amber-600" />
-            <span>한국관광공사 TourAPI 공인</span>
-            {isLiveApi && <Sparkles className="w-2.5 h-2.5 text-emerald-600 ml-0.5" />}
-          </span>
-        )}
       </div>
 
       {/* 카드 본체 */}
@@ -211,24 +208,6 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
                 <ExternalLink className="w-3 h-3" />
               </button>
             )}
-          </div>
-        )}
-
-        {/* 무장애 상세 정보 팝업 모달 열기 버튼 (KTO 매칭 시) */}
-        {hasKtoData && matchedSpotId && (
-          <div className="pt-1 flex items-center justify-between border-t border-[#E5E2DC]/80">
-            <span className="text-[11px] text-[#4A5568] flex items-center gap-1">
-              <Info className="w-3.5 h-3.5 text-[#0A2540]" />
-              <span>8대 무장애 편의정보 확인 가능</span>
-            </span>
-            <button
-              type="button"
-              onClick={() => onOpenDetail(matchedSpotId)}
-              className="text-xs font-bold text-[#0A2540] hover:text-white bg-[#F4EBE1] hover:bg-[#0A2540] px-3 py-1.5 rounded-lg border border-[#E5E2DC] transition-all flex items-center gap-1.5"
-            >
-              <span>무장애 상세 정보 보기</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </button>
           </div>
         )}
       </div>

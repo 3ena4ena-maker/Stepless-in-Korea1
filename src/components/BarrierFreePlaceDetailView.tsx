@@ -26,6 +26,7 @@ import {
   ChevronDown,
   ChevronUp,
   Train,
+  Info,
 } from 'lucide-react';
 import {
   OpenApiPlaceDetail,
@@ -65,6 +66,8 @@ export default function BarrierFreePlaceDetailView({
     let isMounted = true;
     setLoading(true);
     setImageLoadError(false);
+    setDetail(getKoreaTourApiPlaceDetail(placeId));
+    setLiveBarrierFree(null);
 
     fetchTourApiPlaceDetail(placeId).then((res) => {
       if (!isMounted) return;
@@ -117,24 +120,54 @@ export default function BarrierFreePlaceDetailView({
 
   if (!detail && !loading) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-16 text-center space-y-4 text-left">
-        <h2 className="text-lg font-bold text-slate-800">
-          {language === 'KR' ? '관광지 정보를 찾을 수 없습니다.' : 'Place not found.'}
-        </h2>
-        <p className="text-xs text-slate-500">
-          {language === 'KR'
-            ? '해당 관광지의 한국관광공사 데이터를 불러오지 못했습니다.'
-            : 'Could not load Korea Tourism Organization data for this spot.'}
-        </p>
-        <button
-          type="button"
-          onClick={onBack}
-          className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0A2540] text-white rounded-lg text-xs font-bold"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>{language === 'KR' ? '목록으로 돌아가기' : 'Back to Spots List'}</span>
-        </button>
-      </div>
+      <article className="max-w-2xl mx-auto px-4 py-6 space-y-6 text-left pb-16 text-slate-900 animate-fade-in">
+        <header className="flex items-center justify-between gap-2 pb-2">
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
+            aria-label="이전으로 돌아가기"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>{language === 'KR' ? '이전으로' : 'Back'}</span>
+          </button>
+        </header>
+
+        <section className="space-y-1">
+          <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+            <span>{language === 'KR' ? '부산' : 'Busan'}</span>
+            <span>·</span>
+            <span>{language === 'KR' ? '무장애 관광지' : 'Barrier-Free Spot'}</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+            {language === 'KR' ? '무장애 관광 정보' : 'Barrier-Free Information'}
+          </h1>
+        </section>
+
+        <div className="p-8 rounded-2xl bg-white border border-slate-200 shadow-2xs text-center space-y-3">
+          <div className="w-12 h-12 mx-auto rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+            <Info className="w-6 h-6" />
+          </div>
+          <h2 className="text-base sm:text-lg font-bold text-slate-900">
+            {language === 'KR' ? '현재 등록된 세부 무장애 편의시설 정보가 없습니다.' : 'No barrier-free accessibility info registered'}
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+            {language === 'KR'
+              ? '한국관광공사(TourAPI) 공공데이터에 해당 장소의 세부 무장애 편의 정보가 아직 등록되지 않았습니다. 현장 상황에 따라 단차나 턱이 있을 수 있으니 방문 전 확인하시기 바랍니다.'
+              : 'Detailed barrier-free accessibility info has not been registered in the Korea Tourism Organization database for this spot.'}
+          </p>
+          <div className="pt-3">
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0A2540] text-white rounded-lg text-xs font-bold hover:bg-[#11161B] transition-colors cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>{language === 'KR' ? '이전 화면으로 돌아가기' : 'Back to previous page'}</span>
+            </button>
+          </div>
+        </div>
+      </article>
     );
   }
 
@@ -302,10 +335,10 @@ export default function BarrierFreePlaceDetailView({
           type="button"
           onClick={onBack}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
-          aria-label="이전 목록으로 돌아가기"
+          aria-label="이전으로 돌아가기"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>{language === 'KR' ? '관광지 목록' : 'Spots List'}</span>
+          <span>{language === 'KR' ? '이전으로' : 'Back'}</span>
         </button>
 
         <button
@@ -450,48 +483,75 @@ export default function BarrierFreePlaceDetailView({
 
       {/* 6. 무장애 정보 */}
       {/* 한국관광공사 무장애 관광 API (KorWithService2) 실제 데이터 */}
-      {barrierFreeDisplayItems.length > 0 ? (
-        <section className="space-y-2 pt-2">
-          <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            {language === 'KR' ? '무장애 정보' : 'Barrier-Free Accessibility'}
-          </h2>
+      <section className="space-y-3 pt-2">
+        <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+          {language === 'KR' ? '무장애 편의 정보' : 'Barrier-Free Accessibility'}
+        </h2>
 
-          <div className="border-t border-slate-200 divide-y divide-slate-100">
-            {barrierFreeDisplayItems.map((item) => (
-              <div key={item.id} className="py-3 space-y-1">
-                {/* 상단: 항목명 (왼쪽) / 상태 (오른쪽) */}
-                <div className="flex items-baseline justify-between gap-3">
-                  <span className="text-sm font-bold text-slate-900">
-                    {item.title}
-                  </span>
-                  {item.status ? (
-                    <span
-                      className={`shrink-0 text-xs sm:text-sm font-bold ${
-                        item.status === '이용 가능' ? 'text-emerald-700' : 'text-red-600'
-                      }`}
-                    >
-                      {item.status}
-                      {item.statusNote ? ` (${item.statusNote})` : ''}
+        {barrierFreeDisplayItems.length > 0 ? (
+          <>
+            <div className="border-t border-slate-200 divide-y divide-slate-100">
+              {barrierFreeDisplayItems.map((item) => (
+                <div key={item.id} className="py-3 space-y-1">
+                  {/* 상단: 항목명 (왼쪽) / 상태 (오른쪽) */}
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="text-sm font-bold text-slate-900">
+                      {item.title}
                     </span>
+                    {item.status ? (
+                      <span
+                        className={`shrink-0 text-xs sm:text-sm font-bold ${
+                          item.status === '이용 가능' ? 'text-emerald-700' : 'text-red-600'
+                        }`}
+                      >
+                        {item.status}
+                        {item.statusNote ? ` (${item.statusNote})` : ''}
+                      </span>
+                    ) : null}
+                  </div>
+
+                  {/* 하단: 상세 내용 (다음 줄) */}
+                  {item.desc ? (
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                      {item.desc}
+                    </p>
                   ) : null}
                 </div>
+              ))}
+            </div>
 
-                {/* 하단: 상세 내용 (다음 줄) */}
-                {item.desc ? (
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                    {item.desc}
-                  </p>
-                ) : null}
+            {/* 섹션 맨 마지막에 단 한 번만 표시 */}
+            <p className="text-xs text-slate-400 pt-1 text-right">
+              출처: ⓒ한국관광공사
+            </p>
+          </>
+        ) : (
+          <div className="p-5 sm:p-6 rounded-xl bg-slate-50 border border-slate-200 text-center space-y-2.5">
+            <div className="w-10 h-10 mx-auto rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+              <Info className="w-5 h-5" />
+            </div>
+            <h3 className="text-sm font-bold text-slate-800">
+              {language === 'KR' ? '현재 등록된 세부 무장애 편의시설 정보가 없습니다.' : 'No barrier-free accessibility info registered'}
+            </h3>
+            <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
+              {language === 'KR'
+                ? '해당 장소는 한국관광공사 공공데이터에 세부 무장애 편의시설(경사로, 휠체어 리프트, 장애인 화장실 등) 정보가 아직 등록되지 않았습니다. 방문 전 관리사무소로 사전 확인을 권장합니다.'
+                : 'Detailed barrier-free facility data is not yet registered for this spot in the official database.'}
+            </p>
+            {currentPlace.tel && (
+              <div className="pt-1.5">
+                <a
+                  href={`tel:${currentPlace.tel.replace(/[^0-9]/g, '')}`}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#0A2540] text-white text-xs font-bold hover:bg-[#11161B] transition-colors"
+                >
+                  <Phone className="w-3.5 h-3.5" />
+                  <span>{language === 'KR' ? `문의 전화: ${currentPlace.tel}` : `Call: ${currentPlace.tel}`}</span>
+                </a>
               </div>
-            ))}
+            )}
           </div>
-
-          {/* 섹션 맨 마지막에 단 한 번만 표시 */}
-          <p className="text-xs text-slate-400 pt-1 text-right">
-            출처: ⓒ한국관광공사
-          </p>
-        </section>
-      ) : null}
+        )}
+      </section>
 
       {/* 7. 부산인의 팁! */}
       {/* Stepless 자체 현장 조사 콘텐츠 및 대중교통 무단차 이동 경로 */}

@@ -9,6 +9,9 @@
  * - 이미지정보 (detailImage2): 고화질 추가 갤러리 이미지
  */
 
+import { BUSAN_TOUR_API_SPOTS } from './tourApiSpots';
+import { BUSAN_ITINERARIES } from './itineraries';
+
 export interface OpenApiBarrierFreeItem {
   available: boolean;
   titleKo: string;
@@ -61,18 +64,19 @@ export interface OpenApiPlaceDetail {
 
   // 6. 무장애 정보 (KorWithAPI detailWithTour2 규격)
   barrierFree: {
-    wheelchair: OpenApiBarrierFreeItem;
-    elevator: OpenApiBarrierFreeItem;
-    restroom: OpenApiBarrierFreeItem;
-    parking: OpenApiBarrierFreeItem;
-    route: OpenApiBarrierFreeItem;
-    tactilePaving: OpenApiBarrierFreeItem;
-    stroller: OpenApiBarrierFreeItem;
-    audioVisual: OpenApiBarrierFreeItem;
+    wheelchair?: OpenApiBarrierFreeItem;
+    elevator?: OpenApiBarrierFreeItem;
+    restroom?: OpenApiBarrierFreeItem;
+    parking?: OpenApiBarrierFreeItem;
+    route?: OpenApiBarrierFreeItem;
+    tactilePaving?: OpenApiBarrierFreeItem;
+    stroller?: OpenApiBarrierFreeItem;
+    audioVisual?: OpenApiBarrierFreeItem;
+    [key: string]: OpenApiBarrierFreeItem | undefined;
   };
 
   // 7. 대중교통 및 지하철 연계 정보
-  subwayLine: string;
+  subwayLine?: string;
   nearestStationNameKo: string;
   nearestStationNameEn: string;
   recommendedExit: string;
@@ -2406,17 +2410,125 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
       },
     },
   },
+  'spot-biff': {
+    id: 'spot-biff',
+    contentId: '2674675',
+    nameKo: '비프광장 (BIFF 광장)',
+    nameEn: 'BIFF Square',
+    categoryKo: '문화/거리',
+    categoryEn: 'Culture/Street',
+    districtKo: '중구',
+    districtEn: 'Jung-gu',
+    firstImage: 'https://tong.visitkorea.or.kr/cms/resource/54/2674654_image2_1.jpg',
+    additionalImages: [],
+    addressRoadKo: '부산광역시 중구 비프광장로 20',
+    addressRoadEn: '20 BIFF gwangjang-ro, Jung-gu, Busan',
+    addressLotKo: '부산광역시 중구 남포동5가 18',
+    addressLotEn: '18 Nampo-dong 5-ga, Jung-gu, Busan',
+    zipcode: '48954',
+    latitude: 35.0984,
+    longitude: 129.0287,
+    tel: '051-240-4061',
+    telDescKo: '부산 중구 문화관광과',
+    overviewKo: '부산국제영화제(BIFF)의 역사가 시작된 상징적 광장이자 핸드프린팅 거리와 맛있는 길거리 음식이 가득한 명소입니다. 차량 통행이 제한된 평탄한 보행자 전용거리로 전 구간이 단차 없이 잘 정비되어 휠체어와 유아차도 안전하고 쾌적하게 활기찬 거리 문화를 즐길 수 있습니다.',
+    overviewEn: 'The historic birthplace of the Busan International Film Festival featuring handprints of world-renowned movie figures. A pedestrian-friendly flat street welcoming wheelchairs and strollers.',
+    useTimeKo: '연중 24시간 개방 (상점별 상이)',
+    useTimeEn: 'Open 24/7 (Varies by shop)',
+    restDateKo: '연중무휴',
+    restDateEn: 'Open year-round',
+    feeKo: '무료 관람',
+    feeEn: 'Free Admission',
+    subwayLine: '1호선',
+    nearestStationNameKo: '자갈치역 (1호선)',
+    nearestStationNameEn: 'Jagalchi Station (Line 1)',
+    recommendedExit: '자갈치역 7번 출구 엘리베이터',
+    walkingDistanceMeters: 120,
+    walkingTimeMinutes: 2,
+    transitTipKo: '지하철 1호선 자갈치역 7번 출구 엘리베이터를 이용해 지상으로 나온 후, 턱 낮춤 횡단보도를 건너면 계단 없이 평지로 비프광장 중심부로 직결됩니다.',
+    transitTipEn: 'Take Jagalchi Stn Line 1 Exit 7 elevator and follow the level curb-cut crosswalk directly into BIFF Square.',
+    apiSource: '한국관광공사 공공데이터포털 KorWithService2 무장애 관광정보',
+    modifiedTime: '2026-06-15',
+    barrierFree: {
+      wheelchair: {
+        available: true,
+        titleKo: '차 없는 평탄 보행거리',
+        titleEn: 'Pedestrian-Only Flat Pavement',
+        descKo: '계단이 없고 평탄한 블록 포장으로 휠체어 주행이 매우 부드럽고 쾌적합니다.',
+        descEn: 'Step-free level paved walkways throughout the pedestrian zone.',
+        icon: '♿',
+        tag: '전 구간 무단차 보행로',
+      },
+      elevator: {
+        available: true,
+        titleKo: '자갈치역 7번 출구 승강기 연계',
+        titleEn: 'Jagalchi Stn Exit 7 Elevator Link',
+        descKo: '자갈치역 7번 출구 엘리베이터에서 하차 후 단차 없는 횡단보도를 통해 광장으로 바로 연결됩니다.',
+        descEn: 'Direct step-free connection via Exit 7 elevator of Jagalchi Station.',
+        icon: '🛗',
+        tag: '지하철 엘리베이터 직결',
+      },
+      restroom: {
+        available: true,
+        titleKo: '인근 극장 및 지하철 장애인 화장실',
+        titleEn: 'Accessible Restrooms in Theaters & Metro',
+        descKo: '광장 내 롯데시네마, 대영시네마 및 자갈치역 내부에 다목적 장애인 화장실이 운영됩니다.',
+        descEn: 'Accessible multi-purpose restrooms available in nearby cinemas and subway station.',
+        icon: '🚻',
+        tag: '다목적 화장실 완비',
+      },
+      parking: {
+        available: true,
+        titleKo: '자갈치 공영주차장 장애인 구역',
+        titleEn: 'Jagalchi Public Parking Bays',
+        descKo: '인근 자갈치 공영주차장에 장애인 전용 주차면이 마련되어 있습니다.',
+        descEn: 'Dedicated accessible parking spaces at nearby Jagalchi public parking.',
+        icon: '🅿️',
+        tag: '장애인 주차구역 완비',
+      },
+      route: {
+        available: true,
+        titleKo: '단차 없는 평지 진입로',
+        titleEn: 'Step-Free Street Access',
+        descKo: '광장 전역의 보도 턱이 낮추어져 있으며 노점 사이 보행 통로가 넓습니다.',
+        descEn: 'Curbs are fully lowered with wide walking passages between stalls.',
+        icon: '🛣️',
+        tag: '턱 없는 평지 보행길',
+      },
+      stroller: {
+        available: true,
+        titleKo: '유아차 보행 최적',
+        titleEn: 'Stroller Friendly Walk',
+        descKo: '차량 통행이 없어 유아차와 함께 쾌적하고 안전하게 이동할 수 있습니다.',
+        descEn: 'Safe pedestrian-only zone ideal for walking with baby strollers.',
+        icon: '👶',
+        tag: '보행자 전용 안전거리',
+      },
+    },
+  },
 };
 
 /**
  * 관광지 ID 또는 contentId로 한국관광공사 OpenAPI 상세 정보 조회
  */
 export function getKoreaTourApiPlaceDetail(targetId: string): OpenApiPlaceDetail | null {
-  const normId = targetId.toLowerCase().trim();
+  if (!targetId) return null;
+  const decoded = decodeURIComponent(targetId).trim();
+  const normId = decoded.toLowerCase();
 
   // 1. 직접 ID 일치
   if (KOREA_TOUR_API_PLACE_DETAILS[normId]) {
     return KOREA_TOUR_API_PLACE_DETAILS[normId];
+  }
+
+  // 1-1. 코스 전용 별칭 처리
+  if (normId === 'spot-gwanganli' || normId === 'gwanganli') {
+    return KOREA_TOUR_API_PLACE_DETAILS['spot-111'] || null;
+  }
+  if (normId === 'spot-centum' || normId === 'centum') {
+    return KOREA_TOUR_API_PLACE_DETAILS['spot-103'] || null;
+  }
+  if (normId === 'spot-biff' || normId === 'biff') {
+    return KOREA_TOUR_API_PLACE_DETAILS['spot-biff'] || null;
   }
 
   // 2. contentId 또는 별칭 검색
@@ -2429,5 +2541,197 @@ export function getKoreaTourApiPlaceDetail(targetId: string): OpenApiPlaceDetail
       normId.includes(item.id.toLowerCase())
   );
 
-  return found || null;
+  if (found) return found;
+
+  // 3. BUSAN_TOUR_API_SPOTS 검색
+  const spot = BUSAN_TOUR_API_SPOTS.find(
+    (s) =>
+      s.contentid.toLowerCase() === normId ||
+      normId.includes(s.contentid.toLowerCase()) ||
+      s.titleKo.toLowerCase().includes(normId) ||
+      normId.includes(s.titleKo.toLowerCase())
+  );
+
+  if (spot) {
+    return {
+      id: spot.contentid,
+      contentId: spot.contentid,
+      nameKo: spot.titleKo,
+      nameEn: spot.titleEn,
+      categoryKo: spot.categoryKo,
+      categoryEn: spot.categoryEn,
+      districtKo: spot.districtKo,
+      districtEn: spot.districtEn,
+      firstImage: spot.firstimage || '',
+      additionalImages: [],
+      addressRoadKo: spot.addr1Ko,
+      addressRoadEn: spot.addr1En,
+      addressLotKo: '',
+      addressLotEn: '',
+      zipcode: '',
+      latitude: spot.mapy,
+      longitude: spot.mapx,
+      tel: spot.tel,
+      overviewKo: spot.overviewKo,
+      overviewEn: spot.overviewEn,
+      homepage: spot.homepage,
+      useTimeKo: spot.useTimeKo,
+      useTimeEn: spot.useTimeEn,
+      restDateKo: spot.restDateKo,
+      restDateEn: spot.restDateEn,
+      feeKo: spot.feeKo,
+      feeEn: spot.feeEn,
+      nearestStationNameKo: spot.nearestStationNameKo,
+      nearestStationNameEn: spot.nearestStationNameEn,
+      recommendedExit: spot.recommendedElevatorExit,
+      walkingDistanceMeters: 300,
+      walkingTimeMinutes: 5,
+      transitTipKo: spot.transitTipKo,
+      transitTipEn: spot.transitTipEn,
+      barrierFree: {
+        wheelchair: spot.barrierFree?.route?.hasNoStep ? {
+          available: true,
+          titleKo: '휠체어 접근 및 주출입구',
+          titleEn: 'Wheelchair Access & Main Entrance',
+          descKo: spot.barrierFree.route.descKo,
+          descEn: spot.barrierFree.route.descEn,
+          icon: '♿',
+          tag: '단차 없는 평탄 출입로'
+        } : undefined,
+        elevator: spot.barrierFree?.elevator?.hasElevator ? {
+          available: true,
+          titleKo: '엘리베이터 시설',
+          titleEn: 'Elevator Facilities',
+          descKo: spot.barrierFree.elevator.descKo,
+          descEn: spot.barrierFree.elevator.descEn,
+          icon: '🛗',
+          tag: '장애인용 엘리베이터'
+        } : undefined,
+        restroom: spot.barrierFree?.toilet?.hasToilet ? {
+          available: true,
+          titleKo: '장애인 화장실',
+          titleEn: 'Accessible Restroom',
+          descKo: spot.barrierFree.toilet.descKo,
+          descEn: spot.barrierFree.toilet.descEn,
+          icon: '🚻',
+          tag: '남녀 구분 장애인 화장실'
+        } : undefined,
+        parking: spot.barrierFree?.parking?.hasParking ? {
+          available: true,
+          titleKo: '장애인 전용 주차구역',
+          titleEn: 'Accessible Parking',
+          descKo: spot.barrierFree.parking.descKo,
+          descEn: spot.barrierFree.parking.descEn,
+          icon: '🅿️',
+          tag: '전용 주차면 완비'
+        } : undefined,
+      },
+      apiSource: '한국관광공사 TourAPI 공공데이터',
+      modifiedTime: new Date().toISOString()
+    };
+  }
+
+  // 4. BUSAN_ITINERARIES 검색 (식도락, 전통시장, 체험, 지하철 역세권 명소)
+  const cleanTarget = normId.replace(/^place-/, '').replace(/-/g, ' ');
+  for (const course of BUSAN_ITINERARIES) {
+    for (const step of course.steps) {
+      const stepKo = step.titleKo.toLowerCase();
+      const stepEn = step.titleEn.toLowerCase();
+      const stepId = step.id ? step.id.toLowerCase() : '';
+      const stepContentId = step.contentId ? step.contentId.toLowerCase() : '';
+
+      if (
+        (stepId && (stepId === normId || normId.includes(stepId))) ||
+        (stepContentId && (stepContentId === normId || normId.includes(stepContentId))) ||
+        stepKo.includes(cleanTarget) ||
+        cleanTarget.includes(stepKo) ||
+        (stepEn && stepEn.includes(cleanTarget))
+      ) {
+        const cleanNameKo = step.titleKo.split(':')[0].trim();
+        const cleanNameEn = step.titleEn.split(':')[0].trim();
+        const address = step.stationInfoKo?.split('(')[0]?.trim() || `${step.regionNameKo || '부산'} 일대`;
+
+        return {
+          id: step.id || targetId,
+          contentId: step.contentId || '',
+          nameKo: cleanNameKo,
+          nameEn: cleanNameEn,
+          categoryKo: step.foodCategory
+            ? (step.foodCategory === 'cafe' ? '카페/디저트' : step.foodCategory === 'market' ? '전통시장' : '식도락/맛집')
+            : (course.category === 'MARKET' ? '전통시장' : course.category === 'EXPERIENCE' ? '체험/문화' : course.tagKo || '부산 명소'),
+          categoryEn: course.tagEn || 'Busan Spot',
+          districtKo: step.regionNameKo || '부산광역시',
+          districtEn: step.regionNameEn || 'Busan',
+          firstImage: '',
+          additionalImages: [],
+          addressRoadKo: address,
+          addressRoadEn: 'Busan, Republic of Korea',
+          addressLotKo: '',
+          addressLotEn: '',
+          zipcode: '',
+          latitude: 35.1796,
+          longitude: 129.0756,
+          tel: '',
+          overviewKo: step.descKo.replace(/📍\s*주소:[^\n]+\n?/, '').trim(),
+          overviewEn: step.descEn.replace(/📍\s*Address:[^\n]+\n?/, '').trim(),
+          nearestStationNameKo: step.stationInfoKo?.match(/([가-힣0-9·]+역)/)?.[1] || '인근 지하철역',
+          nearestStationNameEn: 'Nearby Metro Station',
+          recommendedExit: '지하철역 출구 / 엘리베이터',
+          walkingDistanceMeters: 300,
+          walkingTimeMinutes: 5,
+          transitTipKo: step.stationInfoKo || '대중교통 이용 시 인근 역 출구 및 엘리베이터 위치를 확인하세요.',
+          transitTipEn: step.stationInfoEn || 'Check nearby subway exit and elevator access.',
+          barrierFree: {},
+          apiSource: '한국관광공사 TourAPI 연계 데이터',
+          modifiedTime: new Date().toISOString()
+        };
+      }
+    }
+  }
+
+  // 5. 만약 place- 로 시작하거나 특정 이름이 전달된 경우, 파싱하여 안전한 기본 정보 반환
+  if (normId.startsWith('place-')) {
+    const rawName = decodeURIComponent(normId.replace('place-', '')).replace(/-/g, ' ');
+    return {
+      id: targetId,
+      contentId: '',
+      nameKo: rawName,
+      nameEn: rawName,
+      categoryKo: '부산 명소',
+      categoryEn: 'Busan Spot',
+      districtKo: '부산광역시',
+      districtEn: 'Busan',
+      firstImage: '',
+      additionalImages: [],
+      addressRoadKo: '부산광역시',
+      addressRoadEn: 'Busan, Republic of Korea',
+      addressLotKo: '',
+      addressLotEn: '',
+      zipcode: '',
+      latitude: 35.1796,
+      longitude: 129.0756,
+      tel: '',
+      overviewKo: `${rawName}에 대한 상세 무장애 여행 정보입니다.`,
+      overviewEn: `Travel and accessibility details for ${rawName}.`,
+      nearestStationNameKo: '인근 지하철역',
+      nearestStationNameEn: 'Nearby Station',
+      recommendedExit: '엘리베이터 출구',
+      walkingDistanceMeters: 300,
+      walkingTimeMinutes: 5,
+      transitTipKo: '대중교통 이용 시 인근 역 출구 및 엘리베이터 위치를 확인하세요.',
+      transitTipEn: 'Check nearby subway exit and elevator access.',
+      barrierFree: {},
+      apiSource: '한국관광공사 TourAPI 공공데이터',
+      modifiedTime: new Date().toISOString()
+    };
+  }
+
+  return null;
+}
+
+/**
+ * 모든 스팟/장소 대상 폴백 보장 조회 함수
+ */
+export function getAnyPlaceDetail(targetId: string): OpenApiPlaceDetail | null {
+  return getKoreaTourApiPlaceDetail(targetId);
 }

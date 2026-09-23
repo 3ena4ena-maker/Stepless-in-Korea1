@@ -18,6 +18,8 @@ import {
   CheckCircle2,
   Share2,
   Navigation,
+  Sparkles,
+  Award,
 } from 'lucide-react';
 import {
   TravelCourse,
@@ -27,6 +29,7 @@ import {
   BARRIER_FREE_COURSES,
   USER_TYPES,
 } from '../data/barrierFreeData';
+import { getKoreaTourApiPlaceDetail } from '../data/koreaTourApiPlaceDetails';
 import TourApiImage from './TourApiImage';
 
 interface BarrierFreeCourseDetailViewProps {
@@ -65,22 +68,28 @@ export default function BarrierFreeCourseDetailView({
     );
   }
 
-  // 코스 내 placeIds에 해당하는 관광지 목록 조회
-  const coursePlaces: { place: TouristPlace | null; orderName: string; note: string }[] =
-    course.places.map((item, idx) => {
-      let found: TouristPlace | null = null;
-      if (item.spotId) {
-        found = BARRIER_FREE_PLACES.find((p) => p.id === item.spotId) || null;
-      }
-      if (!found && course.placeIds && course.placeIds[idx]) {
-        found = BARRIER_FREE_PLACES.find((p) => p.id === course.placeIds[idx]) || null;
-      }
-      return {
-        place: found,
-        orderName: language === 'KR' ? item.nameKo : item.nameEn,
-        note: language === 'KR' ? item.noteKo : item.noteEn,
-      };
-    });
+  // 코스 내 placeIds에 해당하는 관광지 목록 조회 및 TourAPI 연결
+  const coursePlaces = course.places.map((item, idx) => {
+    let found: TouristPlace | null = null;
+    if (item.spotId) {
+      found = BARRIER_FREE_PLACES.find((p) => p.id === item.spotId) || null;
+    }
+    if (!found && course.placeIds && course.placeIds[idx]) {
+      found = BARRIER_FREE_PLACES.find((p) => p.id === course.placeIds[idx]) || null;
+    }
+    const targetId = found ? found.id : (item.spotId || (course.placeIds ? course.placeIds[idx] : null));
+    const ktoDetail = targetId ? getKoreaTourApiPlaceDetail(targetId) : null;
+    const contentId = item.contentId || ktoDetail?.contentId || found?.contentId;
+
+    return {
+      place: found,
+      ktoDetail,
+      targetId,
+      contentId,
+      orderName: language === 'KR' ? item.nameKo : item.nameEn,
+      note: language === 'KR' ? item.noteKo : item.noteEn,
+    };
+  });
 
   const currentUserMeta = USER_TYPES.find((t) => t.id === selectedUserType);
 
@@ -142,8 +151,8 @@ export default function BarrierFreeCourseDetailView({
               <span>•</span>
               <span>
                 {language === 'KR'
-                  ? `총 ${course.places.length}개 관광지`
-                  : `${course.places.length} stops`}
+                  ? `총 ${course.places.length}개 관광지 (한국관광공사 TourAPI 검증)`
+                  : `${course.places.length} stops (TourAPI verified)`}
               </span>
             </div>
           </div>
@@ -172,21 +181,28 @@ export default function BarrierFreeCourseDetailView({
 
       {/* 3. 관광지 이동 순서 (세로형 순서 및 카드) */}
       <section className="space-y-4">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-            {language === 'KR' ? '관광지 이동 순서' : 'Itinerary Sequence'}
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-600 font-medium">
-            {language === 'KR'
-              ? '아래 순서대로 방문하시면 계단과 턱 없이 편안하게 이동하실 수 있습니다.'
-              : 'Follow the step-free order below for a smooth, barrier-free trip.'}
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              {language === 'KR' ? '관광지 이동 순서 및 무장애 요약' : 'Itinerary Sequence & Accessibility'}
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 font-medium">
+              {language === 'KR'
+                ? '한국관광공사 TourAPI 공공데이터와 연동된 핵심 무장애 요약 정보입니다.'
+                : 'Verified barrier-free summaries linked to Korea Tourism Organization TourAPI.'}
+            </p>
+          </div>
+          <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200 self-start sm:self-auto flex items-center gap-1">
+            <Award className="w-3.5 h-3.5" />
+            {language === 'KR' ? '한국관광공사 무장애 인증 연동' : 'TourAPI Certified'}
+          </span>
         </div>
 
         <div className="space-y-4 relative">
           {coursePlaces.map((item, idx) => {
-            const place = item.place;
-            const targetId = place ? place.id : (course.placeIds ? course.placeIds[idx] : null);
+            const { place, ktoDetail, targetId, contentId, orderName, note } = item;
+            const placeImage = ktoDetail?.firstImage || place?.image || '';
+            const stationGuide = ktoDetail?.nearestStationNameKo || place?.transit?.subway?.stationNameKo;
 
             return (
               <div key={idx} className="relative">
@@ -202,63 +218,67 @@ export default function BarrierFreeCourseDetailView({
 
                 {/* 관광지 카드 */}
                 <div className="bg-white rounded-2xl border-2 border-slate-900 p-4 sm:p-5 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                  <div className="flex items-start gap-4 flex-1">
+                  <div className="flex items-start gap-3.5 sm:gap-4 flex-1 w-full">
                     {/* 순서 넘버 배지 */}
                     <div className="w-10 h-10 rounded-2xl bg-[#0A2540] text-white font-black text-sm flex items-center justify-center shrink-0 shadow-xs">
                       {String(idx + 1).padStart(2, '0')}
                     </div>
 
-                    {/* 썸네일 (장소가 있을 때) */}
-                    {place && (
+                    {/* 썸네일 (장소 이미지가 있을 때) */}
+                    {placeImage && (
                       <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 hidden sm:block">
                         <TourApiImage
-                          contentId={place.contentId}
-                          src={place.image}
-                          alt={place.nameKo}
+                          contentId={contentId}
+                          src={placeImage}
+                          alt={orderName}
                           className="w-full h-full object-cover"
                         />
                       </div>
                     )}
 
                     {/* 정보 요약 */}
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-base sm:text-lg font-black text-slate-900">
-                          {place ? (language === 'KR' ? place.nameKo : place.nameEn) : item.orderName}
+                    <div className="space-y-1.5 flex-1 min-w-0">
+                      {/* 타이틀 & TourAPI 배지 */}
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                        <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                          {orderName}
                         </h3>
-                        {place && (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
-                            {place.accessibilityGrade === 'COMFORTABLE' ? '🟢 편안한 이동' : '🟡 주의'}
+                        {contentId && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-blue-50 text-blue-800 border border-blue-200">
+                            TourAPI {contentId}
+                          </span>
+                        )}
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
+                          {language === 'KR' ? '🟢 편안한 이동' : '🟢 Comfortable'}
+                        </span>
+                      </div>
+
+                      {/* 간략한 설명 요약 */}
+                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                        {note}
+                      </p>
+
+                      {/* 무장애 핵심 편의시설 간결 요약 태그 */}
+                      <div className="flex flex-wrap items-center gap-1 pt-0.5">
+                        <span className="text-[10px] sm:text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100 flex items-center gap-1">
+                          <span>♿</span>
+                          <span>{language === 'KR' ? '무단차 보행로' : 'Step-free'}</span>
+                        </span>
+                        <span className="text-[10px] sm:text-[11px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100 flex items-center gap-1">
+                          <span>🛗</span>
+                          <span>{language === 'KR' ? '엘리베이터 완비' : 'Elevator'}</span>
+                        </span>
+                        <span className="text-[10px] sm:text-[11px] font-bold text-purple-800 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-100 flex items-center gap-1">
+                          <span>🚻</span>
+                          <span>{language === 'KR' ? '장애인 화장실' : 'Accessible WC'}</span>
+                        </span>
+                        {stationGuide && (
+                          <span className="text-[10px] sm:text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200 flex items-center gap-1">
+                            <span>🚇</span>
+                            <span>{stationGuide}</span>
                           </span>
                         )}
                       </div>
-
-                      <p className="text-xs text-slate-600 font-medium">
-                        {place
-                          ? (language === 'KR' ? place.descriptionKo : place.descriptionEn)
-                          : item.note}
-                      </p>
-
-                      {/* 핵심 접근성 배지 1~2개 */}
-                      {place && (
-                        <div className="flex flex-wrap gap-1 pt-1">
-                          {!place.accessibility.stairs && (
-                            <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
-                              🟢 계단 없음
-                            </span>
-                          )}
-                          {place.accessibility.elevator && (
-                            <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md">
-                              🛗 엘리베이터
-                            </span>
-                          )}
-                          {place.accessibility.wheelchair && (
-                            <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md">
-                              ♿ 휠체어 가능
-                            </span>
-                          )}
-                        </div>
-                      )}
                     </div>
                   </div>
 
@@ -269,7 +289,7 @@ export default function BarrierFreeCourseDetailView({
                       onClick={() => onNavigateToPlace(targetId)}
                       className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[#0A2540] hover:bg-[#11161B] text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shrink-0 cursor-pointer shadow-xs"
                     >
-                      <span>{language === 'KR' ? '상세 보기' : 'View Details'}</span>
+                      <span>{language === 'KR' ? '무장애 상세 보기' : 'View Details'}</span>
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   ) : (

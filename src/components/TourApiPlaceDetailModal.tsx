@@ -76,26 +76,14 @@ export const TourApiPlaceDetailModal: React.FC<TourApiPlaceDetailModalProps> = (
         {/* 모달 상단 헤더 */}
         <div className="bg-[#0A2540] text-white px-5 py-4 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-amber-300">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold tracking-wider text-amber-300 uppercase">
-                  한국관광공사 TourAPI 공인
-                </span>
-                {isLiveApi ? (
-                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center gap-1">
-                    <Sparkles className="w-2.5 h-2.5" /> 실시간 동기화
-                  </span>
-                ) : (
-                  <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-white/10 text-slate-300">
-                    공공데이터 검증 완료
-                  </span>
-                )}
-              </div>
+              {detail && (
+                <div className="text-[11px] font-medium text-slate-300">
+                  {language === 'KR' ? detail.categoryKo : detail.categoryEn} · {detail.districtKo}
+                </div>
+              )}
               <h3 className="text-base sm:text-lg font-bold text-white leading-tight">
-                {language === 'KR' ? '무장애 관광지 공식 상세 정보' : 'Official Barrier-Free Place Guide'}
+                {language === 'KR' ? '무장애 편의시설 상세 정보' : 'Barrier-Free Accessibility Info'}
               </h3>
             </div>
           </div>

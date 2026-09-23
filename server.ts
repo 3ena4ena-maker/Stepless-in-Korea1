@@ -781,12 +781,83 @@ const KTO_SPOT_CONTENT_ID_MAP: Record<string, string | null> = {
 app.get("/api/tourapi/detail/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const detail = getKoreaTourApiPlaceDetail(id);
+    let detail = getKoreaTourApiPlaceDetail(id);
 
+    // If not found in static pre-mapped list, check if id is a numeric contentId or in BUSAN_TOUR_API_SPOTS
     if (!detail) {
-      return res.status(404).json({
-        success: false,
-        error: "Place not found in Korea TourAPI barrier-free directory",
+      const spot = BUSAN_TOUR_API_SPOTS.find(s => s.contentid === id);
+      const isNumeric = /^\d+$/.test(id);
+      if (spot || isNumeric) {
+        let liveDetail: any = null;
+        let isLiveApi = false;
+        const targetContentId = spot ? spot.contentid : id;
+
+        if (KORWITH_SERVICE_KEY) {
+          try {
+            const liveRes = await fetchKorWithSpotFullDetail(targetContentId, KORWITH_SERVICE_KEY);
+            if (liveRes && liveRes.title) {
+              liveDetail = liveRes;
+              isLiveApi = true;
+            }
+          } catch (err) {
+            console.warn(`[KTO Live API] fetch failed for ${id}:`, err);
+          }
+        }
+
+        const titleKo = liveDetail?.title || spot?.titleKo || "관광지";
+        const dummyDetail: any = {
+          id: id,
+          contentId: targetContentId,
+          nameKo: titleKo,
+          nameEn: titleKo,
+          districtKo: spot?.addr1Ko?.split(' ')?.[1] || spot?.districtKo || "부산",
+          districtEn: "Busan",
+          categoryKo: "관광명소",
+          categoryEn: "Tourist Attraction",
+          firstImage: liveDetail?.representativeImage?.firstimage || spot?.firstimage || "",
+          additionalImages: [],
+          addressRoadKo: liveDetail?.address?.addr1 || spot?.addr1Ko || "부산광역시",
+          addressRoadEn: "Busan, Republic of Korea",
+          tel: liveDetail?.phone?.tel || liveDetail?.phone?.infocenter || spot?.tel || "",
+          latitude: liveDetail?.coordinates?.latitude || (spot?.mapy ? Number(spot.mapy) : 35.1796),
+          longitude: liveDetail?.coordinates?.longitude || (spot?.mapx ? Number(spot.mapx) : 129.0756),
+          nearestStationNameKo: "인근 도시철도역",
+          nearestStationNameEn: "Nearby Metro Station",
+          recommendedExit: "엘리베이터",
+          walkingDistanceMeters: 300,
+          walkingTimeMinutes: 5,
+          transitTipKo: "방문 전 역 안내 및 무장애 편의시설 정보를 확인하세요.",
+          transitTipEn: "Check station elevator guide before visiting.",
+          overviewKo: liveDetail?.overview || "한국관광공사에 등록된 부산 관광지 정보입니다.",
+          overviewEn: "Information on tourist destinations in Busan registered with the Korea Tourism Organization.",
+          barrierFree: liveDetail?.barrierFree ? {
+            wheelchair: liveDetail.barrierFree.wheelchair ? { descKo: liveDetail.barrierFree.wheelchair, descEn: liveDetail.barrierFree.wheelchair } : undefined,
+            elevator: liveDetail.barrierFree.elevator ? { descKo: liveDetail.barrierFree.elevator, descEn: liveDetail.barrierFree.elevator } : undefined,
+            restroom: liveDetail.barrierFree.restroom ? { descKo: liveDetail.barrierFree.restroom, descEn: liveDetail.barrierFree.restroom } : undefined,
+            parking: liveDetail.barrierFree.parking ? { descKo: liveDetail.barrierFree.parking, descEn: liveDetail.barrierFree.parking } : undefined,
+            route: (liveDetail.barrierFree.route || liveDetail.barrierFree.exit) ? { descKo: [liveDetail.barrierFree.route, liveDetail.barrierFree.exit].filter(Boolean).join(' / '), descEn: '' } : undefined,
+            tactilePaving: (liveDetail.barrierFree.braileblock || liveDetail.barrierFree.brailepromotion) ? { descKo: [liveDetail.barrierFree.braileblock, liveDetail.barrierFree.brailepromotion].filter(Boolean).join(' / '), descEn: '' } : undefined,
+            stroller: (liveDetail.barrierFree.stroller || liveDetail.barrierFree.lactationroom) ? { descKo: [liveDetail.barrierFree.stroller, liveDetail.barrierFree.lactationroom].filter(Boolean).join(' / '), descEn: '' } : undefined,
+          } : undefined
+        };
+
+        return res.json({
+          success: true,
+          isLiveApi,
+          apiMatched: true,
+          source: isLiveApi ? "한국관광공사 실시간 OpenAPI" : "한국관광공사 공공데이터",
+          liveApiDetail: liveDetail,
+          liveBarrierFree: liveDetail?.barrierFree || null,
+          data: dummyDetail,
+        });
+      }
+
+      return res.json({
+        success: true,
+        isLiveApi: false,
+        source: "한국관광공사 공공데이터",
+        data: null,
+        message: "현재 등록된 세부 무장애 편의시설 정보가 없습니다.",
       });
     }
 

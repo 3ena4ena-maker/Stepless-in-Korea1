@@ -52,7 +52,7 @@ import { getLockerInfoText, renderLockerInfo } from './data/lockers';
 import { getNearbyPlaces, NearbyExitBadge, NearbyPlace } from './data/nearbyPlaces';
 import { STATIONS, INITIAL_REPORTS } from './data';
 import { Station, ExitInfo, FacilityReport, StatusType, getExitDisplayName, translateExitNumber, getTranslatedStationName } from './types';
-import { translateRecommendation } from './utils';
+import { translateRecommendation, navigateToSpa } from './utils';
 import { BUSAN_ITINERARIES } from './data/itineraries';
 
 import SubwayStationMap from './components/SubwayStationMap';
@@ -435,10 +435,20 @@ export default function App() {
           setActiveRegionPage(null);
         }
         setIsHomeLanding(false);
-      } else if (parts[1] === 'barrier-free') {
+      } else if (parts[1] === 'barrier-free' || parts[1] === 'tourapi') {
         setCurrentTab('tourapi');
+        setSelectedItineraryCategory('BARRIER_FREE');
         setIsHomeLanding(false);
-        if (parts[2] === 'course' && parts[3]) {
+        const searchParams = new URLSearchParams(window.location.search);
+        const queryId = searchParams.get('id') || searchParams.get('contentId');
+        if (queryId) {
+          setBarrierFreePlaceId(queryId);
+          setBarrierFreeCourseId(null);
+        } else if (parts[2] === 'detail') {
+          const detailId = searchParams.get('id') || searchParams.get('contentId') || parts[3];
+          setBarrierFreePlaceId(detailId || null);
+          setBarrierFreeCourseId(null);
+        } else if (parts[2] === 'course' && parts[3]) {
           setBarrierFreeCourseId(parts[3]);
           setBarrierFreePlaceId(null);
         } else if (parts[2] === 'place' && parts[3]) {
@@ -450,6 +460,7 @@ export default function App() {
         }
       } else if (parts[1] === 'place' && parts[2]) {
         setCurrentTab('tourapi');
+        setSelectedItineraryCategory('BARRIER_FREE');
         setIsHomeLanding(false);
         setBarrierFreePlaceId(parts[2]);
         setBarrierFreeCourseId(null);
@@ -460,8 +471,12 @@ export default function App() {
           setSelectedStationId(stationId);
           setIsHomeLanding(false);
           setCurrentTab('home');
+          setBarrierFreePlaceId(null);
+          setBarrierFreeCourseId(null);
         }
-      } else if (['home', 'search', 'schedule', 'tips', 'tourapi', 'about', 'privacy', 'terms', 'contact', 'data-source'].includes(parts[1])) {
+      } else if (['home', 'search', 'schedule', 'tips', 'about', 'privacy', 'terms', 'contact', 'data-source'].includes(parts[1])) {
+        setBarrierFreePlaceId(null);
+        setBarrierFreeCourseId(null);
         if (parts[1] === 'privacy') {
           setCurrentTab('about');
           setSiteSubPage('privacy');
@@ -642,7 +657,7 @@ export default function App() {
           }
         } else if (currentTab === 'tourapi') {
           if (barrierFreePlaceId) {
-            expectedPath = `/place/${barrierFreePlaceId}`;
+            expectedPath = `/barrier-free/detail?id=${encodeURIComponent(barrierFreePlaceId)}`;
           } else if (barrierFreeCourseId) {
             expectedPath = `/barrier-free/course/${barrierFreeCourseId}`;
           } else {
@@ -661,7 +676,8 @@ export default function App() {
             expectedPath = '/about/operator';
           }
         }
-        if (window.location.pathname !== expectedPath) {
+        const currentUrlPath = window.location.pathname + window.location.search;
+        if (currentUrlPath !== expectedPath && window.location.pathname !== expectedPath) {
           window.history.pushState({ tab: currentTab, category: selectedItineraryCategory, subPage: tipsSubPage, regionPage: activeRegionPage, siteSubPage }, '', expectedPath);
         }
       }
@@ -1245,6 +1261,16 @@ export default function App() {
               setSelectedItineraryCategory(null);
               setTipsSubPage('index');
               setActiveRegionPage(null);
+              setBarrierFreePlaceId(null);
+              setBarrierFreeCourseId(null);
+            } else if (targetTab === 'tourapi') {
+              setSelectedItineraryCategory('BARRIER_FREE');
+              setBarrierFreePlaceId(null);
+              setBarrierFreeCourseId(null);
+              navigateToSpa('/barrier-free');
+            } else {
+              setBarrierFreePlaceId(null);
+              setBarrierFreeCourseId(null);
             }
           }} 
           language={language} 
@@ -1982,6 +2008,30 @@ export default function App() {
               }}
               onSelectCategory={(category) => {
                 setSelectedItineraryCategory(category);
+                if (category === 'BARRIER_FREE') {
+                  setCurrentTab('tourapi');
+                  setBarrierFreeCourseId(null);
+                  setBarrierFreePlaceId(null);
+                  navigateToSpa('/barrier-free');
+                } else {
+                  setBarrierFreeCourseId(null);
+                  setBarrierFreePlaceId(null);
+                }
+              }}
+              onOpenBarrierFreeDetail={(placeId) => {
+                setBarrierFreePlaceId(placeId);
+                setBarrierFreeCourseId(null);
+                setCurrentTab('tourapi');
+                setSelectedItineraryCategory('BARRIER_FREE');
+                const targetUrl = `/barrier-free/detail?id=${encodeURIComponent(placeId)}`;
+                navigateToSpa(targetUrl, { tab: 'tourapi', placeId });
+              }}
+              onBackToBarrierFreeList={() => {
+                setBarrierFreePlaceId(null);
+                setBarrierFreeCourseId(null);
+                setCurrentTab('tourapi');
+                setSelectedItineraryCategory('BARRIER_FREE');
+                navigateToSpa('/barrier-free', { tab: 'tourapi' });
               }}
               tipsSubPage={currentTab === 'schedule' ? 'schedule' : tipsSubPage}
               setTipsSubPage={(page) => {
@@ -2398,6 +2448,16 @@ export default function App() {
                   setSelectedItineraryCategory(null);
                   setTipsSubPage('index');
                   setActiveRegionPage(null);
+                  setBarrierFreePlaceId(null);
+                  setBarrierFreeCourseId(null);
+                } else if (targetTab === 'tourapi') {
+                  setSelectedItineraryCategory('BARRIER_FREE');
+                  setBarrierFreePlaceId(null);
+                  setBarrierFreeCourseId(null);
+                  navigateToSpa('/barrier-free');
+                } else {
+                  setBarrierFreePlaceId(null);
+                  setBarrierFreeCourseId(null);
                 }
               }}
               className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${

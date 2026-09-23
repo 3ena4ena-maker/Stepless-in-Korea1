@@ -33,6 +33,8 @@ import {
 } from 'lucide-react';
 import { BUSAN_TOUR_API_SPOTS, TourApiSpot } from '../data/tourApiSpots';
 import { TOUR_TRAVEL_GUIDE_DATA, TourTravelGuideItem } from '../data/tourTravelGuideData';
+import { resolvePlaceTargetId } from '../services/tourApiCommon';
+import { navigateToSpa } from '../utils';
 
 interface TourTravelGuideViewProps {
   language: 'KR' | 'EN';
@@ -40,6 +42,7 @@ interface TourTravelGuideViewProps {
   onSelectSpot?: (spotId: string) => void;
   onSelectStation?: (stationId: string, exitNum?: string) => void;
   onSwitchToStandard?: () => void;
+  onOpenBarrierFreeDetail?: (placeId: string) => void;
 }
 
 export default function TourTravelGuideView({
@@ -47,7 +50,8 @@ export default function TourTravelGuideView({
   selectedSpotId,
   onSelectSpot,
   onSelectStation,
-  onSwitchToStandard
+  onSwitchToStandard,
+  onOpenBarrierFreeDetail
 }: TourTravelGuideViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');

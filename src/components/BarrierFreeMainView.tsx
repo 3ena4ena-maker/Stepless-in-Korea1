@@ -58,6 +58,13 @@ export default function BarrierFreeMainView({
   // 3. 함께하는 여행 다중 선택 상태 (초기 상태: 미선택/선택 해제 허용)
   const [selectedCompanions, setSelectedCompanions] = useState<TravelCompanionType[]>([]);
 
+  // Synchronize when selectedUserType prop changes
+  React.useEffect(() => {
+    if (selectedUserType && !selectedUserTypes.includes(selectedUserType)) {
+      setSelectedUserTypes([selectedUserType]);
+    }
+  }, [selectedUserType]);
+
   // 여행자 유형 토글 핸들러 (기존 단일 선택 콜백 연동 유지로 추천/정렬 기능 완벽 보존)
   const handleToggleUserType = (typeId: UserType) => {
     setSelectedUserTypes((prev) => {
@@ -334,8 +341,8 @@ export default function BarrierFreeMainView({
           </div>
         </div>
 
-        {/* 세로형 반응형 그리드 리스트 (모바일 1열, 태블릿/데스크톱 2열 또는 3열) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        {/* 세로형 반응형 그리드 리스트 (모바일 1열, 태블릿/데스크톱 2열) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {recommendedCourses.map((course) => {
             const placesSummary = course.places
               .map((p) => (language === 'KR' ? p.nameKo : p.nameEn))

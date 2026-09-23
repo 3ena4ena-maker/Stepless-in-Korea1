@@ -8,11 +8,12 @@
  * - 3단계: 관광지 상세 (/barrier-free/place/:placeId)
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserType } from '../data/barrierFreeData';
 import BarrierFreeMainView from './BarrierFreeMainView';
 import BarrierFreeCourseDetailView from './BarrierFreeCourseDetailView';
 import BarrierFreePlaceDetailView from './BarrierFreePlaceDetailView';
+import { navigateToSpa } from '../utils';
 
 interface BarrierFreeTourApiViewProps {
   language: 'KR' | 'EN';
@@ -20,6 +21,7 @@ interface BarrierFreeTourApiViewProps {
   initialPlaceId?: string | null;
   onSelectStation?: (stationId: string, exitNum?: string) => void;
   onNavigateHome?: () => void;
+  onBackToPlaceList?: () => void;
 }
 
 type BarrierFreeSubPage = 'main' | 'course' | 'place';
@@ -30,6 +32,7 @@ export default function BarrierFreeTourApiView({
   initialPlaceId = null,
   onSelectStation,
   onNavigateHome,
+  onBackToPlaceList,
 }: BarrierFreeTourApiViewProps) {
   // 1. 여행자 유형 상태 (기본값: 휠체어 이용자)
   const [selectedUserType, setSelectedUserType] = useState<UserType>('wheelchair');
@@ -39,62 +42,72 @@ export default function BarrierFreeTourApiView({
     if (initialPlaceId) return 'place';
     if (initialCourseId) return 'course';
 
-    // URL path 체크 (/place/:id 및 /barrier-free/place/:id 모두 지원)
-    const path = window.location.pathname;
-    if (path.includes('/barrier-free/course/')) return 'course';
-    if (path.includes('/place/') || path.includes('/barrier-free/place/')) return 'place';
+    // URL path 및 searchParams 체크 (/barrier-free/detail?id=... 우선 지원)
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname;
+      const searchParams = new URLSearchParams(window.location.search);
+      const queryId = searchParams.get('id') || searchParams.get('contentId');
+      if (queryId || path.includes('/barrier-free/detail')) return 'place';
+      if (path.includes('/barrier-free/course/')) return 'course';
+      if (path.includes('/place/') || path.includes('/barrier-free/place/')) return 'place';
+    }
     return 'main';
   });
 
   const [activeCourseId, setActiveCourseId] = useState<string | null>(() => {
     if (initialCourseId) return initialCourseId;
-    const path = window.location.pathname;
-    if (path.includes('/barrier-free/course/')) {
-      const parts = path.split('/barrier-free/course/');
-      return parts[1] ? parts[1].split('/')[0] : 'course-haeundae-ocean';
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname;
+      if (path.includes('/barrier-free/course/')) {
+        const parts = path.split('/barrier-free/course/');
+        return parts[1] ? parts[1].split('/')[0] : 'course-haeundae-ocean';
+      }
     }
     return 'course-haeundae-ocean';
   });
 
   const [activePlaceId, setActivePlaceId] = useState<string | null>(() => {
     if (initialPlaceId) return initialPlaceId;
-    const path = window.location.pathname;
-    if (path.includes('/place/')) {
-      const parts = path.split('/place/');
-      return parts[1] ? parts[1].split('/')[0] : 'spot-101';
+    if (typeof window !== 'undefined') {
+      const searchParams = new URLSearchParams(window.location.search);
+      const queryId = searchParams.get('id') || searchParams.get('contentId');
+      if (queryId) return queryId;
+
+      const path = window.location.pathname;
+      if (path.includes('/barrier-free/detail/')) {
+        const parts = path.split('/barrier-free/detail/');
+        if (parts[1]) return parts[1].split('/')[0];
+      }
+      if (path.includes('/place/')) {
+        const parts = path.split('/place/');
+        return parts[1] ? parts[1].split('/')[0] : null;
+      }
+      if (path.includes('/barrier-free/place/')) {
+        const parts = path.split('/barrier-free/place/');
+        return parts[1] ? parts[1].split('/')[0] : null;
+      }
     }
-    if (path.includes('/barrier-free/place/')) {
-      const parts = path.split('/barrier-free/place/');
-      return parts[1] ? parts[1].split('/')[0] : 'spot-101';
-    }
-    return 'spot-101';
+    return null;
   });
 
   // 이전 탐색 경로 스택 (코스에서 왔는지, 메인에서 왔는지 추적)
   const [navHistory, setNavHistory] = useState<string[]>([]);
-
-  // 3. 브라우저 URL 동기화 및 뒤로 가기/앞으로 가기 처리
-  const syncUrl = useCallback((path: string) => {
-    if (window.location.pathname !== path) {
-      window.history.pushState({ barrierFreePath: path }, '', path);
-    }
-  }, []);
 
   // 네비게이션: 코스 상세 페이지로 이동
   const handleNavigateToCourse = (courseId: string) => {
     setActiveCourseId(courseId);
     setCurrentView('course');
     setNavHistory((prev) => [...prev, 'main']);
-    syncUrl(`/barrier-free/course/${courseId}`);
+    navigateToSpa(`/barrier-free/course/${courseId}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // 네비게이션: 개별 관광지 상세 페이지로 이동 (/place/:placeId 로 직관적인 상세 URL 라우팅)
+  // 네비게이션: 개별 관광지 상세 페이지로 이동 (/barrier-free/detail?id= 로 직관적인 상세 URL 라우팅)
   const handleNavigateToPlace = (placeId: string) => {
     setActivePlaceId(placeId);
     setNavHistory((prev) => [...prev, currentView]);
     setCurrentView('place');
-    syncUrl(`/place/${placeId}`);
+    navigateToSpa(`/barrier-free/detail?id=${encodeURIComponent(placeId)}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -104,19 +117,33 @@ export default function BarrierFreeTourApiView({
       const previous = navHistory[navHistory.length - 1];
       if (previous === 'course' && activeCourseId) {
         setCurrentView('course');
+        setActivePlaceId(null);
         setNavHistory((prev) => prev.slice(0, -1));
-        syncUrl(`/barrier-free/course/${activeCourseId}`);
+        navigateToSpa(`/barrier-free/course/${activeCourseId}`);
       } else {
         setCurrentView('main');
+        setActivePlaceId(null);
+        setActiveCourseId(null);
         setNavHistory([]);
-        syncUrl('/barrier-free');
+        if (onBackToPlaceList) {
+          onBackToPlaceList();
+        } else {
+          navigateToSpa('/barrier-free');
+        }
       }
     } else if (currentView === 'course') {
       setCurrentView('main');
+      setActiveCourseId(null);
+      setActivePlaceId(null);
       setNavHistory([]);
-      syncUrl('/barrier-free');
+      if (onBackToPlaceList) {
+        onBackToPlaceList();
+      } else {
+        navigateToSpa('/barrier-free');
+      }
     } else {
       if (onNavigateHome) onNavigateHome();
+      else navigateToSpa('/');
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -124,13 +151,24 @@ export default function BarrierFreeTourApiView({
   // popstate 이벤트 (브라우저 뒤로 가기 / 앞으로 가기 감지)
   useEffect(() => {
     const handlePopState = () => {
+      const searchParams = new URLSearchParams(window.location.search);
+      const queryId = searchParams.get('id') || searchParams.get('contentId');
       const path = window.location.pathname;
-      if (path.startsWith('/barrier-free/course/')) {
+
+      if (queryId || path.startsWith('/barrier-free/detail')) {
+        const pId = queryId || path.split('/barrier-free/detail/')[1]?.split('/')[0];
+        if (pId) {
+          setActivePlaceId(pId);
+          setCurrentView('place');
+          return;
+        }
+      } else if (path.startsWith('/barrier-free/course/')) {
         const parts = path.split('/barrier-free/course/');
         const cId = parts[1]?.split('/')[0];
         if (cId) {
           setActiveCourseId(cId);
           setCurrentView('course');
+          return;
         }
       } else if (path.startsWith('/place/')) {
         const parts = path.split('/place/');
@@ -138,6 +176,7 @@ export default function BarrierFreeTourApiView({
         if (pId) {
           setActivePlaceId(pId);
           setCurrentView('place');
+          return;
         }
       } else if (path.startsWith('/barrier-free/place/')) {
         const parts = path.split('/barrier-free/place/');
@@ -145,10 +184,14 @@ export default function BarrierFreeTourApiView({
         if (pId) {
           setActivePlaceId(pId);
           setCurrentView('place');
+          return;
         }
-      } else if (path === '/barrier-free' || path.startsWith('/barrier-free')) {
-        setCurrentView('main');
       }
+      
+      // 메인 목록으로 복귀
+      setCurrentView('main');
+      setActivePlaceId(null);
+      setActiveCourseId(null);
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -163,6 +206,10 @@ export default function BarrierFreeTourApiView({
     } else if (initialCourseId) {
       setActiveCourseId(initialCourseId);
       setCurrentView('course');
+    } else {
+      setActivePlaceId(null);
+      setActiveCourseId(null);
+      setCurrentView('main');
     }
   }, [initialPlaceId, initialCourseId]);
 
@@ -170,6 +217,7 @@ export default function BarrierFreeTourApiView({
     <div className="w-full bg-[#FBFBF9] min-h-screen">
       {currentView === 'main' && (
         <BarrierFreeMainView
+          key="barrier-free-main-view"
           selectedUserType={selectedUserType}
           onSelectUserType={(type) => setSelectedUserType(type)}
           language={language}
@@ -180,6 +228,7 @@ export default function BarrierFreeTourApiView({
 
       {currentView === 'course' && activeCourseId && (
         <BarrierFreeCourseDetailView
+          key={`barrier-free-course-${activeCourseId}`}
           courseId={activeCourseId}
           selectedUserType={selectedUserType}
           language={language}
@@ -188,9 +237,10 @@ export default function BarrierFreeTourApiView({
         />
       )}
 
-      {currentView === 'place' && activePlaceId && (
+      {currentView === 'place' && (
         <BarrierFreePlaceDetailView
-          placeId={activePlaceId}
+          key={`barrier-free-place-${activePlaceId || initialPlaceId || 'spot-101'}`}
+          placeId={activePlaceId || initialPlaceId || 'spot-101'}
           selectedUserType={selectedUserType}
           language={language}
           onBack={handleBack}
@@ -201,3 +251,4 @@ export default function BarrierFreeTourApiView({
     </div>
   );
 }
+

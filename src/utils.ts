@@ -323,3 +323,19 @@ export function translateDirectionItem(text: string, language: 'KR' | 'EN' = 'KR
 
   return res;
 }
+
+/**
+ * SPA client-side navigation without full page reload.
+ * Uses window.history.pushState and dispatches popstate so all SPA routing listeners
+ * in App.tsx and subcomponents trigger seamlessly.
+ */
+export function navigateToSpa(url: string, state: any = {}): void {
+  if (typeof window === 'undefined') return;
+  const currentPath = window.location.pathname + window.location.search;
+  if (currentPath !== url) {
+    window.history.pushState(state, '', url);
+  }
+  // Dispatch popstate event to notify SPA routing handlers
+  window.dispatchEvent(new PopStateEvent('popstate', { state }));
+}
+

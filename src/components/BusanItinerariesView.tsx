@@ -46,14 +46,13 @@ import {
 import ElegantIllustration from './ElegantIllustration';
 import { BUSAN_ITINERARIES, ItineraryCourse, ItineraryStep } from '../data/itineraries';
 import { CHILD_TRANSPORT_INFOGRAPHIC_BASE64 } from '../childtransport_base64';
-import { getTodayDate } from '../utils';
+import { getTodayDate, navigateToSpa } from '../utils';
 import BusanEventsCalendarView from './BusanEventsCalendarView';
 import BarrierFreeTourApiView from './BarrierFreeTourApiView';
 import ItineraryTravelGuideSection from './ItineraryTravelGuideSection';
 import { CommunityTravelGuideSection } from './CommunityTravelGuideSection';
-import { TourApiPlaceDetailModal } from './TourApiPlaceDetailModal';
 import { TourApiItineraryStepCard } from './TourApiItineraryStepCard';
-import { matchTourApiSpotId } from '../services/tourApiCommon';
+import { matchTourApiSpotId, resolvePlaceTargetId } from '../services/tourApiCommon';
 import { getKoreaTourApiPlaceDetail } from '../data/koreaTourApiPlaceDetails';
 
 export const getStepIllustrationType = (titleKo: string, cat: string): 'temple' | 'park' | 'food' | 'cafe' | 'sea' | 'transit' | 'village' | 'history' | 'culture' | 'default' => {
@@ -96,6 +95,8 @@ interface BusanItinerariesViewProps {
   onSelectStation?: (stationId: string, exitNum?: string) => void;
   initialBarrierFreeCourseId?: string | null;
   initialBarrierFreePlaceId?: string | null;
+  onOpenBarrierFreeDetail?: (placeId: string) => void;
+  onBackToBarrierFreeList?: () => void;
 }
 
 interface CategoryConfig {
@@ -1443,6 +1444,8 @@ export default function BusanItinerariesView({
   onSelectStation,
   initialBarrierFreeCourseId,
   initialBarrierFreePlaceId,
+  onOpenBarrierFreeDetail,
+  onBackToBarrierFreeList,
 }: BusanItinerariesViewProps) {
   // Navigation Section: 'SELECTION' (Travel Tips Hub) | 'TRANSIT_TIPS' (transit guide) | 'RECOMMENDATIONS' (itineraries list) | 'SCHEDULE' (events) | 'COMMUNITY' (live tips)
   const [activeSection, setActiveSection] = useState<'SELECTION' | 'TRANSIT_TIPS' | 'RECOMMENDATIONS' | 'SCHEDULE' | 'COMMUNITY'>(
@@ -1557,7 +1560,27 @@ export default function BusanItinerariesView({
   const [quizStep, setQuizStep] = useState(0); // 0: Landing inside card, 1~7: Questions 1~7, 8: Result
   const [answers, setAnswers] = useState<('A' | 'B')[]>([]);
   const [mapModalOpen, setMapModalOpen] = useState(false);
-  const [tourApiModalPlaceId, setTourApiModalPlaceId] = useState<string | null>(null);
+  const [internalBarrierFreePlaceId, setInternalBarrierFreePlaceId] = useState<string | null>(initialBarrierFreePlaceId || null);
+
+  React.useEffect(() => {
+    setInternalBarrierFreePlaceId(initialBarrierFreePlaceId || null);
+  }, [initialBarrierFreePlaceId]);
+
+  const handleOpenBarrierFreeDetail = (placeId: string) => {
+    if (onOpenBarrierFreeDetail) {
+      onOpenBarrierFreeDetail(placeId);
+      return;
+    }
+    const targetUrl = `/barrier-free/detail?id=${encodeURIComponent(placeId)}`;
+    if (onSelectCategory) {
+      onSelectCategory('BARRIER_FREE');
+    }
+    setActiveCategory('BARRIER_FREE');
+    setInternalBarrierFreePlaceId(placeId);
+    navigateToSpa(targetUrl, { placeId });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const [selectedRegion, setSelectedRegion] = useState<'LINE1' | 'LINE2'>('LINE1');
   
   const [localActiveRegionPage, setLocalActiveRegionPage] = useState<'LINE1' | 'LINE2' | null>(null);
@@ -2223,6 +2246,7 @@ export default function BusanItinerariesView({
               <button
                 type="button"
                 onClick={() => {
+                  setInternalBarrierFreePlaceId(null);
                   if (onSelectCategory) {
                     onSelectCategory('EXPERIENCE');
                   }
@@ -2241,6 +2265,7 @@ export default function BusanItinerariesView({
               <button
                 type="button"
                 onClick={() => {
+                  setInternalBarrierFreePlaceId(null);
                   if (onSelectCategory) {
                     onSelectCategory('MARKET');
                   }
@@ -2259,6 +2284,7 @@ export default function BusanItinerariesView({
               <button
                 type="button"
                 onClick={() => {
+                  setInternalBarrierFreePlaceId(null);
                   const targetDuration = selectedScheduleDuration || 'DAY';
                   if (onSelectCategory) {
                     onSelectCategory(targetDuration);
@@ -2278,6 +2304,7 @@ export default function BusanItinerariesView({
               <button
                 type="button"
                 onClick={() => {
+                  setInternalBarrierFreePlaceId(null);
                   if (onSelectCategory) {
                     onSelectCategory('SUBWAY');
                   }
@@ -2296,10 +2323,12 @@ export default function BusanItinerariesView({
               <button
                 type="button"
                 onClick={() => {
+                  setInternalBarrierFreePlaceId(null);
                   if (onSelectCategory) {
                     onSelectCategory('BARRIER_FREE');
                   }
                   setActiveCategory('BARRIER_FREE');
+                  navigateToSpa('/barrier-free');
                 }}
                 className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                   activeCategory === 'BARRIER_FREE'
@@ -2608,9 +2637,22 @@ export default function BusanItinerariesView({
                   <BarrierFreeTourApiView 
                     language={language}
                     initialCourseId={initialBarrierFreeCourseId}
-                    initialPlaceId={initialBarrierFreePlaceId}
+                    initialPlaceId={initialBarrierFreePlaceId !== undefined && initialBarrierFreePlaceId !== null ? initialBarrierFreePlaceId : internalBarrierFreePlaceId}
                     onSelectStation={onSelectStation}
-                    onNavigateHome={() => setActiveCategory(null)}
+                    onBackToPlaceList={() => {
+                      setInternalBarrierFreePlaceId(null);
+                      if (onBackToBarrierFreeList) {
+                        onBackToBarrierFreeList();
+                      } else {
+                        navigateToSpa('/barrier-free');
+                      }
+                    }}
+                    onNavigateHome={() => {
+                      setActiveCategory(null);
+                      setInternalBarrierFreePlaceId(null);
+                      if (onBack) onBack();
+                      navigateToSpa('/tips');
+                    }}
                   />
                 </div>
               ) : (
@@ -2712,7 +2754,6 @@ export default function BusanItinerariesView({
                               stepNumber={sidx + 1}
                               step={st}
                               language={language}
-                              onOpenDetail={(placeId) => setTourApiModalPlaceId(placeId)}
                               onSelectStation={onSelectStation}
                             />
                           ))}
@@ -2808,7 +2849,6 @@ export default function BusanItinerariesView({
                                 stepNumber={sidx + 1}
                                 step={st}
                                 language={language}
-                                onOpenDetail={(placeId) => setTourApiModalPlaceId(placeId)}
                                 onSelectStation={onSelectStation}
                               />
                             ))}
@@ -2856,7 +2896,6 @@ export default function BusanItinerariesView({
                                 stepNumber={sidx + 1}
                                 step={st}
                                 language={language}
-                                onOpenDetail={(placeId) => setTourApiModalPlaceId(placeId)}
                                 onSelectStation={onSelectStation}
                               />
                             ))}
@@ -2964,7 +3003,6 @@ export default function BusanItinerariesView({
                                   stepNumber={sidx + 1}
                                   step={st}
                                   language={language}
-                                  onOpenDetail={(placeId) => setTourApiModalPlaceId(placeId)}
                                   onSelectStation={onSelectStation}
                                 />
                               ))}
@@ -3063,7 +3101,6 @@ export default function BusanItinerariesView({
                                   stepNumber={sidx + 1}
                                   step={st}
                                   language={language}
-                                  onOpenDetail={(placeId) => setTourApiModalPlaceId(placeId)}
                                   onSelectStation={onSelectStation}
                                 />
                               ))}
@@ -3162,7 +3199,6 @@ export default function BusanItinerariesView({
                                   stepNumber={sidx + 1}
                                   step={st}
                                   language={language}
-                                  onOpenDetail={(placeId) => setTourApiModalPlaceId(placeId)}
                                   onSelectStation={onSelectStation}
                                 />
                               ))}
@@ -3320,7 +3356,13 @@ export default function BusanItinerariesView({
                       {filteredGourmetSteps.map((step, idx) => {
                         const isStepWarning = step.hasStep || step.titleKo.includes('먼스커피바') || step.titleKo.includes('스트럿커피') || step.titleKo.includes('솔솥');
                         const matchedSpotId = matchTourApiSpotId(step.titleKo);
-                        const ktoDetail = matchedSpotId ? getKoreaTourApiPlaceDetail(matchedSpotId) : null;
+                        const effectiveSpotId = resolvePlaceTargetId({
+                          id: step.id,
+                          contentId: step.contentId,
+                          titleKo: step.titleKo,
+                          titleEn: step.titleEn,
+                        }) || matchedSpotId || 'spot-101';
+                        const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
 
                         return (
                           <div 
@@ -3333,12 +3375,6 @@ export default function BusanItinerariesView({
                                   <span className="text-xs font-bold text-[#0A2540] flex items-center gap-1 font-mono">
                                     <span>★ 5.0</span>
                                   </span>
-                                  {ktoDetail && (
-                                    <span className="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex items-center gap-1">
-                                      <ShieldCheck className="w-3 h-3" />
-                                      <span>TourAPI 공인</span>
-                                    </span>
-                                  )}
                                 </div>
                                 <span className="text-[11px] font-mono font-bold text-[#0A2540] bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
                                   {language === 'KR' ? (step.regionNameKo || '부산') : (step.regionNameEn || 'Busan')}
@@ -3373,18 +3409,6 @@ export default function BusanItinerariesView({
                                   <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
                                   <span>{language === 'KR' ? step.stationInfoKo : step.stationInfoEn}</span>
                                 </div>
-                              )}
-
-                              {matchedSpotId && (
-                                <button
-                                  type="button"
-                                  onClick={() => setTourApiModalPlaceId(matchedSpotId)}
-                                  className="w-full mt-2 text-xs font-bold text-[#0A2540] hover:text-white bg-[#F4EBE1] hover:bg-[#0A2540] py-2 px-3 rounded-lg border border-[#E5E2DC] transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-                                >
-                                  <ShieldCheck className="w-3.5 h-3.5" />
-                                  <span>{language === 'KR' ? '한국관광공사 공인 무장애 정보 보기' : 'View KTO Accessibility Info'}</span>
-                                  <ExternalLink className="w-3.5 h-3.5" />
-                                </button>
                               )}
                             </div>
                           </div>
@@ -3547,7 +3571,13 @@ export default function BusanItinerariesView({
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredExperienceSteps.map((step, idx) => {
                           const matchedSpotId = matchTourApiSpotId(step.titleKo);
-                          const ktoDetail = matchedSpotId ? getKoreaTourApiPlaceDetail(matchedSpotId) : null;
+                          const effectiveSpotId = resolvePlaceTargetId({
+                            id: step.id,
+                            contentId: step.contentId,
+                            titleKo: step.titleKo,
+                            titleEn: step.titleEn,
+                          }) || matchedSpotId || 'spot-101';
+                          const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
 
                           const getThemeTagLabel = (cType?: string, defaultTime?: string) => {
                             if (cType === 'MUSEUM') return language === 'KR' ? '박물관' : 'Museum';
@@ -3569,12 +3599,6 @@ export default function BusanItinerariesView({
                                     <span className="text-[11px] font-mono font-bold text-[#0A2540] bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
                                       {language === 'KR' ? (step.regionNameKo || '부산') : (step.regionNameEn || 'Busan')}
                                     </span>
-                                    {ktoDetail && (
-                                      <span className="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex items-center gap-1">
-                                        <ShieldCheck className="w-3 h-3" />
-                                        <span>TourAPI 공인</span>
-                                      </span>
-                                    )}
                                   </div>
                                   <span className="text-[11px] font-mono font-bold text-[#11161B] bg-[#F1EFEC] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
                                     {getThemeTagLabel(step.categoryType, step.time)}
@@ -3604,18 +3628,6 @@ export default function BusanItinerariesView({
                                     <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
                                     <span>{language === 'KR' ? step.stationInfoKo : step.stationInfoEn}</span>
                                   </div>
-                                )}
-
-                                {matchedSpotId && (
-                                  <button
-                                    type="button"
-                                    onClick={() => setTourApiModalPlaceId(matchedSpotId)}
-                                    className="w-full mt-2 text-xs font-bold text-[#0A2540] hover:text-white bg-[#F4EBE1] hover:bg-[#0A2540] py-2 px-3 rounded-lg border border-[#E5E2DC] transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-                                  >
-                                    <ShieldCheck className="w-3.5 h-3.5" />
-                                    <span>{language === 'KR' ? '한국관광공사 공인 무장애 정보 보기' : 'View KTO Accessibility Info'}</span>
-                                    <ExternalLink className="w-3.5 h-3.5" />
-                                  </button>
                                 )}
                               </div>
                             </div>
@@ -3719,7 +3731,13 @@ export default function BusanItinerariesView({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {filteredMarketSteps.map((step, idx) => {
                         const matchedSpotId = matchTourApiSpotId(step.titleKo);
-                        const ktoDetail = matchedSpotId ? getKoreaTourApiPlaceDetail(matchedSpotId) : null;
+                        const effectiveSpotId = resolvePlaceTargetId({
+                          id: step.id,
+                          contentId: step.contentId,
+                          titleKo: step.titleKo,
+                          titleEn: step.titleEn,
+                        }) || matchedSpotId || 'spot-101';
+                        const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
 
                         return (
                           <div
@@ -3732,12 +3750,6 @@ export default function BusanItinerariesView({
                                   <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-[#F1EFEC] text-[#0A2540]">
                                     {step.regionNameKo}
                                   </span>
-                                  {ktoDetail && (
-                                    <span className="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex items-center gap-1">
-                                      <ShieldCheck className="w-3 h-3" />
-                                      <span>TourAPI 공인</span>
-                                    </span>
-                                  )}
                                 </div>
                                 <span className="text-xs text-[#718096] font-medium">
                                   {step.time}
@@ -3779,18 +3791,6 @@ export default function BusanItinerariesView({
                                     {copiedIndex === `market-${idx}` ? (language === 'KR' ? '복사됨' : 'Copied') : (language === 'KR' ? '주소 복사' : 'Copy')}
                                   </button>
                                 </div>
-                              )}
-
-                              {matchedSpotId && (
-                                <button
-                                  type="button"
-                                  onClick={() => setTourApiModalPlaceId(matchedSpotId)}
-                                  className="w-full mt-2 text-xs font-bold text-[#0A2540] hover:text-white bg-[#F4EBE1] hover:bg-[#0A2540] py-2 px-3 rounded-lg border border-[#E5E2DC] transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-                                >
-                                  <ShieldCheck className="w-3.5 h-3.5" />
-                                  <span>{language === 'KR' ? '한국관광공사 공인 무장애 정보 보기' : 'View KTO Accessibility Info'}</span>
-                                  <ExternalLink className="w-3.5 h-3.5" />
-                                </button>
                               )}
                             </div>
                           </div>
@@ -4316,7 +4316,7 @@ export default function BusanItinerariesView({
                                         <Info className="w-4 h-4 text-[#0A2540] shrink-0 mt-0.5" />
                                         <div className="space-y-0.5 leading-relaxed text-left">
                                           <span className="font-bold block text-[#11161B]">
-                                            {language === 'KR' ? '현지인 이용 팁 & 무장애 정보' : 'Local Pro-Tip & Access Info'}
+                                            {language === 'KR' ? '현지인 이용 팁' : 'Local Pro-Tip'}
                                           </span>
                                           <span className="font-normal text-[#4A5568]">
                                             {language === 'KR' ? item.tipKo : item.tipEn}
@@ -5873,14 +5873,6 @@ export default function BusanItinerariesView({
           </div>
         </div>
       )}
-
-      {/* 한국관광공사 TourAPI 공인 무장애 상세 정보 통합 모달 */}
-      <TourApiPlaceDetailModal
-        placeId={tourApiModalPlaceId}
-        language={language}
-        onClose={() => setTourApiModalPlaceId(null)}
-        onSelectStation={onSelectStation}
-      />
     </div>
   );
 }
