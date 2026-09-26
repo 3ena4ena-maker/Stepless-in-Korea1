@@ -142,9 +142,6 @@ export const TourApiPlaceDetailModal: React.FC<TourApiPlaceDetailModalProps> = (
                           {language === 'KR' ? detail.nameKo : detail.nameEn}
                         </h2>
                       </div>
-                      <span className="text-[10px] font-medium text-white/80 bg-black/40 px-2 py-0.5 rounded backdrop-blur-sm">
-                        TourAPI ID: {detail.contentId}
-                      </span>
                     </div>
                   </div>
                 )}

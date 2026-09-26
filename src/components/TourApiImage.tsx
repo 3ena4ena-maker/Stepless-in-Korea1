@@ -7,7 +7,6 @@
  */
 
 import React, { useState } from 'react';
-import { Camera, MapPin, ImageOff } from 'lucide-react';
 import { getPlaceImageUrl } from '../utils/barrierFreeRecommendation';
 
 interface TourApiImageProps {
@@ -34,28 +33,16 @@ export default function TourApiImage({
   if (error || !initialUrl) {
     return (
       <div
-        className={`flex flex-col items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-slate-400 p-4 select-none ${className}`}
+        className={`bg-slate-100 ${className}`}
         aria-label={alt}
-      >
-        <div className="w-10 h-10 rounded-full bg-white/80 border border-slate-300 flex items-center justify-center mb-1.5 shadow-2xs">
-          <Camera className="w-5 h-5 text-slate-500" />
-        </div>
-        <span className="text-[11px] font-bold text-slate-600 text-center line-clamp-1">
-          {fallbackTitle || alt}
-        </span>
-        <span className="text-[10px] text-slate-400 font-medium">
-          한국관광공사 TourAPI 이미지 준비 중
-        </span>
-      </div>
+      />
     );
   }
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-slate-900">
+    <div className="relative w-full h-full overflow-hidden bg-slate-100">
       {!loaded && (
-        <div className="absolute inset-0 bg-slate-100 animate-pulse flex items-center justify-center">
-          <Camera className="w-6 h-6 text-slate-300" />
-        </div>
+        <div className="absolute inset-0 bg-slate-100 animate-pulse" />
       )}
       <img
         src={initialUrl}

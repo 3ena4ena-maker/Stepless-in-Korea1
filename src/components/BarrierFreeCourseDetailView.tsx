@@ -88,6 +88,8 @@ export default function BarrierFreeCourseDetailView({
       contentId,
       orderName: language === 'KR' ? item.nameKo : item.nameEn,
       note: language === 'KR' ? item.noteKo : item.noteEn,
+      transitAccess: language === 'KR' ? item.transitAccessKo : item.transitAccessEn,
+      transitRoutes: item.transitRoutes,
     };
   });
 
@@ -151,8 +153,8 @@ export default function BarrierFreeCourseDetailView({
               <span>•</span>
               <span>
                 {language === 'KR'
-                  ? `총 ${course.places.length}개 관광지 (한국관광공사 TourAPI 검증)`
-                  : `${course.places.length} stops (TourAPI verified)`}
+                  ? `총 ${course.places.length}개 관광지`
+                  : `${course.places.length} stops`}
               </span>
             </div>
           </div>
@@ -186,11 +188,6 @@ export default function BarrierFreeCourseDetailView({
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
               {language === 'KR' ? '관광지 이동 순서 및 무장애 요약' : 'Itinerary Sequence & Accessibility'}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 font-medium">
-              {language === 'KR'
-                ? '한국관광공사 TourAPI 공공데이터와 연동된 핵심 무장애 요약 정보입니다.'
-                : 'Verified barrier-free summaries linked to Korea Tourism Organization TourAPI.'}
-            </p>
           </div>
           <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200 self-start sm:self-auto flex items-center gap-1">
             <Award className="w-3.5 h-3.5" />
@@ -200,7 +197,7 @@ export default function BarrierFreeCourseDetailView({
 
         <div className="space-y-4 relative">
           {coursePlaces.map((item, idx) => {
-            const { place, ktoDetail, targetId, contentId, orderName, note } = item;
+            const { place, ktoDetail, targetId, contentId, orderName, note, transitAccess, transitRoutes } = item;
             const placeImage = ktoDetail?.firstImage || place?.image || '';
             const stationGuide = ktoDetail?.nearestStationNameKo || place?.transit?.subway?.stationNameKo;
 
@@ -224,30 +221,27 @@ export default function BarrierFreeCourseDetailView({
                       {String(idx + 1).padStart(2, '0')}
                     </div>
 
-                    {/* 썸네일 (장소 이미지가 있을 때) */}
-                    {placeImage && (
-                      <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 hidden sm:block">
+                    {/* 이미지 영역: 이미지 있음 -> 이미지 표시, 이미지 없음 -> 빈 이미지 영역 */}
+                    <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 hidden sm:block">
+                      {placeImage ? (
                         <TourApiImage
                           contentId={contentId}
                           src={placeImage}
                           alt={orderName}
                           className="w-full h-full object-cover"
                         />
-                      </div>
-                    )}
+                      ) : (
+                        <div className="w-full h-full bg-slate-100" />
+                      )}
+                    </div>
 
                     {/* 정보 요약 */}
                     <div className="space-y-1.5 flex-1 min-w-0">
-                      {/* 타이틀 & TourAPI 배지 */}
+                      {/* 타이틀 & 편안한 이동 배지 */}
                       <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                         <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
                           {orderName}
                         </h3>
-                        {contentId && (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-blue-50 text-blue-800 border border-blue-200">
-                            TourAPI {contentId}
-                          </span>
-                        )}
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
                           {language === 'KR' ? '🟢 편안한 이동' : '🟢 Comfortable'}
                         </span>
@@ -279,6 +273,26 @@ export default function BarrierFreeCourseDetailView({
                           </span>
                         )}
                       </div>
+
+                      {/* 대중교통 접근 방법 안내 (지정된 장소에만 기존 지하철 정보 아래 표시) */}
+                      {transitRoutes && transitRoutes.length > 0 ? (
+                        <div className="pt-1 space-y-1.5 text-[11px] sm:text-xs">
+                          {transitRoutes.map((route, rIdx) => (
+                            <div key={rIdx} className="space-y-0.5">
+                              <span className="font-bold text-slate-800 block">
+                                {language === 'KR' ? route.labelKo : route.labelEn}
+                              </span>
+                              <p className="text-slate-600 font-medium leading-relaxed">
+                                {language === 'KR' ? route.routeKo : route.routeEn}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : transitAccess ? (
+                        <p className="text-[11px] sm:text-xs text-slate-600 font-medium pt-0.5">
+                          {transitAccess}
+                        </p>
+                      ) : null}
                     </div>
                   </div>
 

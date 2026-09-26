@@ -46,58 +46,111 @@ export function calculateAccessibilityScore(
   place: TouristPlace,
   userType: UserType
 ): number {
-  let baseScore = 60;
   const acc = place.accessibility;
-  const transit = place.transit;
+  const transit = place.transit.subway;
+  const dist = transit.walkingDistanceMeters;
+  let score = 55;
 
   switch (userType) {
     case 'wheelchair': {
-      // 휠체어: 계단(stairs) 회피 최우선, 급경사 회피, 엘리베이터/무단차/장애인화장실 최고 가중치
-      if (acc.stairs) baseScore -= 45;
-      if (acc.steepSlope) baseScore -= 25;
-      if (acc.elevator) baseScore += 20;
-      if (acc.wheelchair) baseScore += 20;
-      if (acc.accessibleRestroom) baseScore += 15;
-      if (acc.accessibleParking) baseScore += 10;
-      if (transit.subway.hasElevator && !transit.subway.hasStairs) baseScore += 15;
+      // 휠체어: 계단 및 급경사 회피, 엘리베이터, 장애인화장실, 이동 거리
+      if (acc.stairs) score -= 40;
+      if (acc.steepSlope) score -= 25;
+      if (acc.wheelchair) score += 15; else score -= 25;
+      if (acc.elevator) score += 10; else score -= 15;
+      if (acc.accessibleRestroom) score += 8;
+      if (transit.hasElevator) score += 10; else score -= 20;
+      if (transit.hasStairs) score -= 30;
+
+      // 지하철역 출구 연계 이동 거리별 차등 점수
+      if (dist <= 100) score += 12;
+      else if (dist <= 300) score += 8;
+      else if (dist <= 500) score += 2;
+      else if (dist <= 650) score -= 6;
+      else score -= 18;
+
+      // 휠체어 리프트/저상 버스 및 실내 전용 슬로프 우수 시설
+      if (place.id === 'spot-city-tour-bus') score += 5;
+      if (place.id === 'spot-aquarium') score += 4;
       break;
     }
 
     case 'stroller': {
-      // 유아차: 계단 회피, 엘리베이터 우선, 완만한 길 우선
-      if (acc.stairs) baseScore -= 35;
-      if (acc.steepSlope) baseScore -= 20;
-      if (acc.elevator) baseScore += 20;
-      if (acc.stroller) baseScore += 20;
-      if (acc.accessibleRestroom) baseScore += 15;
-      if (transit.subway.hasElevator) baseScore += 15;
+      // 유아차: 엘리베이터, 무단차, 화장실/수유실, 쉼터, 혼잡도
+      if (acc.stairs) score -= 35;
+      if (acc.steepSlope) score -= 25;
+      if (acc.stroller) score += 15; else score -= 20;
+      if (acc.elevator) score += 10; else score -= 15;
+      if (acc.accessibleRestroom) score += 8;
+      if (transit.hasElevator) score += 10; else score -= 15;
+      if (transit.hasStairs) score -= 20;
+      if (acc.restAreas) score += 6;
+
+      if (dist <= 100) score += 12;
+      else if (dist <= 300) score += 7;
+      else if (dist <= 500) score += 2;
+      else if (dist <= 650) score -= 6;
+      else score -= 16;
+
+      // 유아차 및 아동 가족 친화 공간 (아쿠아리움 실내 관람 및 수유실)
+      if (place.id === 'spot-aquarium') score += 7;
+      if (place.id === 'spot-106') score += 4;
+      // 좁은 골목과 인파로 유아차 통행이 불편한 전통시장
+      if (place.id === 'spot-bupyeong-market') score -= 16;
       break;
     }
 
     case 'luggage': {
-      // 캐리어: 계단 회피, 엘리베이터 우선, 평탄한 보행로 우선, 대중교통 직통성
-      if (acc.stairs) baseScore -= 40;
-      if (acc.steepSlope) baseScore -= 20;
-      if (transit.subway.hasElevator) baseScore += 20;
-      if (!transit.subway.hasStairs) baseScore += 15;
-      if (transit.subway.walkingDistanceMeters <= 300) baseScore += 15;
+      // 캐리어: 계단 회피, 엘리베이터 필수, 이동 거리 최소화, 보행로 평탄성
+      score = 50;
+      if (acc.stairs) score -= 45;
+      if (acc.steepSlope) score -= 25;
+      if (acc.elevator) score += 10;
+      if (transit.hasElevator) score += 15; else score -= 25;
+      if (transit.hasStairs) score -= 30;
+
+      // 캐리어 이동 시 도보 거리가 가장 치명적인 불편 요소
+      if (dist <= 100) score += 22;
+      else if (dist <= 300) score += 14;
+      else if (dist <= 500) score -= 2;
+      else if (dist <= 650) score -= 16;
+      else score -= 28;
+
+      // 부산역 KTX 직결 투어버스 (보관함 및 환승)
+      if (place.id === 'spot-city-tour-bus') score += 12;
+      // 신관 건물 내 물품보관함
+      if (place.id === 'spot-jagalchi-rooftop') score += 5;
+      // 해변 모래사장은 캐리어 이동이 극히 불리함
+      if (place.categoryKo.includes('해변')) score -= 12;
       break;
     }
 
     case 'senior': {
-      // 천천히 여행하기: 보행거리 단축, 쉼터/휴식 공간, 계단/경사 완만
-      if (transit.subway.walkingDistanceMeters > 500) baseScore -= 20;
-      if (acc.stairs) baseScore -= 25;
-      if (acc.steepSlope) baseScore -= 25;
-      if (acc.restAreas) baseScore += 25;
-      if (acc.elevator) baseScore += 15;
-      if (transit.subway.hasElevator) baseScore += 10;
+      // 천천히 여행하기: 쉼터/벤치 필수, 보행 거리 최소화, 계단/급경사 배제
+      score = 50;
+      if (acc.restAreas) score += 16; else score -= 25;
+      if (acc.stairs) score -= 40;
+      if (acc.steepSlope) score -= 30;
+      if (acc.elevator) score += 10;
+      if (transit.hasElevator) score += 10; else score -= 20;
+      if (transit.hasStairs) score -= 25;
+
+      // 도보 거리 및 보행 피로도
+      if (dist <= 100) score += 20;
+      else if (dist <= 300) score += 12;
+      else if (dist <= 500) score -= 2;
+      else if (dist <= 650) score -= 16;
+      else score -= 28;
+
+      // 시티투어버스는 착석형 관광으로 도보 피로 최소화
+      if (place.id === 'spot-city-tour-bus') score += 12;
+      if (place.id === 'spot-106') score += 4;
       break;
     }
   }
 
   // 상한 100, 하한 30으로 정규화
-  return Math.max(30, Math.min(100, baseScore));
+  return Math.max(30, Math.min(100, score));
 }
 
 /**
@@ -208,48 +261,94 @@ export function calculateAccessibleRoute(
 }
 
 /**
- * 3. 여행자 유형에 맞는 추천 여행 코스 목록
+ * 3. 여행자 유형에 맞는 추천 여행 코스 목록 (복수 유형 지원)
  */
-export function getRecommendedCourses(userType: UserType): TravelCourse[] {
+export function getRecommendedCourses(userTypes: UserType | UserType[]): TravelCourse[] {
+  const types: UserType[] = Array.isArray(userTypes) ? userTypes : [userTypes];
   return [...BARRIER_FREE_COURSES].sort((a, b) => {
-    const weightA = a.baseScoreWeights[userType] || 80;
-    const weightB = b.baseScoreWeights[userType] || 80;
+    if (types.length === 0) return 0;
+    const weightA = types.reduce((sum, t) => sum + (a.baseScoreWeights[t] || 80), 0) / types.length;
+    const weightB = types.reduce((sum, t) => sum + (b.baseScoreWeights[t] || 80), 0) / types.length;
     return weightB - weightA;
   });
 }
 
 /**
- * 4. 여행자 유형 및 선택된 여행 성향에 맞게 정렬된 개별 추천 관광지 목록
- * 기존의 userType만 넘기는 호출도 완벽하게 지원하며, experiences/companions 전달 시 매칭 부스팅 적용
+ * 4. 여행자 유형(단일 또는 복수) 및 선택된 여행 성향에 맞게 정렬 및 필터링된 개별 추천 관광지 목록
+ * - 실제 accessibility 데이터(wheelchair, stroller, elevator, accessibleRestroom, stairs, steepSlope, restAreas)와
+ *   실제 환승 데이터(hasElevator, hasStairs, walkingDistanceMeters)를 정밀하게 반영
+ * - 복수 유형 선택 시 모든 유형의 접근성 조건을 종합적으로 고려
+ * - 실제 접근성이 현저히 낮은 장소는 추천 대상에서 자연스럽게 제외
  */
 export function getRecommendedPlaces(
-  userType: UserType,
+  userTypes: UserType | UserType[],
   selectedExperiences: BusanExperienceType[] = [],
-  selectedCompanions: TravelCompanionType[] = []
+  selectedCompanions: TravelCompanionType[] = [],
+  candidateIds?: string[]
 ): PlaceRecommendationResult[] {
-  return BARRIER_FREE_PLACES.map((place) => {
-    let score = calculateAccessibilityScore(place, userType);
+  const types: UserType[] = Array.isArray(userTypes) ? userTypes : [userTypes];
+  const primaryType: UserType = types.length > 0 ? types[0] : 'wheelchair';
 
-    // 부산 여행 경험 매칭 가산점
+  const sourcePlaces = candidateIds && candidateIds.length > 0
+    ? BARRIER_FREE_PLACES.filter((p) => candidateIds.includes(p.id))
+    : BARRIER_FREE_PLACES;
+
+  const results: PlaceRecommendationResult[] = [];
+
+  for (const place of sourcePlaces) {
+    let accessibilityScore = 0;
+
+    if (types.length === 0) {
+      // 아무 유형도 선택되지 않은 경우 기본 종합 접근성 점수
+      let base = 85;
+      if (place.accessibility.elevator) base += 3;
+      if (place.accessibility.accessibleRestroom) base += 3;
+      if (place.accessibility.restAreas) base += 3;
+      if (place.transit.subway.hasElevator) base += 3;
+      if (place.transit.subway.walkingDistanceMeters <= 300) base += 3;
+      accessibilityScore = Math.min(100, base);
+    } else {
+      // 선택된 모든 유형의 점수를 계산하여 종합
+      const typeScores = types.map((t) => calculateAccessibilityScore(place, t));
+      const avgScore = typeScores.reduce((sum, s) => sum + s, 0) / typeScores.length;
+      const minScore = Math.min(...typeScores);
+
+      // 평균 적합도 60% + 가장 제약이 큰 취약 항목 40% 반영하여 복수 조건 모두 엄격 검토
+      accessibilityScore = Math.round(0.6 * avgScore + 0.4 * minScore);
+
+      // 실제 접근성이 현저히 낮은 장소(적합도 점수 68점 미만)는 추천 대상에서 자연스럽게 제외
+      if (accessibilityScore < 68) {
+        continue;
+      }
+    }
+
+    let finalScore = accessibilityScore;
+
+    // 부산 여행 경험 매칭 가산점 (+12)
     if (selectedExperiences.length > 0 && place.experienceTraits) {
       const matchExp = selectedExperiences.some((exp) => place.experienceTraits?.includes(exp));
-      if (matchExp) score += 15;
+      if (matchExp) finalScore += 12;
     }
 
-    // 함께하는 여행 매칭 가산점
+    // 함께하는 여행 매칭 가산점 (+12)
     if (selectedCompanions.length > 0 && place.companionTraits) {
       const matchComp = selectedCompanions.some((comp) => place.companionTraits?.includes(comp));
-      if (matchComp) score += 15;
+      if (matchComp) finalScore += 12;
     }
 
-    const highlight = place.recommendationReasons[userType];
-    return {
+    // UI 표시용 점수 (최대 100점 상한)
+    finalScore = Math.min(100, finalScore);
+
+    const highlight = place.recommendationReasons[primaryType];
+    results.push({
       place,
-      score,
+      score: finalScore,
       highlightKo: highlight ? highlight.ko : place.descriptionKo,
       highlightEn: highlight ? highlight.en : place.descriptionEn,
-    };
-  }).sort((a, b) => b.score - a.score);
+    });
+  }
+
+  return results.sort((a, b) => b.score - a.score);
 }
 
 /**
@@ -262,8 +361,5 @@ export function getPlaceImageUrl(contentId: string, fallbackUrl?: string): strin
   if (found && found.image) {
     return found.image;
   }
-  return (
-    fallbackUrl ||
-    'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1000&q=80'
-  );
+  return fallbackUrl || '';
 }

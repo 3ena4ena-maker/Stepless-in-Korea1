@@ -95,14 +95,12 @@ export default function BarrierFreeMainView({
     );
   };
 
-  // 기존 추천/정렬 로직 완벽 유지
-  // (아무것도 선택되지 않은 경우 기본 wheelchair 기준으로 안전하게 정렬 fallback)
-  const activeSortUserType: UserType =
-    selectedUserTypes.length > 0 ? selectedUserTypes[selectedUserTypes.length - 1] : selectedUserType;
+  // 추천 코스: 선택된 모든 유형의 선호도 가중치를 반영
+  const recommendedCourses = useMemo(() => {
+    return getRecommendedCourses(selectedUserTypes.length > 0 ? selectedUserTypes : selectedUserType);
+  }, [selectedUserTypes, selectedUserType]);
 
-  const recommendedCourses = getRecommendedCourses(activeSortUserType);
-
-  // 신규 8개 무장애 관광지 ID 목록
+  // 8개 무장애 관광지 ID 목록
   // (해운대 해수욕장, SEA LIFE 부산아쿠아리움, 부산 엑스더스카이 전망대, 다대포 해수욕장, 송정 해수욕장, 자갈치시장, 부평 깡통 국제 시장, 부산 시티투어버스)
   const TARGET_PLACE_IDS = useMemo(
     () => [
@@ -118,13 +116,19 @@ export default function BarrierFreeMainView({
     []
   );
 
-  // 8개 신규 관광지만 정확히 선별하되, 여행자 유형/경험/동행자 기준 점수 계산 및 정렬 로직은 100% 온전히 유지
+  // 선택된 모든 여행자 유형(복수 선택 지원), 경험, 동행자 기준을 실제 접근성 데이터와 대중교통 거리에 반영하여 추천 및 필터링
   const recommendedPlaces = useMemo(() => {
-    const allSorted = getRecommendedPlaces(activeSortUserType, selectedExperiences, selectedCompanions);
-    return allSorted.filter(({ place }) => TARGET_PLACE_IDS.includes(place.id));
-  }, [activeSortUserType, selectedExperiences, selectedCompanions, TARGET_PLACE_IDS]);
+    return getRecommendedPlaces(
+      selectedUserTypes,
+      selectedExperiences,
+      selectedCompanions,
+      TARGET_PLACE_IDS
+    );
+  }, [selectedUserTypes, selectedExperiences, selectedCompanions, TARGET_PLACE_IDS]);
 
-  const activeUserMeta = USER_TYPES.find((t) => t.id === activeSortUserType);
+  const activeUserMeta = USER_TYPES.find((t) =>
+    selectedUserTypes.length > 0 ? t.id === selectedUserTypes[selectedUserTypes.length - 1] : t.id === selectedUserType
+  );
 
   // 부산 지하철/전철 공식 노선별 고유 컬러 뱃지 렌더러
   const renderSubwayBadge = (line?: string) => {
@@ -325,11 +329,15 @@ export default function BarrierFreeMainView({
             <h2 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-500" />
               <span>{language === 'KR' ? '추천 여행 코스' : 'Recommended Travel Courses'}</span>
-              {activeUserMeta && (
+              {selectedUserTypes.length > 0 ? (
                 <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
                   {language === 'KR'
-                    ? `${activeUserMeta.titleKo} 맞춤 순`
-                    : `Tailored for ${activeUserMeta.titleEn}`}
+                    ? `${selectedUserTypes.map((t) => USER_TYPES.find((u) => u.id === t)?.titleKo).filter(Boolean).join('·')} 맞춤 순`
+                    : `Tailored for ${selectedUserTypes.map((t) => USER_TYPES.find((u) => u.id === t)?.titleEn).filter(Boolean).join(', ')}`}
+                </span>
+              ) : (
+                <span className="text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
+                  {language === 'KR' ? '종합 추천 순' : 'General Ranking'}
                 </span>
               )}
             </h2>

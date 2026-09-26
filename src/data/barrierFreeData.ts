@@ -389,6 +389,14 @@ export interface TravelCourse {
     contentId?: string;
     noteKo: string;
     noteEn: string;
+    transitAccessKo?: string;
+    transitAccessEn?: string;
+    transitRoutes?: {
+      labelKo: string;
+      labelEn: string;
+      routeKo: string;
+      routeEn: string;
+    }[];
   }[];
   recommendationReasons: Record<UserType, string[]>;
   accessibilityBadges: {
@@ -2217,6 +2225,8 @@ export const BARRIER_FREE_COURSES: TravelCourse[] = [
         contentId: '2684877',
         noteKo: '휠체어 탑승 가능 해변열차와 미포~송정 해안 무단차 데크로드',
         noteEn: 'Wheelchair-accessible beach train & step-free coastal boardwalk',
+        transitAccessKo: '해운대역 5번출구 엘리베이터 이용',
+        transitAccessEn: 'Use Exit 5 elevator at Haeundae Station',
       },
       {
         nameKo: '송정 해수욕장',
@@ -2225,6 +2235,8 @@ export const BARRIER_FREE_COURSES: TravelCourse[] = [
         contentId: '126080',
         noteKo: '완만한 백사장 산책로와 죽도공원 무단차 데크로드',
         noteEn: 'Gentle flat beach boardwalk and Jukdo Park step-free deck',
+        transitAccessKo: '해변열차 송정 ↔ 해운대 승하차 가능',
+        transitAccessEn: 'Beach train boarding/alighting between Songjeong ↔ Haeundae',
       },
       {
         nameKo: '신세계 센텀시티',
@@ -2233,6 +2245,8 @@ export const BARRIER_FREE_COURSES: TravelCourse[] = [
         contentId: '126084',
         noteKo: '센텀시티역 지하 직결 및 전 층 대형 승강기 완비',
         noteEn: 'Direct underground metro access & elevators on all floors',
+        transitAccessKo: '센텀시티역 지하 연결',
+        transitAccessEn: 'Direct underground connection from Centum City Station',
       },
       {
         nameKo: '광안리',
@@ -2241,6 +2255,8 @@ export const BARRIER_FREE_COURSES: TravelCourse[] = [
         contentId: '126082',
         noteKo: '광안대교 오션뷰를 따라 단차 없이 이어지는 해변 테라스 산책로',
         noteEn: 'Wide step-free beachfront promenade facing Gwangan Bridge',
+        transitAccessKo: '금련산역 3번출구 / 광안역 5번출구',
+        transitAccessEn: 'Geumnyeonsan Station Exit 3 / Gwangan Station Exit 5',
       },
     ],
     duration: '약 4시간',
@@ -2308,6 +2324,20 @@ export const BARRIER_FREE_COURSES: TravelCourse[] = [
         contentId: '1350616',
         noteKo: '마을 안내센터 완만 추천 관람로 및 파노라마 포토존',
         noteEn: 'Gentle access route and scenic viewpoints from visitor center',
+        transitRoutes: [
+          {
+            labelKo: '자갈치역 출발',
+            labelEn: 'From Jagalchi Station',
+            routeKo: '자갈치역 3번 출구 → 1번 출구 방향 마을버스 정류장까지 약 240m 도보 → 마을버스 1-1 또는 2-2 승차 → 감천문화마을 정류장 하차 (12개 정류장)',
+            routeEn: 'Jagalchi Stn Exit 3 → Walk ~240m toward Exit 1 village bus stop → Board village bus 1-1 or 2-2 → Alight at Gamcheon Culture Village stop (12 stops)',
+          },
+          {
+            labelKo: '토성역 출발',
+            labelEn: 'From Toseong Station',
+            routeKo: '토성역 4번 출구 → 부산대학병원 방향 마을버스 정류장까지 약 175m 도보 → 마을버스 1-1 승차 → 감천문화마을 정류장 하차 (10개 정류장)',
+            routeEn: 'Toseong Stn Exit 4 → Walk ~175m toward PNU Hospital village bus stop → Board village bus 1-1 → Alight at Gamcheon Culture Village stop (10 stops)',
+          },
+        ],
       },
       {
         nameKo: '자갈치 시장',
@@ -2316,6 +2346,8 @@ export const BARRIER_FREE_COURSES: TravelCourse[] = [
         contentId: '126087',
         noteKo: '현대화 건물 전 층 승강기 및 유라리광장 해안 수변 데크로드',
         noteEn: 'Modern facility with full elevator access and waterfront wooden deck',
+        transitAccessKo: '자갈치역 6번 / 10번 출구',
+        transitAccessEn: 'Jagalchi Station Exit 6 / 10',
       },
       {
         nameKo: '국제시장',
@@ -2324,6 +2356,8 @@ export const BARRIER_FREE_COURSES: TravelCourse[] = [
         contentId: '1878218',
         noteKo: '비 가림 아케이드 지붕과 턱 없는 시장 골목 평탄 보행',
         noteEn: 'All-weather arcade canopy with step-free pavement through bustling alleys',
+        transitAccessKo: '횡단보도 이용 가능',
+        transitAccessEn: 'Pedestrian crosswalk available',
       },
       {
         nameKo: '비프광장',
@@ -2332,6 +2366,8 @@ export const BARRIER_FREE_COURSES: TravelCourse[] = [
         contentId: '2674675',
         noteKo: '차 없는 평탄 보행자 전용거리 및 자갈치역 7번 출구 평지 직결',
         noteEn: 'Pedestrian-only flat street with direct step-free link from Jagalchi Stn Exit 7',
+        transitAccessKo: '횡단보도 이용 가능',
+        transitAccessEn: 'Pedestrian crosswalk available',
       },
     ],
     duration: '약 3.5시간',
