@@ -58,41 +58,36 @@ export default function BarrierFreeMainView({
   // 3. 함께하는 여행 다중 선택 상태 (초기 상태: 미선택/선택 해제 허용)
   const [selectedCompanions, setSelectedCompanions] = useState<TravelCompanionType[]>([]);
 
-  // Synchronize when selectedUserType prop changes
+  // Synchronize only when selectedUserType prop actually changes externally
+  const prevSelectedUserTypePropRef = React.useRef(selectedUserType);
   React.useEffect(() => {
-    if (selectedUserType && !selectedUserTypes.includes(selectedUserType)) {
+    if (prevSelectedUserTypePropRef.current !== selectedUserType) {
+      prevSelectedUserTypePropRef.current = selectedUserType;
       setSelectedUserTypes([selectedUserType]);
     }
   }, [selectedUserType]);
 
-  // 여행자 유형 토글 핸들러 (기존 단일 선택 콜백 연동 유지로 추천/정렬 기능 완벽 보존)
+  // 1. 여행자 유형 단일 선택 핸들러 (그룹 내 1개만 선택, 다른 항목 선택 시 기존 선택 해제 및 교체)
   const handleToggleUserType = (typeId: UserType) => {
-    setSelectedUserTypes((prev) => {
-      const exists = prev.includes(typeId);
-      const updated = exists ? prev.filter((id) => id !== typeId) : [...prev, typeId];
-      
-      // 기존 추천 정렬 로직과의 호환성 유지:
-      // 선택된 항목이 남아있으면 가장 마지막에 선택된 항목(또는 첫번째 항목)을 기존 정렬 기준으로 동기화
-      if (updated.length > 0) {
-        const nextActive = exists ? updated[updated.length - 1] : typeId;
-        onSelectUserType(nextActive);
-      }
-      return updated;
-    });
+    const isSelected = selectedUserTypes.includes(typeId);
+    if (isSelected) {
+      setSelectedUserTypes([]);
+    } else {
+      setSelectedUserTypes([typeId]);
+      onSelectUserType(typeId);
+    }
   };
 
-  // 부산 여행 경험 토글 핸들러
+  // 2. 부산 여행 경험 단일 선택 핸들러 (그룹 내 1개만 선택, 다른 항목 선택 시 기존 선택 해제 및 교체)
   const handleToggleExperience = (expId: BusanExperienceType) => {
-    setSelectedExperiences((prev) =>
-      prev.includes(expId) ? prev.filter((id) => id !== expId) : [...prev, expId]
-    );
+    const isSelected = selectedExperiences.includes(expId);
+    setSelectedExperiences(isSelected ? [] : [expId]);
   };
 
-  // 함께하는 여행 토글 핸들러
+  // 3. 함께하는 여행 단일 선택 핸들러 (그룹 내 1개만 선택, 다른 항목 선택 시 기존 선택 해제 및 교체)
   const handleToggleCompanion = (compId: TravelCompanionType) => {
-    setSelectedCompanions((prev) =>
-      prev.includes(compId) ? prev.filter((id) => id !== compId) : [...prev, compId]
-    );
+    const isSelected = selectedCompanions.includes(compId);
+    setSelectedCompanions(isSelected ? [] : [compId]);
   };
 
   // 추천 코스: 선택된 모든 유형의 선호도 가중치를 반영
@@ -199,8 +194,8 @@ export default function BarrierFreeMainView({
             <span>{language === 'KR' ? '여행 맞춤 기준 선택' : 'Travel Preference Filters'}</span>
             <span className="text-xs text-slate-500 font-medium">
               {language === 'KR'
-                ? '(복수 선택 가능 · 선택값에 따라 맞춤 정렬)'
-                : '(Multi-select · Instant personalized sorting)'}
+                ? '(각 항목별 1개 선택 · 선택값에 따라 맞춤 정렬)'
+                : '(1 selection per group · Instant personalized sorting)'}
             </span>
           </h2>
         </div>
@@ -219,7 +214,7 @@ export default function BarrierFreeMainView({
                 )}
               </span>
               <span className="text-[11px] text-slate-400 font-medium">
-                {language === 'KR' ? '다중 선택 및 해제 가능' : 'Multi-select & toggleable'}
+                {language === 'KR' ? '1개 선택 가능' : '1 choice'}
               </span>
             </div>
 
@@ -257,7 +252,7 @@ export default function BarrierFreeMainView({
                 )}
               </span>
               <span className="text-[11px] text-slate-400 font-medium">
-                {language === 'KR' ? '선택 해제 가능' : 'Optional'}
+                {language === 'KR' ? '1개 선택 가능' : '1 choice'}
               </span>
             </div>
 
@@ -295,7 +290,7 @@ export default function BarrierFreeMainView({
                 )}
               </span>
               <span className="text-[11px] text-slate-400 font-medium">
-                {language === 'KR' ? '다중 선택 가능' : 'Multi-select available'}
+                {language === 'KR' ? '1개 선택 가능' : '1 choice'}
               </span>
             </div>
 
