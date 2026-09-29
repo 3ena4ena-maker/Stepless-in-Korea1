@@ -516,9 +516,20 @@ app.get("/api/tourapi/test", async (req, res) => {
 });
 
 // Helper: 한국관광공사 무장애 관광정보 상세데이터 3종(공통, 무장애, 소개) 실제 수신
+// 공공데이터포털(apis.data.go.kr) 접속 지연/타임아웃 발생 시 로컬 정밀 데이터셋으로 즉시 안전하게 전환 (Circuit Breaker)
+let ktoCircuitOpenUntil = 0;
+
+function isKtoCircuitOpen(): boolean {
+  return Date.now() < ktoCircuitOpenUntil;
+}
+
+function tripKtoCircuit(durationMs: number = 5 * 60 * 1000) {
+  ktoCircuitOpenUntil = Date.now() + durationMs;
+}
+
 async function fetchKorWithSpotFullDetail(contentId: string, serviceKey: string) {
-  if (!serviceKey || serviceKey.trim() === "") {
-    throw new Error("Service key is missing");
+  if (!serviceKey || serviceKey.trim() === "" || isKtoCircuitOpen()) {
+    return null;
   }
   const trimmed = serviceKey.trim();
   const keyToUse = trimmed.includes("%") ? trimmed : encodeURIComponent(trimmed);
@@ -526,10 +537,21 @@ async function fetchKorWithSpotFullDetail(contentId: string, serviceKey: string)
   const commonUrl = `${KORWITH_ENDPOINT}/detailCommon2?serviceKey=${keyToUse}&MobileOS=ETC&MobileApp=SteplessBusan&_type=json&contentId=${contentId}`;
   const withUrl = `${KORWITH_ENDPOINT}/detailWithTour2?serviceKey=${keyToUse}&MobileOS=ETC&MobileApp=SteplessBusan&_type=json&contentId=${contentId}`;
 
-  const [cRes, wRes] = await Promise.all([
-    fetch(commonUrl, { signal: AbortSignal.timeout(5000) }),
-    fetch(withUrl, { signal: AbortSignal.timeout(5000) })
-  ]);
+  let cRes: Response;
+  let wRes: Response;
+  try {
+    [cRes, wRes] = await Promise.all([
+      fetch(commonUrl, { signal: AbortSignal.timeout(1500) }),
+      fetch(withUrl, { signal: AbortSignal.timeout(1500) })
+    ]);
+  } catch {
+    tripKtoCircuit();
+    return null;
+  }
+
+  if (!cRes.ok || !wRes.ok) {
+    return null;
+  }
 
   const cText = await cRes.text();
   const wText = await wRes.text();
@@ -542,14 +564,20 @@ async function fetchKorWithSpotFullDetail(contentId: string, serviceKey: string)
   const commonItem = cJson?.response?.body?.items?.item?.[0] || null;
   const withItem = wJson?.response?.body?.items?.item?.[0] || null;
 
+  if (!commonItem && !withItem) {
+    return null;
+  }
+
   let introItem: any = null;
   if (commonItem?.contenttypeid) {
     try {
       const introUrl = `${KORWITH_ENDPOINT}/detailIntro2?serviceKey=${keyToUse}&MobileOS=ETC&MobileApp=SteplessBusan&_type=json&contentId=${contentId}&contentTypeId=${commonItem.contenttypeid}`;
-      const iRes = await fetch(introUrl, { signal: AbortSignal.timeout(5000) });
-      const iText = await iRes.text();
-      const iJson = JSON.parse(iText);
-      introItem = iJson?.response?.body?.items?.item?.[0] || null;
+      const iRes = await fetch(introUrl, { signal: AbortSignal.timeout(1500) });
+      if (iRes.ok) {
+        const iText = await iRes.text();
+        const iJson = JSON.parse(iText);
+        introItem = iJson?.response?.body?.items?.item?.[0] || null;
+      }
     } catch {}
   }
 
@@ -727,9 +755,29 @@ app.get("/api/tourapi/spots", async (req, res) => {
 app.get("/api/tourapi/live-proxy", async (req, res) => {
   try {
     const { path: apiPath = "areaBasedList2", numOfRows = "10", pageNo = "1" } = req.query;
+
+    if (isKtoCircuitOpen()) {
+      return res.status(200).json({
+        status: "fallback",
+        message: "Live API call pending or cooling down. Local verified barrier-free dataset active.",
+        fallbackDataAvailable: true,
+      });
+    }
+
     const url = `${KORWITH_ENDPOINT}/${apiPath}?serviceKey=${KORWITH_SERVICE_KEY}&numOfRows=${numOfRows}&pageNo=${pageNo}&MobileOS=ETC&MobileApp=SteplessBusan&_type=json&areaCode=6`;
     
-    const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
+    let response: Response;
+    try {
+      response = await fetch(url, { signal: AbortSignal.timeout(2000) });
+    } catch {
+      tripKtoCircuit();
+      return res.status(200).json({
+        status: "fallback",
+        message: "Live API call timed out. Local verified barrier-free dataset active.",
+        fallbackDataAvailable: true,
+      });
+    }
+
     if (!response.ok) {
       return res.status(response.status).json({
         status: "error",
@@ -799,8 +847,8 @@ app.get("/api/tourapi/detail/:id", async (req, res) => {
               liveDetail = liveRes;
               isLiveApi = true;
             }
-          } catch (err) {
-            console.warn(`[KTO Live API] fetch failed for ${id}:`, err);
+          } catch {
+            // Live API fetch timed out or skipped; local spot fallback active
           }
         }
 
@@ -876,8 +924,8 @@ app.get("/api/tourapi/detail/:id", async (req, res) => {
           liveDetail = liveRes;
           isLiveApi = true;
         }
-      } catch (err) {
-        console.warn(`[KTO Live API] Failed to fetch for ${id} (contentId: ${targetContentId}):`, err);
+      } catch {
+        // Live API fetch timed out or skipped; local verified dataset fallback active
       }
     }
 
