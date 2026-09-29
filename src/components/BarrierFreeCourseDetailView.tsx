@@ -30,7 +30,37 @@ import {
   USER_TYPES,
 } from '../data/barrierFreeData';
 import { getKoreaTourApiPlaceDetail } from '../data/koreaTourApiPlaceDetails';
+import { getPlaceImageUrl } from '../utils/barrierFreeRecommendation';
 import TourApiImage from './TourApiImage';
+
+function CourseStepThumbnail({ contentId, src, alt }: { contentId?: string; src?: string; alt: string }) {
+  const [error, setError] = React.useState(false);
+  const [loaded, setLoaded] = React.useState(false);
+  const initialUrl = contentId ? getPlaceImageUrl(contentId, src) : src;
+
+  React.useEffect(() => {
+    setError(false);
+    setLoaded(false);
+  }, [initialUrl]);
+
+  if (!initialUrl || error) {
+    return null;
+  }
+
+  return (
+    <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 hidden sm:block">
+      <img
+        src={initialUrl}
+        alt={alt}
+        loading="lazy"
+        referrerPolicy="no-referrer"
+        onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
+        className={`w-full h-full object-cover transition-opacity duration-200 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+      />
+    </div>
+  );
+}
 
 interface BarrierFreeCourseDetailViewProps {
   courseId: string;
@@ -221,19 +251,12 @@ export default function BarrierFreeCourseDetailView({
                       {String(idx + 1).padStart(2, '0')}
                     </div>
 
-                    {/* 이미지 영역: 이미지 있음 -> 이미지 표시, 이미지 없음 -> 빈 이미지 영역 */}
-                    <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 hidden sm:block">
-                      {placeImage ? (
-                        <TourApiImage
-                          contentId={contentId}
-                          src={placeImage}
-                          alt={orderName}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-slate-100" />
-                      )}
-                    </div>
+                    {/* 이미지 영역: 이미지 유효 시에만 깔끔하게 표시, 없거나 오류 시 비움 */}
+                    <CourseStepThumbnail
+                      contentId={contentId}
+                      src={placeImage}
+                      alt={orderName}
+                    />
 
                     {/* 정보 요약 */}
                     <div className="space-y-1.5 flex-1 min-w-0">

@@ -39,7 +39,12 @@ export const TourApiPlaceDetailModal: React.FC<TourApiPlaceDetailModalProps> = (
   onSelectStation,
 }) => {
   const [copied, setCopied] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const { detail, liveBarrierFree, loading, isLiveApi, hasKtoData } = useTourApiSpot(placeId || '');
+
+  useEffect(() => {
+    setImgError(false);
+  }, [detail?.firstImage]);
 
   // ESC 키로 닫기
   useEffect(() => {
@@ -124,13 +129,14 @@ export const TourApiPlaceDetailModal: React.FC<TourApiPlaceDetailModalProps> = (
             <>
               {/* 대표 이미지 및 기본 명칭 */}
               <div className="space-y-4">
-                {detail.firstImage && (
+                {detail.firstImage && !imgError && (
                   <div className="relative rounded-xl overflow-hidden aspect-[16/9] max-h-64 sm:max-h-72 bg-slate-100 border border-[#E5E2DC]">
                     <img
                       src={detail.firstImage}
                       alt={language === 'KR' ? detail.nameKo : detail.nameEn}
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
+                      onError={() => setImgError(true)}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
@@ -146,8 +152,8 @@ export const TourApiPlaceDetailModal: React.FC<TourApiPlaceDetailModalProps> = (
                   </div>
                 )}
 
-                {/* 기본 명칭(이미지 없을 때) 및 카테고리 태그 */}
-                {!detail.firstImage && (
+                {/* 기본 명칭(이미지 없거나 로드 실패 시) 및 카테고리 태그 */}
+                {(!detail.firstImage || imgError) && (
                   <div className="border-b border-[#E5E2DC] pb-4">
                     <span className="text-xs font-semibold px-2.5 py-1 rounded bg-[#F4EBE1] text-[#0A2540] inline-block mb-2">
                       {language === 'KR' ? detail.categoryKo : detail.categoryEn} · {detail.districtKo}

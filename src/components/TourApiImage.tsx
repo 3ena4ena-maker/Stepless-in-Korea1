@@ -31,12 +31,7 @@ export default function TourApiImage({
   const initialUrl = contentId ? getPlaceImageUrl(contentId, src) : src;
 
   if (error || !initialUrl) {
-    return (
-      <div
-        className={`bg-slate-100 ${className}`}
-        aria-label={alt}
-      />
-    );
+    return null;
   }
 
   return (

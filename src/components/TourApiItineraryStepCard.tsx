@@ -7,7 +7,7 @@
  * 8대 무장애 편의시설 배지, 지하철 엘리베이터 출구)를 동시 노출하고 상세 팝업을 지원합니다.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   MapPin, 
   Train, 
@@ -49,6 +49,9 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
   onSelectStation,
 }) => {
   const [copied, setCopied] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   const { matchedSpotId, hasKtoData, detail } = useTourApiSpot(step.titleKo);
   const effectiveTargetId = resolvePlaceTargetId({
     id: step.id,
@@ -56,6 +59,11 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
     titleKo: step.titleKo,
     titleEn: step.titleEn,
   }) || matchedSpotId || 'spot-101';
+
+  useEffect(() => {
+    setImageError(false);
+    setImageLoaded(false);
+  }, [detail?.firstImage]);
 
   const handleCopy = (e: React.MouseEvent, text: string) => {
     e.stopPropagation();
@@ -66,6 +74,11 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
   };
 
   const bf = detail?.barrierFree;
+  const hasAnyDetailInfo = Boolean(
+    (detail?.firstImage && !imageError) || 
+    detail?.addressRoadKo || 
+    (bf && Object.values(bf).some((v: any) => v?.available))
+  );
 
   return (
     <div className="relative group text-left space-y-2">
@@ -98,20 +111,22 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
         </div>
 
         {/* 한국관광공사 API 데이터 연동 영역 (등록 장소일 때) */}
-        {hasKtoData && detail && (
+        {hasKtoData && detail && hasAnyDetailInfo && (
           <div className="space-y-3 pt-1">
             {/* 사진 & 주소 복합 정보 */}
             <div className="flex flex-col sm:flex-row gap-3 bg-[#FBFBF9] p-3 rounded-lg border border-[#E5E2DC]">
-              {detail.firstImage && (
+              {detail.firstImage && !imageError ? (
                 <div className="w-full sm:w-28 sm:h-20 rounded-md overflow-hidden bg-slate-100 shrink-0 border border-[#E5E2DC]">
                   <img
                     src={detail.firstImage}
                     alt={detail.nameKo}
-                    className="w-full h-full object-cover"
+                    className={`w-full h-full object-cover transition-opacity duration-200 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                     referrerPolicy="no-referrer"
+                    onLoad={() => setImageLoaded(true)}
+                    onError={() => setImageError(true)}
                   />
                 </div>
-              )}
+              ) : null}
               
               <div className="flex-1 space-y-1.5 text-xs">
                 {detail.addressRoadKo && (

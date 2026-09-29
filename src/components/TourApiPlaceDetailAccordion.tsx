@@ -9,7 +9,7 @@
  * 정갈한 여백과 명확한 무장애 편의시설 정보를 제공합니다.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   MapPin, 
   Phone, 
@@ -42,7 +42,12 @@ export const TourApiPlaceDetailAccordion: React.FC<TourApiPlaceDetailAccordionPr
   className = '',
 }) => {
   const [copied, setCopied] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const { detail, loading } = useTourApiSpot(placeId || '');
+
+  useEffect(() => {
+    setImageError(false);
+  }, [detail?.firstImage]);
 
   const handleCopyAddress = (text: string) => {
     if (!text) return;
@@ -115,14 +120,15 @@ export const TourApiPlaceDetailAccordion: React.FC<TourApiPlaceDetailAccordionPr
         )}
       </div>
 
-      {/* 2. 대표 이미지 (있을 경우) */}
-      {detail.firstImage && (
+      {/* 2. 대표 이미지 (있고 정상 로드 시) */}
+      {detail.firstImage && !imageError && (
         <div className="relative rounded-xl overflow-hidden aspect-[16/9] max-h-52 sm:max-h-64 bg-slate-100 border border-[#E5E2DC]">
           <img
             src={detail.firstImage}
             alt={language === 'KR' ? detail.nameKo : detail.nameEn}
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
+            onError={() => setImageError(true)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
           <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white">
