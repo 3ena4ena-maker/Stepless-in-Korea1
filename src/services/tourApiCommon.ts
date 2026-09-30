@@ -68,6 +68,9 @@ export function matchTourApiSpotId(titleOrText: string): string | null {
   if (t.includes('태종대') || t.includes('다누비')) {
     return 'spot-taejongdae';
   }
+  if (t.includes('이기대') || t.includes('동생말') || t.includes('어울마당')) {
+    return 'spot-igidae';
+  }
   if (t.includes('해동용궁사') || t.includes('용궁사')) {
     return 'spot-yonggungsa';
   }

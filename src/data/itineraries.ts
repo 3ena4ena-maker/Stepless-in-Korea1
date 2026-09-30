@@ -21,6 +21,8 @@ export interface ItineraryStep {
   regionId?: 'famous' | 'haeundae_gijang' | 'gwangalli_centum' | 'seomyeon_jeonpo' | 'nampo_yeongdo' | 'others';
   regionNameKo?: string;
   regionNameEn?: string;
+  tipKo?: string;
+  tipEn?: string;
 }
 
 export interface ItineraryCourse {
@@ -29,7 +31,7 @@ export interface ItineraryCourse {
   titleEn: string;
   subtitleKo: string;
   subtitleEn: string;
-  category: 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'MARKET' | 'EXPERIENCE' | 'SUBWAY';
+  category: 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'MARKET' | 'EXPERIENCE' | 'SUBWAY' | 'ATTRACTION';
   durationKo: string;
   durationEn: string;
   tagKo: string;
@@ -1970,6 +1972,78 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         icon: 'Food',
         stationInfoKo: '부산 북구 구포시장1길 17 (2호선/3호선 덕천역 3번 출구 / 3호선 구포역)',
         stationInfoEn: '17 Guposijang 1-gil, Buk-gu, Busan (Deokcheon Station Exit 3)'
+      }
+    ]
+  },
+  {
+    id: 'itinerary-attraction',
+    category: 'ATTRACTION',
+    titleKo: '부산 대표 명소 베스트 가이드',
+    titleEn: 'Busan Iconic Attractions Best Guide',
+    subtitleKo: '해동 용궁사, 이기대 해안산책로, 태종대를 비롯하여 푸른 바다와 기암절벽의 장관을 만끽하는 부산의 대표 명소 추천 가이드예요.',
+    subtitleEn: 'Explore Busan’s iconic attractions including Haedong Yonggungsa Temple, Igidae Coastal Walk, and Taejongdae Resort Park.',
+    durationKo: '명소 탐방',
+    durationEn: 'Attraction Visit',
+    tagKo: '부산 대표 명소 🌊',
+    tagEn: 'Busan Top Attractions 🌊',
+    difficultyKo: '쉬움',
+    difficultyEn: 'Easy',
+    overallTipKo: '해동 용궁사(기장), 이기대 해안산책로(남구), 태종대(영도) 등 부산의 대표 명소들은 다누비열차 순환 운행, 동생말 완만 데크로드, 사찰 입구 평탄 보행로 등 교통약자를 위한 보행 편의 및 대중교통 연계가 잘 갖추어져 있습니다.',
+    overallTipEn: 'Busan’s iconic attractions such as Haedong Yonggungsa, Igidae Coastal Walk, and Taejongdae are equipped with accessible paths, scenic trains, and public transit links.',
+    steps: [
+      {
+        id: 'spot-yonggungsa',
+        contentId: '128509',
+        regionId: 'haeundae_gijang',
+        regionNameKo: '기장 · 동부산',
+        regionNameEn: 'Gijang & East Busan',
+        categoryType: 'TEMPLE',
+        time: '바다 사찰',
+        titleKo: '해동 용궁사 (바다와 가장 가까운 사찰)',
+        titleEn: 'Haedong Yonggungsa Temple (Seaside Temple)',
+        descKo: '푸른 동해 바다 깎아지른 해안 암벽 위에 세워진 대한민국 대표 사찰로, "한 가지 소원은 꼭 이루어진다"는 영험한 관음성지입니다. 십이지신상이 늘어선 입구 광장을 지나 시원한 파도 소리와 기암괴석이 어우러진 해안 절경을 마주할 수 있습니다.',
+        descEn: 'A magnificent Buddhist temple perched on coastal cliffs overlooking the East Sea. Famous for granting wishes, dramatic waves, and unique coastal rock scenery.',
+        tipKo: '해동용궁사 주변에는 롯데월드 어드벤처 부산, 루지 롯데 아울렛 등 즐길거리가 있는데 대중교통을 이용한다면 다소 불편할 수 있습니다. 타바라(TABA-RA) 버스를 스마트폰 어플로 호출하면 가고자 하는 곳까지 고속으로 연결해 주기 때문에 이동이 쉬워요!',
+        tipEn: 'Nearby attractions like Lotte World Adventure Busan, Skyline Luge, and Lotte Outlet can be tricky via standard buses. Calling the on-demand TABA-RA bus via smartphone app connects you directly and quickly, making travel seamless!',
+        icon: 'Map',
+        stationInfoKo: '부산 기장군 기장읍 용궁사로 86 (동해선 오시리아역 1번 출구 버스/택시 5분 연계 또는 2호선 해운대역 7번 출구 181번 버스)',
+        stationInfoEn: '86 Yonggungsa-ro, Gijang-eup, Gijang-gun, Busan (Osiria Station Exit 1, 5-min bus/taxi)'
+      },
+      {
+        id: 'spot-igidae',
+        contentId: '1266072',
+        regionId: 'gwangalli_centum',
+        regionNameKo: '남구 · 광안권',
+        regionNameEn: 'Nam-gu & Coastal',
+        categoryType: 'TRAIL',
+        time: '해안 산책',
+        titleKo: '이기대 해안산책로 (동생말 & 오션뷰 데크길)',
+        titleEn: 'Igidae Coastal Walk (Dongsaengmal Observation Trail)',
+        descKo: '부산 국가지질공원이자 갈맷길 대표 코스로, 깎아지른 바위 해안 절벽을 따라 광안대교와 해운대 마린시티 마천루 파노라마가 한눈에 펼쳐집니다. 동생말 전망대 일원은 단차 없는 평탄한 목재 데크로드가 잘 연결되어 있습니다.',
+        descEn: 'Busan National Geopark coastal walking trail offering panoramic views of Gwangan Bridge and Marine City. Step-free wooden observation decks at Dongsaengmal.',
+        tipKo: '동생말 전망대에서 광안대교와 마린시티 파노라마를 조망한 뒤, 휠체어나 유아차 동반 시에는 오륙도 방면 바위 계단 대신 동생말 평탄 데크로드 구간을 왕복하는 코스가 안전하고 쾌적합니다.',
+        tipEn: 'After admiring Gwangan Bridge from Dongsaengmal deck, strollers and wheelchair users should take the flat wooden boardwalk round-trip rather than the rocky cliff stairs towards Oryukdo.',
+        icon: 'Compass',
+        stationInfoKo: '부산 남구 이기대공원로 105-20 (2호선 경성대·부경대역 5번 출구 앞 시내버스 20, 22, 24, 27번 환승 10분)',
+        stationInfoEn: '105-20 Igidaegongwon-ro, Nam-gu, Busan (Line 2 Kyungsung Univ. Station Exit 5, bus transfer 10 mins)'
+      },
+      {
+        id: 'spot-taejongdae',
+        contentId: '126088',
+        regionId: 'nampo_yeongdo',
+        regionNameKo: '영도 · 원도심',
+        regionNameEn: 'Yeongdo & Downtown',
+        categoryType: 'LANDMARK',
+        time: '해안 절경',
+        titleKo: '태종대 (기암절벽과 다누비열차 순환 코스)',
+        titleEn: 'Taejongdae Resort Park (Danubi Scenic Train)',
+        descKo: '영도 최남단에 솟아오른 국가명승지이자 국가지질공원으로, 아찔한 해식절벽과 울창한 해송 숲, 푸른 남해 바다가 장관을 이룹니다. 휠체어 리프트가 장착된 친환경 다누비열차로 전망대와 영도등대를 편안하게 둘러볼 수 있습니다.',
+        descEn: 'Iconic national scenic site on Yeongdo cliffs featuring lush pine forests and deep blue ocean. Accessible Danubi circular train provides easy sightseeing for all visitors.',
+        tipKo: '태종대 입구 매표소에서 휠체어 리프트가 장착된 친환경 다누비열차를 이용하시면 오르막길 걱정 없이 전망대와 영도등대까지 편안하게 이동할 수 있습니다. (비나 눈이 올 때는 운행이 중단되니 날씨를 꼭 확인하세요!)',
+        tipEn: 'Take the eco-friendly Danubi train with dedicated wheelchair boarding at the entrance to easily reach the observatory and lighthouse without walking steep inclines. (Check weather as train suspends on rain!)',
+        icon: 'Train',
+        stationInfoKo: '부산 영도구 전망로 24 (1호선 남포역 6번 출구 앞 시내버스 8, 30, 66, 88, 186번 탑승 종점 하차)',
+        stationInfoEn: '24 Jeonmang-ro, Yeongdo-gu, Busan (Line 1 Nampo Station Exit 6, bus 8/30/66/88 to terminus)'
       }
     ]
   }

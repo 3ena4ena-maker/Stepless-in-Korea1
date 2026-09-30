@@ -319,12 +319,12 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
   },
   {
     id: 'rock-festival',
-    titleKo: '부산 국제 록 페스티벌',
+    titleKo: '부산국제록페스티벌',
     titleEn: 'Busan International Rock Festival',
     category: 'performance',
     categoryKo: '공연/콘서트',
     categoryEn: 'Performance & Concert',
-    startDate: '2026-10-03',
+    startDate: '2026-10-02',
     endDate: '2026-10-04',
     stationId: 'sasang',
     exitNumber: '3번 출구',
@@ -335,22 +335,22 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     accessibilityEn: 'Set inside the grand Samrak Park. Massive industrial rubber mats are temporarily paved over the grass path logic to provide firm rollway safety.',
     exitTipKo: '사상역 3번 출구 또는 괘법르네시떼역 1번 출구 엘리베이터 보행교 이용 시 삼락생태공원 메인무대로 무단차 이동이 가능합니다.',
     exitTipEn: 'Sasang Exit 3 or Gwaebeop Renecite Exit 1 elevator bridge provides step-free access to Samrak Park.',
-    descriptionKo: '대한민국 최장수 록 페스티벌로, 국내외 최정상급 록, 인디 뮤지션들이 거대하고 흥겨운 스테이지들을 가르고 야간 불꽃 퍼포먼스를 추진합니다.',
-    descriptionEn: 'Korea\'s longest-running legendary rock festival. Flat park grounds with solid temporary safety layouts that allow strollers and wheels to navigate.',
-    locationKo: '삼락생태공원 중앙잔디무대',
+    descriptionKo: '대한민국 최장수 록 페스티벌로, 국내외 최정상급 록, 인디 뮤지션들이 거대하고 흥겨운 스테이지들을 가르고 야간 라이브 퍼포먼스를 펼칩니다.',
+    descriptionEn: 'Korea\'s longest-running legendary rock festival with domestic and global rock icons, indie bands, and energetic outdoor stages.',
+    locationKo: '삼락생태공원',
     locationEn: 'Samrak Ecological Park',
     colorClass: 'bg-indigo-50 text-indigo-850 border-indigo-100',
     dotClass: 'bg-indigo-600'
   },
   {
     id: 'biff-festival',
-    titleKo: '부산 국제영화제 (BIFF)',
+    titleKo: '부산국제영화제',
     titleEn: 'Busan International Film Festival (BIFF)',
     category: 'culture',
     categoryKo: '문화/예술',
     categoryEn: 'Culture & Arts',
-    startDate: '2026-10-07',
-    endDate: '2026-10-16',
+    startDate: '2026-10-06',
+    endDate: '2026-10-15',
     stationId: 'bexco',
     exitNumber: '7번 출구',
     stationKo: '벡스코역 (2호선/동해선)',
@@ -362,20 +362,20 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     exitTipEn: 'BEXCO Exit 7 offers a smooth 5-min flat walkway straight to Busan Cinema Center.',
     descriptionKo: '아시아 최고 권위의 국제 영화제로, 세계 각국의 엄선된 예술영화, 감독 전작 무비 상영 및 관객과의 대화(GV), 스타 야간 레드카펫 행사가 풍성하게 이어집니다.',
     descriptionEn: 'Asia\'s most prestigious films and red carpet spectacles. The Cinema Center is seamlessly connected to Centum City Subway Station via flat underpass paths.',
-    locationKo: '해운대 센텀시티 영화의전당 등',
-    locationEn: 'Busan Cinema Center, Centum City',
+    locationKo: '영화의 전당 등',
+    locationEn: 'Busan Cinema Center and Centum City Venues',
     colorClass: 'bg-rose-50 text-rose-850 border-rose-100',
     dotClass: 'bg-rose-600'
   },
   {
     id: 'jagalchi-festival',
-    titleKo: '부산 자갈치축제',
+    titleKo: '부산자갈치축제',
     titleEn: 'Busan Jagalchi Festival',
     category: 'festival',
     categoryKo: '전통 축제',
     categoryEn: 'Traditional Festival',
-    startDate: '2026-10-08',
-    endDate: '2026-10-11',
+    startDate: '2026-10-15',
+    endDate: '2026-10-18',
     stationId: 'jagalchi',
     exitNumber: '10번 출구',
     stationKo: '자갈치역 / 남포역 (1호선)',
@@ -387,10 +387,60 @@ const BUSAN_EVENTS_DATA: BusanEvent[] = [
     exitTipEn: 'Jagalchi Exit 10 offers flat step-free access to Jagalchi Market coastal plaza.',
     descriptionKo: '"오이소, 보이소, 사이소!" 정겨운 사투리와 한국 수산업의 최대 집결지로 싱싱한 수산물 무료 시식, 수산물 맨손 잡기 행사, 유람선 탑승 등 활기가 넘칩니다.',
     descriptionEn: 'Korea\'s largest coastal seafood festival. Fully flat modern market complex structures ensure Senior companions and wheelchair users dine safely.',
-    locationKo: '자갈치시장 친수공간 일원',
-    locationEn: 'Jagalchi Market Coastal Esplanade',
+    locationKo: '부산 자갈치 시장',
+    locationEn: 'Busan Jagalchi Market & Coastal Waterfront',
     colorClass: 'bg-violet-50 text-violet-850 border-violet-100',
     dotClass: 'bg-violet-500'
+  },
+  {
+    id: 'guponaru-festival',
+    titleKo: '낙동강 구포나루축제',
+    titleEn: 'Nakdong River Guponaru Festival',
+    category: 'festival',
+    categoryKo: '전통/역사 축제',
+    categoryEn: 'Traditional River Festival',
+    startDate: '2026-10-16',
+    endDate: '2026-10-18',
+    stationId: 'bujeon',
+    exitNumber: '3번 출구',
+    stationKo: '구포역 / 덕천역 (3호선/2호선)',
+    stationEn: 'Gupo / Deokcheon Station',
+    metroLine: 'Line 3 & 2',
+    accessibilityKo: '화명생태공원 나루터 일원 및 선착장 보행로는 단차가 최소화된 평지 산책로로 조성되어 휠체어와 유모차가 안전하게 산책할 수 있습니다.',
+    accessibilityEn: 'Riverside walkways at Hwamyeong Ecological Park provide flat, step-free access for strollers and wheelchairs along the river.',
+    exitTipKo: '구포역 3번 출구 또는 덕천역 3번 출구를 통해 평탄한 낙동강 수변 보행로로 진입하실 수 있습니다.',
+    exitTipEn: 'Use Gupo Exit 3 or Deokcheon Exit 3 for direct flat walkway access to the festival area.',
+    descriptionKo: '조선시대 영남 3대 나루터였던 구포나루의 역사와 문화를 기리는 축제로, 낙동강 뗏목 타기 체험, 구포국수 먹거리 장터, 나루터 가요제, 야간 빛축제가 풍성하게 펼쳐집니다.',
+    descriptionEn: 'A historic festival celebrating the ancient Gupo ferry port with river raft rides, traditional Gupo noodle food markets, music contests, and night light shows along the Nakdong River.',
+    locationKo: '화명생태공원 및 구포나루터 선착장 일원',
+    locationEn: 'Hwamyeong Ecological Park & Guponaru Wharf',
+    colorClass: 'bg-amber-50 text-amber-850 border-amber-100',
+    dotClass: 'bg-amber-500'
+  },
+  {
+    id: 'sasang-riverside-festival',
+    titleKo: '사상강변축제',
+    titleEn: 'Sasang Riverside Festival',
+    category: 'festival',
+    categoryKo: '문화/강변 축제',
+    categoryEn: 'Riverside Cultural Festival',
+    startDate: '2026-10-17',
+    endDate: '2026-10-18',
+    stationId: 'sasang',
+    exitNumber: '3번 출구',
+    stationKo: '사상역 (2호선) / 괘법르네시떼역',
+    stationEn: 'Sasang / Gwaebeop Renecite Station',
+    metroLine: 'Line 2 & BGL',
+    accessibilityKo: '삼락생태공원 문화마당은 보행 약자를 위한 완만한 잔디 광장 및 평탄 보도블록으로 구성되어 휠체어와 유모차 이동이 수월합니다.',
+    accessibilityEn: 'Samrak Ecological Park Cultural Plaza features flat asphalt and brick pathways providing smooth access for wheelchair and stroller users.',
+    exitTipKo: '사상역 3번 출구 또는 괘법르네시떼역 1번 출구 엘리베이터 보행육교를 이용해 삼락생태공원 문화마당으로 턱 없이 진입하실 수 있습니다.',
+    exitTipEn: 'Use the elevator pedestrian overpass at Sasang Exit 3 or Gwaebeop Renecite Exit 1 to reach Samrak Park Cultural Plaza step-free.',
+    descriptionKo: '가을 낙동강변의 정취와 함께 펼쳐지는 사상 대표 축제로 삼락생태공원 문화마당에서 열리는 강변 음악회, 거리 버스킹, 전통 체험 및 야간 경관 조명 행사입니다.',
+    descriptionEn: 'A representative autumn riverside festival at Samrak Park featuring acoustic concerts, street performances, traditional craft workshops, and riverbank illuminations.',
+    locationKo: '삼락생태공원 문화마당',
+    locationEn: 'Samrak Ecological Park Cultural Plaza',
+    colorClass: 'bg-emerald-50 text-emerald-850 border-emerald-100',
+    dotClass: 'bg-emerald-500'
   },
   {
     id: 'fireworks-festival',
@@ -786,7 +836,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                       handleSelectEvent(dayEvents[0].id);
                     }
                   }}
-                  className={`min-h-[58px] sm:min-h-[96px] p-1 border rounded-xl sm:rounded-2xl flex flex-col justify-between transition-all text-left relative ${
+                  className={`min-h-[64px] sm:min-h-[105px] h-auto p-1 border rounded-xl sm:rounded-2xl flex flex-col justify-start gap-1 transition-all text-left relative ${
                     cell.isPadding ? 'opacity-30 border-slate-50' : 'border-slate-100 hover:border-slate-250'
                   } ${
                     isToday ? 'bg-amber-500/[0.04] border-amber-300 ring-1 ring-amber-200' : ''
@@ -806,49 +856,33 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                     )}
                   </div>
 
-                  {/* Desktop Layout - Render beautiful text-labeled badges */}
-                  <div className="hidden sm:block space-y-1 mt-1.5 px-0.5">
-                    {dayEvents.slice(0, 2).map(evt => (
+                  {/* Desktop Layout - Render all text-labeled badges directly without more button */}
+                  <div className="hidden sm:block space-y-1 mt-1 px-0.5">
+                    {dayEvents.map(evt => (
                       <div
                         key={evt.id}
                         onClick={(e) => {
                           e.stopPropagation(); // Avoid triggering parent cell popover
                           handleSelectEvent(evt.id);
                         }}
-                        className={`text-[9.5px] truncate px-1.5 py-0.5 rounded-lg font-black tracking-tight leading-tight transition-transform hover:scale-103 ${evt.colorClass} border`}
+                        className={`text-[9.5px] truncate px-1.5 py-0.5 rounded-lg font-black tracking-tight leading-tight transition-transform hover:scale-103 ${evt.colorClass} border cursor-pointer`}
                         title={language === 'KR' ? evt.titleKo : evt.titleEn}
                       >
                         <span className="mr-0.5 select-none text-[9px]">📍</span>
                         {formatBadgeTitle(evt, language)}
                       </div>
                     ))}
-                    {dayEvents.length > 2 && (
-                      <div 
-                        onClick={(e) => {
-                          e.stopPropagation(); // Avoid twice-triggering the popover
-                          setDayEventsPopup({ dateString: cell.dateString, events: dayEvents });
-                        }}
-                        className="text-[9.5px] font-black text-slate-500 hover:text-[#004481] hover:bg-slate-100 bg-slate-50 border border-slate-200 rounded-lg px-1 py-0.5 mt-0.5 text-center transition-colors cursor-pointer select-none"
-                      >
-                        + {dayEvents.length - 2} {language === 'KR' ? '개 더' : 'more'}
-                      </div>
-                    )}
                   </div>
 
-                  {/* Mobile Layout - Clean colored dots to prevent cluttered boxes on small screens */}
-                  <div className="flex sm:hidden justify-center items-center gap-1 mt-1 pb-1">
-                    {dayEvents.slice(0, 3).map(evt => (
+                  {/* Mobile Layout - Render all colored dots without truncation */}
+                  <div className="flex sm:hidden flex-wrap justify-center items-center gap-1 mt-1 pb-1">
+                    {dayEvents.map(evt => (
                       <span
                         key={evt.id}
                         className={`w-1.5 h-1.5 rounded-full ${evt.dotClass}`}
                         title={language === 'KR' ? evt.titleKo : evt.titleEn}
                       />
                     ))}
-                    {dayEvents.length > 3 && (
-                      <span className="text-[7.5px] font-black text-slate-400 leading-none">
-                        +
-                      </span>
-                    )}
                   </div>
                 </div>
               );

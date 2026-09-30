@@ -393,7 +393,7 @@ export default function App() {
       // Look for /itinerary-[category]
       if (parts[1] && parts[1].startsWith('itinerary-')) {
         const categorySuffix = parts[1].replace('itinerary-', '').toUpperCase();
-        const validCategories = ['DAY', '1NIGHT', '2NIGHTS', '3NIGHTS', '4NIGHTS', 'GOURMET', 'MARKET', 'SCHEDULE', 'EXPERIENCE', 'SUBWAY', 'BARRIER_FREE', 'HISTORY'];
+        const validCategories = ['DAY', '1NIGHT', '2NIGHTS', '3NIGHTS', '4NIGHTS', 'GOURMET', 'MARKET', 'SCHEDULE', 'EXPERIENCE', 'SUBWAY', 'BARRIER_FREE', 'HISTORY', 'ATTRACTION'];
         if (validCategories.includes(categorySuffix)) {
           setSelectedItineraryCategory(categorySuffix);
           setCurrentTab('tips');
@@ -2039,6 +2039,14 @@ export default function App() {
                   setCurrentTab('schedule');
                 } else if (currentTab === 'schedule') {
                   setCurrentTab('tips');
+                }
+                if (page === 'index' || page === 'courses') {
+                  setSelectedItineraryCategory(null);
+                  setBarrierFreeCourseId(null);
+                  setBarrierFreePlaceId(null);
+                  if (currentTab === 'tourapi') {
+                    setCurrentTab('tips');
+                  }
                 }
                 setTipsSubPage(page);
               }}
