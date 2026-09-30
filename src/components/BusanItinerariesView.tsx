@@ -1875,19 +1875,6 @@ export default function BusanItinerariesView({
 
   const categoriesConfig: CategoryConfig[] = [
     {
-      id: 'ATTRACTION',
-      icon: '',
-      tagKo: '핵심 랜드마크',
-      tagEn: 'Landmarks',
-      titleKo: '명소',
-      titleEn: 'Attractions',
-      descKo: '해동 용궁사, 이기대 해안산책로, 태종대 등 부산을 대표하는 명소들을 편안한 동선과 함께 추천해 드려요.',
-      descEn: 'Explore Busan’s iconic scenic attractions including Haedong Yonggungsa, Igidae Coastal Walk, and Taejongdae.',
-      bgClass: 'bg-sky-50/70 hover:bg-sky-50',
-      borderClass: 'border-sky-100 hover:border-sky-200',
-      textClass: 'text-sky-950'
-    },
-    {
       id: 'GOURMET',
       icon: '',
       tagKo: '침샘 가득',
@@ -1925,6 +1912,19 @@ export default function BusanItinerariesView({
       bgClass: 'bg-amber-50/70 hover:bg-amber-50',
       borderClass: 'border-amber-100 hover:border-amber-200',
       textClass: 'text-amber-950'
+    },
+    {
+      id: 'ATTRACTION',
+      icon: '',
+      tagKo: '핵심 랜드마크',
+      tagEn: 'Landmarks',
+      titleKo: '명소',
+      titleEn: 'Attractions',
+      descKo: '해동 용궁사, 이기대 해안산책로, 태종대 등 부산을 대표하는 명소들을 편안한 동선과 함께 추천해 드려요.',
+      descEn: 'Explore Busan’s iconic scenic attractions including Haedong Yonggungsa, Igidae Coastal Walk, and Taejongdae.',
+      bgClass: 'bg-sky-50/70 hover:bg-sky-50',
+      borderClass: 'border-sky-100 hover:border-sky-200',
+      textClass: 'text-sky-950'
     },
     {
       id: 'SUBWAY',
@@ -2304,26 +2304,7 @@ export default function BusanItinerariesView({
                 {language === 'KR' ? '전체' : 'All'}
               </button>
 
-              {/* 2. 명소 */}
-              <button
-                type="button"
-                onClick={() => {
-                  setInternalBarrierFreePlaceId(null);
-                  if (onSelectCategory) {
-                    onSelectCategory('ATTRACTION');
-                  }
-                  setActiveCategory('ATTRACTION');
-                }}
-                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
-                  activeCategory === 'ATTRACTION'
-                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
-                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
-                }`}
-              >
-                {language === 'KR' ? '명소' : 'Attractions'}
-              </button>
-
-              {/* 3. 식도락 */}
+              {/* 2. 식도락 */}
               <button
                 type="button"
                 onClick={() => {
@@ -2377,6 +2358,25 @@ export default function BusanItinerariesView({
                 }`}
               >
                 {language === 'KR' ? '전통시장' : 'Traditional Market'}
+              </button>
+
+              {/* 5. 명소 */}
+              <button
+                type="button"
+                onClick={() => {
+                  setInternalBarrierFreePlaceId(null);
+                  if (onSelectCategory) {
+                    onSelectCategory('ATTRACTION');
+                  }
+                  setActiveCategory('ATTRACTION');
+                }}
+                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  activeCategory === 'ATTRACTION'
+                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
+                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                }`}
+              >
+                {language === 'KR' ? '명소' : 'Attractions'}
               </button>
 
               {/* 5. 일정별 여행 */}
@@ -2521,40 +2521,6 @@ export default function BusanItinerariesView({
           {activeCategory === null && (
             <div className="space-y-6 sm:space-y-8 animate-fade-in py-2">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full mx-auto">
-                {/* Card 0: Attractions / 명소 */}
-                <div
-                  onClick={() => {
-                    if (onSelectCategory) {
-                      onSelectCategory('ATTRACTION');
-                    } else {
-                      setActiveCategory('ATTRACTION');
-                    }
-                  }}
-                  className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#0A2540] transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-5 text-left"
-                >
-                  <div className="space-y-3.5 sm:space-y-4">
-                    <div className="bg-[#FBFBF9] rounded-md p-3.5 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC]">
-                      <AttractionIllustration />
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className="text-base font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap">
-                        {language === 'KR' ? '명소' : 'Attractions'}
-                      </h3>
-                      <p className="text-xs text-[#4A5568] font-normal leading-relaxed break-keep">
-                        {language === 'KR'
-                          ? '해동 용궁사 · 이기대 해안산책로 · 태종대 등 부산을 대표하는 명소 가이드'
-                          : 'Explore top attractions including Haedong Yonggungsa, Igidae Coastal Walk, and Taejongdae.'}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="pt-4 flex justify-end items-center">
-                    <span className="text-xs font-bold text-[#0A2540] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                      <span>{language === 'KR' ? '자세히 보기' : 'Explore'}</span>
-                      <ChevronRight className="w-4 h-4 text-[#0A2540]" />
-                    </span>
-                  </div>
-                </div>
-
                 {/* Card 1: Foodie / 식도락 */}
                 <div
                   onClick={() => {
@@ -2646,6 +2612,40 @@ export default function BusanItinerariesView({
                         {language === 'KR'
                           ? '부전·자갈치·깡통·국제시장 등 정겨운 장터와 먹거리 투어'
                           : 'Explore Busan’s iconic traditional markets and lively street food alleys.'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="pt-4 flex justify-end items-center">
+                    <span className="text-xs font-bold text-[#0A2540] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                      <span>{language === 'KR' ? '자세히 보기' : 'Explore'}</span>
+                      <ChevronRight className="w-4 h-4 text-[#0A2540]" />
+                    </span>
+                  </div>
+                </div>
+
+                {/* Card 4: Attractions / 명소 */}
+                <div
+                  onClick={() => {
+                    if (onSelectCategory) {
+                      onSelectCategory('ATTRACTION');
+                    } else {
+                      setActiveCategory('ATTRACTION');
+                    }
+                  }}
+                  className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#0A2540] transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-5 text-left"
+                >
+                  <div className="space-y-3.5 sm:space-y-4">
+                    <div className="bg-[#FBFBF9] rounded-md p-3.5 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC]">
+                      <AttractionIllustration />
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="text-base font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap">
+                        {language === 'KR' ? '명소' : 'Attractions'}
+                      </h3>
+                      <p className="text-xs text-[#4A5568] font-normal leading-relaxed break-keep">
+                        {language === 'KR'
+                          ? '해동 용궁사 · 이기대 해안산책로 · 태종대 등 부산을 대표하는 명소 가이드'
+                          : 'Explore top attractions including Haedong Yonggungsa, Igidae Coastal Walk, and Taejongdae.'}
                       </p>
                     </div>
                   </div>
@@ -3366,9 +3366,9 @@ export default function BusanItinerariesView({
                   const matchesRegion = selectedGourmetRegion === 'ALL'
                     ? true
                     : (selectedGourmetRegion === 'famous' 
-                        ? (s.titleKo.includes('모모스') || s.titleKo.includes('이재모') || s.titleKo.includes('톤쇼우') || s.titleKo.includes('주문진막국수') || s.titleKo.includes('금수복국') || s.titleKo.includes('최뼈다귀'))
+                        ? (s.titleKo.includes('모모스') || s.titleKo.includes('이재모') || s.titleKo.includes('톤쇼우') || s.titleKo.includes('주문진막국수') || s.titleKo.includes('금수복국') || s.titleKo.includes('최뼈다귀') || s.titleKo.includes('이가네') || s.titleKo.includes('씨앗호떡'))
                         : (selectedGourmetRegion === 'market'
-                            ? (s.foodCategory === 'market' || s.time === '전통시장' || s.titleKo.includes('시장') || s.titleKo.includes('깡통') || s.titleKo.includes('자갈치') || s.titleKo.includes('국제'))
+                            ? (s.foodCategory === 'market' || s.time === '전통시장' || s.titleKo.includes('시장') || s.titleKo.includes('깡통') || s.titleKo.includes('자갈치') || s.titleKo.includes('국제') || s.titleKo.includes('이가네') || s.titleKo.includes('씨앗호떡'))
                             : s.regionId === selectedGourmetRegion));
                   
                   const matchesCategory = selectedGourmetFoodCat === 'ALL'
@@ -3448,9 +3448,9 @@ export default function BusanItinerariesView({
                               const matchesReg = selectedGourmetRegion === 'ALL'
                                 ? true
                                 : (selectedGourmetRegion === 'famous'
-                                    ? (s.titleKo.includes('모모스') || s.titleKo.includes('이재모') || s.titleKo.includes('톤쇼우') || s.titleKo.includes('주문진막국수') || s.titleKo.includes('금수복국') || s.titleKo.includes('최뼈다귀'))
+                                    ? (s.titleKo.includes('모모스') || s.titleKo.includes('이재모') || s.titleKo.includes('톤쇼우') || s.titleKo.includes('주문진막국수') || s.titleKo.includes('금수복국') || s.titleKo.includes('최뼈다귀') || s.titleKo.includes('이가네') || s.titleKo.includes('씨앗호떡'))
                                     : (selectedGourmetRegion === 'market'
-                                        ? (s.foodCategory === 'market' || s.time === '전통시장' || s.titleKo.includes('시장') || s.titleKo.includes('깡통') || s.titleKo.includes('자갈치') || s.titleKo.includes('국제'))
+                                        ? (s.foodCategory === 'market' || s.time === '전통시장' || s.titleKo.includes('시장') || s.titleKo.includes('깡통') || s.titleKo.includes('자갈치') || s.titleKo.includes('국제') || s.titleKo.includes('이가네') || s.titleKo.includes('씨앗호떡'))
                                         : s.regionId === selectedGourmetRegion));
                               const matchesCat = tab.id === 'ALL'
                                 ? true
