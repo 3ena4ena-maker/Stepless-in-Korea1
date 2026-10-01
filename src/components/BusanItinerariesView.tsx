@@ -2838,27 +2838,6 @@ export default function BusanItinerariesView({
                 case 'DAY':
                   return (
                     <div className="space-y-6 animate-fade-in text-left">
-                      {/* Editorial Header */}
-                      <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-3">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
-                            {language === 'KR' ? '당일치기 코스' : 'ONE DAY ESSENTIAL'}
-                          </span>
-                          <span className="text-[#E5E2DC] text-xs font-mono">
-                            {language === 'KR' ? '추천 소요시간: 1일' : 'Duration: 1 Day'}
-                          </span>
-                        </div>
-
-                        <div className="space-y-2">
-                          <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
-                            {language === 'KR' ? course.titleKo : course.titleEn}
-                          </h3>
-                          <p className="text-xs sm:text-sm text-[#E5E2DC] font-normal leading-relaxed max-w-3xl">
-                            {language === 'KR' ? (course.subtitleKo || course.titleKo) : (course.subtitleEn || course.titleEn)}
-                          </p>
-                        </div>
-                      </div>
-
                       {/* Day Trip Route Flow & Steps */}
                       <div className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-6 text-left">
                         <div className="bg-[#FBFBF9] p-3.5 rounded-lg border border-[#E5E2DC] flex items-center flex-wrap gap-2 text-xs font-bold text-[#11161B]">
@@ -2916,29 +2895,6 @@ export default function BusanItinerariesView({
               case '1NIGHT':
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Editorial Header */}
-                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
-                          {language === 'KR' ? '1박 2일 코스' : '1 NIGHT 2 DAYS'}
-                        </span>
-                        <span className="text-[#E5E2DC] text-xs font-mono">
-                          {language === 'KR' ? '추천 소요시간: 1박 2일' : 'Duration: 1 Night 2 Days'}
-                        </span>
-                      </div>
-
-                      <div className="space-y-2">
-                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
-                          {language === 'KR' ? '광안리 밤바다 & 복합문화 쉼터 1박 2일 코스' : 'Gwangalli Night Wave & Cultural Shelter 1N2D'}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-[#E5E2DC] font-normal leading-relaxed max-w-3xl">
-                          {language === 'KR' 
-                            ? '야간 LED 바다 산책로와 턱 없는 수변 공원, 예술 전시장까지 보행 제약 없이 온가족이 밤바다 낭만을 만끽하는 코스입니다.' 
-                            : 'Barrier-free ocean boardwalks, illuminated beach bridges, and cozy beachfront cultural spaces.'}
-                        </p>
-                      </div>
-                    </div>
-
                     {/* Timeline Container */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* Day 1 Section */}
@@ -3059,29 +3015,6 @@ export default function BusanItinerariesView({
               case '2NIGHTS':
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Editorial Header */}
-                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
-                          {language === 'KR' ? '2박 3일 코스' : '2 NIGHTS 3 DAYS'}
-                        </span>
-                        <span className="text-[#E5E2DC] text-xs font-mono">
-                          {language === 'KR' ? '추천 소요시간: 2박 3일' : 'Duration: 2 Nights 3 Days'}
-                        </span>
-                      </div>
-
-                      <div className="space-y-2">
-                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
-                          {language === 'KR' ? '감성과 바다 비경을 담은 2박 3일 코스' : 'Trendy Cafe & Coastal Wonders 2N3D Route'}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-[#E5E2DC] font-normal leading-relaxed max-w-3xl">
-                          {language === 'KR' 
-                            ? '전포카페거리, 해동용궁사부터 망미 골목까지 감성 넘치는 핫플레이스들을 경사 걱정 없이 평탄하고 편리한 길로 만나는 일주 코스입니다.' 
-                            : 'Explore the high view ridges and beautiful coastlines of Busan without steps.'}
-                        </p>
-                      </div>
-                    </div>
-
                     {/* Vertical Day-by-Day Journey List */}
                     <div className="space-y-6">
                       {[1, 2, 3].map((dayNum) => {
@@ -3168,29 +3101,6 @@ export default function BusanItinerariesView({
               case '3NIGHTS':
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Editorial Header */}
-                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
-                          {language === 'KR' ? '3박 4일 코스' : '3 NIGHTS 4 DAYS'}
-                        </span>
-                        <span className="text-[#E5E2DC] text-xs font-mono">
-                          {language === 'KR' ? '추천 소요시간: 3박 4일' : 'Duration: 3 Nights 4 Days'}
-                        </span>
-                      </div>
-
-                      <div className="space-y-2">
-                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
-                          {language === 'KR' ? '자연 힐링 & 강변 휴식 3박 4일 코스' : 'Organic Rest & Scenic Waterways 3N4D'}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-[#E5E2DC] font-normal leading-relaxed max-w-3xl">
-                          {language === 'KR' 
-                            ? '동래역에서 강변 수변 공원으로 내려가는 우회 램프와 온천천 강물 소리를 벗하는 완만한 사색의 여정입니다.' 
-                            : 'Descend smoothly along ramp lanes to stroll scenic bamboo canals and flower margins.'}
-                        </p>
-                      </div>
-                    </div>
-
                     {/* Vertically connected list of Days */}
                     <div className="space-y-6">
                       {[1, 2, 3, 4].map((dayNum) => {
@@ -3266,29 +3176,6 @@ export default function BusanItinerariesView({
               case '4NIGHTS':
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Editorial Header */}
-                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
-                          {language === 'KR' ? '4박 5일 코스' : '4 NIGHTS 5 DAYS'}
-                        </span>
-                        <span className="text-[#E5E2DC] text-xs font-mono">
-                          {language === 'KR' ? '추천 소요시간: 4박 5일' : 'Duration: 4 Nights 5 Days'}
-                        </span>
-                      </div>
-
-                      <div className="space-y-2">
-                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
-                          {language === 'KR' ? '부산 보행 종합 선물세트 4박 5일 코스' : 'Comprehensive Barrier-Free Busan 4N5D Master Plan'}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-[#E5E2DC] font-normal leading-relaxed max-w-3xl">
-                          {language === 'KR' 
-                            ? '대중교통 광장 엘리베이터 탐방부터 유모차 전용 와이드 쉘터 개찰구 위치 가이드, 센텀시티 패밀리 아케이드 수영 강변 산책로 완벽 가이드입니다.' 
-                            : 'Targeting air-conditioned indoor mega malls, custom accessible subway gate numbers, and flat garden links.'}
-                        </p>
-                      </div>
-                    </div>
-
                     {/* Vertical Day-by-Day Journey List */}
                     <div className="space-y-6">
                       {[1, 2, 3, 4, 5].map((dayNum) => {
@@ -3380,29 +3267,6 @@ export default function BusanItinerariesView({
 
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Editorial Header */}
-                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
-                          {language === 'KR' ? '부산 미식 가이드' : 'BUSAN GOURMET GUIDE'}
-                        </span>
-                        <span className="text-[#E5E2DC] text-xs font-mono">
-                          {language === 'KR' ? `총 ${filteredGourmetSteps.length}개 엄선 스팟` : `${filteredGourmetSteps.length} Curated Spots`}
-                        </span>
-                      </div>
-
-                      <div className="space-y-2">
-                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
-                          {language === 'KR' ? '부산 로컬 미식 & 식도락 추천 코스' : 'Busan Local Gastronomy & Gourmet Guide'}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-[#E5E2DC] font-normal leading-relaxed max-w-3xl">
-                          {language === 'KR' 
-                            ? '돼지국밥, 밀면, 부산 3대 빵집부터 센텀·해운대 감성 카페까지 현지인이 검증한 대표 미식 가이드' 
-                            : 'Steaming pork soup, wheat noodles, iconic bakeries, cafes, and traditional market eateries.'}
-                        </p>
-                      </div>
-                    </div>
-
                     {/* Gourmet Regional Filter Tabs */}
                     <div className="bg-white p-5 rounded-lg border border-[#E5E2DC] space-y-4 text-left">
                       <div className="flex items-center justify-between text-xs font-bold text-[#11161B] border-b border-[#E5E2DC] pb-3">
@@ -3589,29 +3453,6 @@ export default function BusanItinerariesView({
 
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Header Banner */}
-                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
-                          {language === 'KR' ? '체험 & 박물관 가이드' : 'MUSEUM & EXPERIENCE GUIDE'}
-                        </span>
-                        <span className="text-[#E5E2DC] text-xs font-mono">
-                          {language === 'KR' ? '날씨 상관없는 실내 무장애 코스' : 'All-Weather Indoor Accessible Route'}
-                        </span>
-                      </div>
-
-                      <div className="space-y-2">
-                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
-                          {language === 'KR' ? '오감만족 부산! 체험 & 박물관 다채로운 문화 탐방' : 'Hands-on & Culture: Busan Museums & Interactive Experience Guide'}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-[#E5E2DC] font-normal leading-relaxed max-w-3xl">
-                          {language === 'KR' 
-                            ? '국립해양박물관, 부산시립미술관, F1963, 국립부산과학관 등 권역별 주요 박물관과 미술관, 체험형 문화공간을 무장애 편의 동선으로 즐기는 가이드' 
-                            : 'Explore National Maritime Museum, Busan Museum of Art, F1963, and Busan National Science Museum categorized by themes and regions.'}
-                        </p>
-                      </div>
-                    </div>
-
                     {/* Regional & Category Filter Panel */}
                     <div className="bg-white p-5 rounded-lg border border-[#E5E2DC] space-y-4 text-left">
                       {/* Regional Filter */}
@@ -3798,42 +3639,6 @@ export default function BusanItinerariesView({
 
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Header Banner */}
-                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
-                          {language === 'KR' ? '부산 전통시장 가이드' : 'BUSAN TRADITIONAL MARKET GUIDE'}
-                        </span>
-                        <span className="text-[#E5E2DC] text-xs font-mono">
-                          {language === 'KR' ? '지하철 역세권 평지 시장 코스' : 'Subway-Linked Flat Walking Markets'}
-                        </span>
-                      </div>
-
-                      <div className="space-y-2">
-                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
-                          {language === 'KR' ? course.titleKo : course.titleEn}
-                        </h3>
-                        <p className="text-sm text-[#E5E2DC] font-normal leading-relaxed break-keep max-w-3xl">
-                          {language === 'KR' ? course.subtitleKo : course.subtitleEn}
-                        </p>
-                      </div>
-
-                      <div className="pt-2 flex flex-wrap gap-4 text-xs text-[#E5E2DC] border-t border-white/10 font-mono">
-                        <div className="flex items-center gap-1.5">
-                          <Clock className="w-4 h-4 text-amber-400" />
-                          <span>{language === 'KR' ? course.durationKo : course.durationEn}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                          <span>{language === 'KR' ? `난이도: ${course.difficultyKo}` : `Difficulty: ${course.difficultyEn}`}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <Train className="w-4 h-4 text-sky-400" />
-                          <span>{language === 'KR' ? '1·2호선 지하철역 출구 직결' : 'Direct Metro Station Exits'}</span>
-                        </div>
-                      </div>
-                    </div>
-
                     {/* Regional Sub-filter Tabs */}
                     <div className="space-y-3">
                       <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap flex-nowrap py-1">
@@ -3957,29 +3762,6 @@ export default function BusanItinerariesView({
 
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Editorial Header */}
-                    <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-lg border border-[#0A2540] relative overflow-hidden text-left space-y-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="bg-white/10 text-white text-[11px] font-mono font-bold px-2.5 py-1 rounded-md border border-white/20 uppercase tracking-wider">
-                          {language === 'KR' ? '부산 도시철도 가이드' : 'BUSAN METRO ROUTE GUIDE'}
-                        </span>
-                        <span className="text-[#E5E2DC] text-xs font-mono">
-                          {language === 'KR' ? '1호선 & 2호선 무장애 연계' : 'Lines 1 & 2 Accessible Connections'}
-                        </span>
-                      </div>
-
-                      <div className="space-y-2">
-                        <h3 className="text-xl sm:text-2xl font-bold font-heading text-white tracking-tight leading-snug">
-                          {language === 'KR' ? '부산 도시철도 1호선 · 2호선 무장애 탐방 코스' : 'Busan Metro Lines 1 & 2 Course Guide'}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-[#E5E2DC] font-normal leading-relaxed max-w-3xl">
-                          {language === 'KR' 
-                            ? '지하철 역 출구와 가까운 핵심 명소, 백년가게 맛집, 감성 카페, 공연 및 전시공간을 노선축별로 한눈에 탐방해보세요.' 
-                            : 'Explore top attractions, authentic local food, cafes, and performance spaces connected along Lines 1 & 2.'}
-                        </p>
-                      </div>
-                    </div>
-
                     {/* Integrated Busan Metro Guide Map Section */}
                     <div className="bg-white p-5 sm:p-6 rounded-lg border border-[#E5E2DC] text-left space-y-5 animate-fade-in">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E5E2DC] pb-3.5">
