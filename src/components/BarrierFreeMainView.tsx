@@ -18,7 +18,16 @@ import {
   ShieldCheck,
   Check,
   Train,
+  Search,
+  X,
+  Loader2,
+  AlertCircle,
+  CheckCircle2,
 } from 'lucide-react';
+import {
+  searchTourApiSpots,
+  TourApiSearchResultItem,
+} from '../services/tourApiService';
 import {
   UserType,
   USER_TYPES,
@@ -57,6 +66,44 @@ export default function BarrierFreeMainView({
 
   // 3. 함께하는 여행 다중 선택 상태 (초기 상태: 미선택/선택 해제 허용)
   const [selectedCompanions, setSelectedCompanions] = useState<TravelCompanionType[]>([]);
+
+  // 4. 한국관광공사 TourAPI 관광지 검색 상태
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
+  const [lastSearchedKeyword, setLastSearchedKeyword] = useState<string>('');
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [searchResults, setSearchResults] = useState<TourApiSearchResultItem[]>([]);
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
+
+  const handleSearch = async (keywordToSearch: string) => {
+    const trimmed = keywordToSearch.trim();
+    if (!trimmed) return;
+
+    setIsSearching(true);
+    setHasSearched(true);
+    setLastSearchedKeyword(trimmed);
+
+    try {
+      const response = await searchTourApiSpots(trimmed);
+      setSearchResults(response.spots || []);
+    } catch (err) {
+      console.error('Search error:', err);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSearch(searchKeyword);
+  };
+
+  const handleClearSearch = () => {
+    setSearchKeyword('');
+    setLastSearchedKeyword('');
+    setSearchResults([]);
+    setHasSearched(false);
+  };
 
   // Synchronize only when selectedUserType prop actually changes externally
   const prevSelectedUserTypePropRef = React.useRef(selectedUserType);
@@ -405,6 +452,199 @@ export default function BarrierFreeMainView({
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* 3.5. 한국관광공사 TourAPI 관광지 검색 섹션 (최소형 디자인, 테두리 없음) */}
+      <section className="space-y-2 py-0.5" id="kto-tour-search-section">
+        <div className="bg-slate-50 p-3 sm:p-3.5 rounded-xl space-y-2 text-left">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <div className="flex items-center gap-1.5">
+              <Search className="w-3.5 h-3.5 text-[#0A2540]" />
+              <h3 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight">
+                {language === 'KR' ? '부산 무장애 관광지 검색' : 'Busan Barrier-Free Spot Search'}
+              </h3>
+            </div>
+            <p className="text-[11px] text-slate-500 font-normal">
+              {language === 'KR'
+                ? '찾으시는 부산 무장애 관광지가 목록에 없나요? 검색해보세요.'
+                : 'Cannot find your destination in the list? Search here.'}
+            </p>
+          </div>
+
+          {/* Search Input Form (컴팩트 최소형 검색창) */}
+          <form onSubmit={handleSearchSubmit} className="flex items-center gap-1.5">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                placeholder={
+                  language === 'KR'
+                    ? '관광지 이름 검색 (예: 태종대, 용두산, 해운대, 자갈치)...'
+                    : 'Search destination (e.g. Taejongdae, Haeundae)...'
+                }
+                className="w-full pl-8 pr-7 py-1.5 sm:py-2 rounded-lg bg-white border border-slate-200 focus:border-[#0A2540] text-xs font-medium transition-all outline-none text-slate-900 placeholder:text-slate-400 shadow-2xs"
+              />
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              {searchKeyword && (
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 text-slate-400 hover:text-slate-600 rounded-full cursor-pointer"
+                  title={language === 'KR' ? '검색어 지우기' : 'Clear search'}
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+            <button
+              type="submit"
+              disabled={isSearching}
+              className="px-3.5 py-1.5 sm:py-2 rounded-lg bg-[#0A2540] hover:bg-[#11161B] text-white text-xs font-bold transition-all flex items-center gap-1 cursor-pointer shadow-2xs disabled:opacity-50 shrink-0"
+            >
+              {isSearching ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <span className="hidden sm:inline">{language === 'KR' ? '검색 중' : 'Searching'}</span>
+                </>
+              ) : (
+                <>
+                  <Search className="w-3.5 h-3.5" />
+                  <span>{language === 'KR' ? '검색' : 'Search'}</span>
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* Search Results Area */}
+          {hasSearched && (
+            <div className="pt-2 border-t border-slate-100 space-y-3 animate-fade-in">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-bold text-slate-800">
+                  {language === 'KR'
+                    ? `'${lastSearchedKeyword}' 검색 결과 (총 ${searchResults.length}건)`
+                    : `Results for '${lastSearchedKeyword}' (${searchResults.length} found)`}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  className="text-xs text-slate-500 hover:text-slate-800 font-semibold underline cursor-pointer"
+                >
+                  {language === 'KR' ? '결과 닫기' : 'Close Results'}
+                </button>
+              </div>
+
+              {/* Loading State */}
+              {isSearching && (
+                <div className="py-8 text-center space-y-2">
+                  <Loader2 className="w-6 h-6 animate-spin text-[#0A2540] mx-auto" />
+                  <p className="text-xs text-slate-500">
+                    {language === 'KR' ? '한국관광공사 TourAPI에서 관광지를 조회 중입니다...' : 'Querying Korea Tourism Organization TourAPI...'}
+                  </p>
+                </div>
+              )}
+
+              {/* Empty Results */}
+              {!isSearching && searchResults.length === 0 && (
+                <div className="py-8 text-center bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                  <AlertCircle className="w-6 h-6 text-slate-400 mx-auto" />
+                  <p className="text-xs sm:text-sm font-bold text-slate-700">
+                    {language === 'KR' ? `'${lastSearchedKeyword}'에 대한 검색 결과가 없습니다.` : `No results found for '${lastSearchedKeyword}'.`}
+                  </p>
+                  <p className="text-xs text-slate-500">
+                    {language === 'KR'
+                      ? '부산 권역 관광지명이나 주요 랜드마크 키워드로 다시 검색해보세요.'
+                      : 'Try searching with general landmark names in Busan.'}
+                  </p>
+                </div>
+              )}
+
+              {/* Results Cards Grid */}
+              {!isSearching && searchResults.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[460px] overflow-y-auto pr-1">
+                  {searchResults.map((spot) => (
+                    <div
+                      key={spot.contentid || spot.id}
+                      className="p-3.5 bg-slate-50 hover:bg-white rounded-xl border border-slate-200 hover:border-slate-900 transition-all flex flex-col justify-between space-y-3 group"
+                    >
+                      <div className="flex gap-3 items-start">
+                        {spot.firstimage ? (
+                          <img
+                            src={spot.firstimage}
+                            alt={spot.titleKo}
+                            className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover shrink-0 border border-slate-200 bg-slate-100"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg bg-slate-200 text-slate-400 flex items-center justify-center shrink-0">
+                            <MapPin className="w-6 h-6" />
+                          </div>
+                        )}
+                        <div className="space-y-1 min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            {spot.districtKo && (
+                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#0A2540] text-white">
+                                {language === 'KR' ? spot.districtKo : spot.districtEn || spot.districtKo}
+                              </span>
+                            )}
+                            {spot.isVerified && (
+                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-0.5">
+                                <CheckCircle2 className="w-2.5 h-2.5" />
+                                <span>{language === 'KR' ? '무장애 검증' : 'Verified'}</span>
+                              </span>
+                            )}
+                            <span className="text-[10px] text-slate-400 font-mono">
+                              ID: {spot.contentid}
+                            </span>
+                          </div>
+                          <h4 className="text-sm font-black text-slate-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                            {language === 'KR' ? spot.titleKo : spot.titleEn || spot.titleKo}
+                          </h4>
+                          <p className="text-xs text-slate-500 line-clamp-1 flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-red-500 shrink-0" />
+                            <span>{language === 'KR' ? spot.addr1Ko : spot.addr1En || spot.addr1Ko}</span>
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Barrier-Free Tags if available */}
+                      {spot.barrierFree && (
+                        <div className="flex flex-wrap gap-1 text-[10px] text-slate-600">
+                          {spot.barrierFree.elevator?.hasElevator && (
+                            <span className="px-1.5 py-0.5 rounded bg-white border border-slate-200 font-medium">🛗 엘리베이터</span>
+                          )}
+                          {spot.barrierFree.wheelchair?.hasRental && (
+                            <span className="px-1.5 py-0.5 rounded bg-white border border-slate-200 font-medium">♿ 휠체어 대여</span>
+                          )}
+                          {spot.barrierFree.toilet?.hasToilet && (
+                            <span className="px-1.5 py-0.5 rounded bg-white border border-slate-200 font-medium">🚻 장애인 화장실</span>
+                          )}
+                          {spot.barrierFree.parking?.hasParking && (
+                            <span className="px-1.5 py-0.5 rounded bg-white border border-slate-200 font-medium">🅿️ 장애인 주차</span>
+                          )}
+                          {spot.barrierFree.route?.hasNoStep && (
+                            <span className="px-1.5 py-0.5 rounded bg-white border border-slate-200 font-medium">✨ 무단차 출입</span>
+                          )}
+                        </div>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => onNavigateToPlace(spot.id || spot.contentid)}
+                        className="w-full py-2 rounded-lg bg-white hover:bg-[#0A2540] hover:text-white border border-slate-300 text-slate-800 text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer"
+                      >
+                        <span>{language === 'KR' ? '무장애 상세 정보 보기' : 'View Barrier-Free Details'}</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
 

@@ -20,7 +20,6 @@ import {
   ChevronRight,
   Sun,
   Umbrella,
-  ArrowRight,
   ExternalLink,
   ShieldCheck,
   Building2,
@@ -99,64 +98,76 @@ export default function ItineraryTravelGuideSection({
     }
   };
 
+  const getCategoryTitle = () => {
+    switch (category) {
+      case 'DAY': return language === 'KR' ? '당일치기 코스' : 'One Day Essential Course';
+      case '1NIGHT': return language === 'KR' ? '1박 2일 코스' : '1 Night 2 Days Course';
+      case '2NIGHTS': return language === 'KR' ? '2박 3일 코스' : '2 Nights 3 Days Course';
+      case '3NIGHTS': return language === 'KR' ? '3박 4일 코스' : '3 Nights 4 Days Course';
+      case '4NIGHTS': return language === 'KR' ? '4박 5일 코스' : '4 Nights 5 Days Course';
+      case 'GOURMET': return language === 'KR' ? '부산 식도락' : 'Busan Gourmet Travel';
+      case 'MARKET': return language === 'KR' ? '부산 전통시장' : 'Busan Traditional Markets';
+      case 'EXPERIENCE': return language === 'KR' ? '부산 체험 & 박물관' : 'Busan Museums & Experiences';
+      case 'SUBWAY': return language === 'KR' ? '부산 도시철도 코스' : 'Busan Metro Course';
+      case 'ATTRACTION': return language === 'KR' ? '부산 명소' : 'Busan Attractions';
+      default: return language === 'KR' ? '여행 코스 안내' : 'Travel Guide';
+    }
+  };
+
+  const getCategorySubtitle = () => {
+    switch (category) {
+      case 'DAY': return language === 'KR' ? '하루 동안 부산의 핵심 명소와 미식을 알차게 둘러보는 추천 일정입니다.' : 'A curated 1-day itinerary covering essential Busan highlights.';
+      case '1NIGHT': return language === 'KR' ? '광안리 밤바다와 도심 속 힐링을 여유롭게 만끽하는 1박 2일 일정입니다.' : 'A relaxing 2-day journey enjoying Gwangalli ocean waves and city culture.';
+      case '2NIGHTS': return language === 'KR' ? '감성 카페거리부터 푸른 바다 비경까지 부산 전역을 일주하는 2박 3일 일정입니다.' : 'A 3-day route from trendy cafe alleys to breathtaking coastal scenery.';
+      case '3NIGHTS': return language === 'KR' ? '자연 힐링과 강변 수변 공원을 벗하며 사색과 여유를 즐기는 3박 4일 일정입니다.' : 'A 4-day peaceful journey along scenic waterways and nature parks.';
+      case '4NIGHTS': return language === 'KR' ? '부산의 바다, 역사, 미식, 쇼핑을 모두 아우르는 완전 정복 4박 5일 마스터 일정입니다.' : 'A comprehensive 5-day master course covering ocean views, history, and dining.';
+      case 'GOURMET': return language === 'KR' ? '현지인이 검증한 대표 맛집부터 감성 카페와 명물 먹거리까지 만나보세요.' : 'Explore authentic local restaurants, cafes, and street food across Busan.';
+      case 'MARKET': return language === 'KR' ? '지하철역과 바로 이어지는 정겨운 부산 대표 전통시장과 명물 장터를 만나보세요.' : 'Explore vibrant local markets directly linked to subway stations.';
+      case 'EXPERIENCE': return language === 'KR' ? '날씨에 구애받지 않고 편안하게 즐기는 다채로운 전시와 문화공간을 만나보세요.' : 'Explore museums, art galleries, and cultural spaces with accessible routes.';
+      case 'SUBWAY': return language === 'KR' ? '지하철 1·2호선 노선축을 따라 역세권 명소와 맛집을 한눈에 둘러보는 코스입니다.' : 'Explore top attractions and local food conveniently connected along Metro Lines 1 & 2.';
+      case 'ATTRACTION': return language === 'KR' ? '해동 용궁사, 이기대 해안산책로, 태종대 등 부산을 대표하는 핵심 명소를 만나보세요.' : 'Explore iconic scenic landmarks including Haedong Yonggungsa, Igidae, and Taejongdae.';
+      default: return language === 'KR' ? '누구나 편안하게 즐길 수 있는 맞춤형 여행 코스를 만나보세요.' : 'Explore tailored step-free travel courses for everyone.';
+    }
+  };
+
   return (
     <div className="space-y-6 sm:space-y-8 animate-fade-in text-left font-sans">
       
-      {/* 1. Header Banner */}
-      <div className="bg-[#0A2540] text-white p-6 sm:p-8 rounded-xl border border-[#0A2540] relative overflow-hidden shadow-xs">
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="bg-amber-400/20 text-amber-300 text-xs font-mono font-bold px-3 py-1 rounded-md border border-amber-400/30 flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>{language === 'KR' ? 'Stepless 큐레이션' : 'Stepless Curation'}</span>
-            </span>
-            <span className="text-[#E5E2DC] text-xs font-mono">
-              {language === 'KR' ? guide.recommendedDurationKo : guide.recommendedDurationEn}
-            </span>
-          </div>
-
-          {onSwitchToStandard && (
-            <button
-              onClick={onSwitchToStandard}
-              className="flex items-center gap-1.5 text-xs font-bold bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-md border border-white/20 transition-colors cursor-pointer shrink-0"
-            >
-              <span>{language === 'KR' ? '기본 일정표 보기' : 'View Standard Schedule'}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+      {/* 1. Simple Clean Header */}
+      <div className="space-y-2 border-b border-slate-200 pb-5 text-left">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            {getCategoryTitle()}
+          </h2>
+          {category === 'DAY' && (
+            <div className="inline-flex p-1 bg-[#FBFBF9] rounded-lg border border-[#E5E2DC] gap-1">
+              <button
+                type="button"
+                onClick={() => setSelectedDayCourseId('itinerary-day-first-time')}
+                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
+                  selectedDayCourseId === 'itinerary-day-first-time'
+                    ? 'bg-[#0A2540] text-white shadow-2xs'
+                    : 'text-[#4A5568] hover:text-[#11161B]'
+                }`}
+              >
+                {language === 'KR' ? '① 원도심 코스' : '① Historic Downtown'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedDayCourseId('itinerary-day')}
+                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
+                  selectedDayCourseId === 'itinerary-day'
+                    ? 'bg-[#0A2540] text-white shadow-2xs'
+                    : 'text-[#4A5568] hover:text-[#11161B]'
+                }`}
+              >
+                {language === 'KR' ? '② 낙동강 생태 코스' : '② Nakdong Eco'}
+              </button>
+            </div>
           )}
         </div>
-
-        {/* DAY category sub-selector */}
-        {category === 'DAY' && (
-          <div className="mb-4 inline-flex p-1 bg-white/10 rounded-lg border border-white/20 gap-1">
-            <button
-              onClick={() => setSelectedDayCourseId('itinerary-day-first-time')}
-              className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
-                selectedDayCourseId === 'itinerary-day-first-time'
-                  ? 'bg-white text-[#0A2540] shadow-2xs'
-                  : 'text-white/80 hover:text-white'
-              }`}
-            >
-              {language === 'KR' ? '① 원도심 정복 코스' : '① Historic Downtown'}
-            </button>
-            <button
-              onClick={() => setSelectedDayCourseId('itinerary-day')}
-              className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
-                selectedDayCourseId === 'itinerary-day'
-                  ? 'bg-white text-[#0A2540] shadow-2xs'
-                  : 'text-white/80 hover:text-white'
-              }`}
-            >
-              {language === 'KR' ? '② 낙동강 생태 디톡스' : '② Nakdong Eco Detox'}
-            </button>
-          </div>
-        )}
-
-        <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-heading text-white tracking-tight leading-snug">
-          {language === 'KR' ? guide.dayTitleKo : guide.dayTitleEn}
-        </h2>
-        <p className="text-xs sm:text-sm text-sky-100/90 mt-2.5 font-normal leading-relaxed max-w-3xl">
-          {language === 'KR' ? guide.oneLineSummaryKo : guide.oneLineSummaryEn}
+        <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+          {getCategorySubtitle()}
         </p>
       </div>
 

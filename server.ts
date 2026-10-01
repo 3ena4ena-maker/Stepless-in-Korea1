@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 
 import { BUSAN_TOUR_API_SPOTS, TourApiSpot } from "./src/data/tourApiSpots";
-import { getKoreaTourApiPlaceDetail } from "./src/data/koreaTourApiPlaceDetails";
+import { getKoreaTourApiPlaceDetail, KOREA_TOUR_API_PLACE_DETAILS } from "./src/data/koreaTourApiPlaceDetails";
 
 dotenv.config();
 
@@ -748,6 +748,147 @@ app.get("/api/tourapi/spots", async (req, res) => {
   } catch (error: any) {
     console.error("TourAPI spots query error:", error);
     res.status(500).json({ error: "Failed to fetch TourAPI barrier-free spots" });
+  }
+});
+
+// Search TourAPI spots (Live OpenAPI searchKeyword2 + pre-verified TourAPI dataset)
+app.get("/api/tourapi/search", async (req, res) => {
+  try {
+    const rawKeyword = typeof req.query.keyword === "string" ? req.query.keyword.trim() : "";
+    if (!rawKeyword) {
+      return res.json({ total: 0, keyword: "", spots: [], source: "empty" });
+    }
+
+    const kwLower = rawKeyword.toLowerCase();
+    const matchedSpotsMap = new Map<string, any>();
+
+    // 1. Search verified BUSAN_TOUR_API_SPOTS
+    BUSAN_TOUR_API_SPOTS.forEach(spot => {
+      const match =
+        spot.titleKo.toLowerCase().includes(kwLower) ||
+        spot.titleEn.toLowerCase().includes(kwLower) ||
+        spot.districtKo.toLowerCase().includes(kwLower) ||
+        spot.addr1Ko.toLowerCase().includes(kwLower) ||
+        spot.overviewKo.toLowerCase().includes(kwLower);
+
+      if (match) {
+        matchedSpotsMap.set(spot.contentid, {
+          contentid: spot.contentid,
+          id: spot.contentid,
+          titleKo: spot.titleKo,
+          titleEn: spot.titleEn,
+          addr1Ko: spot.addr1Ko,
+          addr1En: spot.addr1En,
+          districtKo: spot.districtKo,
+          districtEn: spot.districtEn,
+          categoryKo: spot.categoryKo,
+          categoryEn: spot.categoryEn,
+          firstimage: spot.firstimage,
+          tel: spot.tel,
+          mapx: spot.mapx,
+          mapy: spot.mapy,
+          barrierFree: spot.barrierFree,
+          isVerified: true,
+          source: "한국관광공사 무장애 관광정보 검증 데이터셋"
+        });
+      }
+    });
+
+    // 2. Search KOREA_TOUR_API_PLACE_DETAILS
+    Object.values(KOREA_TOUR_API_PLACE_DETAILS).forEach(detail => {
+      const match =
+        detail.nameKo.toLowerCase().includes(kwLower) ||
+        detail.nameEn.toLowerCase().includes(kwLower) ||
+        detail.districtKo.toLowerCase().includes(kwLower) ||
+        detail.addressRoadKo.toLowerCase().includes(kwLower) ||
+        detail.overviewKo.toLowerCase().includes(kwLower);
+
+      if (match && !matchedSpotsMap.has(detail.contentId)) {
+        matchedSpotsMap.set(detail.contentId, {
+          contentid: detail.contentId,
+          id: detail.id,
+          titleKo: detail.nameKo,
+          titleEn: detail.nameEn,
+          addr1Ko: detail.addressRoadKo,
+          addr1En: detail.addressRoadEn,
+          districtKo: detail.districtKo,
+          districtEn: detail.districtEn,
+          categoryKo: detail.categoryKo,
+          categoryEn: detail.categoryEn,
+          firstimage: detail.firstImage,
+          tel: detail.tel,
+          mapx: detail.longitude,
+          mapy: detail.latitude,
+          barrierFree: detail.barrierFree,
+          isVerified: true,
+          source: "한국관광공사 KorWithService2 검증 데이터"
+        });
+      }
+    });
+
+    // 3. Live TourAPI call (KorWithService2 / KorService2 searchKeyword2)
+    let isLiveSuccess = false;
+    if (KORWITH_SERVICE_KEY && !isKtoCircuitOpen()) {
+      try {
+        const liveRes = await executeKtoApiCall(
+          `${KORWITH_ENDPOINT}/searchKeyword2`,
+          KORWITH_SERVICE_KEY,
+          {
+            MobileOS: "ETC",
+            MobileApp: "SteplessBusan",
+            _type: "json",
+            keyword: rawKeyword,
+            areaCode: "6", // Busan
+            numOfRows: "20",
+            pageNo: "1"
+          }
+        );
+
+        if (liveRes.success && liveRes.rawItem) {
+          const rawItems = Array.isArray(liveRes.rawItem) ? liveRes.rawItem : [liveRes.rawItem];
+          if (rawItems.length > 0) {
+            isLiveSuccess = true;
+            rawItems.forEach((item: any) => {
+              if (item && item.contentid && !matchedSpotsMap.has(String(item.contentid))) {
+                matchedSpotsMap.set(String(item.contentid), {
+                  contentid: String(item.contentid),
+                  id: String(item.contentid),
+                  titleKo: item.title,
+                  titleEn: item.title,
+                  addr1Ko: item.addr1 || (item.addr2 ? `${item.addr1} ${item.addr2}` : "부산광역시"),
+                  addr1En: "Busan, Republic of Korea",
+                  districtKo: item.addr1?.split(' ')?.[1] || "부산",
+                  districtEn: "Busan",
+                  categoryKo: "관광명소",
+                  categoryEn: "Attraction",
+                  firstimage: item.firstimage || item.firstimage2 || "",
+                  tel: item.tel || "",
+                  mapx: item.mapx ? Number(item.mapx) : undefined,
+                  mapy: item.mapy ? Number(item.mapy) : undefined,
+                  isVerified: false,
+                  source: "한국관광공사 TourAPI 실시간 검색"
+                });
+              }
+            });
+          }
+        }
+      } catch (liveErr) {
+        console.warn("Live TourAPI keyword search error:", liveErr);
+      }
+    }
+
+    const results = Array.from(matchedSpotsMap.values());
+    res.json({
+      total: results.length,
+      keyword: rawKeyword,
+      source: isLiveSuccess
+        ? "한국관광공사 실시간 TourAPI + 무장애 검증 데이터"
+        : "한국관광공사 TourAPI 무장애 공공데이터",
+      spots: results
+    });
+  } catch (error: any) {
+    console.error("TourAPI search endpoint error:", error);
+    res.status(500).json({ error: "Failed to search TourAPI spots" });
   }
 });
 
