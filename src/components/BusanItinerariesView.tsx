@@ -55,6 +55,8 @@ import { CommunityTravelGuideSection } from './CommunityTravelGuideSection';
 import { TourApiItineraryStepCard } from './TourApiItineraryStepCard';
 import { matchTourApiSpotId, resolvePlaceTargetId } from '../services/tourApiCommon';
 import { getKoreaTourApiPlaceDetail } from '../data/koreaTourApiPlaceDetails';
+import MyTravelRouteMapView from './MyTravelRouteMapView';
+import { useMyRoute } from '../services/myRouteService';
 
 export const getStepIllustrationType = (titleKo: string, cat: string): 'temple' | 'park' | 'food' | 'cafe' | 'sea' | 'transit' | 'village' | 'history' | 'culture' | 'default' => {
   const normalized = titleKo.toLowerCase();
@@ -79,7 +81,7 @@ export const getStepIllustrationType = (titleKo: string, cat: string): 'temple' 
 
 
 
-type CategoryType = 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'MARKET' | 'SCHEDULE' | 'EXPERIENCE' | 'SUBWAY' | 'BARRIER_FREE' | 'ATTRACTION';
+type CategoryType = 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'MARKET' | 'SCHEDULE' | 'EXPERIENCE' | 'SUBWAY' | 'BARRIER_FREE' | 'ATTRACTION' | 'MY_ROUTE';
 
 export type TopCategoryType = 'GOURMET' | 'MARKET' | 'SCHEDULE' | 'EXPERIENCE' | 'SUBWAY' | 'BARRIER_FREE' | 'ATTRACTION';
 export type ScheduleDurationType = 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS';
@@ -1517,6 +1519,7 @@ export default function BusanItinerariesView({
   const [selectedThemeFilter, setSelectedThemeFilter] = useState<'ALL' | 'GOURMET' | 'EXPERIENCE'>('ALL');
   const [selectedDurationFilter, setSelectedDurationFilter] = useState<'ALL' | 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS'>('ALL');
   const [overviewSearchQuery, setOverviewSearchQuery] = useState<string>('');
+  const { isBookmarked, toggle: toggleMyRoute, count: myRouteCount } = useMyRoute();
 
   const navigateToSubPage = (page: 'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule' | 'community') => {
     if (setTipsSubPage) {
@@ -2437,6 +2440,33 @@ export default function BusanItinerariesView({
               >
                 {language === 'KR' ? '무장애 관광지' : 'Barrier-Free Spots'}
               </button>
+
+              {/* 8. 내 여행 루트 (지도) */}
+              <button
+                type="button"
+                onClick={() => {
+                  setInternalBarrierFreePlaceId(null);
+                  if (onSelectCategory) {
+                    onSelectCategory('MY_ROUTE');
+                  }
+                  setActiveCategory('MY_ROUTE');
+                }}
+                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center flex items-center gap-1.5 ${
+                  activeCategory === 'MY_ROUTE'
+                    ? 'bg-amber-500 text-white border-amber-500 shadow-2xs'
+                    : 'bg-amber-50/70 hover:bg-amber-100 text-amber-950 border-amber-300'
+                }`}
+              >
+                <Star className={`w-3.5 h-3.5 ${myRouteCount > 0 ? 'fill-amber-400 text-amber-500' : ''}`} />
+                <span>{language === 'KR' ? '내 여행 루트' : 'My Route'}</span>
+                {myRouteCount > 0 && (
+                  <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full font-bold ${
+                    activeCategory === 'MY_ROUTE' ? 'bg-white text-amber-700' : 'bg-amber-200 text-amber-900'
+                  }`}>
+                    {myRouteCount}
+                  </span>
+                )}
+              </button>
             </div>
 
             {/* Sub-duration row for "일정별 여행": 당일치기 | 1박 | 2박 3박 | 4박 (Horizontal, no emojis) */}
@@ -2759,13 +2789,81 @@ export default function BusanItinerariesView({
                     </span>
                   </div>
                 </div>
+
+                {/* Card 8: My Travel Route / 내 여행 루트 (맞춤 지도) */}
+                <div
+                  onClick={() => {
+                    setInternalBarrierFreePlaceId(null);
+                    if (onSelectCategory) {
+                      onSelectCategory('MY_ROUTE');
+                    }
+                    setActiveCategory('MY_ROUTE');
+                  }}
+                  className="bg-white rounded-lg border border-amber-300 hover:border-amber-500 hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-5 text-left relative"
+                >
+                  <div className="space-y-3.5 sm:space-y-4">
+                    <div className="bg-amber-50 rounded-md p-3.5 flex items-center justify-center group-hover:bg-amber-100 transition-colors border border-amber-200">
+                      <div className="w-12 h-12 rounded-lg bg-amber-500 text-white flex items-center justify-center shadow-xs">
+                        <Compass className="w-7 h-7" />
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-1">
+                        <h3 className="text-base font-bold text-[#11161B] group-hover:text-amber-800 transition-colors tracking-tight whitespace-nowrap flex items-center gap-1.5">
+                          <Star className="w-4 h-4 fill-amber-400 text-amber-500" />
+                          <span>{language === 'KR' ? '내 여행 루트' : 'My Travel Route'}</span>
+                        </h3>
+                        {myRouteCount > 0 ? (
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full font-bold bg-amber-500 text-white shadow-2xs">
+                            {myRouteCount}{language === 'KR' ? '곳 저장' : ' spots'}
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-200">
+                            {language === 'KR' ? '맞춤 지도' : 'Custom Map'}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-[#4A5568] font-normal leading-relaxed break-keep">
+                        {language === 'KR'
+                          ? '내가 즐겨찾기한 장소들을 지도 위에서 한눈에 확인하고 나만의 맞춤 여행 코스 만들기'
+                          : 'View your bookmarked places on an interactive map and build your personalized itinerary.'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="pt-4 flex justify-end items-center">
+                    <span className="text-xs font-bold text-amber-700 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                      <span>{language === 'KR' ? '지도 보기' : 'View Map'}</span>
+                      <ChevronRight className="w-4 h-4 text-amber-700" />
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           )}
 
           {activeCategory !== null && (
             <div className="space-y-6">
-              {activeCategory === 'BARRIER_FREE' ? (
+              {activeCategory === 'MY_ROUTE' ? (
+                <div className="space-y-6 animate-fade-in text-left">
+                  <MyTravelRouteMapView 
+                    language={language}
+                    onNavigateToCategory={(cat) => {
+                      if (onSelectCategory) {
+                        onSelectCategory(cat as any);
+                      }
+                      setActiveCategory(cat as any);
+                    }}
+                    onSelectStation={onSelectStation}
+                    onOpenBarrierFreeDetail={(id) => {
+                      setInternalBarrierFreePlaceId(id);
+                      if (onSelectCategory) {
+                        onSelectCategory('BARRIER_FREE');
+                      }
+                      setActiveCategory('BARRIER_FREE');
+                    }}
+                  />
+                </div>
+              ) : activeCategory === 'BARRIER_FREE' ? (
                 <div className="space-y-6 animate-fade-in text-left">
                   <BarrierFreeTourApiView 
                     language={language}
@@ -3432,6 +3530,7 @@ export default function BusanItinerariesView({
                           titleEn: step.titleEn,
                         }) || matchedSpotId || 'spot-101';
                         const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
+                        const isSaved = isBookmarked(step.id || step.titleKo);
 
                         return (
                           <div 
@@ -3445,9 +3544,41 @@ export default function BusanItinerariesView({
                                     <span>★ 5.0</span>
                                   </span>
                                 </div>
-                                <span className="text-[11px] font-mono font-bold text-[#0A2540] bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                                  {language === 'KR' ? (step.regionNameKo || '부산') : (step.regionNameEn || 'Busan')}
-                                </span>
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      toggleMyRoute({
+                                        id: step.id || step.titleKo,
+                                        titleKo: step.titleKo,
+                                        titleEn: step.titleEn,
+                                        categoryKo: step.foodCategory ? `식도락 · ${step.foodCategory}` : '부산 식도락',
+                                        categoryEn: 'Gourmet',
+                                        addressRoadKo: ktoDetail?.addressRoadKo || step.stationInfoKo,
+                                        stationInfoKo: step.stationInfoKo,
+                                        stationInfoEn: step.stationInfoEn,
+                                        descKo: step.descKo,
+                                        descEn: step.descEn,
+                                        firstImage: ktoDetail?.firstImage,
+                                        latitude: ktoDetail?.latitude,
+                                        longitude: ktoDetail?.longitude,
+                                      });
+                                    }}
+                                    className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
+                                      isSaved
+                                        ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                        : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
+                                    }`}
+                                    title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                  >
+                                    <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                    <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                  </button>
+                                  <span className="text-[11px] font-mono font-bold text-[#0A2540] bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
+                                    {language === 'KR' ? (step.regionNameKo || '부산') : (step.regionNameEn || 'Busan')}
+                                  </span>
+                                </div>
                               </div>
 
                               <h4 className="text-base font-bold text-[#11161B] leading-snug">
@@ -3636,6 +3767,7 @@ export default function BusanItinerariesView({
                             titleEn: step.titleEn,
                           }) || matchedSpotId || 'spot-101';
                           const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
+                          const isSaved = isBookmarked(step.id || step.titleKo);
 
                           const getThemeTagLabel = (cType?: string, defaultTime?: string) => {
                             if (cType === 'MUSEUM') return language === 'KR' ? '박물관' : 'Museum';
@@ -3657,10 +3789,40 @@ export default function BusanItinerariesView({
                                     <span className="text-[11px] font-mono font-bold text-[#0A2540] bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
                                       {language === 'KR' ? (step.regionNameKo || '부산') : (step.regionNameEn || 'Busan')}
                                     </span>
+                                    <span className="text-[11px] font-mono font-bold text-[#11161B] bg-[#F1EFEC] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
+                                      {getThemeTagLabel(step.categoryType, step.time)}
+                                    </span>
                                   </div>
-                                  <span className="text-[11px] font-mono font-bold text-[#11161B] bg-[#F1EFEC] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                                    {getThemeTagLabel(step.categoryType, step.time)}
-                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      toggleMyRoute({
+                                        id: step.id || step.titleKo,
+                                        titleKo: step.titleKo,
+                                        titleEn: step.titleEn,
+                                        categoryKo: getThemeTagLabel(step.categoryType, step.time) || '체험/박물관',
+                                        categoryEn: 'Experience',
+                                        addressRoadKo: ktoDetail?.addressRoadKo || step.stationInfoKo,
+                                        stationInfoKo: step.stationInfoKo,
+                                        stationInfoEn: step.stationInfoEn,
+                                        descKo: step.descKo,
+                                        descEn: step.descEn,
+                                        firstImage: ktoDetail?.firstImage,
+                                        latitude: ktoDetail?.latitude,
+                                        longitude: ktoDetail?.longitude,
+                                      });
+                                    }}
+                                    className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
+                                      isSaved
+                                        ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                        : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
+                                    }`}
+                                    title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                  >
+                                    <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                    <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                  </button>
                                 </div>
 
                                 {/* Title */}
@@ -3772,6 +3934,7 @@ export default function BusanItinerariesView({
                           titleEn: step.titleEn,
                         }) || matchedSpotId || 'spot-101';
                         const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
+                        const isSaved = isBookmarked(step.id || step.titleKo);
 
                         return (
                           <div
@@ -3785,9 +3948,41 @@ export default function BusanItinerariesView({
                                     {step.regionNameKo}
                                   </span>
                                 </div>
-                                <span className="text-xs text-[#718096] font-medium">
-                                  {step.time}
-                                </span>
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      toggleMyRoute({
+                                        id: step.id || step.titleKo,
+                                        titleKo: step.titleKo,
+                                        titleEn: step.titleEn,
+                                        categoryKo: '전통시장',
+                                        categoryEn: 'Market',
+                                        addressRoadKo: ktoDetail?.addressRoadKo || step.stationInfoKo,
+                                        stationInfoKo: step.stationInfoKo,
+                                        stationInfoEn: step.stationInfoEn,
+                                        descKo: step.descKo,
+                                        descEn: step.descEn,
+                                        firstImage: ktoDetail?.firstImage,
+                                        latitude: ktoDetail?.latitude,
+                                        longitude: ktoDetail?.longitude,
+                                      });
+                                    }}
+                                    className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
+                                      isSaved
+                                        ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                        : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
+                                    }`}
+                                    title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                  >
+                                    <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                    <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                  </button>
+                                  <span className="text-xs text-[#718096] font-medium">
+                                    {step.time}
+                                  </span>
+                                </div>
                               </div>
 
                               <div className="space-y-1">
@@ -4266,9 +4461,10 @@ export default function BusanItinerariesView({
                             <div key={r.id} className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
                               {filteredItems.map((item, idx) => {
                                 const isCopied = copiedIndex === item.nameKo;
+                                const isSaved = isBookmarked(item.nameKo);
                                 return (
                                   <div 
-                                    key={idx}
+                                    key={idx} 
                                     className="p-5 sm:p-6 rounded-lg border border-[#E5E2DC] bg-white hover:border-[#0A2540] transition-colors flex flex-col justify-between gap-4 text-left"
                                   >
                                     <div className="space-y-3 text-left">
@@ -4286,6 +4482,33 @@ export default function BusanItinerariesView({
                                             </span>
                                           </div>
                                         </div>
+                                        <button
+                                          type="button"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleMyRoute({
+                                              id: item.nameKo,
+                                              titleKo: item.nameKo,
+                                              titleEn: item.nameEn,
+                                              categoryKo: item.stationGroupNameKo || '도시철도 명소',
+                                              categoryEn: item.stationGroupNameEn || 'Subway Landmark',
+                                              addressRoadKo: item.addressKo,
+                                              stationInfoKo: item.tagKo,
+                                              stationInfoEn: item.tagEn,
+                                              descKo: item.descKo,
+                                              descEn: item.descEn,
+                                            });
+                                          }}
+                                          className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
+                                            isSaved
+                                              ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                              : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
+                                          }`}
+                                          title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                        >
+                                          <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                          <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                        </button>
                                       </div>
 
                                       <p className="text-xs text-[#4A5568] font-normal leading-relaxed whitespace-pre-line">
@@ -4419,6 +4642,7 @@ export default function BusanItinerariesView({
                         }) || matchedSpotId || 'spot-101';
                         const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
                         const bf = ktoDetail?.barrierFree;
+                        const isSaved = isBookmarked(step.id || step.titleKo);
 
                         return (
                           <div
@@ -4437,9 +4661,42 @@ export default function BusanItinerariesView({
                                     </span>
                                   )}
                                 </div>
-                                <span className="text-xs text-[#718096] font-medium">
-                                  {step.time}
-                                </span>
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      toggleMyRoute({
+                                        id: step.id || step.titleKo,
+                                        titleKo: step.titleKo,
+                                        titleEn: step.titleEn,
+                                        categoryKo: '부산 명소',
+                                        categoryEn: 'Attraction',
+                                        addressRoadKo: ktoDetail?.addressRoadKo,
+                                        stationInfoKo: step.stationInfoKo,
+                                        stationInfoEn: step.stationInfoEn,
+                                        descKo: step.descKo,
+                                        descEn: step.descEn,
+                                        firstImage: ktoDetail?.firstImage,
+                                        time: step.time,
+                                        latitude: ktoDetail?.latitude,
+                                        longitude: ktoDetail?.longitude,
+                                      });
+                                    }}
+                                    className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
+                                      isSaved
+                                        ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                        : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
+                                    }`}
+                                    title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                  >
+                                    <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                    <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                  </button>
+                                  <span className="text-xs text-[#718096] font-medium">
+                                    {step.time}
+                                  </span>
+                                </div>
                               </div>
 
                               <div className="space-y-1">

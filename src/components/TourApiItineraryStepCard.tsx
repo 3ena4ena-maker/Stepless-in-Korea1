@@ -14,10 +14,12 @@ import {
   ExternalLink, 
   Copy, 
   Check, 
-  Info
+  Info,
+  Star
 } from 'lucide-react';
 import { ItineraryStep } from '../data/itineraries';
 import { useTourApiSpot, resolvePlaceTargetId } from '../services/tourApiCommon';
+import { useMyRoute } from '../services/myRouteService';
 import ElegantIllustration from './ElegantIllustration';
 
 interface TourApiItineraryStepCardProps {
@@ -73,6 +75,9 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
     });
   };
 
+  const { isBookmarked, toggle } = useMyRoute();
+  const isSaved = isBookmarked(step.id || step.titleKo);
+
   const bf = detail?.barrierFree;
   const hasAnyDetailInfo = Boolean(
     (detail?.firstImage && !imageError) || 
@@ -92,21 +97,65 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
 
       {/* 카드 본체 */}
       <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#E5E2DC] space-y-3 text-left shadow-xs hover:border-[#0A2540]/40 transition-all">
-        {/* 제목 & 아이콘 헤더 */}
+        {/* 제목 & 즐겨찾기 & 아이콘 헤더 */}
         <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1">
+          <div className="space-y-1 min-w-0 flex-1">
             <h5 className="text-sm sm:text-base font-bold text-[#11161B] leading-snug">
               {language === 'KR' ? step.titleKo : step.titleEn}
             </h5>
             {hasKtoData && detail && (
-              <p className="text-[11px] text-[#0A2540] font-medium">
+              <p className="text-[11px] text-[#0A2540] font-medium truncate">
                 {language === 'KR' ? detail.nameKo : detail.nameEn} · {detail.categoryKo}
               </p>
             )}
           </div>
 
-          <div className="p-1.5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] shrink-0 text-[#4A5568]">
-            <ElegantIllustration type={getIllustrationType(step.titleKo)} size="sm" className="w-5 h-5 stroke-[1.8]" />
+          <div className="flex items-center gap-1.5 shrink-0">
+            {/* 즐겨찾기(내 여행 루트) 토글 버튼 */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggle({
+                  id: step.id || step.titleKo,
+                  titleKo: step.titleKo,
+                  titleEn: step.titleEn,
+                  categoryKo: detail?.categoryKo || '추천코스',
+                  categoryEn: detail?.categoryEn || 'Course',
+                  addressRoadKo: detail?.addressRoadKo,
+                  addressRoadEn: detail?.addressRoadEn,
+                  stationInfoKo: step.stationInfoKo,
+                  stationInfoEn: step.stationInfoEn,
+                  descKo: step.descKo,
+                  descEn: step.descEn,
+                  firstImage: detail?.firstImage,
+                  time: step.time,
+                  latitude: detail?.latitude,
+                  longitude: detail?.longitude,
+                });
+              }}
+              className={`px-2 py-1 rounded-lg border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
+                isSaved
+                  ? 'bg-amber-50 text-amber-600 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                  : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
+              }`}
+              title={
+                isSaved
+                  ? (language === 'KR' ? '내 여행 루트에서 제거' : 'Remove from My Route')
+                  : (language === 'KR' ? '내 여행 루트(지도)에 추가' : 'Add to My Route')
+              }
+            >
+              <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+              <span className="hidden sm:inline">
+                {isSaved
+                  ? (language === 'KR' ? '루트 담김' : 'In Route')
+                  : (language === 'KR' ? '루트 추가' : 'Add Route')}
+              </span>
+            </button>
+
+            <div className="p-1.5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] shrink-0 text-[#4A5568]">
+              <ElegantIllustration type={getIllustrationType(step.titleKo)} size="sm" className="w-5 h-5 stroke-[1.8]" />
+            </div>
           </div>
         </div>
 
