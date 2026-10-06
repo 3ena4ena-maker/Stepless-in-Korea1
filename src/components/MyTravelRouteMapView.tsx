@@ -10,7 +10,7 @@
  * - 즐겨찾기(⭐)한 모든 장소를 번호 마커(①, ②, ③...)와 경로선(Polyline)으로 연결하여 표시
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import {
   MapPin,
   Train,
@@ -31,8 +31,26 @@ import {
   Layers,
   Search,
   Plus,
+  Share2,
+  Download,
+  Send,
+  Locate,
+  Maximize2,
+  Bookmark,
+  CheckCircle2,
 } from 'lucide-react';
-import { useMyRoute, MyRoutePlace, addPlaceToMyRoute, KNOWN_COORDINATES, isPlaceInMyRoute } from '../services/myRouteService';
+import {
+  useMyRoute,
+  MyRoutePlace,
+  addPlaceToMyRoute,
+  KNOWN_COORDINATES,
+  isPlaceInMyRoute,
+  exportRouteToShareData,
+  importRouteFromShareData,
+  saveImportedRouteAsMyRoute,
+  mergeImportedRouteIntoMyRoute,
+  formatRouteSummaryText,
+} from '../services/myRouteService';
 import { BUSAN_TOUR_API_SPOTS } from '../data/tourApiSpots';
 import { KOREA_TOUR_API_PLACE_DETAILS } from '../data/koreaTourApiPlaceDetails';
 
@@ -192,6 +210,54 @@ export default function MyTravelRouteMapView({
 
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
+
+  // 방안 A: URL 공유 링크 및 내 루트 복사 관련 상태
+  const [sharedRoutePlaces, setSharedRoutePlaces] = useState<MyRoutePlace[] | null>(null);
+  const [isViewingSharedRoute, setIsViewingSharedRoute] = useState<boolean>(false);
+  const [showShareModal, setShowShareModal] = useState<boolean>(false);
+  const [shareUrlCopied, setShareUrlCopied] = useState<boolean>(false);
+  const [summaryTextCopied, setSummaryTextCopied] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // 모바일 GPS 위치 상태
+  const [gpsLocation, setGpsLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [isLocating, setIsLocating] = useState<boolean>(false);
+  const userGpsMarkerRef = useRef<any>(null);
+
+  // 현재 화면 및 지도에 표시할 장소 목록 (공유받은 루트 조회 중이면 sharedRoutePlaces, 아니면 본인 루트 places)
+  const displayPlaces = useMemo(() => {
+    if (isViewingSharedRoute && sharedRoutePlaces && sharedRoutePlaces.length > 0) {
+      return sharedRoutePlaces;
+    }
+    return places;
+  }, [isViewingSharedRoute, sharedRoutePlaces, places]);
+
+  // URL에서 공유 루트 감지 (?route=... 또는 ?shared_route=... 또는 hash #route=...)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const hash = window.location.hash;
+      const rawRoute = params.get('route') || params.get('shared_route') || params.get('route_data');
+      
+      let hashRoute = '';
+      if (hash && hash.includes('route=')) {
+        const match = hash.match(/route=([A-Za-z0-9_-]+)/);
+        if (match) hashRoute = match[1];
+      }
+
+      const routeStr = rawRoute || hashRoute;
+      if (routeStr) {
+        const imported = importRouteFromShareData(routeStr);
+        if (imported && imported.length > 0) {
+          setSharedRoutePlaces(imported);
+          setIsViewingSharedRoute(true);
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to parse route from URL:', e);
+    }
+  }, []);
 
   // 구글(EN) / 네이버(KR) 실시간 자동 완성 검색 상태
   const isGoogleMode = language === 'EN' || provider === 'GOOGLE';
@@ -385,6 +451,224 @@ export default function MyTravelRouteMapView({
     }
   };
 
+  // 공유받은 루트를 내 여행 루트로 복사 및 영구 저장 (방안 A 핵심 기능)
+  const handleSaveSharedRouteAsMine = () => {
+    if (!sharedRoutePlaces || sharedRoutePlaces.length === 0) return;
+    saveImportedRouteAsMyRoute(sharedRoutePlaces);
+    setIsViewingSharedRoute(false);
+    
+    // URL에서 공유 파라미터 깔끔하게 제거
+    if (typeof window !== 'undefined' && window.history) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('route');
+      url.searchParams.delete('shared_route');
+      url.searchParams.delete('route_data');
+      window.history.replaceState({}, '', url.pathname + (url.search ? url.search : ''));
+    }
+
+    setToastMessage(language === 'KR' 
+      ? '🎉 공유받은 여행 루트가 내 루트로 복사 및 저장되었습니다!' 
+      : '🎉 Shared route successfully copied and saved to your route!');
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  // 공유받은 루트를 기존 내 여행 루트에 합치기
+  const handleMergeSharedRouteWithMine = () => {
+    if (!sharedRoutePlaces || sharedRoutePlaces.length === 0) return;
+    const addedCount = mergeImportedRouteIntoMyRoute(sharedRoutePlaces);
+    setIsViewingSharedRoute(false);
+
+    if (typeof window !== 'undefined' && window.history) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('route');
+      url.searchParams.delete('shared_route');
+      url.searchParams.delete('route_data');
+      window.history.replaceState({}, '', url.pathname + (url.search ? url.search : ''));
+    }
+
+    setToastMessage(language === 'KR' 
+      ? `➕ ${addedCount}개의 신규 장소가 내 기존 루트에 추가되었습니다!` 
+      : `➕ Added ${addedCount} new spots to your existing route!`);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  // 공유 미리보기 닫고 내 원래 루트로 복귀
+  const handleDismissSharedRoute = () => {
+    setIsViewingSharedRoute(false);
+    if (typeof window !== 'undefined' && window.history) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('route');
+      url.searchParams.delete('shared_route');
+      url.searchParams.delete('route_data');
+      window.history.replaceState({}, '', url.pathname + (url.search ? url.search : ''));
+    }
+  };
+
+  // 현재 루트 공유 링크 생성 (URL-safe base64)
+  const getCurrentShareUrl = () => {
+    if (typeof window === 'undefined') return '';
+    const code = exportRouteToShareData(displayPlaces);
+    return `${window.location.origin}${window.location.pathname}?route=${code}#my-route`;
+  };
+
+  // 링크 복사
+  const handleCopyShareLink = () => {
+    const url = getCurrentShareUrl();
+    if (!url) return;
+    navigator.clipboard.writeText(url).then(() => {
+      setShareUrlCopied(true);
+      setTimeout(() => setShareUrlCopied(false), 2500);
+      setToastMessage(language === 'KR' ? '🔗 내 여행 루트 공유 링크가 복사되었습니다!' : '🔗 Route share link copied!');
+      setTimeout(() => setToastMessage(null), 3000);
+    });
+  };
+
+  // 모바일 Native Web Share API (카카오톡, 메시지 등으로 바로 전송)
+  const handleNativeShare = async () => {
+    const url = getCurrentShareUrl();
+    if (!url) return;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: language === 'KR' ? `내 부산 여행 루트 (총 ${displayPlaces.length}곳)` : `My Busan Route (${displayPlaces.length} Spots)`,
+          text: language === 'KR' 
+            ? `제가 계획한 부산 여행 루트(${displayPlaces.length}개 장소)입니다. 지도에서 최적 이동 동선을 확인해보세요!`
+            : `Check out my custom Busan travel route with ${displayPlaces.length} spots!`,
+          url: url,
+        });
+        return;
+      } catch (err: any) {
+        if (err.name !== 'AbortError') {
+          handleCopyShareLink();
+        }
+      }
+    } else {
+      handleCopyShareLink();
+    }
+  };
+
+  // 일정 텍스트 복사
+  const handleCopySummaryText = () => {
+    const text = formatRouteSummaryText(displayPlaces, language);
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      setSummaryTextCopied(true);
+      setTimeout(() => setSummaryTextCopied(false), 2500);
+      setToastMessage(language === 'KR' ? '📋 일정표 텍스트가 클립보드에 복사되었습니다!' : '📋 Itinerary text copied!');
+      setTimeout(() => setToastMessage(null), 3000);
+    });
+  };
+
+  // 모바일 지도 최적화: 전체 동선 한눈에 맞춤 (Fit All Stops)
+  const handleFitAllStops = () => {
+    if (displayPlaces.length === 0) return;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+
+    if (provider === 'NAVER' && naverMapRef.current && window.naver?.maps) {
+      if (displayPlaces.length === 1) {
+        naverMapRef.current.setCenter(new window.naver.maps.LatLng(displayPlaces[0].latitude, displayPlaces[0].longitude));
+        naverMapRef.current.setZoom(15);
+      } else {
+        const bounds = new window.naver.maps.LatLngBounds();
+        displayPlaces.forEach(p => bounds.extend(new window.naver.maps.LatLng(p.latitude, p.longitude)));
+        naverMapRef.current.fitBounds(bounds, isMobile ? { top: 35, right: 25, bottom: 35, left: 25 } : { top: 50, right: 50, bottom: 50, left: 50 });
+      }
+    } else if (provider === 'GOOGLE' && googleMapRef.current && window.google?.maps) {
+      if (displayPlaces.length === 1) {
+        googleMapRef.current.setCenter({ lat: displayPlaces[0].latitude, lng: displayPlaces[0].longitude });
+        googleMapRef.current.setZoom(15);
+      } else {
+        const bounds = new window.google.maps.LatLngBounds();
+        displayPlaces.forEach(p => bounds.extend({ lat: p.latitude, lng: p.longitude }));
+        googleMapRef.current.fitBounds(bounds, isMobile ? 30 : 50);
+      }
+    } else if (provider === 'LEAFLET' && leafletMapRef.current && window.L) {
+      if (displayPlaces.length === 1) {
+        leafletMapRef.current.setView([displayPlaces[0].latitude, displayPlaces[0].longitude], 15);
+      } else {
+        const latLngs = displayPlaces.map(p => [p.latitude, p.longitude] as [number, number]);
+        const bounds = window.L.latLngBounds(latLngs);
+        leafletMapRef.current.fitBounds(bounds, { padding: isMobile ? [30, 20] : [45, 45], maxZoom: 16 });
+      }
+    }
+  };
+
+  // 모바일 지도 최적화: GPS 내 현재 위치 확인
+  const handleLocateUser = () => {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      setToastMessage(language === 'KR' ? '사용 중인 브라우저에서 위치 서비스를 지원하지 않습니다.' : 'Geolocation is not supported by your browser.');
+      setTimeout(() => setToastMessage(null), 3000);
+      return;
+    }
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setIsLocating(false);
+        const { latitude, longitude } = pos.coords;
+        setGpsLocation({ lat: latitude, lng: longitude });
+
+        if (provider === 'NAVER' && naverMapRef.current && window.naver?.maps) {
+          const latLng = new window.naver.maps.LatLng(latitude, longitude);
+          naverMapRef.current.panTo(latLng);
+          if (userGpsMarkerRef.current) userGpsMarkerRef.current.setMap(null);
+          userGpsMarkerRef.current = new window.naver.maps.Marker({
+            position: latLng,
+            map: naverMapRef.current,
+            icon: {
+              content: `<div style="display:flex; flex-direction:column; align-items:center; transform:translate(-50%, -50%);">
+                <div style="width:16px; height:16px; background:#2563EB; border:3px solid #FFFFFF; border-radius:50%; box-shadow:0 0 0 6px rgba(37,99,235,0.25);"></div>
+                <span style="font-size:10px; font-weight:bold; background:#2563EB; color:#fff; padding:1px 5px; border-radius:8px; margin-top:2px;">내 위치</span>
+              </div>`,
+              anchor: new window.naver.maps.Point(0, 0),
+            },
+          });
+        } else if (provider === 'GOOGLE' && googleMapRef.current && window.google?.maps) {
+          const pos = { lat: latitude, lng: longitude };
+          googleMapRef.current.panTo(pos);
+          googleMapRef.current.setZoom(15);
+          if (userGpsMarkerRef.current) userGpsMarkerRef.current.setMap(null);
+          userGpsMarkerRef.current = new window.google.maps.Marker({
+            position: pos,
+            map: googleMapRef.current,
+            title: language === 'KR' ? '내 현재 위치' : 'My Location',
+            icon: {
+              path: window.google.maps.SymbolPath.CIRCLE,
+              scale: 8,
+              fillColor: '#2563EB',
+              fillOpacity: 1,
+              strokeColor: '#FFFFFF',
+              strokeWeight: 3,
+            },
+          });
+        } else if (provider === 'LEAFLET' && leafletMapRef.current && window.L) {
+          leafletMapRef.current.setView([latitude, longitude], 15);
+          if (userGpsMarkerRef.current) userGpsMarkerRef.current.remove();
+          const L = window.L;
+          const gpsIcon = L.divIcon({
+            html: `<div style="display:flex; flex-direction:column; align-items:center; transform:translate(-50%, -50%);">
+              <div style="width:16px; height:16px; background:#2563EB; border:3px solid #FFFFFF; border-radius:50%; box-shadow:0 0 0 6px rgba(37,99,235,0.25);"></div>
+              <span style="font-size:10px; font-weight:bold; background:#2563EB; color:#fff; padding:1px 5px; border-radius:8px; margin-top:2px;">내 위치</span>
+            </div>`,
+            className: 'custom-my-route-marker',
+            iconSize: [0, 0],
+          });
+          userGpsMarkerRef.current = L.marker([latitude, longitude], { icon: gpsIcon }).addTo(leafletMapRef.current);
+        }
+
+        setToastMessage(language === 'KR' ? '📍 현재 GPS 위치를 지도에 표시했습니다.' : '📍 Located your current position on the map.');
+        setTimeout(() => setToastMessage(null), 3000);
+      },
+      (err) => {
+        setIsLocating(false);
+        console.warn('Geolocation error:', err);
+        setToastMessage(language === 'KR' ? '위치 권한을 허용하시면 내 위치를 지도에서 확인할 수 있습니다.' : 'Please allow location permission to view your position.');
+        setTimeout(() => setToastMessage(null), 3000);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
+
   // Map Instance Refs
   const naverMapRef = useRef<any>(null);
   const naverMarkersRef = useRef<any[]>([]);
@@ -419,6 +703,15 @@ export default function MyTravelRouteMapView({
 
   // Clean all map instances and clear container
   const cleanupAllMaps = () => {
+    // 0. Clean User GPS marker
+    if (userGpsMarkerRef.current) {
+      try {
+        if (userGpsMarkerRef.current.setMap) userGpsMarkerRef.current.setMap(null);
+        if (userGpsMarkerRef.current.remove) userGpsMarkerRef.current.remove();
+      } catch {}
+      userGpsMarkerRef.current = null;
+    }
+
     // 1. Naver Maps
     if (naverInfoWindowRef.current) {
       try { naverInfoWindowRef.current.close(); } catch {}
@@ -496,7 +789,7 @@ export default function MyTravelRouteMapView({
   };
 
   // --------------------------------------------------------------------------
-  // 1. NAVER MAPS RENDERER
+  // 1. NAVER MAPS RENDERER (모바일 정밀 좌표 및 핀포인트 닷 최적화)
   // --------------------------------------------------------------------------
   const renderNaverMap = () => {
     if (!mapContainerRef.current || !window.naver?.maps) return;
@@ -504,12 +797,12 @@ export default function MyTravelRouteMapView({
     cleanupAllMaps();
 
     try {
-      const centerLat = places.length > 0 ? places[0].latitude : 35.1587;
-      const centerLng = places.length > 0 ? places[0].longitude : 129.1186;
+      const centerLat = displayPlaces.length > 0 ? displayPlaces[0].latitude : 35.1587;
+      const centerLng = displayPlaces.length > 0 ? displayPlaces[0].longitude : 129.1186;
 
       const map = new window.naver.maps.Map(mapContainerRef.current, {
         center: new window.naver.maps.LatLng(centerLat, centerLng),
-        zoom: 12,
+        zoom: displayPlaces.length === 1 ? 15 : 12,
         minZoom: 9,
         maxZoom: 19,
         zoomControl: true,
@@ -522,19 +815,14 @@ export default function MyTravelRouteMapView({
       });
       naverMapRef.current = map;
 
-      // Trigger resize after layout finishes
-      setTimeout(() => {
-        if (naverMapRef.current && window.naver?.maps?.Event) {
-          window.naver.maps.Event.trigger(naverMapRef.current, 'resize');
-        }
-      }, 150);
-
-      if (places.length === 0) return;
+      if (displayPlaces.length === 0) return;
 
       const naverLatLngs: any[] = [];
       const bounds = new window.naver.maps.LatLngBounds();
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+      const mobilePadding = isMobile ? { top: 35, right: 25, bottom: 35, left: 25 } : { top: 50, right: 50, bottom: 50, left: 50 };
 
-      places.forEach((place, index) => {
+      displayPlaces.forEach((place, index) => {
         const stepNum = index + 1;
         const latLng = new window.naver.maps.LatLng(place.latitude, place.longitude);
         naverLatLngs.push(latLng);
@@ -544,13 +832,15 @@ export default function MyTravelRouteMapView({
         const markerBgColor = isSelected ? '#D95338' : '#0A2540';
         const markerBorderColor = isSelected ? '#FBBF24' : '#FFFFFF';
 
+        // 정밀 좌표 핀포인트 닷(Pinpoint Dot) 포함 마커 HTML
         const markerContent = `
           <div style="display:flex; flex-direction:column; align-items:center; transform:translate(-50%, -100%); cursor:pointer;">
             <div style="background:${markerBgColor}; color:#ffffff; font-size:11px; font-weight:800; padding:4px 9px; border-radius:12px; white-space:nowrap; box-shadow:0 3px 10px rgba(0,0,0,0.3); border:2px solid ${markerBorderColor}; display:flex; align-items:center; gap:5px;">
               <span style="background:#F59E0B; color:#0A2540; font-size:10px; font-weight:900; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${stepNum}</span>
               <span>${place.titleKo}</span>
             </div>
-            <div style="width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-top:8px solid ${markerBgColor}; margin-top:-1px;"></div>
+            <div style="width:0; height:0; border-left:5px solid transparent; border-right:5px solid transparent; border-top:6px solid ${markerBgColor}; margin-top:-1px;"></div>
+            <div style="width:8px; height:8px; background:${isSelected ? '#EF4444' : '#0A2540'}; border:2px solid #FFFFFF; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,0.4); margin-top:-1px;"></div>
           </div>
         `;
 
@@ -564,11 +854,11 @@ export default function MyTravelRouteMapView({
         });
 
         const infoContent = `
-          <div style="padding:10px 12px; font-family:sans-serif; text-align:left; min-width:200px; max-width:260px;">
+          <div style="padding:10px 12px; font-family:sans-serif; text-align:left; min-width:210px; max-width:270px;">
             <div style="font-size:10px; font-weight:bold; color:#F59E0B; margin-bottom:2px;">루트 순서: ${stepNum}번째 경유지</div>
             <div style="font-size:13px; font-weight:bold; color:#0A2540; margin-bottom:4px;">${place.titleKo}</div>
             <div style="font-size:11px; color:#64748B; margin-bottom:8px; line-height:1.3;">${place.addressRoadKo || '부산광역시'}</div>
-            <div style="display:flex; gap:5px;">
+            <div style="display:flex; flex-wrap:wrap; gap:5px;">
               <a href="https://map.naver.com/v5/search/${encodeURIComponent(place.titleKo)}" target="_blank" rel="noopener noreferrer" style="display:inline-block; font-size:10px; font-weight:bold; background:#03C75A; color:#ffffff; padding:4px 8px; border-radius:4px; text-decoration:none;">네이버지도 길찾기</a>
               <a href="https://map.kakao.com/link/search/${encodeURIComponent(place.titleKo)}" target="_blank" rel="noopener noreferrer" style="display:inline-block; font-size:10px; font-weight:bold; background:#FEE500; color:#191919; padding:4px 8px; border-radius:4px; text-decoration:none;">카카오맵</a>
             </div>
@@ -580,7 +870,7 @@ export default function MyTravelRouteMapView({
           borderColor: '#E5E2DC',
           borderWidth: 1,
           disableAnchor: true,
-          pixelOffset: new window.naver.maps.Point(0, -35),
+          pixelOffset: new window.naver.maps.Point(0, -38),
         });
 
         window.naver.maps.Event.addListener(marker, 'click', () => {
@@ -607,10 +897,26 @@ export default function MyTravelRouteMapView({
         });
       }
 
-      // 영역 자동 맞춤
-      if (naverLatLngs.length > 0) {
-        map.fitBounds(bounds, { top: 50, right: 50, bottom: 50, left: 50 });
+      // 영역 자동 맞춤 (단일 장소일 땐 적정 확대율 유지)
+      if (naverLatLngs.length === 1) {
+        map.setCenter(naverLatLngs[0]);
+        map.setZoom(15);
+      } else if (naverLatLngs.length > 1) {
+        map.fitBounds(bounds, mobilePadding);
       }
+
+      // 모바일 렌더링 지연 및 화면 크기 변화 대응 재맞춤
+      setTimeout(() => {
+        if (naverMapRef.current && window.naver?.maps?.Event) {
+          window.naver.maps.Event.trigger(naverMapRef.current, 'resize');
+          if (naverLatLngs.length === 1) {
+            naverMapRef.current.setCenter(naverLatLngs[0]);
+            naverMapRef.current.setZoom(15);
+          } else if (naverLatLngs.length > 1) {
+            naverMapRef.current.fitBounds(bounds, mobilePadding);
+          }
+        }
+      }, 200);
     } catch (err) {
       console.warn('Naver map initialization failed, falling back to Leaflet:', err);
       setNaverAuthFailed(true);
@@ -619,7 +925,7 @@ export default function MyTravelRouteMapView({
   };
 
   // --------------------------------------------------------------------------
-  // 2. GOOGLE MAPS RENDERER
+  // 2. GOOGLE MAPS RENDERER (모바일 정밀 좌표 및 화면 맞춤 최적화)
   // --------------------------------------------------------------------------
   const renderGoogleMap = () => {
     if (!mapContainerRef.current || !window.google?.maps) return;
@@ -627,12 +933,12 @@ export default function MyTravelRouteMapView({
     cleanupAllMaps();
 
     try {
-      const centerLat = places.length > 0 ? places[0].latitude : 35.1587;
-      const centerLng = places.length > 0 ? places[0].longitude : 129.1186;
+      const centerLat = displayPlaces.length > 0 ? displayPlaces[0].latitude : 35.1587;
+      const centerLng = displayPlaces.length > 0 ? displayPlaces[0].longitude : 129.1186;
 
       const map = new window.google.maps.Map(mapContainerRef.current, {
         center: { lat: centerLat, lng: centerLng },
-        zoom: 12,
+        zoom: displayPlaces.length === 1 ? 15 : 12,
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: false,
@@ -641,18 +947,14 @@ export default function MyTravelRouteMapView({
       });
       googleMapRef.current = map;
 
-      setTimeout(() => {
-        if (googleMapRef.current && window.google?.maps?.event) {
-          window.google.maps.event.trigger(googleMapRef.current, 'resize');
-        }
-      }, 150);
-
-      if (places.length === 0) return;
+      if (displayPlaces.length === 0) return;
 
       const googleCoords: any[] = [];
       const bounds = new window.google.maps.LatLngBounds();
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+      const paddingVal = isMobile ? 30 : 50;
 
-      places.forEach((place, index) => {
+      displayPlaces.forEach((place, index) => {
         const stepNum = index + 1;
         const coord = { lat: place.latitude, lng: place.longitude };
         googleCoords.push(coord);
@@ -682,7 +984,7 @@ export default function MyTravelRouteMapView({
         });
 
         const infoContent = `
-          <div style="padding:8px 10px; font-family:sans-serif; text-align:left; min-width:190px;">
+          <div style="padding:8px 10px; font-family:sans-serif; text-align:left; min-width:200px;">
             <div style="font-size:10px; font-weight:bold; color:#F59E0B; margin-bottom:2px;">Stop #${stepNum} in Route</div>
             <div style="font-size:13px; font-weight:bold; color:#0A2540; margin-bottom:3px;">${place.titleEn || place.titleKo}</div>
             <div style="font-size:11px; color:#64748B; margin-bottom:6px;">${place.addressRoadKo || 'Busan, South Korea'}</div>
@@ -718,9 +1020,24 @@ export default function MyTravelRouteMapView({
       }
 
       // 영역 맞춤
-      if (googleCoords.length > 0) {
-        map.fitBounds(bounds, 50);
+      if (googleCoords.length === 1) {
+        map.setCenter(googleCoords[0]);
+        map.setZoom(15);
+      } else if (googleCoords.length > 1) {
+        map.fitBounds(bounds, paddingVal);
       }
+
+      setTimeout(() => {
+        if (googleMapRef.current && window.google?.maps?.event) {
+          window.google.maps.event.trigger(googleMapRef.current, 'resize');
+          if (googleCoords.length === 1) {
+            googleMapRef.current.setCenter(googleCoords[0]);
+            googleMapRef.current.setZoom(15);
+          } else if (googleCoords.length > 1) {
+            googleMapRef.current.fitBounds(bounds, paddingVal);
+          }
+        }
+      }, 200);
     } catch (err) {
       console.warn('Google Maps initialization failed, falling back to Leaflet:', err);
       setGoogleAuthFailed(true);
@@ -729,7 +1046,7 @@ export default function MyTravelRouteMapView({
   };
 
   // --------------------------------------------------------------------------
-  // 3. LEAFLET MAPS RENDERER (Universal Fallback)
+  // 3. LEAFLET MAPS RENDERER (Universal Fallback, 모바일 핀포인트 닷 최적화)
   // --------------------------------------------------------------------------
   const renderLeafletMap = () => {
     if (!mapContainerRef.current || !window.L) return;
@@ -738,30 +1055,25 @@ export default function MyTravelRouteMapView({
     const L = window.L;
 
     try {
-      const centerLat = places.length > 0 ? places[0].latitude : 35.1587;
-      const centerLng = places.length > 0 ? places[0].longitude : 129.1186;
+      const centerLat = displayPlaces.length > 0 ? displayPlaces[0].latitude : 35.1587;
+      const centerLng = displayPlaces.length > 0 ? displayPlaces[0].longitude : 129.1186;
 
       const map = L.map(mapContainerRef.current, {
         zoomControl: true,
         attributionControl: false,
-      }).setView([centerLat, centerLng], 12);
+      }).setView([centerLat, centerLng], displayPlaces.length === 1 ? 15 : 12);
       leafletMapRef.current = map;
 
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
       }).addTo(map);
 
-      setTimeout(() => {
-        if (leafletMapRef.current) {
-          leafletMapRef.current.invalidateSize();
-        }
-      }, 150);
-
-      if (places.length === 0) return;
+      if (displayPlaces.length === 0) return;
 
       const latLngs: [number, number][] = [];
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
 
-      places.forEach((place, index) => {
+      displayPlaces.forEach((place, index) => {
         const stepNum = index + 1;
         const latLng: [number, number] = [place.latitude, place.longitude];
         latLngs.push(latLng);
@@ -770,13 +1082,15 @@ export default function MyTravelRouteMapView({
         const markerBgColor = isSelected ? '#D95338' : '#0A2540';
         const markerBorderColor = isSelected ? '#FBBF24' : '#FFFFFF';
 
+        // 정밀 좌표 핀포인트 닷(Pinpoint Dot) 포함
         const markerHtml = `
-          <div style="display:flex; flex-direction:column; align-items:center; transform:translate(-50%, -100%); cursor:pointer;">
+          <div style="display:flex; flex-direction:column; align-items:center; transform:translate(-50%, -100%); cursor:pointer; pointer-events:auto;">
             <div style="background:${markerBgColor}; color:#ffffff; font-size:11px; font-weight:800; padding:4px 9px; border-radius:12px; white-space:nowrap; box-shadow:0 3px 10px rgba(0,0,0,0.3); border:2px solid ${markerBorderColor}; display:flex; align-items:center; gap:5px;">
               <span style="background:#F59E0B; color:#0A2540; font-size:10px; font-weight:900; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${stepNum}</span>
               <span>${language === 'KR' ? place.titleKo : (place.titleEn || place.titleKo)}</span>
             </div>
-            <div style="width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-top:8px solid ${markerBgColor}; margin-top:-1px;"></div>
+            <div style="width:0; height:0; border-left:5px solid transparent; border-right:5px solid transparent; border-top:6px solid ${markerBgColor}; margin-top:-1px;"></div>
+            <div style="width:8px; height:8px; background:${isSelected ? '#EF4444' : '#0A2540'}; border:2px solid #FFFFFF; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,0.4); margin-top:-1px;"></div>
           </div>
         `;
 
@@ -784,6 +1098,7 @@ export default function MyTravelRouteMapView({
           html: markerHtml,
           className: 'custom-my-route-marker',
           iconSize: [0, 0],
+          iconAnchor: [0, 0],
         });
 
         const marker = L.marker(latLng, { icon }).addTo(map);
@@ -791,7 +1106,7 @@ export default function MyTravelRouteMapView({
         const popupContent = document.createElement('div');
         popupContent.style.textAlign = 'left';
         popupContent.style.padding = '4px';
-        popupContent.style.minWidth = '180px';
+        popupContent.style.minWidth = '190px';
         popupContent.innerHTML = `
           <div style="font-size:10px; font-weight:bold; color:#F59E0B; margin-bottom:2px;">
             ${language === 'KR' ? `루트 순서: ${stepNum}번째 장소` : `Route Stop #${stepNum}`}
@@ -827,13 +1142,30 @@ export default function MyTravelRouteMapView({
         }).addTo(map);
       }
 
-      if (latLngs.length > 0) {
+      if (latLngs.length === 1) {
+        map.setView(latLngs[0], 15);
+      } else if (latLngs.length > 1) {
         const bounds = L.latLngBounds(latLngs);
         map.fitBounds(bounds, {
-          padding: [50, 50],
-          maxZoom: 15,
+          padding: isMobile ? [30, 20] : [45, 45],
+          maxZoom: 16,
         });
       }
+
+      setTimeout(() => {
+        if (leafletMapRef.current) {
+          leafletMapRef.current.invalidateSize();
+          if (latLngs.length === 1) {
+            leafletMapRef.current.setView(latLngs[0], 15);
+          } else if (latLngs.length > 1) {
+            const bounds = L.latLngBounds(latLngs);
+            leafletMapRef.current.fitBounds(bounds, {
+              padding: isMobile ? [30, 20] : [45, 45],
+              maxZoom: 16,
+            });
+          }
+        }
+      }, 200);
     } catch (err) {
       console.error('Leaflet map error:', err);
     }
@@ -875,7 +1207,6 @@ export default function MyTravelRouteMapView({
         const scriptId = 'naver-maps-script';
         let script = document.getElementById(scriptId) as HTMLScriptElement;
 
-        // If existing script had different clientId, replace it
         if (script && !script.src.includes(`ncpClientId=${activeClientId}`)) {
           script.remove();
           script = null as any;
@@ -1006,28 +1337,48 @@ export default function MyTravelRouteMapView({
       isMounted = false;
       cleanupAllMaps();
     };
-  }, [provider, places, customClientId]);
+  }, [provider, displayPlaces, customClientId]);
 
-  // 특정 장소 카드 클릭 시 지도에서 해당 위치로 포커스 이동
+  // 컨테이너 크기 변화 시 모바일 맵 리사이즈 옵저버
+  useEffect(() => {
+    if (!mapContainerRef.current) return;
+    const observer = new ResizeObserver(() => {
+      if (provider === 'NAVER' && naverMapRef.current && window.naver?.maps?.Event) {
+        window.naver.maps.Event.trigger(naverMapRef.current, 'resize');
+      } else if (provider === 'GOOGLE' && googleMapRef.current && window.google?.maps?.event) {
+        window.google.maps.event.trigger(googleMapRef.current, 'resize');
+      } else if (provider === 'LEAFLET' && leafletMapRef.current) {
+        leafletMapRef.current.invalidateSize();
+      }
+    });
+    observer.observe(mapContainerRef.current);
+    return () => observer.disconnect();
+  }, [provider]);
+
+  // 특정 장소 카드 클릭 시 지도에서 해당 위치로 포커스 이동 (모바일 부드러운 스크롤 연동)
   const handleFocusPlace = (place: MyRoutePlace) => {
     setSelectedPlaceId(place.id);
 
+    if (typeof window !== 'undefined' && window.innerWidth < 768 && mapContainerRef.current) {
+      mapContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
     if (provider === 'NAVER' && naverMapRef.current && window.naver?.maps) {
       naverMapRef.current.panTo(new window.naver.maps.LatLng(place.latitude, place.longitude));
-      const idx = places.findIndex(p => p.id === place.id);
+      const idx = displayPlaces.findIndex(p => p.id === place.id);
       if (idx !== -1 && naverMarkersRef.current[idx]) {
         window.naver.maps.Event.trigger(naverMarkersRef.current[idx], 'click');
       }
     } else if (provider === 'GOOGLE' && googleMapRef.current && window.google?.maps) {
       googleMapRef.current.panTo({ lat: place.latitude, lng: place.longitude });
       googleMapRef.current.setZoom(15);
-      const idx = places.findIndex(p => p.id === place.id);
+      const idx = displayPlaces.findIndex(p => p.id === place.id);
       if (idx !== -1 && googleMarkersRef.current[idx]) {
         window.google.maps.event.trigger(googleMarkersRef.current[idx], 'click');
       }
     } else if (provider === 'LEAFLET' && leafletMapRef.current) {
       leafletMapRef.current.setView([place.latitude, place.longitude], 15, { animate: true });
-      const idx = places.findIndex(p => p.id === place.id);
+      const idx = displayPlaces.findIndex(p => p.id === place.id);
       if (idx !== -1 && leafletMarkersRef.current[idx]) {
         leafletMarkersRef.current[idx].openPopup();
       }
@@ -1036,8 +1387,8 @@ export default function MyTravelRouteMapView({
 
   return (
     <div className="space-y-6 animate-fade-in text-left font-sans">
-      {/* 1. Header (Clean Text) */}
-      <div className="space-y-2 border-b border-slate-200 pb-5 text-left">
+      {/* 1. Header (Clean Text) & Route Actions */}
+      <div className="space-y-3 border-b border-slate-200 pb-5 text-left">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
@@ -1047,22 +1398,46 @@ export default function MyTravelRouteMapView({
               <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2">
                 <span>{language === 'KR' ? '내 여행 루트 (맞춤 지도)' : 'My Travel Route (Custom Map)'}</span>
                 <span className="text-xs sm:text-sm font-mono font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
-                  {places.length}{language === 'KR' ? '곳 저장' : ' spots'}
+                  {displayPlaces.length}{language === 'KR' ? '곳 저장' : ' spots'}
                 </span>
               </h2>
             </div>
           </div>
 
-          {places.length > 0 && (
-            <div className="flex items-center gap-2">
+          {displayPlaces.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2">
+              {/* 공유하기 버튼 (방안 A: URL 공유 링크 & 내 루트 복사) */}
               <button
                 type="button"
-                onClick={clear}
-                className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 hover:text-red-600 hover:border-red-200 hover:bg-red-50 text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+                onClick={() => setShowShareModal(true)}
+                className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                title={language === 'KR' ? '친구에게 내 여행 루트 공유 링크 보내기' : 'Share Route Link with Friends'}
               >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>{language === 'KR' ? '루트 전체 비우기' : 'Clear All'}</span>
+                <Share2 className="w-3.5 h-3.5" />
+                <span>{language === 'KR' ? '루트 공유하기' : 'Share Route'}</span>
               </button>
+
+              {/* 일정 텍스트 복사 버튼 */}
+              <button
+                type="button"
+                onClick={handleCopySummaryText}
+                className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                title={language === 'KR' ? '일정표 텍스트 클립보드 복사' : 'Copy Itinerary Text'}
+              >
+                {summaryTextCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-500" />}
+                <span>{summaryTextCopied ? (language === 'KR' ? '복사됨!' : 'Copied!') : (language === 'KR' ? '일정 복사' : 'Copy Text')}</span>
+              </button>
+
+              {!isViewingSharedRoute && (
+                <button
+                  type="button"
+                  onClick={clear}
+                  className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 hover:text-red-600 hover:border-red-200 hover:bg-red-50 text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>{language === 'KR' ? '루트 비우기' : 'Clear All'}</span>
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -1072,6 +1447,63 @@ export default function MyTravelRouteMapView({
             ? '내가 즐겨찾기(⭐)한 장소들을 지도 위에 순서대로 연결하여 최적의 이동 동선을 한눈에 보여줍니다. 순서를 변경하거나 장소를 추가하여 나만의 여행 코스를 완성하세요.'
             : 'View your bookmarked destinations connected on an interactive map. Reorder stops and plan your personalized Busan itinerary.'}
         </p>
+
+        {/* 공유받은 루트 확인 배너 (방안 A: 친구가 보낸 루트를 내 루트로 저장/복사) */}
+        {isViewingSharedRoute && sharedRoutePlaces && (
+          <div className="p-4 bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/15 rounded-xl border-2 border-amber-400/50 shadow-xs space-y-3 animate-fade-in">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div className="flex items-start sm:items-center gap-2.5">
+                <span className="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                  <Share2 className="w-4 h-4" />
+                </span>
+                <div>
+                  <h3 className="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2 flex-wrap">
+                    <span>{language === 'KR' ? '🔗 친구가 공유한 여행 루트를 보고 계십니다' : '🔗 Viewing a Shared Travel Route'}</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500 text-white font-mono font-bold">
+                      {sharedRoutePlaces.length}{language === 'KR' ? '곳 연결' : ' stops'}
+                    </span>
+                  </h3>
+                  <p className="text-xs text-slate-600 mt-0.5">
+                    {language === 'KR'
+                      ? '이 루트를 내 여행 루트로 복사하여 저장하면, 자유롭게 순서를 바꾸거나 나만의 여행지를 추가할 수 있습니다.'
+                      : 'Save this route to your own customized travel itinerary to edit stops or add custom places.'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto shrink-0 justify-end">
+                <button
+                  type="button"
+                  onClick={handleSaveSharedRouteAsMine}
+                  className="flex-1 sm:flex-initial px-3.5 py-2 bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white rounded-lg font-extrabold text-xs transition cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>{language === 'KR' ? '내 루트로 저장 (복사하기)' : 'Save as My Route'}</span>
+                </button>
+
+                {places.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleMergeSharedRouteWithMine}
+                    className="px-3 py-2 bg-white hover:bg-slate-50 border border-amber-300 text-amber-900 rounded-lg font-bold text-xs transition cursor-pointer flex items-center gap-1"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>{language === 'KR' ? '기존 내 루트에 추가' : 'Merge to My Route'}</span>
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleDismissSharedRoute}
+                  className="px-2.5 py-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-100 text-xs font-semibold transition cursor-pointer"
+                  title={language === 'KR' ? '내 원래 루트로 돌아가기' : 'Return to my original route'}
+                >
+                  {language === 'KR' ? '내 원래 루트 보기' : 'Close'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* 2. 대화형 지도 영역 (Numbered Markers & Polyline Route) */}
@@ -1135,11 +1567,36 @@ export default function MyTravelRouteMapView({
           </div>
 
           <div className="flex items-center gap-2">
-            {places.length > 1 && (
+            {displayPlaces.length > 1 && (
               <span className="text-[11px] font-mono text-amber-900 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 font-bold">
-                {language === 'KR' ? `총 ${places.length}개 지점 연결됨` : `${places.length} connected`}
+                {language === 'KR' ? `총 ${displayPlaces.length}개 지점 연결됨` : `${displayPlaces.length} connected`}
               </span>
             )}
+
+            {/* 모바일 최적화: 전체 맞춤 버튼 */}
+            {displayPlaces.length > 0 && (
+              <button
+                type="button"
+                onClick={handleFitAllStops}
+                className="px-2 py-1 bg-white hover:bg-slate-100 active:bg-slate-200 text-slate-700 rounded-md border border-[#E5E2DC] text-[11px] font-bold flex items-center gap-1 cursor-pointer transition shadow-2xs"
+                title={language === 'KR' ? '전체 루트 동선을 화면 중앙에 맞춤' : 'Fit all route stops in view'}
+              >
+                <Maximize2 className="w-3 h-3 text-[#0A2540]" />
+                <span className="hidden xs:inline">{language === 'KR' ? '전체 맞춤' : 'Fit View'}</span>
+              </button>
+            )}
+
+            {/* 모바일 최적화: GPS 내 현재 위치 확인 버튼 */}
+            <button
+              type="button"
+              onClick={handleLocateUser}
+              disabled={isLocating}
+              className="px-2 py-1 bg-white hover:bg-slate-100 active:bg-slate-200 text-slate-700 rounded-md border border-[#E5E2DC] text-[11px] font-bold flex items-center gap-1 cursor-pointer transition shadow-2xs disabled:opacity-50"
+              title={language === 'KR' ? '모바일 GPS로 내 현재 위치 확인' : 'Locate my position via GPS'}
+            >
+              <Locate className={`w-3 h-3 text-blue-600 ${isLocating ? 'animate-spin' : ''}`} />
+              <span className="hidden xs:inline">{language === 'KR' ? '내 위치' : 'GPS'}</span>
+            </button>
 
             {/* Optional Map Switcher Toggle */}
             <div className="flex items-center bg-[#F1EFEC] p-0.5 rounded-md border border-[#E5E2DC] text-[10px] font-bold">
@@ -1186,10 +1643,44 @@ export default function MyTravelRouteMapView({
         {/* Map Canvas Container */}
         <div
           ref={mapContainerRef}
-          className="w-full h-[340px] sm:h-[420px] lg:h-[460px] bg-slate-100 relative z-0"
+          className="w-full h-[340px] sm:h-[420px] lg:h-[460px] bg-slate-100 relative z-0 route-map-canvas"
         />
 
-        {places.length === 0 && (
+        {/* 모바일 최적화: 가로 스크롤 경유지 퀵 네비게이션 스트립 */}
+        {displayPlaces.length > 0 && (
+          <div className="bg-[#FBFBF9] border-t border-[#E5E2DC] p-2 overflow-x-auto no-scrollbar flex items-center gap-1.5">
+            <span className="text-[10px] font-extrabold text-slate-400 shrink-0 uppercase tracking-wider pl-1">
+              {language === 'KR' ? '동선 순서:' : 'Route:'}
+            </span>
+            {displayPlaces.map((p, idx) => {
+              const stepNum = idx + 1;
+              const isSelected = selectedPlaceId === p.id;
+              return (
+                <button
+                  key={`quick-${p.id || idx}`}
+                  type="button"
+                  onClick={() => handleFocusPlace(p)}
+                  className={`px-2.5 py-1 rounded-full text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 cursor-pointer border ${
+                    isSelected
+                      ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-xs ring-2 ring-amber-400/40'
+                      : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
+                  }`}
+                >
+                  <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[9.5px] font-black ${
+                    isSelected ? 'bg-amber-400 text-[#0A2540]' : 'bg-slate-200 text-slate-700'
+                  }`}>
+                    {stepNum}
+                  </span>
+                  <span className="truncate max-w-[110px] sm:max-w-[150px]">
+                    {language === 'KR' ? p.titleKo : (p.titleEn || p.titleKo)}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {displayPlaces.length === 0 && (
           <div className="absolute inset-0 bg-white/90 backdrop-blur-[2px] flex flex-col items-center justify-center p-6 text-center z-10 space-y-3">
             <div className="w-12 h-12 rounded-full bg-amber-50 border border-amber-200 text-amber-500 flex items-center justify-center shadow-xs">
               <Sparkles className="w-6 h-6" />

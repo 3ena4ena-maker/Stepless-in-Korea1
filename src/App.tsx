@@ -390,6 +390,15 @@ export default function App() {
 
       const parts = pathname.split('/');
       
+      // Look for shared route data or /my-route
+      if (searchParams.has('route') || searchParams.has('route_data') || searchParams.has('shared_route') || parts[1] === 'my-route') {
+        setSelectedItineraryCategory('MY_ROUTE');
+        setCurrentTab('tips');
+        setTipsSubPage('courses');
+        setIsHomeLanding(false);
+        return;
+      }
+
       // Look for /itinerary-[category]
       if (parts[1] && parts[1].startsWith('itinerary-')) {
         const categorySuffix = parts[1].replace('itinerary-', '').toUpperCase();

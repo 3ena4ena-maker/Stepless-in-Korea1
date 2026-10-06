@@ -93,10 +93,18 @@ button, a, input, select, textarea, [role="button"], .smooth-transition {
 
 /* Leaflet marker reset to guarantee pixel-perfect custom HTML markers */
 .leaflet-custom-marker-wrapper,
-.leaflet-div-icon {
+.leaflet-div-icon,
+.custom-my-route-marker {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
+  overflow: visible !important;
 }
+
+/* Mobile map canvas touch optimization */
+.route-map-canvas {
+  touch-action: pan-x pan-y pinch-zoom;
+}
+
 
 

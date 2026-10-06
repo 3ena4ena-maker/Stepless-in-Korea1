@@ -1499,16 +1499,30 @@ export default function BusanItinerariesView({
   onBackToBarrierFreeList,
 }: BusanItinerariesViewProps) {
   // Navigation Section: 'SELECTION' (Travel Tips Hub) | 'TRANSIT_TIPS' (transit guide) | 'RECOMMENDATIONS' (itineraries list) | 'SCHEDULE' (events) | 'COMMUNITY' (live tips)
-  const [activeSection, setActiveSection] = useState<'SELECTION' | 'TRANSIT_TIPS' | 'RECOMMENDATIONS' | 'SCHEDULE' | 'COMMUNITY'>(
-    tipsSubPage === 'courses' ? 'RECOMMENDATIONS' :
-    tipsSubPage === 'schedule' ? 'SCHEDULE' :
-    tipsSubPage === 'community' ? 'COMMUNITY' :
-    (tipsSubPage === 'transit' || tipsSubPage === 'child-free' || tipsSubPage === 'taxi' || tipsSubPage === 'transfer') ? 'TRANSIT_TIPS' :
-    (initialCategory ? 'RECOMMENDATIONS' : 'SELECTION')
-  );
+  const [activeSection, setActiveSection] = useState<'SELECTION' | 'TRANSIT_TIPS' | 'RECOMMENDATIONS' | 'SCHEDULE' | 'COMMUNITY'>(() => {
+    if (typeof window !== 'undefined') {
+      const sp = new URLSearchParams(window.location.search);
+      if (sp.has('route') || sp.has('route_data') || sp.has('shared_route')) {
+        return 'RECOMMENDATIONS';
+      }
+    }
+    return tipsSubPage === 'courses' ? 'RECOMMENDATIONS' :
+      tipsSubPage === 'schedule' ? 'SCHEDULE' :
+      tipsSubPage === 'community' ? 'COMMUNITY' :
+      (tipsSubPage === 'transit' || tipsSubPage === 'child-free' || tipsSubPage === 'taxi' || tipsSubPage === 'transfer') ? 'TRANSIT_TIPS' :
+      (initialCategory ? 'RECOMMENDATIONS' : 'SELECTION');
+  });
 
   // Initially activeCategory defaults to initialCategory or null (Category Overview)
-  const [activeCategory, setActiveCategory] = useState<CategoryType | null>(initialCategory || null);
+  const [activeCategory, setActiveCategory] = useState<CategoryType | null>(() => {
+    if (typeof window !== 'undefined') {
+      const sp = new URLSearchParams(window.location.search);
+      if (sp.has('route') || sp.has('route_data') || sp.has('shared_route')) {
+        return 'MY_ROUTE';
+      }
+    }
+    return initialCategory || null;
+  });
   const [selectedScheduleDuration, setSelectedScheduleDuration] = useState<'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS'>(() => {
     if (initialCategory === '1NIGHT' || initialCategory === '2NIGHTS' || initialCategory === '3NIGHTS' || initialCategory === '4NIGHTS') {
       return initialCategory;
