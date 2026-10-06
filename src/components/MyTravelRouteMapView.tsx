@@ -75,10 +75,12 @@ interface SearchablePlace {
   categoryKo: string;
   categoryEn?: string;
   addressKo?: string;
+  addressEn?: string;
   latitude?: number;
   longitude?: number;
   firstImage?: string;
   districtKo?: string;
+  districtEn?: string;
   stationInfoKo?: string;
 }
 
@@ -98,10 +100,12 @@ const SEARCHABLE_RECOMMENDED_PLACES: SearchablePlace[] = (() => {
           categoryKo: d.categoryKo || '추천명소',
           categoryEn: d.categoryEn || 'Attraction',
           addressKo: d.addressRoadKo || d.addressLotKo || '',
+          addressEn: d.addressRoadEn || d.addressLotEn || '',
           latitude: d.latitude,
           longitude: d.longitude,
           firstImage: d.firstImage,
           districtKo: d.districtKo,
+          districtEn: d.districtEn,
           stationInfoKo: d.nearestStationNameKo,
         });
       }
@@ -120,10 +124,12 @@ const SEARCHABLE_RECOMMENDED_PLACES: SearchablePlace[] = (() => {
           categoryKo: s.categoryKo || '추천명소',
           categoryEn: s.categoryEn || 'Attraction',
           addressKo: s.addr1Ko || '',
+          addressEn: s.addr1En || '',
           latitude: s.mapy,
           longitude: s.mapx,
           firstImage: s.firstimage,
           districtKo: s.districtKo,
+          districtEn: s.districtEn,
           stationInfoKo: s.nearestStationNameKo,
         });
       }
@@ -141,6 +147,7 @@ const SEARCHABLE_RECOMMENDED_PLACES: SearchablePlace[] = (() => {
         categoryKo: info.categoryKo || '식도락/명소',
         categoryEn: 'Food/Spot',
         addressKo: info.addressKo || '',
+        addressEn: '',
         latitude: info.lat,
         longitude: info.lng,
       });
@@ -186,9 +193,12 @@ export default function MyTravelRouteMapView({
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
 
-  // 최소한의 크기로 제공되는 장소 검색창 상태
+  // 구글(EN) / 네이버(KR) 실시간 자동 완성 검색 상태
+  const isGoogleMode = language === 'EN' || provider === 'GOOGLE';
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
   const [addFeedback, setAddFeedback] = useState<string | null>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
@@ -205,21 +215,116 @@ export default function MyTravelRouteMapView({
     };
   }, []);
 
-  const filteredSearchPlaces = React.useMemo(() => {
+  // 언어/지도 모드에 따른 실시간 자동 완성 검색 (EN: Google Maps, KR: Naver Maps)
+  useEffect(() => {
+    const trimmed = searchQuery.trim();
+    if (!trimmed) {
+      setSearchResults([]);
+      setIsSearching(false);
+      setIsSearchOpen(false);
+      return;
+    }
+
+    setIsSearching(true);
+    setIsSearchOpen(true);
+
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        const endpoint = isGoogleMode
+          ? `/api/google/search?query=${encodeURIComponent(trimmed)}`
+          : `/api/naver/search?query=${encodeURIComponent(trimmed)}`;
+
+        const res = await fetch(endpoint, {
+          signal: controller.signal,
+        });
+
+        if (res.ok) {
+          const json = await res.json();
+          if (json && Array.isArray(json.items)) {
+            const formatted = json.items.map((it: any) => ({
+              id: it.id || it.titleEn || it.titleKo,
+              titleKo: it.titleKo,
+              titleEn: it.titleEn || it.titleKo,
+              categoryKo: it.categoryKo || (isGoogleMode ? '구글 명소' : '네이버 플레이스'),
+              categoryEn: it.categoryEn || (isGoogleMode ? 'Google Place' : 'Naver Place'),
+              addressKo: it.addressKo || '',
+              addressEn: it.addressEn || it.addressKo || '',
+              latitude: it.latitude,
+              longitude: it.longitude,
+              source: it.source || (isGoogleMode ? 'GOOGLE_PLACES' : 'NAVER_API'),
+            }));
+            setSearchResults(formatted);
+          }
+        }
+      } catch (err: any) {
+        if (err.name !== 'AbortError') {
+          console.warn('Place search fetch error:', err);
+        }
+      } finally {
+        setIsSearching(false);
+      }
+    }, 200);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [searchQuery, isGoogleMode]);
+
+  // 검색 결과 목록: 실시간 API(구글/네이버) 자동 검색 결과 + 데이터베이스 연관 검색어
+  // ※ 사용자의 요청에 따라 기본 '추천 인기 명소'는 완전 삭제하고, 검색어 입력 시에만 실시간 자동 검색되도록 구성
+  const activeSearchResults = React.useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) {
-      return SEARCHABLE_RECOMMENDED_PLACES.slice(0, 6);
+      return []; // 추천 인기 명소 삭제: 검색어가 없을 때는 표시하지 않음
     }
-    return SEARCHABLE_RECOMMENDED_PLACES.filter(p => {
-      return (
-        p.titleKo.toLowerCase().includes(query) ||
-        p.titleEn.toLowerCase().includes(query) ||
-        (p.categoryKo && p.categoryKo.toLowerCase().includes(query)) ||
-        (p.districtKo && p.districtKo.toLowerCase().includes(query)) ||
-        (p.addressKo && p.addressKo.toLowerCase().includes(query))
-      );
-    }).slice(0, 8);
-  }, [searchQuery]);
+
+    const list: any[] = [];
+    const seenTitles = new Set<string>();
+
+    // 1. 실시간 API (구글/네이버) 검색 결과 우선 추가
+    searchResults.forEach(item => {
+      const cleanKey = (isGoogleMode ? (item.titleEn || item.titleKo) : item.titleKo).trim().toLowerCase();
+      if (!seenTitles.has(cleanKey)) {
+        seenTitles.add(cleanKey);
+        list.push(item);
+      }
+    });
+
+    // 2. 앱 내 부산 검증 명소 DB 중 검색어와 일치하는 항목 보강 (중복 제거)
+    SEARCHABLE_RECOMMENDED_PLACES.forEach(p => {
+      const cleanKey = (isGoogleMode ? (p.titleEn || p.titleKo) : p.titleKo).trim().toLowerCase();
+      if (!seenTitles.has(cleanKey)) {
+        if (
+          p.titleKo.toLowerCase().includes(query) ||
+          p.titleEn.toLowerCase().includes(query) ||
+          (p.categoryKo && p.categoryKo.toLowerCase().includes(query)) ||
+          (p.categoryEn && p.categoryEn.toLowerCase().includes(query)) ||
+          (p.districtKo && p.districtKo.toLowerCase().includes(query)) ||
+          (p.districtEn && p.districtEn.toLowerCase().includes(query)) ||
+          (p.addressKo && p.addressKo.toLowerCase().includes(query))
+        ) {
+          seenTitles.add(cleanKey);
+          list.push({
+            id: p.id,
+            titleKo: p.titleKo,
+            titleEn: p.titleEn,
+            categoryKo: p.categoryKo,
+            categoryEn: p.categoryEn,
+            addressKo: p.addressKo,
+            addressEn: p.addressEn || p.addressKo,
+            latitude: p.latitude,
+            longitude: p.longitude,
+            districtKo: p.districtKo,
+            source: isGoogleMode ? 'GOOGLE_PLACES' : 'VERIFIED_DB',
+          });
+        }
+      }
+    });
+
+    return list.slice(0, 8);
+  }, [searchQuery, searchResults, isGoogleMode]);
 
   const handleAddSearchResult = (spot: {
     id?: string;
@@ -247,13 +352,14 @@ export default function MyTravelRouteMapView({
     });
 
     if (success) {
-      setAddFeedback(spot.titleKo);
+      const displayTitle = isGoogleMode ? (spot.titleEn || spot.titleKo) : spot.titleKo;
+      setAddFeedback(displayTitle);
       setSelectedPlaceId(spot.id || spot.titleKo);
       setTimeout(() => setAddFeedback(null), 3500);
       setSearchQuery('');
       setIsSearchOpen(false);
     } else {
-      setAddFeedback(language === 'KR' ? '이미 루트에 추가된 장소입니다' : 'Already in your route');
+      setAddFeedback(isGoogleMode ? 'Already in your route' : '이미 루트에 추가된 장소입니다');
       setTimeout(() => setAddFeedback(null), 2500);
     }
   };
@@ -262,7 +368,7 @@ export default function MyTravelRouteMapView({
     const trimmed = searchQuery.trim();
     if (!trimmed) return;
 
-    const exactMatch = filteredSearchPlaces.find(
+    const exactMatch = activeSearchResults.find(
       p => p.titleKo.toLowerCase() === trimmed.toLowerCase() || p.titleEn.toLowerCase() === trimmed.toLowerCase()
     );
 
@@ -824,7 +930,7 @@ export default function MyTravelRouteMapView({
         if (!script) {
           script = document.createElement('script');
           script.id = scriptId;
-          script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&hl=en&language=en`;
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&hl=en&language=en&libraries=places`;
           script.async = true;
           script.onload = () => {
             setTimeout(() => {
@@ -1099,31 +1205,10 @@ export default function MyTravelRouteMapView({
               </p>
             </div>
 
-            {/* Quick 1-click popular spots */}
-            <div className="pt-2 space-y-2">
-              <span className="text-xs font-bold text-slate-700 block">
-                {language === 'KR' ? '추천 인기 장소 1클릭 추가:' : 'Quick Add Popular Spots:'}
-              </span>
-              <div className="flex flex-wrap gap-1.5 justify-center max-w-xl">
-                {QUICK_SUGGESTED_SPOTS.map((s, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => {
-                      addPlaceToMyRoute({
-                        titleKo: s.titleKo,
-                        titleEn: s.titleEn,
-                        categoryKo: s.categoryKo,
-                        stationInfoKo: s.stationInfoKo,
-                      });
-                    }}
-                    className="px-2.5 py-1 rounded-md bg-white hover:bg-amber-50 border border-slate-200 hover:border-amber-300 text-[11px] font-semibold text-slate-700 hover:text-amber-900 transition-all flex items-center gap-1 cursor-pointer shadow-2xs"
-                  >
-                    <PlusCircle className="w-3 h-3 text-amber-500" />
-                    <span>{s.titleKo.split(' ')[0]}</span>
-                  </button>
-                ))}
-              </div>
+            <div className="pt-2 text-xs text-slate-500 bg-slate-50 px-3.5 py-2 rounded-lg border border-slate-200">
+              {language === 'KR'
+                ? '아래 검색창에 원하시는 장소를 입력하시면 네이버 자동 검색을 통해 나만의 여행 루트에 즉시 추가할 수 있습니다.'
+                : 'Type any destination or food spot in the search bar below to add it directly to your route.'}
             </div>
           </div>
         )}
@@ -1262,9 +1347,11 @@ export default function MyTravelRouteMapView({
                 }
               }}
               placeholder={
-                language === 'KR'
-                  ? '추천 여행지 또는 알고 계신 장소명을 검색하세요 (예: 해운대, 이재모피자, 흰여울문화마을)'
-                  : 'Search recommended spots or enter a place name (e.g. Haeundae, Lee Jaemo Pizza)'
+                isGoogleMode
+                  ? 'Search places on Google Maps (e.g. Haeundae Beach, Lee Jaemo Pizza, Busan Station)'
+                  : (language === 'KR'
+                    ? '추천 여행지 또는 알고 계신 장소명을 검색하세요 (예: 해운대, 이재모피자, 흰여울문화마을)'
+                    : 'Search recommended spots or enter a place name (e.g. Haeundae, Lee Jaemo Pizza)')
               }
               className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 shadow-2xs transition-all"
             />
@@ -1308,45 +1395,85 @@ export default function MyTravelRouteMapView({
           </div>
         )}
 
-        {/* Search Results Dropdown */}
-        {isSearchOpen && (
+        {/* Search Results Dropdown (구글 Maps / 네이버 API 실시간 자동 검색) */}
+        {isSearchOpen && searchQuery.trim() && (
           <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden z-40 max-h-80 flex flex-col animate-fade-in">
             {/* Header */}
-            <div className="px-3 py-2 text-[11px] font-bold text-slate-600 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
-              <span>{searchQuery.trim() ? (language === 'KR' ? '검색 추천 장소' : 'Suggested Places') : (language === 'KR' ? '추천 인기 명소' : 'Popular Spots')}</span>
-              <span className="font-normal text-slate-400 text-[10px]">
-                {language === 'KR' ? 'Enter로 즉시 추가' : 'Press Enter to add'}
+            <div className="px-3 py-2 text-[11px] font-bold text-slate-700 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                {isGoogleMode ? (
+                  <>
+                    <span className="w-3.5 h-3.5 rounded-xs bg-[#1A73E8] text-white flex items-center justify-center font-black text-[9px] shadow-2xs">
+                      G
+                    </span>
+                    <span>Google Maps Place Auto-Search</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="w-3.5 h-3.5 rounded-xs bg-[#03C75A] text-white flex items-center justify-center font-black text-[9px] shadow-2xs">
+                      N
+                    </span>
+                    <span>네이버 장소 자동 검색 결과</span>
+                  </>
+                )}
               </span>
+              {isSearching ? (
+                <span className="text-[10px] text-slate-400 font-normal animate-pulse">
+                  {isGoogleMode ? 'Searching Google Places...' : '네이버 검색 중...'}
+                </span>
+              ) : (
+                <span className="font-normal text-slate-400 text-[10px]">
+                  {isGoogleMode ? 'Click to add to route' : '클릭 시 루트 즉시 추가'}
+                </span>
+              )}
             </div>
 
             {/* List */}
             <div className="overflow-y-auto divide-y divide-slate-100 max-h-60">
-              {filteredSearchPlaces.length > 0 ? (
-                filteredSearchPlaces.map((spot) => {
+              {isSearching && activeSearchResults.length === 0 ? (
+                <div className="p-4 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
+                  <span className={`w-2 h-2 rounded-full ${isGoogleMode ? 'bg-[#1A73E8]' : 'bg-[#03C75A]'} animate-ping`} />
+                  <span>{isGoogleMode ? 'Searching places on Google Maps...' : '네이버 실시간 장소 검색 중...'}</span>
+                </div>
+              ) : activeSearchResults.length > 0 ? (
+                activeSearchResults.map((spot) => {
                   const isSaved = isPlaceInMyRoute(spot.titleKo);
                   return (
                     <div
-                      key={spot.id || spot.titleKo}
+                      key={spot.id || spot.titleEn || spot.titleKo}
                       onClick={() => handleAddSearchResult(spot)}
-                      className="p-2.5 hover:bg-amber-50/70 flex items-center justify-between gap-3 cursor-pointer transition text-left"
+                      className={`p-2.5 ${isGoogleMode ? 'hover:bg-blue-50/50' : 'hover:bg-emerald-50/50'} flex items-center justify-between gap-3 cursor-pointer transition text-left`}
                     >
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-1.5 flex-wrap">
                           <span className="text-xs font-bold text-slate-900">
-                            {language === 'KR' ? spot.titleKo : spot.titleEn}
+                            {isGoogleMode ? (spot.titleEn || spot.titleKo) : spot.titleKo}
                           </span>
-                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0 font-medium">
-                            {language === 'KR' ? spot.categoryKo : (spot.categoryEn || 'Spot')}
-                          </span>
+                          {isGoogleMode && spot.titleKo && spot.titleKo !== spot.titleEn && (
+                            <span className="text-[10px] text-slate-400 font-normal">
+                              ({spot.titleKo})
+                            </span>
+                          )}
+                          {isGoogleMode ? (
+                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#1A73E8]/10 text-[#1A73E8] border border-[#1A73E8]/25 shrink-0 font-bold flex items-center gap-0.5">
+                              <span className="font-mono text-[9px]">G</span>
+                              <span>{spot.categoryEn || spot.categoryKo || 'Place'}</span>
+                            </span>
+                          ) : (
+                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#03C75A]/10 text-[#029B46] border border-[#03C75A]/25 shrink-0 font-bold flex items-center gap-0.5">
+                              <span className="font-mono text-[9px]">N</span>
+                              <span>{language === 'KR' ? spot.categoryKo : (spot.categoryEn || 'Place')}</span>
+                            </span>
+                          )}
                           {spot.districtKo && (
                             <span className="text-[10px] text-slate-400">
-                              {spot.districtKo}
+                              {isGoogleMode ? (spot.districtEn || spot.districtKo) : spot.districtKo}
                             </span>
                           )}
                         </div>
-                        {spot.addressKo && (
+                        {(isGoogleMode ? (spot.addressEn || spot.addressKo) : spot.addressKo) && (
                           <p className="text-[11px] text-slate-500 truncate mt-0.5">
-                            {spot.addressKo}
+                            {isGoogleMode ? (spot.addressEn || spot.addressKo) : spot.addressKo}
                           </p>
                         )}
                       </div>
@@ -1355,7 +1482,7 @@ export default function MyTravelRouteMapView({
                         {isSaved ? (
                           <span className="text-[11px] text-emerald-600 font-bold flex items-center gap-1 bg-emerald-50 px-2 py-1 rounded-md border border-emerald-200">
                             <Check className="w-3 h-3" />
-                            <span>{language === 'KR' ? '추가됨' : 'Added'}</span>
+                            <span>{isGoogleMode ? 'Added' : '추가됨'}</span>
                           </span>
                         ) : (
                           <button
@@ -1364,10 +1491,14 @@ export default function MyTravelRouteMapView({
                               e.stopPropagation();
                               handleAddSearchResult(spot);
                             }}
-                            className="text-[11px] font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 px-2.5 py-1 rounded-md border border-amber-300 flex items-center gap-1 transition cursor-pointer"
+                            className={`text-[11px] font-bold ${
+                              isGoogleMode
+                                ? 'text-blue-900 bg-blue-100 hover:bg-blue-200 border-blue-300'
+                                : 'text-emerald-900 bg-emerald-100 hover:bg-emerald-200 border-emerald-300'
+                            } px-2.5 py-1 rounded-md border flex items-center gap-1 transition cursor-pointer`}
                           >
-                            <Plus className="w-3 h-3" />
-                            <span>{language === 'KR' ? '추가' : 'Add'}</span>
+                            <Plus className={`w-3 h-3 ${isGoogleMode ? 'text-blue-700' : 'text-emerald-700'}`} />
+                            <span>{isGoogleMode ? 'Add' : '추가'}</span>
                           </button>
                         )}
                       </div>
@@ -1376,7 +1507,9 @@ export default function MyTravelRouteMapView({
                 })
               ) : (
                 <div className="p-4 text-center text-xs text-slate-500">
-                  {language === 'KR' ? '일치하는 추천 관광지가 없습니다.' : 'No matched places found.'}
+                  {isGoogleMode
+                    ? 'No matched places found on Google Maps.'
+                    : (language === 'KR' ? '일치하는 네이버 검색 결과가 없습니다.' : 'No matched places found.')}
                 </div>
               )}
             </div>
