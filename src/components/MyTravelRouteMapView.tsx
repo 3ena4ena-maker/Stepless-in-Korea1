@@ -29,8 +29,12 @@ import {
   Settings,
   X,
   Layers,
+  Search,
+  Plus,
 } from 'lucide-react';
-import { useMyRoute, MyRoutePlace, addPlaceToMyRoute } from '../services/myRouteService';
+import { useMyRoute, MyRoutePlace, addPlaceToMyRoute, KNOWN_COORDINATES, isPlaceInMyRoute } from '../services/myRouteService';
+import { BUSAN_TOUR_API_SPOTS } from '../data/tourApiSpots';
+import { KOREA_TOUR_API_PLACE_DETAILS } from '../data/koreaTourApiPlaceDetails';
 
 interface MyTravelRouteMapViewProps {
   language: 'KR' | 'EN';
@@ -63,6 +67,88 @@ const QUICK_SUGGESTED_SPOTS = [
   { titleKo: '해운대 해수욕장', titleEn: 'Haeundae Beach', categoryKo: '해변/자연', stationInfoKo: '해운대역 3·5번 출구' },
   { titleKo: '해동용궁사', titleEn: 'Haedong Yonggungsa', categoryKo: '사찰/명소', stationInfoKo: '오시리아역 버스' },
 ];
+
+interface SearchablePlace {
+  id: string;
+  titleKo: string;
+  titleEn: string;
+  categoryKo: string;
+  categoryEn?: string;
+  addressKo?: string;
+  latitude?: number;
+  longitude?: number;
+  firstImage?: string;
+  districtKo?: string;
+  stationInfoKo?: string;
+}
+
+// 부산 전역 통합 검색 사전 (추천 관광지, 문화시설, 명소, 맛집, 카페 등)
+const SEARCHABLE_RECOMMENDED_PLACES: SearchablePlace[] = (() => {
+  const map = new Map<string, SearchablePlace>();
+
+  // 1. Korea Tour API 상세 장소
+  Object.values(KOREA_TOUR_API_PLACE_DETAILS).forEach(d => {
+    if (d && d.nameKo) {
+      const cleanKey = d.nameKo.trim().toLowerCase();
+      if (!map.has(cleanKey)) {
+        map.set(cleanKey, {
+          id: d.id || d.nameKo,
+          titleKo: d.nameKo,
+          titleEn: d.nameEn || d.nameKo,
+          categoryKo: d.categoryKo || '추천명소',
+          categoryEn: d.categoryEn || 'Attraction',
+          addressKo: d.addressRoadKo || d.addressLotKo || '',
+          latitude: d.latitude,
+          longitude: d.longitude,
+          firstImage: d.firstImage,
+          districtKo: d.districtKo,
+          stationInfoKo: d.nearestStationNameKo,
+        });
+      }
+    }
+  });
+
+  // 2. Busan Tour API 스팟
+  BUSAN_TOUR_API_SPOTS.forEach(s => {
+    if (s && s.titleKo) {
+      const cleanKey = s.titleKo.trim().toLowerCase();
+      if (!map.has(cleanKey)) {
+        map.set(cleanKey, {
+          id: s.contentid || s.titleKo,
+          titleKo: s.titleKo,
+          titleEn: s.titleEn || s.titleKo,
+          categoryKo: s.categoryKo || '추천명소',
+          categoryEn: s.categoryEn || 'Attraction',
+          addressKo: s.addr1Ko || '',
+          latitude: s.mapy,
+          longitude: s.mapx,
+          firstImage: s.firstimage,
+          districtKo: s.districtKo,
+          stationInfoKo: s.nearestStationNameKo,
+        });
+      }
+    }
+  });
+
+  // 3. 알려진 유명 맛집/카페/명소 (KNOWN_COORDINATES)
+  Object.entries(KNOWN_COORDINATES).forEach(([name, info]) => {
+    const cleanKey = name.trim().toLowerCase();
+    if (!map.has(cleanKey)) {
+      map.set(cleanKey, {
+        id: name,
+        titleKo: name,
+        titleEn: name,
+        categoryKo: info.categoryKo || '식도락/명소',
+        categoryEn: 'Food/Spot',
+        addressKo: info.addressKo || '',
+        latitude: info.lat,
+        longitude: info.lng,
+      });
+    }
+  });
+
+  return Array.from(map.values());
+})();
 
 export default function MyTravelRouteMapView({
   language,
@@ -99,6 +185,99 @@ export default function MyTravelRouteMapView({
 
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
+
+  // 최소한의 크기로 제공되는 장소 검색창 상태
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [addFeedback, setAddFeedback] = useState<string | null>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  // 검색창 외부 클릭 시 드롭다운 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setIsSearchOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const filteredSearchPlaces = React.useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) {
+      return SEARCHABLE_RECOMMENDED_PLACES.slice(0, 6);
+    }
+    return SEARCHABLE_RECOMMENDED_PLACES.filter(p => {
+      return (
+        p.titleKo.toLowerCase().includes(query) ||
+        p.titleEn.toLowerCase().includes(query) ||
+        (p.categoryKo && p.categoryKo.toLowerCase().includes(query)) ||
+        (p.districtKo && p.districtKo.toLowerCase().includes(query)) ||
+        (p.addressKo && p.addressKo.toLowerCase().includes(query))
+      );
+    }).slice(0, 8);
+  }, [searchQuery]);
+
+  const handleAddSearchResult = (spot: {
+    id?: string;
+    titleKo: string;
+    titleEn?: string;
+    categoryKo?: string;
+    categoryEn?: string;
+    addressKo?: string;
+    latitude?: number;
+    longitude?: number;
+    firstImage?: string;
+    stationInfoKo?: string;
+  }) => {
+    const success = addPlaceToMyRoute({
+      id: spot.id,
+      titleKo: spot.titleKo,
+      titleEn: spot.titleEn,
+      categoryKo: spot.categoryKo,
+      categoryEn: spot.categoryEn,
+      addressRoadKo: spot.addressKo,
+      latitude: spot.latitude,
+      longitude: spot.longitude,
+      firstImage: spot.firstImage,
+      stationInfoKo: spot.stationInfoKo,
+    });
+
+    if (success) {
+      setAddFeedback(spot.titleKo);
+      setSelectedPlaceId(spot.id || spot.titleKo);
+      setTimeout(() => setAddFeedback(null), 3500);
+      setSearchQuery('');
+      setIsSearchOpen(false);
+    } else {
+      setAddFeedback(language === 'KR' ? '이미 루트에 추가된 장소입니다' : 'Already in your route');
+      setTimeout(() => setAddFeedback(null), 2500);
+    }
+  };
+
+  const handleQuickAdd = () => {
+    const trimmed = searchQuery.trim();
+    if (!trimmed) return;
+
+    const exactMatch = filteredSearchPlaces.find(
+      p => p.titleKo.toLowerCase() === trimmed.toLowerCase() || p.titleEn.toLowerCase() === trimmed.toLowerCase()
+    );
+
+    if (exactMatch) {
+      handleAddSearchResult(exactMatch);
+    } else {
+      handleAddSearchResult({
+        id: trimmed,
+        titleKo: trimmed,
+        titleEn: trimmed,
+        categoryKo: '내가 등록한 장소',
+        categoryEn: 'My Custom Spot',
+      });
+    }
+  };
 
   // Map Instance Refs
   const naverMapRef = useRef<any>(null);
@@ -1049,6 +1228,187 @@ export default function MyTravelRouteMapView({
           </div>
         </div>
       )}
+
+      {/* 2.5 최소한의 크기로 배치된 장소 검색 및 루트 추가 바 (Minimal Place Search Bar) */}
+      <div ref={searchContainerRef} className="relative z-30 pt-1">
+        <div className="flex items-center justify-between pb-1.5 px-0.5">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+            <Search className="w-3.5 h-3.5 text-amber-500" />
+            <span>{language === 'KR' ? '여행지 검색 및 직접 추가' : 'Search & Add Places'}</span>
+          </div>
+          <span className="text-[11px] text-slate-400">
+            {language === 'KR' ? '추천지 검색 또는 알고 있는 장소명을 입력해 루트에 추가' : 'Search recommended spots or enter custom location'}
+          </span>
+        </div>
+
+        {/* Search Input Bar (최소한의 크기) */}
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setIsSearchOpen(true);
+              }}
+              onFocus={() => setIsSearchOpen(true)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleQuickAdd();
+                } else if (e.key === 'Escape') {
+                  setIsSearchOpen(false);
+                }
+              }}
+              placeholder={
+                language === 'KR'
+                  ? '추천 여행지 또는 알고 계신 장소명을 검색하세요 (예: 해운대, 이재모피자, 흰여울문화마을)'
+                  : 'Search recommended spots or enter a place name (e.g. Haeundae, Lee Jaemo Pizza)'
+              }
+              className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 shadow-2xs transition-all"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery('');
+                  setIsSearchOpen(false);
+                }}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={handleQuickAdd}
+            disabled={!searchQuery.trim()}
+            className="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 disabled:bg-slate-200 disabled:text-slate-400 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition cursor-pointer shadow-2xs shrink-0"
+            title={language === 'KR' ? '루트에 추가' : 'Add to Route'}
+          >
+            <Plus className="w-4 h-4" />
+            <span className="hidden sm:inline">{language === 'KR' ? '루트 추가' : 'Add to Route'}</span>
+          </button>
+        </div>
+
+        {/* Feedback alert if recently added */}
+        {addFeedback && (
+          <div className="mt-2 flex items-center gap-2 p-2 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-lg animate-fade-in font-medium">
+            <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+            <span>
+              {addFeedback.includes('이미') || addFeedback.includes('Already')
+                ? addFeedback
+                : language === 'KR'
+                ? `"${addFeedback}" 장소가 내 여행 루트에 추가되었습니다.`
+                : `"${addFeedback}" has been added to your route.`}
+            </span>
+          </div>
+        )}
+
+        {/* Search Results Dropdown */}
+        {isSearchOpen && (
+          <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden z-40 max-h-80 flex flex-col animate-fade-in">
+            {/* Header */}
+            <div className="px-3 py-2 text-[11px] font-bold text-slate-600 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+              <span>{searchQuery.trim() ? (language === 'KR' ? '검색 추천 장소' : 'Suggested Places') : (language === 'KR' ? '추천 인기 명소' : 'Popular Spots')}</span>
+              <span className="font-normal text-slate-400 text-[10px]">
+                {language === 'KR' ? 'Enter로 즉시 추가' : 'Press Enter to add'}
+              </span>
+            </div>
+
+            {/* List */}
+            <div className="overflow-y-auto divide-y divide-slate-100 max-h-60">
+              {filteredSearchPlaces.length > 0 ? (
+                filteredSearchPlaces.map((spot) => {
+                  const isSaved = isPlaceInMyRoute(spot.titleKo);
+                  return (
+                    <div
+                      key={spot.id || spot.titleKo}
+                      onClick={() => handleAddSearchResult(spot)}
+                      className="p-2.5 hover:bg-amber-50/70 flex items-center justify-between gap-3 cursor-pointer transition text-left"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-xs font-bold text-slate-900">
+                            {language === 'KR' ? spot.titleKo : spot.titleEn}
+                          </span>
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0 font-medium">
+                            {language === 'KR' ? spot.categoryKo : (spot.categoryEn || 'Spot')}
+                          </span>
+                          {spot.districtKo && (
+                            <span className="text-[10px] text-slate-400">
+                              {spot.districtKo}
+                            </span>
+                          )}
+                        </div>
+                        {spot.addressKo && (
+                          <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                            {spot.addressKo}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="shrink-0">
+                        {isSaved ? (
+                          <span className="text-[11px] text-emerald-600 font-bold flex items-center gap-1 bg-emerald-50 px-2 py-1 rounded-md border border-emerald-200">
+                            <Check className="w-3 h-3" />
+                            <span>{language === 'KR' ? '추가됨' : 'Added'}</span>
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddSearchResult(spot);
+                            }}
+                            className="text-[11px] font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 px-2.5 py-1 rounded-md border border-amber-300 flex items-center gap-1 transition cursor-pointer"
+                          >
+                            <Plus className="w-3 h-3" />
+                            <span>{language === 'KR' ? '추가' : 'Add'}</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="p-4 text-center text-xs text-slate-500">
+                  {language === 'KR' ? '일치하는 추천 관광지가 없습니다.' : 'No matched places found.'}
+                </div>
+              )}
+            </div>
+
+            {/* Custom Add Row for any known place typed by user */}
+            {searchQuery.trim() && (
+              <div
+                onClick={handleQuickAdd}
+                className="p-2.5 bg-amber-50/90 hover:bg-amber-100 border-t border-amber-200 flex items-center justify-between gap-2 cursor-pointer transition text-left shrink-0"
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="w-6 h-6 rounded-md bg-amber-500 text-white flex items-center justify-center shrink-0">
+                    <Sparkles className="w-3.5 h-3.5" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-xs font-extrabold text-amber-950 truncate">
+                      {language === 'KR' ? `"${searchQuery.trim()}" 장소를 직접 추가` : `Add "${searchQuery.trim()}" directly`}
+                    </p>
+                    <p className="text-[10px] text-amber-700 truncate">
+                      {language === 'KR' ? '알고 계신 장소를 좌표 매칭하여 내 여행 루트에 즉시 등록합니다.' : 'Register custom known place into your custom route.'}
+                    </p>
+                  </div>
+                </div>
+                <span className="text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 px-2.5 py-1 rounded-md shadow-2xs shrink-0 flex items-center gap-1">
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>{language === 'KR' ? '직접 추가' : 'Add'}</span>
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* 3. 루트 상세 목록 및 동선 관리 (Step List & Reordering) */}
       {places.length > 0 && (

@@ -34,7 +34,7 @@ const STORAGE_KEY = 'stepless_my_travel_route_v1';
 const EVENT_NAME = 'stepless_my_route_changed';
 
 // 부산 주요 명소 기본 정밀 좌표 사전 (TourAPI 미매칭 시 안정적 폴백)
-const KNOWN_COORDINATES: Record<string, { lat: number; lng: number; addressKo: string; categoryKo: string }> = {
+export const KNOWN_COORDINATES: Record<string, { lat: number; lng: number; addressKo: string; categoryKo: string }> = {
   '부산역': { lat: 35.1154, lng: 129.0422, addressKo: '부산광역시 동구 중앙대로 206', categoryKo: '교통/명소' },
   '해운대': { lat: 35.1587, lng: 129.1604, addressKo: '부산광역시 해운대구 우동 해운대해변로 264', categoryKo: '해변/자연' },
   '해운대해수욕장': { lat: 35.1587, lng: 129.1604, addressKo: '부산광역시 해운대구 우동 해운대해변로 264', categoryKo: '해변/자연' },

@@ -1623,7 +1623,6 @@ export default function BusanItinerariesView({
   const [quizActive, setQuizActive] = useState(false);
   const [quizStep, setQuizStep] = useState(0); // 0: Landing inside card, 1~7: Questions 1~7, 8: Result
   const [answers, setAnswers] = useState<('A' | 'B')[]>([]);
-  const [mapModalOpen, setMapModalOpen] = useState(false);
   const [internalBarrierFreePlaceId, setInternalBarrierFreePlaceId] = useState<string | null>(initialBarrierFreePlaceId || null);
 
   React.useEffect(() => {
@@ -4065,143 +4064,67 @@ export default function BusanItinerariesView({
                       </p>
                     </div>
 
-                    {/* Integrated Busan Metro Guide Map Section */}
-                    <div className="bg-white p-5 sm:p-6 rounded-lg border border-[#E5E2DC] text-left space-y-5 animate-fade-in">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E5E2DC] pb-3.5">
-                        <div className="space-y-0.5">
-                          <h3 className="text-base font-bold text-[#11161B] flex items-center gap-1.5">
-                            <Train className="w-4 h-4 text-[#0A2540]" />
-                            <span>{language === 'KR' ? '부산 가이드 지도 (도시철도 1·2호선 기준)' : 'Busan Guide Map (Metro Lines 1 & 2)'}</span>
-                          </h3>
-                          <p className="text-xs text-[#4A5568]">
+                    {/* Busan Metro Network Division Summary Banner */}
+                    <div className="bg-white p-5 sm:p-6 rounded-lg border border-[#E5E2DC] text-left space-y-4 animate-fade-in">
+                      <div className="flex items-center gap-2 font-bold text-[#11161B] text-base border-b border-[#E5E2DC] pb-3">
+                        <Train className="w-5 h-5 text-[#0A2540]" />
+                        <span>{language === 'KR' ? '부산 도시철도 통합 노선 네트워크 안내' : 'Busan Transit Network Guide'}</span>
+                      </div>
+
+                      <p className="text-[#4A5568] leading-relaxed bg-[#FBFBF9] p-3.5 rounded-md border border-[#E5E2DC] text-xs">
+                        {language === 'KR'
+                          ? '부산 도시철도는 1호선, 2호선, 3호선, 4호선과 부산김해경전철, 동해선으로 구성되어 부산 시내 전역 및 김해공항, 기장 오시리아, 울산 태화강까지 편리하게 이동할 수 있습니다.'
+                          : 'Busan urban transit system comprises Lines 1, 2, 3, 4, BGL Light Rail, and Donghae Line.'}
+                      </p>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div className="bg-[#FBFBF9] p-3 rounded-md border border-[#E5E2DC] space-y-1">
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="bg-[#0A2540] text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded-md shrink-0">
+                              {language === 'KR' ? '1호선' : 'Line 1'}
+                            </span>
+                            <span className="font-bold text-[#11161B] text-xs">
+                              노포역 ↔ 다대포해수욕장역
+                            </span>
+                          </div>
+                          <p className="text-[#4A5568] text-xs leading-relaxed">
                             {language === 'KR'
-                              ? '지도 주위의 1·2호선 노선 버튼을 누르면, 해당 역축의 대표 명소와 맛집을 바로 확인하실 수 있습니다.'
-                              : 'Click on Metro Lines 1 & 2 buttons to explore top local spots and restaurants along the route.'}
+                              ? '총 40개 역, 39.9km (원도심, 동래, 남포, 부산역)'
+                              : 'Nopo Station to Dadaepo Beach Station (40 stations)'}
                           </p>
                         </div>
-                        <button
-                          onClick={() => setMapModalOpen(true)}
-                          className="flex items-center gap-1 text-xs font-bold text-[#0A2540] bg-[#FBFBF9] hover:bg-[#F1EFEC] px-3 py-1.5 rounded-md border border-[#E5E2DC] transition-colors cursor-pointer shrink-0"
-                        >
-                          <span>{language === 'KR' ? '지도 크게 보기' : 'Enlarge Map'}</span>
-                          <ExternalLink className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
 
-                      {/* Busan Metro Network Division Summary Banner */}
-                      <div className="bg-[#FBFBF9] p-4 rounded-lg border border-[#E5E2DC] space-y-3 text-xs">
-                        <div className="flex items-center gap-2 font-bold text-[#11161B]">
-                          <Info className="w-4 h-4 text-[#0A2540]" />
-                          <span>{language === 'KR' ? '부산 도시철도 통합 노선 네트워크 안내' : 'Busan Transit Network Guide'}</span>
-                        </div>
-
-                        <p className="text-[#4A5568] leading-relaxed bg-white p-3 rounded-md border border-[#E5E2DC]">
-                          {language === 'KR'
-                            ? '부산 도시철도는 1호선, 2호선, 3호선, 4호선과 부산김해경전철, 동해선으로 구성되어 부산 시내 전역 및 김해공항, 기장 오시리아, 울산 태화강까지 편리하게 이동할 수 있습니다.'
-                            : 'Busan urban transit system comprises Lines 1, 2, 3, 4, BGL Light Rail, and Donghae Line.'}
-                        </p>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                          <div className="bg-white p-3 rounded-md border border-[#E5E2DC] space-y-1">
-                            <div className="flex items-center justify-between gap-1">
-                              <span className="bg-[#0A2540] text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded-md shrink-0">
-                                {language === 'KR' ? '1호선' : 'Line 1'}
-                              </span>
-                              <span className="font-bold text-[#11161B] text-xs">
-                                노포역 ↔ 다대포해수욕장역
-                              </span>
-                            </div>
-                            <p className="text-[#4A5568] text-xs leading-relaxed">
-                              {language === 'KR'
-                                ? '총 40개 역, 39.9km (원도심, 동래, 남포, 부산역)'
-                                : 'Nopo Station to Dadaepo Beach Station (40 stations)'}
-                            </p>
+                        <div className="bg-[#FBFBF9] p-3 rounded-md border border-[#E5E2DC] space-y-1">
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="bg-[#0A2540] text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded-md shrink-0">
+                              {language === 'KR' ? '2호선' : 'Line 2'}
+                            </span>
+                            <span className="font-bold text-[#11161B] text-xs">
+                              장산역 ↔ 양산역
+                            </span>
                           </div>
-
-                          <div className="bg-white p-3 rounded-md border border-[#E5E2DC] space-y-1">
-                            <div className="flex items-center justify-between gap-1">
-                              <span className="bg-[#0A2540] text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded-md shrink-0">
-                                {language === 'KR' ? '2호선' : 'Line 2'}
-                              </span>
-                              <span className="font-bold text-[#11161B] text-xs">
-                                장산역 ↔ 양산역
-                              </span>
-                            </div>
-                            <p className="text-[#4A5568] text-xs leading-relaxed">
-                              {language === 'KR'
-                                ? '총 43개 역, 45.2km (해운대, 센텀, 광안리, 서면)'
-                                : 'Jangsan Station to Yangsan Station (43 stations)'}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Lines 3, 4, BGL, Donghae Line */}
-                        <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-mono font-medium text-[#4A5568] pt-1">
-                          <span className="bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                            {language === 'KR' ? '3호선 (수영 ↔ 대저)' : 'Line 3 (Suyeong↔Daejeo)'}
-                          </span>
-                          <span className="bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                            {language === 'KR' ? '4호선 (미남 ↔ 안평)' : 'Line 4 (Minam↔Anpyeong)'}
-                          </span>
-                          <span className="bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                            {language === 'KR' ? '부산김해 경전철' : 'BGL Light Rail'}
-                          </span>
-                          <span className="bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                            {language === 'KR' ? '동해선 (부전 ↔ 태화강)' : 'Donghae Line'}
-                          </span>
+                          <p className="text-[#4A5568] text-xs leading-relaxed">
+                            {language === 'KR'
+                              ? '총 43개 역, 45.2km (해운대, 센텀, 광안리, 서면)'
+                              : 'Jangsan Station to Yangsan Station (43 stations)'}
+                          </p>
                         </div>
                       </div>
 
-                      {/* Large Centered Interactive Map */}
-                      <div className="space-y-4">
-                        <div className="relative aspect-[16/9] w-full max-w-3xl mx-auto rounded-lg overflow-hidden border border-[#E5E2DC] bg-[#FBFBF9]">
-                          <img 
-                            src="/images/busan_wide_map_1782270122755.jpg"
-                            alt="Busan Travel Map Illustration"
-                            referrerPolicy="no-referrer"
-                            className="w-full h-full object-cover"
-                          />
-
-                          <div className="absolute inset-0 p-4 hidden sm:flex flex-col justify-between z-10 pointer-events-none">
-                            <div className="flex justify-between items-start pt-2 px-4">
-                              <button 
-                                onClick={() => {
-                                  if (setActiveRegionPage) {
-                                    setActiveRegionPage('LINE1');
-                                  }
-                                  setSelectedLine('LINE1');
-                                  setSelectedRegion('LINE1');
-                                }}
-                                className={`text-xs font-bold px-3.5 py-2 rounded-md border transition-colors cursor-pointer pointer-events-auto flex items-center gap-1.5 ${
-                                  currentLine === 'LINE1' 
-                                    ? 'bg-[#0A2540] text-white border-[#0A2540]' 
-                                    : 'bg-white/95 text-[#11161B] border-[#E5E2DC] hover:bg-white'
-                                }`}
-                              >
-                                <Train className="w-3.5 h-3.5" />
-                                <span>{language === 'KR' ? '1호선 (노포역 ↔ 다대포)' : 'Line 1 (Nopo ↔ Dadaepo)'}</span>
-                              </button>
-
-                              <button 
-                                onClick={() => {
-                                  if (setActiveRegionPage) {
-                                    setActiveRegionPage('LINE2');
-                                  }
-                                  setSelectedLine('LINE2');
-                                  setSelectedRegion('LINE2');
-                                }}
-                                className={`text-xs font-bold px-3.5 py-2 rounded-md border transition-colors cursor-pointer pointer-events-auto flex items-center gap-1.5 ${
-                                  currentLine === 'LINE2' 
-                                    ? 'bg-[#0A2540] text-white border-[#0A2540]' 
-                                    : 'bg-white/95 text-[#11161B] border-[#E5E2DC] hover:bg-white'
-                                }`}
-                              >
-                                <Train className="w-3.5 h-3.5" />
-                                <span>{language === 'KR' ? '2호선 (장산역 ↔ 양산역)' : 'Line 2 (Jangsan ↔ Yangsan)'}</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
+                      {/* Lines 3, 4, BGL, Donghae Line */}
+                      <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-mono font-medium text-[#4A5568] pt-1">
+                        <span className="bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
+                          {language === 'KR' ? '3호선 (수영 ↔ 대저)' : 'Line 3 (Suyeong↔Daejeo)'}
+                        </span>
+                        <span className="bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
+                          {language === 'KR' ? '4호선 (미남 ↔ 안평)' : 'Line 4 (Minam↔Anpyeong)'}
+                        </span>
+                        <span className="bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
+                          {language === 'KR' ? '부산김해 경전철' : 'BGL Light Rail'}
+                        </span>
+                        <span className="bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
+                          {language === 'KR' ? '동해선 (부전 ↔ 태화강)' : 'Donghae Line'}
+                        </span>
                       </div>
                     </div>
 
@@ -6292,66 +6215,6 @@ export default function BusanItinerariesView({
               onSwitchToStandard={() => setCommunityTab('STANDARD')}
             />
           )}
-        </div>
-      )}
-
-      {/* MAP FULLSCREEN ZOOM MODAL */}
-      {mapModalOpen && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md animate-fade-in"
-          onClick={() => setMapModalOpen(false)}
-        >
-          <div 
-            className="relative max-w-5xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[90vh] animate-scale-up"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 sm:px-6 border-b border-slate-100 bg-white shrink-0">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">🗺️</span>
-                <h4 className="font-extrabold text-slate-850 text-sm sm:text-base">
-                  {language === 'KR' ? '부산 관광 가이드 일러스트 지도' : 'Busan Travel Guide Illustrative Map'}
-                </h4>
-              </div>
-              <button 
-                onClick={() => setMapModalOpen(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-all cursor-pointer text-sm font-bold border border-slate-200/50"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Modal Body (Scrollable Image container) */}
-            <div className="flex-1 overflow-auto bg-slate-50 p-4 flex items-center justify-center min-h-0">
-              <img 
-                src="/images/busan_wide_map_1782270122755.jpg"
-                alt="Busan Travel Map Illustration Enlarged"
-                referrerPolicy="no-referrer"
-                className="max-w-full max-h-[70vh] object-contain rounded-xl shadow-md border border-slate-200/60"
-              />
-            </div>
-
-            {/* Modal Footer */}
-            <div className="p-4 bg-slate-50 border-t border-slate-100 text-center shrink-0 space-y-1.5">
-              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-bold text-slate-700">
-                <span className="bg-orange-100 text-orange-900 px-2.5 py-0.5 rounded-md border border-orange-200">
-                  {language === 'KR'
-                    ? '🚇 1호선: 노포역 ↔ 다대포해수욕장역 (총 40개 역, 39.9km)'
-                    : '🚇 Line 1: Nopo ↔ Dadaepo Beach (40 stations, 39.9km)'}
-                </span>
-                <span className="bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-md border border-emerald-200">
-                  {language === 'KR'
-                    ? '🚇 2호선: 장산역 ↔ 양산역 (총 43개 역, 45.2km)'
-                    : '🚇 Line 2: Jangsan ↔ Yangsan (43 stations, 45.2km)'}
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-400 font-medium">
-                {language === 'KR'
-                  ? '※ r/BusanTravelTips 커뮤니티와 현지 가이드를 통해 엄선된 추천 장소의 개략적인 일러스트 위치 지도입니다.'
-                  : '* This is a schematic illustrative location map of recommended spots curated by locals.'}
-              </p>
-            </div>
-          </div>
         </div>
       )}
     </div>
