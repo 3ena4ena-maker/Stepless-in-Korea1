@@ -185,6 +185,7 @@ export const KNOWN_COORDINATES: Record<string, { lat: number; lng: number; addre
   '온천장 허심청': { lat: 35.2210, lng: 129.0825, addressKo: '부산광역시 동래구 온천장로107번길 32', categoryKo: '온천/휴양' },
   '동래읍성': { lat: 35.2085, lng: 129.0885, addressKo: '부산광역시 동래구 명륜동', categoryKo: '역사/명소' },
   '화명수목원': { lat: 35.2425, lng: 129.0345, addressKo: '부산광역시 북구 산성로 299', categoryKo: '자연/생태' },
+};
 
 /**
  * 장소명으로부터 위도, 경도, 도로명주소 및 사진 정보를 정밀하게 추론합니다.
