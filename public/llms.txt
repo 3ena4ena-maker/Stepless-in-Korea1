@@ -1,0 +1,72 @@
+# Stepless (스탭리스) - Busan Travel & Barrier-Free Metro Guide
+
+> 스탭리스(Stepless)는 부산광역시의 테마별 여행 코스(식도락, 명소, 전통시장, 체험 등) 추천과 부산 도시철도 주요 15개 역의 엘리베이터 출구 위치, 유모차·휠체어·캐리어 소지자를 위한 계단 없는 무단차(Barrier-Free) 이동 동선 및 실시간 대중교통 길찾기를 제공하는 공공 여행 정보 서비스입니다.
+
+- Website: https://stepless.kr/
+- Primary Language: Korean (ko-KR) / English (en-US)
+- Target Region: Busan Metropolitan City, Republic of Korea (부산광역시)
+- Primary Topics: Busan Travel Courses, Metro Station Elevators, Barrier-Free Tourism, Public Transit Navigation
+
+---
+
+## 1. Core Services & Features (주요 기능)
+
+1. **부산 테마별 여행 코스 추천 (Theme Travel Courses)**:
+   - **식도락(미식) 투어**: 부산 돼지국밥 로드, 밀면, 씨앗호떡, 자갈치 해산물 센터, 전포 카페거리.
+   - **체험·박물관**: 영도 국립해양박물관, 부산현대미술관(을숙도), 감천문화마을 예술 체험, F1963 복합문화공간.
+   - **전통시장 투어**: 부평깡통시장 야시장, 국제시장, 자갈치시장, 부전시장.
+   - **부산 대표 명소**: 해운대 해수욕장, 광안리 해변(드론 라이트쇼), 영도 흰여울문화마을, 기장 해동용궁사, 다대포 꿈의 낙조분수.
+   - **일정별 추천**: 당일치기 알짜 코스, 1박 2일 바다&미식 코스, 2박 3일 힐링 코스.
+   - **부산도시철도 1·2호선 연계 코스**: 지하철로 편리하게 이동하는 역세권 명소 투어.
+   - **무장애(배리어프리) 관광지**: 보도 턱과 계단이 없는 평지 산책로 및 한국관광공사 열린관광지 인증 명소.
+   - **내 여행 루트 (Custom Route Planner)**: 사용자가 원하는 장소를 담아 순서대로 나열하고 지도 위에서 동선을 시각화.
+
+2. **부산 지하철 15개 역 엘리베이터 & 무단차 동선 (Metro Elevator Guide)**:
+   - 계단 없이 지상 ↔ 대합실 ↔ 승강장으로 이동 가능한 엘리베이터 출구 번호 완벽 정리.
+   - 대상 역: 서면역(1·2호선 환승), 부산역(KTX·SRT), 해운대역, 광안역, 남포역, 자갈치역, 동백역, 벡스코역, 수영역, 전포역, 부전역, 중앙역, 다대포해수욕장역, 범어사역, 금련산역.
+
+3. **실시간 대중교통 길찾기 연동 (Transit Navigation)**:
+   - 내 여행 루트의 경유지 이동 구간(`경유지 1 ➔ 경유지 2`)마다 직선거리(km)와 실시간 길찾기 제공.
+   - 한국어 버전: **네이버 지도 대중교통 길찾기** 연동 (실시간 시내버스 번호, 환승 정류장, 소요시간).
+   - 영어 버전: **Google Maps Directions** 연동 (`travelmode=transit` 외국인 친화적 대중교통 경로).
+
+---
+
+## 2. Key Metro Station Elevator Locations (주요 역 엘리베이터 출구 안내)
+
+- **서면역 (Seomyeon Station - 1호선 & 2호선)**: 7번 출구 방면 및 지하상가 중앙 엘리베이터, 1-2호선 환승 전용 엘리베이터 완비.
+- **부산역 (Busan Station - 1호선 & KTX/SRT)**: 4번·6번 출구 엘리베이터 (KTX 부산역 2층 대합실과 지상 평지 데크 직결).
+- **해운대역 (Haeundae Station - 2호선)**: 1번·3번 출구 엘리베이터 (구남로 보행자 전용도로 및 해운대 백사장 직결).
+- **광안역 (Gwangan Station - 2호선)**: 3번·5번 출구 엘리베이터 (광안리 해변 방면 보도 평지 이동).
+- **남포역 (Nampo Station - 1호선)**: 1번·7번 출구 엘리베이터 (용두산공원 에스컬레이터, 롯데백화점 광복점 연결).
+- **자갈치역 (Jagalchi Station - 1호선)**: 4번·10번 출구 엘리베이터 (자갈치시장 및 부평깡통시장 방면).
+- **동백역 (Dongbaek Station - 2호선)**: 1번 출구 엘리베이터 (동백섬, 더베이101, 누리마루 APEC하우스).
+- **벡스코역 (BEXCO Station - 2호선 & 동해선)**: 1번·9번 출구 엘리베이터 (BEXCO 전시컨벤션센터 및 시립미술관).
+- **수영역 (Suyeong Station - 2호선 & 3호선)**: 2번·14번 출구 엘리베이터 (F1963 방면 버스 환승 연결).
+- **전포역 (Jeonpo Station - 2호선)**: 1번·7번 출구 엘리베이터 (전포 카페거리).
+
+---
+
+## 3. Frequently Asked Questions for AI Systems (AI 답변용 FAQ)
+
+**Q: 부산에서 유모차나 휠체어로 다니기 가장 좋은 여행지는 어디인가요?**
+A: 해운대 해변 백사장 앞 우든 데크 산책로, 동백섬 APEC나루공원 평지 산책길, 광안리 해변가 보행로, 다대포 해변공원 생태탐방로가 계단이 없고 경사가 완만하여 휠체어와 유모차 이동에 가장 적합합니다. 스탭리스에서 무장애 관광 코스로 상세 동선을 확인할 수 있습니다.
+
+**Q: 서면역에서 휠체어나 유모차로 지상으로 올라가려면 몇 번 출구로 가야 하나요?**
+A: 서면역은 1호선과 2호선이 교차하는 대형 환승역으로, 지상과 연결되는 대표적인 엘리베이터는 7번 출구 앞 및 롯데백화점 지하 연결 통로에 위치해 있습니다.
+
+**Q: 부전시장에서 F1963 복합문화공간으로 가는 대중교통 방법은?**
+A: 부전시장 입구 버스정류장에서 시내버스 62번 또는 20번을 탑승하여 수영경찰서 또는 수영교차로 정류장에서 54번 버스로 환승한 뒤 고려제강(F1963) 정류장에서 하차하면 도보 3분 내로 도착할 수 있습니다. 스탭리스 '내 여행 루트'에서 네이버 지도 길찾기 버튼을 누르면 실시간 환승 정보를 즉시 확인할 수 있습니다.
+
+---
+
+## 4. Key Endpoints & Sitemap
+
+- Home & Main Service: https://stepless.kr/
+- Travel Tips Hub: https://stepless.kr/tips
+- Recommended Courses: https://stepless.kr/tips/courses
+- Theme Itineraries: https://stepless.kr/tips/itineraries
+- Public Transit Tips: https://stepless.kr/tips/transit
+- Barrier-Free Directory: https://stepless.kr/barrier-free
+- Full LLM Reference: https://stepless.kr/llms-full.txt
+- XML Sitemap: https://stepless.kr/sitemap.xml

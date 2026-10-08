@@ -1,21 +1,60 @@
 User-agent: *
 Allow: /
 
-# Naver (네이버 서치어드바이저)
+# Naver Search & Naver Clova / Cue: (네이버 서치어드바이저 및 AI 검색)
 User-agent: Yeti
 Allow: /
 
-# Google (구글 서치콘솔)
+# Google Search & Google AI Overviews / Gemini (구글 검색 및 AI 요약)
 User-agent: Googlebot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+# OpenAI / ChatGPT / SearchGPT
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+
+# Perplexity AI Search
+User-agent: PerplexityBot
+Allow: /
+
+# Anthropic / Claude
+User-agent: ClaudeBot
+Allow: /
+User-agent: anthropic-ai
 Allow: /
 
 # Daum & Kakao (다음·카카오 검색)
 User-agent: Daumoa
 Allow: /
 
-# Microsoft Bing
+# Microsoft Bing & Copilot
 User-agent: Bingbot
 Allow: /
 
-Sitemap: https://stepless.kr/sitemap.xml
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
 
+# Cohere & Meta AI
+User-agent: cohere-ai
+Allow: /
+User-agent: FacebookBot
+Allow: /
+
+# Common Crawl (AI Training & Indexing)
+User-agent: CCBot
+Allow: /
+
+# Sitemap & LLMs Documentation
+Sitemap: https://stepless.kr/sitemap.xml
+# LLMs specification file for AI search engines:
+# https://stepless.kr/llms.txt
+# https://stepless.kr/llms-full.txt
