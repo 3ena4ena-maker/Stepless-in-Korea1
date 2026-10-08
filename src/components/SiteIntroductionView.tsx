@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { UserCheck, Shield, FileText, Mail, Database, ExternalLink, CheckCircle2, Send, Heart, AlertCircle, Phone } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { UserCheck, Shield, FileText, Mail, Database, ExternalLink, CheckCircle2, Send, Heart, AlertCircle, Phone, ChevronDown } from 'lucide-react';
 import { VerificationBadge } from './VerificationBadge';
 import { AdSenseUnit } from './AdSenseManager';
 
@@ -15,10 +15,27 @@ export function SiteIntroductionView({
   onSubTabChange
 }: SiteIntroductionViewProps) {
   const [activeSubTab, setActiveSubTab] = useState<'about' | 'privacy' | 'terms' | 'contact' | 'data-source'>(initialPage);
+  const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     setActiveSubTab(initialPage);
   }, [initialPage]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
+        setIsMobileMoreOpen(false);
+      }
+    };
+    if (isMobileMoreOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMobileMoreOpen]);
 
   // Copy feedback state
   const [copiedEmail, setCopiedEmail] = useState(false);
@@ -39,11 +56,21 @@ export function SiteIntroductionView({
     { id: 'data-source', label: language === 'KR' ? '데이터 출처' : 'Data Sources', icon: Database },
   ];
 
+  const handleSelectTab = (tabId: 'about' | 'privacy' | 'terms' | 'contact' | 'data-source') => {
+    setActiveSubTab(tabId);
+    onSubTabChange?.(tabId);
+    setIsMobileMoreOpen(false);
+  };
+
+  // Find currently active secondary tab label if not 'about'
+  const currentSecondaryTab = subTabs.find(t => t.id === activeSubTab && t.id !== 'about');
+
   return (
-    <div className="max-w-5xl mx-auto space-y-8 py-6 text-left animate-fade-in" id="site-intro-container">
+    <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8 py-3 sm:py-6 text-left animate-fade-in" id="site-intro-container">
       
-      {/* Category Navigation (Clean Minimalist Design matching Main Home Screen) */}
-      <div className="border-b border-[#E5E2DC] overflow-x-auto no-scrollbar">
+      {/* Category Navigation */}
+      {/* DESKTOP (md+): Minimalist flat horizontal nav matching home screen */}
+      <div className="hidden md:block border-b border-[#E5E2DC]">
         <nav className="flex items-center space-x-1 sm:space-x-2 min-w-max pb-px" aria-label="사이트 소개 카테고리">
           {subTabs.map(tab => {
             const Icon = tab.icon;
@@ -52,11 +79,7 @@ export function SiteIntroductionView({
               <button
                 key={tab.id}
                 id={`site-intro-tab-${tab.id}`}
-                onClick={() => {
-                  const newSub = tab.id as 'about' | 'privacy' | 'terms' | 'contact' | 'data-source';
-                  setActiveSubTab(newSub);
-                  onSubTabChange?.(newSub);
-                }}
+                onClick={() => handleSelectTab(tab.id as 'about' | 'privacy' | 'terms' | 'contact' | 'data-source')}
                 className={`flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-md text-xs sm:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
                   isActive
                     ? 'text-[#0A2540] bg-[#F1EFEC] font-bold border-b-2 border-[#0A2540]'
@@ -71,18 +94,114 @@ export function SiteIntroductionView({
         </nav>
       </div>
 
+      {/* MOBILE (< md): Optimized with Operator tab first + "More" dropdown for one-glance clarity */}
+      <div className="md:hidden border-b border-[#E5E2DC] pb-2 relative" ref={moreMenuRef}>
+        <div className="flex items-center gap-2 justify-between">
+          <div className="flex items-center gap-1.5 flex-1 min-w-0">
+            {/* 운영자 소개 (Always First) */}
+            <button
+              id="site-intro-mobile-tab-about"
+              onClick={() => handleSelectTab('about')}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 ${
+                activeSubTab === 'about'
+                  ? 'text-[#0A2540] bg-[#F1EFEC] border-b-2 border-[#0A2540]'
+                  : 'text-[#4A5568] hover:bg-[#F1EFEC]/60'
+              }`}
+            >
+              <UserCheck className={`w-3.5 h-3.5 shrink-0 ${activeSubTab === 'about' ? 'text-[#0A2540]' : 'text-slate-400'}`} />
+              <span>{language === 'KR' ? '운영자 소개' : 'About Operator'}</span>
+            </button>
+
+            {/* If a secondary tab is active, display it next to About */}
+            {currentSecondaryTab && (
+              <div className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-xs font-bold text-[#0A2540] bg-[#F1EFEC] border-b-2 border-[#0A2540] truncate shrink-0 max-w-[150px]">
+                <currentSecondaryTab.icon className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
+                <span className="truncate">{currentSecondaryTab.label}</span>
+              </div>
+            )}
+          </div>
+
+          {/* 더보기 (More) Button */}
+          <div className="relative shrink-0">
+            <button
+              type="button"
+              id="site-intro-mobile-more-btn"
+              onClick={() => setIsMobileMoreOpen(prev => !prev)}
+              aria-expanded={isMobileMoreOpen}
+              className={`flex items-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                isMobileMoreOpen || (activeSubTab !== 'about')
+                  ? 'text-[#004481] bg-blue-50/80 border border-blue-200'
+                  : 'text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80'
+              }`}
+            >
+              <span>{language === 'KR' ? '더보기' : 'More'}</span>
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isMobileMoreOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {/* More Dropdown Menu */}
+            {isMobileMoreOpen && (
+              <div 
+                className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-xl border border-slate-200/90 py-2 z-50 animate-fade-in"
+                role="menu"
+              >
+                <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 mb-1">
+                  {language === 'KR' ? '전체 카테고리' : 'All Categories'}
+                </div>
+                {subTabs.map(tab => {
+                  const Icon = tab.icon;
+                  const isActive = activeSubTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      role="menuitem"
+                      onClick={() => handleSelectTab(tab.id as 'about' | 'privacy' | 'terms' | 'contact' | 'data-source')}
+                      className={`w-full flex items-center justify-between px-3.5 py-2.5 text-xs text-left transition-colors cursor-pointer ${
+                        isActive 
+                          ? 'bg-blue-50/70 text-[#004481] font-bold' 
+                          : 'text-slate-700 hover:bg-slate-50 font-medium'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#004481]' : 'text-slate-400'}`} />
+                        <span>{tab.label}</span>
+                      </div>
+                      {isActive && <CheckCircle2 className="w-3.5 h-3.5 text-[#004481]" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* PAGE 1: 운영자 소개 (Operator Intro) */}
       {activeSubTab === 'about' && (
-        <div className="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm space-y-8 animate-fade-in">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="md:w-2/3 space-y-5">
+        <div className="bg-white p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xs sm:shadow-sm space-y-6 sm:space-y-8 animate-fade-in">
+          {/* Mobile Optimized Hero: Harmonious combination of Title, Image, and Body */}
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8">
+            <div className="w-full md:w-2/3 space-y-4 sm:space-y-5 order-2 md:order-1">
               <div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight leading-tight">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight leading-snug">
                   {language === 'KR' ? '모두가 자유로운 이동' : 'Barrier-Free Mobility for Everyone'}
                 </h2>
-                <p className="mt-2 text-base sm:text-lg font-bold text-[#004481] leading-relaxed">
+                <p className="mt-1.5 sm:mt-2 text-sm sm:text-base lg:text-lg font-bold text-[#004481] leading-relaxed">
                   {language === 'KR' ? '누구나 제약 없이 이동할 수 있는 도시를 꿈꿉니다.' : 'Dreaming of a city where everyone moves without boundaries.'}
                 </p>
+              </div>
+
+              {/* Mobile Only: Inline Image for natural reading flow if desired, or keep right column for desktop */}
+              <div className="md:hidden w-full my-2">
+                <div className="relative rounded-2xl overflow-hidden shadow-md border border-slate-100">
+                  <img 
+                    src="/images/busan_travelers_about_1782566089566.jpg" 
+                    alt="Florer Operator Busan Transit"
+                    className="w-full aspect-[16/10] sm:aspect-[4/3] object-cover"
+                  />
+                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-2.5 text-white text-[11px] font-semibold text-center">
+                    {language === 'KR' ? '부산 현장 보행 동선 직접 점검 및 큐레이션' : 'Field Inspection & Route Curation in Busan'}
+                  </div>
+                </div>
               </div>
 
               <p className="text-slate-700 text-sm sm:text-base leading-relaxed font-medium">
@@ -107,7 +226,7 @@ export function SiteIntroductionView({
                   <span className="w-1.5 h-4 bg-[#004481] rounded-full inline-block"></span>
                   <span>{language === 'KR' ? 'Stepless의 핵심 가치' : 'Core Values of Stepless'}</span>
                 </h3>
-                <div className="space-y-2 pl-3 border-l-2 border-slate-200 text-sm sm:text-base text-slate-700 font-medium">
+                <div className="space-y-2.5 pl-3 border-l-2 border-slate-200 text-xs sm:text-sm md:text-base text-slate-700 font-medium">
                   <p className="leading-relaxed">
                     <strong className="text-slate-900 font-bold">{language === 'KR' ? '실효성 있는 경로 안내:' : 'Effective Route Guidance:'}</strong>{' '}
                     <span>{language === 'KR' ? '계단과 장애물을 피해 수직 이동(엘리베이터, 에스컬레이터)이 가능한 실질적인 이동 경로 정보를 제공합니다.' : 'Providing practical vertical transit routes (elevators, escalators) that bypass stairs and physical obstacles.'}</span>
@@ -135,7 +254,7 @@ export function SiteIntroductionView({
 
               {/* Explicit Plain-Text Contact Box on About Page */}
               <div className="pt-2">
-                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="p-3.5 sm:p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
                     <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
                       {language === 'KR' ? '이메일' : 'Email'}
@@ -150,7 +269,7 @@ export function SiteIntroductionView({
                   <button
                     type="button"
                     onClick={handleCopyEmail}
-                    className="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                    className="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs w-full sm:w-auto justify-center"
                   >
                     {copiedEmail ? (
                       <>
@@ -164,8 +283,10 @@ export function SiteIntroductionView({
                 </div>
               </div>
             </div>
-            <div className="md:w-1/3 md:self-start">
-              <div className="relative rounded-3xl overflow-hidden shadow-lg border border-slate-100">
+
+            {/* Desktop Side Image (Hidden on Mobile since displayed inline below title) */}
+            <div className="hidden md:block md:w-1/3 md:self-start order-1 md:order-2">
+              <div className="relative rounded-3xl overflow-hidden shadow-lg border border-slate-100 sticky top-24">
                 <img 
                   src="/images/busan_travelers_about_1782566089566.jpg" 
                   alt="Florer Operator Busan Transit"
