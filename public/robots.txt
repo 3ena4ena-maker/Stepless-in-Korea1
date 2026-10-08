@@ -1,7 +1,20 @@
 User-agent: *
 Allow: /
 
+# Naver (네이버 서치어드바이저)
 User-agent: Yeti
+Allow: /
+
+# Google (구글 서치콘솔)
+User-agent: Googlebot
+Allow: /
+
+# Daum & Kakao (다음·카카오 검색)
+User-agent: Daumoa
+Allow: /
+
+# Microsoft Bing
+User-agent: Bingbot
 Allow: /
 
 Sitemap: https://stepless.kr/sitemap.xml

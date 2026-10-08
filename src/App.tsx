@@ -742,15 +742,60 @@ export default function App() {
 
       const ogDesc = document.querySelector('meta[property="og:description"]');
       if (ogDesc) ogDesc.setAttribute('content', pageDesc);
+    } else if (currentTab === 'tips') {
+      let pageTitle = "부산 여행 코스 추천 & 실시간 여행 팁 | 스탭리스";
+      let pageDesc = "부산 식도락, 명소, 전통시장, 무장애 여행 코스 추천 및 나만의 맞춤 루트 만들기, 실시간 대중교통 길찾기 가이드.";
+      let canonicalUrl = "https://stepless.kr/tips";
+
+      if (selectedItineraryCategory) {
+        pageTitle = `부산 ${selectedItineraryCategory} 여행 코스 추천 & 내 여행 루트 | 스탭리스`;
+        pageDesc = "부산 추천 여행 코스, 대표 명소와 맛집, 무장애 관광지 및 나만의 맞춤 여행 코스 지도 만들기.";
+        canonicalUrl = `https://stepless.kr/itinerary-${selectedItineraryCategory.toLowerCase()}`;
+      } else if (tipsSubPage === 'transit' || tipsSubPage === 'transfer') {
+        pageTitle = "부산 대중교통 이용 팁 & 시내버스·지하철 환승 가이드 | 스탭리스";
+        pageDesc = "부산 시내버스 노선, 지하철 환승 팁, 캐리어 보관함 및 유모차·휠체어 배리어프리 대중교통 이용 가이드.";
+        canonicalUrl = "https://stepless.kr/tips/transit";
+      } else if (tipsSubPage === 'courses') {
+        pageTitle = "부산 권역별 추천 여행 코스 | 스탭리스";
+        pageDesc = "해운대, 광안리, 원도심, 영도, 기장 등 부산 권역별 테마 여행 코스 안내.";
+        canonicalUrl = "https://stepless.kr/tips/courses";
+      } else if (tipsSubPage === 'schedule') {
+        pageTitle = "부산 일정별 여행 코스 추천 (당일치기·1박2일) | 스탭리스";
+        pageDesc = "부산 당일치기, 1박2일, 2박3일 알짜 일정별 추천 여행 코스 및 무단차 동선 안내.";
+        canonicalUrl = "https://stepless.kr/schedule";
+      }
+
+      document.title = pageTitle;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', pageDesc);
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) ogTitle.setAttribute('content', pageTitle);
+      const ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc) ogDesc.setAttribute('content', pageDesc);
+      const canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) canonical.setAttribute('href', canonicalUrl);
+    } else if (currentTab === 'tourapi') {
+      const pageTitle = "부산 무장애 관광지 & 배리어프리 여행 코스 | 스탭리스";
+      const pageDesc = "한국관광공사 열린관광지 데이터 기반 부산 전역 무장애 여행 스팟, 단차 없는 평탄 보도 및 편의시설 가이드.";
+      document.title = pageTitle;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', pageDesc);
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) ogTitle.setAttribute('content', pageTitle);
+      const ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc) ogDesc.setAttribute('content', pageDesc);
+      const canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) canonical.setAttribute('href', "https://stepless.kr/barrier-free");
     } else {
-      document.title = "부산 지하철역 엘리베이터 위치 & 유모차 동선 안내 | 스탭리스";
-      const defaultDesc = "부산 지하철역 엘리베이터 위치, 유모차와 캐리어 소지자를 위한 계단 없는 지하철 최적 동선 안내.";
+      const defaultTitle = "부산 여행 코스 추천 & 지하철 배리어프리 무장애 가이드 | 스탭리스 Stepless";
+      const defaultDesc = "부산 명소·맛집·전통시장 추천 여행 코스부터 주요 지하철역 엘리베이터 위치, 유모차·휠체어 배리어프리 무단차 동선, 맞춤 내 여행 루트 및 실시간 대중교통 길찾기까지 한 번에 안내합니다.";
       
+      document.title = defaultTitle;
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) metaDesc.setAttribute('content', defaultDesc);
 
       const ogTitle = document.querySelector('meta[property="og:title"]');
-      if (ogTitle) ogTitle.setAttribute('content', "부산 지하철역 엘리베이터 위치 & 유모차 동선 안내 | 스탭리스");
+      if (ogTitle) ogTitle.setAttribute('content', defaultTitle);
 
       const ogDesc = document.querySelector('meta[property="og:description"]');
       if (ogDesc) ogDesc.setAttribute('content', defaultDesc);

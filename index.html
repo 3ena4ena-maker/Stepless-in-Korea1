@@ -73,58 +73,166 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="canonical" href="https://stepless.kr/" />
-    <meta name="robots" content="index, follow" />
-    <title>부산 지하철 엘리베이터 위치 & 배리어프리 동선 가이드 | 스탭리스</title>
-    <meta name="description" content="부산 주요 지하철역의 엘리베이터 위치, 최단 출구 번호, 무단차 이동 경로를 안내합니다. 휠체어 및 유모차 이용자를 위해 검증된 이동 정보를 제공합니다." />
-    <meta name="keywords" content="부산 지하철, 지하철 엘리베이터 위치, 서면역 엘리베이터, 부산역 엘리베이터, 해운대역 엘리베이터, 배리어프리, 스탭리스" />
-    
-    <!-- Open Graph Metadata -->
-    <meta property="og:title" content="부산 지하철 엘리베이터 위치 & 배리어프리 동선 가이드 | 스탭리스" />
-    <meta property="og:description" content="부산 주요 지하철역의 엘리베이터 최단 위치, 출구 번호, 무단차 이동 동선을 한눈에 확인하세요." />
-    <meta property="og:image" content="https://stepless.kr/og-image.png" />
-    <meta property="og:url" content="https://stepless.kr/" />
-    <meta property="og:type" content="website" />
 
-    <!-- JSON-LD 구조화 데이터 -->
+    <!-- Search Engine Indexing & Bot Directives (Google, Naver, Daum, Bing) -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="스탭리스 (Stepless)" />
+
+    <!-- Geographic SEO (GEO) Meta Tags - Busan Metropolitan City, Republic of Korea -->
+    <meta name="geo.region" content="KR-26" />
+    <meta name="geo.placename" content="Busan, South Korea" />
+    <meta name="geo.position" content="35.1796;129.0756" />
+    <meta name="ICBM" content="35.1796, 129.0756" />
+    <meta name="target-country" content="KR" />
+    <meta name="content-language" content="ko-KR, en-US" />
+
+    <!-- Page Title & Meta Description & Keywords (최상위 검색 노출 최적화) -->
+    <title>부산 여행 코스 추천 & 지하철 배리어프리 무장애 가이드 | 스탭리스 Stepless</title>
+    <meta name="description" content="부산 명소·맛집·전통시장 추천 여행 코스부터 주요 지하철역 엘리베이터 위치, 유모차·휠체어 배리어프리 무단차 동선, 맞춤 내 여행 루트 및 실시간 대중교통 길찾기까지 한 번에 안내합니다." />
+    <meta name="keywords" content="부산 여행, 부산 여행 코스, 부산 여행 추천, 부산 가볼만한곳, 부산 1박2일 코스, 부산 당일치기, 부산 지하철 엘리베이터, 부산 지하철 노선, 서면역 엘리베이터, 부산역 엘리베이터, 해운대역 엘리베이터, 광안리, 자갈치시장, 감천문화마을, 흰여울문화마을, 해동용궁사, 부산 무장애 여행, 부산 배리어프리, 부산 대중교통 길찾기, 스탭리스, Stepless, Busan Travel, Busan Travel Guide, Busan Metro Elevator" />
+
+    <!-- Open Graph Metadata (카카오톡, 네이버, 페이스북, 인스타그램 등 소셜 공유 최적화) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="스탭리스 Stepless" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:url" content="https://stepless.kr/" />
+    <meta property="og:title" content="부산 여행 코스 추천 & 지하철 배리어프리 무장애 가이드 | 스탭리스 Stepless" />
+    <meta property="og:description" content="부산 명소·맛집·전통시장 추천 여행 코스부터 주요 지하철역 엘리베이터 위치, 유모차·휠체어 배리어프리 무단차 동선 및 실시간 맞춤 대중교통 길찾기" />
+    <meta property="og:image" content="https://stepless.kr/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="스탭리스 부산 여행 코스 및 지하철 배리어프리 무장애 가이드" />
+
+    <!-- Twitter / X Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="부산 여행 코스 추천 & 지하철 배리어프리 무장애 가이드 | 스탭리스 Stepless" />
+    <meta name="twitter:description" content="부산 명소·맛집·전통시장 추천 여행 코스부터 주요 지하철역 엘리베이터 위치, 유모차·휠체어 배리어프리 무단차 동선 및 실시간 맞춤 대중교통 길찾기" />
+    <meta name="twitter:image" content="https://stepless.kr/og-image.png" />
+
+    <!-- Schema.org 구조화 데이터 (JSON-LD) - 구글 및 포털 리치 검색 결과 최적화 -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Stepless (스탭리스)",
-      "alternateName": ["부산 지하철 배리어프리 가이드", "Busan Metro Barrier-Free Guide"],
-      "url": "https://stepless.kr/",
-      "image": "https://stepless.kr/og-image.png",
-      "description": "부산 주요 지하철역의 엘리베이터 위치, 최단 출구, 수평 이동 동선을 제공하는 교통약자 안내 서비스입니다.",
-      "applicationCategory": "TravelApplication",
-      "operatingSystem": "All"
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [{
-        "@type": "Question",
-        "name": "부산 지하철역의 엘리베이터 위치는 어떻게 확인하나요?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "스탭리스(Stepless) 검색창에서 서면역, 부산역, 해운대역 등 원하는 역명을 검색하면 지정된 엘리베이터 출구 번호, 상세 위치 및 지상·지하 수평 동선을 바로 확인할 수 있습니다."
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://stepless.kr/#website",
+          "url": "https://stepless.kr/",
+          "name": "스탭리스 (Stepless)",
+          "alternateName": ["부산 여행 가이드", "부산 지하철 배리어프리", "Busan Travel Guide", "Busan Metro Guide"],
+          "description": "부산 여행 코스 추천, 주요 지하철역 엘리베이터 위치, 유모차·휠체어 배리어프리 무단차 동선 안내 서비스",
+          "inLanguage": ["ko-KR", "en-US"],
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://stepless.kr/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://stepless.kr/#webapp",
+          "name": "Stepless (스탭리스)",
+          "url": "https://stepless.kr/",
+          "applicationCategory": "TravelApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "KRW"
+          },
+          "areaServed": {
+            "@type": "City",
+            "name": "Busan",
+            "alternateName": "부산광역시"
+          },
+          "spatialCoverage": {
+            "@type": "Place",
+            "name": "Busan Metropolitan City",
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 35.1796,
+              "longitude": 129.0756
+            }
+          }
+        },
+        {
+          "@type": "TouristDestination",
+          "@id": "https://stepless.kr/#busan-destination",
+          "name": "부산광역시 (Busan Metropolitan City)",
+          "alternateName": "Busan",
+          "description": "대한민국 대표 해양 관광 도시 부산 - 해운대, 광안리, 자갈치시장, 감천문화마을 등 명소와 배리어프리 여행 코스",
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 35.1796,
+            "longitude": 129.0756
+          },
+          "touristType": [
+            "Accessible Tourism",
+            "Culinary Tourism",
+            "Cultural Tourism",
+            "Family Tourism"
+          ],
+          "includesAttraction": [
+            { "@type": "TouristAttraction", "name": "해운대 해수욕장 (Haeundae Beach)" },
+            { "@type": "TouristAttraction", "name": "광안리 해수욕장 (Gwangalli Beach)" },
+            { "@type": "TouristAttraction", "name": "감천문화마을 (Gamcheon Culture Village)" },
+            { "@type": "TouristAttraction", "name": "자갈치시장 (Jagalchi Market)" },
+            { "@type": "TouristAttraction", "name": "영도 흰여울문화마을 (Huinnyeoul Culture Village)" },
+            { "@type": "TouristAttraction", "name": "해동용궁사 (Haedong Yonggungsa)" },
+            { "@type": "TouristAttraction", "name": "부평깡통시장 & 국제시장 (Bupyeong Kkangtong & Gukje Market)" },
+            { "@type": "TouristAttraction", "name": "F1963 복합문화공간 (F1963)" }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://stepless.kr/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "부산 여행 코스는 어떤 카테고리가 추천되나요?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "스탭리스에서는 식도락(미식 투어), 체험·박물관, 전통시장 투어, 핵심 명소, 당일치기/1박2일 일정별 코스, 부산도시철도 연계 코스, 무장애 관광지 및 나만의 맞춤 루트 등 다채로운 여행 코스를 테마별로 제공합니다."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "부산 지하철역의 엘리베이터 최단 위치와 출구 번호는 어떻게 확인하나요?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "서면역, 부산역, 해운대역, 광안역, 남포역, 자갈치역 등 주요 15개 역의 엘리베이터 출구 번호, 휠체어/유모차 전용 개찰구 위치, 지상 보도 연결 무단차 이동 동선 정보를 역별 상세 카드에서 직관적으로 확인할 수 있습니다."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "유모차나 휠체어, 캐리어 소지자도 부산을 편리하게 여행할 수 있나요?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "네, 스탭리스는 보도 턱과 계단을 피할 수 있는 무단차(Stepless) 이동 경로를 최우선으로 안내하며, 한국관광공사 열린관광지 데이터 기반 무장애 관광 스팟과 장애인 편의시설 정보를 제공합니다."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "내 여행 루트에서 장소 간 이동 방법은 어떻게 안내받나요?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "즐겨찾기한 장소들을 지도 위에 순서대로 연결하여 '내 여행 루트'를 만들 수 있으며, 경유지 간 이동 구간마다 네이버 지도 또는 구글맵 대중교통 길찾기 버튼을 통해 실시간 버스 번호, 환승 정류장, 소요시간을 바로 확인할 수 있습니다."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can foreign travelers use this service in English?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, you can easily switch to English using the language selector. Stepless provides English translations for all Busan metro stations, attractions, and Google Maps transit directions."
+              }
+            }
+          ]
         }
-      }, {
-        "@type": "Question",
-        "name": "서면역에서 계단 없이 지상으로 나가려면 어느 출구를 이용해야 하나요?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "서면역 9번 출구와 11번 출구 사이에 위치한 지상 엘리베이터를 이용하시면 보도 단차 없이 지하 개찰구까지 원스톱으로 오가실 수 있습니다."
-        }
-      }, {
-        "@type": "Question",
-        "name": "외국인 관광객을 위한 영문 안내도 제공되나요?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "네, 상단 다국어 선택 메뉴를 통해 영문(English)으로 전환하여 주요 역의 엘리베이터 위치 및 출구 정보를 쉽게 이용하실 수 있습니다."
-        }
-      }]
+      ]
     }
     </script>
   </head>
@@ -142,6 +250,36 @@
         <p style="margin: 4px 0 0 0; font-size: 12px; color: #64748b; font-weight: 500;">부산 지하철 배리어프리 이동 경로 안내 중...</p>
       </div>
     </div>
+
+    <!-- Semantic Fallback for Search Engine Crawlers (Naver Yeti, Googlebot, Daumoa, Bingbot) -->
+    <noscript>
+      <header style="padding:20px; font-family:sans-serif;">
+        <h1>부산 여행 코스 추천 & 지하철 배리어프리 무장애 가이드 - 스탭리스 (Stepless)</h1>
+        <p>부산 명소·맛집·전통시장 추천 여행 코스부터 주요 15개 지하철역 엘리베이터 위치, 유모차·휠체어 배리어프리 무단차 동선 및 실시간 맞춤 대중교통 길찾기 가이드를 제공합니다.</p>
+      </header>
+      <main style="padding:0 20px; font-family:sans-serif;">
+        <section>
+          <h2>부산 테마별 추천 여행 코스</h2>
+          <ul>
+            <li>식도락 여행 코스: 부산 대표 돼지국밥, 씨앗호떡, 밀면, 자갈치 해산물 미식 투어</li>
+            <li>체험 및 박물관 코스: 국립해양박물관, 부산현대미술관, 감천문화마을 예술 체험</li>
+            <li>전통시장 코스: 부평깡통시장 야시장, 국제시장, 자갈치시장, 부전시장 투어</li>
+            <li>부산 핵심 명소: 해운대 해수욕장, 광안리 해변 & 드론쇼, 영도 흰여울문화마을, 기장 해동용궁사</li>
+            <li>일정별 추천 코스: 당일치기 코스, 1박 2일 코스, 2박 3일 코스</li>
+            <li>부산도시철도 테마 코스: 1호선·2호선 환승 연계 알짜 여행 코스</li>
+            <li>무장애 관광 코스: 계단과 턱이 없는 휠체어·유모차 친화 배리어프리 명소</li>
+          </ul>
+        </section>
+        <section>
+          <h2>부산 주요 지하철역 엘리베이터 최단 출구 가이드</h2>
+          <p>서면역(1·2호선 환승), 부산역(KTX·SRT 연계), 해운대역, 광안역, 남포역, 자갈치역, 동백역, 벡스코역, 수영역, 전포역, 부전역, 중앙역, 다대포해수욕장역, 범어사역, 금련산역의 엘리베이터 위치 및 수평 무단차 동선 안내.</p>
+        </section>
+        <section>
+          <h2>내 여행 루트 & 네이버 지도·구글맵 실시간 길찾기</h2>
+          <p>원하는 여행지를 담아 맞춤형 여행 일정을 구성하고, 각 경유지 간 최적 대중교통(버스 번호, 지하철 환승, 도보 구간)을 네이버 지도와 구글맵으로 바로 안내받을 수 있습니다.</p>
+        </section>
+      </main>
+    </noscript>
 
     <!-- React Root Mount Target -->
     <div id="root"></div>
