@@ -16,6 +16,7 @@ import {
   Train,
   ArrowUp,
   ArrowDown,
+  ArrowRight,
   Trash2,
   ExternalLink,
   Copy,
@@ -2055,20 +2056,80 @@ export default function MyTravelRouteMapView({
 
               return (
                 <React.Fragment key={place.id}>
-                  {/* 경유지 간 이동 연결선 */}
-                  {index > 0 && (
-                    <div className="flex items-center gap-3 pl-4 sm:pl-6 py-1">
-                      <div className="w-0.5 h-6 bg-slate-300 ml-3"></div>
-                      <div className="text-[11px] font-semibold text-slate-500 flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200">
-                        <Train className="w-3.5 h-3.5 text-[#0A2540]" />
-                        <span>
-                          {language === 'KR'
-                            ? `경유지 ${index} ➔ 경유지 ${stepNumber} 이동 구간`
-                            : `Transfer between Stop ${index} and ${stepNumber}`}
-                        </span>
+                  {/* 경유지 간 이동 연결선 & 실시간 대중교통 길찾기 */}
+                  {index > 0 && (() => {
+                    const prevPlace = places[index - 1];
+                    let distanceKm: number | null = null;
+                    if (prevPlace?.latitude && prevPlace?.longitude && place?.latitude && place?.longitude) {
+                      const dLat = ((place.latitude - prevPlace.latitude) * Math.PI) / 180;
+                      const dLon = ((place.longitude - prevPlace.longitude) * Math.PI) / 180;
+                      const a =
+                        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos((prevPlace.latitude * Math.PI) / 180) *
+                          Math.cos((place.latitude * Math.PI) / 180) *
+                          Math.sin(dLon / 2) *
+                          Math.sin(dLon / 2);
+                      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                      distanceKm = Math.round(6371 * c * 10) / 10;
+                    }
+
+                    const prevTitle = language === 'KR' ? prevPlace.titleKo : (prevPlace.titleEn || prevPlace.titleKo);
+                    const curTitle = language === 'KR' ? place.titleKo : (place.titleEn || place.titleKo);
+
+                    // 한글: 네이버 지도 대중교통 길찾기 (좌표 및 장소명 기반 실시간 버스·지하철 최적 경로)
+                    const naverTransitUrl =
+                      prevPlace.longitude && prevPlace.latitude && place.longitude && place.latitude
+                        ? `https://map.naver.com/p/directions/${prevPlace.longitude},${prevPlace.latitude},${encodeURIComponent(prevPlace.titleKo)}/${place.longitude},${place.latitude},${encodeURIComponent(place.titleKo)}/-/transit`
+                        : `https://map.naver.com/p/directions/-/-/-/transit?sText=${encodeURIComponent(prevPlace.titleKo)}&eText=${encodeURIComponent(place.titleKo)}`;
+
+                    // 영문: 구글맵 대중교통 길찾기 (Transit Directions)
+                    const googleTransitUrl =
+                      prevPlace.latitude && prevPlace.longitude && place.latitude && place.longitude
+                        ? `https://www.google.com/maps/dir/?api=1&origin=${prevPlace.latitude},${prevPlace.longitude}&destination=${place.latitude},${place.longitude}&travelmode=transit`
+                        : `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(prevPlace.titleEn || prevPlace.titleKo)}&destination=${encodeURIComponent(place.titleEn || place.titleKo)}&travelmode=transit`;
+
+                    return (
+                      <div className="relative pl-3 sm:pl-6 py-1 my-0.5" onClick={(e) => e.stopPropagation()}>
+                        {/* 수직 동선 가이드라인 */}
+                        <div className="absolute left-[26px] sm:left-[38px] top-0 bottom-0 w-0.5 border-l-2 border-dashed border-slate-300"></div>
+
+                        <div className="relative z-10 ml-6 sm:ml-7 bg-slate-50 border border-slate-200/90 rounded-lg px-3 py-2 transition-all text-left flex items-center justify-between gap-2.5">
+                          <div className="text-xs font-semibold text-slate-700 flex items-center gap-1.5 min-w-0">
+                            <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
+                            <span className="truncate">
+                              {language === 'KR'
+                                ? `이동구간 ${distanceKm !== null ? `직선 약 ${distanceKm}km` : ''}`.trim()
+                                : `Direct distance ${distanceKm !== null ? `approx. ${distanceKm} km` : ''}`.trim()}
+                            </span>
+                          </div>
+
+                          <div className="shrink-0">
+                            {language === 'KR' ? (
+                              <a
+                                href={naverTransitUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#03C75A] hover:bg-[#02B350] active:scale-98 text-white text-[11px] font-bold shadow-2xs transition-all cursor-pointer"
+                              >
+                                <span>네이버지도 길찾기</span>
+                                <ExternalLink className="w-3 h-3 opacity-90" />
+                              </a>
+                            ) : (
+                              <a
+                                href={googleTransitUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#1A73E8] hover:bg-[#1557B0] active:scale-98 text-white text-[11px] font-bold shadow-2xs transition-all cursor-pointer"
+                              >
+                                <span>Google Maps Directions</span>
+                                <ExternalLink className="w-3 h-3 opacity-90" />
+                              </a>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    );
+                  })()}
 
                   {/* 장소 카드 */}
                   <div
