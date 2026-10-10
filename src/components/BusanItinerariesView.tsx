@@ -48,15 +48,17 @@ import ElegantIllustration from './ElegantIllustration';
 import { BUSAN_ITINERARIES, ItineraryCourse, ItineraryStep } from '../data/itineraries';
 import { CHILD_TRANSPORT_INFOGRAPHIC_BASE64 } from '../childtransport_base64';
 import { getTodayDate, navigateToSpa } from '../utils';
-import BusanEventsCalendarView from './BusanEventsCalendarView';
-import BarrierFreeTourApiView from './BarrierFreeTourApiView';
-import ItineraryTravelGuideSection from './ItineraryTravelGuideSection';
-import { CommunityTravelGuideSection } from './CommunityTravelGuideSection';
 import { TourApiItineraryStepCard } from './TourApiItineraryStepCard';
 import { matchTourApiSpotId, resolvePlaceTargetId } from '../services/tourApiCommon';
 import { getKoreaTourApiPlaceDetail } from '../data/koreaTourApiPlaceDetails';
-import MyTravelRouteMapView from './MyTravelRouteMapView';
 import { useMyRoute } from '../services/myRouteService';
+
+// Code-split heavy sub-views to keep initial travel guide bundle lightweight and quick to render on mobile
+const BusanEventsCalendarView = React.lazy(() => import('./BusanEventsCalendarView'));
+const BarrierFreeTourApiView = React.lazy(() => import('./BarrierFreeTourApiView'));
+const ItineraryTravelGuideSection = React.lazy(() => import('./ItineraryTravelGuideSection'));
+const CommunityTravelGuideSection = React.lazy(() => import('./CommunityTravelGuideSection').then(m => ({ default: m.CommunityTravelGuideSection })));
+const MyTravelRouteMapView = React.lazy(() => import('./MyTravelRouteMapView'));
 
 export const getStepIllustrationType = (titleKo: string, cat: string): 'temple' | 'park' | 'food' | 'cafe' | 'sea' | 'transit' | 'village' | 'history' | 'culture' | 'default' => {
   const normalized = titleKo.toLowerCase();
@@ -3125,46 +3127,50 @@ export default function BusanItinerariesView({
             <div className="space-y-6">
               {activeCategory === 'MY_ROUTE' ? (
                 <div className="space-y-6 animate-fade-in text-left">
-                  <MyTravelRouteMapView 
-                    language={language}
-                    onNavigateToCategory={(cat) => {
-                      if (onSelectCategory) {
-                        onSelectCategory(cat as any);
-                      }
-                      setActiveCategory(cat as any);
-                    }}
-                    onSelectStation={onSelectStation}
-                    onOpenBarrierFreeDetail={(id) => {
-                      setInternalBarrierFreePlaceId(id);
-                      if (onSelectCategory) {
-                        onSelectCategory('BARRIER_FREE');
-                      }
-                      setActiveCategory('BARRIER_FREE');
-                    }}
-                  />
+                  <React.Suspense fallback={<div className="h-64 flex items-center justify-center text-slate-400 font-bold text-sm">내 여행 루트를 불러오는 중...</div>}>
+                    <MyTravelRouteMapView 
+                      language={language}
+                      onNavigateToCategory={(cat) => {
+                        if (onSelectCategory) {
+                          onSelectCategory(cat as any);
+                        }
+                        setActiveCategory(cat as any);
+                      }}
+                      onSelectStation={onSelectStation}
+                      onOpenBarrierFreeDetail={(id) => {
+                        setInternalBarrierFreePlaceId(id);
+                        if (onSelectCategory) {
+                          onSelectCategory('BARRIER_FREE');
+                        }
+                        setActiveCategory('BARRIER_FREE');
+                      }}
+                    />
+                  </React.Suspense>
                 </div>
               ) : activeCategory === 'BARRIER_FREE' ? (
                 <div className="space-y-6 animate-fade-in text-left">
-                  <BarrierFreeTourApiView 
-                    language={language}
-                    initialCourseId={initialBarrierFreeCourseId}
-                    initialPlaceId={initialBarrierFreePlaceId !== undefined && initialBarrierFreePlaceId !== null ? initialBarrierFreePlaceId : internalBarrierFreePlaceId}
-                    onSelectStation={onSelectStation}
-                    onBackToPlaceList={() => {
-                      setInternalBarrierFreePlaceId(null);
-                      if (onBackToBarrierFreeList) {
-                        onBackToBarrierFreeList();
-                      } else {
-                        navigateToSpa('/barrier-free');
-                      }
-                    }}
-                    onNavigateHome={() => {
-                      setActiveCategory(null);
-                      setInternalBarrierFreePlaceId(null);
-                      if (onBack) onBack();
-                      navigateToSpa('/tips');
-                    }}
-                  />
+                  <React.Suspense fallback={<div className="h-64 flex items-center justify-center text-slate-400 font-bold text-sm">무장애 관광 정보를 불러오는 중...</div>}>
+                    <BarrierFreeTourApiView 
+                      language={language}
+                      initialCourseId={initialBarrierFreeCourseId}
+                      initialPlaceId={initialBarrierFreePlaceId !== undefined && initialBarrierFreePlaceId !== null ? initialBarrierFreePlaceId : internalBarrierFreePlaceId}
+                      onSelectStation={onSelectStation}
+                      onBackToPlaceList={() => {
+                        setInternalBarrierFreePlaceId(null);
+                        if (onBackToBarrierFreeList) {
+                          onBackToBarrierFreeList();
+                        } else {
+                          navigateToSpa('/barrier-free');
+                        }
+                      }}
+                      onNavigateHome={() => {
+                        setActiveCategory(null);
+                        setInternalBarrierFreePlaceId(null);
+                        if (onBack) onBack();
+                        navigateToSpa('/tips');
+                      }}
+                    />
+                  </React.Suspense>
                 </div>
               ) : (
                 <div className="space-y-6 animate-fade-in text-left">
@@ -3200,13 +3206,15 @@ export default function BusanItinerariesView({
                   </div>
 
                   {itineraryTab === 'STEPLESS_GUIDE' ? (
-                    <ItineraryTravelGuideSection
-                      language={language}
-                      category={activeCategory}
-                      course={filteredCourses[0]}
-                      onSwitchToStandard={() => setItineraryTab('STANDARD')}
-                      onSelectStation={onSelectStation}
-                    />
+                    <React.Suspense fallback={<div className="h-64 flex items-center justify-center text-slate-400 font-bold text-sm">상세 여행 가이드를 불러오는 중...</div>}>
+                      <ItineraryTravelGuideSection
+                        language={language}
+                        category={activeCategory}
+                        course={filteredCourses[0]}
+                        onSwitchToStandard={() => setItineraryTab('STANDARD')}
+                        onSelectStation={onSelectStation}
+                      />
+                    </React.Suspense>
                   ) : (
                     (() => {
                       const course = filteredCourses[0];
@@ -6354,10 +6362,12 @@ export default function BusanItinerariesView({
       {/* ========================================================================= */}
       {activeSection === 'SCHEDULE' && (
         <div className="space-y-4 animate-fade-in">
-          <BusanEventsCalendarView 
-            language={language} 
-            onSelectStation={onSelectStation}
-          />
+          <React.Suspense fallback={<div className="h-64 flex items-center justify-center text-slate-400 font-bold text-sm">부산 축제 & 행사 일정을 불러오는 중...</div>}>
+            <BusanEventsCalendarView 
+              language={language} 
+              onSelectStation={onSelectStation}
+            />
+          </React.Suspense>
         </div>
       )}
 
@@ -6486,15 +6496,17 @@ export default function BusanItinerariesView({
 
           {/* TAB 2: STEPLESS EXCLUSIVE CURATED TRAVEL GUIDE */}
           {communityTab === 'STEPLESS_GUIDE' && (
-            <CommunityTravelGuideSection
-              language={language}
-              onSelectStation={(stationId) => {
-                if (onSelectStation) {
-                  onSelectStation(stationId);
-                }
-              }}
-              onSwitchToStandard={() => setCommunityTab('STANDARD')}
-            />
+            <React.Suspense fallback={<div className="h-64 flex items-center justify-center text-slate-400 font-bold text-sm">큐레이션 여행안내를 불러오는 중...</div>}>
+              <CommunityTravelGuideSection
+                language={language}
+                onSelectStation={(stationId) => {
+                  if (onSelectStation) {
+                    onSelectStation(stationId);
+                  }
+                }}
+                onSwitchToStandard={() => setCommunityTab('STANDARD')}
+              />
+            </React.Suspense>
           )}
         </div>
       )}

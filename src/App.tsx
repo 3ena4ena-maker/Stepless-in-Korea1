@@ -45,8 +45,6 @@ import {
 import Header from './components/Header';
 import TimelineVisualizer from './components/TimelineVisualizer';
 import { StationBarrierFreeCard } from './components/StationBarrierFreeCard';
-import { StationTravelGuideView } from './components/StationTravelGuideView';
-import { SiteIntroductionView } from './components/SiteIntroductionView';
 import { HomeOverviewSection } from './components/HomeOverviewSection';
 import { getLockerInfoText, renderLockerInfo } from './data/lockers';
 import { getNearbyPlaces, NearbyExitBadge, NearbyPlace } from './data/nearbyPlaces';
@@ -55,12 +53,14 @@ import { Station, ExitInfo, FacilityReport, StatusType, getExitDisplayName, tran
 import { translateRecommendation, navigateToSpa } from './utils';
 import { BUSAN_ITINERARIES } from './data/itineraries';
 
-import SubwayStationMap from './components/SubwayStationMap';
-import BusanItinerariesView from './components/BusanItinerariesView';
-import BusanEventsCalendarView from './components/BusanEventsCalendarView';
-import BarrierFreeTourApiView from './components/BarrierFreeTourApiView';
 import StationSearchBar, { searchStations } from './components/StationSearchBar';
 import { AdSenseUnit, AdEligibilityParams } from './components/AdSenseManager';
+
+// Code-split heavy views to drastically reduce initial mobile JavaScript bundle and parse latency
+const BusanItinerariesView = lazy(() => import('./components/BusanItinerariesView'));
+const SiteIntroductionView = lazy(() => import('./components/SiteIntroductionView').then(m => ({ default: m.SiteIntroductionView })));
+const StationTravelGuideView = lazy(() => import('./components/StationTravelGuideView').then(m => ({ default: m.StationTravelGuideView })));
+const SubwayStationMap = lazy(() => import('./components/SubwayStationMap'));
 
 // Dynamic tab loading fallback component for code-split views
 const TabLoadingFallback = ({ text = "정보를 신속하게 불러오는 중..." }: { text?: string }) => (
@@ -1588,16 +1588,20 @@ export default function App() {
               </div>
 
               {stationDetailTab === 'TRAVEL_GUIDE' ? (
-                <StationTravelGuideView 
-                  station={activeStation} 
-                  language={language} 
-                  onSwitchToStandard={() => setStationDetailTab('STANDARD')} 
-                />
+                <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? "여행 가이드를 불러오는 중..." : "Loading travel guide..."} />}>
+                  <StationTravelGuideView 
+                    station={activeStation} 
+                    language={language} 
+                    onSwitchToStandard={() => setStationDetailTab('STANDARD')} 
+                  />
+                </Suspense>
               ) : (
                 <>
                   {/* Station Map directly below station selection */}
                   <div id="search-tab-map-container" className="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-                    <SubwayStationMap station={activeStation} language={language} focusedExitCoords={focusedExitCoords} isAdminMode={isAdminMode} />
+                    <Suspense fallback={<div className="h-64 sm:h-96 flex items-center justify-center bg-slate-50 text-slate-400 font-bold text-sm">지도를 불러오는 중...</div>}>
+                      <SubwayStationMap station={activeStation} language={language} focusedExitCoords={focusedExitCoords} isAdminMode={isAdminMode} />
+                    </Suspense>
                   </div>
 
                   {/* 📋 Station Barrier-Free Movement Summary Table & Step-by-Step Info */}
@@ -2050,79 +2054,81 @@ export default function App() {
 
           {/* Tab 3 & 4: TRAVEL TIPS & BUSAN MAJOR SCHEDULE VIEW & BARRIER FREE */}
           {(currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') && (
-            <BusanItinerariesView 
-              language={language}
-              initialCategory={currentTab === 'tourapi' ? 'BARRIER_FREE' : (selectedItineraryCategory as any)}
-              initialBarrierFreeCourseId={barrierFreeCourseId}
-              initialBarrierFreePlaceId={barrierFreePlaceId}
-              onBack={() => {
-                setSelectedItineraryCategory(null);
-                setBarrierFreeCourseId(null);
-                setBarrierFreePlaceId(null);
-              }}
-              onSelectCategory={(category) => {
-                setSelectedItineraryCategory(category);
-                if (category === 'BARRIER_FREE') {
-                  setCurrentTab('tourapi');
-                  setBarrierFreeCourseId(null);
-                  setBarrierFreePlaceId(null);
-                  navigateToSpa('/barrier-free');
-                } else {
-                  setBarrierFreeCourseId(null);
-                  setBarrierFreePlaceId(null);
-                }
-              }}
-              onOpenBarrierFreeDetail={(placeId) => {
-                setBarrierFreePlaceId(placeId);
-                setBarrierFreeCourseId(null);
-                setCurrentTab('tourapi');
-                setSelectedItineraryCategory('BARRIER_FREE');
-                const targetUrl = `/barrier-free/detail?id=${encodeURIComponent(placeId)}`;
-                navigateToSpa(targetUrl, { tab: 'tourapi', placeId });
-              }}
-              onBackToBarrierFreeList={() => {
-                setBarrierFreePlaceId(null);
-                setBarrierFreeCourseId(null);
-                setCurrentTab('tourapi');
-                setSelectedItineraryCategory('BARRIER_FREE');
-                navigateToSpa('/barrier-free', { tab: 'tourapi' });
-              }}
-              tipsSubPage={currentTab === 'schedule' ? 'schedule' : tipsSubPage}
-              setTipsSubPage={(page) => {
-                if (page === 'schedule') {
-                  setCurrentTab('schedule');
-                } else if (currentTab === 'schedule') {
-                  setCurrentTab('tips');
-                }
-                if (page === 'index' || page === 'courses') {
+            <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? "여행 루트 및 추천 코스를 불러오는 중..." : "Loading travel routes and courses..."} />}>
+              <BusanItinerariesView 
+                language={language}
+                initialCategory={currentTab === 'tourapi' ? 'BARRIER_FREE' : (selectedItineraryCategory as any)}
+                initialBarrierFreeCourseId={barrierFreeCourseId}
+                initialBarrierFreePlaceId={barrierFreePlaceId}
+                onBack={() => {
                   setSelectedItineraryCategory(null);
                   setBarrierFreeCourseId(null);
                   setBarrierFreePlaceId(null);
-                  if (currentTab === 'tourapi') {
+                }}
+                onSelectCategory={(category) => {
+                  setSelectedItineraryCategory(category);
+                  if (category === 'BARRIER_FREE') {
+                    setCurrentTab('tourapi');
+                    setBarrierFreeCourseId(null);
+                    setBarrierFreePlaceId(null);
+                    navigateToSpa('/barrier-free');
+                  } else {
+                    setBarrierFreeCourseId(null);
+                    setBarrierFreePlaceId(null);
+                  }
+                }}
+                onOpenBarrierFreeDetail={(placeId) => {
+                  setBarrierFreePlaceId(placeId);
+                  setBarrierFreeCourseId(null);
+                  setCurrentTab('tourapi');
+                  setSelectedItineraryCategory('BARRIER_FREE');
+                  const targetUrl = `/barrier-free/detail?id=${encodeURIComponent(placeId)}`;
+                  navigateToSpa(targetUrl, { tab: 'tourapi', placeId });
+                }}
+                onBackToBarrierFreeList={() => {
+                  setBarrierFreePlaceId(null);
+                  setBarrierFreeCourseId(null);
+                  setCurrentTab('tourapi');
+                  setSelectedItineraryCategory('BARRIER_FREE');
+                  navigateToSpa('/barrier-free', { tab: 'tourapi' });
+                }}
+                tipsSubPage={currentTab === 'schedule' ? 'schedule' : tipsSubPage}
+                setTipsSubPage={(page) => {
+                  if (page === 'schedule') {
+                    setCurrentTab('schedule');
+                  } else if (currentTab === 'schedule') {
                     setCurrentTab('tips');
                   }
-                }
-                setTipsSubPage(page);
-              }}
-              activeRegionPage={activeRegionPage}
-              setActiveRegionPage={setActiveRegionPage}
-              onSelectStation={(stationId, exitNum) => {
-                setSelectedStationId(stationId);
-                if (exitNum) {
-                  setExpandedExitNum(exitNum);
-                }
-                setCurrentTab('search');
-                setIsHomeLanding(false);
-                setTimeout(() => {
-                  const targetEl = document.getElementById('search-selected-station-details') || document.getElementById('search-tab-map-container');
-                  if (targetEl) {
-                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  } else {
-                    window.scrollTo(0, 0);
+                  if (page === 'index' || page === 'courses') {
+                    setSelectedItineraryCategory(null);
+                    setBarrierFreeCourseId(null);
+                    setBarrierFreePlaceId(null);
+                    if (currentTab === 'tourapi') {
+                      setCurrentTab('tips');
+                    }
                   }
-                }, 100);
-              }}
-            />
+                  setTipsSubPage(page);
+                }}
+                activeRegionPage={activeRegionPage}
+                setActiveRegionPage={setActiveRegionPage}
+                onSelectStation={(stationId, exitNum) => {
+                  setSelectedStationId(stationId);
+                  if (exitNum) {
+                    setExpandedExitNum(exitNum);
+                  }
+                  setCurrentTab('search');
+                  setIsHomeLanding(false);
+                  setTimeout(() => {
+                    const targetEl = document.getElementById('search-selected-station-details') || document.getElementById('search-tab-map-container');
+                    if (targetEl) {
+                      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                      window.scrollTo(0, 0);
+                    }
+                  }, 100);
+                }}
+              />
+            </Suspense>
           )}
 
           {/* Google AdSense Unit for Verified Guides / Magazine / Content Hub */}
@@ -2132,11 +2138,13 @@ export default function App() {
 
           {/* New Tab 5: ABOUT THE SITE */}
           {currentTab === 'about' && (
-            <SiteIntroductionView 
-              language={language} 
-              initialPage={siteSubPage}
-              onSubTabChange={(sub) => setSiteSubPage(sub)}
-            />
+            <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? "사이트 소개 페이지를 불러오는 중..." : "Loading about page..."} />}>
+              <SiteIntroductionView 
+                language={language} 
+                initialPage={siteSubPage}
+                onSubTabChange={(sub) => setSiteSubPage(sub)}
+              />
+            </Suspense>
           )}
 
 
