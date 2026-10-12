@@ -2461,7 +2461,7 @@ export default function BusanItinerariesView({
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === null
-                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                   }`}
                 >
@@ -2479,7 +2479,7 @@ export default function BusanItinerariesView({
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'GOURMET'
-                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                   }`}
                 >
@@ -2498,7 +2498,7 @@ export default function BusanItinerariesView({
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'EXPERIENCE'
-                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                   }`}
                 >
@@ -2517,7 +2517,7 @@ export default function BusanItinerariesView({
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'MARKET'
-                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                   }`}
                 >
@@ -2536,7 +2536,7 @@ export default function BusanItinerariesView({
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'ATTRACTION'
-                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                   }`}
                 >
@@ -2556,7 +2556,7 @@ export default function BusanItinerariesView({
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     isScheduleActive
-                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                   }`}
                 >
@@ -2575,7 +2575,7 @@ export default function BusanItinerariesView({
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'SUBWAY'
-                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                   }`}
                 >
@@ -2595,7 +2595,7 @@ export default function BusanItinerariesView({
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'BARRIER_FREE'
-                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                   }`}
                 >
@@ -2647,7 +2647,7 @@ export default function BusanItinerariesView({
                       }}
                       className={`px-3 py-2 rounded-md text-xs font-bold transition-all duration-200 cursor-pointer border shrink-0 ${
                         activeCategory === null
-                          ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                          ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                           : 'bg-white text-[#11161B] border-[#E5E2DC] hover:bg-slate-50'
                       }`}
                     >
@@ -2659,7 +2659,7 @@ export default function BusanItinerariesView({
                       <button
                         type="button"
                         onClick={() => setIsCategoryMoreOpen(prev => !prev)}
-                        className="flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold bg-[#004481] text-white border border-[#004481] truncate max-w-[170px] shadow-2xs cursor-pointer text-left"
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold bg-[#8EA85E] text-white border border-[#8EA85E] truncate max-w-[170px] shadow-2xs cursor-pointer text-left"
                         title={language === 'KR' ? '카테고리 목록 열기' : 'View all categories'}
                       >
                         <span className="truncate">
@@ -2685,7 +2685,7 @@ export default function BusanItinerariesView({
                       aria-expanded={isCategoryMoreOpen}
                       className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold transition-all cursor-pointer border ${
                         isCategoryMoreOpen
-                          ? 'bg-blue-50 text-[#004481] border-[#004481] ring-2 ring-[#004481]/15'
+                          ? 'bg-[#8EA85E]/15 text-[#8EA85E] border-[#8EA85E] ring-2 ring-[#8EA85E]/20'
                           : 'bg-white hover:bg-slate-50 text-slate-700 border-[#E5E2DC]'
                       }`}
                     >
@@ -2759,7 +2759,7 @@ export default function BusanItinerariesView({
                                     ? 'bg-amber-500 text-white border-amber-500 shadow-2xs' 
                                     : 'bg-amber-50/70 hover:bg-amber-100 text-amber-950 border-amber-300')
                                 : (isCatActive 
-                                    ? 'bg-[#004481] text-white border-[#004481] shadow-2xs' 
+                                    ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs' 
                                     : 'bg-slate-50/80 hover:bg-slate-100 text-slate-700 border-slate-200/80')
                             }`}
                           >
@@ -2767,7 +2767,7 @@ export default function BusanItinerariesView({
                               <IconComponent className={`w-3.5 h-3.5 shrink-0 ${
                                 isCatActive 
                                   ? 'text-white' 
-                                  : (isMyRoute ? 'text-amber-600' : 'text-[#004481]')
+                                  : (isMyRoute ? 'text-amber-600' : 'text-[#8EA85E]')
                               }`} />
                               <span className="truncate">{language === 'KR' ? catItem.labelKR : catItem.labelEN}</span>
                             </div>
@@ -2806,7 +2806,7 @@ export default function BusanItinerariesView({
                     }}
                     className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
                       activeCategory === 'DAY'
-                        ? 'bg-[#004481] text-white border-[#004481]'
+                        ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
                         : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
                     }`}
                   >
@@ -2823,7 +2823,7 @@ export default function BusanItinerariesView({
                     }}
                     className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
                       activeCategory === '1NIGHT'
-                        ? 'bg-[#004481] text-white border-[#004481]'
+                        ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
                         : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
                     }`}
                   >
@@ -2840,7 +2840,7 @@ export default function BusanItinerariesView({
                     }}
                     className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
                       activeCategory === '2NIGHTS' || activeCategory === '3NIGHTS'
-                        ? 'bg-[#004481] text-white border-[#004481]'
+                        ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
                         : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
                     }`}
                   >
@@ -2857,7 +2857,7 @@ export default function BusanItinerariesView({
                     }}
                     className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
                       activeCategory === '4NIGHTS'
-                        ? 'bg-[#004481] text-white border-[#004481]'
+                        ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
                         : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
                     }`}
                   >
@@ -3362,7 +3362,7 @@ export default function BusanItinerariesView({
                       onClick={() => setItineraryTab('STANDARD')}
                       className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer border ${
                         itineraryTab === 'STANDARD'
-                          ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                          ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                           : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
                       }`}
                     >
@@ -3374,7 +3374,7 @@ export default function BusanItinerariesView({
                       onClick={() => setItineraryTab('STEPLESS_GUIDE')}
                       className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer border ${
                         itineraryTab === 'STEPLESS_GUIDE'
-                          ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                          ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                           : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
                       }`}
                     >
