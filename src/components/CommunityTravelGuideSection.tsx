@@ -567,7 +567,7 @@ export function CommunityTravelGuideSection({
             onClick={() => setSelectedCategory('ALL')}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border min-h-[38px] ${
               selectedCategory === 'ALL'
-                ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
@@ -579,7 +579,7 @@ export function CommunityTravelGuideSection({
             onClick={() => setSelectedCategory('TRAVELER_TYPE')}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border min-h-[38px] flex items-center gap-1.5 ${
               selectedCategory === 'TRAVELER_TYPE'
-                ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
@@ -592,7 +592,7 @@ export function CommunityTravelGuideSection({
             onClick={() => setSelectedCategory('REGIONAL_HACKS')}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border min-h-[38px] flex items-center gap-1.5 ${
               selectedCategory === 'REGIONAL_HACKS'
-                ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
@@ -605,7 +605,7 @@ export function CommunityTravelGuideSection({
             onClick={() => setSelectedCategory('SITUATIONAL_ACTION')}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border min-h-[38px] flex items-center gap-1.5 ${
               selectedCategory === 'SITUATIONAL_ACTION'
-                ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
@@ -618,7 +618,7 @@ export function CommunityTravelGuideSection({
             onClick={() => setSelectedCategory('FIELD_QNA')}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border min-h-[38px] flex items-center gap-1.5 ${
               selectedCategory === 'FIELD_QNA'
-                ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
@@ -686,7 +686,7 @@ export function CommunityTravelGuideSection({
                 setSelectedImportance('ALL');
                 setSearchKeyword('');
               }}
-              className="px-4 py-2 bg-[#004481] text-white rounded-xl text-xs font-bold shadow-2xs hover:bg-[#003366] transition-all"
+              className="px-4 py-2 bg-[#8EA85E] text-white rounded-xl text-xs font-bold shadow-2xs hover:bg-[#003366] transition-all"
             >
               {language === 'KR' ? '필터 초기화' : 'Reset Filters'}
             </button>
@@ -778,7 +778,7 @@ export function CommunityTravelGuideSection({
                         key={sIdx}
                         className="flex items-start gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200/70 text-xs text-slate-700"
                       >
-                        <span className="w-5 h-5 rounded-full bg-[#004481] text-white flex items-center justify-center text-2xs font-black shrink-0 mt-0.5 shadow-3xs">
+                        <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-2xs font-black shrink-0 mt-0.5 shadow-3xs">
                           {sIdx + 1}
                         </span>
                         <span className="font-semibold leading-relaxed pt-0.5">{step}</span>
@@ -808,7 +808,7 @@ export function CommunityTravelGuideSection({
                         <button
                           type="button"
                           onClick={() => onSelectStation(tip.relatedStationId!)}
-                          className="px-3 py-2 bg-[#004481] hover:bg-[#003366] text-white text-2xs font-black rounded-xl transition-all shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer"
+                          className="px-3 py-2 bg-[#8EA85E] hover:bg-[#7b944f] text-white text-2xs font-black rounded-xl transition-all shadow-2xs flex items-center gap-1 shrink-0 cursor-pointer"
                         >
                           <span>{language === 'KR' ? '역 출구 보기' : 'View Exits'}</span>
                           <ArrowRight className="w-3 h-3" />

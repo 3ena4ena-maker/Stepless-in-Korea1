@@ -92,11 +92,11 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
                   }}
                   className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs lg:text-sm font-semibold transition-all cursor-pointer ${
                     isActive
-                      ? 'text-[#0A2540] bg-[#F1EFEC] font-bold border-b-2 border-[#0A2540]'
+                      ? 'text-[#8EA85E] bg-[#F1EFEC] font-bold border-b-2 border-[#8EA85E]'
                       : 'text-[#4A5568] hover:text-[#11161B] hover:bg-[#F1EFEC]/60'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#0A2540]' : 'text-slate-400'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#8EA85E]' : 'text-slate-400'}`} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -110,7 +110,7 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
                 onClick={() => { if (language !== 'KR') toggleLanguage(); }}
                 className={`transition-colors cursor-pointer px-1.5 py-1 ${
                   language === 'KR' 
-                    ? 'font-bold text-[#0A2540] underline underline-offset-4 decoration-2' 
+                    ? 'font-bold text-[#8EA85E] underline underline-offset-4 decoration-2' 
                     : 'text-slate-400 hover:text-[#11161B]'
                 }`}
               >
@@ -121,7 +121,7 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
                 onClick={() => { if (language !== 'EN') toggleLanguage(); }}
                 className={`transition-colors cursor-pointer px-1.5 py-1 ${
                   language === 'EN' 
-                    ? 'font-bold text-[#0A2540] underline underline-offset-4 decoration-2' 
+                    ? 'font-bold text-[#8EA85E] underline underline-offset-4 decoration-2' 
                     : 'text-slate-400 hover:text-[#11161B]'
                 }`}
               >
@@ -135,7 +135,7 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
             <div className="flex items-center text-xs font-mono select-none">
               <button
                 onClick={toggleLanguage}
-                className="px-2 py-1 text-xs font-semibold text-[#0A2540] bg-[#F1EFEC] rounded-md border border-[#E5E2DC]"
+                className="px-2 py-1 text-xs font-semibold text-[#8EA85E] bg-[#F1EFEC] rounded-md border border-[#E5E2DC]"
               >
                 {language === 'KR' ? '한국어' : 'English'}
               </button>
@@ -171,11 +171,11 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
                   }}
                   className={`flex items-center gap-3 w-full px-4 py-3 rounded-md text-sm font-semibold transition-all cursor-pointer ${
                     isActive
-                      ? 'text-[#0A2540] bg-[#F1EFEC] font-bold border-l-4 border-[#0A2540]'
+                      ? 'text-[#8EA85E] bg-[#F1EFEC] font-bold border-l-4 border-[#8EA85E]'
                       : 'text-[#4A5568] hover:bg-[#F1EFEC]/60'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#0A2540]' : 'text-slate-400'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#8EA85E]' : 'text-slate-400'}`} />
                   <span>{item.label}</span>
                 </button>
               );

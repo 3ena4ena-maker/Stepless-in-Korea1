@@ -90,7 +90,7 @@ export default function BarrierFreeCourseDetailView({
         </p>
         <button
           onClick={onBackToCourseList}
-          className="px-4 py-2 bg-[#0A2540] text-white rounded-xl text-xs font-bold"
+          className="px-4 py-2 bg-[#8EA85E] text-white rounded-xl text-xs font-bold"
         >
           {language === 'KR' ? '← 추천 코스 목록으로 돌아가기' : '← Back to course list'}
         </button>
@@ -158,7 +158,7 @@ export default function BarrierFreeCourseDetailView({
 
           {/* 태그 & 난이도 */}
           <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
-            <span className="px-3 py-1 rounded-lg bg-[#0A2540] text-white text-xs font-bold shadow-xs">
+            <span className="px-3 py-1 rounded-lg bg-[#8EA85E] text-white text-xs font-bold shadow-xs">
               {language === 'KR' ? course.tagKo : course.tagEn}
             </span>
             <span className="px-3 py-1 rounded-lg bg-emerald-500 text-white text-xs font-bold shadow-xs">
@@ -247,7 +247,7 @@ export default function BarrierFreeCourseDetailView({
                 <div className="bg-white rounded-2xl border-2 border-slate-900 p-4 sm:p-5 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div className="flex items-start gap-3.5 sm:gap-4 flex-1 w-full">
                     {/* 순서 넘버 배지 */}
-                    <div className="w-10 h-10 rounded-2xl bg-[#0A2540] text-white font-black text-sm flex items-center justify-center shrink-0 shadow-xs">
+                    <div className="w-10 h-10 rounded-2xl bg-[#8EA85E] text-white font-black text-sm flex items-center justify-center shrink-0 shadow-xs">
                       {String(idx + 1).padStart(2, '0')}
                     </div>
 
@@ -324,7 +324,7 @@ export default function BarrierFreeCourseDetailView({
                     <button
                       type="button"
                       onClick={() => onNavigateToPlace(targetId)}
-                      className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[#0A2540] hover:bg-[#11161B] text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shrink-0 cursor-pointer shadow-xs"
+                      className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[#8EA85E] hover:bg-[#11161B] text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shrink-0 cursor-pointer shadow-xs"
                     >
                       <span>{language === 'KR' ? '무장애 상세 보기' : 'View Details'}</span>
                       <ChevronRight className="w-4 h-4" />

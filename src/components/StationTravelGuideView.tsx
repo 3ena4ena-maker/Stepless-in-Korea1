@@ -112,7 +112,7 @@ export function StationTravelGuideView({ station, language = 'KR', onSwitchToSta
       <div className="border-b border-slate-150 pb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-2 mb-1.5">
-            <span className="px-2.5 py-1 rounded-lg bg-[#004481] text-white text-xs font-black tracking-wide flex items-center gap-1">
+            <span className="px-2.5 py-1 rounded-lg bg-[#8EA85E] text-white text-xs font-black tracking-wide flex items-center gap-1">
               <Compass className="w-3.5 h-3.5" />
               <span>Stepless Travel Guide</span>
             </span>
@@ -236,7 +236,7 @@ export function StationTravelGuideView({ station, language = 'KR', onSwitchToSta
             >
               <div>
                 <div className="flex items-center gap-1.5 font-black text-[#004481] mb-1">
-                  <span className="w-5 h-5 rounded-full bg-[#004481] text-white flex items-center justify-center text-2xs font-black shrink-0">
+                  <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-2xs font-black shrink-0">
                     {stepItem.step}
                   </span>
                   <span className="text-xs sm:text-sm font-bold text-slate-900">{stepItem.title}</span>

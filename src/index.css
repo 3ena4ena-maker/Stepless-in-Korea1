@@ -6,9 +6,9 @@
   --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'Hanken Grotesk', system-ui, monospace;
   
-  --color-primary-navy: #004481;
-  --color-primary-light: #d5e3ff;
-  --color-primary-container: #005baa;
+  --color-primary-navy: #8EA85E;
+  --color-primary-light: #e8eedd;
+  --color-primary-container: #7b944f;
   --color-secondary-green: #1b6d24;
   --color-secondary-light: #a3f69c;
   --color-secondary-container: #a0f399;
@@ -16,7 +16,6 @@
 
 /* Mobile-first HTML & Body smoothness & zero horizontal scroll overflow */
 html {
-  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   -webkit-tap-highlight-color: transparent;
   width: 100%;

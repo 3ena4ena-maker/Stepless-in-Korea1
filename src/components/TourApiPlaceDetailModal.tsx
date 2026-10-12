@@ -79,7 +79,7 @@ export const TourApiPlaceDetailModal: React.FC<TourApiPlaceDetailModalProps> = (
         onClick={(e) => e.stopPropagation()}
       >
         {/* 모달 상단 헤더 */}
-        <div className="bg-[#0A2540] text-white px-5 py-4 flex items-center justify-between shrink-0">
+        <div className="bg-[#8EA85E] text-white px-5 py-4 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
             <div>
               {detail && (
@@ -105,7 +105,7 @@ export const TourApiPlaceDetailModal: React.FC<TourApiPlaceDetailModalProps> = (
         <div className="overflow-y-auto p-5 sm:p-6 space-y-6">
           {loading && !detail ? (
             <div className="py-16 text-center space-y-3">
-              <div className="w-10 h-10 border-3 border-[#0A2540] border-t-transparent rounded-full animate-spin mx-auto" />
+              <div className="w-10 h-10 border-3 border-[#8EA85E] border-t-transparent rounded-full animate-spin mx-auto" />
               <p className="text-sm font-medium text-[#4A5568]">
                 {language === 'KR' ? '한국관광공사 OpenAPI 무장애 편의시설 정보를 불러오는 중입니다...' : 'Loading official TourAPI barrier-free specifications...'}
               </p>
@@ -120,7 +120,7 @@ export const TourApiPlaceDetailModal: React.FC<TourApiPlaceDetailModalProps> = (
               </p>
               <button
                 onClick={onClose}
-                className="px-4 py-2 bg-[#0A2540] text-white rounded-lg text-xs font-semibold hover:bg-[#07192C]"
+                className="px-4 py-2 bg-[#8EA85E] text-white rounded-lg text-xs font-semibold hover:bg-[#7b944f]"
               >
                 {language === 'KR' ? '확인 및 닫기' : 'Close'}
               </button>
@@ -449,7 +449,7 @@ export const TourApiPlaceDetailModal: React.FC<TourApiPlaceDetailModalProps> = (
           </span>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-[#0A2540] hover:bg-[#07192C] text-white rounded-lg text-xs font-bold transition-colors"
+            className="px-4 py-2 bg-[#8EA85E] hover:bg-[#7b944f] text-white rounded-lg text-xs font-bold transition-colors"
           >
             {language === 'KR' ? '닫기' : 'Close'}
           </button>

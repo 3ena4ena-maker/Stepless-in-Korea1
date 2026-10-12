@@ -2188,11 +2188,11 @@ export default function BusanItinerariesView({
               {/* Card 1: 대중교통 이용 팁 */}
               <div
                 onClick={() => navigateToSubPage('transit')}
-                className="group bg-white p-3 rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left relative"
+                className="group bg-white p-3 rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left relative"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-[#0A2540] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-[#8EA85E] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
                       <Train className="w-4 h-4" />
                     </div>
                     <ArrowRight className="w-3.5 h-3.5 text-[#718096] group-hover:text-[#0A2540] group-hover:translate-x-0.5 transition-all shrink-0" />
@@ -2211,11 +2211,11 @@ export default function BusanItinerariesView({
               {/* Card 2: 여행 코스 추천 */}
               <div
                 onClick={() => navigateToSubPage('courses')}
-                className="group bg-white p-3 rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left relative"
+                className="group bg-white p-3 rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left relative"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-[#0A2540] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-[#8EA85E] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
                       <Compass className="w-4 h-4" />
                     </div>
                     <ArrowRight className="w-3.5 h-3.5 text-[#718096] group-hover:text-[#0A2540] group-hover:translate-x-0.5 transition-all shrink-0" />
@@ -2234,11 +2234,11 @@ export default function BusanItinerariesView({
               {/* Card 3: 부산 주요 일정표 */}
               <div
                 onClick={() => navigateToSubPage('schedule')}
-                className="group bg-white p-3 rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left relative"
+                className="group bg-white p-3 rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left relative"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-[#0A2540] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-[#8EA85E] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
                       <Calendar className="w-4 h-4" />
                     </div>
                     <ArrowRight className="w-3.5 h-3.5 text-[#718096] group-hover:text-[#0A2540] group-hover:translate-x-0.5 transition-all shrink-0" />
@@ -2259,11 +2259,11 @@ export default function BusanItinerariesView({
                 href="https://www.reddit.com/r/BusanTravelTips/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group bg-white p-3 rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left relative block"
+                className="group bg-white p-3 rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left relative block"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-[#0A2540] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-[#8EA85E] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
                       <MessageSquare className="w-4 h-4" />
                     </div>
                     <ArrowRight className="w-3.5 h-3.5 text-[#718096] group-hover:text-[#0A2540] group-hover:translate-x-0.5 transition-all shrink-0" />
@@ -2305,7 +2305,7 @@ export default function BusanItinerariesView({
                 <div>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#0A2540] text-white flex items-center justify-center shrink-0 shadow-xs">
+                      <div className="w-12 h-12 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
                         <Train className="w-6 h-6" />
                       </div>
                       <div>
@@ -2339,7 +2339,7 @@ export default function BusanItinerariesView({
                 <div>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#0A2540] text-white flex items-center justify-center shrink-0 shadow-xs">
+                      <div className="w-12 h-12 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
                         <Compass className="w-6 h-6" />
                       </div>
                       <div>
@@ -2373,7 +2373,7 @@ export default function BusanItinerariesView({
                 <div>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#0A2540] text-white flex items-center justify-center shrink-0 shadow-xs">
+                      <div className="w-12 h-12 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
                         <Calendar className="w-6 h-6" />
                       </div>
                       <div>
@@ -2409,7 +2409,7 @@ export default function BusanItinerariesView({
                 <div>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#0A2540] text-white flex items-center justify-center shrink-0 shadow-xs">
+                      <div className="w-12 h-12 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
                         <MessageSquare className="w-6 h-6" />
                       </div>
                       <div>
@@ -2883,7 +2883,7 @@ export default function BusanItinerariesView({
                         setActiveCategory('GOURMET');
                       }
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
                     <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
                       <FoodieIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
@@ -2904,7 +2904,7 @@ export default function BusanItinerariesView({
                         setActiveCategory('EXPERIENCE');
                       }
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
                     <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
                       <ExperienceIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
@@ -2925,7 +2925,7 @@ export default function BusanItinerariesView({
                         setActiveCategory('MARKET');
                       }
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
                     <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
                       <TraditionalMarketIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
@@ -2946,7 +2946,7 @@ export default function BusanItinerariesView({
                         setActiveCategory('ATTRACTION');
                       }
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
                     <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
                       <AttractionIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
@@ -2968,7 +2968,7 @@ export default function BusanItinerariesView({
                         setActiveCategory(targetDuration);
                       }
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
                     <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
                       <ItineraryIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
@@ -2989,7 +2989,7 @@ export default function BusanItinerariesView({
                         setActiveCategory('SUBWAY');
                       }
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
                     <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
                       <SubwayCourseIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
@@ -3011,7 +3011,7 @@ export default function BusanItinerariesView({
                       }
                       navigateToSpa('/barrier-free');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#0A2540] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
                     <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
                       <BarrierFreeIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
@@ -3453,7 +3453,7 @@ export default function BusanItinerariesView({
 
                       {/* Overall Tip */}
                       <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
-                        <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                        <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
                           <Info className="w-4 h-4" />
                         </div>
                         <div className="space-y-1 text-left">
@@ -3492,7 +3492,7 @@ export default function BusanItinerariesView({
                       <div className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-5 text-left">
                         <div className="border-b border-[#E5E2DC] pb-3.5 space-y-3">
                           <h4 className="text-base font-bold text-[#11161B] flex items-center gap-2">
-                            <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0A2540] text-white font-mono font-bold text-xs">
+                            <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#8EA85E] text-white font-mono font-bold text-xs">
                               DAY 1
                             </span>
                             <span>{language === 'KR' ? 'Day 1 동선 안내' : 'Day 1 Itinerary'}</span>
@@ -3539,7 +3539,7 @@ export default function BusanItinerariesView({
                       <div className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-5 text-left">
                         <div className="border-b border-[#E5E2DC] pb-3.5 space-y-3">
                           <h4 className="text-base font-bold text-[#11161B] flex items-center gap-2">
-                            <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0A2540] text-white font-mono font-bold text-xs">
+                            <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#8EA85E] text-white font-mono font-bold text-xs">
                               DAY 2
                             </span>
                             <span>{language === 'KR' ? 'Day 2 동선 안내' : 'Day 2 Itinerary'}</span>
@@ -3585,7 +3585,7 @@ export default function BusanItinerariesView({
 
                     {/* Overall tip banner */}
                     <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
-                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                      <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
                         <Info className="w-4 h-4" />
                       </div>
                       <div className="space-y-1 text-left">
@@ -3639,7 +3639,7 @@ export default function BusanItinerariesView({
                           <div key={dayNum} className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-5 text-left">
                             <div className="border-b border-[#E5E2DC] pb-3.5 space-y-3">
                               <h4 className="text-base font-bold text-[#11161B] flex items-center gap-2">
-                                <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0A2540] text-white font-mono font-bold text-xs">
+                                <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#8EA85E] text-white font-mono font-bold text-xs">
                                   DAY {dayNum}
                                 </span>
                                 <span>{language === 'KR' ? dayTitlesKo[dayNum - 1] : dayTitlesEn[dayNum - 1]}</span>
@@ -3683,7 +3683,7 @@ export default function BusanItinerariesView({
 
                     {/* Overall tip banner */}
                     <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
-                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                      <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
                         <Info className="w-4 h-4" />
                       </div>
                       <div className="space-y-1 text-left">
@@ -3726,7 +3726,7 @@ export default function BusanItinerariesView({
                           <div key={dayNum} className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-5 text-left">
                             <div className="border-b border-[#E5E2DC] pb-3.5 space-y-3">
                               <h4 className="text-base font-bold text-[#11161B] flex items-center gap-2">
-                                <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0A2540] text-white font-mono font-bold text-xs">
+                                <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#8EA85E] text-white font-mono font-bold text-xs">
                                   DAY {dayNum}
                                 </span>
                                 <span>{language === 'KR' ? `Day ${dayNum} 일정` : `Day ${dayNum} Itinerary`}</span>
@@ -3770,7 +3770,7 @@ export default function BusanItinerariesView({
 
                     {/* Overall tip */}
                     <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
-                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                      <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
                         <Info className="w-4 h-4" />
                       </div>
                       <div className="space-y-1 text-left">
@@ -3827,7 +3827,7 @@ export default function BusanItinerariesView({
                         return (
                           <div key={dayNum} className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-5 text-left">
                             <h4 className="text-base font-bold text-[#11161B] border-b border-[#E5E2DC] pb-3 flex items-center gap-2">
-                              <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0A2540] text-white font-mono font-bold text-xs">
+                              <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-[#8EA85E] text-white font-mono font-bold text-xs">
                                 DAY {dayNum}
                               </span>
                               <span>
@@ -3857,7 +3857,7 @@ export default function BusanItinerariesView({
 
                     {/* Overall tip banner */}
                     <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
-                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                      <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
                         <Info className="w-4 h-4" />
                       </div>
                       <div className="space-y-1 text-left">
@@ -3928,7 +3928,7 @@ export default function BusanItinerariesView({
                               onClick={() => setSelectedGourmetRegion(tab.id)}
                               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer shrink-0 border ${
                                 isSelected
-                                  ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                                  ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
                                   : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                               }`}
                             >
@@ -3967,7 +3967,7 @@ export default function BusanItinerariesView({
                                 onClick={() => setSelectedGourmetFoodCat(tab.id)}
                                 className={`flex items-center justify-between px-3 py-2 rounded-md text-xs font-bold transition-colors cursor-pointer border ${
                                   isSelected
-                                    ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                                    ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
                                     : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
                                 }`}
                               >
@@ -4004,7 +4004,7 @@ export default function BusanItinerariesView({
                         return (
                           <div 
                             key={idx} 
-                            className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#0A2540] transition-colors p-5 sm:p-6 flex flex-col justify-between text-left"
+                            className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors p-5 sm:p-6 flex flex-col justify-between text-left"
                           >
                             <div className="space-y-3 text-left">
                               <div className="flex items-center justify-between border-b border-[#E5E2DC] pb-2.5">
@@ -4087,7 +4087,7 @@ export default function BusanItinerariesView({
 
                     {/* Overall tip banner */}
                     <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
-                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                      <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
                         <Info className="w-4 h-4 text-white shrink-0" />
                       </div>
                       <div className="space-y-1 select-none text-left">
@@ -4158,7 +4158,7 @@ export default function BusanItinerariesView({
                                 onClick={() => setSelectedExperienceRegion(tab.id)}
                                 className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer shrink-0 border ${
                                   isSelected
-                                    ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                                    ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
                                     : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                                 }`}
                               >
@@ -4191,7 +4191,7 @@ export default function BusanItinerariesView({
                                 onClick={() => setSelectedExperienceTheme(tab.id)}
                                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer shrink-0 border ${
                                   isSelected
-                                    ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                                    ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
                                     : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
                                 }`}
                               >
@@ -4220,7 +4220,7 @@ export default function BusanItinerariesView({
                             setSelectedExperienceTheme('ALL');
                             setSelectedExperienceRegion('ALL');
                           }}
-                          className="mt-2 px-4 py-2 bg-[#0A2540] text-white text-xs font-bold rounded-md cursor-pointer hover:bg-[#0A2540]/90 transition-colors"
+                          className="mt-2 px-4 py-2 bg-[#8EA85E] text-white text-xs font-bold rounded-md cursor-pointer hover:bg-[#8EA85E]/90 transition-colors"
                         >
                           {language === 'KR' ? '필터 초기화 (전체 보기)' : 'Reset Filters'}
                         </button>
@@ -4249,7 +4249,7 @@ export default function BusanItinerariesView({
                           return (
                             <div 
                               key={idx} 
-                              className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#0A2540] transition-colors p-5 flex flex-col justify-between text-left space-y-4"
+                              className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors p-5 flex flex-col justify-between text-left space-y-4"
                             >
                               <div className="space-y-3 text-left">
                                 {/* Top Badges Row */}
@@ -4327,7 +4327,7 @@ export default function BusanItinerariesView({
 
                     {/* Overall tip block */}
                     <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
-                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                      <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
                         <Info className="w-4 h-4 text-white shrink-0" />
                       </div>
                       <div className="space-y-1 select-none text-left">
@@ -4382,7 +4382,7 @@ export default function BusanItinerariesView({
                             onClick={() => setSelectedMarketRegion(tab.id)}
                             className={`px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
                               selectedMarketRegion === tab.id
-                                ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                                ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
                                 : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
                             }`}
                           >
@@ -4408,7 +4408,7 @@ export default function BusanItinerariesView({
                         return (
                           <div
                             key={idx}
-                            className="bg-white rounded-lg border border-[#E5E2DC] p-5 hover:border-[#0A2540] transition-colors duration-200 flex flex-col justify-between text-left space-y-4"
+                            className="bg-white rounded-lg border border-[#E5E2DC] p-5 hover:border-[#8EA85E] transition-colors duration-200 flex flex-col justify-between text-left space-y-4"
                           >
                             <div className="space-y-3">
                               <div className="flex items-center justify-between gap-2">
@@ -4498,7 +4498,7 @@ export default function BusanItinerariesView({
 
                     {/* Overall tip block */}
                     <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
-                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                      <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
                         <Info className="w-4 h-4 text-white shrink-0" />
                       </div>
                       <div className="space-y-1 select-none text-left">
@@ -4550,7 +4550,7 @@ export default function BusanItinerariesView({
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                         <div className="bg-[#FBFBF9] p-3 rounded-md border border-[#E5E2DC] space-y-1">
                           <div className="flex items-center justify-between gap-1">
-                            <span className="bg-[#0A2540] text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded-md shrink-0">
+                            <span className="bg-[#8EA85E] text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded-md shrink-0">
                               {language === 'KR' ? '1호선' : 'Line 1'}
                             </span>
                             <span className="font-bold text-[#11161B] text-xs">
@@ -4566,7 +4566,7 @@ export default function BusanItinerariesView({
 
                         <div className="bg-[#FBFBF9] p-3 rounded-md border border-[#E5E2DC] space-y-1">
                           <div className="flex items-center justify-between gap-1">
-                            <span className="bg-[#0A2540] text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded-md shrink-0">
+                            <span className="bg-[#8EA85E] text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded-md shrink-0">
                               {language === 'KR' ? '2호선' : 'Line 2'}
                             </span>
                             <span className="font-bold text-[#11161B] text-xs">
@@ -4621,7 +4621,7 @@ export default function BusanItinerariesView({
                           }}
                           className={`p-4 rounded-lg border text-left transition-colors cursor-pointer flex items-center justify-between ${
                             currentLine === 'LINE1'
-                              ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                              ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
                               : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                           }`}
                         >
@@ -4652,7 +4652,7 @@ export default function BusanItinerariesView({
                           }}
                           className={`p-4 rounded-lg border text-left transition-colors cursor-pointer flex items-center justify-between ${
                             currentLine === 'LINE2'
-                              ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                              ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
                               : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                           }`}
                         >
@@ -4688,7 +4688,7 @@ export default function BusanItinerariesView({
                               }}
                               className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors cursor-pointer text-center border ${
                                 isActive 
-                                  ? 'bg-[#0A2540] text-white border-[#0A2540]' 
+                                  ? 'bg-[#8EA85E] text-white border-[#8EA85E]' 
                                   : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
                               }`}
                             >
@@ -4703,7 +4703,7 @@ export default function BusanItinerariesView({
                         <div id="jungang-nampo-jagalchi-guide" className="bg-[#FBFBF9] border border-[#E5E2DC] p-5 rounded-lg space-y-4 text-left animate-fade-in">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E5E2DC] pb-3">
                             <div className="flex items-center gap-2">
-                              <span className="bg-[#0A2540] text-white font-mono font-bold text-xs px-2.5 py-0.5 rounded-md">
+                              <span className="bg-[#8EA85E] text-white font-mono font-bold text-xs px-2.5 py-0.5 rounded-md">
                                 1호선
                               </span>
                               <h3 className="font-bold text-[#11161B] text-base">
@@ -4763,7 +4763,7 @@ export default function BusanItinerariesView({
                         <div id="oncheonjang-guide" className="bg-[#FBFBF9] border border-[#E5E2DC] p-5 rounded-lg space-y-4 text-left animate-fade-in">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E5E2DC] pb-3">
                             <div className="flex items-center gap-2">
-                              <span className="bg-[#0A2540] text-white font-mono font-bold text-xs px-2.5 py-0.5 rounded-md">
+                              <span className="bg-[#8EA85E] text-white font-mono font-bold text-xs px-2.5 py-0.5 rounded-md">
                                 1호선
                               </span>
                               <h3 className="font-bold text-[#11161B] text-base">
@@ -4801,7 +4801,7 @@ export default function BusanItinerariesView({
                         <div id="beomeosa-guide" className="bg-[#FBFBF9] border border-[#E5E2DC] p-5 rounded-lg space-y-4 text-left animate-fade-in">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E5E2DC] pb-3">
                             <div className="flex items-center gap-2">
-                              <span className="bg-[#0A2540] text-white font-mono font-bold text-xs px-2.5 py-0.5 rounded-md">
+                              <span className="bg-[#8EA85E] text-white font-mono font-bold text-xs px-2.5 py-0.5 rounded-md">
                                 1호선
                               </span>
                               <h3 className="font-bold text-[#11161B] text-base">
@@ -4858,7 +4858,7 @@ export default function BusanItinerariesView({
                                 return (
                                   <div 
                                     key={idx} 
-                                    className="p-5 sm:p-6 rounded-lg border border-[#E5E2DC] bg-white hover:border-[#0A2540] transition-colors flex flex-col justify-between gap-4 text-left"
+                                    className="p-5 sm:p-6 rounded-lg border border-[#E5E2DC] bg-white hover:border-[#8EA85E] transition-colors flex flex-col justify-between gap-4 text-left"
                                   >
                                     <div className="space-y-3 text-left">
                                       <div className="flex items-start justify-between gap-2 border-b border-[#E5E2DC] pb-2.5">
@@ -5013,7 +5013,7 @@ export default function BusanItinerariesView({
                             onClick={() => setSelectedAttractionRegion(tab.id)}
                             className={`px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
                               selectedAttractionRegion === tab.id
-                                ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                                ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
                                 : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
                             }`}
                           >
@@ -5040,7 +5040,7 @@ export default function BusanItinerariesView({
                         return (
                           <div
                             key={idx}
-                            className="bg-white rounded-lg border border-[#E5E2DC] p-5 hover:border-[#0A2540] transition-colors duration-200 flex flex-col justify-between text-left space-y-4 shadow-xs"
+                            className="bg-white rounded-lg border border-[#E5E2DC] p-5 hover:border-[#8EA85E] transition-colors duration-200 flex flex-col justify-between text-left space-y-4 shadow-xs"
                           >
                             <div className="space-y-3">
                               <div className="flex items-center justify-between gap-2">
@@ -5157,7 +5157,7 @@ export default function BusanItinerariesView({
                               {/* Local Tip Box (부산현지인 팁!) */}
                               {(step.tipKo || step.tipEn) && (
                                 <div className="p-3.5 rounded-lg bg-[#F8F9FA] border border-[#E2E8F0] text-xs flex items-start gap-2.5 mt-2.5 shadow-2xs">
-                                  <div className="p-1 rounded bg-[#0A2540] text-white shrink-0 mt-0.5">
+                                  <div className="p-1 rounded bg-[#8EA85E] text-white shrink-0 mt-0.5">
                                     <Info className="w-3.5 h-3.5 text-amber-300" />
                                   </div>
                                   <div className="space-y-1 leading-relaxed text-left">
@@ -5194,7 +5194,7 @@ export default function BusanItinerariesView({
 
                     {/* Overall tip block */}
                     <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
-                      <div className="p-2 rounded-md bg-[#0A2540] text-white shrink-0 mt-0.5">
+                      <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
                         <Info className="w-4 h-4 text-white shrink-0" />
                       </div>
                       <div className="space-y-1 select-none text-left">
@@ -5348,7 +5348,7 @@ export default function BusanItinerariesView({
                         </>
                       )}
                     </p>
-                    <div className="inline-flex items-center justify-center gap-1 sm:gap-2 w-full bg-[#004481] hover:bg-[#003566] text-white border-2 border-slate-900 text-[11px] sm:text-sm font-black py-1.5 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] sm:shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-all duration-200 group-hover:scale-[1.02]">
+                    <div className="inline-flex items-center justify-center gap-1 sm:gap-2 w-full bg-[#8EA85E] hover:bg-[#7b944f] text-white border-2 border-slate-900 text-[11px] sm:text-sm font-black py-1.5 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] sm:shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-all duration-200 group-hover:scale-[1.02]">
                       <span>
                         {language === 'KR' ? (
                           <>
@@ -5581,7 +5581,7 @@ export default function BusanItinerariesView({
                         </>
                       )}
                     </p>
-                    <div className="inline-flex items-center justify-center gap-1 sm:gap-2 w-full bg-[#004481] hover:bg-[#003566] text-white border-2 border-slate-900 text-[11px] sm:text-sm font-black py-1.5 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] sm:shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-all duration-200 group-hover:scale-[1.02]">
+                    <div className="inline-flex items-center justify-center gap-1 sm:gap-2 w-full bg-[#8EA85E] hover:bg-[#7b944f] text-white border-2 border-slate-900 text-[11px] sm:text-sm font-black py-1.5 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] sm:shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-all duration-200 group-hover:scale-[1.02]">
                       <span>
                         {language === 'KR' ? (
                           <>
@@ -6566,7 +6566,7 @@ export default function BusanItinerariesView({
                 onClick={() => setCommunityTab('STANDARD')}
                 className={`py-3 px-3 sm:px-5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 cursor-pointer border min-h-[44px] ${
                   communityTab === 'STANDARD'
-                    ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                    ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                     : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
                 }`}
               >
@@ -6580,7 +6580,7 @@ export default function BusanItinerariesView({
                 onClick={() => setCommunityTab('STEPLESS_GUIDE')}
                 className={`py-3 px-3 sm:px-5 rounded-xl font-black text-xs sm:text-sm transition-all flex items-center justify-center gap-2 cursor-pointer border min-h-[44px] ${
                   communityTab === 'STEPLESS_GUIDE'
-                    ? 'bg-[#004481] text-white border-[#004481] shadow-2xs ring-2 ring-blue-100'
+                    ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs ring-2 ring-blue-100'
                     : 'bg-gradient-to-r from-amber-50 to-blue-50 hover:from-amber-100 hover:to-blue-100 text-blue-950 border-amber-200/80 shadow-2xs'
                 }`}
               >
@@ -6608,7 +6608,7 @@ export default function BusanItinerariesView({
               </div>
 
               {/* Official Reddit Banner */}
-              <div className="border border-[#E5E2DC] rounded-xl p-6 bg-[#FBFBF9] hover:border-[#0A2540] transition-colors flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="border border-[#E5E2DC] rounded-xl p-6 bg-[#FBFBF9] hover:border-[#8EA85E] transition-colors flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="space-y-2 max-w-xl">
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-[#11161B] text-base">
@@ -6629,7 +6629,7 @@ export default function BusanItinerariesView({
                   href="https://www.reddit.com/r/BusanTravelTips/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-5 py-3 rounded-xl bg-[#11161B] hover:bg-[#0A2540] text-white font-semibold text-xs transition-colors whitespace-nowrap cursor-pointer flex items-center gap-2 shrink-0 shadow-2xs"
+                  className="px-5 py-3 rounded-xl bg-[#11161B] hover:bg-[#8EA85E] text-white font-semibold text-xs transition-colors whitespace-nowrap cursor-pointer flex items-center gap-2 shrink-0 shadow-2xs"
                 >
                   <span>{language === 'KR' ? '레딧 커뮤니티 방문하기' : 'Visit Reddit Community'}</span>
                   <ExternalLink className="w-3.5 h-3.5" />

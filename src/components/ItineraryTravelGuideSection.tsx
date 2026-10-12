@@ -146,7 +146,7 @@ export default function ItineraryTravelGuideSection({
                 onClick={() => setSelectedDayCourseId('itinerary-day-first-time')}
                 className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
                   selectedDayCourseId === 'itinerary-day-first-time'
-                    ? 'bg-[#0A2540] text-white shadow-2xs'
+                    ? 'bg-[#8EA85E] text-white shadow-2xs'
                     : 'text-[#4A5568] hover:text-[#11161B]'
                 }`}
               >
@@ -157,7 +157,7 @@ export default function ItineraryTravelGuideSection({
                 onClick={() => setSelectedDayCourseId('itinerary-day')}
                 className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
                   selectedDayCourseId === 'itinerary-day'
-                    ? 'bg-[#0A2540] text-white shadow-2xs'
+                    ? 'bg-[#8EA85E] text-white shadow-2xs'
                     : 'text-[#4A5568] hover:text-[#11161B]'
                 }`}
               >
@@ -175,7 +175,7 @@ export default function ItineraryTravelGuideSection({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
         {/* Metric 1: 소요 시간 */}
         <div className="bg-white p-4 rounded-xl border border-[#E5E2DC] flex items-start gap-3">
-          <div className="w-9 h-9 rounded-lg bg-[#0A2540]/5 text-[#0A2540] flex items-center justify-center shrink-0">
+          <div className="w-9 h-9 rounded-lg bg-[#8EA85E]/5 text-[#0A2540] flex items-center justify-center shrink-0">
             <Clock className="w-4 h-4" />
           </div>
           <div className="space-y-0.5 min-w-0">
@@ -190,7 +190,7 @@ export default function ItineraryTravelGuideSection({
 
         {/* Metric 2: 주요 권역 */}
         <div className="bg-white p-4 rounded-xl border border-[#E5E2DC] flex items-start gap-3">
-          <div className="w-9 h-9 rounded-lg bg-[#0A2540]/5 text-[#0A2540] flex items-center justify-center shrink-0">
+          <div className="w-9 h-9 rounded-lg bg-[#8EA85E]/5 text-[#0A2540] flex items-center justify-center shrink-0">
             <MapPin className="w-4 h-4" />
           </div>
           <div className="space-y-0.5 min-w-0">
@@ -205,7 +205,7 @@ export default function ItineraryTravelGuideSection({
 
         {/* Metric 3: 이동 수단 */}
         <div className="bg-white p-4 rounded-xl border border-[#E5E2DC] flex items-start gap-3">
-          <div className="w-9 h-9 rounded-lg bg-[#0A2540]/5 text-[#0A2540] flex items-center justify-center shrink-0">
+          <div className="w-9 h-9 rounded-lg bg-[#8EA85E]/5 text-[#0A2540] flex items-center justify-center shrink-0">
             <Train className="w-4 h-4" />
           </div>
           <div className="space-y-0.5 min-w-0">
@@ -220,7 +220,7 @@ export default function ItineraryTravelGuideSection({
 
         {/* Metric 4: 보행 난이도 */}
         <div className="bg-white p-4 rounded-xl border border-[#E5E2DC] flex items-start gap-3">
-          <div className="w-9 h-9 rounded-lg bg-[#0A2540]/5 text-[#0A2540] flex items-center justify-center shrink-0">
+          <div className="w-9 h-9 rounded-lg bg-[#8EA85E]/5 text-[#0A2540] flex items-center justify-center shrink-0">
             <Footprints className="w-4 h-4" />
           </div>
           <div className="space-y-0.5 min-w-0">
@@ -302,7 +302,7 @@ export default function ItineraryTravelGuideSection({
             <div className="absolute left-[11px] sm:left-[15px] top-2 bottom-2 w-0.5 bg-[#E5E2DC]" />
             {(language === 'KR' ? guide.whyThisOrderKo.flowStepsKo : guide.whyThisOrderEn.flowStepsEn).map((step, sidx) => (
               <div key={sidx} className="relative flex items-start gap-3">
-                <div className="absolute -left-[24px] sm:-left-[28px] top-0.5 w-5 h-5 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-[10px] font-mono font-bold shrink-0 shadow-2xs">
+                <div className="absolute -left-[24px] sm:-left-[28px] top-0.5 w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-[10px] font-mono font-bold shrink-0 shadow-2xs">
                   {sidx + 1}
                 </div>
                 <div className="p-3 bg-white rounded-lg border border-[#E5E2DC] text-xs sm:text-sm font-medium text-[#11161B] w-full">
@@ -332,10 +332,10 @@ export default function ItineraryTravelGuideSection({
           {guide.steplessPoints.map((point, idx) => (
             <div
               key={idx}
-              className="p-4 sm:p-5 rounded-xl bg-white border border-[#E5E2DC] hover:border-[#0A2540] transition-colors space-y-2"
+              className="p-4 sm:p-5 rounded-xl bg-white border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors space-y-2"
             >
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-md bg-[#0A2540]/10 text-[#0A2540]">
+                <div className="p-1.5 rounded-md bg-[#8EA85E]/10 text-[#0A2540]">
                   {renderIcon(point.icon)}
                 </div>
                 <h4 className="text-xs sm:text-sm font-bold text-[#11161B]">
@@ -483,7 +483,7 @@ export default function ItineraryTravelGuideSection({
           </div>
           <button
             onClick={onSwitchToStandard}
-            className="px-4 py-2 rounded-lg bg-[#0A2540] hover:bg-[#11161B] text-white text-xs font-bold transition-colors cursor-pointer shrink-0"
+            className="px-4 py-2 rounded-lg bg-[#8EA85E] hover:bg-[#11161B] text-white text-xs font-bold transition-colors cursor-pointer shrink-0"
           >
             {language === 'KR' ? '기본 일정표로 전환' : 'Switch to Standard Schedule'}
           </button>

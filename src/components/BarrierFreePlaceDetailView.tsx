@@ -160,7 +160,7 @@ export default function BarrierFreePlaceDetailView({
             <button
               type="button"
               onClick={onBack}
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0A2540] text-white rounded-lg text-xs font-bold hover:bg-[#11161B] transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#8EA85E] text-white rounded-lg text-xs font-bold hover:bg-[#11161B] transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>{language === 'KR' ? '이전 화면으로 돌아가기' : 'Back to previous page'}</span>
@@ -542,7 +542,7 @@ export default function BarrierFreePlaceDetailView({
               <div className="pt-1.5">
                 <a
                   href={`tel:${currentPlace.tel.replace(/[^0-9]/g, '')}`}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#0A2540] text-white text-xs font-bold hover:bg-[#11161B] transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#8EA85E] text-white text-xs font-bold hover:bg-[#11161B] transition-colors"
                 >
                   <Phone className="w-3.5 h-3.5" />
                   <span>{language === 'KR' ? `문의 전화: ${currentPlace.tel}` : `Call: ${currentPlace.tel}`}</span>
@@ -592,7 +592,7 @@ export default function BarrierFreePlaceDetailView({
                   const stationQuery = currentPlace.nearestStationNameKo.split(' ')[0].replace(/역$/, '');
                   onSelectStation(stationQuery);
                 }}
-                className="w-full py-2 rounded-lg bg-[#0A2540] hover:bg-[#11161B] text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-2 rounded-lg bg-[#8EA85E] hover:bg-[#11161B] text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Train className="w-3.5 h-3.5" />
                 <span>

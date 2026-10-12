@@ -188,7 +188,7 @@ export default function StationSearchBar({
           <button
             type="button"
             onClick={() => handleExecuteSearch()}
-            className="px-4 py-2 bg-[#004481] hover:bg-blue-900 text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all cursor-pointer shadow-xs active:scale-95 flex items-center gap-1"
+            className="px-4 py-2 bg-[#8EA85E] hover:bg-[#7b944f] text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all cursor-pointer shadow-xs active:scale-95 flex items-center gap-1"
           >
             <span>{language === 'KR' ? '검색' : 'Search'}</span>
           </button>

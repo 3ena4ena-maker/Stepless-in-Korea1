@@ -66,7 +66,7 @@ const SubwayStationMap = lazyWithRetry(() => import('./components/SubwayStationM
 // Dynamic tab loading fallback component for code-split views
 const TabLoadingFallback = ({ text = "정보를 신속하게 불러오는 중..." }: { text?: string }) => (
   <div className="flex flex-col items-center justify-center min-h-[360px] p-8 text-center space-y-3 animate-fade-in">
-    <div className="w-10 h-10 border-3 border-blue-100 border-t-[#004481] rounded-full animate-spin"></div>
+    <div className="w-9 h-9 border-3 border-emerald-100 border-t-[#8EA85E] rounded-full animate-spin"></div>
     <p className="text-sm font-bold text-slate-600">{text}</p>
   </div>
 );
@@ -178,6 +178,19 @@ const DEFAULT_RECOMMENDATIONS: TravelerRecommendation[] = [
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<string>('home');
+  const [visitedTabs, setVisitedTabs] = useState<Record<string, boolean>>({ home: true });
+
+  useEffect(() => {
+    setVisitedTabs(prev => ({ ...prev, [currentTab]: true }));
+  }, [currentTab]);
+
+  // Immediately preload all code-split views in background for instant transitions
+  useEffect(() => {
+    import('./components/BusanItinerariesView');
+    import('./components/SiteIntroductionView');
+    import('./components/StationTravelGuideView');
+    import('./components/SubwayStationMap');
+  }, []);
   const [language, setLanguage] = useState<'KR' | 'EN'>('KR');
   const [selectedStationId, setSelectedStationId] = useState<string>('seomyeon');
   const [isHomeLanding, setIsHomeLanding] = useState<boolean>(true);
@@ -1338,8 +1351,8 @@ export default function App() {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 sm:py-8 animate-fade-in">
           
           {/* Tab 1: HOME LANDING VIEW */}
-          {currentTab === 'home' && (
-            <div className="space-y-8">
+          {(visitedTabs['home'] || currentTab === 'home') && (
+            <div className={currentTab === 'home' ? 'space-y-8' : 'hidden'}>
               {/* Feature Hero banner removed as requested */}
               {isHomeLanding && (
                 <>
@@ -1440,8 +1453,8 @@ export default function App() {
           )}
 
           {/* Tab 2: SEARCH / BENTO GRID VIEW */}
-          {currentTab === 'search' && (
-            <div className="space-y-8 text-left google-anno-skip" data-ad-exclude="true">
+          {(visitedTabs['search'] || currentTab === 'search') && (
+            <div className={currentTab === 'search' ? 'space-y-8 text-left google-anno-skip' : 'hidden'} data-ad-exclude="true">
               {/* Search Header */}
               <div>
                 <h2 className="text-2xl font-extrabold font-heading text-slate-800">
@@ -1505,8 +1518,8 @@ export default function App() {
                         }}
                         className={`p-2.5 sm:p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-0.5 active:scale-95 ${
                           isSelected
-                            ? 'bg-[#1e3a70] border-[#1e3a70] text-white shadow-sm ring-2 ring-blue-500/20'
-                            : 'bg-white border-slate-300 hover:border-blue-400 hover:bg-slate-50 text-slate-800'
+                            ? 'bg-[#8EA85E] border-[#8EA85E] text-white shadow-sm ring-2 ring-[#8EA85E]/20'
+                            : 'bg-white border-slate-300 hover:border-[#8EA85E] hover:bg-slate-50 text-slate-800'
                         }`}
                       >
                         <span className={`font-bold text-sm sm:text-base font-heading ${isSelected ? 'text-white' : 'text-slate-800'}`}>
@@ -1514,28 +1527,28 @@ export default function App() {
                         </span>
                         <div className="text-[11px] sm:text-xs font-semibold inline-flex items-center gap-0.5">
                           {lineStr.split('·').map((part, idx) => {
-                            let colorClass = isSelected ? 'text-blue-200 font-bold' : 'text-blue-600 font-bold';
+                            let colorClass = isSelected ? 'text-white/90 font-bold' : 'text-blue-600 font-bold';
                             if (part.includes('1')) {
-                              colorClass = isSelected ? 'text-orange-300 font-bold' : 'text-orange-600 font-bold';
+                              colorClass = isSelected ? 'text-amber-200 font-bold' : 'text-orange-600 font-bold';
                             } else if (part.includes('2')) {
-                              colorClass = isSelected ? 'text-emerald-300 font-bold' : 'text-emerald-600 font-bold';
+                              colorClass = isSelected ? 'text-emerald-100 font-bold' : 'text-emerald-600 font-bold';
                             } else if (part.includes('3')) {
-                              colorClass = isSelected ? 'text-amber-300 font-bold' : 'text-amber-700 font-bold';
+                              colorClass = isSelected ? 'text-amber-100 font-bold' : 'text-amber-700 font-bold';
                             } else if (part.includes('동해')) {
-                              colorClass = isSelected ? 'text-sky-300 font-bold' : 'text-sky-600 font-bold';
+                              colorClass = isSelected ? 'text-sky-100 font-bold' : 'text-sky-600 font-bold';
                             }
 
                             return (
                               <React.Fragment key={idx}>
                                 {idx > 0 && (
-                                  <span className={isSelected ? 'text-blue-200/60 font-normal' : 'text-slate-300 font-normal'}>·</span>
+                                  <span className={isSelected ? 'text-white/60 font-normal' : 'text-slate-300 font-normal'}>·</span>
                                 )}
                                 <span className={colorClass}>{part}</span>
                               </React.Fragment>
                             );
                           })}
                         </div>
-                        <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold tracking-wider ${isSelected ? 'text-slate-300' : 'text-slate-400'}`}>
+                        <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold tracking-wider ${isSelected ? 'text-emerald-100' : 'text-slate-400'}`}>
                           {st.englishName}
                         </span>
                       </a>
@@ -1553,7 +1566,7 @@ export default function App() {
                     onClick={() => setStationDetailTab('STANDARD')}
                     className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center gap-2 cursor-pointer border min-h-[42px] ${
                       stationDetailTab === 'STANDARD'
-                        ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                        ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                         : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
                     }`}
                   >
@@ -1567,7 +1580,7 @@ export default function App() {
                     onClick={() => setStationDetailTab('TRAVEL_GUIDE')}
                     className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center gap-2 cursor-pointer border min-h-[42px] ${
                       stationDetailTab === 'TRAVEL_GUIDE'
-                        ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                        ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                         : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
                     }`}
                   >
@@ -1618,7 +1631,7 @@ export default function App() {
                           onClick={() => setActivePathFilter('ALL')}
                           className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1 border cursor-pointer min-h-[42px] ${
                             activePathFilter === 'ALL'
-                              ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                              ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                               : 'bg-white text-slate-600 border-slate-200 hover:text-slate-900 hover:bg-slate-50'
                           }`}
                         >
@@ -1688,7 +1701,7 @@ export default function App() {
                             id={`search-exit-item-${exit.number}`}
                             className={`bg-white rounded-3xl border p-5 sm:p-6 transition-all shadow-[0_2px_12px_rgb(0,0,0,0.01)] hover:shadow-[0_12px_32px_rgb(0,0,0,0.03)] text-left ${
                               isExpanded 
-                                ? 'border-[#004481] ring-2 ring-[#004481]/5 bg-slate-50/10' 
+                                ? 'border-[#8EA85E] ring-2 ring-[#8EA85E]/10 bg-slate-50/10' 
                                 : 'border-slate-100 hover:border-slate-300'
                             }`}
                           >
@@ -1696,11 +1709,11 @@ export default function App() {
                             <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-100 flex-wrap sm:flex-nowrap">
                               <div className="space-y-1">
                                 <h3 className="text-lg sm:text-lg font-extrabold text-slate-800 font-heading flex items-center gap-2">
-                                  <span>{getExitDisplayName(activeStation.name, exit.number, language)}</span>
+                                <span>{getExitDisplayName(activeStation.name, exit.number, language)}</span>
                                 </h3>
                                 {exit.directionDesc && (
                                   <p className="text-xs sm:text-sm text-slate-600 font-medium flex items-center gap-1.5">
-                                    <MapPin className="w-3.5 h-3.5 text-[#004481] shrink-0" />
+                                    <MapPin className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
                                     <span>
                                       {language === 'KR' 
                                         ? exit.directionDesc 
@@ -1716,8 +1729,8 @@ export default function App() {
                                 onClick={() => setExpandedExitNum(isExpanded ? null : exit.number)}
                                 className={`text-xs font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer whitespace-nowrap ${
                                   isExpanded
-                                    ? 'bg-[#004481] text-white shadow-sm'
-                                    : 'bg-slate-100 hover:bg-slate-200 text-[#004481]'
+                                    ? 'bg-[#8EA85E] text-white shadow-sm'
+                                    : 'bg-slate-100 hover:bg-slate-200 text-[#8EA85E]'
                                 }`}
                               >
                                 {isExpanded 
@@ -1830,7 +1843,7 @@ export default function App() {
                   <button
                     id="toggle-all-station-cards-btn"
                     onClick={() => setShowAllStationCards(!showAllStationCards)}
-                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-[#004481] font-bold text-xs transition-colors shrink-0 cursor-pointer"
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-[#8EA85E] font-bold text-xs transition-colors shrink-0 cursor-pointer"
                   >
                     <span>
                       {(showAllStationCards || searchQuery.trim().length > 0)
@@ -1864,7 +1877,7 @@ export default function App() {
                           {/* Station Title */}
                           <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3 mb-3.5">
                             <div className="flex items-center gap-3">
-                              <div className="p-2.5 rounded-2xl bg-sky-50 text-[#004481]">
+                              <div className="p-2.5 rounded-2xl bg-[#8EA85E]/10 text-[#8EA85E]">
                                 <Train className="w-5 h-5 shrink-0" />
                               </div>
                               <div>
@@ -2041,7 +2054,7 @@ export default function App() {
                           </div>
                         </div>
 
-                        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-[#004481] font-bold group-hover:translate-x-1 transition-transform">
+                        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-[#8EA85E] font-bold group-hover:translate-x-1 transition-transform">
                           <span>{activeStation.name === station.name ? (language === 'KR' ? '현재 선택됨' : 'Active') : (language === 'KR' ? '이 역 가이드로 지정하기' : 'Switch to Station')}</span>
                           <ChevronRight className="w-4 h-4" />
                         </div>
@@ -2054,98 +2067,99 @@ export default function App() {
           )}
 
           {/* Tab 3 & 4: TRAVEL TIPS & BUSAN MAJOR SCHEDULE VIEW & BARRIER FREE */}
-          {(currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') && (
-            <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? "여행 루트 및 추천 코스를 불러오는 중..." : "Loading travel routes and courses..."} />}>
-              <BusanItinerariesView 
-                language={language}
-                initialCategory={currentTab === 'tourapi' ? 'BARRIER_FREE' : (selectedItineraryCategory as any)}
-                initialBarrierFreeCourseId={barrierFreeCourseId}
-                initialBarrierFreePlaceId={barrierFreePlaceId}
-                onBack={() => {
-                  setSelectedItineraryCategory(null);
-                  setBarrierFreeCourseId(null);
-                  setBarrierFreePlaceId(null);
-                }}
-                onSelectCategory={(category) => {
-                  setSelectedItineraryCategory(category);
-                  if (category === 'BARRIER_FREE') {
-                    setCurrentTab('tourapi');
-                    setBarrierFreeCourseId(null);
-                    setBarrierFreePlaceId(null);
-                    navigateToSpa('/barrier-free');
-                  } else {
-                    setBarrierFreeCourseId(null);
-                    setBarrierFreePlaceId(null);
-                  }
-                }}
-                onOpenBarrierFreeDetail={(placeId) => {
-                  setBarrierFreePlaceId(placeId);
-                  setBarrierFreeCourseId(null);
-                  setCurrentTab('tourapi');
-                  setSelectedItineraryCategory('BARRIER_FREE');
-                  const targetUrl = `/barrier-free/detail?id=${encodeURIComponent(placeId)}`;
-                  navigateToSpa(targetUrl, { tab: 'tourapi', placeId });
-                }}
-                onBackToBarrierFreeList={() => {
-                  setBarrierFreePlaceId(null);
-                  setBarrierFreeCourseId(null);
-                  setCurrentTab('tourapi');
-                  setSelectedItineraryCategory('BARRIER_FREE');
-                  navigateToSpa('/barrier-free', { tab: 'tourapi' });
-                }}
-                tipsSubPage={currentTab === 'schedule' ? 'schedule' : tipsSubPage}
-                setTipsSubPage={(page) => {
-                  if (page === 'schedule') {
-                    setCurrentTab('schedule');
-                  } else if (currentTab === 'schedule') {
-                    setCurrentTab('tips');
-                  }
-                  if (page === 'index' || page === 'courses') {
+          {(visitedTabs['tips'] || visitedTabs['schedule'] || visitedTabs['tourapi'] || currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') && (
+            <div className={(currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') ? 'space-y-6' : 'hidden'}>
+              <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? "여행 루트 및 추천 코스를 불러오는 중..." : "Loading travel routes and courses..."} />}>
+                <BusanItinerariesView 
+                  language={language}
+                  initialCategory={currentTab === 'tourapi' ? 'BARRIER_FREE' : (selectedItineraryCategory as any)}
+                  initialBarrierFreeCourseId={barrierFreeCourseId}
+                  initialBarrierFreePlaceId={barrierFreePlaceId}
+                  onBack={() => {
                     setSelectedItineraryCategory(null);
                     setBarrierFreeCourseId(null);
                     setBarrierFreePlaceId(null);
-                    if (currentTab === 'tourapi') {
+                  }}
+                  onSelectCategory={(category) => {
+                    setSelectedItineraryCategory(category);
+                    if (category === 'BARRIER_FREE') {
+                      setCurrentTab('tourapi');
+                      setBarrierFreeCourseId(null);
+                      setBarrierFreePlaceId(null);
+                      navigateToSpa('/barrier-free');
+                    } else {
+                      setBarrierFreeCourseId(null);
+                      setBarrierFreePlaceId(null);
+                    }
+                  }}
+                  onOpenBarrierFreeDetail={(placeId) => {
+                    setBarrierFreePlaceId(placeId);
+                    setBarrierFreeCourseId(null);
+                    setCurrentTab('tourapi');
+                    setSelectedItineraryCategory('BARRIER_FREE');
+                    const targetUrl = `/barrier-free/detail?id=${encodeURIComponent(placeId)}`;
+                    navigateToSpa(targetUrl, { tab: 'tourapi', placeId });
+                  }}
+                  onBackToBarrierFreeList={() => {
+                    setBarrierFreePlaceId(null);
+                    setBarrierFreeCourseId(null);
+                    setCurrentTab('tourapi');
+                    setSelectedItineraryCategory('BARRIER_FREE');
+                    navigateToSpa('/barrier-free', { tab: 'tourapi' });
+                  }}
+                  tipsSubPage={currentTab === 'schedule' ? 'schedule' : tipsSubPage}
+                  setTipsSubPage={(page) => {
+                    if (page === 'schedule') {
+                      setCurrentTab('schedule');
+                    } else if (currentTab === 'schedule') {
                       setCurrentTab('tips');
                     }
-                  }
-                  setTipsSubPage(page);
-                }}
-                activeRegionPage={activeRegionPage}
-                setActiveRegionPage={setActiveRegionPage}
-                onSelectStation={(stationId, exitNum) => {
-                  setSelectedStationId(stationId);
-                  if (exitNum) {
-                    setExpandedExitNum(exitNum);
-                  }
-                  setCurrentTab('search');
-                  setIsHomeLanding(false);
-                  setTimeout(() => {
-                    const targetEl = document.getElementById('search-selected-station-details') || document.getElementById('search-tab-map-container');
-                    if (targetEl) {
-                      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    } else {
-                      window.scrollTo(0, 0);
+                    if (page === 'index' || page === 'courses') {
+                      setSelectedItineraryCategory(null);
+                      setBarrierFreeCourseId(null);
+                      setBarrierFreePlaceId(null);
+                      if (currentTab === 'tourapi') {
+                        setCurrentTab('tips');
+                      }
                     }
-                  }, 100);
-                }}
-              />
-            </Suspense>
-          )}
-
-          {/* Google AdSense Unit for Verified Guides / Magazine / Content Hub */}
-          {(currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') && (
-            <AdSenseUnit currentParams={adParams} />
+                    setTipsSubPage(page);
+                  }}
+                  activeRegionPage={activeRegionPage}
+                  setActiveRegionPage={setActiveRegionPage}
+                  onSelectStation={(stationId, exitNum) => {
+                    setSelectedStationId(stationId);
+                    if (exitNum) {
+                      setExpandedExitNum(exitNum);
+                    }
+                    setCurrentTab('search');
+                    setIsHomeLanding(false);
+                    setTimeout(() => {
+                      const targetEl = document.getElementById('search-selected-station-details') || document.getElementById('search-tab-map-container');
+                      if (targetEl) {
+                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      } else {
+                        window.scrollTo(0, 0);
+                      }
+                    }, 100);
+                  }}
+                />
+              </Suspense>
+              {/* Google AdSense Unit for Verified Guides / Magazine / Content Hub */}
+              <AdSenseUnit currentParams={adParams} />
+            </div>
           )}
 
           {/* New Tab 5: ABOUT THE SITE */}
-          {currentTab === 'about' && (
-            <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? "사이트 소개 페이지를 불러오는 중..." : "Loading about page..."} />}>
-              <SiteIntroductionView 
-                language={language} 
-                initialPage={siteSubPage}
-                onSubTabChange={(sub) => setSiteSubPage(sub)}
-              />
-            </Suspense>
+          {(visitedTabs['about'] || currentTab === 'about') && (
+            <div className={currentTab === 'about' ? '' : 'hidden'}>
+              <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? "사이트 소개 페이지를 불러오는 중..." : "Loading about page..."} />}>
+                <SiteIntroductionView 
+                  language={language} 
+                  initialPage={siteSubPage}
+                  onSubTabChange={(sub) => setSiteSubPage(sub)}
+                />
+              </Suspense>
+            </div>
           )}
 
 
@@ -2224,7 +2238,7 @@ export default function App() {
                   setSiteSubPage('contact');
                   window.scrollTo(0, 0);
                 }}
-                className="px-3 py-1.5 rounded-lg bg-[#004481] hover:bg-blue-800 text-white font-bold text-xs transition-colors cursor-pointer"
+                className="px-3 py-1.5 rounded-lg bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs transition-colors cursor-pointer"
               >
                 ✉️ {language === 'KR' ? '문의 보내기' : 'Contact Us'}
               </button>
