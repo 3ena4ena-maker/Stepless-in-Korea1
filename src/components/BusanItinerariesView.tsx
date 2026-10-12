@@ -1658,6 +1658,24 @@ export default function BusanItinerariesView({
   const [quizStep, setQuizStep] = useState(0); // 0: Landing inside card, 1~7: Questions 1~7, 8: Result
   const [answers, setAnswers] = useState<('A' | 'B')[]>([]);
   const [internalBarrierFreePlaceId, setInternalBarrierFreePlaceId] = useState<string | null>(initialBarrierFreePlaceId || null);
+  const [isCategoryMoreOpen, setIsCategoryMoreOpen] = useState(false);
+  const categoryMoreRef = useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+      if (categoryMoreRef.current && !categoryMoreRef.current.contains(e.target as Node)) {
+        setIsCategoryMoreOpen(false);
+      }
+    };
+    if (isCategoryMoreOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isCategoryMoreOpen]);
 
   React.useEffect(() => {
     setInternalBarrierFreePlaceId(initialBarrierFreePlaceId || null);
@@ -2423,270 +2441,432 @@ export default function BusanItinerariesView({
 
       {activeSection === 'RECOMMENDATIONS' && (
         <div className="space-y-4 sm:space-y-6">
-          {/* Top Primary Category Navigation Bar (Single line, horizontal scrollable, zero emojis) */}
-          <div className="bg-white p-2.5 sm:p-3.5 rounded-xl border border-[#E5E2DC] shadow-[0_1px_4px_rgba(0,0,0,0.03)] space-y-2.5 animate-fade-in text-left">
-            <div 
-              ref={quickPillsRef}
-              className="flex items-center gap-1.5 sm:gap-2 w-full overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap flex-nowrap py-0.5"
-              id="main-categories-nav-bar"
-            >
-              {/* 1. 전체 */}
-              <button
-                type="button"
-                onClick={() => {
-                  if (onSelectCategory) {
-                    onSelectCategory(null);
-                  }
-                  setActiveCategory(null);
-                }}
-                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
-                  activeCategory === null
-                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
-                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
-                }`}
+          {/* Top Primary Category Navigation Bar: Only visible inside sub-categories to eliminate duplicate lists on main screen */}
+          {activeCategory !== null && (
+            <div className="bg-white p-2.5 sm:p-3.5 rounded-xl border border-[#E5E2DC] shadow-[0_1px_4px_rgba(0,0,0,0.03)] space-y-2.5 animate-fade-in text-left">
+              {/* DESKTOP (md+): Full horizontal category nav bar */}
+              <div 
+                ref={quickPillsRef}
+                className="hidden md:flex items-center gap-1.5 sm:gap-2 w-full overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap flex-nowrap py-0.5"
+                id="main-categories-nav-bar"
               >
-                {language === 'KR' ? '전체' : 'All'}
-              </button>
-
-              {/* 2. 식도락 */}
-              <button
-                type="button"
-                onClick={() => {
-                  if (onSelectCategory) {
-                    onSelectCategory('GOURMET');
-                  }
-                  setActiveCategory('GOURMET');
-                }}
-                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
-                  activeCategory === 'GOURMET'
-                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
-                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
-                }`}
-              >
-                {language === 'KR' ? '식도락' : 'Gourmet'}
-              </button>
-
-              {/* 3. 체험&박물관 */}
-              <button
-                type="button"
-                onClick={() => {
-                  setInternalBarrierFreePlaceId(null);
-                  if (onSelectCategory) {
-                    onSelectCategory('EXPERIENCE');
-                  }
-                  setActiveCategory('EXPERIENCE');
-                }}
-                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
-                  activeCategory === 'EXPERIENCE'
-                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
-                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
-                }`}
-              >
-                {language === 'KR' ? '체험&박물관' : 'Experience & Museum'}
-              </button>
-
-              {/* 4. 전통시장 */}
-              <button
-                type="button"
-                onClick={() => {
-                  setInternalBarrierFreePlaceId(null);
-                  if (onSelectCategory) {
-                    onSelectCategory('MARKET');
-                  }
-                  setActiveCategory('MARKET');
-                }}
-                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
-                  activeCategory === 'MARKET'
-                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
-                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
-                }`}
-              >
-                {language === 'KR' ? '전통시장' : 'Traditional Market'}
-              </button>
-
-              {/* 5. 명소 */}
-              <button
-                type="button"
-                onClick={() => {
-                  setInternalBarrierFreePlaceId(null);
-                  if (onSelectCategory) {
-                    onSelectCategory('ATTRACTION');
-                  }
-                  setActiveCategory('ATTRACTION');
-                }}
-                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
-                  activeCategory === 'ATTRACTION'
-                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
-                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
-                }`}
-              >
-                {language === 'KR' ? '명소' : 'Attractions'}
-              </button>
-
-              {/* 5. 일정별 여행 */}
-              <button
-                type="button"
-                onClick={() => {
-                  setInternalBarrierFreePlaceId(null);
-                  const targetDuration = selectedScheduleDuration || 'DAY';
-                  if (onSelectCategory) {
-                    onSelectCategory(targetDuration);
-                  }
-                  setActiveCategory(targetDuration);
-                }}
-                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
-                  isScheduleActive
-                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
-                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
-                }`}
-              >
-                {language === 'KR' ? '일정별 여행' : 'Itinerary by Duration'}
-              </button>
-
-              {/* 6. 부산 도시철도 코스 */}
-              <button
-                type="button"
-                onClick={() => {
-                  setInternalBarrierFreePlaceId(null);
-                  if (onSelectCategory) {
-                    onSelectCategory('SUBWAY');
-                  }
-                  setActiveCategory('SUBWAY');
-                }}
-                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
-                  activeCategory === 'SUBWAY'
-                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
-                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
-                }`}
-              >
-                {language === 'KR' ? '부산 도시철도 코스' : 'Subway Course'}
-              </button>
-
-              {/* 7. 무장애 관광지 */}
-              <button
-                type="button"
-                onClick={() => {
-                  setInternalBarrierFreePlaceId(null);
-                  if (onSelectCategory) {
-                    onSelectCategory('BARRIER_FREE');
-                  }
-                  setActiveCategory('BARRIER_FREE');
-                  navigateToSpa('/barrier-free');
-                }}
-                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
-                  activeCategory === 'BARRIER_FREE'
-                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
-                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
-                }`}
-              >
-                {language === 'KR' ? '무장애 관광지' : 'Barrier-Free Spots'}
-              </button>
-
-              {/* 8. 내 여행 루트 (지도) */}
-              <button
-                type="button"
-                onClick={() => {
-                  setInternalBarrierFreePlaceId(null);
-                  if (onSelectCategory) {
-                    onSelectCategory('MY_ROUTE');
-                  }
-                  setActiveCategory('MY_ROUTE');
-                }}
-                className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center flex items-center gap-1.5 ${
-                  activeCategory === 'MY_ROUTE'
-                    ? 'bg-amber-500 text-white border-amber-500 shadow-2xs'
-                    : 'bg-amber-50/70 hover:bg-amber-100 text-amber-950 border-amber-300'
-                }`}
-              >
-                <Star className={`w-3.5 h-3.5 ${myRouteCount > 0 ? 'fill-amber-400 text-amber-500' : ''}`} />
-                <span>{language === 'KR' ? '내 여행 루트' : 'My Route'}</span>
-                {myRouteCount > 0 && (
-                  <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full font-bold ${
-                    activeCategory === 'MY_ROUTE' ? 'bg-white text-amber-700' : 'bg-amber-200 text-amber-900'
-                  }`}>
-                    {myRouteCount}
-                  </span>
-                )}
-              </button>
-            </div>
-
-            {/* Sub-duration row for "일정별 여행": 당일치기 | 1박 | 2박 3박 | 4박 (Horizontal, no emojis) */}
-            {isScheduleActive && (
-              <div className="pt-2 border-t border-[#F1EFEC] flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap flex-nowrap">
-                <span className="text-xs font-semibold text-[#4A5568] shrink-0 mr-1 hidden sm:inline">
-                  {language === 'KR' ? '일정 선택:' : 'Duration:'}
-                </span>
-
-                {/* 당일치기 */}
+                {/* 1. 전체 */}
                 <button
                   type="button"
                   onClick={() => {
-                    setSelectedScheduleDuration('DAY');
-                    setActiveCategory('DAY');
-                    if (onSelectCategory) onSelectCategory('DAY');
+                    if (onSelectCategory) {
+                      onSelectCategory(null);
+                    }
+                    setActiveCategory(null);
                   }}
-                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
-                    activeCategory === 'DAY'
-                      ? 'bg-[#0A2540] text-white border-[#0A2540]'
-                      : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
+                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                    activeCategory === null
+                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                   }`}
                 >
-                  {language === 'KR' ? '당일치기' : 'Day Trip'}
+                  {language === 'KR' ? '전체' : 'All'}
                 </button>
 
-                {/* 1박 */}
+                {/* 2. 식도락 */}
                 <button
                   type="button"
                   onClick={() => {
-                    setSelectedScheduleDuration('1NIGHT');
-                    setActiveCategory('1NIGHT');
-                    if (onSelectCategory) onSelectCategory('1NIGHT');
+                    if (onSelectCategory) {
+                      onSelectCategory('GOURMET');
+                    }
+                    setActiveCategory('GOURMET');
                   }}
-                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
-                    activeCategory === '1NIGHT'
-                      ? 'bg-[#0A2540] text-white border-[#0A2540]'
-                      : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
+                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                    activeCategory === 'GOURMET'
+                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                   }`}
                 >
-                  {language === 'KR' ? '1박' : '1 Night'}
+                  {language === 'KR' ? '식도락' : 'Gourmet'}
                 </button>
 
-                {/* 2박 3박 */}
+                {/* 3. 체험&박물관 */}
                 <button
                   type="button"
                   onClick={() => {
-                    setSelectedScheduleDuration('2NIGHTS');
-                    setActiveCategory('2NIGHTS');
-                    if (onSelectCategory) onSelectCategory('2NIGHTS');
+                    setInternalBarrierFreePlaceId(null);
+                    if (onSelectCategory) {
+                      onSelectCategory('EXPERIENCE');
+                    }
+                    setActiveCategory('EXPERIENCE');
                   }}
-                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
-                    activeCategory === '2NIGHTS' || activeCategory === '3NIGHTS'
-                      ? 'bg-[#0A2540] text-white border-[#0A2540]'
-                      : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
+                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                    activeCategory === 'EXPERIENCE'
+                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                   }`}
                 >
-                  {language === 'KR' ? '2박 3박' : '2-3 Nights'}
+                  {language === 'KR' ? '체험&박물관' : 'Experience & Museum'}
                 </button>
 
-                {/* 4박 */}
+                {/* 4. 전통시장 */}
                 <button
                   type="button"
                   onClick={() => {
-                    setSelectedScheduleDuration('4NIGHTS');
-                    setActiveCategory('4NIGHTS');
-                    if (onSelectCategory) onSelectCategory('4NIGHTS');
+                    setInternalBarrierFreePlaceId(null);
+                    if (onSelectCategory) {
+                      onSelectCategory('MARKET');
+                    }
+                    setActiveCategory('MARKET');
                   }}
-                  className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
-                    activeCategory === '4NIGHTS'
-                      ? 'bg-[#0A2540] text-white border-[#0A2540]'
-                      : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
+                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                    activeCategory === 'MARKET'
+                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
                   }`}
                 >
-                  {language === 'KR' ? '4박' : '4 Nights'}
+                  {language === 'KR' ? '전통시장' : 'Traditional Market'}
+                </button>
+
+                {/* 5. 명소 */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setInternalBarrierFreePlaceId(null);
+                    if (onSelectCategory) {
+                      onSelectCategory('ATTRACTION');
+                    }
+                    setActiveCategory('ATTRACTION');
+                  }}
+                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                    activeCategory === 'ATTRACTION'
+                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                  }`}
+                >
+                  {language === 'KR' ? '명소' : 'Attractions'}
+                </button>
+
+                {/* 6. 일정별 여행 */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setInternalBarrierFreePlaceId(null);
+                    const targetDuration = selectedScheduleDuration || 'DAY';
+                    if (onSelectCategory) {
+                      onSelectCategory(targetDuration);
+                    }
+                    setActiveCategory(targetDuration);
+                  }}
+                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                    isScheduleActive
+                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                  }`}
+                >
+                  {language === 'KR' ? '일정별 여행' : 'Itinerary by Duration'}
+                </button>
+
+                {/* 7. 부산 도시철도 코스 */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setInternalBarrierFreePlaceId(null);
+                    if (onSelectCategory) {
+                      onSelectCategory('SUBWAY');
+                    }
+                    setActiveCategory('SUBWAY');
+                  }}
+                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                    activeCategory === 'SUBWAY'
+                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                  }`}
+                >
+                  {language === 'KR' ? '부산 도시철도 코스' : 'Subway Course'}
+                </button>
+
+                {/* 8. 무장애 관광지 */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setInternalBarrierFreePlaceId(null);
+                    if (onSelectCategory) {
+                      onSelectCategory('BARRIER_FREE');
+                    }
+                    setActiveCategory('BARRIER_FREE');
+                    navigateToSpa('/barrier-free');
+                  }}
+                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                    activeCategory === 'BARRIER_FREE'
+                      ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                      : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                  }`}
+                >
+                  {language === 'KR' ? '무장애 관광지' : 'Barrier-Free Spots'}
+                </button>
+
+                {/* 9. 내 여행 루트 (지도) */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setInternalBarrierFreePlaceId(null);
+                    if (onSelectCategory) {
+                      onSelectCategory('MY_ROUTE');
+                    }
+                    setActiveCategory('MY_ROUTE');
+                  }}
+                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center flex items-center gap-1.5 ${
+                    activeCategory === 'MY_ROUTE'
+                      ? 'bg-amber-500 text-white border-amber-500 shadow-2xs'
+                      : 'bg-amber-50/70 hover:bg-amber-100 text-amber-950 border-amber-300'
+                  }`}
+                >
+                  <Star className={`w-3.5 h-3.5 ${myRouteCount > 0 ? 'fill-amber-400 text-amber-500' : ''}`} />
+                  <span>{language === 'KR' ? '내 여행 루트' : 'My Route'}</span>
+                  {myRouteCount > 0 && (
+                    <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full font-bold ${
+                      activeCategory === 'MY_ROUTE' ? 'bg-white text-amber-700' : 'bg-amber-200 text-amber-900'
+                    }`}>
+                      {myRouteCount}
+                    </span>
+                  )}
                 </button>
               </div>
-            )}
-          </div>
+
+              {/* MOBILE (< md): '전체' + '현재 카테고리' + '더보기 ▾' dropdown */}
+              <div className="md:hidden relative" ref={categoryMoreRef}>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-hidden">
+                    {/* 전체 버튼 */}
+                    <button
+                      type="button"
+                      id="itinerary-mobile-tab-all"
+                      onClick={() => {
+                        if (onSelectCategory) {
+                          onSelectCategory(null);
+                        }
+                        setActiveCategory(null);
+                        setIsCategoryMoreOpen(false);
+                      }}
+                      className={`px-3 py-2 rounded-md text-xs font-bold transition-all duration-200 cursor-pointer border shrink-0 ${
+                        activeCategory === null
+                          ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
+                          : 'bg-white text-[#11161B] border-[#E5E2DC] hover:bg-slate-50'
+                      }`}
+                    >
+                      {language === 'KR' ? '전체' : 'All'}
+                    </button>
+
+                    {/* 현재 선택된 카테고리 뱃지 */}
+                    {activeCategory !== null && (
+                      <button
+                        type="button"
+                        onClick={() => setIsCategoryMoreOpen(prev => !prev)}
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold bg-[#004481] text-white border border-[#004481] truncate max-w-[170px] shadow-2xs cursor-pointer text-left"
+                        title={language === 'KR' ? '카테고리 목록 열기' : 'View all categories'}
+                      >
+                        <span className="truncate">
+                          {activeCategory === 'GOURMET' && (language === 'KR' ? '식도락' : 'Gourmet')}
+                          {activeCategory === 'EXPERIENCE' && (language === 'KR' ? '체험&박물관' : 'Experience')}
+                          {activeCategory === 'MARKET' && (language === 'KR' ? '전통시장' : 'Market')}
+                          {activeCategory === 'ATTRACTION' && (language === 'KR' ? '명소' : 'Attraction')}
+                          {isScheduleActive && (language === 'KR' ? '일정별 여행' : 'Itinerary')}
+                          {activeCategory === 'SUBWAY' && (language === 'KR' ? '부산 도시철도' : 'Subway')}
+                          {activeCategory === 'BARRIER_FREE' && (language === 'KR' ? '무장애 관광지' : 'Barrier-Free')}
+                          {activeCategory === 'MY_ROUTE' && (language === 'KR' ? '내 여행 루트' : 'My Route')}
+                        </span>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* 더보기 버튼 */}
+                  <div className="shrink-0">
+                    <button
+                      type="button"
+                      id="itinerary-mobile-more-btn"
+                      onClick={() => setIsCategoryMoreOpen(prev => !prev)}
+                      aria-expanded={isCategoryMoreOpen}
+                      className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold transition-all cursor-pointer border ${
+                        isCategoryMoreOpen
+                          ? 'bg-blue-50 text-[#004481] border-[#004481] ring-2 ring-[#004481]/15'
+                          : 'bg-white hover:bg-slate-50 text-slate-700 border-[#E5E2DC]'
+                      }`}
+                    >
+                      <span>{language === 'KR' ? '더보기' : 'More'}</span>
+                      <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isCategoryMoreOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* 더보기 카테고리 전체 목록 (모바일 화면 전체 너비로 깔끔하고 시원하게 표시) */}
+                {isCategoryMoreOpen && (
+                  <div 
+                    className="mt-2.5 pt-2.5 border-t border-slate-100 animate-fade-in space-y-2 text-left"
+                    role="region"
+                    aria-label="All Itinerary Categories"
+                  >
+                    <div className="flex items-center justify-between px-0.5">
+                      <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                        {language === 'KR' ? '여행 코스 전체 카테고리' : 'All Itinerary Categories'}
+                      </span>
+                      <span className="text-[10px] text-slate-400">
+                        {language === 'KR' ? '탭하여 이동' : 'Tap to select'}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
+                      {[
+                        { id: null, labelKR: '전체 (목록 보기)', labelEN: 'All Categories', icon: Compass },
+                        { id: 'GOURMET', labelKR: '식도락', labelEN: 'Gourmet', icon: Utensils },
+                        { id: 'EXPERIENCE', labelKR: '체험&박물관', labelEN: 'Experience', icon: Sparkles },
+                        { id: 'MARKET', labelKR: '전통시장', labelEN: 'Traditional Market', icon: Landmark },
+                        { id: 'ATTRACTION', labelKR: '명소', labelEN: 'Attractions', icon: MapPin },
+                        { id: 'DAY', labelKR: '일정별 여행', labelEN: 'Itinerary Course', icon: Calendar },
+                        { id: 'SUBWAY', labelKR: '부산 도시철도', labelEN: 'Subway Course', icon: Train },
+                        { id: 'BARRIER_FREE', labelKR: '무장애 관광지', labelEN: 'Barrier-Free', icon: Footprints },
+                        { id: 'MY_ROUTE', labelKR: '내 여행 루트', labelEN: 'My Route', icon: Star },
+                      ].map((catItem) => {
+                        const isCatActive = catItem.id === null 
+                          ? activeCategory === null 
+                          : (catItem.id === 'DAY' ? isScheduleActive : activeCategory === catItem.id);
+                        const IconComponent = catItem.icon;
+                        const isMyRoute = catItem.id === 'MY_ROUTE';
+
+                        return (
+                          <button
+                            key={String(catItem.id)}
+                            type="button"
+                            onClick={() => {
+                              setIsCategoryMoreOpen(false);
+                              if (catItem.id === null) {
+                                if (onSelectCategory) onSelectCategory(null);
+                                setActiveCategory(null);
+                              } else if (catItem.id === 'DAY') {
+                                const targetDuration = selectedScheduleDuration || 'DAY';
+                                if (onSelectCategory) onSelectCategory(targetDuration);
+                                setActiveCategory(targetDuration);
+                              } else if (catItem.id === 'BARRIER_FREE') {
+                                setInternalBarrierFreePlaceId(null);
+                                if (onSelectCategory) onSelectCategory('BARRIER_FREE');
+                                setActiveCategory('BARRIER_FREE');
+                                navigateToSpa('/barrier-free');
+                              } else {
+                                setInternalBarrierFreePlaceId(null);
+                                if (onSelectCategory) onSelectCategory(catItem.id as any);
+                                setActiveCategory(catItem.id as any);
+                              }
+                            }}
+                            className={`w-full flex items-center justify-between p-2.5 rounded-lg text-xs font-bold transition-all cursor-pointer border text-left ${
+                              isMyRoute
+                                ? (isCatActive 
+                                    ? 'bg-amber-500 text-white border-amber-500 shadow-2xs' 
+                                    : 'bg-amber-50/70 hover:bg-amber-100 text-amber-950 border-amber-300')
+                                : (isCatActive 
+                                    ? 'bg-[#004481] text-white border-[#004481] shadow-2xs' 
+                                    : 'bg-slate-50/80 hover:bg-slate-100 text-slate-700 border-slate-200/80')
+                            }`}
+                          >
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              <IconComponent className={`w-3.5 h-3.5 shrink-0 ${
+                                isCatActive 
+                                  ? 'text-white' 
+                                  : (isMyRoute ? 'text-amber-600' : 'text-[#004481]')
+                              }`} />
+                              <span className="truncate">{language === 'KR' ? catItem.labelKR : catItem.labelEN}</span>
+                            </div>
+                            {isMyRoute && myRouteCount > 0 && (
+                              <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full font-bold ml-1 ${
+                                isCatActive ? 'bg-white text-amber-700' : 'bg-amber-200 text-amber-900'
+                              }`}>
+                                {myRouteCount}
+                              </span>
+                            )}
+                            {isCatActive && !isMyRoute && (
+                              <CheckCircle2 className="w-3.5 h-3.5 text-white shrink-0 ml-1" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Sub-duration row for "일정별 여행": 당일치기 | 1박 | 2박 3박 | 4박 (Horizontal, no emojis) */}
+              {isScheduleActive && (
+                <div className="pt-2 border-t border-[#F1EFEC] flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap flex-nowrap">
+                  <span className="text-xs font-semibold text-[#4A5568] shrink-0 mr-1 hidden sm:inline">
+                    {language === 'KR' ? '일정 선택:' : 'Duration:'}
+                  </span>
+
+                  {/* 당일치기 */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedScheduleDuration('DAY');
+                      setActiveCategory('DAY');
+                      if (onSelectCategory) onSelectCategory('DAY');
+                    }}
+                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
+                      activeCategory === 'DAY'
+                        ? 'bg-[#004481] text-white border-[#004481]'
+                        : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
+                    }`}
+                  >
+                    {language === 'KR' ? '당일치기' : 'Day Trip'}
+                  </button>
+
+                  {/* 1박 */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedScheduleDuration('1NIGHT');
+                      setActiveCategory('1NIGHT');
+                      if (onSelectCategory) onSelectCategory('1NIGHT');
+                    }}
+                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
+                      activeCategory === '1NIGHT'
+                        ? 'bg-[#004481] text-white border-[#004481]'
+                        : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
+                    }`}
+                  >
+                    {language === 'KR' ? '1박' : '1 Night'}
+                  </button>
+
+                  {/* 2박 3박 */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedScheduleDuration('2NIGHTS');
+                      setActiveCategory('2NIGHTS');
+                      if (onSelectCategory) onSelectCategory('2NIGHTS');
+                    }}
+                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
+                      activeCategory === '2NIGHTS' || activeCategory === '3NIGHTS'
+                        ? 'bg-[#004481] text-white border-[#004481]'
+                        : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
+                    }`}
+                  >
+                    {language === 'KR' ? '2박 3박' : '2-3 Nights'}
+                  </button>
+
+                  {/* 4박 */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedScheduleDuration('4NIGHTS');
+                      setActiveCategory('4NIGHTS');
+                      if (onSelectCategory) onSelectCategory('4NIGHTS');
+                    }}
+                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
+                      activeCategory === '4NIGHTS'
+                        ? 'bg-[#004481] text-white border-[#004481]'
+                        : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
+                    }`}
+                  >
+                    {language === 'KR' ? '4박' : '4 Nights'}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Main Container: Mobile Compact View (ㅁㅁㅁㅁ / ㅁㅁㅁㅁ) VS Web Rich Cards with Full Explanations */}
           {activeCategory === null && (
@@ -3182,7 +3362,7 @@ export default function BusanItinerariesView({
                       onClick={() => setItineraryTab('STANDARD')}
                       className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer border ${
                         itineraryTab === 'STANDARD'
-                          ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
+                          ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
                           : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
                       }`}
                     >
@@ -3194,7 +3374,7 @@ export default function BusanItinerariesView({
                       onClick={() => setItineraryTab('STEPLESS_GUIDE')}
                       className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer border ${
                         itineraryTab === 'STEPLESS_GUIDE'
-                          ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-2xs'
+                          ? 'bg-[#004481] text-white border-[#004481] shadow-2xs'
                           : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
                       }`}
                     >
