@@ -55,12 +55,13 @@ import { BUSAN_ITINERARIES } from './data/itineraries';
 
 import StationSearchBar, { searchStations } from './components/StationSearchBar';
 import { AdSenseUnit, AdEligibilityParams } from './components/AdSenseManager';
+import { lazyWithRetry } from './utils/lazyWithRetry';
 
-// Code-split heavy views to drastically reduce initial mobile JavaScript bundle and parse latency
-const BusanItinerariesView = lazy(() => import('./components/BusanItinerariesView'));
-const SiteIntroductionView = lazy(() => import('./components/SiteIntroductionView').then(m => ({ default: m.SiteIntroductionView })));
-const StationTravelGuideView = lazy(() => import('./components/StationTravelGuideView').then(m => ({ default: m.StationTravelGuideView })));
-const SubwayStationMap = lazy(() => import('./components/SubwayStationMap'));
+// Code-split heavy views with auto-retry to prevent "Failed to fetch dynamically imported module" errors
+const BusanItinerariesView = lazyWithRetry(() => import('./components/BusanItinerariesView'));
+const SiteIntroductionView = lazyWithRetry(() => import('./components/SiteIntroductionView'));
+const StationTravelGuideView = lazyWithRetry(() => import('./components/StationTravelGuideView'));
+const SubwayStationMap = lazyWithRetry(() => import('./components/SubwayStationMap'));
 
 // Dynamic tab loading fallback component for code-split views
 const TabLoadingFallback = ({ text = "정보를 신속하게 불러오는 중..." }: { text?: string }) => (

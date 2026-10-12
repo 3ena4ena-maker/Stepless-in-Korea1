@@ -52,13 +52,14 @@ import { TourApiItineraryStepCard } from './TourApiItineraryStepCard';
 import { matchTourApiSpotId, resolvePlaceTargetId } from '../services/tourApiCommon';
 import { getKoreaTourApiPlaceDetail } from '../data/koreaTourApiPlaceDetails';
 import { useMyRoute } from '../services/myRouteService';
+import { lazyWithRetry } from '../utils/lazyWithRetry';
 
-// Code-split heavy sub-views to keep initial travel guide bundle lightweight and quick to render on mobile
-const BusanEventsCalendarView = React.lazy(() => import('./BusanEventsCalendarView'));
-const BarrierFreeTourApiView = React.lazy(() => import('./BarrierFreeTourApiView'));
-const ItineraryTravelGuideSection = React.lazy(() => import('./ItineraryTravelGuideSection'));
-const CommunityTravelGuideSection = React.lazy(() => import('./CommunityTravelGuideSection').then(m => ({ default: m.CommunityTravelGuideSection })));
-const MyTravelRouteMapView = React.lazy(() => import('./MyTravelRouteMapView'));
+// Code-split heavy sub-views with auto-retry to prevent dynamic import failures
+const BusanEventsCalendarView = lazyWithRetry(() => import('./BusanEventsCalendarView'));
+const BarrierFreeTourApiView = lazyWithRetry(() => import('./BarrierFreeTourApiView'));
+const ItineraryTravelGuideSection = lazyWithRetry(() => import('./ItineraryTravelGuideSection'));
+const CommunityTravelGuideSection = lazyWithRetry(() => import('./CommunityTravelGuideSection'));
+const MyTravelRouteMapView = lazyWithRetry(() => import('./MyTravelRouteMapView'));
 
 export const getStepIllustrationType = (titleKo: string, cat: string): 'temple' | 'park' | 'food' | 'cafe' | 'sea' | 'transit' | 'village' | 'history' | 'culture' | 'default' => {
   const normalized = titleKo.toLowerCase();

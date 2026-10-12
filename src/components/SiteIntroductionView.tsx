@@ -694,3 +694,5 @@ export function SiteIntroductionView({
     </div>
   );
 }
+
+export default SiteIntroductionView;

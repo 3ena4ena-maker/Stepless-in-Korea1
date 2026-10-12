@@ -885,3 +885,5 @@ export function CommunityTravelGuideSection({
     </div>
   );
 }
+
+export default CommunityTravelGuideSection;

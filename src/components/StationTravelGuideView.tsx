@@ -364,3 +364,5 @@ export function StationTravelGuideView({ station, language = 'KR', onSwitchToSta
     </div>
   );
 }
+
+export default StationTravelGuideView;
