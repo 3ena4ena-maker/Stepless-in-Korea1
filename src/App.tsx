@@ -2167,18 +2167,18 @@ export default function App() {
       </div>
 
       {/* Footer information section */}
-      <footer className="mt-12 bg-slate-900 text-slate-400 text-left border-t border-slate-800 pt-16 pb-20 rounded-t-[2.5rem]">
+      <footer className="mt-12 bg-[#8EA85E]/15 backdrop-blur-md text-slate-700 text-left border-t border-[#8EA85E]/30 pt-16 pb-20 rounded-t-[2.5rem]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-2">
-              <div className="p-2 rounded-xl bg-white/10 text-white shadow-sm">
+              <div className="p-2 rounded-xl bg-[#8EA85E] text-white shadow-xs">
                 <Train className="w-5 h-5" />
               </div>
-              <span className="text-lg font-bold font-heading text-white tracking-tight">
+              <span className="text-lg font-bold font-heading text-slate-900 tracking-tight">
                 Stepless (Busan)
               </span>
             </div>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">
+            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed max-w-sm font-medium">
               {language === 'KR' 
                 ? '부산 지하철 이용객들의 평등하고 자유로운 지상 이동을 지원하기 위해 설계된 교통약자 특화형 편의 플랫폼입니다. 공공데이터 연계 및 수동 검증 데이터를 기반으로 운영되며, 부산 현지인이 직접 엄선하고 작성한 생생한 부산 여행 코스와 대중교통 이용 팁을 함께 제공하여 누구나 편리하게 부산을 여행할 수 있도록 돕습니다.' 
                 : 'A dedicated public transit helper to establish smooth, accessible pathways throughout major transit hubs. It features verified public data alongside authentic Busan itineraries and practical transit tips curated by a Busan local to ensure a convenient and enjoyable travel experience for everyone.'}
@@ -2186,30 +2186,30 @@ export default function App() {
           </div>
 
           <div className="md:col-span-3 space-y-3">
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider">
+            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
               {language === 'KR' ? '관련 서비스 & 커뮤니티' : 'Agencies & Community'}
             </h4>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2 text-xs font-medium">
               <li>
-                <a href="https://www.humetro.busan.kr" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline flex items-center gap-1">
+                <a href="https://www.humetro.busan.kr" target="_blank" rel="noopener noreferrer" className="text-slate-700 hover:text-[#728b43] hover:underline flex items-center gap-1 transition-colors">
                   <span>부산교통공사 (Humetro)</span>
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
               <li>
-                <a href="https://www.reddit.com/r/BusanTravelTips/" target="_blank" rel="noopener noreferrer" className="hover:text-[#ff4500] hover:underline flex items-center gap-1 font-semibold text-orange-500">
+                <a href="https://www.reddit.com/r/BusanTravelTips/" target="_blank" rel="noopener noreferrer" className="hover:underline flex items-center gap-1 font-bold text-[#ff4500]">
                   <span>{language === 'KR' ? '레딧 커뮤니티 (Reddit)' : 'Reddit Community'}</span>
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
               <li>
-                <a href="https://www.data.go.kr" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline flex items-center gap-1">
+                <a href="https://www.data.go.kr" target="_blank" rel="noopener noreferrer" className="text-slate-700 hover:text-[#728b43] hover:underline flex items-center gap-1 transition-colors">
                   <span>공공데이터포털 연계</span>
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
               <li>
-                <a href="https://www.visitbusan.net" target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline flex items-center gap-1">
+                <a href="https://www.visitbusan.net" target="_blank" rel="noopener noreferrer" className="text-slate-700 hover:text-[#728b43] hover:underline flex items-center gap-1 transition-colors">
                   <span>비짓부산 배리어프리 투어</span>
                   <ExternalLink className="w-3 h-3" />
                 </a>
@@ -2218,15 +2218,15 @@ export default function App() {
           </div>
 
           <div className="md:col-span-4 space-y-3">
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider font-heading text-left flex items-center gap-2">
-              <UserCheck className="w-4 h-4 text-emerald-400" />
+            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-heading text-left flex items-center gap-2">
+              <UserCheck className="w-4 h-4 text-[#8EA85E]" />
               <span>{language === 'KR' ? '운영자 정보 및 제휴 문의' : 'Operator & Inquiries'}</span>
             </h4>
-            <div className="text-xs font-sans text-slate-300 space-y-1">
-              <p>운영 서비스: <strong className="text-white">스탭리스 (Stepless)</strong></p>
-              <p>조사자 및 운영 총괄: <strong className="text-white">플로레르 (Floreur)</strong></p>
+            <div className="text-xs font-sans text-slate-700 space-y-1">
+              <p>운영 서비스: <strong className="text-slate-900">스탭리스 (Stepless)</strong></p>
+              <p>조사자 및 운영 총괄: <strong className="text-slate-900">플로레르 (Floreur)</strong></p>
             </div>
-            <p className="text-xs font-sans text-slate-400 leading-relaxed">
+            <p className="text-xs font-sans text-slate-600 leading-relaxed">
               {language === 'KR' 
                 ? '부산 전철역 엘리베이터 데이터 현행화 제의, 데이터 오류 제보 및 제휴문의는 지원 메일 또는 문의 창구를 이용해 연락 주시기 바랍니다.' 
                 : 'For comments or suggesting detailed accessibility paths, contact the support team.'}
@@ -2238,13 +2238,13 @@ export default function App() {
                   setSiteSubPage('contact');
                   window.scrollTo(0, 0);
                 }}
-                className="px-3 py-1.5 rounded-lg bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs transition-colors cursor-pointer"
+                className="px-3.5 py-1.5 rounded-lg bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs transition-colors cursor-pointer shadow-xs"
               >
                 ✉️ {language === 'KR' ? '문의 보내기' : 'Contact Us'}
               </button>
               <a
                 href="mailto:floreur88@gmail.com"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono text-xs font-bold transition-colors border border-slate-700"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/80 hover:bg-white text-slate-800 font-mono text-xs font-bold transition-colors border border-[#8EA85E]/30 shadow-2xs backdrop-blur-sm"
               >
                 <span>📧 floreur88@gmail.com</span>
               </a>
@@ -2253,14 +2253,14 @@ export default function App() {
         </div>
 
         {/* AdSense & Cookie Privacy Policy Notice */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-slate-800/60">
-          <p className="text-2xs sm:text-xs text-slate-400 leading-relaxed font-sans text-left">
-            📢 <strong>구글 맞춤형 광고 및 쿠키 안내:</strong> 본 배리어프리 플랫폼은 공익적 정보의 지속가능한 제공을 위해 구글 애드센스 맞춤형 광고를 활용하고 있습니다. 쿠키 맞춤 설정 및 거부 안내는 하단의 <button onClick={() => { setCurrentTab('about'); setSiteSubPage('privacy'); window.scrollTo(0, 0); }} className="text-blue-400 underline hover:text-blue-300 font-bold cursor-pointer">개인정보처리방침</button>을 참고해 주시기 바랍니다.
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-[#8EA85E]/20">
+          <p className="text-2xs sm:text-xs text-slate-600 leading-relaxed font-sans text-left">
+            📢 <strong>구글 맞춤형 광고 및 쿠키 안내:</strong> 본 배리어프리 플랫폼은 공익적 정보의 지속가능한 제공을 위해 구글 애드센스 맞춤형 광고를 활용하고 있습니다. 쿠키 맞춤 설정 및 거부 안내는 하단의 <button onClick={() => { setCurrentTab('about'); setSiteSubPage('privacy'); window.scrollTo(0, 0); }} className="text-[#6C8540] hover:text-[#526630] underline font-bold cursor-pointer">개인정보처리방침</button>을 참고해 주시기 바랍니다.
           </p>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/80 mt-6 pt-6 text-xs text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <span className="font-medium text-slate-400">© 2026 floreur (스탭리스). All rights reserved.</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#8EA85E]/20 mt-6 pt-6 text-xs text-slate-600 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <span className="font-semibold text-slate-600">© 2026 floreur (스탭리스). All rights reserved.</span>
           
           {/* Prominent Legal Links Bar */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 justify-center sm:justify-end">
@@ -2270,7 +2270,7 @@ export default function App() {
                 setSiteSubPage('about');
                 window.scrollTo(0, 0);
               }}
-              className="px-3 py-1 rounded-md bg-slate-800 hover:bg-blue-900/60 hover:text-white border border-slate-700/80 text-slate-200 font-bold text-xs transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer"
             >
               {language === 'KR' ? '👤 운영자 소개' : 'Operator'}
             </button>
@@ -2280,7 +2280,7 @@ export default function App() {
                 setSiteSubPage('contact');
                 window.scrollTo(0, 0);
               }}
-              className="px-3 py-1 rounded-md bg-slate-800 hover:bg-blue-900/60 hover:text-white border border-slate-700/80 text-slate-200 font-bold text-xs transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer"
             >
               {language === 'KR' ? '✉️ 정보 오류 요청 제보 및 문의' : 'Inquiries & Edits'}
             </button>
@@ -2290,7 +2290,7 @@ export default function App() {
                 setSiteSubPage('privacy');
                 window.scrollTo(0, 0);
               }}
-              className="px-3 py-1 rounded-md bg-slate-800 hover:bg-blue-900/60 hover:text-white border border-slate-700/80 text-slate-200 font-bold text-xs transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer"
             >
               {language === 'KR' ? '🔒 개인정보처리방침' : 'Privacy'}
             </button>
@@ -2300,7 +2300,7 @@ export default function App() {
                 setSiteSubPage('terms');
                 window.scrollTo(0, 0);
               }}
-              className="px-3 py-1 rounded-md bg-slate-800 hover:bg-blue-900/60 hover:text-white border border-slate-700/80 text-slate-200 font-bold text-xs transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer"
             >
               {language === 'KR' ? '📄 이용약관' : 'Terms'}
             </button>
@@ -2310,7 +2310,7 @@ export default function App() {
                 setSiteSubPage('data-source');
                 window.scrollTo(0, 0);
               }}
-              className="px-3 py-1 rounded-md bg-slate-800 hover:bg-blue-900/60 hover:text-white border border-slate-700/80 text-slate-200 font-bold text-xs transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer"
             >
               {language === 'KR' ? '📊 데이터 출처' : 'Data Sources'}
             </button>
@@ -2318,7 +2318,7 @@ export default function App() {
               href="https://www.reddit.com/r/BusanTravelTips/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="px-3 py-1 rounded-md bg-slate-800 hover:bg-orange-950/60 hover:text-orange-300 border border-slate-700/80 text-slate-300 font-bold text-xs transition-colors cursor-pointer inline-flex items-center gap-1"
+              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-orange-600 border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer inline-flex items-center gap-1"
             >
               <span>{language === 'KR' ? '레딧 커뮤니티' : 'Reddit'}</span>
               <ExternalLink className="w-3 h-3" />
