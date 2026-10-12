@@ -1663,12 +1663,12 @@ export default function MyTravelRouteMapView({
                   onClick={() => handleFocusPlace(p)}
                   className={`px-2.5 py-1 rounded-full text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 cursor-pointer border ${
                     isSelected
-                      ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-xs ring-2 ring-amber-400/40'
+                      ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-xs ring-2 ring-emerald-400/40'
                       : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
                   }`}
                 >
                   <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[9.5px] font-black ${
-                    isSelected ? 'bg-amber-400 text-[#0A2540]' : 'bg-slate-200 text-slate-700'
+                    isSelected ? 'bg-white text-[#8EA85E]' : 'bg-slate-200 text-slate-700'
                   }`}>
                     {stepNum}
                   </span>
@@ -2143,7 +2143,7 @@ export default function MyTravelRouteMapView({
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-3 min-w-0">
                         {/* Step Number Badge */}
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs sm:text-sm font-extrabold shrink-0 shadow-2xs">
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-xs sm:text-sm font-extrabold shrink-0 shadow-2xs">
                           {stepNumber}
                         </div>
 

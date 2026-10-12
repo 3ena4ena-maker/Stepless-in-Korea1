@@ -223,7 +223,7 @@ export function SiteIntroductionView({
               {/* Stepless 핵심 가치 - 박스 없이 소개글과 자연스럽게 연결되는 심플한 UX/UI */}
               <div className="pt-2 space-y-2.5">
                 <h3 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
-                  <span className="w-1.5 h-4 bg-[#004481] rounded-full inline-block"></span>
+                  <span className="w-1.5 h-4 bg-[#8EA85E] rounded-full inline-block"></span>
                   <span>{language === 'KR' ? 'Stepless의 핵심 가치' : 'Core Values of Stepless'}</span>
                 </h3>
                 <div className="space-y-2.5 pl-3 border-l-2 border-slate-200 text-xs sm:text-sm md:text-base text-slate-700 font-medium">
@@ -398,7 +398,7 @@ export function SiteIntroductionView({
 
                 <a
                   href={`mailto:${officialEmail}?subject=${encodeURIComponent(language === 'KR' ? '[스탭리스] 정보 오류 제보 및 문의' : '[Stepless] Feedback & Inquiry')}&body=${encodeURIComponent(language === 'KR' ? '[스탭리스 정보 오류 제보 및 문의]\n\n- 역명/출구:\n- 오류/의견 내용:\n\n* 플로레르 대표 이메일(floreur88@gmail.com)로 발송됩니다.' : '[Stepless Inquiry & Report]\n\n- Station / Exit:\n- Details:\n\n* Directly routed to publisher (floreur88@gmail.com).')}`}
-                  className="flex-1 sm:flex-none px-5 py-2.5 bg-[#004481] hover:bg-blue-900 text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="flex-1 sm:flex-none px-5 py-2.5 bg-[#8EA85E] hover:bg-[#7b944f] text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span>{language === 'KR' ? '메일 보내기' : 'Send Mail'}</span>
@@ -406,8 +406,8 @@ export function SiteIntroductionView({
               </div>
             </div>
 
-            <div className="pt-1 text-2xs sm:text-xs text-slate-500 space-y-1 font-medium bg-blue-50/50 p-3.5 rounded-xl border border-blue-100/80">
-              <p className="font-bold text-[#004481] flex items-center gap-1">
+            <div className="pt-1 text-2xs sm:text-xs text-slate-500 space-y-1 font-medium bg-[#8EA85E]/10 p-3.5 rounded-xl border border-[#8EA85E]/30">
+              <p className="font-bold text-[#8EA85E] flex items-center gap-1">
                 💡 {language === 'KR' ? '손쉬운 제보 안내' : 'Direct Email Assistance'}
               </p>
               <p className="leading-relaxed">
@@ -448,7 +448,7 @@ export function SiteIntroductionView({
           <div className="space-y-6">
             <div>
               <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#004481]"></span>
+                <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
                 <span>{language === 'KR' ? '1. 위치정보(Geolocation) 처리 안내' : '1. Geolocation Data Handling'}</span>
               </h3>
               <p className="font-medium text-slate-600 leading-relaxed pl-3.5">
@@ -460,7 +460,7 @@ export function SiteIntroductionView({
 
             <div>
               <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#004481]"></span>
+                <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
                 <span>{language === 'KR' ? '2. 쿠키(Cookie) 수집 및 이용 목적' : '2. Cookies & Purpose of Collection'}</span>
               </h3>
               <p className="font-medium text-slate-600 leading-relaxed pl-3.5">
@@ -472,7 +472,7 @@ export function SiteIntroductionView({
 
             <div>
               <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#004481]"></span>
+                <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
                 <span>{language === 'KR' ? '3. 웹/앱 서비스 사용 분석(Analytics)' : '3. Anonymous Web Analytics'}</span>
               </h3>
               <p className="font-medium text-slate-600 leading-relaxed pl-3.5">
@@ -484,7 +484,7 @@ export function SiteIntroductionView({
 
             <div>
               <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#004481]"></span>
+                <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
                 <span>{language === 'KR' ? '4. 구글 맞춤형 광고 및 쿠키 거부(Opt-out) 수칙' : '4. Google Personalized Advertising & Opt-out'}</span>
               </h3>
               <div className="pl-3.5 space-y-2 text-slate-600 font-medium">
@@ -522,7 +522,7 @@ export function SiteIntroductionView({
 
             <div>
               <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#004481]"></span>
+                <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
                 <span>{language === 'KR' ? '5. 정보 오류 제보 및 문의 데이터 처리 방침' : '5. Handling of Inquiries & Feedback'}</span>
               </h3>
               <p className="font-medium text-slate-600 leading-relaxed pl-3.5">

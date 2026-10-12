@@ -686,7 +686,7 @@ export function CommunityTravelGuideSection({
                 setSelectedImportance('ALL');
                 setSearchKeyword('');
               }}
-              className="px-4 py-2 bg-[#8EA85E] text-white rounded-xl text-xs font-bold shadow-2xs hover:bg-[#003366] transition-all"
+              className="px-4 py-2 bg-[#8EA85E] text-white rounded-xl text-xs font-bold shadow-2xs hover:bg-[#7b944f] transition-all"
             >
               {language === 'KR' ? '필터 초기화' : 'Reset Filters'}
             </button>
@@ -768,7 +768,7 @@ export function CommunityTravelGuideSection({
                 {/* Step-by-Step Action Guide */}
                 <div className="space-y-2.5 pt-1">
                   <h4 className="text-xs sm:text-sm font-black text-slate-900 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#004481]"></span>
+                    <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
                     <span>{language === 'KR' ? '현장 실전 행동 수칙 3단계' : '3-Step Field Action Guide'}</span>
                   </h4>
 

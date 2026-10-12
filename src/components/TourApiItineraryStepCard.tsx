@@ -88,8 +88,8 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
   return (
     <div className="relative group text-left space-y-2">
       {/* 타임라인 인덱스 및 시간 (복잡한 인증 뱃지 삭제 및 정갈한 여백) */}
-      <div className="flex items-center gap-2 text-xs font-bold text-[#0A2540]">
-        <span className="w-5 h-5 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-[10px] shrink-0">
+      <div className="flex items-center gap-2 text-xs font-bold text-[#8EA85E]">
+        <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-[10px] shrink-0">
           {stepNumber}
         </span>
         <span className="font-mono text-[11px] text-[#4A5568]">{step.time}</span>

@@ -212,12 +212,12 @@ export default function StationSearchBar({
                   className="w-full px-3.5 py-3 text-left hover:bg-blue-50/70 transition-colors flex items-center justify-between group cursor-pointer rounded-xl my-0.5"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-xl bg-blue-100/70 text-[#004481] group-hover:bg-[#004481] group-hover:text-white transition-colors">
+                    <div className="p-2 rounded-xl bg-[#8EA85E]/15 text-[#8EA85E] group-hover:bg-[#8EA85E] group-hover:text-white transition-colors">
                       <Train className="w-4 h-4 shrink-0" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-800 group-hover:text-[#004481] text-sm font-heading">
+                        <span className="font-bold text-slate-800 group-hover:text-[#8EA85E] text-sm font-heading">
                           {language === 'KR' ? station.name : station.englishName}
                         </span>
                         <div className="flex items-center gap-1">

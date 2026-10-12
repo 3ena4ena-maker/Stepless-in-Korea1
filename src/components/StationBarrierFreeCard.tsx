@@ -52,7 +52,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="p-2 rounded-xl bg-[#004481] text-white shadow-xs">
+            <span className="p-2 rounded-xl bg-[#8EA85E] text-white shadow-xs">
               <Train className="w-5 h-5" />
             </span>
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 font-heading">
@@ -257,8 +257,8 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1 text-xs">
-            <div className="font-extrabold text-[#004481] flex items-center gap-1">
-              <span className="w-5 h-5 rounded-full bg-[#004481] text-white flex items-center justify-center text-2xs">1</span>
+            <div className="font-extrabold text-[#8EA85E] flex items-center gap-1">
+              <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-2xs">1</span>
               <span>{language === 'KR' ? '지상 출입구 접근' : 'Street Level Access'}</span>
             </div>
             <p className="text-slate-600 leading-relaxed font-medium">
@@ -269,8 +269,8 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
           </div>
 
           <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1 text-xs">
-            <div className="font-extrabold text-[#004481] flex items-center gap-1">
-              <span className="w-5 h-5 rounded-full bg-[#004481] text-white flex items-center justify-center text-2xs">2</span>
+            <div className="font-extrabold text-[#8EA85E] flex items-center gap-1">
+              <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-2xs">2</span>
               <span>{language === 'KR' ? '대합실 및 게이트 이동' : 'Concourse & Gate'}</span>
             </div>
             <p className="text-slate-600 leading-relaxed font-medium">
@@ -281,8 +281,8 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
           </div>
 
           <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1 text-xs">
-            <div className="font-extrabold text-[#004481] flex items-center gap-1">
-              <span className="w-5 h-5 rounded-full bg-[#004481] text-white flex items-center justify-center text-2xs">3</span>
+            <div className="font-extrabold text-[#8EA85E] flex items-center gap-1">
+              <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-2xs">3</span>
               <span>{language === 'KR' ? '승강장 탑승' : 'Platform Boarding'}</span>
             </div>
             <p className="text-slate-600 leading-relaxed font-medium">

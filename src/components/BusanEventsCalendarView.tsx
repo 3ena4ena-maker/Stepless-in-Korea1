@@ -949,7 +949,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                     <div className="bg-gradient-to-br from-blue-50/70 to-emerald-50/70 p-4 rounded-2xl border border-sky-200/80 space-y-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="p-1.5 bg-[#004481] text-white rounded-lg shadow-2xs shrink-0">
+                          <span className="p-1.5 bg-[#8EA85E] text-white rounded-lg shadow-2xs shrink-0">
                             <Train className="w-4 h-4" />
                           </span>
                           <div>
@@ -985,7 +985,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                         {onSelectStation && (
                           <button
                             onClick={() => onSelectStation(activeEventDetail.stationId, activeEventDetail.exitNumber)}
-                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#004481] hover:bg-[#003366] text-white font-black text-xs transition-colors shadow-sm cursor-pointer active:scale-98"
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#8EA85E] hover:bg-[#7b944f] text-white font-black text-xs transition-colors shadow-sm cursor-pointer active:scale-98"
                           >
                             <Navigation className="w-3.5 h-3.5" />
                             <span>

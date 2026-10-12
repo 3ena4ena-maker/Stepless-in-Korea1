@@ -93,11 +93,11 @@ export function HomeOverviewSection({
         };
       default:
         return {
-          bg: 'bg-[#0A2540]',
+          bg: 'bg-[#8EA85E]',
           bgLight: 'bg-[#F1EFEC]',
           border: 'border-[#E5E2DC]',
-          text: 'text-[#0A2540]',
-          badgeBg: 'bg-[#0A2540]',
+          text: 'text-[#8EA85E]',
+          badgeBg: 'bg-[#8EA85E]',
           badgeText: 'text-white',
         };
     }
@@ -322,7 +322,7 @@ export function HomeOverviewSection({
                 <button
                   type="button"
                   onClick={() => onSelectStation(st.id)}
-                  className="w-full py-2 px-3 rounded-md bg-[#11161B] hover:bg-[#0A2540] text-white font-medium text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full py-2 px-3 rounded-md bg-[#11161B] hover:bg-[#8EA85E] text-white font-medium text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <span>{d.buttons.viewRoute}</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -648,8 +648,8 @@ export function HomeOverviewSection({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
             <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-1.5">
-              <div className="flex items-center gap-2 font-mono font-bold text-sm text-[#0A2540]">
-                <span className="w-5 h-5 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs">1</span>
+              <div className="flex items-center gap-2 font-mono font-bold text-sm text-[#8EA85E]">
+                <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-xs">1</span>
                 <span>{language === 'KR' ? '역 및 출구 조회' : 'Find Station & Exit'}</span>
               </div>
               <p className="text-xs text-[#4A5568] leading-relaxed">
@@ -660,8 +660,8 @@ export function HomeOverviewSection({
             </div>
 
             <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-1.5">
-              <div className="flex items-center gap-2 font-mono font-bold text-sm text-[#0A2540]">
-                <span className="w-5 h-5 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs">2</span>
+              <div className="flex items-center gap-2 font-mono font-bold text-sm text-[#8EA85E]">
+                <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-xs">2</span>
                 <span>{language === 'KR' ? '지상 보도 무단차 이동' : 'Level Ground Pathway'}</span>
               </div>
               <p className="text-xs text-[#4A5568] leading-relaxed">
@@ -672,8 +672,8 @@ export function HomeOverviewSection({
             </div>
 
             <div className="p-4 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] space-y-1.5">
-              <div className="flex items-center gap-2 font-mono font-bold text-sm text-[#0A2540]">
-                <span className="w-5 h-5 rounded-full bg-[#0A2540] text-white flex items-center justify-center text-xs">3</span>
+              <div className="flex items-center gap-2 font-mono font-bold text-sm text-[#8EA85E]">
+                <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-xs">3</span>
                 <span>{language === 'KR' ? '개찰구 및 승강장 진입' : 'Gate & Platform Access'}</span>
               </div>
               <p className="text-xs text-[#4A5568] leading-relaxed">

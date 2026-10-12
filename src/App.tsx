@@ -2488,7 +2488,7 @@ export default function App() {
             <div className="p-5 border-t border-slate-100 flex justify-end">
               <button 
                 onClick={() => setShowPrivacyModal(false)}
-                className="px-5 py-2.5 bg-[#004481] hover:bg-[#003566] text-white font-bold text-xs sm:text-sm rounded-xl cursor-pointer shadow-sm transition-colors"
+                className="px-5 py-2.5 bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs sm:text-sm rounded-xl cursor-pointer shadow-sm transition-colors"
               >
                 {language === 'KR' ? '약관 동의 및 확인' : 'Accept & Complete'}
               </button>
@@ -2547,11 +2547,11 @@ export default function App() {
               }}
               className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
                 isActive 
-                  ? 'text-[#004481] font-black scale-105' 
+                  ? 'text-[#8EA85E] font-black scale-105' 
                   : 'text-slate-400 font-medium hover:text-slate-600'
               }`}
             >
-              <div className={`p-1 rounded-lg ${isActive ? 'bg-blue-50 text-[#004481]' : ''}`}>
+              <div className={`p-1 rounded-lg ${isActive ? 'bg-[#8EA85E]/15 text-[#8EA85E]' : ''}`}>
                 <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
               </div>
               <span className="text-[10px] leading-tight mt-0.5 tracking-tight">{item.label}</span>

@@ -94,7 +94,7 @@ export const TourApiPlaceDetailAccordion: React.FC<TourApiPlaceDetailAccordionPr
       {/* 1. 상단 타이틀 & 접기 버튼 (복잡한 공인/동기화 뱃지 완전 삭제 및 깔끔한 여백 정돈) */}
       <div className="flex items-center justify-between border-b border-[#E5E2DC] pb-3.5">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-[#0A2540] text-white flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-[#8EA85E] text-white flex items-center justify-center shrink-0">
             <Accessibility className="w-4 h-4" />
           </div>
           <div>
@@ -424,7 +424,7 @@ export const TourApiPlaceDetailAccordion: React.FC<TourApiPlaceDetailAccordionPr
           <button
             type="button"
             onClick={onCollapse}
-            className="px-3.5 py-1.5 rounded-lg bg-[#0A2540] hover:bg-[#07192C] text-white text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
+            className="px-3.5 py-1.5 rounded-lg bg-[#8EA85E] hover:bg-[#7b944f] text-white text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
           >
             <span>{language === 'KR' ? '무장애 정보 접기' : 'Hide Accessibility Info'}</span>
             <ChevronUp className="w-3.5 h-3.5" />

@@ -1269,7 +1269,7 @@ const RECOMMENDATION_OVERVIEW_CARDS = [
     durationLabelEn: '4 Nights 5 Days',
     rating: '4.9',
     badgeText: 'GRAND TOUR',
-    badgeBg: 'bg-[#004481]',
+    badgeBg: 'bg-[#8EA85E]',
     badgeTextCol: 'text-white',
     themeBadgeKo: '완주코스',
     themeBadgeEn: 'Full Tour',
@@ -5242,10 +5242,10 @@ export default function BusanItinerariesView({
             
             {/* Verification Info - Clean single line on the row below */}
             <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1.5 whitespace-nowrap overflow-x-auto max-w-full scrollbar-none">
-              <span className="font-bold text-[#004481] flex items-center gap-1 shrink-0">
+              <span className="font-bold text-[#8EA85E] flex items-center gap-1 shrink-0">
                 <span className="relative flex h-1.5 w-1.5 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#004481]"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8EA85E] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#8EA85E]"></span>
                 </span>
                 <span>{language === 'KR' ? '검증 정보' : 'Verified Info'}</span>
               </span>
@@ -5605,7 +5605,7 @@ export default function BusanItinerariesView({
               <div className="space-y-8 pt-8 border-t border-slate-100">
 {/* Sub-panel 2: High-contrast split scorecard for transfer guidelines */}
                 <div className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs">
-                  <div className="p-6 sm:p-8 bg-[#004481]/5 border-b border-slate-100 flex items-center gap-2.5">
+                  <div className="p-6 sm:p-8 bg-[#8EA85E]/10 border-b border-slate-100 flex items-center gap-2.5">
                     <span className="text-xl">🔄</span>
                     <div>
                       <h3 className="text-base sm:text-lg font-black text-slate-800">
@@ -6120,7 +6120,7 @@ export default function BusanItinerariesView({
                 {/* Infographic with sleek frame border */}
                 <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
                   <p className="text-xs sm:text-sm font-black text-slate-900 flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 bg-[#004481] rounded-full inline-block"></span>
+                    <span className="w-2.5 h-2.5 bg-[#8EA85E] rounded-full inline-block"></span>
                     <span>{language === 'KR' ? '어린이 대중교통 무료화 등록 방법 안내서' : 'Official Enrollment Guide Infographic'}</span>
                   </p>
                   
@@ -6507,7 +6507,7 @@ export default function BusanItinerariesView({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                     <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-2">
                       <h5 className="font-black text-slate-800 flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-[#004481]"></span>
+                        <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
                         <span>{language === 'KR' ? '주요 지정 승강장 위치' : 'Key Taxi Stand Locations'}</span>
                       </h5>
                       <ul className="space-y-1.5 text-slate-600 font-medium">
