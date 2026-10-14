@@ -1626,7 +1626,7 @@ Station/Exit: ${stationOrExit || ''}
 Content: ${content}`;
 
     const response = await gemini.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-3.8-flash",
       contents: prompt,
       config: {
         systemInstruction: `You are an expert friendly editor and translator for Busan transit and travel guides. 
