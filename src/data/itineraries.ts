@@ -23,6 +23,13 @@ export interface ItineraryStep {
   regionNameEn?: string;
   tipKo?: string;
   tipEn?: string;
+  accessibilityDescKo?: string;
+  accessibilityDescEn?: string;
+  naverMapLinks?: {
+    labelKo: string;
+    labelEn?: string;
+    url: string;
+  }[];
 }
 
 export interface ItineraryCourse {
@@ -1826,6 +1833,36 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         icon: 'Camera',
         stationInfoKo: '부산 부산진구 새싹로 295 (어린이대공원 내, 1호선 서면역/부전역에서 81, 133, 54번 버스 탑승 후 어린이대공원 하차)',
         stationInfoEn: '295 Saessak-ro, Busanjin-gu, Busan'
+      },
+      {
+        id: 'experience-oncheoncheon-bike',
+        contentId: 'spot-oncheoncheon',
+        regionId: 'others',
+        regionNameKo: '동래 · 금정 · 연제',
+        regionNameEn: 'Dongnae & Geumjeong',
+        categoryType: 'SCIENCE_ECO',
+        time: '생태 라이딩',
+        titleKo: '온천천 자전거 코스',
+        titleEn: 'Oncheoncheon Stream Bicycle Route',
+        descKo: '금정구에서 동래구를 거쳐 수영강 합류부까지 이어지는 약 7~8km의 도심 생태하천 라이딩 코스입니다. 보행로와 분리된 완만한 평지 자전거 전용도로로 정비되어 남녀노소 누구나 안전하고 편안하게 라이딩을 즐길 수 있습니다. 브런치 카페와 레스토랑이 있어 천천히 시간을 즐길 수 있습니다.',
+        descEn: 'A scenic 7-8 km paved riverside bicycle route running through Geumjeong, Dongnae, and Yeonje down to Suyeonggang River. Separated from pedestrian walkways with flat, gentle terrain so anyone can ride safely and comfortably. Enjoy a leisurely time with nearby brunch cafes and restaurants along the stream.',
+        icon: 'Map',
+        stationInfoKo: '자전거 대여소\n온천천 자전거 대여소 : 도시철도 1호선 동래역 1번출구 -> 교대방향 약 430m 온천천 인공폭포 맞은편\n금정구 공영자전거 대여소 : 1호선 온천장역 4번 출구 옆 북측 공영주차장 안',
+        stationInfoEn: 'Bicycle Rental Stations:\n• Oncheoncheon Bike Rental: Line 1 Dongnae Stn Exit 1 -> ~430m towards Gyodae, opposite Oncheoncheon Waterfall\n• Geumjeong Public Bike Rental: Line 1 Oncheonjang Stn Exit 4, inside North Public Parking Lot',
+        accessibilityDescKo: '보행로 분리 자전거길 · 무료 자전거 대여소',
+        accessibilityDescEn: 'Separated bike lane · Free bicycle rental stations',
+        naverMapLinks: [
+          {
+            labelKo: '온천천 자전거 대여소',
+            labelEn: 'Oncheoncheon Rental',
+            url: 'https://map.naver.com/v5/search/%EC%98%A8%EC%B2%9C%EC%B2%9C%20%EC%9E%90%EC%A0%84%EA%B1%B0%20%EB%8C%80%EC%97%AC%EC%86%8C'
+          },
+          {
+            labelKo: '금정구 공영자전거 대여소',
+            labelEn: 'Geumjeong Bike Rental',
+            url: 'https://map.naver.com/v5/search/%EA%B8%88%EC%A0%95%EA%B5%AC%20%EA%B3%B5%EC%98%81%EC%9E%90%EC%A0%84%EA%B1%B0%20%EB%8C%80%EC%97%AC%EC%86%8C'
+          }
+        ]
       }
     ]
   },

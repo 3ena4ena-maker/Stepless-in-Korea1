@@ -135,6 +135,7 @@ export const KNOWN_COORDINATES: Record<string, { lat: number; lng: number; addre
   '부전시장': { lat: 35.1630, lng: 129.0601, addressKo: '부산광역시 부산진구 중앙대로 786', categoryKo: '전통시장' },
   '구포시장': { lat: 35.2104, lng: 129.0049, addressKo: '부산광역시 북구 구포시장1길 17', categoryKo: '전통시장' },
   '온천천': { lat: 35.2078, lng: 129.0835, addressKo: '부산광역시 동래구 온천천로', categoryKo: '자연/산책' },
+  '온천천 자전거 코스': { lat: 35.2078, lng: 129.0835, addressKo: '부산광역시 동래구 온천천로 (온천2호인도교 하부)', categoryKo: '체험/레저' },
   '범어사': { lat: 35.2838, lng: 129.0682, addressKo: '부산광역시 금정구 범어사로 250', categoryKo: '사찰/명소' },
   '부산시립미술관': { lat: 35.1675, lng: 129.1378, addressKo: '부산광역시 해운대구 APEC로 58', categoryKo: '미술관' },
   '부산현대미술관': { lat: 35.1089, lng: 128.9419, addressKo: '부산광역시 사하구 낙동남로 1191', categoryKo: '미술관' },

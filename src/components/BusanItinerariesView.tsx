@@ -42,7 +42,8 @@ import {
   AlertTriangle,
   CheckCircle2,
   ShieldCheck,
-  Landmark
+  Landmark,
+  Bike
 } from 'lucide-react';
 import ElegantIllustration from './ElegantIllustration';
 import { BUSAN_ITINERARIES, ItineraryCourse, ItineraryStep } from '../data/itineraries';
@@ -4200,9 +4201,12 @@ export default function BusanItinerariesView({
                           const isSaved = isBookmarked(step.id || step.titleKo);
 
                           const getThemeTagLabel = (cType?: string, defaultTime?: string) => {
+                            if (defaultTime && (defaultTime.includes('라이딩') || defaultTime.includes('자전거') || defaultTime.includes('생태'))) {
+                              return defaultTime;
+                            }
                             if (cType === 'MUSEUM') return language === 'KR' ? '박물관' : 'Museum';
                             if (cType === 'ART') return language === 'KR' ? '미술관' : 'Art Gallery';
-                            if (cType === 'SCIENCE_ECO') return language === 'KR' ? '과학/수족관' : 'Science';
+                            if (cType === 'SCIENCE_ECO') return language === 'KR' ? '과학/생태' : 'Science & Eco';
                             if (cType === 'CULTURE') return language === 'KR' ? '복합문화' : 'Cultural Space';
                             return defaultTime || (language === 'KR' ? '체험전시' : 'Interactive');
                           };
@@ -4270,13 +4274,44 @@ export default function BusanItinerariesView({
                               <div className="pt-3 border-t border-[#E5E2DC] space-y-2 text-left">
                                 <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-[#11161B] bg-[#FBFBF9] p-2.5 rounded-md border border-[#E5E2DC]">
                                   <CheckCircle2 className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-                                  <span>{language === 'KR' ? '엘리베이터 완비 · 무장애 평지/경사로' : 'Elevators & Step-free ramps provided'}</span>
+                                  <span>
+                                    {language === 'KR'
+                                      ? (step.accessibilityDescKo || '엘리베이터 완비 · 무장애 평지/경사로')
+                                      : (step.accessibilityDescEn || 'Elevators & Step-free ramps provided')}
+                                  </span>
                                 </div>
 
                                 {step.stationInfoKo && (
-                                  <div className="text-[11px] font-mono text-[#0A2540] flex items-center gap-1.5 pt-0.5">
-                                    <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-                                    <span>{language === 'KR' ? step.stationInfoKo : step.stationInfoEn}</span>
+                                  <div className="text-[11px] font-mono text-[#0A2540] flex items-start gap-1.5 pt-0.5">
+                                    {step.stationInfoKo.includes('자전거') ? (
+                                      <Bike className="w-3.5 h-3.5 text-[#0A2540] shrink-0 mt-0.5" />
+                                    ) : (
+                                      <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0 mt-0.5" />
+                                    )}
+                                    <div className="whitespace-pre-line leading-relaxed text-left flex-1">
+                                      {language === 'KR' ? step.stationInfoKo : step.stationInfoEn}
+                                    </div>
+                                  </div>
+                                )}
+
+                                {step.naverMapLinks && step.naverMapLinks.length > 0 && (
+                                  <div className="pt-2 flex flex-wrap gap-2">
+                                    {step.naverMapLinks.map((link, lIdx) => (
+                                      <a
+                                        key={lIdx}
+                                        href={link.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] font-bold bg-[#03C75A]/10 hover:bg-[#03C75A]/20 text-[#008A3D] border border-[#03C75A]/30 transition-all hover:scale-[1.01] shadow-2xs cursor-pointer"
+                                        title={language === 'KR' ? `${link.labelKo} 네이버 지도에서 보기` : `View ${link.labelEn} on Naver Map`}
+                                      >
+                                        <span className="w-2 h-2 rounded-full bg-[#03C75A] shrink-0" />
+                                        <span>{language === 'KR' ? link.labelKo : (link.labelEn || link.labelKo)}</span>
+                                        <span className="text-[10px] text-[#008A3D] font-semibold bg-[#03C75A]/15 px-1 py-0.2 rounded">네이버 지도</span>
+                                        <ExternalLink className="w-3 h-3 text-[#03C75A] shrink-0 ml-0.5" />
+                                      </a>
+                                    ))}
                                   </div>
                                 )}
                               </div>
