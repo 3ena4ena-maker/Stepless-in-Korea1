@@ -30,6 +30,14 @@ export interface ItineraryStep {
     labelEn?: string;
     url: string;
   }[];
+  rentalStations?: {
+    nameKo: string;
+    nameEn?: string;
+    descKo: string;
+    descEn?: string;
+    naverMapUrl?: string;
+    googleMapUrl?: string;
+  }[];
 }
 
 export interface ItineraryCourse {
@@ -1851,16 +1859,22 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         stationInfoEn: 'Bicycle Rental Stations:\n• Oncheoncheon Bike Rental: Line 1 Dongnae Stn Exit 1 -> ~430m towards Gyodae, opposite Oncheoncheon Waterfall\n• Geumjeong Public Bike Rental: Line 1 Oncheonjang Stn Exit 4, inside North Public Parking Lot',
         accessibilityDescKo: '보행로 분리 자전거길 · 무료 자전거 대여소',
         accessibilityDescEn: 'Separated bike lane · Free bicycle rental stations',
-        naverMapLinks: [
+        rentalStations: [
           {
-            labelKo: '온천천 자전거 대여소',
-            labelEn: 'Oncheoncheon Rental',
-            url: 'https://map.naver.com/v5/search/%EC%98%A8%EC%B2%9C%EC%B2%9C%20%EC%9E%90%EC%A0%84%EA%B1%B0%20%EB%8C%80%EC%97%AC%EC%86%8C'
+            nameKo: '온천천 자전거 대여소',
+            nameEn: 'Oncheoncheon Bike Rental',
+            descKo: '도시철도 1호선 동래역 1번출구 -> 교대방향 약 430m 온천천 인공폭포 맞은편',
+            descEn: 'Line 1 Dongnae Stn Exit 1 -> ~430m towards Gyodae, opposite Oncheoncheon Waterfall',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%98%A8%EC%B2%9C%EC%B2%9C%20%EC%9E%90%EC%A0%84%EA%B1%B0%20%EB%8C%80%EC%97%AC%EC%86%8C',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EB%B6%80%EC%82%B0%20%EC%98%A8%EC%B2%9C%EC%B2%9C%20%EC%9E%90%EC%A0%84%EA%B1%B0%EB%8C%80%EC%97%AC%EC%86%8C'
           },
           {
-            labelKo: '금정구 공영자전거 대여소',
-            labelEn: 'Geumjeong Bike Rental',
-            url: 'https://map.naver.com/v5/search/%EA%B8%88%EC%A0%95%EA%B5%AC%20%EA%B3%B5%EC%98%81%EC%9E%90%EC%A0%84%EA%B1%B0%20%EB%8C%80%EC%97%AC%EC%86%8C'
+            nameKo: '금정구 공영자전거 대여소',
+            nameEn: 'Geumjeong Public Bike Rental',
+            descKo: '1호선 온천장역 4번 출구 옆 북측 공영주차장 안',
+            descEn: 'Line 1 Oncheonjang Stn Exit 4, inside North Public Parking Lot',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EA%B8%88%EC%A0%95%EA%B5%AC%20%EA%B3%B5%EC%98%81%EC%9E%90%EC%A0%84%EA%B1%B0%20%EB%8C%80%EC%97%AC%EC%86%8C',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EA%B8%88%EC%A0%95%EA%B5%AC%20%EA%B3%B5%EC%98%81%EC%9E%90%EC%A0%84%EA%B1%B0%20%EB%8C%80%EC%97%AC%EC%86%8C'
           }
         ]
       }

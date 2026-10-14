@@ -4281,38 +4281,96 @@ export default function BusanItinerariesView({
                                   </span>
                                 </div>
 
-                                {step.stationInfoKo && (
-                                  <div className="text-[11px] font-mono text-[#0A2540] flex items-start gap-1.5 pt-0.5">
-                                    {step.stationInfoKo.includes('자전거') ? (
-                                      <Bike className="w-3.5 h-3.5 text-[#0A2540] shrink-0 mt-0.5" />
-                                    ) : (
-                                      <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0 mt-0.5" />
-                                    )}
-                                    <div className="whitespace-pre-line leading-relaxed text-left flex-1">
-                                      {language === 'KR' ? step.stationInfoKo : step.stationInfoEn}
+                                {step.rentalStations && step.rentalStations.length > 0 ? (
+                                  <div className="pt-2 border-t border-[#E5E2DC] space-y-2">
+                                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#0A2540]">
+                                      <Bike className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
+                                      <span>{language === 'KR' ? '자전거 대여소' : 'Bicycle Rental Stations'}</span>
+                                    </div>
+                                    <div className="space-y-2">
+                                      {step.rentalStations.map((station, sIdx) => (
+                                        <div key={sIdx} className="bg-[#FBFBF9] p-2.5 rounded-lg border border-[#E5E2DC] text-left space-y-1.5">
+                                          <div className="flex flex-wrap items-center justify-between gap-1.5 pb-1 border-b border-[#E5E2DC]/60">
+                                            <span className="font-bold text-xs text-[#11161B]">
+                                              {language === 'KR' ? station.nameKo : (station.nameEn || station.nameKo)}
+                                            </span>
+                                            <div className="flex items-center gap-1.5 shrink-0">
+                                              {/* 네이버 지도 버튼 */}
+                                              {station.naverMapUrl && (
+                                                <a
+                                                  href={station.naverMapUrl}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  onClick={(e) => e.stopPropagation()}
+                                                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold bg-[#03C75A]/10 hover:bg-[#03C75A]/20 text-[#008A3D] border border-[#03C75A]/30 transition-all hover:scale-[1.02] shadow-2xs cursor-pointer"
+                                                  title={language === 'KR' ? `${station.nameKo} 네이버 지도에서 보기` : `View ${station.nameKo} on Naver Map`}
+                                                >
+                                                  <span className="w-1.5 h-1.5 rounded-full bg-[#03C75A] shrink-0" />
+                                                  <span>{language === 'KR' ? '네이버 지도' : 'Naver Map'}</span>
+                                                  <ExternalLink className="w-2.5 h-2.5 text-[#03C75A] shrink-0" />
+                                                </a>
+                                              )}
+
+                                              {/* 구글맵 버튼 */}
+                                              {station.googleMapUrl && (
+                                                <a
+                                                  href={station.googleMapUrl}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  onClick={(e) => e.stopPropagation()}
+                                                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold bg-[#4285F4]/10 hover:bg-[#4285F4]/20 text-[#1A73E8] border border-[#4285F4]/30 transition-all hover:scale-[1.02] shadow-2xs cursor-pointer"
+                                                  title={language === 'KR' ? `${station.nameKo} 구글맵에서 보기` : `View ${station.nameKo} on Google Maps`}
+                                                >
+                                                  <span className="w-1.5 h-1.5 rounded-full bg-[#4285F4] shrink-0" />
+                                                  <span>{language === 'KR' ? '구글맵' : 'Google Maps'}</span>
+                                                  <ExternalLink className="w-2.5 h-2.5 text-[#4285F4] shrink-0" />
+                                                </a>
+                                              )}
+                                            </div>
+                                          </div>
+                                          <p className="text-[11px] text-[#4A5568] font-mono leading-relaxed pl-0.5">
+                                            {language === 'KR' ? station.descKo : (station.descEn || station.descKo)}
+                                          </p>
+                                        </div>
+                                      ))}
                                     </div>
                                   </div>
-                                )}
+                                ) : (
+                                  <>
+                                    {step.stationInfoKo && (
+                                      <div className="text-[11px] font-mono text-[#0A2540] flex items-start gap-1.5 pt-0.5">
+                                        {step.stationInfoKo.includes('자전거') ? (
+                                          <Bike className="w-3.5 h-3.5 text-[#0A2540] shrink-0 mt-0.5" />
+                                        ) : (
+                                          <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0 mt-0.5" />
+                                        )}
+                                        <div className="whitespace-pre-line leading-relaxed text-left flex-1">
+                                          {language === 'KR' ? step.stationInfoKo : step.stationInfoEn}
+                                        </div>
+                                      </div>
+                                    )}
 
-                                {step.naverMapLinks && step.naverMapLinks.length > 0 && (
-                                  <div className="pt-2 flex flex-wrap gap-2">
-                                    {step.naverMapLinks.map((link, lIdx) => (
-                                      <a
-                                        key={lIdx}
-                                        href={link.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        onClick={(e) => e.stopPropagation()}
-                                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] font-bold bg-[#03C75A]/10 hover:bg-[#03C75A]/20 text-[#008A3D] border border-[#03C75A]/30 transition-all hover:scale-[1.01] shadow-2xs cursor-pointer"
-                                        title={language === 'KR' ? `${link.labelKo} 네이버 지도에서 보기` : `View ${link.labelEn} on Naver Map`}
-                                      >
-                                        <span className="w-2 h-2 rounded-full bg-[#03C75A] shrink-0" />
-                                        <span>{language === 'KR' ? link.labelKo : (link.labelEn || link.labelKo)}</span>
-                                        <span className="text-[10px] text-[#008A3D] font-semibold bg-[#03C75A]/15 px-1 py-0.2 rounded">네이버 지도</span>
-                                        <ExternalLink className="w-3 h-3 text-[#03C75A] shrink-0 ml-0.5" />
-                                      </a>
-                                    ))}
-                                  </div>
+                                    {step.naverMapLinks && step.naverMapLinks.length > 0 && (
+                                      <div className="pt-2 flex flex-wrap gap-2">
+                                        {step.naverMapLinks.map((link, lIdx) => (
+                                          <a
+                                            key={lIdx}
+                                            href={link.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] font-bold bg-[#03C75A]/10 hover:bg-[#03C75A]/20 text-[#008A3D] border border-[#03C75A]/30 transition-all hover:scale-[1.01] shadow-2xs cursor-pointer"
+                                            title={language === 'KR' ? `${link.labelKo} 네이버 지도에서 보기` : `View ${link.labelEn} on Naver Map`}
+                                          >
+                                            <span className="w-2 h-2 rounded-full bg-[#03C75A] shrink-0" />
+                                            <span>{language === 'KR' ? link.labelKo : (link.labelEn || link.labelKo)}</span>
+                                            <span className="text-[10px] text-[#008A3D] font-semibold bg-[#03C75A]/15 px-1 py-0.2 rounded">네이버 지도</span>
+                                            <ExternalLink className="w-3 h-3 text-[#03C75A] shrink-0 ml-0.5" />
+                                          </a>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </>
                                 )}
                               </div>
                             </div>
