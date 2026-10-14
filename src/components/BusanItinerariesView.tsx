@@ -1661,15 +1661,43 @@ export default function BusanItinerariesView({
   const [isCategoryMoreOpen, setIsCategoryMoreOpen] = useState(false);
   const categoryMoreRef = useRef<HTMLDivElement>(null);
 
+  const handleSelectCategory = (category: CategoryType | null) => {
+    setActiveCategory(category);
+    setIsCategoryMoreOpen(false);
+    if (category === 'DAY' || category === '1NIGHT' || category === '2NIGHTS' || category === '3NIGHTS' || category === '4NIGHTS') {
+      setSelectedScheduleDuration(category);
+    }
+    if (category === 'BARRIER_FREE') {
+      setInternalBarrierFreePlaceId(null);
+      if (onSelectCategory) {
+        onSelectCategory('BARRIER_FREE');
+      } else {
+        navigateToSpa('/barrier-free');
+      }
+    } else if (category === 'MY_ROUTE') {
+      setInternalBarrierFreePlaceId(null);
+      if (onSelectCategory) {
+        onSelectCategory('MY_ROUTE');
+      }
+    } else {
+      setInternalBarrierFreePlaceId(null);
+      if (onSelectCategory) {
+        onSelectCategory(category);
+      }
+    }
+  };
+
   React.useEffect(() => {
     const handleClickOutside = (e: MouseEvent | TouchEvent) => {
-      if (categoryMoreRef.current && !categoryMoreRef.current.contains(e.target as Node)) {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      if (categoryMoreRef.current && !categoryMoreRef.current.contains(target)) {
         setIsCategoryMoreOpen(false);
       }
     };
     if (isCategoryMoreOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('touchstart', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside, { passive: true });
     }
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -2089,12 +2117,18 @@ export default function BusanItinerariesView({
         if (activeCategory === 'MARKET') {
           return course.category === 'MARKET';
         }
-        if (activeCategory === '2NIGHTS' || activeCategory === '3NIGHTS') {
-          return course.category === '2NIGHTS' || course.category === '3NIGHTS';
+        if (activeCategory === '2NIGHTS') {
+          return course.category === '2NIGHTS';
+        }
+        if (activeCategory === '3NIGHTS') {
+          return course.category === '3NIGHTS';
         }
         if (activeCategory === 'SCHEDULE') {
-          if (selectedScheduleDuration === '2NIGHTS' || selectedScheduleDuration === '3NIGHTS') {
-            return course.category === '2NIGHTS' || course.category === '3NIGHTS';
+          if (selectedScheduleDuration === '2NIGHTS') {
+            return course.category === '2NIGHTS';
+          }
+          if (selectedScheduleDuration === '3NIGHTS') {
+            return course.category === '3NIGHTS';
           }
           return course.category === (selectedScheduleDuration || 'DAY');
         }
@@ -2453,11 +2487,9 @@ export default function BusanItinerariesView({
                 {/* 1. 전체 */}
                 <button
                   type="button"
-                  onClick={() => {
-                    if (onSelectCategory) {
-                      onSelectCategory(null);
-                    }
-                    setActiveCategory(null);
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectCategory(null);
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === null
@@ -2471,11 +2503,9 @@ export default function BusanItinerariesView({
                 {/* 2. 식도락 */}
                 <button
                   type="button"
-                  onClick={() => {
-                    if (onSelectCategory) {
-                      onSelectCategory('GOURMET');
-                    }
-                    setActiveCategory('GOURMET');
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectCategory('GOURMET');
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'GOURMET'
@@ -2489,12 +2519,9 @@ export default function BusanItinerariesView({
                 {/* 3. 체험&박물관 */}
                 <button
                   type="button"
-                  onClick={() => {
-                    setInternalBarrierFreePlaceId(null);
-                    if (onSelectCategory) {
-                      onSelectCategory('EXPERIENCE');
-                    }
-                    setActiveCategory('EXPERIENCE');
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectCategory('EXPERIENCE');
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'EXPERIENCE'
@@ -2508,12 +2535,9 @@ export default function BusanItinerariesView({
                 {/* 4. 전통시장 */}
                 <button
                   type="button"
-                  onClick={() => {
-                    setInternalBarrierFreePlaceId(null);
-                    if (onSelectCategory) {
-                      onSelectCategory('MARKET');
-                    }
-                    setActiveCategory('MARKET');
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectCategory('MARKET');
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'MARKET'
@@ -2527,12 +2551,9 @@ export default function BusanItinerariesView({
                 {/* 5. 명소 */}
                 <button
                   type="button"
-                  onClick={() => {
-                    setInternalBarrierFreePlaceId(null);
-                    if (onSelectCategory) {
-                      onSelectCategory('ATTRACTION');
-                    }
-                    setActiveCategory('ATTRACTION');
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectCategory('ATTRACTION');
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'ATTRACTION'
@@ -2546,13 +2567,10 @@ export default function BusanItinerariesView({
                 {/* 6. 일정별 여행 */}
                 <button
                   type="button"
-                  onClick={() => {
-                    setInternalBarrierFreePlaceId(null);
+                  onClick={(e) => {
+                    e.stopPropagation();
                     const targetDuration = selectedScheduleDuration || 'DAY';
-                    if (onSelectCategory) {
-                      onSelectCategory(targetDuration);
-                    }
-                    setActiveCategory(targetDuration);
+                    handleSelectCategory(targetDuration);
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     isScheduleActive
@@ -2566,12 +2584,9 @@ export default function BusanItinerariesView({
                 {/* 7. 부산 도시철도 코스 */}
                 <button
                   type="button"
-                  onClick={() => {
-                    setInternalBarrierFreePlaceId(null);
-                    if (onSelectCategory) {
-                      onSelectCategory('SUBWAY');
-                    }
-                    setActiveCategory('SUBWAY');
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectCategory('SUBWAY');
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'SUBWAY'
@@ -2585,13 +2600,9 @@ export default function BusanItinerariesView({
                 {/* 8. 무장애 관광지 */}
                 <button
                   type="button"
-                  onClick={() => {
-                    setInternalBarrierFreePlaceId(null);
-                    if (onSelectCategory) {
-                      onSelectCategory('BARRIER_FREE');
-                    }
-                    setActiveCategory('BARRIER_FREE');
-                    navigateToSpa('/barrier-free');
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectCategory('BARRIER_FREE');
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'BARRIER_FREE'
@@ -2605,12 +2616,9 @@ export default function BusanItinerariesView({
                 {/* 9. 내 여행 루트 (지도) */}
                 <button
                   type="button"
-                  onClick={() => {
-                    setInternalBarrierFreePlaceId(null);
-                    if (onSelectCategory) {
-                      onSelectCategory('MY_ROUTE');
-                    }
-                    setActiveCategory('MY_ROUTE');
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectCategory('MY_ROUTE');
                   }}
                   className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center flex items-center gap-1.5 ${
                     activeCategory === 'MY_ROUTE'
@@ -2733,24 +2741,15 @@ export default function BusanItinerariesView({
                           <button
                             key={String(catItem.id)}
                             type="button"
-                            onClick={() => {
-                              setIsCategoryMoreOpen(false);
+                            onClick={(e) => {
+                              e.stopPropagation();
                               if (catItem.id === null) {
-                                if (onSelectCategory) onSelectCategory(null);
-                                setActiveCategory(null);
+                                handleSelectCategory(null);
                               } else if (catItem.id === 'DAY') {
                                 const targetDuration = selectedScheduleDuration || 'DAY';
-                                if (onSelectCategory) onSelectCategory(targetDuration);
-                                setActiveCategory(targetDuration);
-                              } else if (catItem.id === 'BARRIER_FREE') {
-                                setInternalBarrierFreePlaceId(null);
-                                if (onSelectCategory) onSelectCategory('BARRIER_FREE');
-                                setActiveCategory('BARRIER_FREE');
-                                navigateToSpa('/barrier-free');
+                                handleSelectCategory(targetDuration);
                               } else {
-                                setInternalBarrierFreePlaceId(null);
-                                if (onSelectCategory) onSelectCategory(catItem.id as any);
-                                setActiveCategory(catItem.id as any);
+                                handleSelectCategory(catItem.id as any);
                               }
                             }}
                             className={`w-full flex items-center justify-between p-2.5 rounded-lg text-xs font-bold transition-all cursor-pointer border text-left ${
@@ -2799,10 +2798,10 @@ export default function BusanItinerariesView({
                   {/* 당일치기 */}
                   <button
                     type="button"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setSelectedScheduleDuration('DAY');
-                      setActiveCategory('DAY');
-                      if (onSelectCategory) onSelectCategory('DAY');
+                      handleSelectCategory('DAY');
                     }}
                     className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
                       activeCategory === 'DAY'
@@ -2816,10 +2815,10 @@ export default function BusanItinerariesView({
                   {/* 1박 */}
                   <button
                     type="button"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setSelectedScheduleDuration('1NIGHT');
-                      setActiveCategory('1NIGHT');
-                      if (onSelectCategory) onSelectCategory('1NIGHT');
+                      handleSelectCategory('1NIGHT');
                     }}
                     className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
                       activeCategory === '1NIGHT'
@@ -2833,10 +2832,10 @@ export default function BusanItinerariesView({
                   {/* 2박 3박 */}
                   <button
                     type="button"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setSelectedScheduleDuration('2NIGHTS');
-                      setActiveCategory('2NIGHTS');
-                      if (onSelectCategory) onSelectCategory('2NIGHTS');
+                      handleSelectCategory('2NIGHTS');
                     }}
                     className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
                       activeCategory === '2NIGHTS' || activeCategory === '3NIGHTS'
@@ -2850,10 +2849,10 @@ export default function BusanItinerariesView({
                   {/* 4박 */}
                   <button
                     type="button"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setSelectedScheduleDuration('4NIGHTS');
-                      setActiveCategory('4NIGHTS');
-                      if (onSelectCategory) onSelectCategory('4NIGHTS');
+                      handleSelectCategory('4NIGHTS');
                     }}
                     className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
                       activeCategory === '4NIGHTS'
@@ -2876,12 +2875,9 @@ export default function BusanItinerariesView({
                 <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full mx-auto">
                   {/* 1. 식도락 */}
                   <div
-                    onClick={() => {
-                      if (onSelectCategory) {
-                        onSelectCategory('GOURMET');
-                      } else {
-                        setActiveCategory('GOURMET');
-                      }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('GOURMET');
                     }}
                     className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
@@ -2897,12 +2893,9 @@ export default function BusanItinerariesView({
 
                   {/* 2. 체험&박물관 */}
                   <div
-                    onClick={() => {
-                      if (onSelectCategory) {
-                        onSelectCategory('EXPERIENCE');
-                      } else {
-                        setActiveCategory('EXPERIENCE');
-                      }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('EXPERIENCE');
                     }}
                     className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
@@ -2918,12 +2911,9 @@ export default function BusanItinerariesView({
 
                   {/* 3. 전통시장 */}
                   <div
-                    onClick={() => {
-                      if (onSelectCategory) {
-                        onSelectCategory('MARKET');
-                      } else {
-                        setActiveCategory('MARKET');
-                      }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('MARKET');
                     }}
                     className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
@@ -2939,12 +2929,9 @@ export default function BusanItinerariesView({
 
                   {/* 4. 명소 */}
                   <div
-                    onClick={() => {
-                      if (onSelectCategory) {
-                        onSelectCategory('ATTRACTION');
-                      } else {
-                        setActiveCategory('ATTRACTION');
-                      }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('ATTRACTION');
                     }}
                     className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
@@ -2960,13 +2947,10 @@ export default function BusanItinerariesView({
 
                   {/* 5. 일정별 여행 */}
                   <div
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       const targetDuration = selectedScheduleDuration || 'DAY';
-                      if (onSelectCategory) {
-                        onSelectCategory(targetDuration);
-                      } else {
-                        setActiveCategory(targetDuration);
-                      }
+                      handleSelectCategory(targetDuration);
                     }}
                     className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
@@ -2982,12 +2966,9 @@ export default function BusanItinerariesView({
 
                   {/* 6. 부산 도시철도 */}
                   <div
-                    onClick={() => {
-                      if (onSelectCategory) {
-                        onSelectCategory('SUBWAY');
-                      } else {
-                        setActiveCategory('SUBWAY');
-                      }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('SUBWAY');
                     }}
                     className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
@@ -3003,13 +2984,9 @@ export default function BusanItinerariesView({
 
                   {/* 7. 무장애 관광지 */}
                   <div
-                    onClick={() => {
-                      if (onSelectCategory) {
-                        onSelectCategory('BARRIER_FREE');
-                      } else {
-                        setActiveCategory('BARRIER_FREE');
-                      }
-                      navigateToSpa('/barrier-free');
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('BARRIER_FREE');
                     }}
                     className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
                   >
@@ -3025,12 +3002,9 @@ export default function BusanItinerariesView({
 
                   {/* 8. 내 여행 루트 */}
                   <div
-                    onClick={() => {
-                      setInternalBarrierFreePlaceId(null);
-                      if (onSelectCategory) {
-                        onSelectCategory('MY_ROUTE');
-                      }
-                      setActiveCategory('MY_ROUTE');
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('MY_ROUTE');
                     }}
                     className="bg-white rounded-xl border border-amber-300 hover:border-amber-500 hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] relative"
                   >
@@ -3056,12 +3030,9 @@ export default function BusanItinerariesView({
                 <div className="grid grid-cols-3 gap-6">
                   {/* Card 1: 식도락 */}
                   <div
-                    onClick={() => {
-                      if (onSelectCategory) {
-                        onSelectCategory('GOURMET');
-                      } else {
-                        setActiveCategory('GOURMET');
-                      }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('GOURMET');
                     }}
                     className="bg-white rounded-2xl border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group text-left"
                   >
@@ -3085,12 +3056,9 @@ export default function BusanItinerariesView({
 
                   {/* Card 2: 체험 & 박물관 */}
                   <div
-                    onClick={() => {
-                      if (onSelectCategory) {
-                        onSelectCategory('EXPERIENCE');
-                      } else {
-                        setActiveCategory('EXPERIENCE');
-                      }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('EXPERIENCE');
                     }}
                     className="bg-white rounded-2xl border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group text-left"
                   >
@@ -3114,12 +3082,9 @@ export default function BusanItinerariesView({
 
                   {/* Card 3: 전통시장 */}
                   <div
-                    onClick={() => {
-                      if (onSelectCategory) {
-                        onSelectCategory('MARKET');
-                      } else {
-                        setActiveCategory('MARKET');
-                      }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('MARKET');
                     }}
                     className="bg-white rounded-2xl border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group text-left"
                   >
@@ -3143,12 +3108,9 @@ export default function BusanItinerariesView({
 
                   {/* Card 4: 명소 */}
                   <div
-                    onClick={() => {
-                      if (onSelectCategory) {
-                        onSelectCategory('ATTRACTION');
-                      } else {
-                        setActiveCategory('ATTRACTION');
-                      }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('ATTRACTION');
                     }}
                     className="bg-white rounded-2xl border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group text-left"
                   >
@@ -3172,13 +3134,10 @@ export default function BusanItinerariesView({
 
                   {/* Card 5: 일정별 여행 */}
                   <div
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       const targetDuration = selectedScheduleDuration || 'DAY';
-                      if (onSelectCategory) {
-                        onSelectCategory(targetDuration);
-                      } else {
-                        setActiveCategory(targetDuration);
-                      }
+                      handleSelectCategory(targetDuration);
                     }}
                     className="bg-white rounded-2xl border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group text-left"
                   >
@@ -3202,12 +3161,9 @@ export default function BusanItinerariesView({
 
                   {/* Card 6: 부산 도시철도 코스 */}
                   <div
-                    onClick={() => {
-                      if (onSelectCategory) {
-                        onSelectCategory('SUBWAY');
-                      } else {
-                        setActiveCategory('SUBWAY');
-                      }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('SUBWAY');
                     }}
                     className="bg-white rounded-2xl border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group text-left"
                   >
@@ -3231,13 +3187,9 @@ export default function BusanItinerariesView({
 
                   {/* Card 7: 무장애 관광지 */}
                   <div
-                    onClick={() => {
-                      if (onSelectCategory) {
-                        onSelectCategory('BARRIER_FREE');
-                      } else {
-                        setActiveCategory('BARRIER_FREE');
-                      }
-                      navigateToSpa('/barrier-free');
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('BARRIER_FREE');
                     }}
                     className="bg-white rounded-2xl border border-slate-200/80 p-6 flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group text-left"
                   >
@@ -3261,12 +3213,9 @@ export default function BusanItinerariesView({
 
                   {/* Card 8: 내 여행 루트 (Image 1과 100% 동일) */}
                   <div
-                    onClick={() => {
-                      setInternalBarrierFreePlaceId(null);
-                      if (onSelectCategory) {
-                        onSelectCategory('MY_ROUTE');
-                      }
-                      setActiveCategory('MY_ROUTE');
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectCategory('MY_ROUTE');
                     }}
                     className="bg-white rounded-2xl border border-amber-300 p-6 flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group text-left"
                   >
@@ -3925,7 +3874,10 @@ export default function BusanItinerariesView({
                           return (
                             <button
                               key={tab.id}
-                              onClick={() => setSelectedGourmetRegion(tab.id)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedGourmetRegion(tab.id);
+                              }}
                               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer shrink-0 border ${
                                 isSelected
                                   ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
@@ -3964,7 +3916,10 @@ export default function BusanItinerariesView({
                             return (
                               <button
                                 key={tab.id}
-                                onClick={() => setSelectedGourmetFoodCat(tab.id)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedGourmetFoodCat(tab.id);
+                                }}
                                 className={`flex items-center justify-between px-3 py-2 rounded-md text-xs font-bold transition-colors cursor-pointer border ${
                                   isSelected
                                     ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
@@ -4155,7 +4110,10 @@ export default function BusanItinerariesView({
                             return (
                               <button
                                 key={tab.id}
-                                onClick={() => setSelectedExperienceRegion(tab.id)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedExperienceRegion(tab.id);
+                                }}
                                 className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer shrink-0 border ${
                                   isSelected
                                     ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
@@ -4188,7 +4146,10 @@ export default function BusanItinerariesView({
                             return (
                               <button
                                 key={tab.id}
-                                onClick={() => setSelectedExperienceTheme(tab.id)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedExperienceTheme(tab.id);
+                                }}
                                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer shrink-0 border ${
                                   isSelected
                                     ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
@@ -4379,7 +4340,10 @@ export default function BusanItinerariesView({
                           <button
                             key={tab.id}
                             type="button"
-                            onClick={() => setSelectedMarketRegion(tab.id)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedMarketRegion(tab.id);
+                            }}
                             className={`px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
                               selectedMarketRegion === tab.id
                                 ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
@@ -4612,9 +4576,12 @@ export default function BusanItinerariesView({
                       {/* 1호선 / 2호선 Line Tabs */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <button
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             if (setActiveRegionPage) {
                               setActiveRegionPage('LINE1');
+                            } else {
+                              setLocalActiveRegionPage('LINE1');
                             }
                             setSelectedStationGroup('ALL');
                             setCopiedIndex(null);
@@ -4643,9 +4610,12 @@ export default function BusanItinerariesView({
                         </button>
 
                         <button
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             if (setActiveRegionPage) {
                               setActiveRegionPage('LINE2');
+                            } else {
+                              setLocalActiveRegionPage('LINE2');
                             }
                             setSelectedStationGroup('ALL');
                             setCopiedIndex(null);
@@ -4682,7 +4652,8 @@ export default function BusanItinerariesView({
                           return (
                             <button
                               key={tab.id}
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 setSelectedStationGroup(tab.id);
                                 setCopiedIndex(null);
                               }}
@@ -5010,7 +4981,10 @@ export default function BusanItinerariesView({
                           <button
                             key={tab.id}
                             type="button"
-                            onClick={() => setSelectedAttractionRegion(tab.id)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedAttractionRegion(tab.id);
+                            }}
                             className={`px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
                               selectedAttractionRegion === tab.id
                                 ? 'bg-[#8EA85E] text-white border-[#8EA85E]'

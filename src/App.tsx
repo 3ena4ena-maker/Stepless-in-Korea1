@@ -416,12 +416,12 @@ export default function App() {
       // Look for /itinerary-[category]
       if (parts[1] && parts[1].startsWith('itinerary-')) {
         const categorySuffix = parts[1].replace('itinerary-', '').toUpperCase();
-        const validCategories = ['DAY', '1NIGHT', '2NIGHTS', '3NIGHTS', '4NIGHTS', 'GOURMET', 'MARKET', 'SCHEDULE', 'EXPERIENCE', 'SUBWAY', 'BARRIER_FREE', 'HISTORY', 'ATTRACTION'];
+        const validCategories = ['DAY', '1NIGHT', '2NIGHTS', '3NIGHTS', '4NIGHTS', 'GOURMET', 'MARKET', 'SCHEDULE', 'EXPERIENCE', 'SUBWAY', 'BARRIER_FREE', 'HISTORY', 'ATTRACTION', 'MY_ROUTE'];
         if (validCategories.includes(categorySuffix)) {
           setSelectedItineraryCategory(categorySuffix);
           setCurrentTab('tips');
           setTipsSubPage('courses');
-          if (parts[2] && ['east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
+          if (parts[2] && ['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
             setActiveRegionPage(parts[2].toUpperCase() as any);
           } else {
             setActiveRegionPage(null);
@@ -439,7 +439,7 @@ export default function App() {
         const sub = parts[1].replace('tips-', '');
         if (sub === 'courses' || sub === 'itinerary') {
           setTipsSubPage('courses');
-          if (parts[2] && ['east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
+          if (parts[2] && ['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
             setActiveRegionPage(parts[2].toUpperCase() as any);
           } else {
             setActiveRegionPage(null);
@@ -548,7 +548,7 @@ export default function App() {
               setSelectedItineraryCategory(null);
               if (parts[2] === 'courses' || parts[2] === 'itinerary') {
                 setTipsSubPage('courses');
-                if (parts[3] && ['east', 'west', 'south', 'north'].includes(parts[3].toLowerCase())) {
+                if (parts[3] && ['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[3].toLowerCase())) {
                   setActiveRegionPage(parts[3].toUpperCase() as any);
                 } else {
                   setActiveRegionPage(null);
@@ -578,7 +578,7 @@ export default function App() {
               } else if (parts[2] === 'transfer') {
                 setTipsSubPage('transit');
                 setActiveRegionPage(null);
-              } else if (parts[2] && ['east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
+              } else if (parts[2] && ['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
                 setTipsSubPage('courses');
                 setActiveRegionPage(parts[2].toUpperCase() as any);
               } else {
@@ -654,8 +654,8 @@ export default function App() {
           }
         } else if (currentTab === 'tips') {
           if (selectedItineraryCategory) {
-            if (activeRegionPage) {
-              expectedPath = `/itinerary-${selectedItineraryCategory.toLowerCase()}/${activeRegionPage.toLowerCase()}`;
+            if (selectedItineraryCategory === 'SUBWAY' && activeRegionPage) {
+              expectedPath = `/itinerary-subway/${activeRegionPage.toLowerCase()}`;
             } else {
               expectedPath = `/itinerary-${selectedItineraryCategory.toLowerCase()}`;
             }
