@@ -545,15 +545,25 @@ export default function App() {
                 setSelectedStationId(stationId);
               }
             } else if (parts[1] === 'tips') {
-              setSelectedItineraryCategory(null);
+              const validCategories = ['DAY', '1NIGHT', '2NIGHTS', '3NIGHTS', '4NIGHTS', 'GOURMET', 'MARKET', 'SCHEDULE', 'EXPERIENCE', 'SUBWAY', 'BARRIER_FREE', 'HISTORY', 'ATTRACTION', 'MY_ROUTE'];
               if (parts[2] === 'courses' || parts[2] === 'itinerary') {
                 setTipsSubPage('courses');
-                if (parts[3] && ['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[3].toLowerCase())) {
+                if (parts[3] && validCategories.includes(parts[3].toUpperCase())) {
+                  setSelectedItineraryCategory(parts[3].toUpperCase() as any);
+                  setActiveRegionPage(null);
+                } else if (parts[3] && ['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[3].toLowerCase())) {
+                  setSelectedItineraryCategory(null);
                   setActiveRegionPage(parts[3].toUpperCase() as any);
                 } else {
+                  setSelectedItineraryCategory(null);
                   setActiveRegionPage(null);
                 }
+              } else if (parts[2] && validCategories.includes(parts[2].toUpperCase())) {
+                setSelectedItineraryCategory(parts[2].toUpperCase() as any);
+                setTipsSubPage('courses');
+                setActiveRegionPage(null);
               } else if (parts[2] === 'transit') {
+                setSelectedItineraryCategory(null);
                 setTipsSubPage('transit');
                 setActiveRegionPage(null);
               } else if (parts[2] === 'barrier-free' || parts[2] === 'tourapi') {
@@ -570,18 +580,23 @@ export default function App() {
                   setBarrierFreePlaceId(null);
                 }
               } else if (parts[2] === 'child-free') {
+                setSelectedItineraryCategory(null);
                 setTipsSubPage('child-free');
                 setActiveRegionPage(null);
               } else if (parts[2] === 'taxi') {
+                setSelectedItineraryCategory(null);
                 setTipsSubPage('taxi');
                 setActiveRegionPage(null);
               } else if (parts[2] === 'transfer') {
+                setSelectedItineraryCategory(null);
                 setTipsSubPage('transit');
                 setActiveRegionPage(null);
               } else if (parts[2] && ['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
+                setSelectedItineraryCategory(null);
                 setTipsSubPage('courses');
                 setActiveRegionPage(parts[2].toUpperCase() as any);
               } else {
+                setSelectedItineraryCategory(null);
                 setTipsSubPage('index');
                 setActiveRegionPage(null);
               }

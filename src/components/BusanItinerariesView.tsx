@@ -1686,6 +1686,11 @@ export default function BusanItinerariesView({
         onSelectCategory(category);
       }
     }
+    try {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    } catch {
+      window.scrollTo(0, 0);
+    }
   };
 
   React.useEffect(() => {
@@ -2875,144 +2880,152 @@ export default function BusanItinerariesView({
               <div className="md:hidden space-y-3 py-1">
                 <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full mx-auto">
                   {/* 1. 식도락 */}
-                  <div
+                  <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSelectCategory('GOURMET');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
                       <FoodieIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5">
+                    <div className="pt-1.5 pointer-events-none w-full">
                       <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
                         {language === 'KR' ? '식도락' : 'Foodie'}
                       </h3>
                     </div>
-                  </div>
+                  </button>
 
                   {/* 2. 체험&박물관 */}
-                  <div
+                  <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSelectCategory('EXPERIENCE');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
                       <ExperienceIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5">
+                    <div className="pt-1.5 pointer-events-none w-full">
                       <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
                         {language === 'KR' ? '체험&박물관' : 'Experience'}
                       </h3>
                     </div>
-                  </div>
+                  </button>
 
                   {/* 3. 전통시장 */}
-                  <div
+                  <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSelectCategory('MARKET');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
                       <TraditionalMarketIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5">
+                    <div className="pt-1.5 pointer-events-none w-full">
                       <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
                         {language === 'KR' ? '전통시장' : 'Market'}
                       </h3>
                     </div>
-                  </div>
+                  </button>
 
                   {/* 4. 명소 */}
-                  <div
+                  <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSelectCategory('ATTRACTION');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
                       <AttractionIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5">
+                    <div className="pt-1.5 pointer-events-none w-full">
                       <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
                         {language === 'KR' ? '명소' : 'Attractions'}
                       </h3>
                     </div>
-                  </div>
+                  </button>
 
                   {/* 5. 일정별 여행 */}
-                  <div
+                  <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       const targetDuration = selectedScheduleDuration || 'DAY';
                       handleSelectCategory(targetDuration);
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
                       <ItineraryIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5">
+                    <div className="pt-1.5 pointer-events-none w-full">
                       <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
                         {language === 'KR' ? '일정별 여행' : 'Itinerary'}
                       </h3>
                     </div>
-                  </div>
+                  </button>
 
                   {/* 6. 부산 도시철도 */}
-                  <div
+                  <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSelectCategory('SUBWAY');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
                       <SubwayCourseIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5">
+                    <div className="pt-1.5 pointer-events-none w-full">
                       <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
                         {language === 'KR' ? '부산 도시철도' : 'Subway'}
                       </h3>
                     </div>
-                  </div>
+                  </button>
 
                   {/* 7. 무장애 관광지 */}
-                  <div
+                  <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSelectCategory('BARRIER_FREE');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden">
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
                       <BarrierFreeIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5">
+                    <div className="pt-1.5 pointer-events-none w-full">
                       <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
                         {language === 'KR' ? '무장애 관광지' : 'Barrier-Free'}
                       </h3>
                     </div>
-                  </div>
+                  </button>
 
                   {/* 8. 내 여행 루트 */}
-                  <div
+                  <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSelectCategory('MY_ROUTE');
                     }}
-                    className="bg-white rounded-xl border border-amber-300 hover:border-amber-500 hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] relative"
+                    className="bg-white rounded-xl border border-amber-300 hover:border-amber-500 hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] relative w-full focus:outline-none focus:ring-2 focus:ring-amber-400 active:scale-[0.98]"
                   >
-                    <div className="bg-amber-50/60 rounded-lg p-1 flex items-center justify-center group-hover:bg-amber-100/60 transition-colors border border-amber-200 h-14 w-full overflow-hidden">
+                    <div className="bg-amber-50/60 rounded-lg p-1 flex items-center justify-center group-hover:bg-amber-100/60 transition-colors border border-amber-200 h-14 w-full overflow-hidden pointer-events-none">
                       <MyRouteIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5 flex items-center justify-center gap-1">
+                    <div className="pt-1.5 flex items-center justify-center gap-1 pointer-events-none w-full">
                       <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-amber-800 transition-colors tracking-tight whitespace-nowrap text-center">
                         {language === 'KR' ? '내 여행 루트' : 'My Route'}
                       </h3>
@@ -3022,7 +3035,7 @@ export default function BusanItinerariesView({
                         </span>
                       )}
                     </div>
-                  </div>
+                  </button>
                 </div>
               </div>
 
