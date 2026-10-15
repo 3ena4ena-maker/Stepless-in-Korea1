@@ -8,7 +8,7 @@ export default defineConfig(({mode}) => {
   const googleMapsApiKey = process.env.VITE_GOOGLE_MAPS_API_KEY || env.VITE_GOOGLE_MAPS_API_KEY || 'AIzaSyDEKgT4EZLHN5agdtkadl7q8NHaeO_g4DE';
 
   return {
-    base: './',
+    base: '/',
     plugins: [react(), tailwindcss()],
     define: {
       'import.meta.env.VITE_GOOGLE_MAPS_API_KEY': JSON.stringify(googleMapsApiKey),
