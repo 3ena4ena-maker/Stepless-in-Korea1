@@ -53,6 +53,57 @@ import { Station, ExitInfo, FacilityReport, StatusType, getExitDisplayName, tran
 import { translateRecommendation, navigateToSpa } from './utils';
 import { BUSAN_ITINERARIES } from './data/itineraries';
 
+// Robust normalization between URL slugs (e.g. 'gourmet', 'barrier-free') and CategoryType ('GOURMET', 'BARRIER_FREE')
+export function normalizeCategorySlug(raw: string | undefined | null): string | null {
+  if (!raw) return null;
+  const clean = raw.trim().toLowerCase().replace(/_/g, '-');
+  const mapping: Record<string, string> = {
+    'gourmet': 'GOURMET',
+    'foodie': 'GOURMET',
+    'experience': 'EXPERIENCE',
+    'market': 'MARKET',
+    'attraction': 'ATTRACTION',
+    'attractions': 'ATTRACTION',
+    'day': 'DAY',
+    '1night': '1NIGHT',
+    '2nights': '2NIGHTS',
+    '3nights': '3NIGHTS',
+    '4nights': '4NIGHTS',
+    'schedule': 'DAY',
+    'subway': 'SUBWAY',
+    'barrier-free': 'BARRIER_FREE',
+    'barrierfree': 'BARRIER_FREE',
+    'my-route': 'MY_ROUTE',
+    'myroute': 'MY_ROUTE',
+    'history': 'HISTORY',
+  };
+  if (mapping[clean]) return mapping[clean];
+  const upper = raw.trim().toUpperCase();
+  const validList = ['DAY', '1NIGHT', '2NIGHTS', '3NIGHTS', '4NIGHTS', 'GOURMET', 'MARKET', 'SCHEDULE', 'EXPERIENCE', 'SUBWAY', 'BARRIER_FREE', 'HISTORY', 'ATTRACTION', 'MY_ROUTE'];
+  if (validList.includes(upper)) return upper;
+  return null;
+}
+
+export function categoryToUrlSlug(cat: string | null | undefined): string {
+  if (!cat) return '';
+  const map: Record<string, string> = {
+    'GOURMET': 'gourmet',
+    'EXPERIENCE': 'experience',
+    'MARKET': 'market',
+    'ATTRACTION': 'attraction',
+    'DAY': 'day',
+    '1NIGHT': '1night',
+    '2NIGHTS': '2nights',
+    '3NIGHTS': '3nights',
+    '4NIGHTS': '4nights',
+    'SCHEDULE': 'day',
+    'SUBWAY': 'subway',
+    'BARRIER_FREE': 'barrier-free',
+    'MY_ROUTE': 'my-route',
+  };
+  return map[cat] || cat.toLowerCase().replace(/_/g, '-');
+}
+
 import StationSearchBar, { searchStations } from './components/StationSearchBar';
 import { AdSenseUnit, AdEligibilityParams } from './components/AdSenseManager';
 import { lazyWithRetry } from './utils/lazyWithRetry';
@@ -415,10 +466,10 @@ export default function App() {
 
       // Look for /itinerary-[category]
       if (parts[1] && parts[1].startsWith('itinerary-')) {
-        const categorySuffix = parts[1].replace('itinerary-', '').toUpperCase();
-        const validCategories = ['DAY', '1NIGHT', '2NIGHTS', '3NIGHTS', '4NIGHTS', 'GOURMET', 'MARKET', 'SCHEDULE', 'EXPERIENCE', 'SUBWAY', 'BARRIER_FREE', 'HISTORY', 'ATTRACTION', 'MY_ROUTE'];
-        if (validCategories.includes(categorySuffix)) {
-          setSelectedItineraryCategory(categorySuffix);
+        const rawSuffix = parts[1].replace('itinerary-', '');
+        const matchedCategory = normalizeCategorySlug(rawSuffix);
+        if (matchedCategory) {
+          setSelectedItineraryCategory(matchedCategory as any);
           setCurrentTab('tips');
           setTipsSubPage('courses');
           if (parts[2] && ['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
@@ -545,56 +596,67 @@ export default function App() {
                 setSelectedStationId(stationId);
               }
             } else if (parts[1] === 'tips') {
-              const validCategories = ['DAY', '1NIGHT', '2NIGHTS', '3NIGHTS', '4NIGHTS', 'GOURMET', 'MARKET', 'SCHEDULE', 'EXPERIENCE', 'SUBWAY', 'BARRIER_FREE', 'HISTORY', 'ATTRACTION', 'MY_ROUTE'];
               if (parts[2] === 'courses' || parts[2] === 'itinerary') {
                 setTipsSubPage('courses');
-                if (parts[3] && validCategories.includes(parts[3].toUpperCase())) {
-                  setSelectedItineraryCategory(parts[3].toUpperCase() as any);
-                  setActiveRegionPage(null);
-                } else if (parts[3] && ['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[3].toLowerCase())) {
-                  setSelectedItineraryCategory(null);
-                  setActiveRegionPage(parts[3].toUpperCase() as any);
+                if (parts[3] === 'subway' && parts[4] && ['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[4].toLowerCase())) {
+                  setSelectedItineraryCategory('SUBWAY');
+                  setActiveRegionPage(parts[4].toUpperCase() as any);
+                } else if (parts[3]) {
+                  const matchedCat = normalizeCategorySlug(parts[3]);
+                  if (matchedCat) {
+                    setSelectedItineraryCategory(matchedCat as any);
+                    setActiveRegionPage(null);
+                  } else if (['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[3].toLowerCase())) {
+                    setSelectedItineraryCategory(null);
+                    setActiveRegionPage(parts[3].toUpperCase() as any);
+                  } else {
+                    setSelectedItineraryCategory(null);
+                    setActiveRegionPage(null);
+                  }
                 } else {
                   setSelectedItineraryCategory(null);
                   setActiveRegionPage(null);
                 }
-              } else if (parts[2] && validCategories.includes(parts[2].toUpperCase())) {
-                setSelectedItineraryCategory(parts[2].toUpperCase() as any);
-                setTipsSubPage('courses');
-                setActiveRegionPage(null);
-              } else if (parts[2] === 'transit') {
-                setSelectedItineraryCategory(null);
-                setTipsSubPage('transit');
-                setActiveRegionPage(null);
-              } else if (parts[2] === 'barrier-free' || parts[2] === 'tourapi') {
-                setSelectedItineraryCategory('BARRIER_FREE');
-                setActiveRegionPage(null);
-                if (parts[3] === 'course' && parts[4]) {
-                  setBarrierFreeCourseId(parts[4]);
-                  setBarrierFreePlaceId(null);
-                } else if (parts[3] === 'place' && parts[4]) {
-                  setBarrierFreePlaceId(parts[4]);
-                  setBarrierFreeCourseId(null);
+              } else if (parts[2]) {
+                const matchedCat = normalizeCategorySlug(parts[2]);
+                if (matchedCat) {
+                  setSelectedItineraryCategory(matchedCat as any);
+                  setTipsSubPage('courses');
+                  setActiveRegionPage(null);
+                } else if (parts[2] === 'transit' || parts[2] === 'transfer') {
+                  setSelectedItineraryCategory(null);
+                  setTipsSubPage('transit');
+                  setActiveRegionPage(null);
+                } else if (parts[2] === 'barrier-free' || parts[2] === 'tourapi') {
+                  setSelectedItineraryCategory('BARRIER_FREE');
+                  setActiveRegionPage(null);
+                  if (parts[3] === 'course' && parts[4]) {
+                    setBarrierFreeCourseId(parts[4]);
+                    setBarrierFreePlaceId(null);
+                  } else if (parts[3] === 'place' && parts[4]) {
+                    setBarrierFreePlaceId(parts[4]);
+                    setBarrierFreeCourseId(null);
+                  } else {
+                    setBarrierFreeCourseId(null);
+                    setBarrierFreePlaceId(null);
+                  }
+                } else if (parts[2] === 'child-free') {
+                  setSelectedItineraryCategory(null);
+                  setTipsSubPage('child-free');
+                  setActiveRegionPage(null);
+                } else if (parts[2] === 'taxi') {
+                  setSelectedItineraryCategory(null);
+                  setTipsSubPage('taxi');
+                  setActiveRegionPage(null);
+                } else if (['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
+                  setSelectedItineraryCategory(null);
+                  setTipsSubPage('courses');
+                  setActiveRegionPage(parts[2].toUpperCase() as any);
                 } else {
-                  setBarrierFreeCourseId(null);
-                  setBarrierFreePlaceId(null);
+                  setSelectedItineraryCategory(null);
+                  setTipsSubPage('index');
+                  setActiveRegionPage(null);
                 }
-              } else if (parts[2] === 'child-free') {
-                setSelectedItineraryCategory(null);
-                setTipsSubPage('child-free');
-                setActiveRegionPage(null);
-              } else if (parts[2] === 'taxi') {
-                setSelectedItineraryCategory(null);
-                setTipsSubPage('taxi');
-                setActiveRegionPage(null);
-              } else if (parts[2] === 'transfer') {
-                setSelectedItineraryCategory(null);
-                setTipsSubPage('transit');
-                setActiveRegionPage(null);
-              } else if (parts[2] && ['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
-                setSelectedItineraryCategory(null);
-                setTipsSubPage('courses');
-                setActiveRegionPage(parts[2].toUpperCase() as any);
               } else {
                 setSelectedItineraryCategory(null);
                 setTipsSubPage('index');
@@ -668,24 +730,30 @@ export default function App() {
             expectedPath = `/search/${selectedStationId}`;
           }
         } else if (currentTab === 'tips') {
-          if (selectedItineraryCategory) {
-            if (selectedItineraryCategory === 'SUBWAY' && activeRegionPage) {
-              expectedPath = `/itinerary-subway/${activeRegionPage.toLowerCase()}`;
-            } else {
-              expectedPath = `/itinerary-${selectedItineraryCategory.toLowerCase()}`;
-            }
-          } else if (tipsSubPage === 'courses') {
-            if (activeRegionPage) {
+          if (tipsSubPage === 'courses') {
+            if (selectedItineraryCategory) {
+              const catSlug = categoryToUrlSlug(selectedItineraryCategory);
+              if (selectedItineraryCategory === 'SUBWAY' && activeRegionPage) {
+                expectedPath = `/tips/courses/subway/${activeRegionPage.toLowerCase()}`;
+              } else {
+                expectedPath = `/tips/courses/${catSlug}`;
+              }
+            } else if (activeRegionPage) {
               expectedPath = `/tips/courses/${activeRegionPage.toLowerCase()}`;
             } else {
               expectedPath = '/tips/courses';
             }
+          } else if (selectedItineraryCategory) {
+            const catSlug = categoryToUrlSlug(selectedItineraryCategory);
+            expectedPath = `/tips/courses/${catSlug}`;
           } else if (tipsSubPage === 'transit') {
             expectedPath = '/tips/transit';
           } else if (tipsSubPage === 'child-free') {
             expectedPath = '/tips/child-free';
-          } else if (tipsSubPage === 'transfer') {
-            expectedPath = '/tips/transit';
+          } else if (tipsSubPage === 'taxi') {
+            expectedPath = '/tips/taxi';
+          } else if (tipsSubPage === 'schedule') {
+            expectedPath = '/schedule';
           } else {
             if (activeRegionPage) {
               expectedPath = `/tips/${activeRegionPage.toLowerCase()}`;
@@ -777,9 +845,10 @@ export default function App() {
       let canonicalUrl = "https://stepless.kr/tips";
 
       if (selectedItineraryCategory) {
+        const catSlug = categoryToUrlSlug(selectedItineraryCategory);
         pageTitle = `부산 ${selectedItineraryCategory} 여행 코스 추천 & 내 여행 루트 | 스탭리스`;
         pageDesc = "부산 추천 여행 코스, 대표 명소와 맛집, 무장애 관광지 및 나만의 맞춤 여행 코스 지도 만들기.";
-        canonicalUrl = `https://stepless.kr/itinerary-${selectedItineraryCategory.toLowerCase()}`;
+        canonicalUrl = `https://stepless.kr/tips/courses/${catSlug}`;
       } else if (tipsSubPage === 'transit' || tipsSubPage === 'transfer') {
         pageTitle = "부산 대중교통 이용 팁 & 시내버스·지하철 환승 가이드 | 스탭리스";
         pageDesc = "부산 시내버스 노선, 지하철 환승 팁, 캐리어 보관함 및 유모차·휠체어 배리어프리 대중교통 이용 가이드.";
@@ -2094,17 +2163,20 @@ export default function App() {
                     setSelectedItineraryCategory(null);
                     setBarrierFreeCourseId(null);
                     setBarrierFreePlaceId(null);
+                    navigateToSpa('/tips/courses', { tab: 'tips', subPage: 'courses', category: null });
                   }}
                   onSelectCategory={(category) => {
                     setSelectedItineraryCategory(category);
+                    setBarrierFreeCourseId(null);
+                    setBarrierFreePlaceId(null);
                     if (category === 'BARRIER_FREE') {
                       setCurrentTab('tourapi');
-                      setBarrierFreeCourseId(null);
-                      setBarrierFreePlaceId(null);
-                      navigateToSpa('/barrier-free');
+                      navigateToSpa('/barrier-free', { tab: 'tourapi' });
+                    } else if (category) {
+                      const catSlug = categoryToUrlSlug(category);
+                      navigateToSpa(`/tips/courses/${catSlug}`, { tab: 'tips', subPage: 'courses', category });
                     } else {
-                      setBarrierFreeCourseId(null);
-                      setBarrierFreePlaceId(null);
+                      navigateToSpa('/tips/courses', { tab: 'tips', subPage: 'courses', category: null });
                     }
                   }}
                   onOpenBarrierFreeDetail={(placeId) => {
