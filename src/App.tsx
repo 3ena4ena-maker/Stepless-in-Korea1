@@ -250,7 +250,7 @@ export default function App() {
   const [activePathFilter, setActivePathFilter] = useState<'ALL' | 'ACCESSIBLE' | 'CARRY'>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedItineraryCategory, setSelectedItineraryCategory] = useState<string | null>(null);
-  const [tipsSubPage, setTipsSubPage] = useState<'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule' | 'community'>('index');
+  const [tipsSubPage, setTipsSubPage] = useState<'index' | 'courses' | 'transit' | 'child-free' | 'bus-qr' | 'transfer' | 'taxi' | 'schedule' | 'community'>('index');
   const [activeRegionPage, setActiveRegionPage] = useState<'LINE1' | 'LINE2' | null>(null);
   const [siteSubPage, setSiteSubPage] = useState<'about' | 'privacy' | 'terms' | 'contact' | 'data-source'>('about');
   const [barrierFreeCourseId, setBarrierFreeCourseId] = useState<string | null>(null);
@@ -501,6 +501,9 @@ export default function App() {
         } else if (sub === 'child-free') {
           setTipsSubPage('child-free');
           setActiveRegionPage(null);
+        } else if (sub === 'bus-qr' || sub === 'qr-pay' || sub === 'qr') {
+          setTipsSubPage('bus-qr');
+          setActiveRegionPage(null);
         } else if (sub === 'transfer') {
           setTipsSubPage('transit');
           setActiveRegionPage(null);
@@ -644,6 +647,10 @@ export default function App() {
                   setSelectedItineraryCategory(null);
                   setTipsSubPage('child-free');
                   setActiveRegionPage(null);
+                } else if (parts[2] === 'bus-qr' || parts[2] === 'qr-pay' || parts[2] === 'qr') {
+                  setSelectedItineraryCategory(null);
+                  setTipsSubPage('bus-qr');
+                  setActiveRegionPage(null);
                 } else if (parts[2] === 'taxi') {
                   setSelectedItineraryCategory(null);
                   setTipsSubPage('taxi');
@@ -750,6 +757,8 @@ export default function App() {
             expectedPath = '/tips/transit';
           } else if (tipsSubPage === 'child-free') {
             expectedPath = '/tips/child-free';
+          } else if (tipsSubPage === 'bus-qr') {
+            expectedPath = '/tips/bus-qr';
           } else if (tipsSubPage === 'taxi') {
             expectedPath = '/tips/taxi';
           } else if (tipsSubPage === 'schedule') {

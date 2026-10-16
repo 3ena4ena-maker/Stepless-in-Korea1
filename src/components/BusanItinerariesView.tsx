@@ -95,8 +95,8 @@ interface BusanItinerariesViewProps {
   initialCategory?: CategoryType | null;
   onBack?: () => void;
   onSelectCategory?: (category: CategoryType | null) => void;
-  tipsSubPage?: 'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule' | 'community';
-  setTipsSubPage?: (page: 'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule' | 'community') => void;
+  tipsSubPage?: 'index' | 'courses' | 'transit' | 'child-free' | 'bus-qr' | 'transfer' | 'taxi' | 'schedule' | 'community';
+  setTipsSubPage?: (page: 'index' | 'courses' | 'transit' | 'child-free' | 'bus-qr' | 'transfer' | 'taxi' | 'schedule' | 'community') => void;
   activeRegionPage?: 'LINE1' | 'LINE2' | null;
   setActiveRegionPage?: (region: 'LINE1' | 'LINE2' | null) => void;
   onSelectStation?: (stationId: string, exitNum?: string) => void;
@@ -1556,7 +1556,7 @@ export default function BusanItinerariesView({
   const [overviewSearchQuery, setOverviewSearchQuery] = useState<string>('');
   const { isBookmarked, toggle: toggleMyRoute, count: myRouteCount } = useMyRoute();
 
-  const navigateToSubPage = (page: 'index' | 'courses' | 'transit' | 'child-free' | 'transfer' | 'taxi' | 'schedule' | 'community') => {
+  const navigateToSubPage = (page: 'index' | 'courses' | 'transit' | 'child-free' | 'bus-qr' | 'transfer' | 'taxi' | 'schedule' | 'community') => {
     if (setTipsSubPage) {
       if (page === 'transfer') {
         setTipsSubPage('transit');
@@ -1585,6 +1585,9 @@ export default function BusanItinerariesView({
     } else if (page === 'child-free') {
       setActiveSection('TRANSIT_TIPS');
       setTransitSection('CHILD_FREE');
+    } else if (page === 'bus-qr') {
+      setActiveSection('TRANSIT_TIPS');
+      setTransitSection('BUS_QR');
     } else if (page === 'taxi') {
       setActiveSection('TRANSIT_TIPS');
       setTransitSection('TAXI');
@@ -1617,6 +1620,9 @@ export default function BusanItinerariesView({
     } else if (tipsSubPage === 'child-free') {
       setActiveSection('TRANSIT_TIPS');
       setTransitSection('CHILD_FREE');
+    } else if (tipsSubPage === 'bus-qr') {
+      setActiveSection('TRANSIT_TIPS');
+      setTransitSection('BUS_QR');
     } else if (tipsSubPage === 'taxi') {
       setActiveSection('TRANSIT_TIPS');
       setTransitSection('TAXI');
@@ -1652,7 +1658,7 @@ export default function BusanItinerariesView({
   // Transit page states
   const [activeTransitCategory, setActiveTransitCategory] = useState<'LINES' | 'BOARDING' | 'EMERGENCY' | 'TRANSITS'>('LINES');
   const [checkedRules, setCheckedRules] = useState<Record<number, boolean>>({});
-  const [transitSection, setTransitSection] = useState<'SUBMENU' | 'CHILD_FREE' | 'TRANSFERS' | 'TAXI'>('SUBMENU');
+  const [transitSection, setTransitSection] = useState<'SUBMENU' | 'CHILD_FREE' | 'BUS_QR' | 'TRANSFERS' | 'TAXI'>('SUBMENU');
 
   // Quiz States
   const [quizActive, setQuizActive] = useState(false);
@@ -2179,24 +2185,54 @@ export default function BusanItinerariesView({
         <div className="flex items-center justify-between gap-4 pb-4 mb-6 border-b border-[#E5E2DC] font-sans text-left">
           <button
             type="button"
-            onClick={() => navigateToSubPage('index')}
+            onClick={() => {
+              if (activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU') {
+                navigateToSubPage('transit');
+              } else if (activeSection === 'RECOMMENDATIONS' && activeCategory !== null) {
+                setActiveCategory(null);
+                if (onSelectCategory) onSelectCategory(null);
+                if (setTipsSubPage) setTipsSubPage('courses');
+              } else {
+                navigateToSubPage('index');
+              }
+            }}
             className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#F1EFEC] hover:bg-[#E5E2DC] text-[#0A2540] font-bold text-xs sm:text-sm transition-all cursor-pointer border border-[#E5E2DC]"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>
-              {language === 'KR' ? '여행 팁 허브로 돌아가기' : 'Back to Travel Tips Hub'}
+              {activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU'
+                ? (language === 'KR' ? '대중교통 이용 팁으로 돌아가기' : 'Back to Public Transit Tips')
+                : (language === 'KR' ? '여행 팁 허브로 돌아가기' : 'Back to Travel Tips Hub')}
             </span>
           </button>
 
           <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-[#4A5568]">
             <span>{language === 'KR' ? '여행 팁' : 'Travel Tips'}</span>
             <span>/</span>
-            <span className="font-bold text-[#11161B]">
-              {activeSection === 'TRANSIT_TIPS' && (language === 'KR' ? '대중교통 이용 팁' : 'Public Transit Tips')}
-              {activeSection === 'RECOMMENDATIONS' && (language === 'KR' ? '여행 코스 추천' : 'Recommended Itineraries')}
-              {activeSection === 'SCHEDULE' && (language === 'KR' ? '부산 주요 일정표' : 'Busan Events & Schedule')}
-              {activeSection === 'COMMUNITY' && (language === 'KR' ? '실시간 부산 여행 팁 커뮤니티' : 'Live Busan Travel Tips')}
-            </span>
+            {activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU' ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => navigateToSubPage('transit')}
+                  className="hover:underline text-[#4A5568] cursor-pointer"
+                >
+                  {language === 'KR' ? '대중교통 이용 팁' : 'Public Transit Tips'}
+                </button>
+                <span>/</span>
+                <span className="font-bold text-[#11161B]">
+                  {transitSection === 'CHILD_FREE' && (language === 'KR' ? '어린이 요금 무료 안내' : 'Child Free Fare Guide')}
+                  {transitSection === 'BUS_QR' && (language === 'KR' ? '부산 버스 QR 간편결제 가이드' : 'Busan Bus QR Pay Guide')}
+                  {transitSection === 'TAXI' && (language === 'KR' ? '부산 택시 이용 팁' : 'Busan Taxi Tips')}
+                </span>
+              </>
+            ) : (
+              <span className="font-bold text-[#11161B]">
+                {activeSection === 'TRANSIT_TIPS' && (language === 'KR' ? '대중교통 이용 팁' : 'Public Transit Tips')}
+                {activeSection === 'RECOMMENDATIONS' && (language === 'KR' ? '여행 코스 추천' : 'Recommended Itineraries')}
+                {activeSection === 'SCHEDULE' && (language === 'KR' ? '부산 주요 일정표' : 'Busan Events & Schedule')}
+                {activeSection === 'COMMUNITY' && (language === 'KR' ? '실시간 부산 여행 팁 커뮤니티' : 'Live Busan Travel Tips')}
+              </span>
+            )}
           </div>
         </div>
       )}
@@ -5450,12 +5486,7 @@ export default function BusanItinerariesView({
                 {/* CARD 02: 부산 시내버스 모바일 QR 간편결제 (Zero Pay 글로벌 연동) */}
                 <div
                   id="card-bus-qr"
-                  onClick={() => {
-                    const el = document.getElementById('bus-qr-guide');
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
+                  onClick={() => navigateToSubPage('bus-qr')}
                   className="relative group bg-white p-3 sm:p-5 lg:p-4 xl:p-6 rounded-2xl sm:rounded-3xl border-2 border-slate-900 hover:border-[#004481] cursor-pointer shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,68,129,1)] transition-all duration-300 text-center flex flex-col justify-between min-h-[235px] sm:min-h-[380px]"
                 >
                   <div>
@@ -5531,13 +5562,13 @@ export default function BusanItinerariesView({
                       <span>
                         {language === 'KR' ? (
                           <>
-                            <span className="sm:hidden">방법 보기</span>
-                            <span className="hidden sm:inline">결제 방법 보기</span>
+                            <span className="sm:hidden">상세 정보</span>
+                            <span className="hidden sm:inline">상세 가이드 보기</span>
                           </>
                         ) : (
                           <>
                             <span className="sm:hidden">Guide</span>
-                            <span className="hidden sm:inline">View QR Guide</span>
+                            <span className="hidden sm:inline">View Full Guide</span>
                           </>
                         )}
                       </span>
@@ -5782,209 +5813,7 @@ export default function BusanItinerariesView({
 
               {/* HIGH-VISIBILITY DETAIL PANELS (Style 2: Layout like the brochure flyers in image 2) */}
               <div className="space-y-8 pt-8 border-t border-slate-100">
-                {/* Sub-panel 1: 부산 시내버스 제로페이 모바일 QR 간편결제 가이드 */}
-                <div id="bus-qr-guide" className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs scroll-mt-20">
-                  <div className="p-5 sm:p-8 bg-sky-500/10 border-b border-sky-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#004481] text-white flex items-center justify-center text-xl sm:text-2xl shadow-sm shrink-0">
-                        📱
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-base sm:text-lg font-black text-slate-800">
-                            {language === 'KR' 
-                              ? '부산 시내버스 제로페이 QR 간편결제 안내' 
-                              : 'Busan City Bus QR Code Payment Guide (Zero Pay)'}
-                          </h3>
-                        </div>
-                        <p className="text-xs text-slate-500 font-semibold mt-0.5">
-                          {language === 'KR' 
-                            ? 'No cash, no card, no problem: 현금도 카드도 없이 스마트폰 앱 QR로 간편 탑승' 
-                            : 'No cash, no card, no problem: Busan buses now accept mobile QR payment.'}
-                        </p>
-                      </div>
-                    </div>
-                    <span className="self-start sm:self-auto text-[10px] sm:text-xs font-black px-2.5 py-1 rounded-full bg-[#004481] text-white tracking-wide shrink-0">
-                      {language === 'KR' ? 'Zero Pay 글로벌 연동' : 'Powered by Zero Pay'}
-                    </span>
-                  </div>
-
-                  <div className="p-5 sm:p-8 space-y-6">
-                    {/* Announcement Overview Card */}
-                    <div className="p-4 sm:p-5 bg-sky-50/60 border border-sky-150 rounded-2xl flex items-start gap-3">
-                      <span className="text-xl shrink-0 mt-0.5">🌐</span>
-                      <div className="space-y-1.5 text-xs sm:text-sm">
-                        <h4 className="font-black text-[#004481]">
-                          {language === 'KR' 
-                            ? '부산 시내버스 전 노선 모바일 QR 결제 서비스 도입' 
-                            : 'No cash, no card, no problem: Busan buses accept QR payment'}
-                        </h4>
-                        <p className="text-slate-600 font-medium leading-relaxed">
-                          {language === 'KR' ? (
-                            <>
-                              외국인 관광객 및 국내 여행객의 편리한 대중교통 이용을 위해, 부산 시내버스 전 노선에서 <strong>제로페이(Zero Pay) QR코드</strong>를 스캔해 요금을 결제할 수 있습니다.<br />
-                              제로페이 글로벌 네트워크와 연동되어 중국의 <strong>알리페이(Alipay)·위챗페이(WeChat Pay)·유니온페이(UnionPay)</strong>, 일본의 <strong>페이페이(PayPay)</strong> 등 수십 종의 해외 간편결제 앱과 제로페이를 그대로 사용할 수 있습니다.
-                            </>
-                          ) : (
-                            <>
-                              Getting around Busan just got easier for international visitors. Travelers can pay bus fares by scanning a Zero Pay QR code with their own mobile payment app.<br />
-                              The service links into Zero Pay’s global network to support dozens of overseas payment apps — including <strong>Alipay, WeChat Pay, and UnionPay</strong> from China, and <strong>PayPay</strong> from Japan.
-                            </>
-                          )}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* How It Works (3 Steps) */}
-                    <div className="space-y-3">
-                      <h4 className="text-xs sm:text-sm font-black text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-[#004481]"></span>
-                        {language === 'KR' ? '이용 방법 (How It Works)' : 'How It Works (3 Simple Steps)'}
-                      </h4>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
-                        {/* Step 1 */}
-                        <div className="p-4 sm:p-5 bg-slate-50/80 rounded-2xl border border-slate-200/80 flex flex-col justify-between space-y-3">
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs font-black px-2 py-0.5 rounded-md bg-[#004481] text-white">STEP 01</span>
-                              <span className="text-base">📷</span>
-                            </div>
-                            <h5 className="text-xs sm:text-sm font-black text-slate-900">
-                              {language === 'KR' ? '탑승 후 차내 QR 스캔' : 'Scan In-Bus QR Code'}
-                            </h5>
-                            <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed">
-                              {language === 'KR' ? (
-                                <>
-                                  버스 탑승 후, 지원되는 결제 앱을 열고 <strong>차량 내부에 부착된 제로페이 QR코드</strong>를 스캔합니다.
-                                </>
-                              ) : (
-                                <>
-                                  After boarding, open a supported payment app and scan the QR code posted inside the bus.
-                                </>
-                              )}
-                            </p>
-                          </div>
-                          <div className="text-[10px] text-sky-700 bg-sky-50 px-2 py-1 rounded-md font-bold">
-                            {language === 'KR' ? '※ 버스 차내 부착된 QR코드 스캔' : '※ Scan the QR code posted inside'}
-                          </div>
-                        </div>
-
-                        {/* Step 2 */}
-                        <div className="p-4 sm:p-5 bg-slate-50/80 rounded-2xl border border-slate-200/80 flex flex-col justify-between space-y-3">
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs font-black px-2 py-0.5 rounded-md bg-[#004481] text-white">STEP 02</span>
-                              <span className="text-base">💱</span>
-                            </div>
-                            <h5 className="text-xs sm:text-sm font-black text-slate-900">
-                              {language === 'KR' ? '결제 옵션 선택 & 자동 환전' : 'Auto Currency Conversion'}
-                            </h5>
-                            <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed">
-                              {language === 'KR' ? (
-                                <>
-                                  결제 옵션을 선택하면 요금이 <strong>탑승객의 현지 통화로 자동 환전</strong>되어 표시됩니다.
-                                </>
-                              ) : (
-                                <>
-                                  Select the payment option — the fare converts automatically to the rider's home currency.
-                                </>
-                              )}
-                            </p>
-                          </div>
-                          <div className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-1 rounded-md font-bold">
-                            {language === 'KR' ? '※ 탑승객 본국 통화로 자동 계산' : '※ Converts to your home currency'}
-                          </div>
-                        </div>
-
-                        {/* Step 3 */}
-                        <div className="p-4 sm:p-5 bg-slate-50/80 rounded-2xl border border-slate-200/80 flex flex-col justify-between space-y-3">
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs font-black px-2 py-0.5 rounded-md bg-[#004481] text-white">STEP 03</span>
-                              <span className="text-base">✅</span>
-                            </div>
-                            <h5 className="text-xs sm:text-sm font-black text-slate-900">
-                              {language === 'KR' ? '기사님께 완료 화면 제시' : 'Show Screen to Driver'}
-                            </h5>
-                            <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed">
-                              {language === 'KR' ? (
-                                <>
-                                  스마트폰에 표시된 <strong>결제 완료 화면을 운전기사님께 제시</strong>하면 탑승이 완료됩니다.
-                                </>
-                              ) : (
-                                <>
-                                  Show the payment confirmation screen to the driver upon completing payment.
-                                </>
-                              )}
-                            </p>
-                          </div>
-                          <div className="text-[10px] text-indigo-700 bg-indigo-50 px-2 py-1 rounded-md font-bold">
-                            {language === 'KR' ? '※ 결제 완료 확인 후 착석' : '※ Show confirmation before taking a seat'}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Key Fare & Payment Policy (Flat 1,700 won, separate payment, no transfer discount) */}
-                    <div className="p-4 sm:p-5 bg-amber-50/70 border border-amber-200/80 rounded-2xl space-y-3">
-                      <div className="flex items-center gap-2 text-amber-900 text-xs sm:text-sm font-black">
-                        <span>⚠️</span>
-                        <span>{language === 'KR' ? '요금 및 이용 수칙 필수 확인' : 'Fare Policy & Key Rules'}</span>
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                        <div className="p-3 bg-white rounded-xl border border-amber-200/60 space-y-1">
-                          <div className="font-black text-slate-800">{language === 'KR' ? '1인당 균일 1,700원' : 'Flat ₩1,700 Per Person'}</div>
-                          <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
-                            {language === 'KR' 
-                              ? '성인 현금 요금과 동일한 1인당 1,700원 균일 요금 (어린이 및 청소년도 동일 요금 적용)' 
-                              : 'Matches standard adult cash fare of ₩1,700 (same rate applies to children & teens).'}
-                          </p>
-                        </div>
-                        <div className="p-3 bg-white rounded-xl border border-amber-200/60 space-y-1">
-                          <div className="font-black text-slate-800">{language === 'KR' ? '개별 결제 원칙' : 'Individual Payment'}</div>
-                          <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
-                            {language === 'KR' 
-                              ? '단체 여행객의 경우 각자 1인씩 스마트폰으로 개별 결제를 진행해야 합니다.' 
-                              : 'Group travelers should each pay separately using their own mobile device.'}
-                          </p>
-                        </div>
-                        <div className="p-3 bg-white rounded-xl border border-amber-200/60 space-y-1">
-                          <div className="font-black text-slate-800">{language === 'KR' ? '환승 할인 미적용' : 'No Transfer Discounts'}</div>
-                          <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
-                            {language === 'KR' 
-                              ? '교통카드가 아닌 현금을 대체하는 간편결제 방식이므로 환승 할인은 적용되지 않습니다.' 
-                              : 'Replaces cash rather than a transit card, so transfer discounts do not apply.'}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Supported Services Badges & Multilingual Guidance Info */}
-                    <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-black text-slate-800 shrink-0">
-                            {language === 'KR' ? '지원 글로벌 결제 앱:' : 'Supported Global Apps:'}
-                          </span>
-                          <span className="text-slate-700 font-bold leading-relaxed">
-                            Alipay · WeChat Pay · UnionPay · PayPay · Zero Pay 연동 앱
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-slate-500">
-                          {language === 'KR' 
-                            ? '부산 시내버스 전 노선 차내 및 부산역, 부산항, 주요 관광안내소에 다국어 안내문이 비치되어 있습니다.' 
-                            : 'QR codes and multilingual instructions are posted on every city bus, Busan Station, and Busan Port.'}
-                        </p>
-                      </div>
-                      <span className="text-[10px] font-black px-2.5 py-1 rounded bg-[#004481] text-white self-start sm:self-auto shrink-0">
-                        {language === 'KR' ? '부산 시내버스 전 노선 적용' : 'All Busan City Buses'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Sub-panel 2: High-contrast split scorecard for transfer guidelines */}
+                {/* Sub-panel 1: High-contrast split scorecard for transfer guidelines */}
                 <div className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs">
                   <div className="p-6 sm:p-8 bg-[#8EA85E]/10 border-b border-slate-100 flex items-center gap-2.5">
                     <span className="text-xl">🔄</span>
@@ -6526,6 +6355,286 @@ export default function BusanItinerariesView({
                     </a>
                   </div>
                 </div>
+
+                {/* Bottom Back Button */}
+                <div className="pt-4 pb-2 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigateToSubPage('transit');
+                      try {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                      } catch {
+                        window.scrollTo(0, 0);
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#004481] hover:bg-[#003366] text-white font-black text-xs sm:text-sm transition-all shadow-md hover:shadow-lg cursor-pointer"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>
+                      {language === 'KR' ? '대중교통 이용 팁으로 돌아가기' : 'Back to Public Transit Tips'}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {transitSection === 'BUS_QR' && (
+            <div className="space-y-6 animate-fade-in text-left">
+              {/* BRAND HEADER TITLE */}
+              <div className="text-center py-4 sm:py-6 max-w-2xl mx-auto space-y-2">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-[#004481] text-xs font-black tracking-wide mb-1">
+                  <span>📱</span>
+                  <span>{language === 'KR' ? 'Zero Pay 글로벌 연동 서비스' : 'Powered by Zero Pay Global Network'}</span>
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight uppercase font-heading">
+                  {language === 'KR' ? '부산 시내버스 모바일 QR 간편결제 가이드' : 'Busan City Bus QR Code Payment Guide'}
+                </h1>
+                <p className="text-xs sm:text-sm text-slate-500 font-bold">
+                  {language === 'KR' 
+                    ? 'No cash, no card, no problem: 현금도 실물 카드도 없이 스마트폰 앱 QR로 간편 탑승' 
+                    : 'No cash, no card, no problem: Busan buses now accept mobile QR payment.'}
+                </p>
+              </div>
+
+              {/* Main Content Card */}
+              <div className="bg-white rounded-3xl border-2 border-slate-900 overflow-hidden shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+                {/* Header Banner */}
+                <div className="p-5 sm:p-8 bg-sky-500/10 border-b-2 border-slate-900 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#004481] text-white flex items-center justify-center text-2xl sm:text-3xl shadow-md shrink-0">
+                      📱
+                    </div>
+                    <div>
+                      <h2 className="text-base sm:text-xl font-black text-slate-900">
+                        {language === 'KR' 
+                          ? '부산 시내버스 전 노선 모바일 QR 결제 서비스 도입' 
+                          : 'No cash, no card, no problem: Busan buses accept QR payment'}
+                      </h2>
+                      <p className="text-xs sm:text-sm text-slate-600 font-bold mt-0.5">
+                        {language === 'KR'
+                          ? '외국인 관광객 및 국내 여행객을 위한 제로페이(Zero Pay) QR코드 결제'
+                          : 'Zero Pay mobile QR payment for international & domestic travelers'}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="self-start sm:self-auto text-xs font-black px-3.5 py-1.5 rounded-full bg-[#004481] text-white tracking-wide shrink-0 shadow-xs">
+                    {language === 'KR' ? '부산 시내버스 전 노선 적용' : 'All Busan City Buses'}
+                  </span>
+                </div>
+
+                <div className="p-5 sm:p-8 space-y-7">
+                  {/* Announcement Context Overview */}
+                  <div className="p-4 sm:p-6 bg-sky-50/70 border border-sky-200 rounded-2xl space-y-2.5">
+                    <div className="flex items-center gap-2 text-[#004481] font-black text-sm">
+                      <span className="text-lg">🌐</span>
+                      <span>{language === 'KR' ? '공식 안내문 (Overview)' : 'Official Announcement'}</span>
+                    </div>
+                    <div className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed space-y-2">
+                      {language === 'KR' ? (
+                        <>
+                          <p>
+                            부산 관광 붐에 발맞추어 외국인 방문객 및 여행객들이 보다 편리하게 시내버스를 이용할 수 있도록, 부산 시내버스 전 노선에서 <strong>제로페이(Zero Pay) QR코드</strong>를 스캔해 요금을 결제할 수 있습니다.
+                          </p>
+                          <p>
+                            제로페이의 글로벌 결제망과 연동되어 중국의 <strong>알리페이(Alipay) · 위챗페이(WeChat Pay) · 유니온페이(UnionPay)</strong>, 일본의 <strong>페이페이(PayPay)</strong> 등 전 세계 수십 종의 해외 간편결제 앱과 제로페이를 평소 사용하던 스마트폰 그대로 이용할 수 있습니다.
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <p>
+                            <strong>Getting around Busan just got easier for international visitors.</strong> Travelers can pay bus fares by scanning a Zero Pay QR code with their own mobile payment app.
+                          </p>
+                          <p>
+                            The move comes amid Busan's international tourism boom. Foreign visitors to the city are projected to top 4 million this year, with more than 60% coming from Asian markets including China, Taiwan, Hong Kong, and the Philippines. Demand has grown for a way to use familiar apps on Busan's public transit.
+                          </p>
+                          <p>
+                            The new QR service answers that call, linking into Zero Pay’s global network to support dozens of overseas payment apps — including <strong>Alipay, WeChat Pay, and UnionPay</strong> from China, and <strong>PayPay</strong> from Japan.
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* How It Works (3 Steps) */}
+                  <div className="space-y-4">
+                    <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-[#004481]"></span>
+                      <span>{language === 'KR' ? '이용 방법 3단계 (How it works)' : 'How it works (3 Easy Steps)'}</span>
+                    </h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {/* Step 1 */}
+                      <div className="p-5 bg-slate-50/90 rounded-2xl border-2 border-slate-900/10 flex flex-col justify-between space-y-3.5 hover:border-slate-900/30 transition-colors">
+                        <div className="space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-black px-2.5 py-1 rounded-md bg-[#004481] text-white">STEP 01</span>
+                            <span className="text-xl">📷</span>
+                          </div>
+                          <h4 className="text-sm font-black text-slate-900">
+                            {language === 'KR' ? '1. 탑승 후 차내 QR 스캔' : '1. Scan In-Bus QR Code'}
+                          </h4>
+                          <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                            {language === 'KR' ? (
+                              <>
+                                버스 탑승 후, 본인이 사용하는 결제 앱을 실행하고 <strong>차량 내부에 부착된 제로페이 QR코드</strong>를 스캔합니다.
+                              </>
+                            ) : (
+                              <>
+                                After boarding, open a supported payment app and scan the QR code posted inside the bus.
+                              </>
+                            )}
+                          </p>
+                        </div>
+                        <div className="text-[11px] text-sky-800 bg-sky-100/70 px-2.5 py-1.5 rounded-lg font-bold">
+                          {language === 'KR' ? '※ 버스 차내 부착된 제로페이 QR 스캔' : '※ Scan the Zero Pay QR code posted inside'}
+                        </div>
+                      </div>
+
+                      {/* Step 2 */}
+                      <div className="p-5 bg-slate-50/90 rounded-2xl border-2 border-slate-900/10 flex flex-col justify-between space-y-3.5 hover:border-slate-900/30 transition-colors">
+                        <div className="space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-black px-2.5 py-1 rounded-md bg-[#004481] text-white">STEP 02</span>
+                            <span className="text-xl">💱</span>
+                          </div>
+                          <h4 className="text-sm font-black text-slate-900">
+                            {language === 'KR' ? '2. 결제 옵션 선택 & 자동 환전' : '2. Select Payment Option'}
+                          </h4>
+                          <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                            {language === 'KR' ? (
+                              <>
+                                결제 옵션을 선택하면 요금이 <strong>탑승객의 본국 현지 통화로 자동 환전</strong> 계산되어 화면에 표시됩니다.
+                              </>
+                            ) : (
+                              <>
+                                Select the payment option — the fare converts automatically to the rider's home currency.
+                              </>
+                            )}
+                          </p>
+                        </div>
+                        <div className="text-[11px] text-emerald-800 bg-emerald-100/70 px-2.5 py-1.5 rounded-lg font-bold">
+                          {language === 'KR' ? '※ 탑승객 본국 통화로 자동 계산' : '※ Automatic currency conversion'}
+                        </div>
+                      </div>
+
+                      {/* Step 3 */}
+                      <div className="p-5 bg-slate-50/90 rounded-2xl border-2 border-slate-900/10 flex flex-col justify-between space-y-3.5 hover:border-slate-900/30 transition-colors">
+                        <div className="space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-black px-2.5 py-1 rounded-md bg-[#004481] text-white">STEP 03</span>
+                            <span className="text-xl">✅</span>
+                          </div>
+                          <h4 className="text-sm font-black text-slate-900">
+                            {language === 'KR' ? '3. 기사님께 완료 화면 제시' : '3. Show Screen to Driver'}
+                          </h4>
+                          <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                            {language === 'KR' ? (
+                              <>
+                                스마트폰에 표시된 <strong>결제 완료 확인 화면을 버스 운전기사님께 보여주시면</strong> 탑승이 정상 완료됩니다.
+                              </>
+                            ) : (
+                              <>
+                                Show the payment confirmation screen to the driver to complete your boarding.
+                              </>
+                            )}
+                          </p>
+                        </div>
+                        <div className="text-[11px] text-indigo-800 bg-indigo-100/70 px-2.5 py-1.5 rounded-lg font-bold">
+                          {language === 'KR' ? '※ 결제 완료 확인 후 자리로 이동' : '※ Show confirmation before taking a seat'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Key Fare & Payment Policy */}
+                  <div className="p-5 sm:p-6 bg-amber-50/80 border-2 border-amber-300 rounded-2xl space-y-4">
+                    <div className="flex items-center gap-2 text-amber-950 text-sm font-black">
+                      <span className="text-lg">⚠️</span>
+                      <span>{language === 'KR' ? '요금 규정 및 필수 수칙 안내' : 'Fare Policy & Key Rules'}</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                      <div className="p-4 bg-white rounded-xl border border-amber-200 space-y-1.5 shadow-xs">
+                        <div className="font-black text-slate-900 text-xs sm:text-sm">
+                          {language === 'KR' ? '1인당 균일 1,700원' : 'Flat ₩1,700 Per Person'}
+                        </div>
+                        <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed font-medium">
+                          {language === 'KR' 
+                            ? '성인 시내버스 현금 요금과 동일한 1인당 1,700원 균일 요금 (어린이 및 청소년도 동일 요금 적용)' 
+                            : 'The QR fare is a flat 1,700 won per person, matching the standard adult cash fare — the same rate applies to children and teens.'}
+                        </p>
+                      </div>
+                      <div className="p-4 bg-white rounded-xl border border-amber-200 space-y-1.5 shadow-xs">
+                        <div className="font-black text-slate-900 text-xs sm:text-sm">
+                          {language === 'KR' ? '개별 결제 원칙' : 'Individual Payments'}
+                        </div>
+                        <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed font-medium">
+                          {language === 'KR' 
+                            ? '단체 여행객의 경우 한 번에 결제할 수 없으며, 각자 본인의 스마트폰 앱으로 1인씩 개별 결제해야 합니다.' 
+                            : 'Group travelers should each pay separately using their own mobile device and payment app.'}
+                        </p>
+                      </div>
+                      <div className="p-4 bg-white rounded-xl border border-amber-200 space-y-1.5 shadow-xs">
+                        <div className="font-black text-slate-900 text-xs sm:text-sm">
+                          {language === 'KR' ? '환승 할인 미적용' : 'No Transfer Discounts'}
+                        </div>
+                        <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed font-medium">
+                          {language === 'KR' 
+                            ? '교통카드가 아닌 현금을 대체하는 간편결제 서비스이므로 버스·지하철 간 환승 할인은 적용되지 않습니다.' 
+                            : 'Since the service replaces cash rather than a transit card, transfer discounts do not apply.'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Supported Services Badges & Multilingual Guidance Info */}
+                  <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="space-y-1.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-black text-slate-900 text-xs sm:text-sm shrink-0">
+                          {language === 'KR' ? '지원 글로벌 결제 앱:' : 'Supported Global Apps:'}
+                        </span>
+                        <div className="flex flex-wrap gap-1.5 text-xs font-bold text-slate-800">
+                          <span className="px-2 py-0.5 bg-white border border-slate-300 rounded-md">Alipay (알리페이)</span>
+                          <span className="px-2 py-0.5 bg-white border border-slate-300 rounded-md">WeChat Pay (위챗페이)</span>
+                          <span className="px-2 py-0.5 bg-white border border-slate-300 rounded-md">UnionPay (유니온페이)</span>
+                          <span className="px-2 py-0.5 bg-white border border-slate-300 rounded-md">PayPay (페이페이)</span>
+                          <span className="px-2 py-0.5 bg-white border border-slate-300 rounded-md">Zero Pay (제로페이)</span>
+                        </div>
+                      </div>
+                      <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                        {language === 'KR' 
+                          ? '모든 시내버스 차내에 다국어 안내문이 부착되어 있으며, 부산역, 부산항, 주요 관광안내소에 홍보물이 비치되어 있습니다.' 
+                          : 'QR codes and multilingual instructions are up on every city bus, with guidance posted at stops, information centers, Busan Station, and Busan Port.'}
+                      </p>
+                    </div>
+                    <span className="text-xs font-black px-3 py-1.5 rounded-lg bg-[#004481] text-white self-start sm:self-auto shrink-0 shadow-xs">
+                      {language === 'KR' ? '제로페이 글로벌 연동' : 'Zero Pay Global Network'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Bottom Back Button */}
+                <div className="p-6 bg-slate-50 border-t border-slate-200 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigateToSubPage('transit');
+                      try {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                      } catch {
+                        window.scrollTo(0, 0);
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#004481] hover:bg-[#003366] text-white font-black text-xs sm:text-sm transition-all shadow-md hover:shadow-lg cursor-pointer"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>
+                      {language === 'KR' ? '대중교통 이용 팁으로 돌아가기' : 'Back to Public Transit Tips'}
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -6912,6 +7021,27 @@ export default function BusanItinerariesView({
                       </ul>
                     </div>
                   </div>
+                </div>
+
+                {/* Bottom Back Button */}
+                <div className="pt-4 pb-2 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigateToSubPage('transit');
+                      try {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                      } catch {
+                        window.scrollTo(0, 0);
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#004481] hover:bg-[#003366] text-white font-black text-xs sm:text-sm transition-all shadow-md hover:shadow-lg cursor-pointer"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>
+                      {language === 'KR' ? '대중교통 이용 팁으로 돌아가기' : 'Back to Public Transit Tips'}
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
