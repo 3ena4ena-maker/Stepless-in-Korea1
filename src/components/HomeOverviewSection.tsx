@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { 
   Baby, 
   Accessibility, 
@@ -124,67 +124,71 @@ export function HomeOverviewSection({
   });
 
 
-  // 4 Core Activity Courses (귀염뽀짝 & 액티비티 테마)
+  // 4 Core Activity Courses (소프트 파스텔 톤 & 노-이모지 정갈한 디자인)
   const recommendedCourses = [
     {
       id: 'DAY' as const,
-      emoji: '🏖️',
+      icon: Compass,
       title: language === 'KR' ? '추천 여행 코스' : 'RECOMMENDED ITINERARY',
       tag: language === 'KR' ? '바다·투어' : 'OCEAN TRIP',
       desc: language === 'KR'
-        ? '원도심·해운대·기장까지 인생샷 건지는 힐링 코스!'
+        ? '원도심·해운대·기장까지 알짜배기 힐링 명소 코스'
         : 'Curated itineraries for Haeundae, Nampo, and Gijang.',
-      bgGradient: 'from-sky-50/90 via-white to-sky-50/30',
-      borderColor: 'border-sky-200 hover:border-sky-400',
-      tagBg: 'bg-sky-100 text-sky-700',
-      badgeDot: 'bg-sky-400',
-      btnBg: 'bg-sky-500 hover:bg-sky-600 text-white',
-      btnText: language === 'KR' ? '코스 탐험 ➜' : 'Explore ➜',
+      bg: 'bg-[#F3F8FB]',
+      border: 'border-[#E1EDF5] hover:border-[#BED6E6]',
+      iconBg: 'bg-[#E3EFF7]',
+      iconColor: 'text-[#3B7291]',
+      tagBg: 'bg-[#E3EFF7] text-[#3B7291]',
+      btnBg: 'bg-white hover:bg-[#EAF3F8] border border-[#D5E5F0] text-[#2F5E78]',
+      btnText: language === 'KR' ? '코스 보기' : 'Explore',
     },
     {
       id: 'SUBWAY' as const,
-      emoji: '🚇',
+      icon: Train,
       title: language === 'KR' ? '지하철 무장애 코스' : 'STEP-FREE METRO ROUTE',
       tag: language === 'KR' ? '계단 ZERO' : 'STEP-FREE',
       desc: language === 'KR'
-        ? '엘리베이터 출구로 턱 없이 슝슝 달리는 쾌속 동선!'
+        ? '엘리베이터 출구로 턱 없이 편안하게 달리는 쾌속 동선'
         : 'Elevator exits and flat, step-free travel paths.',
-      bgGradient: 'from-amber-50/90 via-white to-amber-50/30',
-      borderColor: 'border-amber-200 hover:border-amber-400',
-      tagBg: 'bg-amber-100 text-amber-700',
-      badgeDot: 'bg-amber-400',
-      btnBg: 'bg-amber-500 hover:bg-amber-600 text-white',
-      btnText: language === 'KR' ? '동선 확인 ➜' : 'Check Route ➜',
+      bg: 'bg-[#F4F8F3]',
+      border: 'border-[#E1EEDF] hover:border-[#BFDBBB]',
+      iconBg: 'bg-[#E5F1E2]',
+      iconColor: 'text-[#4D7744]',
+      tagBg: 'bg-[#E5F1E2] text-[#4D7744]',
+      btnBg: 'bg-white hover:bg-[#ECF5E9] border border-[#D5E6CF] text-[#3C6134]',
+      btnText: language === 'KR' ? '동선 확인' : 'Check Route',
     },
     {
       id: 'GOURMET' as const,
-      emoji: '😋',
+      icon: UtensilsCrossed,
       title: language === 'KR' ? '식도락 (부산 맛집)' : 'BUSAN FOOD GUIDE',
-      tag: language === 'KR' ? '침샘 폭발' : 'FOODIE',
+      tag: language === 'KR' ? '부산 미식' : 'FOODIE',
       desc: language === 'KR'
-        ? '원조 돼지국밥 노포부터 감성 충만 오션뷰 카페!'
+        ? '원조 돼지국밥 노포부터 감성 충만 오션뷰 카페까지'
         : 'Authentic pork soup eateries and oceanfront cafes.',
-      bgGradient: 'from-rose-50/90 via-white to-rose-50/30',
-      borderColor: 'border-rose-200 hover:border-rose-400',
-      tagBg: 'bg-rose-100 text-rose-700',
-      badgeDot: 'bg-rose-400',
-      btnBg: 'bg-rose-500 hover:bg-rose-600 text-white',
-      btnText: language === 'KR' ? '맛집 맛보기 ➜' : 'View Eats ➜',
+      bg: 'bg-[#FAF6F3]',
+      border: 'border-[#F1E8DF] hover:border-[#E0D0BF]',
+      iconBg: 'bg-[#F5ECE2]',
+      iconColor: 'text-[#885A3B]',
+      tagBg: 'bg-[#F5ECE2] text-[#885A3B]',
+      btnBg: 'bg-white hover:bg-[#F8F1EB] border border-[#E9DDD0] text-[#6E462A]',
+      btnText: language === 'KR' ? '맛집 보기' : 'View Eats',
     },
     {
       id: 'EXPERIENCE' as const,
-      emoji: '🎡',
+      icon: Building2,
       title: language === 'KR' ? '체험 & 문화 공간' : 'CULTURE & MUSEUM',
-      tag: language === 'KR' ? '인생샷 핫플' : 'HOT SPOTS',
+      tag: language === 'KR' ? '문화·핫플' : 'HOT SPOTS',
       desc: language === 'KR'
-        ? '국립해양박물관·포토존 가득한 신나는 문화 명소!'
+        ? '국립해양박물관과 전시·예술 가득한 문화 명소'
         : 'Maritime museums, art galleries, and cultural centers.',
-      bgGradient: 'from-purple-50/90 via-white to-purple-50/30',
-      borderColor: 'border-purple-200 hover:border-purple-400',
-      tagBg: 'bg-purple-100 text-purple-700',
-      badgeDot: 'bg-purple-400',
-      btnBg: 'bg-purple-500 hover:bg-purple-600 text-white',
-      btnText: language === 'KR' ? '놀러 가기 ➜' : 'Discover ➜',
+      bg: 'bg-[#F8F6FA]',
+      border: 'border-[#ECE4F0] hover:border-[#D6C7DE]',
+      iconBg: 'bg-[#F1E8F5]',
+      iconColor: 'text-[#745084]',
+      tagBg: 'bg-[#F1E8F5] text-[#745084]',
+      btnBg: 'bg-white hover:bg-[#F5EDF8] border border-[#E3D4E8] text-[#5C3B6C]',
+      btnText: language === 'KR' ? '공간 둘러보기' : 'Discover',
     },
   ];
 
@@ -331,69 +335,61 @@ export function HomeOverviewSection({
 
 
       {/* ==========================================
-          3. CUTE ACTIVITY CATEGORY CARDS (부산에서 어디로 떠나볼까?)
+          3. ACTIVITY CATEGORY CARDS (부산에서 어디로 떠나볼까?)
          ========================================== */}
       <section className="space-y-4 pt-6 sm:pt-8 border-t border-[#E5E2DC]" id="activity-explore-section">
-        {/* Playful & Bubbly Section Header */}
-        <div className="space-y-1.5">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#8EA85E]/15 text-[#5F7833] border border-[#8EA85E]/30">
-            <Sparkles className="w-3.5 h-3.5 text-[#8EA85E]" />
-            <span>{language === 'KR' ? '통통 튀는 부산 액티비티' : 'BUSAN ACTIVITIES'}</span>
-          </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#11161B] tracking-tight flex items-center gap-2">
-            <span>{language === 'KR' ? '부산에서 어디로 떠나볼까?' : 'Where Shall We Go in Busan?'}</span>
-            <span className="text-2xl animate-bounce select-none">🎒</span>
+        <div>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#11161B] tracking-tight">
+            {language === 'KR' ? '부산에서 어디로 떠나볼까?' : 'Where Shall We Go in Busan?'}
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium">
-            {language === 'KR'
-              ? '계단 걱정 없이 신나게 즐기는 부산 테마별 여행 & 액티비티 스팟!'
-              : 'Step-free, fun-filled travel themes and activity spots across Busan!'}
-          </p>
         </div>
 
-        {/* 4 Cute & Bubbly Activity Grid Cards */}
+        {/* 4 Pastel Soft Activity Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 pt-1">
-          {recommendedCourses.map((course) => (
-            <div 
-              key={course.id}
-              onClick={() => {
-                if (onNavigateToItinerary) {
-                  onNavigateToItinerary(course.id);
-                }
-              }}
-              className={`bg-gradient-to-b ${course.bgGradient} border-2 ${course.borderColor} rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex flex-col justify-between space-y-4 cursor-pointer hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 group shadow-xs select-none`}
-            >
-              {/* Top Emoji + Tag Bubble */}
-              <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-2xl bg-white shadow-xs border border-white/80 flex items-center justify-center text-2xl group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
-                  {course.emoji}
-                </div>
-                <span className={`text-[11px] font-black px-2.5 py-1 rounded-full ${course.tagBg} flex items-center gap-1.5 shadow-2xs`}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${course.badgeDot} animate-pulse`} />
-                  {course.tag}
-                </span>
-              </div>
-
-              {/* Title & Desc */}
-              <div className="space-y-1.5">
-                <h3 className="font-black text-[#11161B] text-base group-hover:text-[#0A2540] transition-colors flex items-center justify-between">
-                  <span>{course.title}</span>
-                  <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[#11161B] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </h3>
-                <p className="text-xs text-slate-600 font-medium leading-relaxed break-keep">
-                  {course.desc}
-                </p>
-              </div>
-
-              {/* Cute Bubbly Action Button */}
-              <button
-                type="button"
-                className={`w-full py-2 px-3.5 rounded-full ${course.btnBg} font-extrabold text-xs shadow-xs transition-transform active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer`}
+          {recommendedCourses.map((course) => {
+            const IconComponent = course.icon;
+            return (
+              <div 
+                key={course.id}
+                onClick={() => {
+                  if (onNavigateToItinerary) {
+                    onNavigateToItinerary(course.id);
+                  }
+                }}
+                className={`${course.bg} border ${course.border} rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex flex-col justify-between space-y-4 cursor-pointer hover:-translate-y-1 hover:shadow-md transition-all duration-200 group shadow-2xs select-none`}
               >
-                <span>{course.btnText}</span>
-              </button>
-            </div>
-          ))}
+                {/* Top Icon + Tag Bubble */}
+                <div className="flex items-center justify-between">
+                  <div className={`w-10 h-10 rounded-xl ${course.iconBg} ${course.iconColor} flex items-center justify-center transition-transform group-hover:scale-105`}>
+                    <IconComponent className="w-5 h-5" />
+                  </div>
+                  <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${course.tagBg}`}>
+                    {course.tag}
+                  </span>
+                </div>
+
+                {/* Title & Desc */}
+                <div className="space-y-1.5">
+                  <h3 className="font-bold text-[#11161B] text-base group-hover:text-[#0A2540] transition-colors flex items-center justify-between">
+                    <span>{course.title}</span>
+                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[#11161B] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </h3>
+                  <p className="text-xs text-slate-500 font-medium leading-relaxed break-keep">
+                    {course.desc}
+                  </p>
+                </div>
+
+                {/* Soft Pastel Action Button */}
+                <button
+                  type="button"
+                  className={`w-full py-2 px-3.5 rounded-xl ${course.btnBg} font-bold text-xs shadow-2xs transition-all active:scale-95 flex items-center justify-center gap-1 cursor-pointer`}
+                >
+                  <span>{course.btnText}</span>
+                  <ChevronRight className="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 transition-transform" />
+                </button>
+              </div>
+            );
+          })}
         </div>
       </section>
 

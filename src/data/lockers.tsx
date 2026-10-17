@@ -72,50 +72,74 @@ export const getLockerInfoText = (stationId: string, language: 'KR' | 'EN'): str
   }
 };
 
+export const getLineColor = (line: string): string => {
+  switch (line) {
+    case '1':
+      return '#F06A00'; // 부산 1호선 주황
+    case '2':
+      return '#2DA643'; // 부산 2호선 초록
+    case '3':
+      return '#BB8C00'; // 부산 3호선 황갈색
+    case '4':
+      return '#005BAB'; // 부산 4호선 파랑
+    case '동해':
+      return '#004960'; // 동해선 짙은 파랑
+    case '김해':
+    case '부산김해':
+      return '#6B4BA3'; // 부산김해경전철 보라
+    default:
+      return '#004481';
+  }
+};
+
 export const renderLockerBadges = (data: LockerCount, lang: 'KR' | 'EN'): React.ReactNode => {
   const categories = [
     { 
       key: 'small', 
       labelKR: '소형', 
       labelEN: 'S', 
-      badgeClass: 'bg-[#10b981]/10 text-[#047857] border-[#10b981]/30', 
-      numClass: 'text-[#065f46]' 
+      badgeClass: 'bg-[#F2F8F4] border-[#D4EAD9]', 
+      numClass: 'text-[#1B5E20]',
+      labelClass: 'text-[#2D7344]'
     },
     { 
       key: 'med', 
       labelKR: '중형', 
       labelEN: 'M', 
-      badgeClass: 'bg-[#6366f1]/10 text-[#4f46e5] border-[#6366f1]/30', 
-      numClass: 'text-[#3730a3]' 
+      badgeClass: 'bg-[#F1F6FB] border-[#D3E3F2]', 
+      numClass: 'text-[#1E4976]',
+      labelClass: 'text-[#2B6094]'
     },
     { 
       key: 'large', 
       labelKR: '대형', 
       labelEN: 'L', 
-      badgeClass: 'bg-[#f59e0b]/10 text-[#b45309] border-[#f59e0b]/30', 
-      numClass: 'text-[#854d0e]' 
+      badgeClass: 'bg-[#FDF7EE] border-[#F5E5C9]', 
+      numClass: 'text-[#7A450A]',
+      labelClass: 'text-[#9A5B13]'
     },
     { 
       key: 'xlarge', 
       labelKR: '특대', 
       labelEN: 'XL', 
-      badgeClass: 'bg-[#f43f5e]/10 text-[#e11d48] border-[#f43f5e]/30', 
-      numClass: 'text-[#9f1239]' 
+      badgeClass: 'bg-[#FDF2F4] border-[#F7D3D9]', 
+      numClass: 'text-[#931D38]',
+      labelClass: 'text-[#B8324F]'
     },
   ] as const;
 
   return (
     <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 justify-start">
-      {categories.map(({ key, labelKR, labelEN, badgeClass, numClass }) => {
+      {categories.map(({ key, labelKR, labelEN, badgeClass, numClass, labelClass }) => {
         const val = data[key];
         if (!val) return null;
         const label = lang === 'KR' ? labelKR : labelEN;
         return (
           <span 
             key={key} 
-            className={`inline-flex items-center px-2 py-0.5 sm:py-1 rounded-lg text-[11px] sm:text-[12px] font-sans font-bold border ${badgeClass} shadow-2xs transition-all duration-150 hover:scale-105`}
+            className={`inline-flex items-center gap-1 px-2 py-0.5 sm:py-1 rounded-lg text-xs font-bold border ${badgeClass} shadow-2xs whitespace-nowrap`}
           >
-            <span className="opacity-80 font-medium mr-1 text-[10px] sm:text-[11px]">{label}</span>
+            <span className={`font-semibold text-[11px] ${labelClass}`}>{label}</span>
             <span className={`font-black text-xs sm:text-sm tracking-tight ${numClass}`}>{val}</span>
           </span>
         );
@@ -144,8 +168,11 @@ export const renderLockerInfo = (stationId: string, language: 'KR' | 'EN'): Reac
             ? (line === '동해' ? '동해선' : `${line}호선`) 
             : (line === '동해' ? 'Donghae' : `Line ${line}`);
           return (
-            <div key={line} className="flex flex-col sm:flex-row sm:items-center justify-start gap-2 sm:gap-3 w-full pb-1.5 last:pb-0 border-b border-dashed border-slate-200/60 last:border-0">
-              <span className="text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[#004481] inline-self-start sm:self-center w-max shrink-0">
+            <div key={line} className="flex flex-wrap sm:flex-nowrap items-center justify-start gap-2 sm:gap-3 w-full pb-1.5 last:pb-0 border-b border-dashed border-slate-200/60 last:border-0">
+              <span 
+                className="text-xs sm:text-[13px] font-black shrink-0 whitespace-nowrap self-start sm:self-center tracking-tight"
+                style={{ color: getLineColor(line) }}
+              >
                 {lineStr}
               </span>
               {renderLockerBadges(counts, language)}
