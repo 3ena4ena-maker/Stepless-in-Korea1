@@ -711,7 +711,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     // Calculate map focus center dynamically using mathematical average coordinate of all exits or focused override
     let centerLat = 0;
     let centerLng = 0;
-    let currentZoom = 16;
+    let currentZoom = 17; // 50m 기준 줌 레벨
 
     if (focusedExitCoords) {
       centerLat = focusedExitCoords.latitude;
@@ -726,7 +726,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       });
       centerLat = totalLat / exits.length;
       centerLng = totalLng / exits.length;
-      currentZoom = 16;
+      currentZoom = 17; // 50m 기준 줌 레벨
     }
 
     const mapCenter = new window.naver.maps.LatLng(centerLat, centerLng);
@@ -945,7 +945,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
 
     let centerLat = 0;
     let centerLng = 0;
-    let currentZoom = 16;
+    let currentZoom = 17; // 50m 기준 줌 레벨
 
     if (focusedExitCoords) {
       centerLat = focusedExitCoords.latitude;
@@ -960,7 +960,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       });
       centerLat = totalLat / exits.length;
       centerLng = totalLng / exits.length;
-      currentZoom = 16;
+      currentZoom = 17; // 50m 기준 줌 레벨
     }
 
     const mapCenter = new window.google.maps.LatLng(centerLat, centerLng);
@@ -1114,7 +1114,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     // Calculate map focus center dynamically using mathematical average coordinate of all exits or focused override
     let centerLat = 0;
     let centerLng = 0;
-    let currentZoom = 16;
+    let currentZoom = 17; // 50m 기준 줌 레벨
 
     if (focusedExitCoords) {
       centerLat = focusedExitCoords.latitude;
@@ -1129,7 +1129,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       });
       centerLat = totalLat / exits.length;
       centerLng = totalLng / exits.length;
-      currentZoom = 16;
+      currentZoom = 17; // 50m 기준 줌 레벨
     }
 
     // Initialise Leaflet Map instantiation if not built already or DOM container was emptied
