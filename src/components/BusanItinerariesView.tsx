@@ -3879,7 +3879,7 @@ export default function BusanItinerariesView({
                   const matchesRegion = selectedGourmetRegion === 'ALL'
                     ? true
                     : (selectedGourmetRegion === 'famous' 
-                        ? (s.titleKo.includes('모모스') || s.titleKo.includes('이재모') || s.titleKo.includes('톤쇼우') || s.titleKo.includes('주문진막국수') || s.titleKo.includes('금수복국') || s.titleKo.includes('최뼈다귀') || s.titleKo.includes('이가네') || s.titleKo.includes('씨앗호떡'))
+                        ? s.regionId === 'famous'
                         : (selectedGourmetRegion === 'market'
                             ? (s.foodCategory === 'market' || s.time === '전통시장' || s.titleKo.includes('시장') || s.titleKo.includes('깡통') || s.titleKo.includes('자갈치') || s.titleKo.includes('국제') || s.titleKo.includes('이가네') || s.titleKo.includes('씨앗호떡'))
                             : s.regionId === selectedGourmetRegion));
@@ -3953,7 +3953,7 @@ export default function BusanItinerariesView({
                               const matchesReg = selectedGourmetRegion === 'ALL'
                                 ? true
                                 : (selectedGourmetRegion === 'famous'
-                                    ? (s.titleKo.includes('모모스') || s.titleKo.includes('이재모') || s.titleKo.includes('톤쇼우') || s.titleKo.includes('주문진막국수') || s.titleKo.includes('금수복국') || s.titleKo.includes('최뼈다귀') || s.titleKo.includes('이가네') || s.titleKo.includes('씨앗호떡'))
+                                    ? s.regionId === 'famous'
                                     : (selectedGourmetRegion === 'market'
                                         ? (s.foodCategory === 'market' || s.time === '전통시장' || s.titleKo.includes('시장') || s.titleKo.includes('깡통') || s.titleKo.includes('자갈치') || s.titleKo.includes('국제') || s.titleKo.includes('이가네') || s.titleKo.includes('씨앗호떡'))
                                         : s.regionId === selectedGourmetRegion));
@@ -4062,6 +4062,71 @@ export default function BusanItinerariesView({
                               <p className="text-xs text-[#4A5568] font-normal leading-relaxed text-left whitespace-pre-line">
                                 {language === 'KR' ? step.descKo : step.descEn}
                               </p>
+
+                              {/* 다수 매장/프랜차이즈 지점별 주소 목록 & 네이버지도 / 구글맵 버튼 */}
+                              {step.branches && step.branches.length > 0 && (
+                                <div className="mt-3.5 pt-3 border-t border-[#E5E2DC] space-y-2.5">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-[11px] font-bold text-[#11161B] flex items-center gap-1.5">
+                                      <MapPin className="w-3.5 h-3.5 text-[#0A2540]" />
+                                      <span>{language === 'KR' ? '지점별 매장 안내 & 지도' : 'Branch Locations & Maps'}</span>
+                                    </span>
+                                    <span className="text-[10px] font-mono text-[#0A2540] bg-[#FBFBF9] px-2 py-0.5 rounded border border-[#E5E2DC]">
+                                      {step.branches.length} {language === 'KR' ? '개 매장' : 'branches'}
+                                    </span>
+                                  </div>
+
+                                  <div className="space-y-2">
+                                    {step.branches.map((branch, bIdx) => (
+                                      <div 
+                                        key={bIdx}
+                                        className="bg-[#FBFBF9] hover:bg-[#F4EBE1]/40 p-3 rounded-lg border border-[#E5E2DC] transition-colors flex flex-col gap-2"
+                                      >
+                                        <div className="space-y-1 min-w-0">
+                                          <div className="flex items-center gap-1.5 flex-wrap">
+                                            <span className="text-xs font-bold text-[#11161B]">
+                                              {language === 'KR' ? branch.nameKo : (branch.nameEn || branch.nameKo)}
+                                            </span>
+                                          </div>
+                                          <p className="text-[11px] text-[#4A5568] flex items-start gap-1 leading-relaxed">
+                                            <span className="shrink-0 text-slate-400">📍</span>
+                                            <span>{language === 'KR' ? branch.addressKo : (branch.addressEn || branch.addressKo)}</span>
+                                          </p>
+                                        </div>
+
+                                        <div className="flex items-center gap-2 pt-1.5 border-t border-[#E5E2DC]/60">
+                                          {branch.naverMapUrl && (
+                                            <a
+                                              href={branch.naverMapUrl}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              onClick={(e) => e.stopPropagation()}
+                                              className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-bold bg-[#03C75A]/10 text-[#03C75A] hover:bg-[#03C75A] hover:text-white border border-[#03C75A]/30 transition-all cursor-pointer shadow-2xs flex-1 sm:flex-initial"
+                                              title={language === 'KR' ? `${branch.nameKo} 네이버 지도에서 위치 보기` : `View ${branch.nameEn || branch.nameKo} on Naver Map`}
+                                            >
+                                              <span className="font-black text-[11px] leading-none">N</span>
+                                              <span>{language === 'KR' ? '네이버지도' : 'Naver Map'}</span>
+                                            </a>
+                                          )}
+                                          {branch.googleMapUrl && (
+                                            <a
+                                              href={branch.googleMapUrl}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              onClick={(e) => e.stopPropagation()}
+                                              className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-bold bg-[#4285F4]/10 text-[#4285F4] hover:bg-[#4285F4] hover:text-white border border-[#4285F4]/30 transition-all cursor-pointer shadow-2xs flex-1 sm:flex-initial"
+                                              title={language === 'KR' ? `${branch.nameKo} 구글맵에서 위치 보기` : `View ${branch.nameEn || branch.nameKo} on Google Maps`}
+                                            >
+                                              <Compass className="w-3.5 h-3.5 text-[#4285F4]" />
+                                              <span>{language === 'KR' ? '구글맵' : 'Google Maps'}</span>
+                                            </a>
+                                          )}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
                             </div>
 
                             <div className="mt-5 pt-3 border-t border-[#E5E2DC] space-y-2">

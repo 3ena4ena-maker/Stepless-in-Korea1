@@ -38,6 +38,27 @@ export interface ItineraryStep {
     naverMapUrl?: string;
     googleMapUrl?: string;
   }[];
+  branches?: {
+    nameKo: string;
+    nameEn?: string;
+    addressKo: string;
+    addressEn?: string;
+    stationInfoKo?: string;
+    stationInfoEn?: string;
+    naverMapUrl?: string;
+    googleMapUrl?: string;
+  }[];
+}
+
+export interface ItineraryBranch {
+  nameKo: string;
+  nameEn?: string;
+  addressKo: string;
+  addressEn?: string;
+  stationInfoKo?: string;
+  stationInfoEn?: string;
+  naverMapUrl?: string;
+  googleMapUrl?: string;
 }
 
 export interface ItineraryCourse {
@@ -833,55 +854,39 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         regionNameEn: 'Famous Cuisines',
         foodCategory: 'cafe',
         time: '카페',
-        titleKo: '모모스커피 온천장 본점',
-        titleEn: 'Momos Coffee Oncheonjang Main',
-        descKo: '📍 주소: 부산 금정구 오시게로 20\n☕ 한국 최초 WBC 월드 바리스타 챔피언십 우승자를 배출한 부산 대표 스페셜티 커피 브랜드 본점.',
-        descEn: '📍 Address: 20 Osige-ro, Geumjeong-gu, Busan\n☕ Home of Korea’s first World Barista Champion, iconic specialty coffee roastery.',
+        titleKo: '모모스커피',
+        titleEn: 'Momos Coffee',
+        descKo: '☕ 한국 최초 WBC 월드 바리스타 챔피언십 우승자를 배출한 부산 대표 스페셜티 커피 브랜드.\n각 산지별 최고급 생두를 직접 선별·로스팅하여 세계적인 수준의 스페셜티 커피와 바리스타 브루잉을 선보입니다.',
+        descEn: '☕ Home of Korea’s first World Barista Champion and iconic Busan specialty coffee brand.\nEnjoy award-winning hand-drip specialty brews sourced directly from premier origins.',
         icon: 'Coffee',
-        stationInfoKo: '부산 금정구 오시게로 20 (온천장역 2번 출구 바로 앞)',
-        stationInfoEn: '20 Osige-ro, Geumjeong-gu, Busan (Oncheonjang Station Exit 2)'
-      },
-      {
-        regionId: 'famous',
-        regionNameKo: '부산 유명 맛집',
-        regionNameEn: 'Famous Cuisines',
-        foodCategory: 'cafe',
-        time: '카페',
-        titleKo: '모모스 로스터리&커피바 (영도점)',
-        titleEn: 'Momos Roastery & Coffee Bar (Yeongdo)',
-        descKo: '📍 주소: 부산 영도구 봉래나루로 160\n☕ 영도 항구 창고를 개조해 만든 웅장한 로스터리 쇼룸 & 대형 오션 뷰 라운지.',
-        descEn: '📍 Address: 160 Bongraenaru-ro, Yeongdo-gu, Busan\n☕ Spectacular harbour warehouse conversion roastery showroom & ocean view lounge.',
-        icon: 'Coffee',
-        stationInfoKo: '부산 영도구 봉래나루로 160 (남포역 6번 출구 인근)',
-        stationInfoEn: '160 Bongraenaru-ro, Yeongdo-gu, Busan (Near Nampo Station Exit 6)'
-      },
-      {
-        regionId: 'famous',
-        regionNameKo: '부산 유명 맛집',
-        regionNameEn: 'Famous Cuisines',
-        foodCategory: 'cafe',
-        time: '카페',
-        titleKo: '모모스커피 마린시티점',
-        titleEn: 'Momos Coffee Marine City',
-        descKo: '📍 주소: 부산 해운대구 마린시티2로 33 제해운대두산위브더제니스 1층\n☕ 해운대 바다 바람과 함께 최고급 바리스타 핸드드립 커피를 즐기는 감성 라운지.',
-        descEn: '📍 Address: 1F, 33 Marine city 2-ro, Haeundae-gu, Busan\n☕ Elegant coastal venue for specialty hand-drip coffees in Marine City.',
-        icon: 'Coffee',
-        stationInfoKo: '부산 해운대구 마린시티2로 33 (동백역 1번 출구 인근)',
-        stationInfoEn: '33 Marine city 2-ro, Haeundae-gu, Busan (Near Dongbaek Station Exit 1)'
-      },
-      {
-        regionId: 'famous',
-        regionNameKo: '부산 유명 맛집',
-        regionNameEn: 'Famous Cuisines',
-        foodCategory: 'restaurant',
-        time: '음식점',
-        titleKo: '이재모피자 본점',
-        titleEn: 'Lee Jae Mo Pizza Main Branch',
-        descKo: '📍 주소: 부산 중구 광복로093번길 21\n🍕 고소하고 듬뿍 올라간 100% 임실 치즈 크러스트가 일품인 부산 전설의 원조 피자 맛집.',
-        descEn: '📍 Address: 21 Gwangbok-ro 093beon-gil, Jung-gu, Busan\n🍕 Legendary Busan pizza institution famous for its rich 100% Imsil cheese crust.',
-        icon: 'Food',
-        stationInfoKo: '부산 중구 광복로093번길 21 (남포역 1번 출구)',
-        stationInfoEn: '21 Gwangbok-ro 093beon-gil, Jung-gu, Busan (Nampo Station Exit 1)'
+        stationInfoKo: '온천장 본점 / 영도 로스터리 / 마린시티점',
+        stationInfoEn: 'Oncheonjang Main / Yeongdo Roastery / Marine City',
+        branches: [
+          {
+            nameKo: '온천장 본점',
+            nameEn: 'Oncheonjang Main Branch',
+            addressKo: '부산 금정구 오시게로 20 (온천장역 2번 출구 바로 앞)',
+            addressEn: '20 Osige-ro, Geumjeong-gu, Busan (Oncheonjang Station Exit 2)',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EB%AA%A8%EB%AA%A8%EC%8A%A4%EC%BB%A4%ED%94%BC%20%EC%98%A8%EC%82%B0%EC%9E%A5%EB%B3%B8%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EB%AA%A8%EB%AA%A8%EC%8A%A4%EC%BB%A4%ED%94%BC%20%EB%B3%B8%EC%A0%90%20%EB%B6%80%EC%82%B0',
+          },
+          {
+            nameKo: '모모스 로스터리&커피바 (영도점)',
+            nameEn: 'Momos Roastery & Coffee Bar (Yeongdo)',
+            addressKo: '부산 영도구 봉래나루로 160 (남포역 6번 출구 인근)',
+            addressEn: '160 Bongraenaru-ro, Yeongdo-gu, Busan (Near Nampo Station Exit 6)',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EB%AA%A8%EB%AA%A8%EC%8A%A4%20%EB%A1%9C%EC%8A%A4%ED%84%B0%EB%A6%AC%26%EC%BB%A4%ED%94%BC%EB%B0%94',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EB%AA%A8%EB%AA%A8%EC%8A%A4%20%EB%A1%9C%EC%8A%A4%ED%84%B0%EB%A6%AC%26%EC%BB%A4%ED%94%BC%EB%B0%94%20%EC%98%81%EB%8F%84',
+          },
+          {
+            nameKo: '모모스커피 마린시티점',
+            nameEn: 'Momos Coffee Marine City',
+            addressKo: '부산 해운대구 마린시티2로 33 제해운대두산위브더제니스 1층 (동백역 1번 출구 인근)',
+            addressEn: '1F, 33 Marine city 2-ro, Haeundae-gu, Busan (Near Dongbaek Station Exit 1)',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EB%AA%A8%EB%AA%A8%EC%8A%A4%EC%BB%A4%ED%94%BC%20%EB%A7%88%EB%A6%B0%EC%8B%9C%ED%8B%B0%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EB%AA%A8%EB%AA%A8%EC%8A%A4%EC%BB%A4%ED%94%BC%20%EB%A7%88%EB%A6%B0%EC%8B%9C%ED%8B%B0%EC%A0%90',
+          },
+        ],
       },
       {
         regionId: 'famous',
@@ -889,13 +894,39 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         regionNameEn: 'Famous Cuisines',
         foodCategory: 'restaurant',
         time: '음식점',
-        titleKo: '이재모피자 서면점',
-        titleEn: 'Lee Jae Mo Pizza Seomyeon',
-        descKo: '📍 주소: 부산 부산진구 전포대로209번길 21\n🍕 전포 카페거리 골목에서 즐기는 고소한 치즈 폭탄 명품 피자 매장.',
-        descEn: '📍 Address: 21 Jeonpo-daero 209beon-gil, Busanjin-gu, Busan\n🍕 Seomyeon branch serving the famous cheese-crust pizzas.',
+        titleKo: '이재모피자',
+        titleEn: 'Lee Jae Mo Pizza',
+        descKo: '🍕 고소하고 듬뿍 올라간 100% 임실 자연산 치즈 크러스트가 일품인 부산 전설의 원조 피자 맛집.\n풍성한 치즈와 쫄깃한 특제 도우로 부산 여행객과 현지 로컬 모두가 첫손에 꼽는 대표 명소입니다.',
+        descEn: '🍕 Legendary Busan pizza institution famous for its rich 100% natural Imsil cheese crust.\nA mandatory culinary pilgrimage loved by locals and international visitors alike.',
         icon: 'Food',
-        stationInfoKo: '부산 부산진구 전포대로209번길 21 (전포역 7번 출구)',
-        stationInfoEn: '21 Jeonpo-daero 209beon-gil, Busanjin-gu, Busan (Jeonpo Station Exit 7)'
+        stationInfoKo: '본점(남포) / 서면점 / 부산역점',
+        stationInfoEn: 'Main (Nampo) / Seomyeon / Busan Station',
+        branches: [
+          {
+            nameKo: '이재모피자 본점',
+            nameEn: 'Lee Jae Mo Pizza Main Branch',
+            addressKo: '부산 중구 광복중앙로 31 (남포역 1번 출구 인근)',
+            addressEn: '31 Gwangbokjungang-ro, Jung-gu, Busan (Near Nampo Station Exit 1)',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%9D%B4%EC%9E%AC%EB%AA%A8%ED%94%BC%EC%9E%90%20%EB%B3%B8%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%9D%B4%EC%9E%AC%EB%AA%A8%ED%94%BC%EC%9E%90%20%EB%B3%B8%EC%A0%90%20%EB%B6%80%EC%82%B0',
+          },
+          {
+            nameKo: '이재모피자 서면점',
+            nameEn: 'Lee Jae Mo Pizza Seomyeon',
+            addressKo: '부산 부산진구 전포대로209번길 21 (전포역 7번 출구)',
+            addressEn: '21 Jeonpo-daero 209beon-gil, Busanjin-gu, Busan (Jeonpo Station Exit 7)',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%9D%B4%EC%9E%AC%EB%AA%A8%ED%94%BC%EC%9E%90%20%EC%84%9C%EB%A9%B4%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%9D%B4%EC%9E%AC%EB%AA%A8%ED%94%BC%EC%9E%90%20%EC%84%9C%EB%A9%B4%EC%A0%90',
+          },
+          {
+            nameKo: '이재모피자 부산역점',
+            nameEn: 'Lee Jae Mo Pizza Busan Station',
+            addressKo: '부산 동구 중앙대로 197 (부산역 6번 출구 앞)',
+            addressEn: '197 Jungang-daero, Dong-gu, Busan (Busan Station Exit 6)',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%9D%B4%EC%9E%AC%EB%AA%A8%ED%94%BC%EC%9E%90%20%EB%B6%80%EC%82%B0%EC%97%AD%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%9D%B4%EC%9E%AC%EB%AA%A8%ED%94%BC%EC%9E%90%20%EB%B6%80%EC%82%B0%EC%97%AD%EC%A0%90',
+          },
+        ],
       },
       {
         regionId: 'famous',
@@ -903,41 +934,31 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         regionNameEn: 'Famous Cuisines',
         foodCategory: 'restaurant',
         time: '음식점',
-        titleKo: '이재모피자 부산역점',
-        titleEn: 'Lee Jae Mo Pizza Busan Station',
-        descKo: '📍 주소: 부산 동구 중앙대로 197\n🍕 부산역에서 내리자마자 바로 만나는 이재모피자 직영 매장.',
-        descEn: '📍 Address: 197 Jungang-daero, Dong-gu, Busan\n🍕 Conveniently located right outside Busan Station for travelers.',
+        titleKo: '톤쇼우',
+        titleEn: 'Tonshou',
+        descKo: '🥩 숯불 향이 베인 프리미엄 버크셔K 돈카츠와 육즙 가득한 바삭한 튀김 옷의 조화로 오픈런 필수인 부산 대표 돈가스 성지.\n최상급 원육 저온 숙성과 숯불 훈연 기법으로 부산을 넘어 전국적인 명성을 얻은 곳입니다.',
+        descEn: '🥩 Premium charcoal-finished Berkshire K tonkatsu destination with crispy breading and tender meat.\nA must-visit gourmet pilgrimage spot with high demand and table queue waiting.',
         icon: 'Food',
-        stationInfoKo: '부산 동구 중앙대로 197 (부산역 6번 출구 앞)',
-        stationInfoEn: '197 Jungang-daero, Dong-gu, Busan (Busan Station Exit 6)'
-      },
-      {
-        regionId: 'famous',
-        regionNameKo: '부산 유명 맛집',
-        regionNameEn: 'Famous Cuisines',
-        foodCategory: 'restaurant',
-        time: '음식점',
-        titleKo: '톤쇼우 광안리점',
-        titleEn: 'Tonshou Gwangalli',
-        descKo: '📍 주소: 부산 수영구 광안해변로279번길 13\n🥩 숯불 향이 베인 프리미엄 버크셔K 돈카츠로 오픈런 필수인 부산 대표 돈가스 성지.',
-        descEn: '📍 Address: 13 Gwanganhaebyeon-ro 279beon-gil, Suyeong-gu, Busan\n🥩 Premium charcoal-finished Berkshire K tonkatsu destination in Gwangalli.',
-        icon: 'Food',
-        stationInfoKo: '부산 수영구 광안해변로279번길 13 (민락동, 광안리 해변 인근)',
-        stationInfoEn: '13 Gwanganhaebyeon-ro 279beon-gil, Suyeong-gu, Busan'
-      },
-      {
-        regionId: 'famous',
-        regionNameKo: '부산 유명 맛집',
-        regionNameEn: 'Famous Cuisines',
-        foodCategory: 'restaurant',
-        time: '음식점',
-        titleKo: '톤쇼우 부산대점',
-        titleEn: 'Tonshou Pusan Nat’l Univ.',
-        descKo: '📍 주소: 부산 금정구 금정로68번길 18\n🥩 육즙 가득한 바삭한 튀김 옷과 최상급 돼지고기의 조화가 뛰어난 톤쇼우 본점.',
-        descEn: '📍 Address: 18 Geumjeong-ro 68beon-gil, Geumjeong-gu, Busan\n🥩 Original branch of Tonshou near Pusan National University.',
-        icon: 'Food',
-        stationInfoKo: '부산 금정구 금정로68번길 18 (부산대역 1번 출구)',
-        stationInfoEn: '18 Geumjeong-ro 68beon-gil, Geumjeong-gu, Busan (PNU Station Exit 1)'
+        stationInfoKo: '광안리점 / 부산대점 (본점)',
+        stationInfoEn: 'Gwangalli / Pusan Nat’l Univ. (Main)',
+        branches: [
+          {
+            nameKo: '톤쇼우 광안리점',
+            nameEn: 'Tonshou Gwangalli Branch',
+            addressKo: '부산 수영구 광안해변로279번길 13 (민락동, 광안리 해변 인근)',
+            addressEn: '13 Gwanganhaebyeon-ro 279beon-gil, Suyeong-gu, Busan (Near Gwangalli Beach)',
+            naverMapUrl: 'https://map.naver.com/v5/search/%ED%86%A4%EC%87%BC%EC%9A%B0%20%EA%B4%91%EC%95%88%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%ED%86%A4%EC%87%BC%EC%9A%B0%20%EA%B4%91%EC%95%88%EB%A6%AC%EC%A0%90%20%EB%B6%80%EC%82%B0',
+          },
+          {
+            nameKo: '톤쇼우 부산대점 (본점)',
+            nameEn: 'Tonshou Pusan Nat’l Univ. Branch (Main)',
+            addressKo: '부산 금정구 금정로68번길 18 (부산대역 1번 출구)',
+            addressEn: '18 Geumjeong-ro 68beon-gil, Geumjeong-gu, Busan (PNU Station Exit 1)',
+            naverMapUrl: 'https://map.naver.com/v5/search/%ED%86%A4%EC%87%BC%EC%9A%B0%20%EB%B6%80%EC%82%B0%EB%8C%80%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%ED%86%A4%EC%87%BC%EC%9A%B0%20%EB%B6%80%EC%82%B0%EB%8C%80%EC%A0%90',
+          },
+        ],
       },
       {
         regionId: 'famous',
