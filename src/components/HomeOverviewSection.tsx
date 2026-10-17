@@ -200,7 +200,7 @@ export function HomeOverviewSection({
          ========================================== */}
       <section className="pt-8 pb-10 sm:pt-14 sm:pb-16 text-center max-w-2xl mx-auto px-4">
         {/* Primary 3-Second Value Headline */}
-        <h1 className="text-2xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight text-[#11161B] leading-tight break-keep mb-2 sm:mb-3">
+        <h1 className="text-2xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight text-[#11161B] leading-tight break-keep mb-3 sm:mb-4">
           {language === 'KR' ? (
             <>
               계단 없는 부산여행<br />
@@ -215,7 +215,7 @@ export function HomeOverviewSection({
         </h1>
 
         {/* 1-Line Value Proposition (What's in it for me) */}
-        <p className="text-xs sm:text-sm text-slate-500 font-medium max-w-md mx-auto mb-6 sm:mb-8 break-keep">
+        <p className="text-base sm:text-lg md:text-xl text-slate-600 font-medium max-w-xl mx-auto mb-6 sm:mb-8 break-keep">
           {language === 'KR'
             ? '부산의 진짜 매력을 한눈에 느껴보세요!'
             : 'Experience the true charm of Busan at a glance!'}
