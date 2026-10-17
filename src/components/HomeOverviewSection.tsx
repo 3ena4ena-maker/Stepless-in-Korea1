@@ -203,13 +203,13 @@ export function HomeOverviewSection({
         <h1 className="text-2xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight text-[#11161B] leading-tight break-keep mb-2 sm:mb-3">
           {language === 'KR' ? (
             <>
-              계단없는 부산여행<br />
-              <span className="text-[#8EA85E]">스텝리스</span>와 함께하세요
+              계단 없는 부산여행<br />
+              로컬 가이드 <span className="text-[#8EA85E]">스탭리스</span>와 함께
             </>
           ) : (
             <>
               Step-Free Busan Travel<br />
-              With <span className="text-[#8EA85E]">Stepless</span>
+              With Local Guide <span className="text-[#8EA85E]">Stepless</span>
             </>
           )}
         </h1>
@@ -217,8 +217,8 @@ export function HomeOverviewSection({
         {/* 1-Line Value Proposition (What's in it for me) */}
         <p className="text-xs sm:text-sm text-slate-500 font-medium max-w-md mx-auto mb-6 sm:mb-8 break-keep">
           {language === 'KR'
-            ? '부산 지하철역의 엘리베이터·에스컬레이터 출구를 한눈에 확인하세요.'
-            : 'Find elevator and escalator exits for Busan metro stations instantly.'}
+            ? '부산의 진짜 매력을 한눈에 느껴보세요!'
+            : 'Experience the true charm of Busan at a glance!'}
         </p>
 
         {/* The Centerpiece Search Bar */}
