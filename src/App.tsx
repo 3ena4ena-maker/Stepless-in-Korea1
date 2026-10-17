@@ -1390,7 +1390,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBFBF9] text-[#11161B] font-sans antialiased flex flex-col justify-between">
+    <div className="min-h-screen bg-[#FBFBF9] text-[#11161B] font-sans antialiased flex flex-col">
       <div>
         {/* Toast Notification Banner */}
         {toastMessage && (
@@ -1441,11 +1441,11 @@ export default function App() {
         />
 
         {/* Core Main Area */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 sm:py-8 animate-fade-in">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-0 sm:pt-6 sm:pb-0 animate-fade-in">
           
           {/* Tab 1: HOME LANDING VIEW */}
           {(visitedTabs['home'] || currentTab === 'home') && (
-            <div className={currentTab === 'home' ? 'space-y-8' : 'hidden'}>
+            <div className={currentTab === 'home' ? 'space-y-4' : 'hidden'}>
               {/* Feature Hero banner removed as requested */}
               {isHomeLanding && (
                 <>
@@ -1541,8 +1541,6 @@ export default function App() {
                       }
                     }}
                   />
-                  {/* Google AdSense Isolated Banner on Rich Editorial Overview */}
-                  <AdSenseUnit currentParams={adParams} />
                 </>
               )}
 
@@ -2267,7 +2265,7 @@ export default function App() {
       </div>
 
       {/* Footer information section */}
-      <footer className="mt-6 sm:mt-8 bg-[#8EA85E]/15 backdrop-blur-md text-slate-700 text-left border-t border-[#8EA85E]/30 pt-8 sm:pt-10 pb-36 md:pb-28 rounded-t-[2rem]">
+      <footer className="mt-4 sm:mt-5 bg-[#8EA85E]/15 backdrop-blur-md text-slate-700 text-left border-t border-[#8EA85E]/30 pt-6 sm:pt-8 pb-36 md:pb-28 rounded-t-[2rem]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
