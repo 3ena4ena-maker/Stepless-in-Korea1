@@ -124,43 +124,67 @@ export function HomeOverviewSection({
   });
 
 
-  // 4 Core Recommended Courses: [추천 여행 코스] -> [무장애 관광지/지하철 무장애 코스] -> [식도락(부산 맛집)] -> [체험 & 문화 공간]
+  // 4 Core Activity Courses (귀염뽀짝 & 액티비티 테마)
   const recommendedCourses = [
     {
       id: 'DAY' as const,
+      emoji: '🏖️',
       title: language === 'KR' ? '추천 여행 코스' : 'RECOMMENDED ITINERARY',
-      tag: d.categories.explore.tag,
+      tag: language === 'KR' ? '바다·투어' : 'OCEAN TRIP',
       desc: language === 'KR'
-        ? '원도심·해운대·기장 등 일정별 맞춤 코스'
+        ? '원도심·해운대·기장까지 인생샷 건지는 힐링 코스!'
         : 'Curated itineraries for Haeundae, Nampo, and Gijang.',
-      icon: <Compass className="w-5 h-5 text-[#0A2540]" />,
+      bgGradient: 'from-sky-50/90 via-white to-sky-50/30',
+      borderColor: 'border-sky-200 hover:border-sky-400',
+      tagBg: 'bg-sky-100 text-sky-700',
+      badgeDot: 'bg-sky-400',
+      btnBg: 'bg-sky-500 hover:bg-sky-600 text-white',
+      btnText: language === 'KR' ? '코스 탐험 ➜' : 'Explore ➜',
     },
     {
       id: 'SUBWAY' as const,
+      emoji: '🚇',
       title: language === 'KR' ? '지하철 무장애 코스' : 'STEP-FREE METRO ROUTE',
-      tag: d.categories.transit.tag,
+      tag: language === 'KR' ? '계단 ZERO' : 'STEP-FREE',
       desc: language === 'KR'
-        ? '엘리베이터 출구 및 단차 없는 무장애 동선'
-        : 'Elevator exits and step-free travel paths.',
-      icon: <Train className="w-5 h-5 text-[#0A2540]" />,
+        ? '엘리베이터 출구로 턱 없이 슝슝 달리는 쾌속 동선!'
+        : 'Elevator exits and flat, step-free travel paths.',
+      bgGradient: 'from-amber-50/90 via-white to-amber-50/30',
+      borderColor: 'border-amber-200 hover:border-amber-400',
+      tagBg: 'bg-amber-100 text-amber-700',
+      badgeDot: 'bg-amber-400',
+      btnBg: 'bg-amber-500 hover:bg-amber-600 text-white',
+      btnText: language === 'KR' ? '동선 확인 ➜' : 'Check Route ➜',
     },
     {
       id: 'GOURMET' as const,
+      emoji: '😋',
       title: language === 'KR' ? '식도락 (부산 맛집)' : 'BUSAN FOOD GUIDE',
-      tag: d.categories.eat.tag,
+      tag: language === 'KR' ? '침샘 폭발' : 'FOODIE',
       desc: language === 'KR'
-        ? '원조 돼지국밥 노포부터 감성 오션뷰 카페'
+        ? '원조 돼지국밥 노포부터 감성 충만 오션뷰 카페!'
         : 'Authentic pork soup eateries and oceanfront cafes.',
-      icon: <UtensilsCrossed className="w-5 h-5 text-[#0A2540]" />,
+      bgGradient: 'from-rose-50/90 via-white to-rose-50/30',
+      borderColor: 'border-rose-200 hover:border-rose-400',
+      tagBg: 'bg-rose-100 text-rose-700',
+      badgeDot: 'bg-rose-400',
+      btnBg: 'bg-rose-500 hover:bg-rose-600 text-white',
+      btnText: language === 'KR' ? '맛집 맛보기 ➜' : 'View Eats ➜',
     },
     {
       id: 'EXPERIENCE' as const,
+      emoji: '🎡',
       title: language === 'KR' ? '체험 & 문화 공간' : 'CULTURE & MUSEUM',
-      tag: language === 'KR' ? '문화 체험' : 'CULTURE',
+      tag: language === 'KR' ? '인생샷 핫플' : 'HOT SPOTS',
       desc: language === 'KR'
-        ? '국립해양박물관 등 쾌적한 실내 문화 명소'
+        ? '국립해양박물관·포토존 가득한 신나는 문화 명소!'
         : 'Maritime museums, art galleries, and cultural centers.',
-      icon: <Building2 className="w-5 h-5 text-[#0A2540]" />,
+      bgGradient: 'from-purple-50/90 via-white to-purple-50/30',
+      borderColor: 'border-purple-200 hover:border-purple-400',
+      tagBg: 'bg-purple-100 text-purple-700',
+      badgeDot: 'bg-purple-400',
+      btnBg: 'bg-purple-500 hover:bg-purple-600 text-white',
+      btnText: language === 'KR' ? '놀러 가기 ➜' : 'Discover ➜',
     },
   ];
 
@@ -189,8 +213,8 @@ export function HomeOverviewSection({
         {/* 1-Line Value Proposition (What's in it for me) */}
         <p className="text-xs sm:text-sm text-slate-500 font-medium max-w-md mx-auto mb-6 sm:mb-8 break-keep">
           {language === 'KR'
-            ? '부산 15개 지하철역의 엘리베이터·에스컬레이터 출구를 한눈에 확인하세요.'
-            : 'Find elevator and escalator exits for 15 Busan metro stations instantly.'}
+            ? '부산 지하철역의 엘리베이터·에스컬레이터 출구를 한눈에 확인하세요.'
+            : 'Find elevator and escalator exits for Busan metro stations instantly.'}
         </p>
 
         {/* The Centerpiece Search Bar */}
@@ -307,56 +331,66 @@ export function HomeOverviewSection({
 
 
       {/* ==========================================
-          3. CATEGORY INDEX (Where do you want to go?)
+          3. CUTE ACTIVITY CATEGORY CARDS (부산에서 어디로 떠나볼까?)
          ========================================== */}
-      <section className="space-y-4 pt-4 sm:pt-6 border-t border-[#E5E2DC]">
-        <div className="space-y-1">
-          <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
-            {language === 'KR' ? '카테고리 안내' : 'CATEGORY INDEX'}
+      <section className="space-y-4 pt-6 sm:pt-8 border-t border-[#E5E2DC]" id="activity-explore-section">
+        {/* Playful & Bubbly Section Header */}
+        <div className="space-y-1.5">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#8EA85E]/15 text-[#5F7833] border border-[#8EA85E]/30">
+            <Sparkles className="w-3.5 h-3.5 text-[#8EA85E]" />
+            <span>{language === 'KR' ? '통통 튀는 부산 액티비티' : 'BUSAN ACTIVITIES'}</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#11161B] tracking-tight">
-            {d.categories.sectionTitle}
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#11161B] tracking-tight flex items-center gap-2">
+            <span>{language === 'KR' ? '부산에서 어디로 떠나볼까?' : 'Where Shall We Go in Busan?'}</span>
+            <span className="text-2xl animate-bounce select-none">🎒</span>
           </h2>
-          <p className="text-xs sm:text-sm text-[#4A5568]">
-            {d.categories.sectionSubtitle}
+          <p className="text-xs sm:text-sm text-slate-500 font-medium">
+            {language === 'KR'
+              ? '계단 걱정 없이 신나게 즐기는 부산 테마별 여행 & 액티비티 스팟!'
+              : 'Step-free, fun-filled travel themes and activity spots across Busan!'}
           </p>
         </div>
 
-        {/* 4 Category Grid Cards: [추천 여행 코스] -> [지하철 무장애 코스] -> [식도락(부산 맛집)] -> [체험 & 문화 공간] */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {/* 4 Cute & Bubbly Activity Grid Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 pt-1">
           {recommendedCourses.map((course) => (
             <div 
               key={course.id}
-              className="bg-white border border-[#E5E2DC] rounded-lg p-3.5 sm:p-4 hover:border-[#0A2540] transition-colors flex flex-col justify-between space-y-3 group shadow-xs"
+              onClick={() => {
+                if (onNavigateToItinerary) {
+                  onNavigateToItinerary(course.id);
+                }
+              }}
+              className={`bg-gradient-to-b ${course.bgGradient} border-2 ${course.borderColor} rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex flex-col justify-between space-y-4 cursor-pointer hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 group shadow-xs select-none`}
             >
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="p-2 rounded-md bg-[#F1EFEC] text-[#0A2540]">
-                    {course.icon}
-                  </div>
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#F1EFEC] text-[#0A2540]">
-                    {course.tag}
-                  </span>
+              {/* Top Emoji + Tag Bubble */}
+              <div className="flex items-center justify-between">
+                <div className="w-12 h-12 rounded-2xl bg-white shadow-xs border border-white/80 flex items-center justify-center text-2xl group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                  {course.emoji}
                 </div>
-
-                <div>
-                  <h3 className="font-bold text-[#11161B] text-sm sm:text-base group-hover:text-[#0A2540] transition-colors">
-                    {course.title}
-                  </h3>
-                </div>
+                <span className={`text-[11px] font-black px-2.5 py-1 rounded-full ${course.tagBg} flex items-center gap-1.5 shadow-2xs`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${course.badgeDot} animate-pulse`} />
+                  {course.tag}
+                </span>
               </div>
 
+              {/* Title & Desc */}
+              <div className="space-y-1.5">
+                <h3 className="font-black text-[#11161B] text-base group-hover:text-[#0A2540] transition-colors flex items-center justify-between">
+                  <span>{course.title}</span>
+                  <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[#11161B] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </h3>
+                <p className="text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                  {course.desc}
+                </p>
+              </div>
+
+              {/* Cute Bubbly Action Button */}
               <button
                 type="button"
-                onClick={() => {
-                  if (onNavigateToItinerary) {
-                    onNavigateToItinerary(course.id);
-                  }
-                }}
-                className="w-full py-1.5 px-3 rounded-md border border-[#11161B] hover:bg-[#11161B] hover:text-white text-[#11161B] font-semibold text-xs transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                className={`w-full py-2 px-3.5 rounded-full ${course.btnBg} font-extrabold text-xs shadow-xs transition-transform active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer`}
               >
-                <span>{d.buttons.seeAll}</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+                <span>{course.btnText}</span>
               </button>
             </div>
           ))}

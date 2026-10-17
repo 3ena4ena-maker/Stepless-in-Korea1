@@ -1390,7 +1390,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBFBF9] text-[#11161B] font-sans antialiased pb-44 md:pb-32 flex flex-col justify-between">
+    <div className="min-h-screen bg-[#FBFBF9] text-[#11161B] font-sans antialiased flex flex-col justify-between">
       <div>
         {/* Toast Notification Banner */}
         {toastMessage && (
@@ -2267,21 +2267,21 @@ export default function App() {
       </div>
 
       {/* Footer information section */}
-      <footer className="mt-12 bg-[#8EA85E]/15 backdrop-blur-md text-slate-700 text-left border-t border-[#8EA85E]/30 pt-16 pb-20 rounded-t-[2.5rem]">
+      <footer className="mt-6 sm:mt-8 bg-[#8EA85E]/15 backdrop-blur-md text-slate-700 text-left border-t border-[#8EA85E]/30 pt-8 sm:pt-10 pb-36 md:pb-28 rounded-t-[2rem]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-5 space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="p-2 rounded-xl bg-[#8EA85E] text-white shadow-xs">
-                <Train className="w-5 h-5" />
-              </div>
-              <span className="text-lg font-bold font-heading text-slate-900 tracking-tight">
-                Stepless (Busan)
-              </span>
+            <div className="flex items-center gap-3">
+              <img
+                src="/images/stepless_stussy_logo_transparent.png"
+                alt="Stepless in Korea"
+                className="h-12 w-auto object-contain"
+                loading="lazy"
+              />
             </div>
             <p className="text-xs sm:text-sm text-slate-700 leading-relaxed max-w-sm font-medium">
               {language === 'KR' 
-                ? '부산 지하철 이용객들의 평등하고 자유로운 지상 이동을 지원하기 위해 설계된 교통약자 특화형 편의 플랫폼입니다. 공공데이터 연계 및 수동 검증 데이터를 기반으로 운영되며, 부산 현지인이 직접 엄선하고 작성한 생생한 부산 여행 코스와 대중교통 이용 팁을 함께 제공하여 누구나 편리하게 부산을 여행할 수 있도록 돕습니다.' 
-                : 'A dedicated public transit helper to establish smooth, accessible pathways throughout major transit hubs. It features verified public data alongside authentic Busan itineraries and practical transit tips curated by a Busan local to ensure a convenient and enjoyable travel experience for everyone.'}
+                ? '계단 없는 안전한 이동 경로와 로컬 팁을 전하는 부산 무장애 지하철 가이드.' 
+                : 'Step-free transit exits and curated local travel tips for Busan.'}
             </p>
           </div>
 
@@ -2322,14 +2322,13 @@ export default function App() {
               <UserCheck className="w-4 h-4 text-[#8EA85E]" />
               <span>{language === 'KR' ? '운영자 정보 및 제휴 문의' : 'Operator & Inquiries'}</span>
             </h4>
-            <div className="text-xs font-sans text-slate-700 space-y-1">
-              <p>운영 서비스: <strong className="text-slate-900">스탭리스 (Stepless)</strong></p>
-              <p>조사자 및 운영 총괄: <strong className="text-slate-900">플로레르 (Floreur)</strong></p>
+            <div className="text-xs font-sans text-slate-700 space-y-0.5">
+              <p>운영: <strong className="text-slate-900">스텝레스 (Stepless)</strong> · 총괄: <strong className="text-slate-900">플로레르 (Floreur)</strong></p>
             </div>
             <p className="text-xs font-sans text-slate-600 leading-relaxed">
               {language === 'KR' 
-                ? '부산 전철역 엘리베이터 데이터 현행화 제의, 데이터 오류 제보 및 제휴문의는 지원 메일 또는 문의 창구를 이용해 연락 주시기 바랍니다.' 
-                : 'For comments or suggesting detailed accessibility paths, contact the support team.'}
+                ? '데이터 오류 제보 및 제휴 문의는 언제든 편하게 연락해 주세요.' 
+                : 'For comments or suggesting accessibility paths, contact the support team.'}
             </p>
             <div className="flex flex-wrap gap-2">
               <button
@@ -2353,14 +2352,14 @@ export default function App() {
         </div>
 
         {/* AdSense & Cookie Privacy Policy Notice */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-[#8EA85E]/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 pt-4 border-t border-[#8EA85E]/20">
           <p className="text-2xs sm:text-xs text-slate-600 leading-relaxed font-sans text-left">
-            📢 <strong>구글 맞춤형 광고 및 쿠키 안내:</strong> 본 배리어프리 플랫폼은 공익적 정보의 지속가능한 제공을 위해 구글 애드센스 맞춤형 광고를 활용하고 있습니다. 쿠키 맞춤 설정 및 거부 안내는 하단의 <button onClick={() => { setCurrentTab('about'); setSiteSubPage('privacy'); window.scrollTo(0, 0); }} className="text-[#6C8540] hover:text-[#526630] underline font-bold cursor-pointer">개인정보처리방침</button>을 참고해 주시기 바랍니다.
+            📢 <strong>안내:</strong> 구글 맞춤형 광고 및 쿠키 설정 안내는 <button onClick={() => { setCurrentTab('about'); setSiteSubPage('privacy'); window.scrollTo(0, 0); }} className="text-[#6C8540] hover:text-[#526630] underline font-bold cursor-pointer">개인정보처리방침</button>에서 확인하실 수 있습니다.
           </p>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#8EA85E]/20 mt-6 pt-6 text-xs text-slate-600 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <span className="font-semibold text-slate-600">© 2026 floreur (스탭리스). All rights reserved.</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-[#8EA85E]/20 mt-4 pt-4 text-xs text-slate-600 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <span className="font-semibold text-slate-600">© 2026 floreur (스텝레스). All rights reserved.</span>
           
           {/* Prominent Legal Links Bar */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 justify-center sm:justify-end">

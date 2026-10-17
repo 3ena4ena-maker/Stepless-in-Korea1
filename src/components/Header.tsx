@@ -60,18 +60,22 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
           {/* Logo */}
           <div 
             onClick={handleLogoClick} 
-            className="flex items-center gap-3 cursor-pointer group select-none"
+            className="flex items-center gap-2 cursor-pointer group select-none py-1"
             id="header-logo-container"
+            title="Stepless in Korea 홈으로 이동"
           >
-            <div className="flex flex-col">
-              <span className="text-lg sm:text-xl font-black font-heading tracking-tight text-[#11161B] group-hover:text-[#0A2540] transition-colors">
-                {d.brand}
-                {isAdminMode && (
-                  <span className="ml-2 text-[10px] bg-rose-600 text-white font-mono px-1.5 py-0.5 rounded-sm font-bold animate-pulse">
-                    ADMIN
-                  </span>
-                )}
-              </span>
+            <div className="flex items-center gap-2">
+              <img
+                src="/images/stepless_stussy_logo_transparent.png"
+                alt="Stepless in Korea"
+                className="h-9 sm:h-11 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+                loading="eager"
+              />
+              {isAdminMode && (
+                <span className="text-[10px] bg-rose-600 text-white font-mono px-1.5 py-0.5 rounded-sm font-bold animate-pulse">
+                  ADMIN
+                </span>
+              )}
             </div>
           </div>
 
