@@ -1390,7 +1390,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBFBF9] text-[#11161B] font-sans antialiased pb-24 md:pb-12 flex flex-col justify-between">
+    <div className="min-h-screen bg-[#FBFBF9] text-[#11161B] font-sans antialiased pb-44 md:pb-32 flex flex-col justify-between">
       <div>
         {/* Toast Notification Banner */}
         {toastMessage && (
@@ -1520,6 +1520,10 @@ export default function App() {
                     }}
                     onNavigateToReport={() => {
                       setCurrentTab('about');
+                    }}
+                    onNavigateToAbout={() => {
+                      setCurrentTab('about');
+                      window.scrollTo(0, 0);
                     }}
                     onNavigateToNearby={() => {
                       requestNearbyGuide();
@@ -2592,6 +2596,67 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* 🔍 Global Floating Bottom Search Bar (Always reachable on Mobile & PC) */}
+      <div 
+        id="global-floating-bottom-search"
+        className="fixed bottom-[60px] md:bottom-5 left-1/2 -translate-x-1/2 z-[990] w-full max-w-xl px-3 sm:px-4 pointer-events-none animate-fade-in"
+      >
+        <div className="pointer-events-auto bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.16)] p-1 transition-all">
+          <StationSearchBar
+            language={language}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            onSelectStation={(stId, exitNum) => {
+              setSelectedStationId(stId);
+              if (exitNum) {
+                setExpandedExitNum(exitNum);
+              }
+              setCurrentTab('search');
+              setIsHomeLanding(false);
+              setTimeout(() => {
+                const targetEl = document.getElementById('search-selected-station-details') || document.getElementById('search-tab-map-container');
+                if (targetEl) {
+                  targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                  window.scrollTo(0, 0);
+                }
+              }, 100);
+            }}
+            onNavigateToSearch={(q) => {
+              if (q !== undefined) {
+                setSearchQuery(q);
+              }
+              const queryToUse = q !== undefined ? q : searchQuery;
+              if (queryToUse && queryToUse.trim().length > 0) {
+                const matches = searchStations(queryToUse, STATIONS);
+                if (matches.length > 0) {
+                  setSelectedStationId(matches[0].station.id);
+                  if (matches[0].matchedExit) {
+                    setExpandedExitNum(matches[0].matchedExit);
+                  }
+                }
+              }
+              setCurrentTab('search');
+              setIsHomeLanding(false);
+              setTimeout(() => {
+                const targetEl = document.getElementById('search-selected-station-details') || document.getElementById('search-tab-map-container');
+                if (targetEl) {
+                  targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                  window.scrollTo(0, 0);
+                }
+              }, 100);
+            }}
+            dropdownPosition="top"
+            placeholder={
+              language === 'KR'
+                ? '어디로 가시나요? 역 이름 검색 (예: 서면, 해운대)'
+                : 'Search any station... (e.g. Seomyeon, Haeundae)'
+            }
+          />
+        </div>
+      </div>
 
       {/* 📱 Sticky Mobile Bottom Navigation Bar (At-a-glance 1-tap switching) */}
       <nav 

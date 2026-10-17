@@ -11,6 +11,7 @@ interface StationSearchBarProps {
   onNavigateToSearch?: (query?: string) => void;
   placeholder?: string;
   className?: string;
+  dropdownPosition?: 'top' | 'bottom';
 }
 
 export function searchStations(query: string, stations: Station[]) {
@@ -78,7 +79,8 @@ export default function StationSearchBar({
   onSelectStation,
   onNavigateToSearch,
   placeholder,
-  className = ''
+  className = '',
+  dropdownPosition = 'bottom'
 }: StationSearchBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -197,7 +199,9 @@ export default function StationSearchBar({
 
       {/* Auto-complete Dropdown Popup */}
       {isOpen && searchQuery.trim().length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl border border-slate-200 shadow-xl z-50 overflow-hidden animate-fade-in max-h-80 overflow-y-auto">
+        <div className={`absolute left-0 right-0 bg-white rounded-2xl border border-slate-200 shadow-2xl z-50 overflow-hidden animate-fade-in max-h-80 overflow-y-auto ${
+          dropdownPosition === 'top' ? 'bottom-full mb-2.5' : 'top-full mt-2'
+        }`}>
           {matchedResults.length > 0 ? (
             <div className="p-2 divide-y divide-slate-100">
               <div className="px-3 py-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
