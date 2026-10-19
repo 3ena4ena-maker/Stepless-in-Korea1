@@ -3898,8 +3898,9 @@ export default function BusanItinerariesView({
                   <div className="space-y-6 animate-fade-in text-left">
                     {/* Header */}
                     <div className="space-y-2 border-b border-slate-200 pb-5 text-left">
-                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                        {language === 'KR' ? '부산 식도락' : 'Busan Gourmet Travel'}
+                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
+                        <Utensils className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '식도락 여행' : 'Gourmet Tour'}</span>
                       </h2>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                         {language === 'KR'
@@ -3908,49 +3909,35 @@ export default function BusanItinerariesView({
                       </p>
                     </div>
 
-                    {/* Gourmet Category Filter Box (No Emojis, No Multi-Select text) */}
-                    <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#E5E2DC] shadow-[0_1px_4px_rgba(0,0,0,0.03)] space-y-3.5 text-left">
-                      <div className="flex items-center justify-between text-xs font-bold text-[#11161B] pb-2.5 border-b border-[#E5E2DC]">
-                        <span className="flex items-center gap-1.5 text-slate-800">
-                          <Utensils className="w-4 h-4 text-[#8EA85E]" />
-                          <span className="text-sm font-black">{language === 'KR' ? '식도락 카테고리' : 'Gourmet Categories'}</span>
-                        </span>
+                    {/* Category Pills directly without box wrapper */}
+                    <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar flex-nowrap sm:flex-wrap">
+                      {GOURMET_CATEGORY_TABS.map((tab) => {
+                        const isSelected = selectedGourmetCat === tab.id;
+                        const count = getCategoryCount(tab.id);
 
-                        <span className="text-xs font-mono font-bold text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1 rounded-md border border-[#E5E2DC]">
-                          {language === 'KR' ? `총 ${filteredGourmetSteps.length}곳` : `${filteredGourmetSteps.length} spots`}
-                        </span>
-                      </div>
-
-                      {/* Category Pills (전체 카테고리, 부산 유명 맛집, 음식점, 카페, 베이커리, 브런치, 전통시장, 디저트, 기타 - Emojis removed) */}
-                      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar flex-nowrap sm:flex-wrap">
-                        {GOURMET_CATEGORY_TABS.map((tab) => {
-                          const isSelected = selectedGourmetCat === tab.id;
-                          const count = getCategoryCount(tab.id);
-
-                          return (
-                            <button
-                              key={tab.id}
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedGourmetCat(tab.id);
-                              }}
-                              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
-                                isSelected
-                                  ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
-                                  : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
-                              }`}
-                            >
-                              <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
-                              <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
-                                isSelected ? 'bg-white/20 text-white' : 'bg-[#E5E2DC] text-[#4A5568]'
-                              }`}>
-                                {count}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
+                        return (
+                          <button
+                            key={tab.id}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedGourmetCat(tab.id);
+                            }}
+                            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
+                              isSelected
+                                ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
+                                : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
+                            }`}
+                          >
+                            <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
+                            <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                              isSelected ? 'bg-white/20 text-white' : 'bg-[#E5E2DC] text-[#4A5568]'
+                            }`}>
+                              {count}
+                            </span>
+                          </button>
+                        );
+                      })}
                     </div>
 
                     {/* Gourmet Catalog Cards */}
