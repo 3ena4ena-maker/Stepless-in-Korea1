@@ -867,13 +867,13 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
     tagEn: 'Foodie Gourmet 🍕',
     difficultyKo: '쉬움',
     difficultyEn: 'Easy',
-    overallTipKo: '부산 구석구석 직접 발품 팔아 맛본 맛집들을 [부산 유명 맛집 / 해운대·기장 / 광안리·센텀 / 서면·전포 / 남포·영도 / 그 외 지역] 주요 카테고리 및 권역별로 정리했습니다. (개인적인 추천이니 가볍게 참고해 주세요!)',
+    overallTipKo: '부산 구석구석 직접 발품 팔아 맛본 맛집들을 [부산 대표 유명 맛집 / 해운대·기장 / 광안리·센텀 / 서면·전포 / 남포·영도 / 그 외 지역] 주요 카테고리 및 권역별로 정리했습니다. (개인적인 추천이니 가볍게 참고해 주세요!)',
     overallTipEn: 'Personally tested Busan food spots divided into famous cuisines and 5 main regions. (Note: Subjective recommendations!)',
     steps: [
-      // --- 0. 부산 유명 맛집 ---
+      // --- 0. 부산 대표 유명 맛집 ---
       {
         regionId: 'famous',
-        regionNameKo: '부산 유명 맛집',
+        regionNameKo: '부산 대표 유명 맛집',
         regionNameEn: 'Famous Cuisines',
         foodCategory: 'cafe',
         time: '카페',
@@ -914,7 +914,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
       },
       {
         regionId: 'famous',
-        regionNameKo: '부산 유명 맛집',
+        regionNameKo: '부산 대표 유명 맛집',
         regionNameEn: 'Famous Cuisines',
         foodCategory: 'restaurant',
         time: '음식점',
@@ -955,7 +955,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
       },
       {
         regionId: 'famous',
-        regionNameKo: '부산 유명 맛집',
+        regionNameKo: '부산 대표 유명 맛집',
         regionNameEn: 'Famous Cuisines',
         foodCategory: 'restaurant',
         time: '음식점',
@@ -988,7 +988,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
       },
       {
         regionId: 'famous',
-        regionNameKo: '부산 유명 맛집',
+        regionNameKo: '부산 대표 유명 맛집',
         regionNameEn: 'Famous Cuisines',
         foodCategory: 'restaurant',
         time: '음식점',
@@ -1003,7 +1003,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
       },
       {
         regionId: 'famous',
-        regionNameKo: '부산 유명 맛집',
+        regionNameKo: '부산 대표 유명 맛집',
         regionNameEn: 'Famous Cuisines',
         foodCategory: 'restaurant',
         time: '음식점',
@@ -1018,7 +1018,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
       },
       {
         regionId: 'famous',
-        regionNameKo: '부산 유명 맛집',
+        regionNameKo: '부산 대표 유명 맛집',
         regionNameEn: 'Famous Cuisines',
         foodCategory: 'restaurant',
         time: '음식점',
@@ -1066,7 +1066,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
       // [베이커리]
       {
         regionId: 'famous',
-        regionNameKo: '부산 유명 맛집',
+        regionNameKo: '부산 대표 유명 맛집',
         regionNameEn: 'Famous Cuisines',
         foodCategory: 'bakery',
         time: '베이커리',

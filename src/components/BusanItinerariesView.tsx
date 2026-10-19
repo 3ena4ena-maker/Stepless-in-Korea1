@@ -1782,7 +1782,7 @@ export default function BusanItinerariesView({
 
     const GOURMET_CATEGORY_TABS = [
     { id: 'ALL', nameKo: '전체 카테고리', nameEn: 'All Categories' },
-    { id: 'famous', nameKo: '부산 유명 맛집', nameEn: 'Famous Eateries' },
+    { id: 'famous', nameKo: '부산 대표 유명 맛집', nameEn: 'Famous Eateries' },
     { id: 'restaurant', nameKo: '음식점', nameEn: 'Restaurants' },
     { id: 'cafe', nameKo: '카페', nameEn: 'Cafes' },
     { id: 'bakery', nameKo: '베이커리', nameEn: 'Bakery' },
@@ -1793,7 +1793,7 @@ export default function BusanItinerariesView({
   ];
 
   const GOURMET_CATEGORY_MAP: Record<string, { nameKo: string; nameEn: string; icon: string }> = {
-    famous: { nameKo: '부산 유명 맛집', nameEn: 'Famous Eateries', icon: '🔥' },
+    famous: { nameKo: '부산 대표 유명 맛집', nameEn: 'Famous Eateries', icon: '🔥' },
     restaurant: { nameKo: '음식점', nameEn: 'Restaurants', icon: '🍲' },
     cafe: { nameKo: '카페', nameEn: 'Cafes', icon: '☕' },
     bakery: { nameKo: '베이커리', nameEn: 'Bakery', icon: '🥐' },
@@ -1805,7 +1805,7 @@ export default function BusanItinerariesView({
 
   const REGION_FILTER_TABS = [
     { id: 'ALL', nameKo: '전체 카테고리', nameEn: 'All Categories', icon: '📍' },
-    { id: 'famous', nameKo: '부산 유명 맛집', nameEn: 'Famous Cuisines', icon: '🔥' },
+    { id: 'famous', nameKo: '부산 대표 유명 맛집', nameEn: 'Famous Cuisines', icon: '🔥' },
     { id: 'haeundae_gijang', nameKo: '해운대 · 기장', nameEn: 'Haeundae & Gijang', icon: '🌊' },
     { id: 'gwangalli_centum', nameKo: '광안리 · 센텀', nameEn: 'Gwangalli & Centum', icon: '🖼️' },
     { id: 'seomyeon_jeonpo', nameKo: '서면 · 전포', nameEn: 'Seomyeon & Jeonpo', icon: '☕' },
