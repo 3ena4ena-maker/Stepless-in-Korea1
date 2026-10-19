@@ -43,7 +43,8 @@ import {
   CheckCircle2,
   ShieldCheck,
   Landmark,
-  Bike
+  Bike,
+  Lightbulb
 } from 'lucide-react';
 import ElegantIllustration from './ElegantIllustration';
 import { BUSAN_ITINERARIES, ItineraryCourse, ItineraryStep, getStepFoodCategories } from '../data/itineraries';
@@ -4203,14 +4204,14 @@ export default function BusanItinerariesView({
                       })}
                     </div>
 
-                    {/* Overall tip banner */}
-                    <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
-                      <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
-                        <Info className="w-4 h-4 text-white shrink-0" />
+                    {/* Overall tip banner - 부산 현지인 팁! */}
+                    <div className="bg-[#FBFBF9] p-4 sm:p-5 text-left flex items-start gap-3 rounded-xl border border-[#E5E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+                      <div className="p-2 rounded-lg bg-amber-500/10 text-amber-600 shrink-0 mt-0.5 border border-amber-200/60">
+                        <Lightbulb className="w-4 h-4 text-amber-600 shrink-0 stroke-[2.2]" />
                       </div>
-                      <div className="space-y-1 select-none text-left">
-                        <span className="text-[11px] font-mono font-bold text-[#0A2540] uppercase tracking-wider">
-                          {language === 'KR' ? '로컬 식도락 전용 편의 팁' : 'LOCAL CULINARY ACCESSIBILITY TIP'}
+                      <div className="space-y-1 select-none text-left flex-1 min-w-0">
+                        <span className="text-xs sm:text-[13px] font-bold text-[#0A2540] flex items-center gap-1.5">
+                          <span>{language === 'KR' ? '부산 현지인 팁!' : 'Busan Local Tip!'}</span>
                         </span>
                         <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed font-normal">
                           {language === 'KR' ? course.overallTipKo : course.overallTipEn}

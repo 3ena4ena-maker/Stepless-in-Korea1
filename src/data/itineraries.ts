@@ -867,8 +867,8 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
     tagEn: 'Foodie Gourmet 🍕',
     difficultyKo: '쉬움',
     difficultyEn: 'Easy',
-    overallTipKo: '부산 구석구석 직접 발품 팔아 맛본 맛집들을 [부산 대표 유명 맛집 / 해운대·기장 / 광안리·센텀 / 서면·전포 / 남포·영도 / 그 외 지역] 주요 카테고리 및 권역별로 정리했습니다. (개인적인 추천이니 가볍게 참고해 주세요!)',
-    overallTipEn: 'Personally tested Busan food spots divided into famous cuisines and 5 main regions. (Note: Subjective recommendations!)',
+    overallTipKo: '부산 골목골목 직접 발품 팔아 맛보고 엄선한 로컬 맛집 리스트입니다. 맛에 대한 감동은 사람마다 다를 수 있으니 100% 정답은 아니겠지만, 기분 좋고 든든한 부산 여행을 위한 즐거운 길잡이로 너그럽게 참고해 주세요! :)',
+    overallTipEn: 'A local food guide personally tested across Busan. Taste is delightfully subjective and may not please everyone equally, but we hope this serves as a fun and reliable compass for your culinary trip!',
     steps: [
       // --- 0. 부산 대표 유명 맛집 ---
       {
