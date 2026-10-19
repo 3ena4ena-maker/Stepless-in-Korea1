@@ -3886,10 +3886,17 @@ export default function BusanItinerariesView({
                   return getStepFoodCategories(s);
                 };
 
-                const filteredGourmetSteps = course.steps.filter((s) => {
-                  if (selectedGourmetCat === 'ALL') return true;
-                  return getStepCats(s).includes(selectedGourmetCat);
-                });
+                const filteredGourmetSteps = course.steps
+                  .filter((s) => {
+                    if (selectedGourmetCat === 'ALL') return true;
+                    return getStepCats(s).includes(selectedGourmetCat);
+                  })
+                  .slice()
+                  .sort((a, b) => {
+                    const nameA = language === 'KR' ? a.titleKo : (a.titleEn || a.titleKo);
+                    const nameB = language === 'KR' ? b.titleKo : (b.titleEn || b.titleKo);
+                    return nameA.localeCompare(nameB, language === 'KR' ? 'ko' : 'en');
+                  });
 
                 const getCategoryCount = (catId: string): number => {
                   if (catId === 'ALL') return course.steps.length;
@@ -4235,10 +4242,17 @@ export default function BusanItinerariesView({
               // PAGE 7: EXPERIENCE (체험&박물관) - Editorial Travel Magazine
               // -------------------------------------------------------------
 case 'EXPERIENCE': {
-                const filteredExperienceSteps = course.steps.filter(s => {
-                  const matchTheme = selectedExperienceTheme === 'ALL' || s.categoryType === selectedExperienceTheme;
-                  return matchTheme;
-                });
+                const filteredExperienceSteps = course.steps
+                  .filter(s => {
+                    const matchTheme = selectedExperienceTheme === 'ALL' || s.categoryType === selectedExperienceTheme;
+                    return matchTheme;
+                  })
+                  .slice()
+                  .sort((a, b) => {
+                    const nameA = language === 'KR' ? a.titleKo : (a.titleEn || a.titleKo);
+                    const nameB = language === 'KR' ? b.titleKo : (b.titleEn || b.titleKo);
+                    return nameA.localeCompare(nameB, language === 'KR' ? 'ko' : 'en');
+                  });
 
                 const getThemeStepCount = (themeId: string) => {
                   if (themeId === 'ALL') return course.steps.length;
