@@ -341,8 +341,8 @@ export function HomeOverviewSection({
           </h2>
         </div>
 
-        {/* 4 Pastel Soft Activity Cards (모바일 2열 아담한 컴팩트 박스) */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 pt-1">
+        {/* 4 Pastel Soft Activity Cards (글자를 이모지 옆으로 가로 배치) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3.5 pt-1">
           {recommendedCourses.map((course) => {
             const IconComponent = course.icon;
             return (
@@ -353,23 +353,23 @@ export function HomeOverviewSection({
                     onNavigateToItinerary(course.id);
                   }
                 }}
-                className={`${course.bg} border ${course.border} rounded-2xl p-3 sm:p-4 flex flex-col justify-between cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 group shadow-2xs select-none active:scale-95 min-h-[96px] sm:min-h-[116px]`}
+                className={`${course.bg} border ${course.border} rounded-2xl p-2.5 sm:p-3.5 flex items-center gap-2 sm:gap-2.5 cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 group shadow-2xs select-none active:scale-95 min-h-[58px] sm:min-h-[68px]`}
               >
-                {/* Top: Icon + Subtle Arrow */}
-                <div className="flex items-center justify-between w-full mb-2 sm:mb-3">
-                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl ${course.iconBg} ${course.iconColor} flex items-center justify-center transition-transform group-hover:scale-105 shadow-2xs`}>
-                    <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/70 flex items-center justify-center text-slate-400 group-hover:text-[#11161B] group-hover:bg-white shadow-2xs transition-all">
-                    <ArrowUpRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
+                {/* Left: Icon (이모지) */}
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl ${course.iconBg} ${course.iconColor} flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 shadow-2xs`}>
+                  <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
 
-                {/* Bottom: Title Only (더 크고 굵은 폰트) */}
-                <div>
-                  <h3 className="font-black text-[#11161B] text-sm sm:text-base group-hover:text-[#0A2540] transition-colors leading-tight break-keep">
+                {/* Right: Title next to Icon */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-black text-[#11161B] text-xs sm:text-sm md:text-[15px] group-hover:text-[#0A2540] transition-colors leading-tight break-keep">
                     {course.title}
                   </h3>
+                </div>
+
+                {/* Far Right: Arrow */}
+                <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/70 flex items-center justify-center text-slate-400 group-hover:text-[#11161B] group-hover:bg-white shadow-2xs transition-all shrink-0">
+                  <ArrowUpRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
               </div>
             );
