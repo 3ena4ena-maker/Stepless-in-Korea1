@@ -341,8 +341,8 @@ export function HomeOverviewSection({
           </h2>
         </div>
 
-        {/* 4 Pastel Soft Activity Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 pt-1">
+        {/* 4 Pastel Soft Activity Cards (모바일 2열 정사각형 박스) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 pt-1">
           {recommendedCourses.map((course) => {
             const IconComponent = course.icon;
             return (
@@ -353,37 +353,24 @@ export function HomeOverviewSection({
                     onNavigateToItinerary(course.id);
                   }
                 }}
-                className={`${course.bg} border ${course.border} rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex flex-col justify-between space-y-4 cursor-pointer hover:-translate-y-1 hover:shadow-md transition-all duration-200 group shadow-2xs select-none`}
+                className={`${course.bg} border ${course.border} rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 flex flex-col justify-between cursor-pointer hover:-translate-y-1 hover:shadow-md transition-all duration-200 group shadow-2xs select-none aspect-square active:scale-95`}
               >
-                {/* Top Icon + Tag Bubble */}
-                <div className="flex items-center justify-between">
-                  <div className={`w-10 h-10 rounded-xl ${course.iconBg} ${course.iconColor} flex items-center justify-center transition-transform group-hover:scale-105`}>
-                    <IconComponent className="w-5 h-5" />
+                {/* Top: Icon + Subtle Arrow */}
+                <div className="flex items-start justify-between w-full">
+                  <div className={`w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl ${course.iconBg} ${course.iconColor} flex items-center justify-center transition-transform group-hover:scale-105 shadow-2xs`}>
+                    <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${course.tagBg}`}>
-                    {course.tag}
-                  </span>
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/70 flex items-center justify-center text-slate-400 group-hover:text-[#11161B] group-hover:bg-white shadow-2xs transition-all">
+                    <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </div>
                 </div>
 
-                {/* Title & Desc */}
-                <div className="space-y-1.5">
-                  <h3 className="font-bold text-[#11161B] text-base group-hover:text-[#0A2540] transition-colors flex items-center justify-between">
-                    <span>{course.title}</span>
-                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[#11161B] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                {/* Bottom: Title Only (부가설명 및 태그 삭제) */}
+                <div>
+                  <h3 className="font-extrabold text-[#11161B] text-xs sm:text-base group-hover:text-[#0A2540] transition-colors leading-snug break-keep">
+                    {course.title}
                   </h3>
-                  <p className="text-xs text-slate-500 font-medium leading-relaxed break-keep">
-                    {course.desc}
-                  </p>
                 </div>
-
-                {/* Soft Pastel Action Button */}
-                <button
-                  type="button"
-                  className={`w-full py-2 px-3.5 rounded-xl ${course.btnBg} font-bold text-xs shadow-2xs transition-all active:scale-95 flex items-center justify-center gap-1 cursor-pointer`}
-                >
-                  <span>{course.btnText}</span>
-                  <ChevronRight className="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 transition-transform" />
-                </button>
               </div>
             );
           })}
