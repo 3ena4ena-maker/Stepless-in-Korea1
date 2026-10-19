@@ -2005,7 +2005,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         regionNameEn: 'Other Regions',
         categoryType: 'SCIENCE_ECO',
         time: '어린이창의',
-        firstImage: 'https://images.unsplash.com/photo-1584697964190-705b893683f1?auto=format&fit=crop&w=1200&q=80',
+        firstImage: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=1200&q=80',
         titleKo: '부산광역시교육청 어린이창의교육관',
         titleEn: 'Busan Children Creative Education Museum',
         descKo: '어린이대공원 내 위치하여 우주 탐구, 로봇, 창의 놀이 등 다채로운 과학 체험을 즐길 수 있는 공간입니다.',
