@@ -4053,23 +4053,6 @@ export default function BusanItinerariesView({
                                         <MapPin className="w-3.5 h-3.5 text-[#0A2540]" />
                                         <span>{language === 'KR' ? '지점별 매장 안내' : 'Branch Locations'}</span>
                                       </span>
-                                      {step.branches.length > 1 && (
-                                        <button
-                                          type="button"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            setExpandedBranches(prev => ({ ...prev, [step.titleKo]: !prev[step.titleKo] }));
-                                          }}
-                                          className="text-[11px] font-bold text-[#8EA85E] hover:text-[#768F48] flex items-center gap-1 cursor-pointer px-2 py-0.5 rounded bg-[#8EA85E]/10 transition-colors"
-                                        >
-                                          <span>
-                                            {isExpanded
-                                              ? (language === 'KR' ? '접기' : 'Collapse')
-                                              : (language === 'KR' ? `전체 ${step.branches.length}곳 펼치기` : `All ${step.branches.length} branches`)}
-                                          </span>
-                                          <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
-                                        </button>
-                                      )}
                                     </div>
 
                                     <div className="space-y-2">
@@ -4145,17 +4128,17 @@ export default function BusanItinerariesView({
                                           e.stopPropagation();
                                           setExpandedBranches(prev => ({ ...prev, [step.titleKo]: !isExpanded }));
                                         }}
-                                        className="w-full py-1.5 px-3 rounded-md bg-[#FBFBF9] hover:bg-[#F1EFEC] border border-[#E5E2DC] text-[11px] font-bold text-[#0A2540] flex items-center justify-center gap-1 cursor-pointer transition-colors"
+                                        className="w-full py-1.5 px-3 rounded-md bg-[#FBFBF9] hover:bg-[#F1EFEC] border border-[#E5E2DC] text-[11px] font-bold text-[#8EA85E] hover:text-[#768F48] flex items-center justify-center gap-1 cursor-pointer transition-colors"
                                       >
                                         {isExpanded ? (
                                           <>
                                             <span>{language === 'KR' ? '지점 목록 접기' : 'Collapse branches'}</span>
-                                            <ChevronUp className="w-3.5 h-3.5 text-slate-500" />
+                                            <ChevronUp className="w-3.5 h-3.5 text-[#8EA85E]" />
                                           </>
                                         ) : (
                                           <>
                                             <span>{language === 'KR' ? `다른 지점 ${step.branches.length - 1}곳 더보기` : `+${step.branches.length - 1} more branches`}</span>
-                                            <ChevronDown className="w-3.5 h-3.5 text-[#0A2540]" />
+                                            <ChevronDown className="w-3.5 h-3.5 text-[#8EA85E]" />
                                           </>
                                         )}
                                       </button>
