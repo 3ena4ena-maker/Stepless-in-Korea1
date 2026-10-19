@@ -58,7 +58,6 @@ import { lazyWithRetry } from '../utils/lazyWithRetry';
 // Code-split heavy sub-views with auto-retry to prevent dynamic import failures
 const BusanEventsCalendarView = lazyWithRetry(() => import('./BusanEventsCalendarView'));
 const BarrierFreeTourApiView = lazyWithRetry(() => import('./BarrierFreeTourApiView'));
-const ItineraryTravelGuideSection = lazyWithRetry(() => import('./ItineraryTravelGuideSection'));
 const CommunityTravelGuideSection = lazyWithRetry(() => import('./CommunityTravelGuideSection'));
 const MyTravelRouteMapView = lazyWithRetry(() => import('./MyTravelRouteMapView'));
 
@@ -1655,8 +1654,7 @@ export default function BusanItinerariesView({
   const [activeTab2Nights, setActiveTab2Nights] = useState<number>(0);
   const [activeTab4Nights, setActiveTab4Nights] = useState<number>(0);
   const [activeDayCourseIndex, setActiveDayCourseIndex] = useState<number>(0);
-  const [itineraryTab, setItineraryTab] = useState<'STANDARD' | 'STEPLESS_GUIDE'>('STANDARD');
-  const [communityTab, setCommunityTab] = useState<'STANDARD' | 'STEPLESS_GUIDE'>('STANDARD');
+    const [communityTab, setCommunityTab] = useState<'STANDARD' | 'STEPLESS_GUIDE'>('STANDARD');
 
   const [selectedGourmetCat, setSelectedGourmetCat] = useState<string>('ALL');
   const [selectedGourmetMultiCats, setSelectedGourmetMultiCats] = useState<string[]>([]);
@@ -3397,53 +3395,11 @@ export default function BusanItinerariesView({
                 </div>
               ) : (
                 <div className="space-y-6 animate-fade-in text-left">
-                  {/* Sub-tab navigation: [ 🗓️ 기본 일정표 ] VS [ ✨ Stepless 여행안내 ] */}
-                  <div className="flex items-center gap-2 border-b border-[#E5E2DC] pb-3" id="itinerary-view-mode-tabs">
-                    <button
-                      type="button"
-                      onClick={() => setItineraryTab('STANDARD')}
-                      className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer border ${
-                        itineraryTab === 'STANDARD'
-                          ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
-                          : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
-                      }`}
-                    >
-                      <span>🗓️</span>
-                      <span>{language === 'KR' ? '기본 일정표' : 'Standard Schedule'}</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setItineraryTab('STEPLESS_GUIDE')}
-                      className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer border ${
-                        itineraryTab === 'STEPLESS_GUIDE'
-                          ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
-                          : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
-                      }`}
-                    >
-                      <Sparkles className="w-4 h-4 text-amber-500" />
-                      <span>{language === 'KR' ? 'Stepless 여행안내' : 'Stepless Travel Guide'}</span>
-                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-200">
-                        NEW
-                      </span>
-                    </button>
-                  </div>
+                  {(() => {
+                    const course = filteredCourses[0];
+                    if (!course) return null;
 
-                  {itineraryTab === 'STEPLESS_GUIDE' ? (
-                    <React.Suspense fallback={<div className="h-64 flex items-center justify-center text-slate-400 font-bold text-sm">상세 여행 가이드를 불러오는 중...</div>}>
-                      <ItineraryTravelGuideSection
-                        language={language}
-                        category={activeCategory}
-                        course={filteredCourses[0]}
-                        onSwitchToStandard={() => setItineraryTab('STANDARD')}
-                        onSelectStation={onSelectStation}
-                      />
-                    </React.Suspense>
-                  ) : (
-                    (() => {
-                      const course = filteredCourses[0];
-                      if (!course) return null;
-
-                      switch (activeCategory) {
+                    switch (activeCategory) {
                 case 'DAY':
                   return (
                     <div className="space-y-6 animate-fade-in text-left">
@@ -5451,7 +5407,7 @@ export default function BusanItinerariesView({
               default:
                 return null;
             }
-          })())}
+          })()}
                 </div>
               )}
             </div>
