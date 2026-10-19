@@ -3979,55 +3979,60 @@ export default function BusanItinerariesView({
                             key={idx} 
                             className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors p-5 sm:p-6 flex flex-col justify-between text-left"
                           >
-                            <div className="space-y-3 text-left">
-                              {/* Top Bar: Clean Rating & Route Button without category badge clutter */}
-                              <div className="flex items-center justify-between border-b border-[#E5E2DC] pb-2.5">
-                                <div className="flex items-center gap-1.5">
-                                  <span className="text-xs font-bold text-[#0A2540] flex items-center gap-1 font-mono">
-                                    <span>★ 5.0</span>
-                                  </span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <button
-                                    type="button"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      toggleMyRoute({
-                                        id: step.id || step.titleKo,
-                                        titleKo: step.titleKo,
-                                        titleEn: step.titleEn,
-                                        categoryKo: '부산 식도락',
-                                        categoryEn: 'Gourmet',
-                                        addressRoadKo: ktoDetail?.addressRoadKo || step.stationInfoKo,
-                                        stationInfoKo: step.stationInfoKo,
-                                        stationInfoEn: step.stationInfoEn,
-                                        descKo: step.descKo,
-                                        descEn: step.descEn,
-                                        firstImage: ktoDetail?.firstImage,
-                                        latitude: ktoDetail?.latitude,
-                                        longitude: ktoDetail?.longitude,
-                                      });
-                                    }}
-                                    className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
-                                      isSaved
-                                        ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
-                                        : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
-                                    }`}
-                                    title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
-                                  >
-                                    <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
-                                    <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
-                                  </button>
-                                </div>
+                            <div className="space-y-2.5 text-left">
+                              {/* Header: Title & Route Button on the SAME line (No star rating) */}
+                              <div className="flex items-start justify-between gap-2.5">
+                                <h4 className="text-base font-bold text-[#11161B] leading-snug">
+                                  {language === 'KR' ? step.titleKo : step.titleEn}
+                                </h4>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleMyRoute({
+                                      id: step.id || step.titleKo,
+                                      titleKo: step.titleKo,
+                                      titleEn: step.titleEn,
+                                      categoryKo: '부산 식도락',
+                                      categoryEn: 'Gourmet',
+                                      addressRoadKo: ktoDetail?.addressRoadKo || step.stationInfoKo,
+                                      stationInfoKo: step.stationInfoKo,
+                                      stationInfoEn: step.stationInfoEn,
+                                      descKo: step.descKo,
+                                      descEn: step.descEn,
+                                      firstImage: ktoDetail?.firstImage,
+                                      latitude: ktoDetail?.latitude,
+                                      longitude: ktoDetail?.longitude,
+                                    });
+                                  }}
+                                  className={`px-2.5 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
+                                    isSaved
+                                      ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                      : 'bg-white text-slate-500 border-slate-200 hover:text-amber-600 hover:border-amber-300 hover:bg-amber-50/40'
+                                  }`}
+                                  title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                >
+                                  <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                  <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                </button>
                               </div>
 
-                              <h4 className="text-base font-bold text-[#11161B] leading-snug">
-                                {language === 'KR' ? step.titleKo : step.titleEn}
-                              </h4>
+                              {/* 식당 설명문 (주소 중복 노출 방지: 설명이 주소인 경우 생략하여 하단에만 1회 표시) */}
+                              {(() => {
+                                const rawDesc = (language === 'KR' ? step.descKo : (step.descEn || step.descKo)) || '';
+                                const cleanDesc = rawDesc.replace(/^📍\s*주소:?[^\n]+(\n|$)/i, '').trim();
+                                const isPureAddress = /^부산\s+[가-힣]+[구|군]/i.test(cleanDesc) || cleanDesc.startsWith('부산 ');
 
-                              <p className="text-xs text-[#4A5568] font-normal leading-relaxed text-left whitespace-pre-line">
-                                {language === 'KR' ? step.descKo : step.descEn}
-                              </p>
+                                if (!cleanDesc || isPureAddress) {
+                                  return null;
+                                }
+
+                                return (
+                                  <p className="text-xs text-[#4A5568] font-normal leading-relaxed text-left whitespace-pre-line">
+                                    {cleanDesc}
+                                  </p>
+                                );
+                              })()}
 
                               {/* 다수 매장/프랜차이즈 지점별 주소 목록 & 네이버지도 / 구글맵 버튼 (접고 펼치기 지원) */}
                               {step.branches && step.branches.length > 0 && (() => {
