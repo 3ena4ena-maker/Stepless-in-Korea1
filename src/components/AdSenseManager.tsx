@@ -73,6 +73,10 @@ export function isAdEligibleScreen(params: AdEligibilityParams): boolean {
     params.currentTab === 'tourapi' ||
     params.currentTab.startsWith('itinerary-')
   ) {
+    // Exclude sparse navigation index hub with only 4 cards to prevent blank ad placeholder
+    if (params.currentTab === 'tips' && (params.tipsSubPage === 'index' || !params.tipsSubPage)) {
+      return false;
+    }
     return true;
   }
 

@@ -2157,7 +2157,7 @@ export default function BusanItinerariesView({
   const activeCategoryConfig = categoriesConfig.find(c => c.id === activeCategory);
 
   return (
-    <div className={`${activeSection === 'SELECTION' ? 'space-y-3 sm:space-y-5' : 'space-y-6 sm:space-y-8'} text-left animate-fade-in max-w-5xl mx-auto`} id="busan-itineraries-container">
+    <div className={`${activeSection === 'SELECTION' ? 'space-y-1 sm:space-y-2' : 'space-y-6 sm:space-y-8'} text-left animate-fade-in max-w-5xl mx-auto`} id="busan-itineraries-container">
       {/* Dynamic Seagull & Sea Styles Injector */}
       <style>{`
         @keyframes subtle-boat {
@@ -2273,7 +2273,7 @@ export default function BusanItinerariesView({
       {activeSection === 'SELECTION' && (
         <div className="font-sans">
           {/* [모바일 전용] 컴팩트 뷰: 스크롤 최소화, 부가설명 최소화, 박스 전체 클릭 즉시 이동, 하단 버튼 제거 */}
-          <div className="md:hidden space-y-3 animate-fade-in text-left">
+          <div className="md:hidden space-y-2.5 animate-fade-in text-left">
             {/* Header Banner (모바일 최소화) */}
             <div className="space-y-0.5 pt-0.5 pb-0.5 text-left">
               <h2 className="text-lg font-black text-[#11161B] tracking-tight">
@@ -2287,7 +2287,7 @@ export default function BusanItinerariesView({
             </div>
 
             {/* 4 Compact Category Cards (2x2 Grid) */}
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
               {/* Card 1: 대중교통 이용 팁 */}
               <div
                 onClick={() => navigateToSubPage('transit')}
@@ -2385,13 +2385,13 @@ export default function BusanItinerariesView({
           </div>
 
           {/* [웹/데스크톱 전용] Image 2 원본 화면 100% 동일 복구 */}
-          <div className="hidden md:block space-y-8 animate-fade-in text-left">
+          <div className="hidden md:block space-y-4 sm:space-y-5 animate-fade-in text-left">
             {/* Header Banner */}
-            <div className="space-y-3 pt-2 text-left">
-              <h1 className="text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
+            <div className="space-y-2 pt-1 text-left">
+              <h1 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
                 {language === 'KR' ? '부산 여행을 더 편하게' : 'Make Your Busan Trip Easier'}
               </h1>
-              <p className="text-base text-slate-500 max-w-3xl leading-relaxed">
+              <p className="text-sm text-slate-500 max-w-3xl leading-relaxed">
                 {language === 'KR' 
                   ? '부산을 여행하기 전에 알아두면 좋은 정보부터 현지인이 추천하는 여행 코스까지 한곳에서 확인하세요.' 
                   : 'Everything you need before visiting Busan—from essential transit tips to curated local itineraries.'}
@@ -2399,106 +2399,106 @@ export default function BusanItinerariesView({
             </div>
 
             {/* 2x2 Grid */}
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-4 sm:gap-5">
               {/* Card 1: TRANSIT GUIDE - 대중교통 이용 팁 */}
               <div
                 onClick={() => navigateToSubPage('transit')}
-                className="group bg-white p-7 rounded-2xl border border-slate-200/80 hover:border-slate-400 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left"
+                className="group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 hover:border-slate-400 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left"
               >
                 <div>
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
-                        <Train className="w-6 h-6" />
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <Train className="w-5 h-5" />
                       </div>
                       <div>
-                        <span className="text-[11px] font-bold tracking-wider text-slate-400 uppercase block mb-0.5">
+                        <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block mb-0.5">
                           TRANSIT GUIDE
                         </span>
-                        <h2 className="text-xl font-bold text-slate-900 group-hover:text-[#0A2540] transition-colors">
+                        <h2 className="text-lg font-bold text-slate-900 group-hover:text-[#0A2540] transition-colors">
                           {language === 'KR' ? '대중교통 이용 팁' : 'Transit Tips'}
                         </h2>
                       </div>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-1 transition-all" />
                   </div>
-                  <p className="text-sm text-slate-500 leading-relaxed mt-5 mb-6">
+                  <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mt-3 mb-4">
                     {language === 'KR'
                       ? '부산 지하철 노선 요약부터 어린이 무료 대중교통 이용 방법, 30분 무료 환승 요령 등 여행에 필요한 교통 정보를 제공합니다.'
                       : 'Essential transit information covering Metro summaries, free child transit, 30-min transfer tricks, and key logistics.'}
                   </p>
                 </div>
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-800 group-hover:text-[#0A2540]">
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-800 group-hover:text-[#0A2540]">
                   <span>{language === 'KR' ? '교통가이드 보기' : 'View Transit Guide'}</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
 
               {/* Card 2: RECOMMENDED ITINERARIES - 여행 코스 추천 */}
               <div
                 onClick={() => navigateToSubPage('courses')}
-                className="group bg-white p-7 rounded-2xl border border-slate-200/80 hover:border-slate-400 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left"
+                className="group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 hover:border-slate-400 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left"
               >
                 <div>
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
-                        <Compass className="w-6 h-6" />
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <Compass className="w-5 h-5" />
                       </div>
                       <div>
-                        <span className="text-[11px] font-bold tracking-wider text-slate-400 uppercase block mb-0.5">
+                        <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block mb-0.5">
                           RECOMMENDED ITINERARIES
                         </span>
-                        <h2 className="text-xl font-bold text-slate-900 group-hover:text-[#0A2540] transition-colors">
+                        <h2 className="text-lg font-bold text-slate-900 group-hover:text-[#0A2540] transition-colors">
                           {language === 'KR' ? '여행 코스 추천' : 'Recommended Itineraries'}
                         </h2>
                       </div>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-1 transition-all" />
                   </div>
-                  <p className="text-sm text-slate-500 leading-relaxed mt-5 mb-6">
+                  <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mt-3 mb-4">
                     {language === 'KR'
                       ? '현지인이 직접 확인하고 설계한 힐링 및 테마 코스를 추천합니다.'
                       : 'Carefully verified healing and theme-based travel routes curated by local experts.'}
                   </p>
                 </div>
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-800 group-hover:text-[#0A2540]">
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-800 group-hover:text-[#0A2540]">
                   <span>{language === 'KR' ? '추천 코스 탐색하기' : 'Explore Itineraries'}</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
 
               {/* Card 3: EVENTS & FESTIVALS - 부산 주요 일정표 */}
               <div
                 onClick={() => navigateToSubPage('schedule')}
-                className="group bg-white p-7 rounded-2xl border border-slate-200/80 hover:border-slate-400 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left"
+                className="group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 hover:border-slate-400 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left"
               >
                 <div>
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
-                        <Calendar className="w-6 h-6" />
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <Calendar className="w-5 h-5" />
                       </div>
                       <div>
-                        <span className="text-[11px] font-bold tracking-wider text-slate-400 uppercase block mb-0.5">
+                        <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block mb-0.5">
                           EVENTS & FESTIVALS
                         </span>
-                        <h2 className="text-xl font-bold text-slate-900 group-hover:text-[#0A2540] transition-colors">
+                        <h2 className="text-lg font-bold text-slate-900 group-hover:text-[#0A2540] transition-colors">
                           {language === 'KR' ? '부산 주요 일정표' : 'Events & Festivals'}
                         </h2>
                       </div>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-1 transition-all" />
                   </div>
-                  <p className="text-sm text-slate-500 leading-relaxed mt-5 mb-6">
+                  <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mt-3 mb-4">
                     {language === 'KR'
                       ? '부산의 주요 축제, 드론쇼, 불꽃축제 등 여행 일정과 연계할 수 있는 주요 행사를 안내합니다.'
                       : 'Key festival and cultural event schedules such as Gwangalli drone shows and Fireworks Festival.'}
                   </p>
                 </div>
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-800 group-hover:text-[#0A2540]">
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-800 group-hover:text-[#0A2540]">
                   <span>{language === 'KR' ? '일정표 확인하기' : 'Check Schedule'}</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
 
@@ -2507,34 +2507,34 @@ export default function BusanItinerariesView({
                 href="https://www.reddit.com/r/BusanTravelTips/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group bg-white p-7 rounded-2xl border border-slate-200/80 hover:border-slate-400 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left block"
+                className="group bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 hover:border-slate-400 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between text-left block"
               >
                 <div>
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
-                        <MessageSquare className="w-6 h-6" />
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <MessageSquare className="w-5 h-5" />
                       </div>
                       <div>
-                        <span className="text-[11px] font-bold tracking-wider text-slate-400 uppercase block mb-0.5">
+                        <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block mb-0.5">
                           COMMUNITY & REDDIT
                         </span>
-                        <h2 className="text-xl font-bold text-slate-900 group-hover:text-[#0A2540] transition-colors">
+                        <h2 className="text-lg font-bold text-slate-900 group-hover:text-[#0A2540] transition-colors">
                           {language === 'KR' ? '실시간 부산 여행 팁 커뮤니티' : 'Live Community'}
                         </h2>
                       </div>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-1 transition-all" />
                   </div>
-                  <p className="text-sm text-slate-500 leading-relaxed mt-5 mb-6">
+                  <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mt-3 mb-4">
                     {language === 'KR'
                       ? '레딧에서 부산 현지 여행자와 주민들이 실시간으로 주고받는 질문과 답변, 이동 꿀팁 및 현장 상황을 확인해 보세요.'
                       : 'Ask questions and check real-time traveler discussions, local recommendations, and tips on Reddit.'}
                   </p>
                 </div>
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-800 group-hover:text-[#0A2540]">
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-800 group-hover:text-[#0A2540]">
                   <span>{language === 'KR' ? '커뮤니티 이동하기' : 'Go to Community'}</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </a>
             </div>

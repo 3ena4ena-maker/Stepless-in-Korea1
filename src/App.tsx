@@ -1830,7 +1830,7 @@ export default function App() {
 
           {/* Tab 3 & 4: TRAVEL TIPS & BUSAN MAJOR SCHEDULE VIEW & BARRIER FREE */}
           {(visitedTabs['tips'] || visitedTabs['schedule'] || visitedTabs['tourapi'] || currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') && (
-            <div className={(currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') ? 'space-y-6' : 'hidden'}>
+            <div className={(currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') ? ((currentTab === 'tips' && tipsSubPage === 'index') ? 'space-y-1 sm:space-y-2' : 'space-y-6') : 'hidden'}>
               <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? "여행 루트 및 추천 코스를 불러오는 중..." : "Loading travel routes and courses..."} />}>
                 <BusanItinerariesView 
                   language={language}
@@ -1934,7 +1934,9 @@ export default function App() {
                 />
               </Suspense>
               {/* Google AdSense Unit for Verified Guides / Magazine / Content Hub */}
-              <AdSenseUnit currentParams={adParams} />
+              {(currentTab !== 'tips' || tipsSubPage !== 'index') && (
+                <AdSenseUnit currentParams={adParams} />
+              )}
             </div>
           )}
 
@@ -1956,7 +1958,7 @@ export default function App() {
       </div>
 
       {/* Footer information section */}
-      <footer className="mt-4 sm:mt-5 bg-[#8EA85E]/15 backdrop-blur-md text-slate-700 text-left border-t border-[#8EA85E]/30 pt-6 sm:pt-8 pb-36 md:pb-28 rounded-t-[2rem]">
+      <footer className="mt-3 sm:mt-4 bg-[#8EA85E]/15 backdrop-blur-md text-slate-700 text-left border-t border-[#8EA85E]/30 pt-6 sm:pt-7 pb-10 sm:pb-12 md:pb-14 rounded-t-[2rem]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
