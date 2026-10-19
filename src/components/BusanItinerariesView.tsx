@@ -3971,7 +3971,7 @@ export default function BusanItinerariesView({
                     </div>
 
                     {/* Gourmet Catalog Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4" id="gourmet-catalog">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3" id="gourmet-catalog">
                       {filteredGourmetSteps.map((step, idx) => {
                         const matchedSpotId = matchTourApiSpotId(step.titleKo);
                         const effectiveSpotId = resolvePlaceTargetId({
@@ -3986,12 +3986,12 @@ export default function BusanItinerariesView({
                         return (
                           <div 
                             key={idx} 
-                            className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors p-5 sm:p-6 flex flex-col justify-between text-left"
+                            className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors p-3.5 sm:p-4 flex flex-col justify-between text-left space-y-2"
                           >
-                            <div className="space-y-2.5 text-left">
+                            <div className="space-y-1.5 text-left">
                               {/* Header: Title & Route Button on the SAME line (No star rating) */}
-                              <div className="flex items-start justify-between gap-2.5">
-                                <h4 className="text-base font-bold text-[#11161B] leading-snug">
+                              <div className="flex items-center justify-between gap-2">
+                                <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug">
                                   {language === 'KR' ? step.titleKo : step.titleEn}
                                 </h4>
                                 <button
@@ -4014,7 +4014,7 @@ export default function BusanItinerariesView({
                                       longitude: ktoDetail?.longitude,
                                     });
                                   }}
-                                  className={`px-2.5 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
+                                  className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
                                     isSaved
                                       ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
                                       : 'bg-white text-slate-500 border-slate-200 hover:text-amber-600 hover:border-amber-300 hover:bg-amber-50/40'
@@ -4037,7 +4037,7 @@ export default function BusanItinerariesView({
                                 }
 
                                 return (
-                                  <p className="text-xs text-[#4A5568] font-normal leading-relaxed text-left whitespace-pre-line">
+                                  <p className="text-[11.5px] sm:text-xs text-[#4A5568] font-normal leading-relaxed text-left whitespace-pre-line">
                                     {cleanDesc}
                                   </p>
                                 );
@@ -4049,7 +4049,7 @@ export default function BusanItinerariesView({
                                 const displayedBranches = isExpanded ? step.branches : [step.branches[0]];
 
                                 return (
-                                  <div className="mt-3.5 pt-3 border-t border-[#E5E2DC] space-y-2.5">
+                                  <div className="mt-2.5 pt-2 border-t border-[#E5E2DC] space-y-1.5">
                                     <div className="flex items-center justify-between">
                                       <span className="text-[11px] font-bold text-[#11161B] flex items-center gap-1.5">
                                         <MapPin className="w-3.5 h-3.5 text-[#0A2540]" />
@@ -4057,7 +4057,7 @@ export default function BusanItinerariesView({
                                       </span>
                                     </div>
 
-                                    <div className="space-y-2">
+                                    <div className="space-y-1.5">
                                       {displayedBranches.map((branch, bIdx) => {
                                         const rawAddress = language === 'KR' ? branch.addressKo : (branch.addressEn || branch.addressKo);
                                         // 어디어디 인근 등 괄호 설명 제거하고 순수 주소만 표시
@@ -4066,16 +4066,16 @@ export default function BusanItinerariesView({
                                         return (
                                           <div 
                                             key={bIdx}
-                                            className="bg-[#FBFBF9] hover:bg-[#F4EBE1]/40 p-2.5 rounded-lg border border-[#E5E2DC] transition-colors flex flex-col gap-1.5"
+                                            className="bg-[#FBFBF9] hover:bg-[#F4EBE1]/40 p-2 sm:p-2.5 rounded-lg border border-[#E5E2DC] transition-colors flex flex-col gap-1"
                                           >
                                             <div className="flex items-center justify-between gap-1.5 flex-wrap">
-                                              <span className="text-xs font-bold text-[#11161B]">
+                                              <span className="text-[11.5px] sm:text-xs font-bold text-[#11161B]">
                                                 {language === 'KR' ? branch.nameKo : (branch.nameEn || branch.nameKo)}
                                               </span>
                                             </div>
 
                                             <div className="flex items-center justify-between gap-2">
-                                              <p className="text-[11px] text-[#4A5568] flex items-start gap-1 leading-relaxed min-w-0 flex-1">
+                                              <p className="text-[11px] text-[#4A5568] flex items-start gap-1 leading-snug min-w-0 flex-1">
                                                 <span className="shrink-0 text-slate-400">📍</span>
                                                 <span className="break-all">{cleanAddress}</span>
                                               </p>
@@ -4087,7 +4087,7 @@ export default function BusanItinerariesView({
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     onClick={(e) => e.stopPropagation()}
-                                                    className="w-6 h-6 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                                                    className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
                                                     title={language === 'KR' ? `${branch.nameKo} 네이버 지도에서 위치 보기` : `View ${branch.nameEn || branch.nameKo} on Naver Map`}
                                                     aria-label="Naver Map"
                                                   >
@@ -4102,11 +4102,11 @@ export default function BusanItinerariesView({
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     onClick={(e) => e.stopPropagation()}
-                                                    className="w-6 h-6 rounded-md bg-white border border-[#E5E2DC] hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                                                    className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-md bg-white border border-[#E5E2DC] hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
                                                     title={language === 'KR' ? `${branch.nameKo} 구글맵에서 위치 보기` : `View ${branch.nameEn || branch.nameKo} on Google Maps`}
                                                     aria-label="Google Maps"
                                                   >
-                                                    <svg viewBox="0 0 92 135" className="w-3 h-3" fill="none">
+                                                    <svg viewBox="0 0 92 135" className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="none">
                                                       <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
                                                       <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
                                                       <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
@@ -4130,7 +4130,7 @@ export default function BusanItinerariesView({
                                           e.stopPropagation();
                                           setExpandedBranches(prev => ({ ...prev, [step.titleKo]: !isExpanded }));
                                         }}
-                                        className="w-full py-1.5 px-3 rounded-md bg-[#FBFBF9] hover:bg-[#F1EFEC] border border-[#E5E2DC] text-[11px] font-bold text-[#8EA85E] hover:text-[#768F48] flex items-center justify-center gap-1 cursor-pointer transition-colors"
+                                        className="w-full py-1 sm:py-1.5 px-3 rounded-md bg-[#FBFBF9] hover:bg-[#F1EFEC] border border-[#E5E2DC] text-[11px] font-bold text-[#8EA85E] hover:text-[#768F48] flex items-center justify-center gap-1 cursor-pointer transition-colors"
                                       >
                                         {isExpanded ? (
                                           <>
@@ -4156,9 +4156,9 @@ export default function BusanItinerariesView({
                                 const googleUrl = step.googleMapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(step.titleKo + ' ' + cleanAddr)}`;
 
                                 return (
-                                  <div className="mt-3.5 pt-3 border-t border-[#E5E2DC] text-left">
+                                  <div className="mt-2.5 pt-2 border-t border-[#E5E2DC] text-left">
                                     <div className="flex items-center justify-between gap-2">
-                                      <p className="text-[11px] text-[#4A5568] flex items-start gap-1 leading-relaxed min-w-0 flex-1">
+                                      <p className="text-[11px] sm:text-[11.5px] text-[#4A5568] flex items-start gap-1 leading-snug min-w-0 flex-1">
                                         <span className="shrink-0 text-slate-400">📍</span>
                                         <span className="break-all">{cleanAddr}</span>
                                       </p>
@@ -4169,7 +4169,7 @@ export default function BusanItinerariesView({
                                           target="_blank"
                                           rel="noopener noreferrer"
                                           onClick={(e) => e.stopPropagation()}
-                                          className="w-6 h-6 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                                          className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
                                           title={language === 'KR' ? `${step.titleKo} 네이버 지도에서 위치 보기` : `View ${step.titleKo} on Naver Map`}
                                           aria-label="Naver Map"
                                         >
@@ -4182,11 +4182,11 @@ export default function BusanItinerariesView({
                                           target="_blank"
                                           rel="noopener noreferrer"
                                           onClick={(e) => e.stopPropagation()}
-                                          className="w-6 h-6 rounded-md bg-white border border-[#E5E2DC] hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                                          className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-md bg-white border border-[#E5E2DC] hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
                                           title={language === 'KR' ? `${step.titleKo} 구글맵에서 위치 보기` : `View ${step.titleKo} on Google Maps`}
                                           aria-label="Google Maps"
                                         >
-                                          <svg viewBox="0 0 92 135" className="w-3 h-3" fill="none">
+                                          <svg viewBox="0 0 92 135" className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="none">
                                             <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
                                             <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
                                             <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
