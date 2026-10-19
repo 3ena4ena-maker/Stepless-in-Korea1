@@ -63,10 +63,20 @@ A: 부전시장 입구 버스정류장에서 시내버스 62번 또는 20번을 
 ## 4. Key Endpoints & Sitemap
 
 - Home & Main Service: https://stepless.kr/
+- Station Directory & Search: https://stepless.kr/search
 - Travel Tips Hub: https://stepless.kr/tips
 - Recommended Courses: https://stepless.kr/tips/courses
-- Theme Itineraries: https://stepless.kr/tips/itineraries
+- Foodie/Gourmet Course: https://stepless.kr/tips/courses/gourmet
+- Experience & Museum Course: https://stepless.kr/tips/courses/experience
+- Traditional Market Course: https://stepless.kr/tips/courses/market
+- Key Attractions Course: https://stepless.kr/tips/courses/attraction
+- Schedule Itinerary (Day/1Night/2Nights): https://stepless.kr/schedule
 - Public Transit Tips: https://stepless.kr/tips/transit
+- Child & Stroller Transit Tips: https://stepless.kr/tips/child-free
+- City Bus QR Payment: https://stepless.kr/tips/bus-qr
 - Barrier-Free Directory: https://stepless.kr/barrier-free
+- Custom Route Planner: https://stepless.kr/my-route
+- Privacy Policy: https://stepless.kr/about/privacy
+- Terms of Service: https://stepless.kr/about/terms
 - Full LLM Reference: https://stepless.kr/llms-full.txt
 - XML Sitemap: https://stepless.kr/sitemap.xml

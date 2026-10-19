@@ -11,6 +11,14 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
+# Google AdSense Review & Ad Crawler (구글 애드센스 심사 및 광고 크롤러)
+User-agent: Mediapartners-Google
+Allow: /
+User-agent: Mediapartners-Google*
+Allow: /
+User-agent: Google-Display-Ads-Bot
+Allow: /
+
 # OpenAI / ChatGPT / SearchGPT
 User-agent: GPTBot
 Allow: /

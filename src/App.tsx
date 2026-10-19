@@ -805,7 +805,7 @@ export default function App() {
     // 2. Change metadata (Dynamic Title, Description, and OpenGraph tags)
     if (currentTab === 'search' && searchViewMode === 'INDEX') {
       const searchTitle = language === 'KR' 
-        ? "부산 지하철역 출구 정보 둘러보기 & 역 검색 | 스탭리스" 
+        ? "부산 지하철역 출구 정보 둘러보기 & 역 검색 | 스텝레스 Stepless" 
         : "Busan Subway Station & Exit Directory | Stepless";
       const searchDesc = language === 'KR'
         ? "부산 지하철 1~4호선 주요 역의 엘리베이터, 에스컬레이터 대수 및 출구별 무단차 이동 정보를 한눈에 비교하고 검색해 보세요."
@@ -826,7 +826,7 @@ export default function App() {
     } else if (((currentTab === 'home' && !isHomeLanding) || (currentTab === 'search' && searchViewMode === 'DETAIL')) && selectedStationId) {
       const activeST = STATIONS.find(s => s.id === selectedStationId);
       if (activeST) {
-        const titleText = `${activeST.name} 엘리베이터 위치 & 유모차 동선 안내 | 스탭리스`;
+        const titleText = `${activeST.name} 엘리베이터 위치 & 유모차 동선 안내 | 스텝레스 Stepless`;
         document.title = titleText;
 
         const cleanEngName = activeST.englishName.replace(/\s*Station$/i, '').trim();
@@ -845,19 +845,19 @@ export default function App() {
         if (canonical) canonical.setAttribute('href', `https://stepless.kr/search/${selectedStationId}`);
       }
     } else if (currentTab === 'about') {
-      let pageTitle = "운영자 소개 | 스탭리스";
+      let pageTitle = "운영자 소개 | 스텝레스 Stepless";
       let pageDesc = "부산 지하철 배리어프리 플랫폼 운영자 플로레르 소개";
       if (siteSubPage === 'privacy') {
-        pageTitle = "개인정보처리방침 | 스탭리스";
+        pageTitle = "개인정보처리방침 | 스텝레스 Stepless";
         pageDesc = "Stepless 개인정보처리방침 및 구글 맞춤형 광고 쿠키 정책";
       } else if (siteSubPage === 'terms') {
-        pageTitle = "서비스 이용약관 | 스탭리스";
+        pageTitle = "서비스 이용약관 | 스텝레스 Stepless";
         pageDesc = "Stepless 서비스 이용약관 및 면책사항";
       } else if (siteSubPage === 'contact') {
-        pageTitle = "문의 및 제휴 안내 | 스탭리스";
+        pageTitle = "문의 및 제휴 안내 | 스텝레스 Stepless";
         pageDesc = "Stepless 제휴 문의, 개선 의견 및 대표 이메일 안내";
       } else if (siteSubPage === 'data-source') {
-        pageTitle = "데이터 출처와 정정 요청 | 스탭리스";
+        pageTitle = "데이터 출처와 정정 요청 | 스텝레스 Stepless";
         pageDesc = "공식 데이터 출처 명시 및 역별 정보 오류 정정 제보 양식";
       }
       document.title = pageTitle;
@@ -871,25 +871,85 @@ export default function App() {
       const ogDesc = document.querySelector('meta[property="og:description"]');
       if (ogDesc) ogDesc.setAttribute('content', pageDesc);
     } else if (currentTab === 'tips') {
-      let pageTitle = "부산 여행 코스 추천 & 실시간 여행 팁 | 스탭리스";
+      let pageTitle = "부산 여행 코스 추천 & 실시간 여행 팁 | 스텝레스 Stepless";
       let pageDesc = "부산 식도락, 명소, 전통시장, 무장애 여행 코스 추천 및 나만의 맞춤 루트 만들기, 실시간 대중교통 길찾기 가이드.";
       let canonicalUrl = "https://stepless.kr/tips";
 
       if (selectedItineraryCategory) {
         const catSlug = categoryToUrlSlug(selectedItineraryCategory);
-        pageTitle = `부산 ${selectedItineraryCategory} 여행 코스 추천 & 내 여행 루트 | 스탭리스`;
-        pageDesc = "부산 추천 여행 코스, 대표 명소와 맛집, 무장애 관광지 및 나만의 맞춤 여행 코스 지도 만들기.";
+        const categoryLabels: Record<string, { title: string; desc: string }> = {
+          'GOURMET': {
+            title: '부산 식도락 맛집 여행 코스 추천',
+            desc: '부산 대표 돼지국밥, 밀면, 씨앗호떡, 자갈치 해산물 맛집 및 전포 카페거리 식도락 추천 여행 코스를 안내합니다.'
+          },
+          'EXPERIENCE': {
+            title: '부산 체험 & 박물관 여행 코스 추천',
+            desc: '국립해양박물관, 국립부산과학관, 뮤지엄원, 아르떼뮤지엄 부산, 증권박물관, F1963 등 부산 대표 체험·박물관 코스 안내.'
+          },
+          'MARKET': {
+            title: '부산 전통시장 투어 추천 코스',
+            desc: '부평깡통시장 야시장, 국제시장, 자갈치시장, 부전시장 등 활기 넘치는 부산 대표 전통시장 추천 코스 안내.'
+          },
+          'ATTRACTION': {
+            title: '부산 대표 핵심 명소 여행 코스',
+            desc: '해운대 해수욕장, 광안리 해변 드론쇼, 영도 흰여울문화마을, 기장 해동용궁사 등 부산 필수 명소 코스 안내.'
+          },
+          'DAY': {
+            title: '부산 당일치기 여행 추천 코스',
+            desc: '하루 만에 부산의 핵심 바다와 명소, 미식을 알차게 둘러보는 당일치기 추천 여행 코스를 안내합니다.'
+          },
+          '1NIGHT': {
+            title: '부산 1박 2일 여행 추천 코스',
+            desc: '부산의 낮과 밤, 야경과 바다 감성을 모두 만끽하는 1박 2일 추천 여행 코스를 안내합니다.'
+          },
+          '2NIGHTS': {
+            title: '부산 2박 3일 여행 추천 코스',
+            desc: '해운대부터 원도심, 영도, 기장까지 여유롭게 즐기는 2박 3일 부산 완전정복 여행 코스를 안내합니다.'
+          },
+          'SUBWAY': {
+            title: '부산도시철도 지하철 테마 여행 코스',
+            desc: '부산 지하철 1·2호선 역세권 명소를 계단 없이 편리하게 이동하는 지하철 테마 코스를 안내합니다.'
+          },
+          'BARRIER_FREE': {
+            title: '부산 무장애(배리어프리) 열린관광지 코스',
+            desc: '계단과 보도 턱이 없어 휠체어와 유모차로 편리하게 이동할 수 있는 부산 배리어프리 추천 코스를 안내합니다.'
+          },
+          'MY_ROUTE': {
+            title: '나만의 맞춤 부산 여행 코스 만들기',
+            desc: '원하는 장소를 담아 순서대로 나열하고, 실시간 네이버 지도·구글맵 대중교통 길찾기를 연결하는 맞춤 루트 플래너.'
+          }
+        };
+
+        const currentMeta = categoryLabels[selectedItineraryCategory] || {
+          title: `부산 ${selectedItineraryCategory} 여행 코스 추천`,
+          desc: '부산 추천 여행 코스, 대표 명소와 맛집, 무장애 관광지 및 나만의 맞춤 여행 코스 지도 만들기.'
+        };
+
+        pageTitle = `${currentMeta.title} | 스텝레스 Stepless`;
+        pageDesc = currentMeta.desc;
         canonicalUrl = `https://stepless.kr/tips/courses/${catSlug}`;
       } else if (tipsSubPage === 'transit' || tipsSubPage === 'transfer') {
-        pageTitle = "부산 대중교통 이용 팁 & 시내버스·지하철 환승 가이드 | 스탭리스";
+        pageTitle = "부산 대중교통 이용 팁 & 시내버스·지하철 환승 가이드 | 스텝레스 Stepless";
         pageDesc = "부산 시내버스 노선, 지하철 환승 팁, 캐리어 보관함 및 유모차·휠체어 배리어프리 대중교통 이용 가이드.";
         canonicalUrl = "https://stepless.kr/tips/transit";
+      } else if (tipsSubPage === 'child-free') {
+        pageTitle = "부산 영유아·어린이 대중교통 이용 팁 & 무료 요금 가이드 | 스텝레스 Stepless";
+        pageDesc = "부산 어린이 대중교통 요금 전면 무료화 혜택 및 유모차 동반 지하철·버스 이용 팁 안내.";
+        canonicalUrl = "https://stepless.kr/tips/child-free";
+      } else if (tipsSubPage === 'bus-qr') {
+        pageTitle = "부산 시내버스 모바일 QR 결제 가이드 | 스텝레스 Stepless";
+        pageDesc = "교통카드 없이 스마트폰 QR코드로 간편하게 탑승하는 부산 시내버스 모바일 결제 가이드.";
+        canonicalUrl = "https://stepless.kr/tips/bus-qr";
+      } else if (tipsSubPage === 'taxi') {
+        pageTitle = "부산 콜택시 & 교통약자 바우처 택시 이용 안내 | 스텝레스 Stepless";
+        pageDesc = "부산 주요 콜택시 전화번호 및 임산부·교통약자를 위한 바우처 택시, 안심 귀가 서비스 안내.";
+        canonicalUrl = "https://stepless.kr/tips/taxi";
       } else if (tipsSubPage === 'courses') {
-        pageTitle = "부산 권역별 추천 여행 코스 | 스탭리스";
-        pageDesc = "해운대, 광안리, 원도심, 영도, 기장 등 부산 권역별 테마 여행 코스 안내.";
+        pageTitle = "부산 테마별 & 일정별 추천 여행 코스 | 스텝레스 Stepless";
+        pageDesc = "식도락, 체험, 전통시장, 명소 및 당일치기부터 2박 3일까지 부산 추천 여행 코스 안내.";
         canonicalUrl = "https://stepless.kr/tips/courses";
       } else if (tipsSubPage === 'schedule') {
-        pageTitle = "부산 일정별 여행 코스 추천 (당일치기·1박2일) | 스탭리스";
+        pageTitle = "부산 일정별 여행 코스 추천 (당일치기·1박2일·2박3일) | 스텝레스 Stepless";
         pageDesc = "부산 당일치기, 1박2일, 2박3일 알짜 일정별 추천 여행 코스 및 무단차 동선 안내.";
         canonicalUrl = "https://stepless.kr/schedule";
       }
@@ -904,7 +964,7 @@ export default function App() {
       const canonical = document.querySelector('link[rel="canonical"]');
       if (canonical) canonical.setAttribute('href', canonicalUrl);
     } else if (currentTab === 'tourapi') {
-      const pageTitle = "부산 무장애 관광지 & 배리어프리 여행 코스 | 스탭리스";
+      const pageTitle = "부산 무장애 관광지 & 배리어프리 열린관광지 | 스텝레스 Stepless";
       const pageDesc = "한국관광공사 열린관광지 데이터 기반 부산 전역 무장애 여행 스팟, 단차 없는 평탄 보도 및 편의시설 가이드.";
       document.title = pageTitle;
       const metaDesc = document.querySelector('meta[name="description"]');
