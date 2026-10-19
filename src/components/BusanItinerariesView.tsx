@@ -1665,6 +1665,7 @@ export default function BusanItinerariesView({
     const [communityTab, setCommunityTab] = useState<'STANDARD' | 'STEPLESS_GUIDE'>('STANDARD');
 
   const [selectedGourmetCat, setSelectedGourmetCat] = useState<string>('ALL');
+  const [isGourmetSubcatMoreOpen, setIsGourmetSubcatMoreOpen] = useState<boolean>(false);
   const [expandedBranches, setExpandedBranches] = useState<Record<string, boolean>>({});
 
   // Transit page states
@@ -3911,10 +3912,11 @@ export default function BusanItinerariesView({
                     </div>
 
                     {/* Category Pills directly without box wrapper */}
-                    <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar flex-nowrap sm:flex-wrap">
-                      {GOURMET_CATEGORY_TABS.map((tab) => {
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                      {GOURMET_CATEGORY_TABS.map((tab, idx) => {
                         const isSelected = selectedGourmetCat === tab.id;
                         const count = getCategoryCount(tab.id);
+                        const isHiddenOnMobile = !isGourmetSubcatMoreOpen && idx >= 4 && !isSelected;
 
                         return (
                           <button
@@ -3924,7 +3926,7 @@ export default function BusanItinerariesView({
                               e.stopPropagation();
                               setSelectedGourmetCat(tab.id);
                             }}
-                            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
+                            className={`${isHiddenOnMobile ? 'hidden sm:flex' : 'flex'} items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
                               isSelected
                                 ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                                 : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
@@ -3939,6 +3941,24 @@ export default function BusanItinerariesView({
                           </button>
                         );
                       })}
+
+                      {/* 모바일 전용 더보기 / 접기 토글 버튼 */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsGourmetSubcatMoreOpen(prev => !prev);
+                        }}
+                        className="sm:hidden flex items-center gap-1 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border bg-[#F1EFEC] hover:bg-[#E5E2DC] text-[#0A2540] border-[#D5D2CC]"
+                        aria-expanded={isGourmetSubcatMoreOpen}
+                      >
+                        <span>
+                          {isGourmetSubcatMoreOpen
+                            ? (language === 'KR' ? '접기' : 'Collapse')
+                            : (language === 'KR' ? '더보기' : 'More')}
+                        </span>
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isGourmetSubcatMoreOpen ? 'rotate-180' : ''}`} />
+                      </button>
                     </div>
 
                     {/* Gourmet Catalog Cards */}
@@ -4247,7 +4267,7 @@ case 'EXPERIENCE': {
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar flex-nowrap sm:flex-wrap">
+                      <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                         {EXPERIENCE_THEME_TABS.map((tab) => {
                           const count = getThemeStepCount(tab.id);
                           const isSelected = selectedExperienceTheme === tab.id;
