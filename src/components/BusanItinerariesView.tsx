@@ -1657,8 +1657,6 @@ export default function BusanItinerariesView({
     const [communityTab, setCommunityTab] = useState<'STANDARD' | 'STEPLESS_GUIDE'>('STANDARD');
 
   const [selectedGourmetCat, setSelectedGourmetCat] = useState<string>('ALL');
-  const [selectedGourmetMultiCats, setSelectedGourmetMultiCats] = useState<string[]>([]);
-  const [isGourmetMultiSelect, setIsGourmetMultiSelect] = useState<boolean>(false);
 
   // Transit page states
   const [activeTransitCategory, setActiveTransitCategory] = useState<'LINES' | 'BOARDING' | 'EMERGENCY' | 'TRANSITS'>('LINES');
@@ -1774,15 +1772,15 @@ export default function BusanItinerariesView({
   ];
 
     const GOURMET_CATEGORY_TABS = [
-    { id: 'ALL', nameKo: '전체 카테고리', nameEn: 'All Categories', icon: '🍽️' },
-    { id: 'famous', nameKo: '부산 유명 맛집', nameEn: 'Famous Eateries', icon: '🔥' },
-    { id: 'restaurant', nameKo: '음식점', nameEn: 'Restaurants', icon: '🍲' },
-    { id: 'cafe', nameKo: '카페', nameEn: 'Cafes', icon: '☕' },
-    { id: 'bakery', nameKo: '베이커리', nameEn: 'Bakery', icon: '🥐' },
-    { id: 'brunch', nameKo: '브런치', nameEn: 'Brunch', icon: '🍳' },
-    { id: 'market', nameKo: '전통시장', nameEn: 'Traditional Market', icon: '🏬' },
-    { id: 'dessert', nameKo: '디저트', nameEn: 'Dessert', icon: '🍧' },
-    { id: 'other', nameKo: '기타', nameEn: 'Other', icon: '✨' },
+    { id: 'ALL', nameKo: '전체 카테고리', nameEn: 'All Categories' },
+    { id: 'famous', nameKo: '부산 유명 맛집', nameEn: 'Famous Eateries' },
+    { id: 'restaurant', nameKo: '음식점', nameEn: 'Restaurants' },
+    { id: 'cafe', nameKo: '카페', nameEn: 'Cafes' },
+    { id: 'bakery', nameKo: '베이커리', nameEn: 'Bakery' },
+    { id: 'brunch', nameKo: '브런치', nameEn: 'Brunch' },
+    { id: 'market', nameKo: '전통시장', nameEn: 'Traditional Market' },
+    { id: 'dessert', nameKo: '디저트', nameEn: 'Dessert' },
+    { id: 'other', nameKo: '기타', nameEn: 'Other' },
   ];
 
   const GOURMET_CATEGORY_MAP: Record<string, { nameKo: string; nameEn: string; icon: string }> = {
@@ -3879,13 +3877,8 @@ export default function BusanItinerariesView({
                 };
 
                 const filteredGourmetSteps = course.steps.filter((s) => {
-                  const stepCats = getStepCats(s);
-                  if (isGourmetMultiSelect) {
-                    if (selectedGourmetMultiCats.length === 0) return true;
-                    return selectedGourmetMultiCats.some(cat => stepCats.includes(cat));
-                  }
                   if (selectedGourmetCat === 'ALL') return true;
-                  return stepCats.includes(selectedGourmetCat);
+                  return getStepCats(s).includes(selectedGourmetCat);
                 });
 
                 const getCategoryCount = (catId: string): number => {
@@ -3907,51 +3900,23 @@ export default function BusanItinerariesView({
                       </p>
                     </div>
 
-                    {/* Gourmet Category Filter Box */}
+                    {/* Gourmet Category Filter Box (No Emojis, No Multi-Select text) */}
                     <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#E5E2DC] shadow-[0_1px_4px_rgba(0,0,0,0.03)] space-y-3.5 text-left">
                       <div className="flex items-center justify-between text-xs font-bold text-[#11161B] pb-2.5 border-b border-[#E5E2DC]">
-                        <div className="flex items-center gap-2">
-                          <span className="flex items-center gap-1.5 text-slate-800">
-                            <Utensils className="w-4 h-4 text-[#8EA85E]" />
-                            <span className="text-sm font-black">{language === 'KR' ? '식도락 카테고리' : 'Gourmet Categories'}</span>
-                          </span>
-                          {/* 다중 선택 토글 버튼 */}
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setIsGourmetMultiSelect(prev => {
-                                const next = !prev;
-                                if (next) {
-                                  setSelectedGourmetMultiCats(selectedGourmetCat === 'ALL' ? [] : [selectedGourmetCat]);
-                                } else {
-                                  setSelectedGourmetCat(selectedGourmetMultiCats[0] || 'ALL');
-                                }
-                                return next;
-                              });
-                            }}
-                            className={`ml-1.5 sm:ml-2 px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer border flex items-center gap-1.5 ${
-                              isGourmetMultiSelect
-                                ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
-                                : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-slate-600 border-[#E5E2DC]'
-                            }`}
-                            title={language === 'KR' ? '여러 카테고리를 동시에 중복 선택' : 'Toggle multi-category selection'}
-                          >
-                            <span className={`w-2 h-2 rounded-full ${isGourmetMultiSelect ? 'bg-white' : 'bg-slate-400'}`}></span>
-                            <span>{language === 'KR' ? '다중 선택' : 'Multi-Select'}</span>
-                          </button>
-                        </div>
+                        <span className="flex items-center gap-1.5 text-slate-800">
+                          <Utensils className="w-4 h-4 text-[#8EA85E]" />
+                          <span className="text-sm font-black">{language === 'KR' ? '식도락 카테고리' : 'Gourmet Categories'}</span>
+                        </span>
 
                         <span className="text-xs font-mono font-bold text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1 rounded-md border border-[#E5E2DC]">
                           {language === 'KR' ? `총 ${filteredGourmetSteps.length}곳` : `${filteredGourmetSteps.length} spots`}
                         </span>
                       </div>
 
-                      {/* Category Pills (전체 카테고리, 부산 유명 맛집, 음식점, 카페, 베이커리, 브런치, 전통시장, 디저트, 기타) */}
+                      {/* Category Pills (전체 카테고리, 부산 유명 맛집, 음식점, 카페, 베이커리, 브런치, 전통시장, 디저트, 기타 - Emojis removed) */}
                       <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar flex-nowrap sm:flex-wrap">
                         {GOURMET_CATEGORY_TABS.map((tab) => {
-                          const isSelected = isGourmetMultiSelect
-                            ? (tab.id === 'ALL' ? selectedGourmetMultiCats.length === 0 : selectedGourmetMultiCats.includes(tab.id))
-                            : selectedGourmetCat === tab.id;
+                          const isSelected = selectedGourmetCat === tab.id;
                           const count = getCategoryCount(tab.id);
 
                           return (
@@ -3960,21 +3925,7 @@ export default function BusanItinerariesView({
                               type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                if (isGourmetMultiSelect) {
-                                  if (tab.id === 'ALL') {
-                                    setSelectedGourmetMultiCats([]);
-                                  } else {
-                                    setSelectedGourmetMultiCats(prev => {
-                                      if (prev.includes(tab.id)) {
-                                        return prev.filter(c => c !== tab.id);
-                                      } else {
-                                        return [...prev, tab.id];
-                                      }
-                                    });
-                                  }
-                                } else {
-                                  setSelectedGourmetCat(tab.id);
-                                }
+                                setSelectedGourmetCat(tab.id);
                               }}
                               className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
                                 isSelected
@@ -3982,7 +3933,6 @@ export default function BusanItinerariesView({
                                   : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
                               }`}
                             >
-                              <span>{tab.icon}</span>
                               <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
                               <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
                                 isSelected ? 'bg-white/20 text-white' : 'bg-[#E5E2DC] text-[#4A5568]'
@@ -3998,7 +3948,6 @@ export default function BusanItinerariesView({
                     {/* Gourmet Catalog Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4" id="gourmet-catalog">
                       {filteredGourmetSteps.map((step, idx) => {
-                        const isStepWarning = step.hasStep || step.titleKo.includes('먼스커피바') || step.titleKo.includes('스트럿커피') || step.titleKo.includes('솔솥');
                         const matchedSpotId = matchTourApiSpotId(step.titleKo);
                         const effectiveSpotId = resolvePlaceTargetId({
                           id: step.id,
@@ -4008,7 +3957,6 @@ export default function BusanItinerariesView({
                         }) || matchedSpotId || 'spot-101';
                         const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
                         const isSaved = isBookmarked(step.id || step.titleKo);
-                        const stepCats = getStepCats(step);
 
                         return (
                           <div 
@@ -4016,23 +3964,12 @@ export default function BusanItinerariesView({
                             className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors p-5 sm:p-6 flex flex-col justify-between text-left"
                           >
                             <div className="space-y-3 text-left">
+                              {/* Top Bar: Clean Rating & Route Button without category badge clutter */}
                               <div className="flex items-center justify-between border-b border-[#E5E2DC] pb-2.5">
-                                <div className="flex items-center gap-1.5 flex-wrap">
-                                  <span className="text-xs font-bold text-[#0A2540] flex items-center gap-1 font-mono mr-1">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-xs font-bold text-[#0A2540] flex items-center gap-1 font-mono">
                                     <span>★ 5.0</span>
                                   </span>
-                                  {stepCats.map(catKey => {
-                                    const catInfo = GOURMET_CATEGORY_MAP[catKey];
-                                    if (!catInfo) return null;
-                                    return (
-                                      <span
-                                        key={catKey}
-                                        className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#8EA85E]/10 text-[#4D6328] border border-[#8EA85E]/25"
-                                      >
-                                        {catInfo.icon} {language === 'KR' ? catInfo.nameKo : catInfo.nameEn}
-                                      </span>
-                                    );
-                                  })}
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <button
@@ -4043,7 +3980,7 @@ export default function BusanItinerariesView({
                                         id: step.id || step.titleKo,
                                         titleKo: step.titleKo,
                                         titleEn: step.titleEn,
-                                        categoryKo: stepCats.map(c => GOURMET_CATEGORY_MAP[c]?.nameKo).filter(Boolean).join(' · ') || '부산 식도락',
+                                        categoryKo: '부산 식도락',
                                         categoryEn: 'Gourmet',
                                         addressRoadKo: ktoDetail?.addressRoadKo || step.stationInfoKo,
                                         stationInfoKo: step.stationInfoKo,
@@ -4141,28 +4078,6 @@ export default function BusanItinerariesView({
                                 </div>
                               )}
                             </div>
-
-                            <div className="mt-5 pt-3 border-t border-[#E5E2DC] space-y-2">
-                              {/* Flat seating indicators checklist */}
-                              {isStepWarning ? (
-                                <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium text-[#11161B] bg-[#FBFBF9] p-2.5 rounded-md border border-[#E5E2DC]">
-                                  <AlertTriangle className="w-3.5 h-3.5 text-[#D95338] shrink-0" />
-                                  <span>{language === 'KR' ? '입구 턱 있음 (방문 전 미리 문의 추천)' : 'Step at entrance (Call ahead)'}</span>
-                                </div>
-                              ) : (
-                                <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium text-[#11161B] bg-[#FBFBF9] p-2.5 rounded-md border border-[#E5E2DC]">
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-                                  <span>{language === 'KR' ? '턱 없음 / 우회 경판 완비 · 넓은 입식 테이블' : 'Step-free entrance · Flat seat tables provided'}</span>
-                                </div>
-                              )}
-
-                              {step.stationInfoKo && (
-                                <div className="text-[11px] text-[#4A5568] flex items-center gap-1.5 font-mono">
-                                  <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-                                  <span>{language === 'KR' ? step.stationInfoKo : step.stationInfoEn}</span>
-                                </div>
-                              )}
-                            </div>
                           </div>
                         );
                       })}
@@ -4189,7 +4104,7 @@ export default function BusanItinerariesView({
               // -------------------------------------------------------------
               // PAGE 7: EXPERIENCE (체험&박물관) - Editorial Travel Magazine
               // -------------------------------------------------------------
-              case 'EXPERIENCE': {
+case 'EXPERIENCE': {
                 const filteredExperienceSteps = course.steps.filter(s => {
                   const matchRegion = selectedExperienceRegion === 'ALL' || s.regionId === selectedExperienceRegion;
                   const matchTheme = selectedExperienceTheme === 'ALL' || s.categoryType === selectedExperienceTheme;
