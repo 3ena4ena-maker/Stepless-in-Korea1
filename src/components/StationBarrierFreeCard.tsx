@@ -117,7 +117,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
     : (station.precautionsEn || station.precautions);
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md p-5 sm:p-7 space-y-6 text-left my-6" id={`station-summary-${station.id}`}>
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-md p-3.5 sm:p-7 space-y-5 sm:space-y-6 text-left my-4 sm:my-6" id={`station-summary-${station.id}`}>
       
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
@@ -152,42 +152,42 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
           <span>{language === 'KR' ? `${station.name} 핵심 배리어프리 요약표` : `${displayName} Accessibility Summary`}</span>
         </h3>
 
-        <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-2xs">
-          <table className="w-full text-xs sm:text-sm text-left border-collapse">
-            <tbody>
+        <div className="w-full overflow-x-auto rounded-2xl border border-slate-200 shadow-2xs">
+          <table className="w-full text-xs sm:text-sm text-left border-collapse block sm:table">
+            <tbody className="block sm:table-row-group">
               {/* 1. 역명 */}
-              <tr className="border-b border-slate-150 bg-slate-50/50">
-                <th className="py-2.5 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/70 border-r border-slate-200/80 whitespace-nowrap shrink-0 text-xs sm:text-sm">
+              <tr className="block sm:table-row border-b border-slate-150 bg-slate-50/50">
+                <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/90 sm:bg-slate-100/70 border-b sm:border-b-0 sm:border-r border-slate-200/80 text-xs sm:text-sm">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <Train className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#004481] shrink-0" />
                     <span>{language === 'KR' ? '역명' : 'Station'}</span>
                   </div>
                 </th>
-                <td className="py-2.5 px-3 sm:py-3 sm:px-4 text-slate-800 font-extrabold text-xs sm:text-sm">
+                <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-800 font-extrabold text-xs sm:text-sm">
                   <p>{displayName} ({lineLabels} {station.isTransferStation ? (language === 'KR' ? '환승역' : 'Transfer Station') : (language === 'KR' ? '단일노선' : 'Single Line')})</p>
                 </td>
               </tr>
 
               {/* 2. 출구 정보 (추천 출구 및 승강기 설비 통합 현황) */}
-              <tr className="border-b border-slate-150">
-                <th className="py-2.5 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/70 border-r border-slate-200/80 whitespace-nowrap shrink-0 text-xs sm:text-sm align-top">
-                  <div className="flex items-center gap-1 sm:gap-1.5 mt-1 sm:mt-1.5">
+              <tr className="block sm:table-row border-b border-slate-150">
+                <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/90 sm:bg-slate-100/70 border-b sm:border-b-0 sm:border-r border-slate-200/80 text-xs sm:text-sm align-top">
+                  <div className="flex items-center gap-1 sm:gap-1.5 mt-0.5 sm:mt-1.5">
                     <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#8EA85E] shrink-0" />
                     <span>{language === 'KR' ? '출구 정보' : 'Exit Info'}</span>
                   </div>
                 </th>
-                <td className="py-2.5 px-3 sm:py-3 sm:px-4 text-slate-800 text-xs sm:text-sm space-y-3">
+                <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-800 text-xs sm:text-sm space-y-3">
                   {/* Top: Recommended Exit & Counts */}
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-extrabold text-slate-900 text-xs sm:text-sm">
+                    <span className="font-extrabold text-slate-900 text-xs sm:text-sm break-keep">
                       {recommendedExitsText}
                     </span>
-                    <span className="text-2xs sm:text-xs font-bold text-emerald-800 bg-[#F2F8F4] border border-[#D3E8D9] px-2 py-0.5 rounded-md inline-flex items-center gap-1">
+                    <span className="text-2xs sm:text-xs font-bold text-emerald-800 bg-[#F2F8F4] border border-[#D3E8D9] px-2 py-0.5 rounded-md inline-flex items-center gap-1 shrink-0">
                       <span>✓</span>
                       <span>{language === 'KR' ? '단차 없는 추천 출구' : 'Recommended Step-Free'}</span>
                     </span>
                     {station.exits && station.exits.length > 0 && (
-                      <div className="flex flex-wrap items-center gap-1.5 text-2xs sm:text-xs text-slate-500 sm:ml-auto">
+                      <div className="flex flex-wrap items-center gap-1.5 text-2xs sm:text-xs text-slate-500 w-full sm:w-auto sm:ml-auto">
                         <span>
                           {language === 'KR' 
                             ? `총 ${station.exits.length}개 출구:` 
@@ -214,11 +214,11 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                           {bothExits.map((exit, idx) => (
                             <span
                               key={idx}
-                              className="font-bold text-slate-800 bg-[#F2F7F2] hover:bg-[#EBF3EA] px-2.5 py-1.5 rounded-xl border border-[#D0E2CF] shadow-2xs inline-flex items-center gap-2 text-xs sm:text-sm whitespace-nowrap transition-colors"
+                              className="font-bold text-slate-800 bg-[#F2F7F2] hover:bg-[#EBF3EA] px-2.5 py-1.5 rounded-xl border border-[#D0E2CF] shadow-2xs inline-flex flex-wrap sm:flex-nowrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm max-w-full transition-colors"
                             >
-                              <span className="text-slate-900 font-extrabold">{formatExitNumber(exit.number, language)}</span>
-                              <span className="w-px h-3.5 bg-slate-200/90 shrink-0" />
-                              <span className="inline-flex items-center gap-1.5 text-xs">
+                              <span className="text-slate-900 font-extrabold break-keep">{formatExitNumber(exit.number, language)}</span>
+                              <span className="w-px h-3.5 bg-slate-200/90 shrink-0 hidden sm:inline-block" />
+                              <span className="inline-flex items-center gap-1.5 text-xs shrink-0">
                                 <span className="inline-flex items-center gap-1 text-[#2E6B3E] font-bold">
                                   <ElevatorIcon className="w-3.5 h-3.5 text-[#2E6B3E]" />
                                   <span>EV</span>
@@ -241,11 +241,11 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                           {elevatorOnlyExits.map((exit, idx) => (
                             <span
                               key={idx}
-                              className="font-bold text-slate-800 bg-[#F8FAF7] hover:bg-[#F0F5EE] px-2.5 py-1.5 rounded-xl border border-[#DEE7D7] shadow-2xs inline-flex items-center gap-2 text-xs sm:text-sm whitespace-nowrap transition-colors"
+                              className="font-bold text-slate-800 bg-[#F8FAF7] hover:bg-[#F0F5EE] px-2.5 py-1.5 rounded-xl border border-[#DEE7D7] shadow-2xs inline-flex flex-wrap sm:flex-nowrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm max-w-full transition-colors"
                             >
-                              <span className="text-slate-900 font-extrabold">{formatExitNumber(exit.number, language)}</span>
-                              <span className="w-px h-3.5 bg-slate-200/90 shrink-0" />
-                              <span className="inline-flex items-center gap-1 text-[#55702E] font-bold text-xs">
+                              <span className="text-slate-900 font-extrabold break-keep">{formatExitNumber(exit.number, language)}</span>
+                              <span className="w-px h-3.5 bg-slate-200/90 shrink-0 hidden sm:inline-block" />
+                              <span className="inline-flex items-center gap-1 text-[#55702E] font-bold text-xs shrink-0">
                                 <ElevatorIcon className="w-3.5 h-3.5 text-[#55702E]" />
                                 <span>EV</span>
                               </span>
@@ -260,11 +260,11 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                           {escalatorOnlyExits.map((exit, idx) => (
                             <span
                               key={idx}
-                              className="font-bold text-slate-800 bg-[#F9FBFC] hover:bg-[#F0F4F8] px-2.5 py-1.5 rounded-xl border border-[#DEE5ED] shadow-2xs inline-flex items-center gap-2 text-xs sm:text-sm whitespace-nowrap transition-colors"
+                              className="font-bold text-slate-800 bg-[#F9FBFC] hover:bg-[#F0F4F8] px-2.5 py-1.5 rounded-xl border border-[#DEE5ED] shadow-2xs inline-flex flex-wrap sm:flex-nowrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm max-w-full transition-colors"
                             >
-                              <span className="text-slate-900 font-extrabold">{formatExitNumber(exit.number, language)}</span>
-                              <span className="w-px h-3.5 bg-slate-200/90 shrink-0" />
-                              <span className="inline-flex items-center gap-1.5 text-xs">
+                              <span className="text-slate-900 font-extrabold break-keep">{formatExitNumber(exit.number, language)}</span>
+                              <span className="w-px h-3.5 bg-slate-200/90 shrink-0 hidden sm:inline-block" />
+                              <span className="inline-flex items-center gap-1.5 text-xs shrink-0">
                                 <span className="inline-flex items-center gap-1 text-[#3B668F] font-bold">
                                   <EscalatorIcon className="w-3.5 h-3.5 text-[#3B668F]" />
                                   <span>ES</span>
@@ -285,71 +285,71 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
               </tr>
 
               {/* 5. 이동 시간 */}
-              <tr className="border-b border-slate-150 bg-slate-50/50">
-                <th className="py-2.5 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/70 border-r border-slate-200/80 whitespace-nowrap shrink-0 text-xs sm:text-sm">
+              <tr className="block sm:table-row border-b border-slate-150 bg-slate-50/50">
+                <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/90 sm:bg-slate-100/70 border-b sm:border-b-0 sm:border-r border-slate-200/80 text-xs sm:text-sm">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600 shrink-0" />
                     <span>{language === 'KR' ? '이동 시간' : 'Walking Time'}</span>
                   </div>
                 </th>
-                <td className="py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium text-xs sm:text-sm">
+                <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium text-xs sm:text-sm">
                   <p>{avgMovementTimeText}</p>
                 </td>
               </tr>
 
               {/* 6. 환승 동선 */}
-              <tr className="border-b border-slate-150">
-                <th className="py-2.5 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/70 border-r border-slate-200/80 whitespace-nowrap shrink-0 text-xs sm:text-sm">
+              <tr className="block sm:table-row border-b border-slate-150">
+                <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/90 sm:bg-slate-100/70 border-b sm:border-b-0 sm:border-r border-slate-200/80 text-xs sm:text-sm">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <ArrowRightLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600 shrink-0" />
                     <span>{language === 'KR' ? '환승 동선' : 'Transfer Route'}</span>
                   </div>
                 </th>
-                <td className="py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium text-xs sm:text-sm">
+                <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium text-xs sm:text-sm break-keep">
                   <p>{transferRouteText}</p>
                 </td>
               </tr>
 
               {/* 7. 물품보관함 */}
-              <tr className="border-b border-slate-150 bg-slate-50/50">
-                <th className="py-2.5 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/70 border-r border-slate-200/80 whitespace-nowrap shrink-0 text-xs sm:text-sm">
+              <tr className="block sm:table-row border-b border-slate-150 bg-slate-50/50">
+                <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/90 sm:bg-slate-100/70 border-b sm:border-b-0 sm:border-r border-slate-200/80 text-xs sm:text-sm">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <Box className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600 shrink-0" />
                     <span>{language === 'KR' ? '물품보관함' : 'Luggage Lockers'}</span>
                   </div>
                 </th>
-                <td className="py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium text-xs sm:text-sm">
+                <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium text-xs sm:text-sm">
                   {renderLockerInfo(station.id, language)}
                 </td>
               </tr>
 
               {/* 8. 주변 가볼 만한 곳 */}
-              <tr className="border-b border-slate-150 bg-slate-50/30">
-                <th className="py-2.5 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/70 border-r border-slate-200/80 whitespace-nowrap shrink-0 text-xs sm:text-sm">
+              <tr className="block sm:table-row border-b border-slate-150 bg-slate-50/30">
+                <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/90 sm:bg-slate-100/70 border-b sm:border-b-0 sm:border-r border-slate-200/80 text-xs sm:text-sm">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#8EA85E] shrink-0" />
                     <span>{language === 'KR' ? '주변 가볼 만한 곳' : 'Nearby Places'}</span>
                   </div>
                 </th>
-                <td className="py-2.5 px-3 sm:py-3 sm:px-4 text-slate-800 font-medium text-xs sm:text-sm">
+                <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-800 font-medium text-xs sm:text-sm">
                   {nearbyPlaces.length > 0 ? (
                     <div className="flex flex-col gap-1.5">
                       {nearbyPlaces.map((place, idx) => (
                         <div 
                           key={idx} 
-                          className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5 bg-[#FAFBFD] p-2 px-3 rounded-xl border border-slate-200/70 shadow-2xs"
+                          className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2.5 bg-[#FAFBFD] p-2.5 sm:p-2 sm:px-3 rounded-xl border border-slate-200/70 shadow-2xs"
                         >
-                          <div className="flex items-center gap-2 min-w-0">
-                            <span className="font-extrabold text-slate-900 text-xs sm:text-[13px] whitespace-nowrap shrink-0">
+                          <div className="flex items-start sm:items-center gap-1.5 sm:gap-2 min-w-0 flex-wrap sm:flex-nowrap">
+                            <span className="font-extrabold text-slate-900 text-xs sm:text-[13px] shrink-0">
                               {place.name}
                             </span>
-                            <span className="text-slate-300 select-none">|</span>
-                            <span className="text-slate-600 text-[11px] sm:text-xs truncate">
+                            <span className="text-slate-300 select-none hidden sm:inline">|</span>
+                            <span className="text-slate-600 text-[11px] sm:text-xs break-keep">
                               {place.desc}
                             </span>
                           </div>
                           {place.exits && place.exits.length > 0 && (
-                            <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
+                            <div className="flex items-center gap-1 shrink-0 flex-wrap sm:flex-nowrap mt-0.5 sm:mt-0 sm:ml-auto">
                               {place.exits.map((ex, exIdx) => (
                                 <NearbyExitBadge
                                   key={exIdx}
@@ -371,14 +371,14 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
               </tr>
 
               {/* 9. 주의사항 */}
-              <tr className="bg-amber-50/40">
-                <th className="py-2.5 px-3 sm:py-3 sm:px-4 font-bold text-amber-900 bg-amber-100/60 border-r border-amber-200/70 whitespace-nowrap shrink-0 text-xs sm:text-sm">
+              <tr className="block sm:table-row bg-amber-50/40">
+                <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-amber-900 bg-amber-100/80 sm:bg-amber-100/60 border-b sm:border-b-0 sm:border-r border-amber-200/70 text-xs sm:text-sm">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
                     <span>{language === 'KR' ? '주의사항' : 'Precautions'}</span>
                   </div>
                 </th>
-                <td className="py-2.5 px-3 sm:py-3 sm:px-4 text-amber-900 font-medium text-xs sm:text-sm">
+                <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-amber-900 font-medium text-xs sm:text-sm break-keep">
                   <p>{precautionsText}</p>
                 </td>
               </tr>
