@@ -1481,7 +1481,15 @@ const MyRouteIllustration = ({ className }: { className?: string }) => (
   </svg>
 );
 
-function AttractionPhotoThumbnail({ src, alt }: { src?: string; alt?: string }) {
+function AttractionPhotoThumbnail({ 
+  src, 
+  alt, 
+  className = "w-full h-36 sm:h-44" 
+}: { 
+  src?: string; 
+  alt?: string; 
+  className?: string; 
+}) {
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
@@ -1490,7 +1498,7 @@ function AttractionPhotoThumbnail({ src, alt }: { src?: string; alt?: string }) 
   }
 
   return (
-    <div className="w-full h-36 sm:h-44 rounded-md overflow-hidden bg-slate-100 border border-[#E5E2DC] relative">
+    <div className={`${className} rounded-md overflow-hidden bg-slate-100 border border-[#E5E2DC] relative`}>
       <img
         src={src}
         alt={alt || '부산 명소'}
@@ -1764,11 +1772,11 @@ export default function BusanItinerariesView({
   const [selectedAttractionRegion, setSelectedAttractionRegion] = useState<string>('ALL');
 
   const EXPERIENCE_THEME_TABS = [
-    { id: 'ALL', nameKo: '전체 테마', nameEn: 'All Themes', icon: '✨' },
-    { id: 'MUSEUM', nameKo: '박물관 & 역사관', nameEn: 'Museums & History', icon: '🏛️' },
-    { id: 'ART', nameKo: '미술관 & 전시관', nameEn: 'Art & Exhibitions', icon: '🎨' },
-    { id: 'SCIENCE_ECO', nameKo: '과학 & 수족관 & 생태', nameEn: 'Science & Aquarium', icon: '🐬' },
-    { id: 'CULTURE', nameKo: '복합문화공간', nameEn: 'Cultural Spaces', icon: '🎬' }
+    { id: 'ALL', nameKo: '전체 카테고리', nameEn: 'All Categories' },
+    { id: 'MUSEUM', nameKo: '박물관', nameEn: 'Museums' },
+    { id: 'ART', nameKo: '미술관', nameEn: 'Art Galleries' },
+    { id: 'SCIENCE_ECO', nameKo: '과학·생태', nameEn: 'Science & Eco' },
+    { id: 'CULTURE', nameKo: '복합문화', nameEn: 'Cultural Spaces' }
   ];
 
     const GOURMET_CATEGORY_TABS = [
@@ -4106,15 +4114,9 @@ export default function BusanItinerariesView({
               // -------------------------------------------------------------
 case 'EXPERIENCE': {
                 const filteredExperienceSteps = course.steps.filter(s => {
-                  const matchRegion = selectedExperienceRegion === 'ALL' || s.regionId === selectedExperienceRegion;
                   const matchTheme = selectedExperienceTheme === 'ALL' || s.categoryType === selectedExperienceTheme;
-                  return matchRegion && matchTheme;
+                  return matchTheme;
                 });
-
-                const getRegionStepCount = (regId: string) => {
-                  if (regId === 'ALL') return course.steps.length;
-                  return course.steps.filter(s => s.regionId === regId).length;
-                };
 
                 const getThemeStepCount = (themeId: string) => {
                   if (themeId === 'ALL') return course.steps.length;
@@ -4135,81 +4137,46 @@ case 'EXPERIENCE': {
                       </p>
                     </div>
 
-                    {/* Regional & Category Filter Panel */}
-                    <div className="bg-white p-5 rounded-lg border border-[#E5E2DC] space-y-4 text-left">
-                      {/* Regional Filter */}
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between text-xs font-bold text-[#11161B] border-b border-[#E5E2DC] pb-3">
-                          <span className="flex items-center gap-1.5">
-                            <Compass className="w-4 h-4 text-[#0A2540]" />
-                            <span>{language === 'KR' ? '부산 지역 선택' : 'Select Location'}</span>
-                          </span>
-                        </div>
+                    {/* Category Filter Box (Single Clean Filter, No Emojis, No Region Filter) */}
+                    <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#E5E2DC] shadow-[0_1px_4px_rgba(0,0,0,0.03)] space-y-3.5 text-left">
+                      <div className="flex items-center justify-between text-xs font-bold text-[#11161B] pb-2.5 border-b border-[#E5E2DC]">
+                        <span className="flex items-center gap-1.5 text-slate-800">
+                          <Compass className="w-4 h-4 text-[#8EA85E]" />
+                          <span className="text-sm font-black">{language === 'KR' ? '체험 & 박물관 카테고리' : 'Museum & Experience Categories'}</span>
+                        </span>
 
-                        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-                          {REGION_FILTER_TABS.map((tab) => {
-                            const count = getRegionStepCount(tab.id);
-                            const isSelected = selectedExperienceRegion === tab.id;
-                            return (
-                              <button
-                                key={tab.id}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setSelectedExperienceRegion(tab.id);
-                                }}
-                                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer shrink-0 border ${
-                                  isSelected
-                                    ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
-                                    : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
-                                }`}
-                              >
-                                <span>{tab.icon}</span>
-                                <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
-                                <span className={`px-1.5 py-0.5 rounded-md text-[10px] font-mono ${
-                                  isSelected ? 'bg-white/20 text-white' : 'bg-[#E5E2DC] text-[#11161B]'
-                                }`}>
-                                  {count}
-                                </span>
-                              </button>
-                            );
-                          })}
-                        </div>
+                        <span className="text-xs font-mono font-bold text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1 rounded-md border border-[#E5E2DC]">
+                          {language === 'KR' ? `총 ${filteredExperienceSteps.length}곳` : `${filteredExperienceSteps.length} spots`}
+                        </span>
                       </div>
 
-                      {/* Category Filter */}
-                      <div className="pt-3 border-t border-[#E5E2DC] space-y-3">
-                        <div className="text-xs font-bold text-[#4A5568]">
-                          <span>{language === 'KR' ? '체험 카테고리 필터' : 'Filter by Category'}</span>
-                        </div>
-
-                        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-                          {EXPERIENCE_THEME_TABS.map((tab) => {
-                            const count = getThemeStepCount(tab.id);
-                            const isSelected = selectedExperienceTheme === tab.id;
-                            return (
-                              <button
-                                key={tab.id}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setSelectedExperienceTheme(tab.id);
-                                }}
-                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer shrink-0 border ${
-                                  isSelected
-                                    ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
-                                    : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
-                                }`}
-                              >
-                                <span>{tab.icon}</span>
-                                <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
-                                <span className={`px-1.5 py-0.5 rounded-md text-[10px] font-mono ${
-                                  isSelected ? 'bg-white/20 text-white' : 'bg-[#E5E2DC] text-[#11161B]'
-                                }`}>
-                                  ({count})
-                                </span>
-                              </button>
-                            );
-                          })}
-                        </div>
+                      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar flex-nowrap sm:flex-wrap">
+                        {EXPERIENCE_THEME_TABS.map((tab) => {
+                          const count = getThemeStepCount(tab.id);
+                          const isSelected = selectedExperienceTheme === tab.id;
+                          return (
+                            <button
+                              key={tab.id}
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedExperienceTheme(tab.id);
+                              }}
+                              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
+                                isSelected
+                                  ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
+                                  : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
+                              }`}
+                            >
+                              <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
+                              <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                                isSelected ? 'bg-white/20 text-white' : 'bg-[#E5E2DC] text-[#4A5568]'
+                              }`}>
+                                {count}
+                              </span>
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
 
@@ -4222,7 +4189,6 @@ case 'EXPERIENCE': {
                         <button
                           onClick={() => {
                             setSelectedExperienceTheme('ALL');
-                            setSelectedExperienceRegion('ALL');
                           }}
                           className="mt-2 px-4 py-2 bg-[#8EA85E] text-white text-xs font-bold rounded-md cursor-pointer hover:bg-[#8EA85E]/90 transition-colors"
                         >
@@ -4238,20 +4204,46 @@ case 'EXPERIENCE': {
                             contentId: step.contentId,
                             titleKo: step.titleKo,
                             titleEn: step.titleEn,
-                          }) || matchedSpotId || 'spot-101';
+                          }) || matchedSpotId;
                           const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
+                          const imageUrl = step.firstImage || ktoDetail?.firstImage;
                           const isSaved = isBookmarked(step.id || step.titleKo);
 
-                          const getThemeTagLabel = (cType?: string, defaultTime?: string) => {
-                            if (defaultTime && (defaultTime.includes('라이딩') || defaultTime.includes('자전거') || defaultTime.includes('생태'))) {
-                              return defaultTime;
-                            }
-                            if (cType === 'MUSEUM') return language === 'KR' ? '박물관' : 'Museum';
-                            if (cType === 'ART') return language === 'KR' ? '미술관' : 'Art Gallery';
-                            if (cType === 'SCIENCE_ECO') return language === 'KR' ? '과학/생태' : 'Science & Eco';
-                            if (cType === 'CULTURE') return language === 'KR' ? '복합문화' : 'Cultural Space';
-                            return defaultTime || (language === 'KR' ? '체험전시' : 'Interactive');
-                          };
+                          const displayTitle = language === 'KR' ? step.titleKo : step.titleEn;
+                          const isLongTitle = displayTitle.length > 11;
+
+                          const renderRouteButton = () => (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleMyRoute({
+                                  id: step.id || step.titleKo,
+                                  titleKo: step.titleKo,
+                                  titleEn: step.titleEn,
+                                  categoryKo: '체험/박물관',
+                                  categoryEn: 'Experience',
+                                  addressRoadKo: ktoDetail?.addressRoadKo || step.stationInfoKo,
+                                  stationInfoKo: step.stationInfoKo,
+                                  stationInfoEn: step.stationInfoEn,
+                                  descKo: step.descKo,
+                                  descEn: step.descEn,
+                                  firstImage: imageUrl,
+                                  latitude: ktoDetail?.latitude,
+                                  longitude: ktoDetail?.longitude,
+                                });
+                              }}
+                              className={`shrink-0 px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
+                                isSaved
+                                  ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                  : 'bg-white text-slate-500 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
+                              }`}
+                              title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                            >
+                              <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                              <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                            </button>
+                          );
 
                           return (
                             <div 
@@ -4259,72 +4251,46 @@ case 'EXPERIENCE': {
                               className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors p-5 flex flex-col justify-between text-left space-y-4"
                             >
                               <div className="space-y-3 text-left">
-                                {/* Top Badges Row */}
-                                <div className="flex items-center justify-between border-b border-[#E5E2DC] pb-2">
-                                  <div className="flex items-center gap-1.5 flex-wrap">
-                                    <span className="text-[11px] font-mono font-bold text-[#0A2540] bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                                      {language === 'KR' ? (step.regionNameKo || '부산') : (step.regionNameEn || 'Busan')}
-                                    </span>
-                                    <span className="text-[11px] font-mono font-bold text-[#11161B] bg-[#F1EFEC] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                                      {getThemeTagLabel(step.categoryType, step.time)}
-                                    </span>
+                                {/* Small TourAPI image thumbnail (only when available) */}
+                                {imageUrl && (
+                                  <AttractionPhotoThumbnail
+                                    src={imageUrl}
+                                    alt={step.titleKo}
+                                    className="w-full h-28 sm:h-32"
+                                  />
+                                )}
+
+                                {/* Title & Route Button */}
+                                {isLongTitle ? (
+                                  <div className="space-y-1.5">
+                                    <h4 className="text-base font-bold text-[#11161B] leading-snug">
+                                      {displayTitle}
+                                    </h4>
+                                    <div className="flex justify-end pt-0.5">
+                                      {renderRouteButton()}
+                                    </div>
                                   </div>
-                                  <button
-                                    type="button"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      toggleMyRoute({
-                                        id: step.id || step.titleKo,
-                                        titleKo: step.titleKo,
-                                        titleEn: step.titleEn,
-                                        categoryKo: getThemeTagLabel(step.categoryType, step.time) || '체험/박물관',
-                                        categoryEn: 'Experience',
-                                        addressRoadKo: ktoDetail?.addressRoadKo || step.stationInfoKo,
-                                        stationInfoKo: step.stationInfoKo,
-                                        stationInfoEn: step.stationInfoEn,
-                                        descKo: step.descKo,
-                                        descEn: step.descEn,
-                                        firstImage: ktoDetail?.firstImage,
-                                        latitude: ktoDetail?.latitude,
-                                        longitude: ktoDetail?.longitude,
-                                      });
-                                    }}
-                                    className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
-                                      isSaved
-                                        ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
-                                        : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
-                                    }`}
-                                    title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
-                                  >
-                                    <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
-                                    <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
-                                  </button>
-                                </div>
+                                ) : (
+                                  <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                      <h4 className="text-base font-bold text-[#11161B] leading-snug">
+                                        {displayTitle}
+                                      </h4>
+                                      {renderRouteButton()}
+                                    </div>
+                                  </div>
+                                )}
 
-                                {/* Title */}
-                                <h4 className="text-base font-bold text-[#11161B] leading-snug">
-                                  {language === 'KR' ? step.titleKo : step.titleEn}
-                                </h4>
-
-                                {/* Description */}
+                                {/* Description (Clean, concise, barrier-free boilerplate removed) */}
                                 <p className="text-xs text-[#4A5568] font-normal leading-relaxed text-left">
                                   {language === 'KR' ? step.descKo : step.descEn}
                                 </p>
                               </div>
 
-                              {/* Bottom Accessibility & Transit Info */}
+                              {/* Bottom Transit & Station Info */}
                               <div className="pt-3 border-t border-[#E5E2DC] space-y-2 text-left">
-                                <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-[#11161B] bg-[#FBFBF9] p-2.5 rounded-md border border-[#E5E2DC]">
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-                                  <span>
-                                    {language === 'KR'
-                                      ? (step.accessibilityDescKo || '엘리베이터 완비 · 무장애 평지/경사로')
-                                      : (step.accessibilityDescEn || 'Elevators & Step-free ramps provided')}
-                                  </span>
-                                </div>
-
                                 {step.rentalStations && step.rentalStations.length > 0 ? (
-                                  <div className="pt-2 border-t border-[#E5E2DC] space-y-2">
+                                  <div className="space-y-2">
                                     <div className="flex items-center gap-1.5 text-xs font-bold text-[#0A2540]">
                                       <Bike className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
                                       <span>{language === 'KR' ? '자전거 대여소' : 'Bicycle Rental Stations'}</span>
@@ -4337,7 +4303,6 @@ case 'EXPERIENCE': {
                                               {language === 'KR' ? station.nameKo : (station.nameEn || station.nameKo)}
                                             </span>
                                             <div className="flex items-center gap-1.5 shrink-0">
-                                              {/* 네이버 지도 버튼 */}
                                               {station.naverMapUrl && (
                                                 <a
                                                   href={station.naverMapUrl}
@@ -4353,7 +4318,6 @@ case 'EXPERIENCE': {
                                                 </a>
                                               )}
 
-                                              {/* 구글맵 버튼 */}
                                               {station.googleMapUrl && (
                                                 <a
                                                   href={station.googleMapUrl}
@@ -4428,7 +4392,7 @@ case 'EXPERIENCE': {
                       </div>
                       <div className="space-y-1 select-none text-left">
                         <span className="text-[11px] font-mono font-bold text-[#0A2540] uppercase tracking-wider">
-                          {language === 'KR' ? '체험 & 박물관 방문 무장애 팁' : 'ACCESSIBLE MUSEUM TIP'}
+                          {language === 'KR' ? '체험 & 박물관 방문 팁' : 'MUSEUM & EXPERIENCE TIP'}
                         </span>
                         <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed font-normal">
                           {language === 'KR' ? course.overallTipKo : course.overallTipEn}
