@@ -3974,11 +3974,13 @@ export default function BusanItinerariesView({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3" id="gourmet-catalog">
                       {filteredGourmetSteps.map((step, idx) => {
                         const matchedSpotId = matchTourApiSpotId(step.titleKo);
-                        const effectiveSpotId = step.contentId 
-                          ? resolvePlaceTargetId({ id: step.id, contentId: step.contentId, titleKo: step.titleKo, titleEn: step.titleEn })
-                          : (matchedSpotId && matchedSpotId !== 'spot-101' ? matchedSpotId : null);
+                        const effectiveSpotId = resolvePlaceTargetId({
+                          id: step.id,
+                          contentId: step.contentId,
+                          titleKo: step.titleKo,
+                          titleEn: step.titleEn,
+                        }) || matchedSpotId;
                         const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
-                        const imageUrl = step.firstImage || (ktoDetail && ktoDetail.id !== 'spot-101' ? ktoDetail.firstImage : undefined);
                         const isSaved = isBookmarked(step.id || step.titleKo);
 
                         return (
@@ -3987,15 +3989,6 @@ export default function BusanItinerariesView({
                             className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors p-3.5 sm:p-4 flex flex-col justify-between text-left space-y-2"
                           >
                             <div className="space-y-1.5 text-left">
-                              {/* 한국관광공사 TourAPI 대표 이미지 썸네일 (공식 사진이 있는 경우만 표시) */}
-                              {imageUrl && (
-                                <AttractionPhotoThumbnail
-                                  src={imageUrl}
-                                  alt={step.titleKo}
-                                  className="w-full h-28 sm:h-32 mb-1"
-                                />
-                              )}
-
                               {/* Header: Title & Route Button on the SAME line (No star rating) */}
                               <div className="flex items-center justify-between gap-2">
                                 <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug">
@@ -4016,7 +4009,7 @@ export default function BusanItinerariesView({
                                       stationInfoEn: step.stationInfoEn,
                                       descKo: step.descKo,
                                       descEn: step.descEn,
-                                      firstImage: imageUrl || ktoDetail?.firstImage,
+                                      firstImage: ktoDetail?.firstImage,
                                       latitude: ktoDetail?.latitude,
                                       longitude: ktoDetail?.longitude,
                                     });
