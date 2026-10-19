@@ -1779,7 +1779,8 @@ export default function BusanItinerariesView({
     { id: 'MUSEUM', nameKo: '박물관', nameEn: 'Museums' },
     { id: 'ART', nameKo: '미술관', nameEn: 'Art Galleries' },
     { id: 'SCIENCE_ECO', nameKo: '과학·생태', nameEn: 'Science & Eco' },
-    { id: 'CULTURE', nameKo: '복합문화', nameEn: 'Cultural Spaces' }
+    { id: 'CULTURE', nameKo: '복합문화', nameEn: 'Cultural Spaces' },
+    { id: 'WORKSHOP', nameKo: '체험공방', nameEn: 'Craft Workshops' }
   ];
 
     const GOURMET_CATEGORY_TABS = [
@@ -4247,8 +4248,9 @@ case 'EXPERIENCE': {
                   <div className="space-y-6 animate-fade-in text-left">
                     {/* Header */}
                     <div className="space-y-2 border-b border-slate-200 pb-5 text-left">
-                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                        {language === 'KR' ? '부산 체험 & 박물관' : 'Busan Museums & Experiences'}
+                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
+                        <Compass className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '체험 & 박물관' : 'Museums & Experiences'}</span>
                       </h2>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                         {language === 'KR'
@@ -4257,47 +4259,34 @@ case 'EXPERIENCE': {
                       </p>
                     </div>
 
-                    {/* Category Filter Box (Single Clean Filter, No Emojis, No Region Filter) */}
-                    <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#E5E2DC] shadow-[0_1px_4px_rgba(0,0,0,0.03)] space-y-3.5 text-left">
-                      <div className="flex items-center justify-between text-xs font-bold text-[#11161B] pb-2.5 border-b border-[#E5E2DC]">
-                        <span className="flex items-center gap-1.5 text-slate-800">
-                          <Compass className="w-4 h-4 text-[#8EA85E]" />
-                          <span className="text-sm font-black">{language === 'KR' ? '체험 & 박물관 카테고리' : 'Museum & Experience Categories'}</span>
-                        </span>
-
-                        <span className="text-xs font-mono font-bold text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1 rounded-md border border-[#E5E2DC]">
-                          {language === 'KR' ? `총 ${filteredExperienceSteps.length}곳` : `${filteredExperienceSteps.length} spots`}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                        {EXPERIENCE_THEME_TABS.map((tab) => {
-                          const count = getThemeStepCount(tab.id);
-                          const isSelected = selectedExperienceTheme === tab.id;
-                          return (
-                            <button
-                              key={tab.id}
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedExperienceTheme(tab.id);
-                              }}
-                              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
-                                isSelected
-                                  ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
-                                  : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
-                              }`}
-                            >
-                              <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
-                              <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
-                                isSelected ? 'bg-white/20 text-white' : 'bg-[#E5E2DC] text-[#4A5568]'
-                              }`}>
-                                {count}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
+                    {/* Category Pills directly without box wrapper */}
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                      {EXPERIENCE_THEME_TABS.map((tab) => {
+                        const count = getThemeStepCount(tab.id);
+                        const isSelected = selectedExperienceTheme === tab.id;
+                        return (
+                          <button
+                            key={tab.id}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedExperienceTheme(tab.id);
+                            }}
+                            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
+                              isSelected
+                                ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
+                                : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
+                            }`}
+                          >
+                            <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
+                            <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                              isSelected ? 'bg-white/20 text-white' : 'bg-[#E5E2DC] text-[#4A5568]'
+                            }`}>
+                              {count}
+                            </span>
+                          </button>
+                        );
+                      })}
                     </div>
 
                     {/* Spots Catalog Grid */}
