@@ -1542,11 +1542,37 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         foodCategories: ["restaurant","market"],
         titleKo: '홍소족발',
         titleEn: 'Hongso Jokbal',
-        descKo: '따뜻하고 야들야들한 족발과 시원한 매생이 된장국이 일품인 남포동 대표 족발집입니다.',
-        descEn: '21-1 Gwangbok-ro, Jung-gu, Busan',
+        descKo: '따뜻하고 야들야들한 족발과 시원한 매생이 된장국이 일품인 부산 대표 족발 명가입니다.',
+        descEn: 'Iconic Busan jokbal institution famous for tender braised pig trotters and seaweed soup.',
         icon: 'Food',
-        stationInfoKo: '부산 중구 광복로 21-1 (자갈치역 7번 출구)',
-        stationInfoEn: '21-1 Gwangbok-ro, Jung-gu, Busan'
+        stationInfoKo: '부평본점 / 서면점 / 신평점',
+        stationInfoEn: 'Bupyeong Main / Seomyeon / Sinpyeong',
+        branches: [
+          {
+            nameKo: '부평본점',
+            nameEn: 'Bupyeong Main Branch',
+            addressKo: '부산 중구 광복로 21-2',
+            addressEn: '21-2 Gwangbok-ro, Jung-gu, Busan',
+            naverMapUrl: 'https://map.naver.com/v5/search/%ED%99%8D%EC%86%8C%EC%86%8D%EB%B0%9C%20%EB%B3%B8%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%ED%99%8D%EC%86%8C%EC%86%8D%EB%B0%9C%20%EB%B3%B8%EC%A0%90%20%EB%B6%80%EC%82%B0'
+          },
+          {
+            nameKo: '서면점 (부전동)',
+            nameEn: 'Seomyeon Branch (Bujeon-dong)',
+            addressKo: '부산 부산진구 중앙대로691번길 44',
+            addressEn: '44 Jungang-daero 691beon-gil, Busanjin-gu, Busan',
+            naverMapUrl: 'https://map.naver.com/v5/search/%ED%99%8D%EC%86%8C%EC%86%8D%EB%B0%9C%20%EC%84%9C%EB%A9%B4%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%ED%99%8D%EC%86%8C%EC%86%8D%EB%B0%9C%20%EC%84%9C%EB%A9%B4%EC%A0%90%20%EB%B6%80%EC%82%B0'
+          },
+          {
+            nameKo: '신평점',
+            nameEn: 'Sinpyeong Branch',
+            addressKo: '부산 사하구 하신번영로 157',
+            addressEn: '157 Hasinbeonyeong-ro, Saha-gu, Busan',
+            naverMapUrl: 'https://map.naver.com/v5/search/%ED%99%8D%EC%86%8C%EC%86%8D%EB%B0%9C%20%EC%8B%A0%ED%8F%89%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%ED%99%8D%EC%86%8C%EC%86%8D%EB%B0%9C%20%EC%8B%A0%ED%8F%89%EC%A0%90%20%EB%B6%80%EC%82%B0'
+          }
+        ]
       },
       {
         regionId: 'nampo_yeongdo',
