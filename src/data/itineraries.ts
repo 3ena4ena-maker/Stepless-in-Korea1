@@ -1886,7 +1886,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         descKo: '자동차, 항공우주, 선박 해양 등 첨단 과학 기술을 직접 체험할 수 있는 동남권 최대 체험형 과학관입니다.',
         descEn: 'A hands-on science complex featuring aerospace, marine science, and interactive exhibits in Gijang.',
         icon: 'Camera',
-        stationInfoKo: '부산 기장군 기장읍 동부산관광6로 59 (동해선 오시리아역 1번 출구에서 185번 버스 탑승 5분)',
+        stationInfoKo: '부산 기장군 기장읍 동부산관광6로 59',
         stationInfoEn: '59 Dongbusangwangwang 6-ro, Gijang-eup, Gijang-gun, Busan'
       },
       {
@@ -1902,7 +1902,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         descKo: '약 8,000만 개의 초고화질 LED 디스플레이가 화려한 빛의 예술을 선보이는 센텀시티 미디어아트 전문 미술관입니다.',
         descEn: 'A digital media art museum featuring massive LED displays showcasing vibrant light art in Centum City.',
         icon: 'Camera',
-        stationInfoKo: '부산 해운대구 센텀산단로 99 (2호선 센텀시티역 6번 출구 도보 5분)',
+        stationInfoKo: '부산 해운대구 센텀산단로 99',
         stationInfoEn: '99 Centumsandan-ro, Haeundae-gu, Busan'
       },
       {
@@ -1918,7 +1918,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         descKo: '국내외 희귀 영화 자료, LP, 영상 매체를 감상할 수 있는 영화의전당 비프힐 내 영화 전문 도서관입니다.',
         descEn: 'A specialized cinema library inside Busan Cinema Center BIFF Hill featuring movie archives, rare videos, and music.',
         icon: 'Map',
-        stationInfoKo: '부산 해운대구 수영강변대로 120 비프힐 4층 (2호선 센텀시티역 6번 출구 도보 7분)',
+        stationInfoKo: '부산 해운대구 수영강변대로 120 비프힐 4층',
         stationInfoEn: '4F BIFF Hill, 120 Suyeonggangbyeon-daero, Haeundae-gu, Busan'
       },
       {
@@ -1934,7 +1934,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         descKo: '옛 와이어 공장을 재생한 복합문화공간으로, 대형 서점과 갤러리, 카페, 대나무 숲 산책로가 어우러져 있습니다.',
         descEn: 'A transformed former wire factory complex housing galleries, bookstores, bamboo gardens, and cafes.',
         icon: 'Map',
-        stationInfoKo: '부산 수영구 구락로123번길 20 (3호선 망미역 2번 출구에서 버스/택시 이용 5분)',
+        stationInfoKo: '부산 수영구 구락로123번길 20',
         stationInfoEn: '20 Gurak-ro 123beon-gil, Suyeong-gu, Busan'
       },
       {
@@ -1948,8 +1948,8 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         descKo: 'BIFC(부산국제금융센터) 내 위치하여 세계와 한국의 증권 역사 및 금융 경제를 배우고 체험할 수 있는 전문 박물관입니다.',
         descEn: 'Located inside BIFC, a specialized museum showcasing global and Korean securities history and financial exhibits.',
         icon: 'Map',
-        stationInfoKo: '부산 남구 문현금융로 40 BIFC 2층 (2호선 국제금융센터·부산은행역 3번 출구 연결)',
-        stationInfoEn: '2F BIFC, 40 Munhyeongeomyung-ro, Nam-gu, Busan (Directly connected to BIFC Station Exit 3)'
+        stationInfoKo: '부산 남구 문현금융로 40 BIFC 2층',
+        stationInfoEn: '2F BIFC, 40 Munhyeongeomyung-ro, Nam-gu, Busan'
       },
       {
         regionId: 'nampo_yeongdo',
@@ -1964,7 +1964,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         descKo: '크로마키 합성, 성우 더빙, 영화 제작 원리 등 다채로운 영화 콘텐츠를 직접 체험하는 국내 최초 영화 박물관입니다.',
         descEn: 'Korea first movie-themed interactive museum featuring voice dubbing, chroma key synthesis, and cinema exhibits.',
         icon: 'Camera',
-        stationInfoKo: '부산 중구 대청로126번길 12 (1호선 중앙역 5번 출구 / 용두산공원 하단 도보 5분)',
+        stationInfoKo: '부산 중구 대청로126번길 12',
         stationInfoEn: '12 Daecheong-ro 126beon-gil, Jung-gu, Busan'
       },
       {
@@ -1978,7 +1978,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         descKo: '부산의 바다와 자연을 화려한 디지털 빛과 소리로 연출한 영도 해안가의 몰입형 미디어아트 전시관입니다.',
         descEn: 'A colossal immersive media art exhibition hall in Yeongdo, featuring stunning nature-themed digital art.',
         icon: 'Camera',
-        stationInfoKo: '부산 영도구 해양로 247 (1호선 남포역 6번 출구에서 186, 66번 버스 탑승)',
+        stationInfoKo: '부산 영도구 해양로 247',
         stationInfoEn: '247 Haeyang-ro, Yeongdo-gu, Busan'
       },
       {
@@ -1994,7 +1994,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         descKo: '대형 원통 수족관과 해양 역사, 생태 전시, 어린이 체험존을 갖춘 대한민국 대표 해양 박물관입니다.',
         descEn: 'A magnificent maritime museum featuring a cylindrical aquarium, interactive ocean exhibits, and marine history.',
         icon: 'Camera',
-        stationInfoKo: '부산 영도구 해양로301번길 45 (1호선 남포역 6번 출구 버스정류장에서 66번 저상버스 탑승)',
+        stationInfoKo: '부산 영도구 해양로301번길 45',
         stationInfoEn: '45 Haeyang-ro 301beon-gil, Yeongdo-gu, Busan'
       },
       {
@@ -2008,7 +2008,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         descKo: '어린이대공원 내 위치하여 우주 탐구, 로봇, 창의 놀이 등 다채로운 과학 체험을 즐길 수 있는 공간입니다.',
         descEn: 'An interactive children science and creativity museum located inside Children Park with space and robotics exhibits.',
         icon: 'Camera',
-        stationInfoKo: '부산 부산진구 새싹로 295 (어린이대공원 내, 1호선 서면역/부전역에서 81, 133, 54번 버스 탑승 후 어린이대공원 하차)',
+        stationInfoKo: '부산 부산진구 새싹로 295',
         stationInfoEn: '295 Saessak-ro, Busanjin-gu, Busan'
       },
       {
@@ -2025,8 +2025,8 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         descKo: '금정구에서 동래구를 거쳐 수영강으로 이어지는 약 7~8km 도심 생태하천 자전거 전용 코스입니다.',
         descEn: 'A scenic 7-8 km paved riverside bicycle route running through Geumjeong, Dongnae, and Yeonje to Suyeonggang River.',
         icon: 'Map',
-        stationInfoKo: '자전거 대여소\n온천천 자전거 대여소 : 도시철도 1호선 동래역 1번출구 -> 교대방향 약 430m 온천천 인공폭포 맞은편\n금정구 공영자전거 대여소 : 1호선 온천장역 4번 출구 옆 북측 공영주차장 안',
-        stationInfoEn: 'Bicycle Rental Stations:\n• Oncheoncheon Bike Rental: Line 1 Dongnae Stn Exit 1 -> ~430m towards Gyodae, opposite Oncheoncheon Waterfall\n• Geumjeong Public Bike Rental: Line 1 Oncheonjang Stn Exit 4, inside North Public Parking Lot',
+        stationInfoKo: '부산 동래구 온천천시민공원',
+        stationInfoEn: 'Oncheoncheon Citizens Park, Dongnae-gu, Busan',
         rentalStations: [
           {
             nameKo: '온천천 자전거 대여소',

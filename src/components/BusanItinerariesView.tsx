@@ -4396,95 +4396,117 @@ case 'EXPERIENCE': {
                                 </p>
                               </div>
 
-                              {/* Bottom Transit & Station Info */}
+                              {/* Bottom Transit & Station Info (Clean Address & Square Map Buttons) */}
                               <div className="pt-3 border-t border-[#E5E2DC] space-y-2 text-left">
                                 {step.rentalStations && step.rentalStations.length > 0 ? (
                                   <div className="space-y-2">
                                     <div className="flex items-center gap-1.5 text-xs font-bold text-[#0A2540]">
                                       <Bike className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-                                      <span>{language === 'KR' ? '자전거 대여소' : 'Bicycle Rental Stations'}</span>
+                                      <span>{language === 'KR' ? '자전거 대여소 안내' : 'Bicycle Rental Stations'}</span>
                                     </div>
                                     <div className="space-y-2">
-                                      {step.rentalStations.map((station, sIdx) => (
-                                        <div key={sIdx} className="bg-[#FBFBF9] p-2.5 rounded-lg border border-[#E5E2DC] text-left space-y-1.5">
-                                          <div className="flex flex-wrap items-center justify-between gap-1.5 pb-1 border-b border-[#E5E2DC]/60">
-                                            <span className="font-bold text-xs text-[#11161B]">
-                                              {language === 'KR' ? station.nameKo : (station.nameEn || station.nameKo)}
-                                            </span>
-                                            <div className="flex items-center gap-1.5 shrink-0">
-                                              {station.naverMapUrl && (
-                                                <a
-                                                  href={station.naverMapUrl}
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                  onClick={(e) => e.stopPropagation()}
-                                                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold bg-[#03C75A]/10 hover:bg-[#03C75A]/20 text-[#008A3D] border border-[#03C75A]/30 transition-all hover:scale-[1.02] shadow-2xs cursor-pointer"
-                                                  title={language === 'KR' ? `${station.nameKo} 네이버 지도에서 보기` : `View ${station.nameKo} on Naver Map`}
-                                                >
-                                                  <span className="w-1.5 h-1.5 rounded-full bg-[#03C75A] shrink-0" />
-                                                  <span>{language === 'KR' ? '네이버 지도' : 'Naver Map'}</span>
-                                                  <ExternalLink className="w-2.5 h-2.5 text-[#03C75A] shrink-0" />
-                                                </a>
-                                              )}
-
-                                              {station.googleMapUrl && (
-                                                <a
-                                                  href={station.googleMapUrl}
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                  onClick={(e) => e.stopPropagation()}
-                                                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold bg-[#4285F4]/10 hover:bg-[#4285F4]/20 text-[#1A73E8] border border-[#4285F4]/30 transition-all hover:scale-[1.02] shadow-2xs cursor-pointer"
-                                                  title={language === 'KR' ? `${station.nameKo} 구글맵에서 보기` : `View ${station.nameKo} on Google Maps`}
-                                                >
-                                                  <span className="w-1.5 h-1.5 rounded-full bg-[#4285F4] shrink-0" />
-                                                  <span>{language === 'KR' ? '구글맵' : 'Google Maps'}</span>
-                                                  <ExternalLink className="w-2.5 h-2.5 text-[#4285F4] shrink-0" />
-                                                </a>
-                                              )}
+                                      {step.rentalStations.map((station, sIdx) => {
+                                        const cleanStationDesc = (language === 'KR' ? station.descKo : (station.descEn || station.descKo)).replace(/\s*\([^)]*\)/g, '').trim();
+                                        return (
+                                          <div key={sIdx} className="bg-[#FBFBF9] p-2.5 rounded-lg border border-[#E5E2DC] text-left space-y-1.5">
+                                            <div className="flex items-center justify-between gap-1.5 pb-1 border-b border-[#E5E2DC]/60">
+                                              <span className="font-bold text-xs text-[#11161B]">
+                                                {language === 'KR' ? station.nameKo : (station.nameEn || station.nameKo)}
+                                              </span>
+                                              <div className="flex items-center gap-1 shrink-0">
+                                                {station.naverMapUrl && (
+                                                  <a
+                                                    href={station.naverMapUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    className="w-6 h-6 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                                                    title={language === 'KR' ? `${station.nameKo} 네이버 지도에서 보기` : `View ${station.nameKo} on Naver Map`}
+                                                    aria-label="Naver Map"
+                                                  >
+                                                    <svg className="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24">
+                                                      <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
+                                                    </svg>
+                                                  </a>
+                                                )}
+                                                {station.googleMapUrl && (
+                                                  <a
+                                                    href={station.googleMapUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    className="w-6 h-6 rounded-md bg-white border border-[#E5E2DC] hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                                                    title={language === 'KR' ? `${station.nameKo} 구글맵에서 보기` : `View ${station.nameKo} on Google Maps`}
+                                                    aria-label="Google Maps"
+                                                  >
+                                                    <svg viewBox="0 0 92 135" className="w-3 h-3" fill="none">
+                                                      <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
+                                                      <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
+                                                      <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
+                                                      <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
+                                                      <circle cx="46" cy="46" r="18" fill="#FFFFFF"/>
+                                                    </svg>
+                                                  </a>
+                                                )}
+                                              </div>
                                             </div>
+                                            <p className="text-[11px] text-[#4A5568] leading-relaxed pl-0.5">
+                                              {cleanStationDesc}
+                                            </p>
                                           </div>
-                                          <p className="text-[11px] text-[#4A5568] font-mono leading-relaxed pl-0.5">
-                                            {language === 'KR' ? station.descKo : (station.descEn || station.descKo)}
-                                          </p>
-                                        </div>
-                                      ))}
+                                        );
+                                      })}
                                     </div>
                                   </div>
                                 ) : (
                                   <>
-                                    {step.stationInfoKo && (
-                                      <div className="text-[11px] font-mono text-[#0A2540] flex items-start gap-1.5 pt-0.5">
-                                        {step.stationInfoKo.includes('자전거') ? (
-                                          <Bike className="w-3.5 h-3.5 text-[#0A2540] shrink-0 mt-0.5" />
-                                        ) : (
-                                          <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0 mt-0.5" />
-                                        )}
-                                        <div className="whitespace-pre-line leading-relaxed text-left flex-1">
-                                          {language === 'KR' ? step.stationInfoKo : step.stationInfoEn}
-                                        </div>
-                                      </div>
-                                    )}
+                                    {step.stationInfoKo && (() => {
+                                      const cleanAddr = (language === 'KR' ? step.stationInfoKo : (step.stationInfoEn || step.stationInfoKo)).replace(/\s*\([^)]*\)/g, '').trim();
+                                      const naverUrl = (step.naverMapLinks && step.naverMapLinks[0]?.url) || `https://map.naver.com/v5/search/${encodeURIComponent(step.titleKo + ' ' + cleanAddr)}`;
+                                      const googleUrl = step.googleMapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(step.titleKo + ' ' + cleanAddr)}`;
 
-                                    {step.naverMapLinks && step.naverMapLinks.length > 0 && (
-                                      <div className="pt-2 flex flex-wrap gap-2">
-                                        {step.naverMapLinks.map((link, lIdx) => (
-                                          <a
-                                            key={lIdx}
-                                            href={link.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            onClick={(e) => e.stopPropagation()}
-                                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] font-bold bg-[#03C75A]/10 hover:bg-[#03C75A]/20 text-[#008A3D] border border-[#03C75A]/30 transition-all hover:scale-[1.01] shadow-2xs cursor-pointer"
-                                            title={language === 'KR' ? `${link.labelKo} 네이버 지도에서 보기` : `View ${link.labelEn} on Naver Map`}
-                                          >
-                                            <span className="w-2 h-2 rounded-full bg-[#03C75A] shrink-0" />
-                                            <span>{language === 'KR' ? link.labelKo : (link.labelEn || link.labelKo)}</span>
-                                            <span className="text-[10px] text-[#008A3D] font-semibold bg-[#03C75A]/15 px-1 py-0.2 rounded">네이버 지도</span>
-                                            <ExternalLink className="w-3 h-3 text-[#03C75A] shrink-0 ml-0.5" />
-                                          </a>
-                                        ))}
-                                      </div>
-                                    )}
+                                      return (
+                                        <div className="flex items-center justify-between gap-2">
+                                          <p className="text-[11px] text-[#4A5568] flex items-start gap-1 leading-relaxed min-w-0 flex-1">
+                                            <span className="shrink-0 text-slate-400">📍</span>
+                                            <span className="break-all">{cleanAddr}</span>
+                                          </p>
+
+                                          <div className="flex items-center gap-1 shrink-0">
+                                            <a
+                                              href={naverUrl}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              onClick={(e) => e.stopPropagation()}
+                                              className="w-6 h-6 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                                              title={language === 'KR' ? `${step.titleKo} 네이버 지도에서 위치 보기` : `View ${step.titleEn || step.titleKo} on Naver Map`}
+                                              aria-label="Naver Map"
+                                            >
+                                              <svg className="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24">
+                                                <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
+                                              </svg>
+                                            </a>
+                                            <a
+                                              href={googleUrl}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              onClick={(e) => e.stopPropagation()}
+                                              className="w-6 h-6 rounded-md bg-white border border-[#E5E2DC] hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                                              title={language === 'KR' ? `${step.titleKo} 구글맵에서 위치 보기` : `View ${step.titleEn || step.titleKo} on Google Maps`}
+                                              aria-label="Google Maps"
+                                            >
+                                              <svg viewBox="0 0 92 135" className="w-3 h-3" fill="none">
+                                                <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
+                                                <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
+                                                <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
+                                                <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
+                                                <circle cx="46" cy="46" r="18" fill="#FFFFFF"/>
+                                              </svg>
+                                            </a>
+                                          </div>
+                                        </div>
+                                      );
+                                    })()}
                                   </>
                                 )}
                               </div>
