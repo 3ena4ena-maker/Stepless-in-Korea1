@@ -267,51 +267,67 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
             </div>
 
             <div className="space-y-2">
-              {step.branches.map((branch, bIdx) => (
-                <div 
-                  key={bIdx}
-                  className="bg-[#FBFBF9] hover:bg-[#F4EBE1]/40 p-2.5 rounded-lg border border-[#E5E2DC] transition-colors flex flex-col gap-1.5"
-                >
-                  <div className="space-y-0.5 min-w-0">
-                    <span className="text-xs font-bold text-[#11161B] block">
-                      {language === 'KR' ? branch.nameKo : (branch.nameEn || branch.nameKo)}
-                    </span>
-                    <p className="text-[11px] text-[#4A5568] flex items-start gap-1 leading-relaxed">
-                      <span className="shrink-0 text-slate-400">📍</span>
-                      <span>{language === 'KR' ? branch.addressKo : (branch.addressEn || branch.addressKo)}</span>
-                    </p>
-                  </div>
+              {step.branches.map((branch, bIdx) => {
+                const rawAddress = language === 'KR' ? branch.addressKo : (branch.addressEn || branch.addressKo);
+                const cleanAddress = (rawAddress || '').replace(/\s*\([^)]*\)/g, '').trim();
 
-                  <div className="flex items-center gap-2 pt-1 border-t border-[#E5E2DC]/60">
-                    {branch.naverMapUrl && (
-                      <a
-                        href={branch.naverMapUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center justify-center gap-1 px-2.5 py-1 rounded text-xs font-bold bg-[#03C75A]/10 text-[#03C75A] hover:bg-[#03C75A] hover:text-white border border-[#03C75A]/30 transition-all cursor-pointer shadow-2xs"
-                        title={language === 'KR' ? `${branch.nameKo} 네이버 지도에서 위치 보기` : `View on Naver Map`}
-                      >
-                        <span className="font-black text-[10px] leading-none">N</span>
-                        <span>{language === 'KR' ? '네이버지도' : 'Naver Map'}</span>
-                      </a>
-                    )}
-                    {branch.googleMapUrl && (
-                      <a
-                        href={branch.googleMapUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center justify-center gap-1 px-2.5 py-1 rounded text-xs font-bold bg-[#4285F4]/10 text-[#4285F4] hover:bg-[#4285F4] hover:text-white border border-[#4285F4]/30 transition-all cursor-pointer shadow-2xs"
-                        title={language === 'KR' ? `${branch.nameKo} 구글맵에서 위치 보기` : `View on Google Maps`}
-                      >
-                        <Compass className="w-3 h-3 text-[#4285F4]" />
-                        <span>{language === 'KR' ? '구글맵' : 'Google Maps'}</span>
-                      </a>
-                    )}
+                return (
+                  <div 
+                    key={bIdx}
+                    className="bg-[#FBFBF9] hover:bg-[#F4EBE1]/40 p-2.5 rounded-lg border border-[#E5E2DC] transition-colors flex flex-col gap-1.5"
+                  >
+                    <div className="flex items-center justify-between gap-1.5 flex-wrap">
+                      <span className="text-xs font-bold text-[#11161B] block">
+                        {language === 'KR' ? branch.nameKo : (branch.nameEn || branch.nameKo)}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-[11px] text-[#4A5568] flex items-start gap-1 leading-relaxed min-w-0 flex-1">
+                        <span className="shrink-0 text-slate-400">📍</span>
+                        <span className="break-all">{cleanAddress}</span>
+                      </p>
+
+                      <div className="flex items-center gap-1 shrink-0">
+                        {branch.naverMapUrl && (
+                          <a
+                            href={branch.naverMapUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-6 h-6 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                            title={language === 'KR' ? `${branch.nameKo} 네이버 지도에서 위치 보기` : `View on Naver Map`}
+                            aria-label="Naver Map"
+                          >
+                            <svg className="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24">
+                              <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
+                            </svg>
+                          </a>
+                        )}
+                        {branch.googleMapUrl && (
+                          <a
+                            href={branch.googleMapUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-6 h-6 rounded-md bg-white border border-[#E5E2DC] hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                            title={language === 'KR' ? `${branch.nameKo} 구글맵에서 위치 보기` : `View on Google Maps`}
+                            aria-label="Google Maps"
+                          >
+                            <svg viewBox="0 0 92 135" className="w-3 h-3" fill="none">
+                              <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
+                              <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
+                              <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
+                              <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
+                              <circle cx="46" cy="46" r="18" fill="#FFFFFF"/>
+                            </svg>
+                          </a>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}

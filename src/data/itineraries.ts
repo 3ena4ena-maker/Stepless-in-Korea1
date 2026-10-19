@@ -27,6 +27,8 @@ export interface ItineraryStep {
   firstImage?: string;
   accessibilityDescKo?: string;
   accessibilityDescEn?: string;
+  naverMapUrl?: string;
+  googleMapUrl?: string;
   naverMapLinks?: {
     labelKo: string;
     labelEn?: string;
