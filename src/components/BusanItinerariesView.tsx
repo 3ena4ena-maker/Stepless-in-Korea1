@@ -46,7 +46,7 @@ import {
   Bike
 } from 'lucide-react';
 import ElegantIllustration from './ElegantIllustration';
-import { BUSAN_ITINERARIES, ItineraryCourse, ItineraryStep } from '../data/itineraries';
+import { BUSAN_ITINERARIES, ItineraryCourse, ItineraryStep, getStepFoodCategories } from '../data/itineraries';
 import { CHILD_TRANSPORT_INFOGRAPHIC_BASE64 } from '../childtransport_base64';
 import { getTodayDate, navigateToSpa } from '../utils';
 import { TourApiItineraryStepCard } from './TourApiItineraryStepCard';
@@ -1658,8 +1658,9 @@ export default function BusanItinerariesView({
   const [itineraryTab, setItineraryTab] = useState<'STANDARD' | 'STEPLESS_GUIDE'>('STANDARD');
   const [communityTab, setCommunityTab] = useState<'STANDARD' | 'STEPLESS_GUIDE'>('STANDARD');
 
-  const [selectedGourmetRegion, setSelectedGourmetRegion] = useState<string>('ALL');
-  const [selectedGourmetFoodCat, setSelectedGourmetFoodCat] = useState<string>('ALL');
+  const [selectedGourmetCat, setSelectedGourmetCat] = useState<string>('ALL');
+  const [selectedGourmetMultiCats, setSelectedGourmetMultiCats] = useState<string[]>([]);
+  const [isGourmetMultiSelect, setIsGourmetMultiSelect] = useState<boolean>(false);
 
   // Transit page states
   const [activeTransitCategory, setActiveTransitCategory] = useState<'LINES' | 'BOARDING' | 'EMERGENCY' | 'TRANSITS'>('LINES');
@@ -1774,13 +1775,28 @@ export default function BusanItinerariesView({
     { id: 'CULTURE', nameKo: '복합문화공간', nameEn: 'Cultural Spaces', icon: '🎬' }
   ];
 
-  const FOOD_SUBCATEGORY_TABS = [
-    { id: 'ALL', nameKo: '전체 카테고리', nameEn: 'All Categories', icon: '🍽️', descKo: '부산 로컬 대표 미식 전체' },
-    { id: 'restaurant', nameKo: '음식점', nameEn: 'Restaurant', icon: '弁当', descKo: '돼지국밥·밀면·돈카츠·피자 맛집' },
-    { id: 'cafe', nameKo: '카페', nameEn: 'Cafe', icon: '☕', descKo: '스페셜티 커피 & 감성 라운지' },
-    { id: 'bakery', nameKo: '베이커리', nameEn: 'Bakery', icon: '🥐', descKo: '부산 3대 빵집 & 명품 제과점' },
-    { id: 'brunch', nameKo: '브런치', nameEn: 'Brunch', icon: '🍳', descKo: '오션뷰 & 도심 스타일 브런치' },
+    const GOURMET_CATEGORY_TABS = [
+    { id: 'ALL', nameKo: '전체 카테고리', nameEn: 'All Categories', icon: '🍽️' },
+    { id: 'famous', nameKo: '부산 유명 맛집', nameEn: 'Famous Eateries', icon: '🔥' },
+    { id: 'restaurant', nameKo: '음식점', nameEn: 'Restaurants', icon: '🍲' },
+    { id: 'cafe', nameKo: '카페', nameEn: 'Cafes', icon: '☕' },
+    { id: 'bakery', nameKo: '베이커리', nameEn: 'Bakery', icon: '🥐' },
+    { id: 'brunch', nameKo: '브런치', nameEn: 'Brunch', icon: '🍳' },
+    { id: 'market', nameKo: '전통시장', nameEn: 'Traditional Market', icon: '🏬' },
+    { id: 'dessert', nameKo: '디저트', nameEn: 'Dessert', icon: '🍧' },
+    { id: 'other', nameKo: '기타', nameEn: 'Other', icon: '✨' },
   ];
+
+  const GOURMET_CATEGORY_MAP: Record<string, { nameKo: string; nameEn: string; icon: string }> = {
+    famous: { nameKo: '부산 유명 맛집', nameEn: 'Famous Eateries', icon: '🔥' },
+    restaurant: { nameKo: '음식점', nameEn: 'Restaurants', icon: '🍲' },
+    cafe: { nameKo: '카페', nameEn: 'Cafes', icon: '☕' },
+    bakery: { nameKo: '베이커리', nameEn: 'Bakery', icon: '🥐' },
+    brunch: { nameKo: '브런치', nameEn: 'Brunch', icon: '🍳' },
+    market: { nameKo: '전통시장', nameEn: 'Traditional Market', icon: '🏬' },
+    dessert: { nameKo: '디저트', nameEn: 'Dessert', icon: '🍧' },
+    other: { nameKo: '기타', nameEn: 'Other', icon: '✨' },
+  };
 
   const REGION_FILTER_TABS = [
     { id: 'ALL', nameKo: '전체 카테고리', nameEn: 'All Categories', icon: '📍' },
@@ -3902,21 +3918,24 @@ export default function BusanItinerariesView({
               // PAGE 6: GOURMET (식도락) - Editorial Travel Magazine Layout
               // -------------------------------------------------------------
               case 'GOURMET': {
+                const getStepCats = (s: ItineraryStep): string[] => {
+                  return getStepFoodCategories(s);
+                };
+
                 const filteredGourmetSteps = course.steps.filter((s) => {
-                  const matchesRegion = selectedGourmetRegion === 'ALL'
-                    ? true
-                    : (selectedGourmetRegion === 'famous' 
-                        ? s.regionId === 'famous'
-                        : (selectedGourmetRegion === 'market'
-                            ? (s.foodCategory === 'market' || s.time === '전통시장' || s.titleKo.includes('시장') || s.titleKo.includes('깡통') || s.titleKo.includes('자갈치') || s.titleKo.includes('국제') || s.titleKo.includes('이가네') || s.titleKo.includes('씨앗호떡'))
-                            : s.regionId === selectedGourmetRegion));
-                  
-                  const matchesCategory = selectedGourmetFoodCat === 'ALL'
-                    ? true
-                    : (s.foodCategory === selectedGourmetFoodCat || (selectedGourmetFoodCat === 'bakery' && s.foodCategory === 'streetfood'));
-                  
-                  return matchesRegion && matchesCategory;
+                  const stepCats = getStepCats(s);
+                  if (isGourmetMultiSelect) {
+                    if (selectedGourmetMultiCats.length === 0) return true;
+                    return selectedGourmetMultiCats.some(cat => stepCats.includes(cat));
+                  }
+                  if (selectedGourmetCat === 'ALL') return true;
+                  return stepCats.includes(selectedGourmetCat);
                 });
+
+                const getCategoryCount = (catId: string): number => {
+                  if (catId === 'ALL') return course.steps.length;
+                  return course.steps.filter(s => getStepCats(s).includes(catId)).length;
+                };
 
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
@@ -3927,95 +3946,96 @@ export default function BusanItinerariesView({
                       </h2>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                         {language === 'KR'
-                          ? '현지인이 검증한 대표 맛집부터 감성 카페와 명물 먹거리까지 만나보세요.'
-                          : 'Explore authentic local restaurants, cafes, and street food across Busan.'}
+                          ? '현지인이 검증한 대표 맛집부터 감성 카페, 전통시장 및 명물 디저트까지 만나보세요.'
+                          : 'Explore authentic local restaurants, cafes, traditional markets, and iconic desserts across Busan.'}
                       </p>
                     </div>
 
-                    {/* Gourmet Regional Filter Tabs */}
-                    <div className="bg-white p-5 rounded-lg border border-[#E5E2DC] space-y-4 text-left">
-                      <div className="flex items-center justify-between text-xs font-bold text-[#11161B] border-b border-[#E5E2DC] pb-3">
-                        <span className="flex items-center gap-1.5">
-                          <Compass className="w-4 h-4 text-[#0A2540]" />
-                          <span>{language === 'KR' ? '권역별 미식 필터' : 'Filter by Region'}</span>
-                        </span>
-                        <span className="text-xs font-mono text-[#0A2540] bg-[#FBFBF9] px-2.5 py-0.5 rounded-md border border-[#E5E2DC]">
+                    {/* Gourmet Category Filter Box */}
+                    <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#E5E2DC] shadow-[0_1px_4px_rgba(0,0,0,0.03)] space-y-3.5 text-left">
+                      <div className="flex items-center justify-between text-xs font-bold text-[#11161B] pb-2.5 border-b border-[#E5E2DC]">
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center gap-1.5 text-slate-800">
+                            <Utensils className="w-4 h-4 text-[#8EA85E]" />
+                            <span className="text-sm font-black">{language === 'KR' ? '식도락 카테고리' : 'Gourmet Categories'}</span>
+                          </span>
+                          {/* 다중 선택 토글 버튼 */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setIsGourmetMultiSelect(prev => {
+                                const next = !prev;
+                                if (next) {
+                                  setSelectedGourmetMultiCats(selectedGourmetCat === 'ALL' ? [] : [selectedGourmetCat]);
+                                } else {
+                                  setSelectedGourmetCat(selectedGourmetMultiCats[0] || 'ALL');
+                                }
+                                return next;
+                              });
+                            }}
+                            className={`ml-1.5 sm:ml-2 px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer border flex items-center gap-1.5 ${
+                              isGourmetMultiSelect
+                                ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
+                                : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-slate-600 border-[#E5E2DC]'
+                            }`}
+                            title={language === 'KR' ? '여러 카테고리를 동시에 중복 선택' : 'Toggle multi-category selection'}
+                          >
+                            <span className={`w-2 h-2 rounded-full ${isGourmetMultiSelect ? 'bg-white' : 'bg-slate-400'}`}></span>
+                            <span>{language === 'KR' ? '다중 선택' : 'Multi-Select'}</span>
+                          </button>
+                        </div>
+
+                        <span className="text-xs font-mono font-bold text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1 rounded-md border border-[#E5E2DC]">
                           {language === 'KR' ? `총 ${filteredGourmetSteps.length}곳` : `${filteredGourmetSteps.length} spots`}
                         </span>
                       </div>
 
-                      {/* Region Selection */}
-                      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-                        {REGION_FILTER_TABS.map((tab) => {
-                          const isSelected = selectedGourmetRegion === tab.id;
+                      {/* Category Pills (전체 카테고리, 부산 유명 맛집, 음식점, 카페, 베이커리, 브런치, 전통시장, 디저트, 기타) */}
+                      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar flex-nowrap sm:flex-wrap">
+                        {GOURMET_CATEGORY_TABS.map((tab) => {
+                          const isSelected = isGourmetMultiSelect
+                            ? (tab.id === 'ALL' ? selectedGourmetMultiCats.length === 0 : selectedGourmetMultiCats.includes(tab.id))
+                            : selectedGourmetCat === tab.id;
+                          const count = getCategoryCount(tab.id);
+
                           return (
                             <button
                               key={tab.id}
+                              type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setSelectedGourmetRegion(tab.id);
+                                if (isGourmetMultiSelect) {
+                                  if (tab.id === 'ALL') {
+                                    setSelectedGourmetMultiCats([]);
+                                  } else {
+                                    setSelectedGourmetMultiCats(prev => {
+                                      if (prev.includes(tab.id)) {
+                                        return prev.filter(c => c !== tab.id);
+                                      } else {
+                                        return [...prev, tab.id];
+                                      }
+                                    });
+                                  }
+                                } else {
+                                  setSelectedGourmetCat(tab.id);
+                                }
                               }}
-                              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer shrink-0 border ${
+                              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
                                 isSelected
-                                  ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
-                                  : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                                  ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
+                                  : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
                               }`}
                             >
                               <span>{tab.icon}</span>
                               <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
+                              <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                                isSelected ? 'bg-white/20 text-white' : 'bg-[#E5E2DC] text-[#4A5568]'
+                              }`}>
+                                {count}
+                              </span>
                             </button>
                           );
                         })}
-                      </div>
-
-                      {/* Food Subcategory Tabs */}
-                      <div className="pt-3 border-t border-[#E5E2DC] space-y-2">
-                        <div className="text-[11px] font-bold text-[#4A5568]">
-                          <span>{language === 'KR' ? '세부 업종별 카테고리 (음식점 · 카페 · 베이커리 · 브런치)' : 'Detailed Subcategories'}</span>
-                        </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                          {FOOD_SUBCATEGORY_TABS.map((tab) => {
-                            const isSelected = selectedGourmetFoodCat === tab.id;
-                            const tabCount = course.steps.filter((s) => {
-                              const matchesReg = selectedGourmetRegion === 'ALL'
-                                ? true
-                                : (selectedGourmetRegion === 'famous'
-                                    ? s.regionId === 'famous'
-                                    : (selectedGourmetRegion === 'market'
-                                        ? (s.foodCategory === 'market' || s.time === '전통시장' || s.titleKo.includes('시장') || s.titleKo.includes('깡통') || s.titleKo.includes('자갈치') || s.titleKo.includes('국제') || s.titleKo.includes('이가네') || s.titleKo.includes('씨앗호떡'))
-                                        : s.regionId === selectedGourmetRegion));
-                              const matchesCat = tab.id === 'ALL'
-                                ? true
-                                : (s.foodCategory === tab.id || (tab.id === 'bakery' && s.foodCategory === 'streetfood'));
-                              return matchesReg && matchesCat;
-                            }).length;
-
-                            return (
-                              <button
-                                key={tab.id}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setSelectedGourmetFoodCat(tab.id);
-                                }}
-                                className={`flex items-center justify-between px-3 py-2 rounded-md text-xs font-bold transition-colors cursor-pointer border ${
-                                  isSelected
-                                    ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
-                                    : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
-                                }`}
-                              >
-                                <span className="flex items-center gap-1.5">
-                                  <Utensils className="w-3.5 h-3.5" />
-                                  <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
-                                </span>
-                                <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-mono ${
-                                  isSelected ? 'bg-white/20 text-white' : 'bg-[#E5E2DC] text-[#11161B]'
-                                }`}>
-                                  {tabCount}
-                                </span>
-                              </button>
-                            );
-                          })}
-                        </div>
                       </div>
                     </div>
 
@@ -4032,6 +4052,7 @@ export default function BusanItinerariesView({
                         }) || matchedSpotId || 'spot-101';
                         const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
                         const isSaved = isBookmarked(step.id || step.titleKo);
+                        const stepCats = getStepCats(step);
 
                         return (
                           <div 
@@ -4040,10 +4061,22 @@ export default function BusanItinerariesView({
                           >
                             <div className="space-y-3 text-left">
                               <div className="flex items-center justify-between border-b border-[#E5E2DC] pb-2.5">
-                                <div className="flex items-center gap-2">
-                                  <span className="text-xs font-bold text-[#0A2540] flex items-center gap-1 font-mono">
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                  <span className="text-xs font-bold text-[#0A2540] flex items-center gap-1 font-mono mr-1">
                                     <span>★ 5.0</span>
                                   </span>
+                                  {stepCats.map(catKey => {
+                                    const catInfo = GOURMET_CATEGORY_MAP[catKey];
+                                    if (!catInfo) return null;
+                                    return (
+                                      <span
+                                        key={catKey}
+                                        className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#8EA85E]/10 text-[#4D6328] border border-[#8EA85E]/25"
+                                      >
+                                        {catInfo.icon} {language === 'KR' ? catInfo.nameKo : catInfo.nameEn}
+                                      </span>
+                                    );
+                                  })}
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <button
@@ -4054,7 +4087,7 @@ export default function BusanItinerariesView({
                                         id: step.id || step.titleKo,
                                         titleKo: step.titleKo,
                                         titleEn: step.titleEn,
-                                        categoryKo: step.foodCategory ? `식도락 · ${step.foodCategory}` : '부산 식도락',
+                                        categoryKo: stepCats.map(c => GOURMET_CATEGORY_MAP[c]?.nameKo).filter(Boolean).join(' · ') || '부산 식도락',
                                         categoryEn: 'Gourmet',
                                         addressRoadKo: ktoDetail?.addressRoadKo || step.stationInfoKo,
                                         stationInfoKo: step.stationInfoKo,
@@ -4076,9 +4109,6 @@ export default function BusanItinerariesView({
                                     <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
                                     <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
                                   </button>
-                                  <span className="text-[11px] font-mono font-bold text-[#0A2540] bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                                    {language === 'KR' ? (step.regionNameKo || '부산') : (step.regionNameEn || 'Busan')}
-                                  </span>
                                 </div>
                               </div>
 
