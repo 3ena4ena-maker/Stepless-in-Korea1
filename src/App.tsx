@@ -1841,7 +1841,11 @@ export default function App() {
                     setSelectedItineraryCategory(null);
                     setBarrierFreeCourseId(null);
                     setBarrierFreePlaceId(null);
-                    navigateToSpa('/tips/courses', { tab: 'tips', subPage: 'courses', category: null });
+                    setTipsSubPage('index');
+                    if (currentTab === 'schedule' || currentTab === 'tourapi') {
+                      setCurrentTab('tips');
+                    }
+                    navigateToSpa('/tips', { tab: 'tips', subPage: 'index', category: null });
                   }}
                   onSelectCategory={(category) => {
                     setSelectedItineraryCategory(category);
@@ -1854,7 +1858,11 @@ export default function App() {
                       const catSlug = categoryToUrlSlug(category);
                       navigateToSpa(`/tips/courses/${catSlug}`, { tab: 'tips', subPage: 'courses', category });
                     } else {
-                      navigateToSpa('/tips/courses', { tab: 'tips', subPage: 'courses', category: null });
+                      if (tipsSubPage === 'courses') {
+                        navigateToSpa('/tips/courses', { tab: 'tips', subPage: 'courses', category: null });
+                      } else {
+                        navigateToSpa('/tips', { tab: 'tips', subPage: 'index', category: null });
+                      }
                     }
                   }}
                   onOpenBarrierFreeDetail={(placeId) => {
@@ -1888,6 +1896,21 @@ export default function App() {
                       }
                     }
                     setTipsSubPage(page);
+                    if (page === 'index') {
+                      navigateToSpa('/tips', { tab: 'tips', subPage: 'index', category: null });
+                    } else if (page === 'courses') {
+                      navigateToSpa('/tips/courses', { tab: 'tips', subPage: 'courses', category: null });
+                    } else if (page === 'transit') {
+                      navigateToSpa('/tips/transit', { tab: 'tips', subPage: 'transit' });
+                    } else if (page === 'schedule') {
+                      navigateToSpa('/schedule', { tab: 'schedule', subPage: 'schedule' });
+                    } else if (page === 'child-free') {
+                      navigateToSpa('/tips/child-free', { tab: 'tips', subPage: 'child-free' });
+                    } else if (page === 'bus-qr') {
+                      navigateToSpa('/tips/bus-qr', { tab: 'tips', subPage: 'bus-qr' });
+                    } else if (page === 'taxi') {
+                      navigateToSpa('/tips/taxi', { tab: 'tips', subPage: 'taxi' });
+                    }
                   }}
                   activeRegionPage={activeRegionPage}
                   setActiveRegionPage={setActiveRegionPage}

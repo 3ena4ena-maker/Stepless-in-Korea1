@@ -1569,32 +1569,38 @@ export default function BusanItinerariesView({
       setActiveSection('SELECTION');
       setActiveCategory(null);
       setInternalBarrierFreePlaceId(null);
-      if (onSelectCategory) {
-        onSelectCategory(null);
-      }
+      navigateToSpa('/tips', { tab: 'tips', subPage: 'index', category: null });
     } else if (page === 'courses') {
       setActiveSection('RECOMMENDATIONS');
       setActiveCategory(null);
       setInternalBarrierFreePlaceId(null);
-      if (onSelectCategory) {
-        onSelectCategory(null);
-      }
+      navigateToSpa('/tips/courses', { tab: 'tips', subPage: 'courses', category: null });
     } else if (page === 'transit' || page === 'transfer') {
       setActiveSection('TRANSIT_TIPS');
       setTransitSection('SUBMENU');
+      navigateToSpa('/tips/transit', { tab: 'tips', subPage: 'transit' });
     } else if (page === 'child-free') {
       setActiveSection('TRANSIT_TIPS');
       setTransitSection('CHILD_FREE');
+      navigateToSpa('/tips/child-free', { tab: 'tips', subPage: 'child-free' });
     } else if (page === 'bus-qr') {
       setActiveSection('TRANSIT_TIPS');
       setTransitSection('BUS_QR');
+      navigateToSpa('/tips/bus-qr', { tab: 'tips', subPage: 'bus-qr' });
     } else if (page === 'taxi') {
       setActiveSection('TRANSIT_TIPS');
       setTransitSection('TAXI');
+      navigateToSpa('/tips/taxi', { tab: 'tips', subPage: 'taxi' });
     } else if (page === 'schedule') {
       setActiveSection('SCHEDULE');
+      navigateToSpa('/schedule', { tab: 'schedule', subPage: 'schedule' });
     } else if (page === 'community') {
       setActiveSection('COMMUNITY');
+    }
+    try {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    } catch {
+      window.scrollTo(0, 0);
     }
   };
 
@@ -2188,10 +2194,6 @@ export default function BusanItinerariesView({
             onClick={() => {
               if (activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU') {
                 navigateToSubPage('transit');
-              } else if (activeSection === 'RECOMMENDATIONS' && activeCategory !== null) {
-                setActiveCategory(null);
-                if (onSelectCategory) onSelectCategory(null);
-                if (setTipsSubPage) setTipsSubPage('courses');
               } else {
                 navigateToSubPage('index');
               }
@@ -2207,7 +2209,13 @@ export default function BusanItinerariesView({
           </button>
 
           <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-[#4A5568]">
-            <span>{language === 'KR' ? '여행 팁' : 'Travel Tips'}</span>
+            <button
+              type="button"
+              onClick={() => navigateToSubPage('index')}
+              className="hover:underline text-[#4A5568] cursor-pointer"
+            >
+              {language === 'KR' ? '여행 팁' : 'Travel Tips'}
+            </button>
             <span>/</span>
             {activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU' ? (
               <>
@@ -2228,7 +2236,26 @@ export default function BusanItinerariesView({
             ) : (
               <span className="font-bold text-[#11161B]">
                 {activeSection === 'TRANSIT_TIPS' && (language === 'KR' ? '대중교통 이용 팁' : 'Public Transit Tips')}
-                {activeSection === 'RECOMMENDATIONS' && (language === 'KR' ? '여행 코스 추천' : 'Recommended Itineraries')}
+                {activeSection === 'RECOMMENDATIONS' && (
+                  activeCategory ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActiveCategory(null);
+                          navigateToSubPage('courses');
+                        }}
+                        className="hover:underline text-[#4A5568] cursor-pointer font-normal"
+                      >
+                        {language === 'KR' ? '여행 코스 추천' : 'Recommended Itineraries'}
+                      </button>
+                      <span className="mx-1 font-normal text-[#4A5568]">/</span>
+                      <span className="font-bold text-[#11161B]">
+                        {activeCategoryConfig ? (language === 'KR' ? activeCategoryConfig.titleKo : activeCategoryConfig.titleEn) : activeCategory}
+                      </span>
+                    </>
+                  ) : (language === 'KR' ? '여행 코스 추천' : 'Recommended Itineraries')
+                )}
                 {activeSection === 'SCHEDULE' && (language === 'KR' ? '부산 주요 일정표' : 'Busan Events & Schedule')}
                 {activeSection === 'COMMUNITY' && (language === 'KR' ? '실시간 부산 여행 팁 커뮤니티' : 'Live Busan Travel Tips')}
               </span>
