@@ -82,7 +82,7 @@ export function SiteIntroductionView({
                 onClick={() => handleSelectTab(tab.id as 'about' | 'privacy' | 'terms' | 'contact' | 'data-source')}
                 className={`flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-md text-xs sm:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
                   isActive
-                    ? 'text-[#0A2540] bg-[#F1EFEC] font-bold border-b-2 border-[#0A2540]'
+                    ? 'text-[#0A2540] bg-[#F1EFEC] font-bold'
                     : 'text-[#4A5568] hover:text-[#11161B] hover:bg-[#F1EFEC]/60'
                 }`}
               >
@@ -104,7 +104,7 @@ export function SiteIntroductionView({
               onClick={() => handleSelectTab('about')}
               className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 ${
                 activeSubTab === 'about'
-                  ? 'text-[#0A2540] bg-[#F1EFEC] border-b-2 border-[#0A2540]'
+                  ? 'text-[#0A2540] bg-[#F1EFEC]'
                   : 'text-[#4A5568] hover:bg-[#F1EFEC]/60'
               }`}
             >
@@ -114,7 +114,7 @@ export function SiteIntroductionView({
 
             {/* If a secondary tab is active, display it next to About */}
             {currentSecondaryTab && (
-              <div className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-xs font-bold text-[#0A2540] bg-[#F1EFEC] border-b-2 border-[#0A2540] truncate shrink-0 max-w-[150px]">
+              <div className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-xs font-bold text-[#0A2540] bg-[#F1EFEC] truncate shrink-0 max-w-[150px]">
                 <currentSecondaryTab.icon className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
                 <span className="truncate">{currentSecondaryTab.label}</span>
               </div>

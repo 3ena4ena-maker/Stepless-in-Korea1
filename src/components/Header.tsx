@@ -96,7 +96,7 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
                   }}
                   className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs lg:text-sm font-semibold transition-all cursor-pointer ${
                     isActive
-                      ? 'text-[#8EA85E] bg-[#F1EFEC] font-bold border-b-2 border-[#8EA85E]'
+                      ? 'text-[#8EA85E] bg-[#F1EFEC] font-bold'
                       : 'text-[#4A5568] hover:text-[#11161B] hover:bg-[#F1EFEC]/60'
                   }`}
                 >
@@ -175,7 +175,7 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
                   }}
                   className={`flex items-center gap-3 w-full px-4 py-3 rounded-md text-sm font-semibold transition-all cursor-pointer ${
                     isActive
-                      ? 'text-[#8EA85E] bg-[#F1EFEC] font-bold border-l-4 border-[#8EA85E]'
+                      ? 'text-[#8EA85E] bg-[#F1EFEC] font-bold'
                       : 'text-[#4A5568] hover:bg-[#F1EFEC]/60'
                   }`}
                 >
