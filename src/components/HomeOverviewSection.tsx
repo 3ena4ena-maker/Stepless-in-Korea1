@@ -311,22 +311,19 @@ export function HomeOverviewSection({
                 {st.name}
               </div>
 
-              {/* Line Badges & EV Count */}
+              {/* Line Badges */}
               <div className="flex items-center justify-center gap-1 mt-1 flex-wrap">
                 {st.lines.map((l) => {
                   const lineInfo = getLineTheme(l);
                   return (
                     <span 
                       key={l}
-                      className={`text-[8px] sm:text-[9px] font-bold px-1 py-0.2 rounded text-white shadow-2xs ${lineInfo.bg}`}
+                      className={`text-[8px] sm:text-[9px] font-bold px-1.5 py-0.5 rounded text-white shadow-2xs ${lineInfo.bg}`}
                     >
-                      {l === '동해' ? '동해' : `${l}호`}
+                      {l === '동해' ? (language === 'KR' ? '동해선' : 'Donghae') : (language === 'KR' ? `${l}호선` : `Line ${l}`)}
                     </span>
                   );
                 })}
-                <span className="text-[9px] sm:text-[10px] text-slate-400 font-medium">
-                  EV {st.elevatorCount}
-                </span>
               </div>
             </button>
           ))}
