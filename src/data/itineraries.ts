@@ -1400,21 +1400,6 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         stationInfoKo: '부산 부산진구 중앙대로692번길 45 1층 (서면역 2번 출구)',
         stationInfoEn: '1F, 45 Jungang-daero 692beon-gil, Busanjin-gu, Busan'
       },
-      {
-        regionId: 'seomyeon_jeonpo',
-        regionNameKo: '서면 · 전포',
-        regionNameEn: 'Seomyeon & Jeonpo',
-        foodCategory: 'restaurant',
-        time: '음식점',
-        foodCategories: ["restaurant"],
-        titleKo: '이재모피자 서면점',
-        titleEn: 'Lee Jae Mo Pizza Seomyeon',
-        descKo: '부산 부산진구 전포대로209번길 21',
-        descEn: '21 Jeonpo-daero 209beongil, Busanjin-gu, Busan',
-        icon: 'Food',
-        stationInfoKo: '부산 부산진구 전포대로209번길 21 (전포역 7번 출구)',
-        stationInfoEn: '21 Jeonpo-daero 209beongil, Busanjin-gu, Busan'
-      },
       // [브런치]
       {
         regionId: 'seomyeon_jeonpo',
@@ -1559,21 +1544,6 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         icon: 'Food',
         stationInfoKo: '부산 중구 광복로 21-1 (자갈치역 7번 출구)',
         stationInfoEn: '21-1 Gwangbok-ro, Jung-gu, Busan'
-      },
-      {
-        regionId: 'nampo_yeongdo',
-        regionNameKo: '남포동 · 영도',
-        regionNameEn: 'Nampo & Yeongdo',
-        foodCategory: 'restaurant',
-        time: '음식점',
-        foodCategories: ["restaurant"],
-        titleKo: '이재모피자 본점',
-        titleEn: 'Lee Jae Mo Pizza Main Store',
-        descKo: '부산 중구 광복중앙로 31',
-        descEn: '31 Gwangbokjungang-ro, Jung-gu, Busan',
-        icon: 'Food',
-        stationInfoKo: '부산 중구 광복중앙로 31 (중앙역 5번 출구)',
-        stationInfoEn: '31 Gwangbokjungang-ro, Jung-gu, Busan'
       },
       {
         regionId: 'nampo_yeongdo',
