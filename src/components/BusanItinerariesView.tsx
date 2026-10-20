@@ -4377,11 +4377,11 @@ case 'EXPERIENCE': {
                                     ? step.isFree
                                     : !['뮤지엄원', '아르떼뮤지엄', '영화체험박물관', '과학관'].some(k => step.titleKo.includes(k));
 
-                                  const feeBadge = (
-                                    <span className={`px-1.5 py-0.5 rounded text-[10px] sm:text-[10.5px] font-bold border shrink-0 ${
+                                  const feeText = (
+                                    <span className={`text-xs sm:text-sm font-bold shrink-0 ${
                                       isFree
-                                        ? 'text-[#2D6A4F] bg-[#E8F5E9] border-[#2D6A4F]/25'
-                                        : 'text-[#B45309] bg-[#FFFBEB] border-[#F59E0B]/30'
+                                        ? 'text-emerald-600'
+                                        : 'text-orange-600'
                                     }`}>
                                       {isFree ? (language === 'KR' ? '무료' : 'Free') : (language === 'KR' ? '유료' : 'Paid')}
                                     </span>
@@ -4394,7 +4394,7 @@ case 'EXPERIENCE': {
                                           <h4 className="text-base font-bold text-[#11161B] leading-snug">
                                             {displayTitle}
                                           </h4>
-                                          {feeBadge}
+                                          {feeText}
                                         </div>
                                         <div className="flex justify-end pt-0.5">
                                           {renderRouteButton()}
@@ -4409,7 +4409,7 @@ case 'EXPERIENCE': {
                                         <h4 className="text-base font-bold text-[#11161B] leading-snug">
                                           {displayTitle}
                                         </h4>
-                                        {feeBadge}
+                                        {feeText}
                                       </div>
                                       {renderRouteButton()}
                                     </div>
