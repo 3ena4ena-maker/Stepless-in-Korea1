@@ -140,7 +140,13 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
   const [stationExits, setStationExits] = useState<ExitInfo[]>(() => {
     try {
       const saved = localStorage.getItem(`admin_station_override_${station.id}`);
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        if (station.id === 'dadaepo' && (saved.includes('128.963') || saved.includes('128.964'))) {
+          localStorage.removeItem(`admin_station_override_${station.id}`);
+          return station.exits || [];
+        }
+        return JSON.parse(saved);
+      }
     } catch {}
     return station.exits || [];
   });
@@ -149,12 +155,17 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     try {
       const saved = localStorage.getItem(`admin_station_override_${station.id}`);
       if (saved) {
+        if (station.id === 'dadaepo' && (saved.includes('128.963') || saved.includes('128.964'))) {
+          localStorage.removeItem(`admin_station_override_${station.id}`);
+          setStationExits(station.exits || []);
+          return;
+        }
         setStationExits(JSON.parse(saved));
         return;
       }
     } catch {}
     setStationExits(station.exits || []);
-  }, [station.id]);
+  }, [station.id, station.exits]);
 
   // Coordinate inspector mode state
   const [inspectMode, setInspectMode] = useState<boolean>(false);
