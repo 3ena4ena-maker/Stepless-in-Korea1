@@ -4652,7 +4652,7 @@ case 'EXPERIENCE': {
                           titleEn: step.titleEn,
                         }) || matchedSpotId || 'spot-101';
                         const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
-                        const imageUrl = ktoDetail?.firstImage || step.firstImage;
+                        const imageUrl = step.firstImage || ktoDetail?.firstImage;
                         const isSaved = isBookmarked(step.id || step.titleKo);
 
                         const rawAddressKo = ktoDetail?.addressRoadKo || step.stationInfoKo || '';
@@ -4678,7 +4678,7 @@ case 'EXPERIENCE': {
                                 <AttractionPhotoThumbnail
                                   src={imageUrl}
                                   alt={step.titleKo}
-                                  className="w-full h-28 sm:h-32 mb-1.5"
+                                  className="w-full h-32 sm:h-36 mb-2"
                                 />
                               )}
                               {/* Header: Title & Route Button on the SAME line */}

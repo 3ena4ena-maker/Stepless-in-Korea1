@@ -83,8 +83,20 @@ export function matchTourApiSpotId(titleOrText: string): string | null {
   if (t.includes('영도대교')) {
     return 'spot-yeongdodaegyo';
   }
-  if (t.includes('부평깡통') || t.includes('깡통시장') || t.includes('부평시장') || t.includes('국제시장')) {
+  if (t.includes('국제시장')) {
+    return 'spot-gukje-market';
+  }
+  if (t.includes('부평깡통') || t.includes('깡통시장') || t.includes('부평시장')) {
     return 'spot-bupyeong-market';
+  }
+  if (t.includes('서면종합시장') || t.includes('서면시장')) {
+    return 'spot-seomyeon-market';
+  }
+  if (t.includes('해운대시장')) {
+    return 'spot-haeundae-market';
+  }
+  if (t.includes('부산진시장')) {
+    return 'spot-busanjin-market';
   }
   if (t.includes('자갈치') || t.includes('남포동 biff') || t.includes('유라리광장')) {
     return 'spot-107';
@@ -237,13 +249,19 @@ export function resolvePlaceTargetId(
     return `place-${encodeURIComponent(clean)}`;
   }
 
-  // 객체인 경우
+  // 객체인 경우: 명시적 스팟 ID(spot- 또는 tour-)가 있으면 최우선 반환
+  if (placeOrTitle.id && placeOrTitle.id.trim()) {
+    const id = placeOrTitle.id.trim();
+    if (id.startsWith('spot-') || id.startsWith('tour-')) {
+      return id;
+    }
+  }
   if (placeOrTitle.contentId && placeOrTitle.contentId.trim()) {
     return placeOrTitle.contentId.trim();
   }
   if (placeOrTitle.id && placeOrTitle.id.trim()) {
     const id = placeOrTitle.id.trim();
-    if (id.startsWith('spot-') || id.startsWith('tour-') || /^\d+$/.test(id)) {
+    if (/^\d+$/.test(id)) {
       return id;
     }
   }
