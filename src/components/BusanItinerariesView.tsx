@@ -5289,55 +5289,25 @@ case 'EXPERIENCE': {
               // -------------------------------------------------------------
               case 'ATTRACTION': {
                 const attractionSteps = course.steps || [];
-                const filteredAttractionSteps = selectedAttractionRegion === 'ALL'
-                  ? attractionSteps
-                  : attractionSteps.filter(s => s.regionId === selectedAttractionRegion);
 
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Header */}
+                    {/* Header with Landmark Icon */}
                     <div className="space-y-2 border-b border-slate-200 pb-5 text-left">
-                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                        {language === 'KR' ? '부산 명소' : 'Busan Attractions'}
+                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
+                        <Landmark className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '부산 명소' : 'Busan Attractions'}</span>
                       </h2>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                         {language === 'KR'
-                          ? '해동 용궁사, 이기대 해안산책로, 태종대 등 부산을 대표하는 핵심 명소를 만나보세요.'
-                          : 'Explore iconic scenic landmarks including Haedong Yonggungsa, Igidae, and Taejongdae.'}
+                          ? '해동 용궁사, 이기대 해안산책로, 태종대, 황령산전망대, 부산용두산공원, 영도대교 등 부산을 대표하는 핵심 명소를 만나보세요.'
+                          : 'Explore iconic scenic landmarks including Haedong Yonggungsa, Igidae, Taejongdae, Hwangnyeongsan, Yongdusan, and Yeongdodaegyo.'}
                       </p>
-                    </div>
-
-                    {/* Regional Sub-filter Tabs */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap flex-nowrap py-1">
-                        {[
-                          { id: 'ALL', nameKo: '전체 보기', nameEn: 'View All' },
-                          { id: 'haeundae_gijang', nameKo: '기장 (해동 용궁사)', nameEn: 'Gijang (Haedong Yonggungsa)' },
-                          { id: 'gwangalli_centum', nameKo: '남구 (이기대 해안산책로)', nameEn: 'Nam-gu (Igidae Coastal Walk)' },
-                          { id: 'nampo_yeongdo', nameKo: '영도 (태종대)', nameEn: 'Yeongdo (Taejongdae)' },
-                        ].map(tab => (
-                          <button
-                            key={tab.id}
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedAttractionRegion(tab.id);
-                            }}
-                            className={`px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
-                              selectedAttractionRegion === tab.id
-                                ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
-                                : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
-                            }`}
-                          >
-                            {language === 'KR' ? tab.nameKo : tab.nameEn}
-                          </button>
-                        ))}
-                      </div>
                     </div>
 
                     {/* Attraction Cards Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4.5">
-                      {filteredAttractionSteps.map((step, idx) => {
+                      {attractionSteps.map((step, idx) => {
                         const matchedSpotId = matchTourApiSpotId(step.titleKo);
                         const effectiveSpotId = resolvePlaceTargetId({
                           id: step.id,
@@ -5414,33 +5384,78 @@ case 'EXPERIENCE': {
                               </div>
 
                               {/* Photo thumbnail - cleanly returns null if missing or error occurs! */}
-                              {ktoDetail?.firstImage && (
+                              {(ktoDetail?.firstImage || step.firstImage) && (
                                 <AttractionPhotoThumbnail 
-                                  src={ktoDetail.firstImage} 
-                                  alt={ktoDetail.nameKo || step.titleKo} 
+                                  src={ktoDetail?.firstImage || step.firstImage || ''} 
+                                  alt={ktoDetail?.nameKo || step.titleKo} 
                                 />
                               )}
 
-                              {/* Address with copy button */}
-                              {ktoDetail?.addressRoadKo && (
-                                <div className="text-xs text-[#4A5568] flex items-center justify-between gap-2 bg-[#FBFBF9] p-2 rounded border border-[#E5E2DC]">
-                                  <div className="flex items-center gap-1.5 truncate">
-                                    <MapPin className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-                                    <span className="truncate">{language === 'KR' ? ktoDetail.addressRoadKo : ktoDetail.addressRoadEn}</span>
+                              {/* Address with copy button & Map navigation buttons */}
+                              {(() => {
+                                const displayAddress = ktoDetail?.addressRoadKo || (step.stationInfoKo ? step.stationInfoKo.replace(/\s*\([^)]*\)/g, '').trim() : '');
+                                if (!displayAddress) return null;
+
+                                const cleanAddrForMap = displayAddress || step.titleKo;
+                                const naverUrl = (step as any).naverMapUrl || `https://map.naver.com/v5/search/${encodeURIComponent(step.titleKo + ' ' + cleanAddrForMap)}`;
+                                const googleUrl = (step as any).googleMapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((step.titleEn || step.titleKo) + ' ' + cleanAddrForMap)}`;
+
+                                return (
+                                  <div className="text-xs text-[#4A5568] flex items-center justify-between gap-2 bg-[#FBFBF9] p-2 rounded border border-[#E5E2DC]">
+                                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                                      <MapPin className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
+                                      <span className="truncate">{language === 'KR' ? displayAddress : (ktoDetail?.addressRoadEn || step.stationInfoEn || displayAddress)}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1 shrink-0">
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          navigator.clipboard.writeText(displayAddress);
+                                          setCopiedIndex(`attraction-addr-${idx}`);
+                                          setTimeout(() => setCopiedIndex(null), 2000);
+                                        }}
+                                        className="text-[10px] font-bold px-2 py-0.5 rounded border border-[#E5E2DC] bg-white hover:bg-[#F1EFEC] text-[#0A2540] shrink-0 transition-colors cursor-pointer"
+                                      >
+                                        {copiedIndex === `attraction-addr-${idx}` ? (language === 'KR' ? '복사됨' : 'Copied') : (language === 'KR' ? '주소 복사' : 'Copy')}
+                                      </button>
+
+                                      {/* Naver Map Button */}
+                                      <a
+                                        href={naverUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                                        title={language === 'KR' ? `${step.titleKo} 네이버 지도에서 위치 보기` : `View ${step.titleKo} on Naver Map`}
+                                        aria-label="Naver Map"
+                                      >
+                                        <svg className="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24">
+                                          <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
+                                        </svg>
+                                      </a>
+
+                                      {/* Google Maps Button */}
+                                      <a
+                                        href={googleUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-md bg-white border border-[#E5E2DC] hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                                        title={language === 'KR' ? `${step.titleKo} 구글맵에서 위치 보기` : `View ${step.titleKo} on Google Maps`}
+                                        aria-label="Google Maps"
+                                      >
+                                        <svg viewBox="0 0 92 135" className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="none">
+                                          <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
+                                          <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
+                                          <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
+                                          <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
+                                          <path d="M46 31a15 15 0 100 30 15 15 0 000-30z" fill="#fff"/>
+                                        </svg>
+                                      </a>
+                                    </div>
                                   </div>
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      navigator.clipboard.writeText(ktoDetail.addressRoadKo);
-                                      setCopiedIndex(`attraction-addr-${idx}`);
-                                      setTimeout(() => setCopiedIndex(null), 2000);
-                                    }}
-                                    className="text-[10px] font-bold px-2 py-0.5 rounded border border-[#E5E2DC] bg-white hover:bg-[#F1EFEC] text-[#0A2540] shrink-0 transition-colors cursor-pointer"
-                                  >
-                                    {copiedIndex === `attraction-addr-${idx}` ? (language === 'KR' ? '복사됨' : 'Copied') : (language === 'KR' ? '주소 복사' : 'Copy')}
-                                  </button>
-                                </div>
-                              )}
+                                );
+                              })()}
 
                               {/* Barrier-Free Tags */}
                               {bf && (

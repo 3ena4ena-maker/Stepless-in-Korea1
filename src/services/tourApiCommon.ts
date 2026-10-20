@@ -77,6 +77,12 @@ export function matchTourApiSpotId(titleOrText: string): string | null {
   if (t.includes('용두산') || t.includes('부산타워') || t.includes('다이아몬드타워')) {
     return 'spot-105';
   }
+  if (t.includes('황령산')) {
+    return 'spot-hwangnyeongsan';
+  }
+  if (t.includes('영도대교')) {
+    return 'spot-yeongdodaegyo';
+  }
   if (t.includes('부평깡통') || t.includes('깡통시장') || t.includes('부평시장') || t.includes('국제시장')) {
     return 'spot-bupyeong-market';
   }
