@@ -1,6 +1,9 @@
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export interface BusanEvent {
   id: string;
@@ -113,9 +116,9 @@ const VENUE_STATION_MAP = [
     stationKo: '다대포해수욕장역 (1호선)', 
     stationEn: 'Dadaepo Beach Station (Line 1)',
     metroLine: 'Line 1',
-    exitNumber: '1번 출구', 
-    exitTipKo: '다대포해수욕장역 1번 출구 엘리베이터로 바닷가 수변공원 보행 데크로 직결됩니다.',
-    exitTipEn: 'Dadaepo Beach Exit 1 elevator offers step-free beach access.'
+    exitNumber: '4번 출구', 
+    exitTipKo: '다대포해수욕장역 4번 출구 또는 2·3번 출구 엘리베이터를 통해 바닷가 백사장 및 해변공원으로 수평 무단차 진입이 가능합니다.',
+    exitTipEn: 'Dadaepo Beach Exit 4 elevator connects directly to the beach park and boardwalk.'
   },
   { 
     match: /수영|F1963|망미/i, 
@@ -212,6 +215,60 @@ async function fetchDabomEvents(type: string): Promise<any[]> {
   });
 }
 
+// Parse date range from Korean government festival string: e.g. "2026. 05. 22. ~ 05. 31." or "2026.10.16. ~ 2026.10.18."
+function parseDateRange(raw: string): { startDate: string; endDate: string } | null {
+  if (!raw) return null;
+  const fullRange = raw.match(/(\d{4})[.\-년\s]+(\d{1,2})[.\-월\s]+(\d{1,2})[일\s.~까지\-]+(?:(\d{4})[.\-년\s]+)?(\d{1,2})[.\-월\s]+(\d{1,2})/);
+  if (fullRange) {
+    const y1 = fullRange[1];
+    const m1 = fullRange[2].padStart(2, '0');
+    const d1 = fullRange[3].padStart(2, '0');
+    const y2 = fullRange[4] || y1;
+    const m2 = fullRange[5].padStart(2, '0');
+    const d2 = fullRange[6].padStart(2, '0');
+    return { startDate: `${y1}-${m1}-${d1}`, endDate: `${y2}-${m2}-${d2}` };
+  }
+  const single = raw.match(/(\d{4})[.\-년\s]+(\d{1,2})[.\-월\s]+(\d{1,2})/);
+  if (single) {
+    const y = single[1];
+    const m = single[2].padStart(2, '0');
+    const d = single[3].padStart(2, '0');
+    const dateStr = `${y}-${m}-${d}`;
+    return { startDate: dateStr, endDate: dateStr };
+  }
+  return null;
+}
+
+// Fetch official festivals from data.go.kr (부산광역시_부산축제정보 서비스)
+async function fetchBusanGovFestivals(): Promise<any[]> {
+  const serviceKey = process.env.BUSAN_FESTIVAL_API_KEY || process.env.BUSAN_FESTIVAL_SERVICE_KEY || '';
+  if (!serviceKey) {
+    return [];
+  }
+
+  return new Promise((resolve) => {
+    const url = `https://apis.data.go.kr/6260000/FestivalService/getFestivalKr?serviceKey=${serviceKey}&pageNo=1&numOfRows=100&resultType=json`;
+    https.get(url, { timeout: 8000 }, (res) => {
+      let body = '';
+      res.on('data', c => body += c);
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(body);
+          const items = parsed.getFestivalKr?.item || [];
+          resolve(Array.isArray(items) ? items : []);
+        } catch {
+          resolve([]);
+        }
+      });
+    }).on('error', (err) => {
+      console.warn('[BusanEventsSync] FestivalService fetch error:', err.message);
+      resolve([]);
+    }).on('timeout', () => {
+      resolve([]);
+    });
+  });
+}
+
 export function loadCachedBusanEvents(): BusanEvent[] {
   try {
     if (fs.existsSync(EVENTS_DB_FILE)) {
@@ -252,15 +309,62 @@ export async function syncBusanEvents(): Promise<{
   const now = new Date();
 
   try {
-    // 1. Fetch both performances and exhibitions/events from Busan Dabom portal
-    const [performList, displayList] = await Promise.all([
+    // 1. Fetch performances/exhibitions from Dabom and official festivals from data.go.kr
+    const [performList, displayList, govFestivalList] = await Promise.all([
       fetchDabomEvents('perform'),
-      fetchDabomEvents('display')
+      fetchDabomEvents('display'),
+      fetchBusanGovFestivals()
     ]);
 
-    const rawList = [...performList, ...displayList];
     const seenTitles = new Set<string>();
     const syncedEvents: BusanEvent[] = [];
+
+    // 2. Process official Busan City government festivals (공공데이터포털 부산축제정보)
+    for (const item of govFestivalList) {
+      if (!item.MAIN_TITLE) continue;
+      const cleanTitle = String(item.MAIN_TITLE).replace(/\(.*?\)/g, '').trim();
+      const dates = parseDateRange(item.USAGE_DAY_WEEK_AND_TIME);
+      if (!dates) continue;
+
+      const dedupeKey = `${cleanTitle}_${dates.startDate}`;
+      if (seenTitles.has(dedupeKey)) continue;
+      seenTitles.add(dedupeKey);
+
+      const venueText = `${item.MAIN_PLACE || ''} ${item.PLACE || ''} ${item.TRFC_INFO || ''} ${item.GUGUN_NM || ''}`;
+      const stationInfo = findStationForVenue(venueText, item.GUGUN_NM);
+
+      const barrierFreeExtra = item.MIDDLE_SIZE_RM1 ? ` [편의시설: ${item.MIDDLE_SIZE_RM1}]` : '';
+
+      syncedEvents.push({
+        id: `gov-fest-${item.UC_SEQ || Math.random().toString(36).substring(2, 9)}`,
+        titleKo: cleanTitle,
+        titleEn: cleanTitle,
+        category: 'festival',
+        categoryKo: '부산 대표 축제',
+        categoryEn: 'Busan Festival',
+        startDate: dates.startDate,
+        endDate: dates.endDate,
+        stationId: stationInfo.stationId,
+        exitNumber: stationInfo.exitNumber,
+        stationKo: stationInfo.stationKo,
+        stationEn: stationInfo.stationEn,
+        metroLine: stationInfo.metroLine,
+        accessibilityKo: `${item.MAIN_PLACE || item.PLACE || '축제 행사장'}은(는) 보행 약자와 유모차·휠체어 이용객을 위한 접근로를 제공합니다.${barrierFreeExtra}`,
+        accessibilityEn: `Accessible route for strollers and wheelchairs.${item.MIDDLE_SIZE_RM1 ? ` [Accessibility: ${item.MIDDLE_SIZE_RM1}]` : ''}`,
+        exitTipKo: stationInfo.exitTipKo,
+        exitTipEn: stationInfo.exitTipEn,
+        descriptionKo: item.ITEMCNTNTS ? item.ITEMCNTNTS.trim() : `[공공데이터포털 부산광역시 공식 축제] ${cleanTitle}. 장소: ${item.MAIN_PLACE || item.PLACE || '부산 일원'}.`,
+        descriptionEn: `Official Busan Festival: ${cleanTitle}.`,
+        locationKo: item.MAIN_PLACE || item.PLACE || `${item.GUGUN_NM || '부산'} 일원`,
+        locationEn: item.MAIN_PLACE || item.PLACE || 'Busan Venue',
+        colorClass: 'bg-sky-50 text-sky-850 border-sky-100',
+        dotClass: 'bg-sky-500',
+        isAutoSynced: true
+      });
+    }
+
+    // 3. Process Dabom cultural performances and exhibitions
+    const rawList = [...performList, ...displayList];
 
     for (const item of rawList) {
       if (!item.title || !item.op_st_dt) continue;
