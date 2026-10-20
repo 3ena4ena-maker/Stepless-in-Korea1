@@ -8,6 +8,7 @@ import fs from "fs";
 import { BUSAN_TOUR_API_SPOTS, TourApiSpot } from "./src/data/tourApiSpots";
 import { getKoreaTourApiPlaceDetail, KOREA_TOUR_API_PLACE_DETAILS } from "./src/data/koreaTourApiPlaceDetails";
 import { KNOWN_COORDINATES } from "./src/services/myRouteService";
+import { loadCachedBusanEvents, syncBusanEvents, startAutomatedEventSync } from "./src/services/busanEventsSyncService";
 
 dotenv.config();
 
@@ -191,6 +192,38 @@ app.delete("/api/recommendations/:id", async (req, res) => {
 });
 
 // =========================================================================
+// BUSAN OFFICIAL FESTIVALS & CULTURAL EVENTS AUTO-SYNC API
+app.get("/api/busan-events", async (req, res) => {
+  try {
+    let events = loadCachedBusanEvents();
+    if (!events || events.length === 0) {
+      console.log("[API /api/busan-events] Cache is empty, initiating immediate sync...");
+      const result = await syncBusanEvents();
+      events = result.events;
+    }
+    res.json({
+      success: true,
+      count: events.length,
+      events,
+      lastSyncedAt: new Date().toISOString()
+    });
+  } catch (error: any) {
+    console.error("Get busan events error:", error);
+    res.status(500).json({ success: false, error: "Failed to load Busan events", events: [] });
+  }
+});
+
+app.post("/api/busan-events/sync", async (req, res) => {
+  try {
+    console.log("[API /api/busan-events/sync] Manual trigger requested");
+    const result = await syncBusanEvents();
+    res.json(result);
+  } catch (error: any) {
+    console.error("Sync busan events error:", error);
+    res.status(500).json({ success: false, error: "Failed to sync Busan events", events: [] });
+  }
+});
+
 // 5. KOREA TOURISM ORGANIZATION (한국관광공사 TourAPI / KorWithAPI) PROXY & ENDPOINTS
 // =========================================================================
 
@@ -1751,6 +1784,8 @@ async function startServer() {
 
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);
+    // Initialize background automated sync for Busan official events
+    startAutomatedEventSync(12);
   });
 }
 
