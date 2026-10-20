@@ -33,7 +33,10 @@ import {
   Landmark,
   Snowflake,
   Sunrise,
-  Utensils
+  Utensils,
+  Clapperboard,
+  SunMedium,
+  PartyPopper
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { STATIONS } from '../data';
@@ -70,20 +73,51 @@ export interface BusanEvent {
   isAutoSynced?: boolean;
 }
 
-// Helper: Determine a sophisticated line icon for an event
+export interface EventCategoryMeta {
+  icon: React.ElementType;
+  label: string;
+  labelEn: string;
+}
+
+// Helper: Determine a distinct category meta (icon + Korean/English short label) for an event
+export function getEventCategoryMeta(evt: BusanEvent): EventCategoryMeta {
+  const t = (evt.titleKo + ' ' + (evt.categoryKo || '') + ' ' + evt.id + ' ' + (evt.titleEn || '')).toLowerCase();
+  if (t.includes('드론') || t.includes('drone')) {
+    return { icon: Sparkles, label: '드론쇼', labelEn: 'Drone' };
+  }
+  if (t.includes('불꽃') || t.includes('firework')) {
+    return { icon: Flame, label: '불꽃쇼', labelEn: 'Fireworks' };
+  }
+  if (t.includes('영화') || t.includes('movie') || t.includes('film') || t.includes('biff')) {
+    return { icon: Clapperboard, label: '영화제', labelEn: 'Film' };
+  }
+  if (t.includes('록') || t.includes('음악') || t.includes('콘서트') || t.includes('rock') || t.includes('music')) {
+    return { icon: Music, label: '콘서트', labelEn: 'Concert' };
+  }
+  if (t.includes('빛축제') || t.includes('트리') || t.includes('light') || t.includes('일루미네이션')) {
+    return { icon: SunMedium, label: '빛축제', labelEn: 'Light' };
+  }
+  if (t.includes('박람회') || t.includes('지스타') || t.includes('전시') || t.includes('expo') || t.includes('gstar') || t.includes('모빌리티')) {
+    return { icon: Landmark, label: '전시·박람', labelEn: 'Exhibition' };
+  }
+  if (t.includes('sup') || t.includes('오션') || t.includes('바다축제') || t.includes('해변') || t.includes('해양')) {
+    return { icon: Waves, label: '해양축제', labelEn: 'Marine' };
+  }
+  if (t.includes('해맞이') || t.includes('sunrise') || t.includes('일출') || t.includes('타종식')) {
+    return { icon: Sunrise, label: '새해·해맞이', labelEn: 'Sunrise' };
+  }
+  if (t.includes('북극곰') || t.includes('겨울') || t.includes('winter') || t.includes('철새')) {
+    return { icon: Snowflake, label: '겨울이색', labelEn: 'Winter' };
+  }
+  if (t.includes('자갈치') || t.includes('국수') || t.includes('구포나루') || t.includes('food') || t.includes('식')) {
+    return { icon: Utensils, label: '미식·전통', labelEn: 'Food' };
+  }
+  return { icon: PartyPopper, label: '문화축제', labelEn: 'Festival' };
+}
+
+// Backward-compatible icon getter
 export function getEventIcon(evt: BusanEvent) {
-  const t = (evt.titleKo + ' ' + evt.categoryKo + ' ' + evt.id).toLowerCase();
-  if (t.includes('드론') || t.includes('drone')) return Sparkles;
-  if (t.includes('불꽃') || t.includes('firework')) return Flame;
-  if (t.includes('빛축제') || t.includes('트리') || t.includes('light')) return Sparkles;
-  if (t.includes('영화') || t.includes('movie') || t.includes('film') || t.includes('biff')) return Film;
-  if (t.includes('록') || t.includes('음악') || t.includes('콘서트') || t.includes('rock') || t.includes('music')) return Music;
-  if (t.includes('바다') || t.includes('sup') || t.includes('해변') || t.includes('sea') || t.includes('beach')) return Waves;
-  if (t.includes('해맞이') || t.includes('sunrise') || t.includes('일출')) return Sunrise;
-  if (t.includes('북극곰') || t.includes('겨울') || t.includes('winter')) return Snowflake;
-  if (t.includes('자갈치') || t.includes('국수') || t.includes('food') || t.includes('식')) return Utensils;
-  if (t.includes('박람회') || t.includes('지스타') || t.includes('전시') || t.includes('expo') || t.includes('gstar')) return Landmark;
-  return Compass;
+  return getEventCategoryMeta(evt).icon;
 }
 
 // Curated Busan Events Data (2026-08 ~ 2027-01 Rich Festival Roster)
@@ -1066,10 +1100,12 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                       )}
                     </div>
 
-                    {/* Event Icons Area (Clean, Stylish Line Glyphs in Green Palette) */}
+                    {/* Event Icons Area (Distinct Category Icons with Category Labels underneath) */}
                     <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap mt-1">
                       {dayEvents.slice(0, 3).map(evt => {
-                        const EventIcon = getEventIcon(evt);
+                        const meta = getEventCategoryMeta(evt);
+                        const EventIcon = meta.icon;
+                        const catLabel = language === 'KR' ? meta.label : meta.labelEn;
                         return (
                           <button
                             key={evt.id}
@@ -1077,10 +1113,13 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                               e.stopPropagation();
                               setSelectedEvent(evt);
                             }}
-                            className="p-1 sm:p-1.5 rounded-xl bg-[#8EA85E]/10 hover:bg-[#8EA85E]/25 text-[#4E6228] border border-[#8EA85E]/20 transition-all hover:scale-115 active:scale-95 cursor-pointer shadow-2xs group flex items-center justify-center"
-                            title={`${evt.titleKo} (${evt.categoryKo})`}
+                            className="flex flex-col items-center justify-center px-1 sm:px-1.5 py-1 rounded-xl bg-[#8EA85E]/10 hover:bg-[#8EA85E]/22 text-[#4E6228] border border-[#8EA85E]/20 transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-2xs group shrink-0 min-w-[34px] sm:min-w-[42px]"
+                            title={`${language === 'KR' ? evt.titleKo : evt.titleEn} (${catLabel})`}
                           >
-                            <EventIcon className="w-4 h-4 sm:w-4.5 sm:h-4.5 group-hover:text-[#384A1A]" />
+                            <EventIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#526826] group-hover:text-[#384A1A] shrink-0" />
+                            <span className="text-[7.5px] sm:text-[9px] font-bold text-[#526826] mt-0.5 leading-none whitespace-nowrap tracking-tight">
+                              {catLabel}
+                            </span>
                           </button>
                         );
                       })}
@@ -1090,7 +1129,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                             e.stopPropagation();
                             setDayEventsModal({ dateStr: cell.dateString, events: dayEvents });
                           }}
-                          className="px-1.5 py-0.5 rounded-lg bg-[#8EA85E]/15 text-[#526826] text-[10px] font-bold hover:bg-[#8EA85E]/25 cursor-pointer"
+                          className="px-1.5 py-1 rounded-xl bg-[#8EA85E]/15 text-[#526826] text-[9px] sm:text-[10px] font-bold hover:bg-[#8EA85E]/25 cursor-pointer shrink-0 self-center"
                         >
                           +{dayEvents.length - 3}
                         </button>
@@ -1126,7 +1165,8 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {filteredEvents.map(evt => {
-              const EventIcon = getEventIcon(evt);
+              const meta = getEventCategoryMeta(evt);
+              const EventIcon = meta.icon;
               return (
                 <div
                   key={evt.id}
@@ -1135,8 +1175,11 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                 >
                   <div>
                     {/* Top Illustration/Icon Container (Matches the soft gray box from user's image) */}
-                    <div className="w-full h-36 bg-[#F8F9FA] rounded-2xl flex items-center justify-center p-4 relative mb-4 group-hover:bg-[#8EA85E]/5 transition-colors">
-                      <EventIcon className="w-12 h-12 text-[#8EA85E] group-hover:scale-110 transition-transform" />
+                    <div className="w-full h-36 bg-[#F8F9FA] rounded-2xl flex flex-col items-center justify-center p-4 relative mb-4 group-hover:bg-[#8EA85E]/5 transition-colors">
+                      <EventIcon className="w-11 h-11 text-[#8EA85E] group-hover:scale-110 transition-transform" />
+                      <span className="text-[11px] font-bold text-[#526826] mt-2">
+                        {language === 'KR' ? meta.label : meta.labelEn}
+                      </span>
                       <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-lg text-[11px] font-bold bg-white text-[#526826] border border-slate-200/80 shadow-2xs">
                         {language === 'KR' ? evt.categoryKo : evt.categoryEn}
                       </span>
@@ -1234,11 +1277,15 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
 
               {/* Top Illustration Box (Matching Screenshot Aesthetic) */}
               {(() => {
-                const ModalIcon = getEventIcon(selectedEvent);
+                const meta = getEventCategoryMeta(selectedEvent);
+                const ModalIcon = meta.icon;
                 return (
                   <div className="w-full h-36 bg-[#F8F9FA] rounded-2xl flex flex-col items-center justify-center p-4 relative shrink-0">
-                    <ModalIcon className="w-14 h-14 text-[#8EA85E]" />
-                    <span className="mt-2 px-3 py-1 rounded-full text-xs font-bold bg-[#8EA85E]/15 text-[#526826] border border-[#8EA85E]/20">
+                    <ModalIcon className="w-12 h-12 text-[#8EA85E]" />
+                    <span className="text-xs font-bold text-[#526826] mt-1.5">
+                      {language === 'KR' ? meta.label : meta.labelEn}
+                    </span>
+                    <span className="mt-1 px-3 py-0.5 rounded-full text-xs font-bold bg-[#8EA85E]/15 text-[#526826] border border-[#8EA85E]/20">
                       {language === 'KR' ? selectedEvent.categoryKo : selectedEvent.categoryEn}
                     </span>
                   </div>
@@ -1396,7 +1443,8 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
 
               <div className="overflow-y-auto space-y-2.5 pr-1 custom-scrollbar">
                 {dayEventsModal.events.map(evt => {
-                  const EventIcon = getEventIcon(evt);
+                  const meta = getEventCategoryMeta(evt);
+                  const EventIcon = meta.icon;
                   return (
                     <div
                       key={evt.id}
@@ -1406,8 +1454,11 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                       }}
                       className="p-4 rounded-2xl border border-slate-200/80 hover:border-[#8EA85E]/60 hover:bg-[#8EA85E]/5 transition-all cursor-pointer flex items-center gap-3.5 group"
                     >
-                      <div className="p-2.5 rounded-xl bg-[#8EA85E]/15 text-[#526826] shrink-0">
+                      <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-[#8EA85E]/15 text-[#526826] shrink-0 min-w-[50px]">
                         <EventIcon className="w-5 h-5" />
+                        <span className="text-[8.5px] font-bold mt-0.5 text-center leading-none">
+                          {language === 'KR' ? meta.label : meta.labelEn}
+                        </span>
                       </div>
                       <div className="flex-1 space-y-0.5">
                         <span className="text-[10px] font-bold text-[#526826]">
