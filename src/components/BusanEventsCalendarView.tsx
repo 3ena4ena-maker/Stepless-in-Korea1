@@ -1034,7 +1034,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
   };
 
   return (
-    <div className="space-y-6 animate-fade-in text-left max-w-5xl mx-auto" id="busan-events-calendar-container">
+    <div className="space-y-3 sm:space-y-4 animate-fade-in text-left max-w-5xl mx-auto pb-0" id="busan-events-calendar-container">
       
       {/* 1. Intro Header Section - Soft & Clean (Matches theme card aesthetic) */}
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-xs text-left">
@@ -1163,8 +1163,8 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
 
       {/* 3A. FULL-WIDTH CALENDAR VIEW (No 50/50 split! Spacious & Icon-Driven) */}
       {viewMode === 'calendar' && (
-        <div className="space-y-6">
-          <div className="w-full bg-white rounded-3xl border border-slate-200/80 p-5 sm:p-8 shadow-xs text-left space-y-5">
+        <div className="space-y-2">
+          <div className="w-full bg-white rounded-3xl border border-slate-200/80 p-4 sm:p-6 pb-2.5 sm:pb-3 shadow-xs text-left space-y-3 sm:space-y-4">
             
             {/* Calendar Month Control Bar */}
             <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-4">
@@ -1229,7 +1229,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                         setDayEventsModal({ dateStr: cell.dateString, events: dayEvents });
                       }
                     }}
-                    className={`min-h-[80px] sm:min-h-[105px] p-2 rounded-2xl border transition-all text-left flex flex-col justify-between ${
+                    className={`min-h-[70px] sm:min-h-[92px] p-2 rounded-2xl border transition-all text-left flex flex-col justify-between ${
                       cell.isPadding 
                         ? 'bg-slate-50/40 border-slate-100/60 opacity-35' 
                         : 'bg-white border-slate-200/80 hover:border-[#8EA85E]/50 hover:shadow-2xs'

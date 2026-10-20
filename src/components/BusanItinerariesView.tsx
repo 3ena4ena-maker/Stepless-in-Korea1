@@ -2183,7 +2183,7 @@ export default function BusanItinerariesView({
   const activeCategoryConfig = categoriesConfig.find(c => c.id === activeCategory);
 
   return (
-    <div className={`${activeSection === 'SELECTION' ? 'space-y-1 sm:space-y-2' : 'space-y-6 sm:space-y-8'} text-left animate-fade-in max-w-5xl mx-auto`} id="busan-itineraries-container">
+    <div className={`${activeSection === 'SELECTION' || activeSection === 'SCHEDULE' ? 'space-y-1 sm:space-y-2' : 'space-y-6 sm:space-y-8'} text-left animate-fade-in max-w-5xl mx-auto`} id="busan-itineraries-container">
       {/* Dynamic Seagull & Sea Styles Injector */}
       <style>{`
         @keyframes subtle-boat {
@@ -7249,7 +7249,7 @@ case 'EXPERIENCE': {
       {/* VIEW 4: BUSAN MAJOR EVENTS CALENDAR VIEW                                  */}
       {/* ========================================================================= */}
       {activeSection === 'SCHEDULE' && (
-        <div className="space-y-4 animate-fade-in">
+        <div className="space-y-1 animate-fade-in">
           <React.Suspense fallback={<div className="h-64 flex items-center justify-center text-slate-400 font-bold text-sm">부산 축제 & 행사 일정을 불러오는 중...</div>}>
             <BusanEventsCalendarView 
               language={language} 

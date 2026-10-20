@@ -1890,7 +1890,7 @@ export default function App() {
 
           {/* Tab 3 & 4: TRAVEL TIPS & BUSAN MAJOR SCHEDULE VIEW & BARRIER FREE */}
           {(visitedTabs['tips'] || visitedTabs['schedule'] || visitedTabs['tourapi'] || currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') && (
-            <div className={(currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') ? ((currentTab === 'tips' && tipsSubPage === 'index') ? 'space-y-1 sm:space-y-2' : 'space-y-6') : 'hidden'}>
+            <div className={(currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') ? ((currentTab === 'tips' && tipsSubPage === 'index') || currentTab === 'schedule' ? 'space-y-1 sm:space-y-2' : 'space-y-6') : 'hidden'}>
               <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? "여행 루트 및 추천 코스를 불러오는 중..." : "Loading travel routes and courses..."} />}>
                 <BusanItinerariesView 
                   language={language}
@@ -1994,7 +1994,7 @@ export default function App() {
                 />
               </Suspense>
               {/* Google AdSense Unit for Verified Guides / Magazine / Content Hub */}
-              {(currentTab !== 'tips' || tipsSubPage !== 'index') && (
+              {(currentTab !== 'tips' || tipsSubPage !== 'index') && currentTab !== 'schedule' && (
                 <AdSenseUnit currentParams={adParams} />
               )}
             </div>
