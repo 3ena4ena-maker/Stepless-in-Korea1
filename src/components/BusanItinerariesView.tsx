@@ -4554,8 +4554,8 @@ case 'EXPERIENCE': {
                       </h2>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                         {language === 'KR'
-                          ? '지하철역과 바로 이어지는 정겨운 부산 대표 전통시장과 명물 장터를 만나보세요.'
-                          : 'Explore vibrant local markets directly linked to subway stations.'}
+                          ? '전통시장에는 정해진 날짜에 열리는 ‘장날’이 있으며, 5일장은 5일에 한 번(특정 날짜 끝자리) 더 큰 장터가 열립니다. 시장마다 열리는 장날이 다르니 미리 확인하고 방문하시면 더욱 활기차고 재미있게 즐기실 수 있습니다.'
+                          : 'Traditional markets feature special market days (\'Jangnal\'), such as 5-day periodic markets opening every 5 days on specific ending calendar dates. Schedules vary by market, so check the dates in advance for the liveliest experience!'}
                       </p>
                     </div>
 
