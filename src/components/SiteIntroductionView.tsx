@@ -403,36 +403,34 @@ export function SiteIntroductionView({
 
       {/* PAGE 3: 개인정보처리방침 (Privacy Policy) */}
       {activeSubTab === 'privacy' && (
-        <div className="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm space-y-6 text-xs sm:text-sm text-slate-700 leading-relaxed animate-fade-in google-anno-skip" data-ad-exclude="true">
-          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <span className="p-2.5 rounded-xl bg-blue-50 text-[#004481]">
-              <Shield className="w-6 h-6" />
-            </span>
-            <div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900 font-heading">
-                {language === 'KR' ? '🔒 개인정보처리방침 (Privacy Policy)' : '🔒 Privacy Policy'}
-              </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                {language === 'KR'
-                  ? '쿠키·광고·분석·위치·제보 데이터 처리 수칙 및 프라이버시 보호 안내'
-                  : 'Cookie disclosure, personalized advertising, geolocation data, and privacy protection guidelines.'}
-              </p>
-            </div>
+        <div className="space-y-6 animate-fade-in text-left pt-1 sm:pt-2 text-xs sm:text-sm text-slate-700 leading-relaxed google-anno-skip" data-ad-exclude="true">
+          {/* Header with single clean line icon */}
+          <div className="space-y-1">
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
+              <span>{language === 'KR' ? '개인정보처리방침' : 'Privacy Policy'}</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium">
+              {language === 'KR'
+                ? '쿠키·광고·분석·위치·제보 데이터 처리 수칙 및 프라이버시 보호 안내'
+                : 'Cookie disclosure, personalized advertising, geolocation data, and privacy protection guidelines.'}
+            </p>
           </div>
 
-          <div className="bg-sky-50 p-4 border border-sky-100 rounded-2xl text-sky-900 font-medium">
+          {/* Core Privacy Promise - Clean line style without box */}
+          <div className="text-xs sm:text-sm font-medium text-slate-700 leading-relaxed border-l-2 border-[#8EA85E] pl-3 sm:pl-4 py-1">
             {language === 'KR'
-              ? '📢 Stepless는 회원가입, 로그인, 주민등록번호 수집 등 직접 식별이 가능한 개인정보를 일절 저장하거나 요구하지 않는 프라이버시 보호 중심 서비스입니다.'
-              : '📢 Stepless is a privacy-first service that does not collect, store, or require personal identifiers like logins, phone numbers, or national identification numbers.'}
+              ? 'Stepless는 회원가입, 로그인, 주민등록번호 수집 등 직접 식별이 가능한 개인정보를 일절 저장하거나 요구하지 않는 프라이버시 보호 중심 서비스입니다.'
+              : 'Stepless is a privacy-first service that does not collect, store, or require personal identifiers like logins, phone numbers, or national identification numbers.'}
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-5 pt-2 border-t border-slate-200/80">
             <div>
               <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#8EA85E]"></span>
                 <span>{language === 'KR' ? '1. 위치정보(Geolocation) 처리 안내' : '1. Geolocation Data Handling'}</span>
               </h3>
-              <p className="font-medium text-slate-600 leading-relaxed pl-3.5">
+              <p className="font-medium text-slate-600 leading-relaxed pl-3 sm:pl-3.5">
                 {language === 'KR'
                   ? "\'내 주변 역 및 출구 검색\' 기능을 사용할 때 이용자의 위치 정보(GPS 및 네트워크 좌표)는 사용자의 브라우저 동의 하에 단말기 내부에서 일회성 거리 계산 용도로만 활용됩니다. 해당 위치 데이터는 외부 서버로 전송되거나 저장되지 않으며 연산 즉시 파기됩니다."
                   : 'When using nearby station search, your GPS/network coordinates are processed strictly inside your device browser session for one-time distance calculation. No location history is transmitted to or stored on remote servers.'}
@@ -441,10 +439,10 @@ export function SiteIntroductionView({
 
             <div>
               <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#8EA85E]"></span>
                 <span>{language === 'KR' ? '2. 쿠키(Cookie) 수집 및 이용 목적' : '2. Cookies & Purpose of Collection'}</span>
               </h3>
-              <p className="font-medium text-slate-600 leading-relaxed pl-3.5">
+              <p className="font-medium text-slate-600 leading-relaxed pl-3 sm:pl-3.5">
                 {language === 'KR'
                   ? '쿠키는 웹사이트 이용 시 이용자의 브라우저에 저장되는 소규모 텍스트 파일입니다. 본 서비스는 사용자 환경설정(언어 선택 등) 유지, 접속 품질 향상, 그리고 서비스의 지속적인 데이터 업데이트 운영을 위한 타사 서비스 연동 시 쿠키를 활용할 수 있습니다.'
                   : 'Cookies are small text files stored in your browser. We use cookies to remember preferences (such as language), optimize performance, and support third-party integrations essential for maintaining data updates.'}
@@ -453,10 +451,10 @@ export function SiteIntroductionView({
 
             <div>
               <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#8EA85E]"></span>
                 <span>{language === 'KR' ? '3. 웹/앱 서비스 사용 분석(Analytics)' : '3. Anonymous Web Analytics'}</span>
               </h3>
-              <p className="font-medium text-slate-600 leading-relaxed pl-3.5">
+              <p className="font-medium text-slate-600 leading-relaxed pl-3 sm:pl-3.5">
                 {language === 'KR'
                   ? '본 웹사이트는 이용자의 방문 패턴, 검색 빈도가 높은 주요 역, 접속 기기 유형 등 익명의 통계성 데이터(Analytics)를 수집 및 분석할 수 있습니다. 수집된 통계 데이터는 오직 서비스 기능 개선 및 보행자 동선 가이드 품질 향상 목적으로만 활용되며 개인을 식별하지 않습니다.'
                   : 'We may process anonymous analytics regarding aggregate visit frequency and device types. This anonymous statistical data is used solely to improve navigation guide quality and does not identify individuals.'}
@@ -465,10 +463,10 @@ export function SiteIntroductionView({
 
             <div>
               <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#8EA85E]"></span>
                 <span>{language === 'KR' ? '4. 구글 맞춤형 광고 및 쿠키 거부(Opt-out) 수칙' : '4. Google Personalized Advertising & Opt-out'}</span>
               </h3>
-              <div className="pl-3.5 space-y-2 text-slate-600 font-medium">
+              <div className="pl-3 sm:pl-3.5 space-y-2 text-slate-600 font-medium">
                 <p>
                   {language === 'KR'
                     ? '1) 본 서비스는 공익적인 무료 데이터 서비스 유지 및 지속 관리를 위해 구글 애드센스(Google AdSense) 등 제3자 광고 사업자의 광고를 게재할 수 있습니다.'
@@ -503,10 +501,10 @@ export function SiteIntroductionView({
 
             <div>
               <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#8EA85E]"></span>
                 <span>{language === 'KR' ? '5. 정보 오류 제보 및 문의 데이터 처리 방침' : '5. Handling of Inquiries & Feedback'}</span>
               </h3>
-              <p className="font-medium text-slate-600 leading-relaxed pl-3.5">
+              <p className="font-medium text-slate-600 leading-relaxed pl-3 sm:pl-3.5">
                 {language === 'KR'
                   ? `이용자가 대표 이메일(${officialEmail})을 통해 정보 오류 제보, 정정 요청, 일반 문의를 전송하는 경우, 수신된 작성 내용 및 이메일 주소는 오직 제보 내용의 현장 검증, 데이터 정정, 문의 답변 목적으로만 한정하여 이용됩니다. 해당 문의 처리 및 검증 목적이 달성된 후에는 수신된 이메일 데이터를 즉시 파기하거나 안전하게 관리합니다.`
                   : `When users submit feedback or inquiries to ${officialEmail}, the provided message and sender email address are used strictly for auditing transit data and replying to user requests, after which they are securely managed or discarded.`}
