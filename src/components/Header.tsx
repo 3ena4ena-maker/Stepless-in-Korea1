@@ -65,12 +65,9 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
             title="Stepless in Korea 홈으로 이동"
           >
             <div className="flex items-center gap-2">
-              <img
-                src="/images/stepless_stussy_logo_transparent.png"
-                alt="Stepless in Korea"
-                className="h-9 sm:h-11 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
-                loading="eager"
-              />
+              <span className="text-lg sm:text-xl font-black font-heading tracking-tight text-[#11161B] group-hover:text-[#8EA85E] transition-colors">
+                {d.brand}
+              </span>
               {isAdminMode && (
                 <span className="text-[10px] bg-rose-600 text-white font-mono px-1.5 py-0.5 rounded-sm font-bold animate-pulse">
                   ADMIN
