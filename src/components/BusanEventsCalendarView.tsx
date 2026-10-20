@@ -756,10 +756,8 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
       
       {/* 1. Intro Header Section */}
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] text-left">
-        <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-800 flex items-center gap-2.5">
-          <span className="p-2 sm:p-2.5 rounded-2xl bg-sky-50 text-[#004481] border border-sky-100 shadow-2xs shrink-0 inline-flex items-center justify-center">
-            <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#004481]" />
-          </span>
+        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
+          <CalendarIcon className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0" />
           <span>{language === 'KR' ? '부산 주요일정표' : 'Busan Main Festival Calendar'}</span>
         </h2>
         <p className="text-sm sm:text-base text-slate-500 mt-2 leading-relaxed font-semibold">
