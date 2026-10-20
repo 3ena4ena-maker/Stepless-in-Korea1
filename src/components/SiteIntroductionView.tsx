@@ -290,85 +290,59 @@ export function SiteIntroductionView({
 
       {/* PAGE 2: 정보 오류 요청 제보 및 문의 (Inquiry & Data Corrections) */}
       {activeSubTab === 'contact' && (
-        <div className="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm space-y-6 animate-fade-in max-w-3xl mx-auto google-anno-skip" data-ad-exclude="true">
-          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <span className="p-2.5 rounded-xl bg-blue-50 text-[#004481]">
-              <Mail className="w-6 h-6" />
-            </span>
-            <div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900 font-heading">
-                {language === 'KR' ? '✉️ 정보 오류 요청 제보 및 공식 문의' : '✉️ Inquiries & Field Feedback'}
-              </h2>
-              <p className="text-xs text-slate-500 mt-0.5 font-medium">
-                {language === 'KR'
-                  ? '부산 지하철역 엘리베이터 위치, 출구 정정, 시설 공사 정보 제보 및 서비스 공식 문의 창구'
-                  : 'Official contact channel for elevator maintenance feedback, exit corrections, and service inquiries.'}
-              </p>
-            </div>
+        <div className="space-y-4 sm:space-y-5 animate-fade-in text-left pt-1 sm:pt-2 google-anno-skip" data-ad-exclude="true">
+          {/* Header with single clean line icon */}
+          <div className="space-y-1">
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
+              <span>{language === 'KR' ? '정보 오류 요청 제보 및 공식 문의' : 'Inquiries & Field Feedback'}</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium">
+              {language === 'KR'
+                ? '부산 지하철역 엘리베이터 위치, 출구 정정, 시설 공사 정보 제보 및 서비스 공식 문의 창구'
+                : 'Official contact channel for elevator maintenance feedback, exit corrections, and service inquiries.'}
+            </p>
           </div>
 
-          {/* Simple Direct Email Card */}
-          <div className="bg-slate-50/80 p-6 sm:p-8 rounded-3xl border border-slate-200/90 space-y-5">
-            <div className="space-y-2">
-              <h3 className="font-extrabold text-slate-900 text-base sm:text-lg flex items-center gap-2">
-                <Mail className="w-5 h-5 text-[#004481]" />
-                <span>{language === 'KR' ? '공식 대표 이메일 안내' : 'Official Operator Email Channel'}</span>
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                {language === 'KR'
-                  ? '부산 지하철 배리어프리 정보 정정 요청, 공사 제보 및 제휴·광고 정책 문의는 아래 공식 이메일로 보내주시면 운영자 플로레르가 신속히 확인 후 답변 드립니다.'
-                  : 'For transit corrections, out-of-order elevator alerts, or privacy inquiries, contact the operator directly via our verified email below.'}
-              </p>
-            </div>
+          {/* Description */}
+          <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-medium">
+            {language === 'KR'
+              ? '부산 지하철 배리어프리 정보 정정 요청, 공사 제보 및 제휴·광고 정책 문의는 아래 공식 이메일로 보내주시면 운영자 플로레르가 신속히 확인 후 답변 드립니다.'
+              : 'For transit corrections, out-of-order elevator alerts, or privacy inquiries, contact the operator directly via our verified email below.'}
+          </p>
 
-            <div className="p-4 sm:p-5 bg-white rounded-2xl border border-blue-200/80 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <p className="text-2xs text-slate-400 font-semibold uppercase tracking-wider mb-0.5">
-                  {language === 'KR' ? '공식 대표 이메일' : 'Official Email Address'}
-                </p>
-                <a 
-                  href={`mailto:${officialEmail}?subject=${encodeURIComponent(language === 'KR' ? '[스탭리스] 정보 오류 제보 및 문의' : '[Stepless] Inquiry & Feedback')}`}
-                  className="text-base sm:text-lg font-black text-[#004481] hover:underline font-mono"
-                >
-                  {officialEmail}
-                </a>
-              </div>
+          {/* Email and Action Buttons - Flat and clean without boxes */}
+          <div className="pt-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-sm">
+            <a 
+              href={`mailto:${officialEmail}?subject=${encodeURIComponent(language === 'KR' ? '[스탭리스] 정보 오류 제보 및 문의' : '[Stepless] Inquiry & Feedback')}`}
+              className="text-base sm:text-lg font-black text-[#2D6A4F] hover:underline font-mono"
+            >
+              {officialEmail}
+            </a>
 
-              <div className="flex items-center gap-2 w-full sm:w-auto">
-                <button
-                  type="button"
-                  onClick={handleCopyEmail}
-                  className="flex-1 sm:flex-none px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
-                >
-                  {copiedEmail ? (
-                    <>
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      <span className="text-emerald-700 font-bold">{language === 'KR' ? '복사됨!' : 'Copied!'}</span>
-                    </>
-                  ) : (
-                    <span>{language === 'KR' ? '주소 복사' : 'Copy'}</span>
-                  )}
-                </button>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs"
+              >
+                {copiedEmail ? (
+                  <>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                    <span className="text-emerald-700 font-bold">{language === 'KR' ? '복사됨!' : 'Copied!'}</span>
+                  </>
+                ) : (
+                  <span>{language === 'KR' ? '주소 복사' : 'Copy'}</span>
+                )}
+              </button>
 
-                <a
-                  href={`mailto:${officialEmail}?subject=${encodeURIComponent(language === 'KR' ? '[스탭리스] 정보 오류 제보 및 문의' : '[Stepless] Feedback & Inquiry')}&body=${encodeURIComponent(language === 'KR' ? '[스탭리스 정보 오류 제보 및 문의]\n\n- 역명/출구:\n- 오류/의견 내용:\n\n* 플로레르 대표 이메일(floreur88@gmail.com)로 발송됩니다.' : '[Stepless Inquiry & Report]\n\n- Station / Exit:\n- Details:\n\n* Directly routed to publisher (floreur88@gmail.com).')}`}
-                  className="flex-1 sm:flex-none px-5 py-2.5 bg-[#8EA85E] hover:bg-[#7b944f] text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                  <span>{language === 'KR' ? '메일 보내기' : 'Send Mail'}</span>
-                </a>
-              </div>
-            </div>
-
-            <div className="pt-1 text-2xs sm:text-xs text-slate-500 space-y-1 font-medium bg-[#8EA85E]/10 p-3.5 rounded-xl border border-[#8EA85E]/30">
-              <p className="font-bold text-[#8EA85E] flex items-center gap-1">
-                💡 {language === 'KR' ? '손쉬운 제보 안내' : 'Direct Email Assistance'}
-              </p>
-              <p className="leading-relaxed">
-                {language === 'KR'
-                  ? '<strong>[메일 보내기]</strong>를 클릭하시면 스마트폰이나 PC의 기본 이메일 앱(Gmail, Apple Mail 등)이 바로 열립니다. 메일 앱이 연결되지 않는 환경에서는 <strong>[주소 복사]</strong> 버튼을 이용해 주십시오.'
-                  : 'Clicking <strong>[Send Mail]</strong> connects to your default email client (Gmail, Apple Mail). If an email client is not configured, please copy the address above.'}
-              </p>
+              <a
+                href={`mailto:${officialEmail}?subject=${encodeURIComponent(language === 'KR' ? '[스탭리스] 정보 오류 제보 및 문의' : '[Stepless] Feedback & Inquiry')}&body=${encodeURIComponent(language === 'KR' ? '[스탭리스 정보 오류 제보 및 문의]\n\n- 역명/출구:\n- 오류/의견 내용:\n\n* 플로레르 대표 이메일(floreur88@gmail.com)로 발송됩니다.' : '[Stepless Inquiry & Report]\n\n- Station / Exit:\n- Details:\n\n* Directly routed to publisher (floreur88@gmail.com).')}`}
+                className="flex-1 sm:flex-none px-4 py-2 bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-2xs active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <Send className="w-3.5 h-3.5" />
+                <span>{language === 'KR' ? '메일 보내기' : 'Send Mail'}</span>
+              </a>
             </div>
           </div>
         </div>
