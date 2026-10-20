@@ -4547,6 +4547,7 @@ case 'EXPERIENCE': {
 
                 const isFiveDayMarket = (step: ItineraryStep): boolean => {
                   return (
+                    step.marketCategory === 'FIVE_DAY' ||
                     (step.titleKo || '').includes('구포시장') ||
                     Boolean(step.marketDayKo && step.marketDayKo !== '상설 (매일)' && !step.marketDayKo.includes('상설'))
                   );
@@ -4649,9 +4650,16 @@ case 'EXPERIENCE': {
                             <div className="space-y-1.5 text-left">
                               {/* Header: Title & Route Button on the SAME line */}
                               <div className="flex items-center justify-between gap-2">
-                                <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug">
-                                  {language === 'KR' ? step.titleKo : step.titleEn}
-                                </h4>
+                                <div className="flex items-center gap-1.5 flex-wrap min-w-0">
+                                  <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug">
+                                    {language === 'KR' ? step.titleKo : step.titleEn}
+                                  </h4>
+                                  {isFiveDayMarket(step) && (
+                                    <span className="text-[10px] sm:text-[10.5px] font-bold text-[#2D6A4F] bg-[#E8F5E9] border border-[#2D6A4F]/25 px-1.5 py-0.2 rounded shrink-0">
+                                      {language === 'KR' ? '오일장' : '5-Day Market'}
+                                    </span>
+                                  )}
+                                </div>
                                 <button
                                   type="button"
                                   onClick={(e) => {
