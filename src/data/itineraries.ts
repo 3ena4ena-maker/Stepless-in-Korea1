@@ -2283,8 +2283,8 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         titleEn: 'Nopo-dong Osige Market',
         marketDayKo: '2·7·12·17·22·27일',
         marketDayEn: '2nd, 7th, 12th, 17th, 22nd, 27th',
-        descKo: '1호선 노포역 인근에 5일마다 열리는 유서 깊은 민속 5일장으로 신선한 농수산물과 향토 장터 먹거리가 가득합니다.',
-        descEn: 'A historic traditional 5-day periodic market near Nopo Station, brimming with farm-fresh produce and authentic local street food.',
+        descKo: '부산종합버스터미널과 노포역 바로 입구에서 옛 장터의 정취를 느끼는 이색 5일장입니다. 평소에는 장이 서지 않고 오직 정해진 오시게 장날에만 특별하게 열립니다.',
+        descEn: 'Located right at the entrance of Busan Central Bus Terminal and Nopo Station, this vibrant 5-day market offers nostalgic rustic charm. It only opens on designated market days with no market held on regular days.',
         icon: 'Food',
         stationInfoKo: '부산 금정구 중앙대로 2238',
         stationInfoEn: '2238 Jungang-daero, Geumjeong-gu, Busan'
