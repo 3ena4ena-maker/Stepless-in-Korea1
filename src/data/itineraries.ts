@@ -2487,15 +2487,15 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         categoryType: 'TEMPLE',
         time: '바다 사찰',
         firstImage: 'https://tong.visitkorea.or.kr/cms/resource/47/4105447_image2_1.jpg',
-        titleKo: '해동 용궁사 (바다와 가장 가까운 사찰)',
-        titleEn: 'Haedong Yonggungsa Temple (Seaside Temple)',
+        titleKo: '해동 용궁사',
+        titleEn: 'Haedong Yonggungsa Temple',
         descKo: '푸른 동해 바다 깎아지른 해안 암벽 위에 세워진 대한민국 대표 사찰로, "한 가지 소원은 꼭 이루어진다"는 영험한 관음성지입니다. 십이지신상이 늘어선 입구 광장을 지나 시원한 파도 소리와 기암괴석이 어우러진 해안 절경을 마주할 수 있습니다.',
         descEn: 'A magnificent Buddhist temple perched on coastal cliffs overlooking the East Sea. Famous for granting wishes, dramatic waves, and unique coastal rock scenery.',
         tipKo: '해동용궁사 주변에는 롯데월드 어드벤처 부산, 루지 롯데 아울렛 등 즐길거리가 있는데 대중교통을 이용한다면 다소 불편할 수 있습니다. 타바라(TABA-RA) 버스를 스마트폰 어플로 호출하면 가고자 하는 곳까지 고속으로 연결해 주기 때문에 이동이 쉬워요!',
         tipEn: 'Nearby attractions like Lotte World Adventure Busan, Skyline Luge, and Lotte Outlet can be tricky via standard buses. Calling the on-demand TABA-RA bus via smartphone app connects you directly and quickly, making travel seamless!',
         icon: 'Map',
-        stationInfoKo: '부산 기장군 기장읍 용궁사로 86 (동해선 오시리아역 1번 출구 버스/택시 5분 연계 또는 2호선 해운대역 7번 출구 181번 버스)',
-        stationInfoEn: '86 Yonggungsa-ro, Gijang-eup, Gijang-gun, Busan (Osiria Station Exit 1, 5-min bus/taxi)'
+        stationInfoKo: '부산 기장군 기장읍 용궁사로 86',
+        stationInfoEn: '86 Yonggungsa-ro, Gijang-eup, Gijang-gun, Busan'
       },
       {
         id: 'spot-igidae',
@@ -2506,15 +2506,15 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         categoryType: 'TRAIL',
         time: '해안 산책',
         firstImage: 'https://tong.visitkorea.or.kr/cms/resource/16/3350316_image2_1.jpg',
-        titleKo: '이기대 해안산책로 (동생말 & 오션뷰 데크길)',
-        titleEn: 'Igidae Coastal Walk (Dongsaengmal Observation Trail)',
+        titleKo: '이기대 해안산책로',
+        titleEn: 'Igidae Coastal Walk',
         descKo: '부산 국가지질공원이자 갈맷길 대표 코스로, 깎아지른 바위 해안 절벽을 따라 광안대교와 해운대 마린시티 마천루 파노라마가 한눈에 펼쳐집니다. 동생말 전망대 일원은 단차 없는 평탄한 목재 데크로드가 잘 연결되어 있습니다.',
         descEn: 'Busan National Geopark coastal walking trail offering panoramic views of Gwangan Bridge and Marine City. Step-free wooden observation decks at Dongsaengmal.',
         tipKo: '동생말 전망대에서 광안대교와 마린시티 파노라마를 조망한 뒤, 휠체어나 유아차 동반 시에는 오륙도 방면 바위 계단 대신 동생말 평탄 데크로드 구간을 왕복하는 코스가 안전하고 쾌적합니다.',
         tipEn: 'After admiring Gwangan Bridge from Dongsaengmal deck, strollers and wheelchair users should take the flat wooden boardwalk round-trip rather than the rocky cliff stairs towards Oryukdo.',
         icon: 'Compass',
-        stationInfoKo: '부산 남구 이기대공원로 105-20 (2호선 경성대·부경대역 5번 출구 앞 시내버스 20, 22, 24, 27번 환승 10분)',
-        stationInfoEn: '105-20 Igidaegongwon-ro, Nam-gu, Busan (Line 2 Kyungsung Univ. Station Exit 5, bus transfer 10 mins)'
+        stationInfoKo: '부산 남구 이기대공원로 105-20',
+        stationInfoEn: '105-20 Igidaegongwon-ro, Nam-gu, Busan'
       },
       {
         id: 'spot-taejongdae',
@@ -2525,15 +2525,15 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         categoryType: 'LANDMARK',
         time: '해안 절경',
         firstImage: 'https://tong.visitkorea.or.kr/cms/resource/03/2607903_image2_1.jpg',
-        titleKo: '태종대 (기암절벽과 다누비열차 순환 코스)',
-        titleEn: 'Taejongdae Resort Park (Danubi Scenic Train)',
+        titleKo: '태종대',
+        titleEn: 'Taejongdae Resort Park',
         descKo: '영도 최남단에 솟아오른 국가명승지이자 국가지질공원으로, 아찔한 해식절벽과 울창한 해송 숲, 푸른 남해 바다가 장관을 이룹니다. 휠체어 리프트가 장착된 친환경 다누비열차로 전망대와 영도등대를 편안하게 둘러볼 수 있습니다.',
         descEn: 'Iconic national scenic site on Yeongdo cliffs featuring lush pine forests and deep blue ocean. Accessible Danubi circular train provides easy sightseeing for all visitors.',
         tipKo: '태종대 입구 매표소에서 휠체어 리프트가 장착된 친환경 다누비열차를 이용하시면 오르막길 걱정 없이 전망대와 영도등대까지 편안하게 이동할 수 있습니다. (비나 눈이 올 때는 운행이 중단되니 날씨를 꼭 확인하세요!)',
         tipEn: 'Take the eco-friendly Danubi train with dedicated wheelchair boarding at the entrance to easily reach the observatory and lighthouse without walking steep inclines. (Check weather as train suspends on rain!)',
         icon: 'Train',
-        stationInfoKo: '부산 영도구 전망로 24 (1호선 남포역 6번 출구 앞 시내버스 8, 30, 66, 88, 186번 탑승 종점 하차)',
-        stationInfoEn: '24 Jeonmang-ro, Yeongdo-gu, Busan (Line 1 Nampo Station Exit 6, bus 8/30/66/88 to terminus)'
+        stationInfoKo: '부산 영도구 전망로 24',
+        stationInfoEn: '24 Jeonmang-ro, Yeongdo-gu, Busan'
       },
       {
         id: 'spot-hwangnyeongsan',
@@ -2564,14 +2564,14 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         time: '도심 랜드마크',
         firstImage: 'https://tong.visitkorea.or.kr/cms/resource/34/3494834_image2_1.jpg',
         titleKo: '부산용두산공원',
-        titleEn: 'Busan Yongdusan Park & Diamond Tower',
+        titleEn: 'Busan Yongdusan Park',
         descKo: '남포동 광복로 패션거리에서 에스컬레이터로 연결되는 부산 원도심의 상징 공원으로, 높이 120m의 부산 다이아몬드타워와 푸른 쉼터, 부산항과 영도 앞바다 전경이 시원하게 펼쳐집니다.',
         descEn: 'An iconic historic city park in Nampo-dong accessible via the Gwangbok-ro moving escalator, featuring the 120m Diamond Tower, lush pavilions, and sweeping views of Busan Port.',
         tipKo: '광복로 패션거리에서 공원으로 올라가는 캐노피 지붕 에스컬레이터를 이용하시면 계단 없이 수월하게 오를 수 있으며, 타워 내부는 엘리베이터로 휠체어 관람이 가능합니다.',
         tipEn: 'Use the covered public moving escalator from Gwangbok-ro Fashion Street for effortless step-free ascent to the park. The Diamond Tower observatory is equipped with passenger elevators.',
         icon: 'Landmark',
-        stationInfoKo: '부산 중구 용두산길 37-55 (1호선 남포역 1번/7번 출구 도보 5분)',
-        stationInfoEn: '37-55 Yongdusan-gil, Jung-gu, Busan (Line 1 Nampo Station Exit 1/7, 5-min walk)'
+        stationInfoKo: '부산 중구 용두산길 37-55',
+        stationInfoEn: '37-55 Yongdusan-gil, Jung-gu, Busan'
       },
       {
         id: 'spot-yeongdodaegyo',
@@ -2589,8 +2589,8 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         tipKo: '남포역 8번/10번 출구 지하철 엘리베이터를 나와 유라리광장 수변공원으로 진입하시면 단차 없이 평탄한 보행로에서 다리 전경과 도개 광경을 가장 편안하게 감상할 수 있습니다.',
         tipEn: 'Take the elevator at Nampo Station Exit 8/10 to Yurari Plaza along the waterfront for completely flat, step-free viewing of the iconic bridge.',
         icon: 'Waves',
-        stationInfoKo: '부산 영도구 태종로 14 (1호선 남포역 8번/10번 출구 도보 2분)',
-        stationInfoEn: '14 Taejong-ro, Yeongdo-gu, Busan (Line 1 Nampo Station Exit 8/10, 2-min walk)'
+        stationInfoKo: '부산 영도구 태종로 14',
+        stationInfoEn: '14 Taejong-ro, Yeongdo-gu, Busan'
       }
     ]
   }

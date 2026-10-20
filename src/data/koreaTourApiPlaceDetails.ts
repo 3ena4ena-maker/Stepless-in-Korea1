@@ -1603,7 +1603,7 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
   'spot-105': {
     id: 'spot-105',
     contentId: '126086',
-    nameKo: '용두산공원 & 부산타워 (다이아몬드타워)',
+    nameKo: '부산용두산공원',
     nameEn: 'Yongdusan Park & Busan Tower',
     categoryKo: '관광지',
     categoryEn: 'Attraction',
@@ -2508,7 +2508,7 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
   'spot-yonggungsa': {
     id: 'spot-yonggungsa',
     contentId: '128509',
-    nameKo: '해동 용궁사 (해동용궁사)',
+    nameKo: '해동 용궁사',
     nameEn: 'Haedong Yonggungsa Temple',
     categoryKo: '사찰/명소',
     categoryEn: 'Temple/Attraction',
@@ -2576,7 +2576,7 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
   'spot-igidae': {
     id: 'spot-igidae',
     contentId: '1266072',
-    nameKo: '이기대 해안산책로 (이기대 수변공원)',
+    nameKo: '이기대 해안산책로',
     nameEn: 'Igidae Coastal Walk (Igidae Park)',
     categoryKo: '해안산책/명소',
     categoryEn: 'Coastal Walk/Attraction',
@@ -2644,7 +2644,7 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
   'spot-taejongdae': {
     id: 'spot-taejongdae',
     contentId: '126088',
-    nameKo: '태종대 (태종대 유원지)',
+    nameKo: '태종대',
     nameEn: 'Taejongdae Resort Park',
     categoryKo: '국가지질공원/명소',
     categoryEn: 'National Geopark/Attraction',

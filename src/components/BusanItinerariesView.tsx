@@ -5316,174 +5316,86 @@ case 'EXPERIENCE': {
                           titleEn: step.titleEn,
                         }) || matchedSpotId || 'spot-101';
                         const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
-                        const bf = ktoDetail?.barrierFree;
                         const isSaved = isBookmarked(step.id || step.titleKo);
+
+                        // Clean title & address - strictly strip any parentheses
+                        const cleanTitleKo = (step.titleKo || '').replace(/\s*\([^)]*\)/g, '').trim();
+                        const cleanTitleEn = (step.titleEn || '').replace(/\s*\([^)]*\)/g, '').trim();
+
+                        const rawAddrKo = ktoDetail?.addressRoadKo || step.stationInfoKo || '';
+                        const cleanAddrKo = rawAddrKo.replace(/\s*\([^)]*\)/g, '').trim();
+                        const rawAddrEn = ktoDetail?.addressRoadEn || step.stationInfoEn || '';
+                        const cleanAddrEn = rawAddrEn.replace(/\s*\([^)]*\)/g, '').trim();
+
+                        const displayAddress = language === 'KR' ? cleanAddrKo : (cleanAddrEn || cleanAddrKo);
+
+                        const naverUrl = (step as { naverMapUrl?: string }).naverMapUrl || 
+                          `https://map.naver.com/v5/search/${encodeURIComponent(cleanTitleKo + ' ' + cleanAddrKo)}`;
+                        const googleUrl = (step as { googleMapUrl?: string }).googleMapUrl || 
+                          `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((cleanTitleEn || cleanTitleKo) + ' ' + cleanAddrKo)}`;
 
                         return (
                           <div
                             key={idx}
-                            className="bg-white rounded-lg border border-[#E5E2DC] p-5 hover:border-[#8EA85E] transition-colors duration-200 flex flex-col justify-between text-left space-y-4 shadow-xs"
+                            className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors p-3.5 sm:p-4 flex flex-col justify-between text-left space-y-2 shadow-xs"
                           >
-                            <div className="space-y-3">
-                              <div className="flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-1.5 flex-wrap">
-                                  <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-[#F1EFEC] text-[#0A2540]">
-                                    {step.regionNameKo}
-                                  </span>
-                                  {step.categoryType && (
-                                    <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-sky-50 text-sky-800 border border-sky-200">
-                                      {step.categoryType}
-                                    </span>
-                                  )}
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <button
-                                    type="button"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      toggleMyRoute({
-                                        id: step.id || step.titleKo,
-                                        titleKo: step.titleKo,
-                                        titleEn: step.titleEn,
-                                        categoryKo: '부산 명소',
-                                        categoryEn: 'Attraction',
-                                        addressRoadKo: ktoDetail?.addressRoadKo,
-                                        stationInfoKo: step.stationInfoKo,
-                                        stationInfoEn: step.stationInfoEn,
-                                        descKo: step.descKo,
-                                        descEn: step.descEn,
-                                        firstImage: ktoDetail?.firstImage,
-                                        time: step.time,
-                                        latitude: ktoDetail?.latitude,
-                                        longitude: ktoDetail?.longitude,
-                                      });
-                                    }}
-                                    className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
-                                      isSaved
-                                        ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
-                                        : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
-                                    }`}
-                                    title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
-                                  >
-                                    <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
-                                    <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
-                                  </button>
-                                  <span className="text-xs text-[#718096] font-medium">
-                                    {step.time}
-                                  </span>
-                                </div>
-                              </div>
-
-                              <div className="space-y-1">
-                                <h4 className="text-base font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors">
-                                  {language === 'KR' ? step.titleKo : step.titleEn}
-                                </h4>
-                                <p className="text-xs text-[#4A5568] font-normal leading-relaxed whitespace-pre-line">
-                                  {language === 'KR' ? step.descKo : step.descEn}
-                                </p>
-                              </div>
-
-                              {/* Photo thumbnail - cleanly returns null if missing or error occurs! */}
+                            <div className="space-y-2 text-left">
+                              {/* Photo thumbnail */}
                               {(ktoDetail?.firstImage || step.firstImage) && (
                                 <AttractionPhotoThumbnail 
                                   src={ktoDetail?.firstImage || step.firstImage || ''} 
-                                  alt={ktoDetail?.nameKo || step.titleKo} 
+                                  alt={cleanTitleKo} 
+                                  className="w-full h-36 sm:h-44 mb-1"
                                 />
                               )}
 
-                              {/* Address with copy button & Map navigation buttons */}
-                              {(() => {
-                                const displayAddress = ktoDetail?.addressRoadKo || (step.stationInfoKo ? step.stationInfoKo.replace(/\s*\([^)]*\)/g, '').trim() : '');
-                                if (!displayAddress) return null;
+                              {/* Header: Title & Route bookmark Button on the same line */}
+                              <div className="flex items-center justify-between gap-2">
+                                <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug">
+                                  {language === 'KR' ? cleanTitleKo : cleanTitleEn}
+                                </h4>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleMyRoute({
+                                      id: step.id || step.titleKo,
+                                      titleKo: cleanTitleKo,
+                                      titleEn: cleanTitleEn,
+                                      categoryKo: '부산 명소',
+                                      categoryEn: 'Attraction',
+                                      addressRoadKo: cleanAddrKo,
+                                      stationInfoKo: cleanAddrKo,
+                                      stationInfoEn: cleanAddrEn,
+                                      descKo: step.descKo,
+                                      descEn: step.descEn,
+                                      firstImage: ktoDetail?.firstImage || step.firstImage,
+                                      latitude: ktoDetail?.latitude,
+                                      longitude: ktoDetail?.longitude,
+                                    });
+                                  }}
+                                  className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
+                                    isSaved
+                                      ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                      : 'bg-white text-slate-500 border-slate-200 hover:text-amber-600 hover:border-amber-300 hover:bg-amber-50/40'
+                                  }`}
+                                  title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                >
+                                  <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                  <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                </button>
+                              </div>
 
-                                const cleanAddrForMap = displayAddress || step.titleKo;
-                                const naverUrl = (step as any).naverMapUrl || `https://map.naver.com/v5/search/${encodeURIComponent(step.titleKo + ' ' + cleanAddrForMap)}`;
-                                const googleUrl = (step as any).googleMapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((step.titleEn || step.titleKo) + ' ' + cleanAddrForMap)}`;
-
-                                return (
-                                  <div className="text-xs text-[#4A5568] flex items-center justify-between gap-2 bg-[#FBFBF9] p-2 rounded border border-[#E5E2DC]">
-                                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
-                                      <MapPin className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-                                      <span className="truncate">{language === 'KR' ? displayAddress : (ktoDetail?.addressRoadEn || step.stationInfoEn || displayAddress)}</span>
-                                    </div>
-                                    <div className="flex items-center gap-1 shrink-0">
-                                      <button
-                                        type="button"
-                                        onClick={() => {
-                                          navigator.clipboard.writeText(displayAddress);
-                                          setCopiedIndex(`attraction-addr-${idx}`);
-                                          setTimeout(() => setCopiedIndex(null), 2000);
-                                        }}
-                                        className="text-[10px] font-bold px-2 py-0.5 rounded border border-[#E5E2DC] bg-white hover:bg-[#F1EFEC] text-[#0A2540] shrink-0 transition-colors cursor-pointer"
-                                      >
-                                        {copiedIndex === `attraction-addr-${idx}` ? (language === 'KR' ? '복사됨' : 'Copied') : (language === 'KR' ? '주소 복사' : 'Copy')}
-                                      </button>
-
-                                      {/* Naver Map Button */}
-                                      <a
-                                        href={naverUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        onClick={(e) => e.stopPropagation()}
-                                        className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
-                                        title={language === 'KR' ? `${step.titleKo} 네이버 지도에서 위치 보기` : `View ${step.titleKo} on Naver Map`}
-                                        aria-label="Naver Map"
-                                      >
-                                        <svg className="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24">
-                                          <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
-                                        </svg>
-                                      </a>
-
-                                      {/* Google Maps Button */}
-                                      <a
-                                        href={googleUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        onClick={(e) => e.stopPropagation()}
-                                        className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-md bg-white border border-[#E5E2DC] hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
-                                        title={language === 'KR' ? `${step.titleKo} 구글맵에서 위치 보기` : `View ${step.titleKo} on Google Maps`}
-                                        aria-label="Google Maps"
-                                      >
-                                        <svg viewBox="0 0 92 135" className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="none">
-                                          <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
-                                          <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
-                                          <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
-                                          <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
-                                          <path d="M46 31a15 15 0 100 30 15 15 0 000-30z" fill="#fff"/>
-                                        </svg>
-                                      </a>
-                                    </div>
-                                  </div>
-                                );
-                              })()}
-
-                              {/* Barrier-Free Tags */}
-                              {bf && (
-                                <div className="flex flex-wrap gap-1">
-                                  {bf.wheelchair?.available && (
-                                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
-                                      <span>♿</span>
-                                      <span>{bf.wheelchair.tag || (language === 'KR' ? '휠체어 접근 가능' : 'Wheelchair Accessible')}</span>
-                                    </span>
-                                  )}
-                                  {bf.elevator?.available && (
-                                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-200">
-                                      <span>🛗</span>
-                                      <span>{bf.elevator.tag || (language === 'KR' ? '엘리베이터 완비' : 'Elevator')}</span>
-                                    </span>
-                                  )}
-                                  {bf.restroom?.available && (
-                                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-indigo-50 text-indigo-800 border border-indigo-200">
-                                      <span>🚻</span>
-                                      <span>{language === 'KR' ? '장애인화장실' : 'Accessible Restroom'}</span>
-                                    </span>
-                                  )}
-                                </div>
+                              {/* Description */}
+                              {step.descKo && (
+                                <p className="text-[11.5px] sm:text-xs text-[#4A5568] font-normal leading-relaxed whitespace-pre-line text-left">
+                                  {language === 'KR' ? step.descKo : step.descEn}
+                                </p>
                               )}
 
                               {/* Local Tip Box (부산현지인 팁!) */}
                               {(step.tipKo || step.tipEn) && (
-                                <div className="p-3.5 rounded-lg bg-[#F8F9FA] border border-[#E2E8F0] text-xs flex items-start gap-2.5 mt-2.5 shadow-2xs">
+                                <div className="p-3 rounded-lg bg-[#F8F9FA] border border-[#E2E8F0] text-xs flex items-start gap-2.5 mt-2 shadow-2xs">
                                   <div className="p-1 rounded bg-[#8EA85E] text-white shrink-0 mt-0.5">
                                     <Info className="w-3.5 h-3.5 text-amber-300" />
                                   </div>
@@ -5499,21 +5411,53 @@ case 'EXPERIENCE': {
                               )}
                             </div>
 
-                            <div className="pt-3 border-t border-[#E5E2DC] space-y-2">
-                              <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-[#11161B] bg-[#FBFBF9] p-2.5 rounded-md border border-[#E5E2DC]">
-                                <CheckCircle2 className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-                                <span>{language === 'KR' ? '평탄한 보행로 · 장애물 없는 보행 환경 제공' : 'Flat walking path & step-free environment'}</span>
-                              </div>
+                            {/* Bottom: Address + Naver & Google Maps square icon buttons (Clean & consistent) */}
+                            {cleanAddrKo && (
+                              <div className="mt-2.5 pt-2 border-t border-[#E5E2DC] text-left">
+                                <div className="flex items-center justify-between gap-2">
+                                  <p className="text-[11px] sm:text-[11.5px] text-[#4A5568] flex items-center gap-1.5 leading-snug min-w-0 flex-1">
+                                    <MapPin className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
+                                    <span className="truncate">{displayAddress}</span>
+                                  </p>
 
-                              {step.stationInfoKo && (
-                                <div className="flex items-center justify-between gap-2 pt-0.5 text-[11px] text-[#0A2540]">
-                                  <div className="flex items-center gap-1.5 font-mono truncate">
-                                    <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-                                    <span className="truncate">{language === 'KR' ? step.stationInfoKo : step.stationInfoEn}</span>
+                                  <div className="flex items-center gap-1 shrink-0">
+                                    {/* Naver Map Button */}
+                                    <a
+                                      href={naverUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                                      title={language === 'KR' ? `${cleanTitleKo} 네이버 지도에서 위치 보기` : `View ${cleanTitleKo} on Naver Map`}
+                                      aria-label="Naver Map"
+                                    >
+                                      <svg className="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24">
+                                        <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
+                                      </svg>
+                                    </a>
+
+                                    {/* Google Maps Button */}
+                                    <a
+                                      href={googleUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-md bg-white border border-[#E5E2DC] hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                                      title={language === 'KR' ? `${cleanTitleKo} 구글맵에서 위치 보기` : `View ${cleanTitleKo} on Google Maps`}
+                                      aria-label="Google Maps"
+                                    >
+                                      <svg viewBox="0 0 92 135" className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="none">
+                                        <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
+                                        <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
+                                        <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
+                                        <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
+                                        <circle cx="46" cy="46" r="18" fill="#FFFFFF"/>
+                                      </svg>
+                                    </a>
                                   </div>
                                 </div>
-                              )}
-                            </div>
+                              </div>
+                            )}
                           </div>
                         );
                       })}
