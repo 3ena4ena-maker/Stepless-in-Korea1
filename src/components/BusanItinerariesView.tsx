@@ -4692,22 +4692,18 @@ case 'EXPERIENCE': {
                                 </button>
                               </div>
 
-                              {/* Market Day (장날) */}
-                              <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-left">
-                                <span className="font-semibold text-slate-500">
-                                  {language === 'KR' ? '장날' : 'Market Day'}
-                                </span>
-                                <span className="text-slate-300">·</span>
-                                {isFiveDayMarket(step) ? (
+                              {/* Market Day (장날) - 5일장에만 표시, 상설시장은 표시 생략 */}
+                              {isFiveDayMarket(step) && (step.marketDayKo || step.marketDayEn) && (
+                                <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-left">
+                                  <span className="font-semibold text-slate-500">
+                                    {language === 'KR' ? '장날' : 'Market Day'}
+                                  </span>
+                                  <span className="text-slate-300">·</span>
                                   <span className="font-bold text-[#2D6A4F] bg-[#E8F5E9] px-1.5 py-0.5 rounded text-[10.5px] sm:text-[11px] border border-[#2D6A4F]/20">
                                     {language === 'KR' ? (step.marketDayKo || '5일장') : (step.marketDayEn || '5-Day Market')}
                                   </span>
-                                ) : (
-                                  <span className="text-slate-600 font-medium text-[11px] sm:text-[11.5px]">
-                                    {language === 'KR' ? (step.marketDayKo || '상설 (매일)') : (step.marketDayEn || 'Permanent (Daily)')}
-                                  </span>
-                                )}
-                              </div>
+                                </div>
+                              )}
 
                               {/* Description: 1 simple clean line */}
                               {cleanDesc && (
