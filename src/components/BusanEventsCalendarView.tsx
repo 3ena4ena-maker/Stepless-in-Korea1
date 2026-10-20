@@ -169,7 +169,7 @@ export function getEventCategoryMeta(evt: BusanEvent): EventCategoryMeta {
   if (t.includes('박람회') || t.includes('지스타') || t.includes('전시') || t.includes('expo') || t.includes('gstar') || t.includes('모빌리티')) {
     return { 
       icon: Landmark, 
-      label: '전시·박람', 
+      label: '전시', 
       labelEn: 'Exhibition',
       colorTheme: {
         bg: 'bg-[#0D9488]/10',
@@ -199,7 +199,7 @@ export function getEventCategoryMeta(evt: BusanEvent): EventCategoryMeta {
   if (t.includes('해맞이') || t.includes('sunrise') || t.includes('일출') || t.includes('타종식')) {
     return { 
       icon: Sunrise, 
-      label: '새해·해맞이', 
+      label: '해맞이', 
       labelEn: 'Sunrise',
       colorTheme: {
         bg: 'bg-[#EA580C]/10',
@@ -214,7 +214,7 @@ export function getEventCategoryMeta(evt: BusanEvent): EventCategoryMeta {
   if (t.includes('북극곰') || t.includes('겨울') || t.includes('winter') || t.includes('철새')) {
     return { 
       icon: Snowflake, 
-      label: '겨울이색', 
+      label: '겨울축제', 
       labelEn: 'Winter',
       colorTheme: {
         bg: 'bg-[#0891B2]/10',
@@ -229,7 +229,7 @@ export function getEventCategoryMeta(evt: BusanEvent): EventCategoryMeta {
   if (t.includes('자갈치') || t.includes('국수') || t.includes('구포나루') || t.includes('food') || t.includes('식')) {
     return { 
       icon: Utensils, 
-      label: '미식·전통', 
+      label: '미식', 
       labelEn: 'Food',
       colorTheme: {
         bg: 'bg-[#B45309]/10',
@@ -243,7 +243,7 @@ export function getEventCategoryMeta(evt: BusanEvent): EventCategoryMeta {
   // 11. 문화축제 - 부드러운 브랜드 올리브 세이지
   return { 
     icon: PartyPopper, 
-    label: '문화축제', 
+    label: '축제', 
     labelEn: 'Festival',
     colorTheme: {
       bg: 'bg-[#8EA85E]/15',
@@ -1253,11 +1253,14 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                               e.stopPropagation();
                               setSelectedEvent(evt);
                             }}
-                            className="p-1 rounded-md transition-all hover:scale-135 active:scale-95 cursor-pointer group flex items-center justify-center shrink-0 hover:bg-slate-100/90"
+                            className="flex flex-col items-center justify-center p-0.5 rounded transition-all hover:scale-115 active:scale-95 cursor-pointer group shrink-0 hover:bg-slate-100/90"
                             title={`${language === 'KR' ? evt.titleKo : evt.titleEn} (${catLabel})`}
                             aria-label={`${language === 'KR' ? evt.titleKo : evt.titleEn} (${catLabel})`}
                           >
                             <EventIcon className={`w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 ${meta.colorTheme.text} transition-transform`} />
+                            <span className={`text-[7.5px] sm:text-[8.5px] font-bold mt-0.5 leading-none whitespace-nowrap tracking-tighter ${meta.colorTheme.text}`}>
+                              {catLabel}
+                            </span>
                           </button>
                         );
                       })}
