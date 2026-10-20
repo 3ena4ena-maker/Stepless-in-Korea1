@@ -311,39 +311,37 @@ export function SiteIntroductionView({
               : 'For transit corrections, out-of-order elevator alerts, or privacy inquiries, contact the operator directly via our verified email below.'}
           </p>
 
-          {/* Email and Action Buttons - Flat and clean without boxes */}
-          <div className="pt-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-sm">
+          {/* Email and Action Buttons - Right next to email address without wide gap */}
+          <div className="pt-1 flex flex-wrap items-center gap-2.5 sm:gap-3 text-sm">
             <a 
               href={`mailto:${officialEmail}?subject=${encodeURIComponent(language === 'KR' ? '[스탭리스] 정보 오류 제보 및 문의' : '[Stepless] Inquiry & Feedback')}`}
-              className="text-base sm:text-lg font-black text-[#2D6A4F] hover:underline font-mono"
+              className="text-base sm:text-lg font-black text-[#2D6A4F] hover:underline font-mono mr-1"
             >
               {officialEmail}
             </a>
 
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <button
-                type="button"
-                onClick={handleCopyEmail}
-                className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs"
-              >
-                {copiedEmail ? (
-                  <>
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="text-emerald-700 font-bold">{language === 'KR' ? '복사됨!' : 'Copied!'}</span>
-                  </>
-                ) : (
-                  <span>{language === 'KR' ? '주소 복사' : 'Copy'}</span>
-                )}
-              </button>
+            <button
+              type="button"
+              onClick={handleCopyEmail}
+              className="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs"
+            >
+              {copiedEmail ? (
+                <>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="text-emerald-700 font-bold">{language === 'KR' ? '복사됨!' : 'Copied!'}</span>
+                </>
+              ) : (
+                <span>{language === 'KR' ? '주소 복사' : 'Copy'}</span>
+              )}
+            </button>
 
-              <a
-                href={`mailto:${officialEmail}?subject=${encodeURIComponent(language === 'KR' ? '[스탭리스] 정보 오류 제보 및 문의' : '[Stepless] Feedback & Inquiry')}&body=${encodeURIComponent(language === 'KR' ? '[스탭리스 정보 오류 제보 및 문의]\n\n- 역명/출구:\n- 오류/의견 내용:\n\n* 플로레르 대표 이메일(floreur88@gmail.com)로 발송됩니다.' : '[Stepless Inquiry & Report]\n\n- Station / Exit:\n- Details:\n\n* Directly routed to publisher (floreur88@gmail.com).')}`}
-                className="flex-1 sm:flex-none px-4 py-2 bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs sm:text-sm rounded-xl transition-all shadow-2xs active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <Send className="w-3.5 h-3.5" />
-                <span>{language === 'KR' ? '메일 보내기' : 'Send Mail'}</span>
-              </a>
-            </div>
+            <a
+              href={`mailto:${officialEmail}?subject=${encodeURIComponent(language === 'KR' ? '[스탭리스] 정보 오류 제보 및 문의' : '[Stepless] Feedback & Inquiry')}&body=${encodeURIComponent(language === 'KR' ? '[스탭리스 정보 오류 제보 및 문의]\n\n- 역명/출구:\n- 오류/의견 내용:\n\n* 플로레르 대표 이메일(floreur88@gmail.com)로 발송됩니다.' : '[Stepless Inquiry & Report]\n\n- Station / Exit:\n- Details:\n\n* Directly routed to publisher (floreur88@gmail.com).')}`}
+              className="px-3.5 py-1.5 bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs rounded-xl transition-all shadow-2xs active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <Send className="w-3.5 h-3.5" />
+              <span>{language === 'KR' ? '메일 보내기' : 'Send Mail'}</span>
+            </a>
           </div>
         </div>
       )}
