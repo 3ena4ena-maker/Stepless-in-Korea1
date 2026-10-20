@@ -1668,6 +1668,7 @@ export default function BusanItinerariesView({
 
   const [selectedGourmetCat, setSelectedGourmetCat] = useState<string>('ALL');
   const [isGourmetSubcatMoreOpen, setIsGourmetSubcatMoreOpen] = useState<boolean>(false);
+  const [selectedMarketCat, setSelectedMarketCat] = useState<'ALL' | 'FIVE_DAY'>('ALL');
   const [expandedBranches, setExpandedBranches] = useState<Record<string, boolean>>({});
 
   // Transit page states
@@ -4544,6 +4545,31 @@ case 'EXPERIENCE': {
                   (a.titleKo || '').localeCompare(b.titleKo || '', 'ko')
                 );
 
+                const isFiveDayMarket = (step: ItineraryStep): boolean => {
+                  return (
+                    (step.titleKo || '').includes('구포시장') ||
+                    Boolean(step.marketDayKo && step.marketDayKo !== '상설 (매일)' && !step.marketDayKo.includes('상설'))
+                  );
+                };
+
+                const filteredMarketSteps = sortedMarketSteps.filter((step) => {
+                  if (selectedMarketCat === 'FIVE_DAY') {
+                    return isFiveDayMarket(step);
+                  }
+                  return true;
+                });
+
+                const getMarketCategoryCount = (catId: 'ALL' | 'FIVE_DAY'): number => {
+                  if (catId === 'ALL') return marketSteps.length;
+                  if (catId === 'FIVE_DAY') return marketSteps.filter(isFiveDayMarket).length;
+                  return 0;
+                };
+
+                const MARKET_CATEGORY_TABS = [
+                  { id: 'ALL' as const, nameKo: '전체', nameEn: 'All' },
+                  { id: 'FIVE_DAY' as const, nameKo: '오일장', nameEn: '5-Day Market' },
+                ];
+
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
                     {/* Header */}
@@ -4559,9 +4585,40 @@ case 'EXPERIENCE': {
                       </p>
                     </div>
 
+                    {/* Category Filter Pills: 전체 / 오일장 */}
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                      {MARKET_CATEGORY_TABS.map((tab) => {
+                        const isSelected = selectedMarketCat === tab.id;
+                        const count = getMarketCategoryCount(tab.id);
+
+                        return (
+                          <button
+                            key={tab.id}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedMarketCat(tab.id);
+                            }}
+                            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
+                              isSelected
+                                ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
+                                : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
+                            }`}
+                          >
+                            <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
+                            <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                              isSelected ? 'bg-white/20 text-white' : 'bg-[#E5E2DC] text-[#4A5568]'
+                            }`}>
+                              {count}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
                     {/* Market Cards Grid - Matching Gourmet 3-column Catalog */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3">
-                      {sortedMarketSteps.map((step, idx) => {
+                      {filteredMarketSteps.map((step, idx) => {
                         const matchedSpotId = matchTourApiSpotId(step.titleKo);
                         const effectiveSpotId = resolvePlaceTargetId({
                           id: step.id,
