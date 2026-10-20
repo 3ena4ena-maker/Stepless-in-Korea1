@@ -15,6 +15,7 @@ export interface ItineraryStep {
   marketDayKo?: string;
   marketDayEn?: string;
   marketCategory?: 'FIVE_DAY' | 'DAILY';
+  isFree?: boolean;
   icon?: string;
   stationInfoKo?: string;
   stationInfoEn?: string;
@@ -1889,6 +1890,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         firstImage: 'https://tong.visitkorea.or.kr/cms/resource/21/3511021_image2_1.jpg',
         titleKo: '국립부산과학관',
         titleEn: 'National Busan Science Museum',
+        isFree: false,
         descKo: '자동차, 항공우주, 선박 해양 등 첨단 과학 기술을 직접 체험할 수 있는 동남권 최대 체험형 과학관입니다.',
         descEn: 'A hands-on science complex featuring aerospace, marine science, and interactive exhibits in Gijang.',
         icon: 'Camera',
@@ -1905,6 +1907,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         firstImage: 'https://tong.visitkorea.or.kr/cms/resource/21/2816421_image2_1.jpg',
         titleKo: '뮤지엄원 (Museum 1)',
         titleEn: 'Museum 1 Media Art Gallery',
+        isFree: false,
         descKo: '약 8,000만 개의 초고화질 LED 디스플레이가 화려한 빛의 예술을 선보이는 센텀시티 미디어아트 전문 미술관입니다.',
         descEn: 'A digital media art museum featuring massive LED displays showcasing vibrant light art in Centum City.',
         icon: 'Camera',
@@ -1921,6 +1924,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         firstImage: 'https://tong.visitkorea.or.kr/cms/resource/52/3035052_image2_1.jpg',
         titleKo: '영화의전당 라이브러리',
         titleEn: 'Busan Cinema Center Library',
+        isFree: true,
         descKo: '국내외 희귀 영화 자료, LP, 영상 매체를 감상할 수 있는 영화의전당 비프힐 내 영화 전문 도서관입니다.',
         descEn: 'A specialized cinema library inside Busan Cinema Center BIFF Hill featuring movie archives, rare videos, and music.',
         icon: 'Map',
@@ -1937,6 +1941,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         time: '복합문화',
         titleKo: 'F1963',
         titleEn: 'F1963 Cultural Center',
+        isFree: true,
         descKo: '옛 와이어 공장을 재생한 복합문화공간으로, 대형 서점과 갤러리, 카페, 대나무 숲 산책로가 어우러져 있습니다.',
         descEn: 'A transformed former wire factory complex housing galleries, bookstores, bamboo gardens, and cafes.',
         icon: 'Map',
@@ -1952,6 +1957,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         firstImage: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80',
         titleKo: '증권박물관 부산관',
         titleEn: 'Korea Securities Museum (Busan)',
+        isFree: true,
         descKo: 'BIFC(부산국제금융센터) 내 위치하여 세계와 한국의 증권 역사 및 금융 경제를 배우고 체험할 수 있는 전문 박물관입니다.',
         descEn: 'Located inside BIFC, a specialized museum showcasing global and Korean securities history and financial exhibits.',
         icon: 'Map',
@@ -1968,6 +1974,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         firstImage: 'https://tong.visitkorea.or.kr/cms/resource/19/2640519_image2_1.jpg',
         titleKo: '부산영화체험박물관',
         titleEn: 'Busan Museum of Movies',
+        isFree: false,
         descKo: '크로마키 합성, 성우 더빙, 영화 제작 원리 등 다채로운 영화 콘텐츠를 직접 체험하는 국내 최초 영화 박물관입니다.',
         descEn: 'Korea first movie-themed interactive museum featuring voice dubbing, chroma key synthesis, and cinema exhibits.',
         icon: 'Camera',
@@ -1983,6 +1990,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         firstImage: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80',
         titleKo: '아르떼뮤지엄 부산',
         titleEn: 'ARTE MUSEUM BUSAN',
+        isFree: false,
         descKo: '부산의 바다와 자연을 화려한 디지털 빛과 소리로 연출한 영도 해안가의 몰입형 미디어아트 전시관입니다.',
         descEn: 'A colossal immersive media art exhibition hall in Yeongdo, featuring stunning nature-themed digital art.',
         icon: 'Camera',
@@ -1999,6 +2007,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         time: '해양박물관',
         titleKo: '국립해양박물관',
         titleEn: 'National Maritime Museum',
+        isFree: true,
         descKo: '대형 원통 수족관과 해양 역사, 생태 전시, 어린이 체험존을 갖춘 대한민국 대표 해양 박물관입니다.',
         descEn: 'A magnificent maritime museum featuring a cylindrical aquarium, interactive ocean exhibits, and marine history.',
         icon: 'Camera',
@@ -2014,6 +2023,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         firstImage: 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=1200&q=80',
         titleKo: '부산광역시교육청 어린이창의교육관',
         titleEn: 'Busan Children Creative Education Museum',
+        isFree: true,
         descKo: '어린이대공원 내 위치하여 우주 탐구, 로봇, 창의 놀이 등 다채로운 과학 체험을 즐길 수 있는 공간입니다.',
         descEn: 'An interactive children science and creativity museum located inside Children Park with space and robotics exhibits.',
         icon: 'Camera',
@@ -2031,6 +2041,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         time: '생태 라이딩',
         titleKo: '온천천 자전거 코스',
         titleEn: 'Oncheoncheon Stream Bicycle Route',
+        isFree: true,
         descKo: '금정구에서 동래구를 거쳐 수영강으로 이어지는 약 7~8km 도심 생태하천 자전거 전용 코스입니다.',
         descEn: 'A scenic 7-8 km paved riverside bicycle route running through Geumjeong, Dongnae, and Yeonje to Suyeonggang River.',
         icon: 'Map',

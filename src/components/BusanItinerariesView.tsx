@@ -4372,25 +4372,49 @@ case 'EXPERIENCE': {
                                 )}
 
                                 {/* Title & Route Button */}
-                                {isLongTitle ? (
-                                  <div className="space-y-1.5">
-                                    <h4 className="text-base font-bold text-[#11161B] leading-snug">
-                                      {displayTitle}
-                                    </h4>
-                                    <div className="flex justify-end pt-0.5">
+                                {(() => {
+                                  const isFree = typeof step.isFree === 'boolean'
+                                    ? step.isFree
+                                    : !['뮤지엄원', '아르떼뮤지엄', '영화체험박물관', '과학관'].some(k => step.titleKo.includes(k));
+
+                                  const feeBadge = (
+                                    <span className={`px-1.5 py-0.5 rounded text-[10px] sm:text-[10.5px] font-bold border shrink-0 ${
+                                      isFree
+                                        ? 'text-[#2D6A4F] bg-[#E8F5E9] border-[#2D6A4F]/25'
+                                        : 'text-[#B45309] bg-[#FFFBEB] border-[#F59E0B]/30'
+                                    }`}>
+                                      {isFree ? (language === 'KR' ? '무료' : 'Free') : (language === 'KR' ? '유료' : 'Paid')}
+                                    </span>
+                                  );
+
+                                  if (isLongTitle) {
+                                    return (
+                                      <div className="space-y-1.5">
+                                        <div className="flex items-center gap-1.5 flex-wrap">
+                                          <h4 className="text-base font-bold text-[#11161B] leading-snug">
+                                            {displayTitle}
+                                          </h4>
+                                          {feeBadge}
+                                        </div>
+                                        <div className="flex justify-end pt-0.5">
+                                          {renderRouteButton()}
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+
+                                  return (
+                                    <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
+                                      <div className="flex items-center gap-1.5 flex-wrap">
+                                        <h4 className="text-base font-bold text-[#11161B] leading-snug">
+                                          {displayTitle}
+                                        </h4>
+                                        {feeBadge}
+                                      </div>
                                       {renderRouteButton()}
                                     </div>
-                                  </div>
-                                ) : (
-                                  <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
-                                    <div className="flex items-center gap-2 flex-wrap">
-                                      <h4 className="text-base font-bold text-[#11161B] leading-snug">
-                                        {displayTitle}
-                                      </h4>
-                                      {renderRouteButton()}
-                                    </div>
-                                  </div>
-                                )}
+                                  );
+                                })()}
 
                                 {/* Description (Clean, concise, barrier-free boilerplate removed) */}
                                 <p className="text-xs text-[#4A5568] font-normal leading-relaxed text-left">
