@@ -4698,9 +4698,9 @@ case 'EXPERIENCE': {
                                   {language === 'KR' ? '장날' : 'Market Day'}
                                 </span>
                                 <span className="text-slate-300">·</span>
-                                {step.titleKo.includes('구포시장') ? (
+                                {isFiveDayMarket(step) ? (
                                   <span className="font-bold text-[#2D6A4F] bg-[#E8F5E9] px-1.5 py-0.5 rounded text-[10.5px] sm:text-[11px] border border-[#2D6A4F]/20">
-                                    {language === 'KR' ? (step.marketDayKo || '3·8·13·18·23·28일') : (step.marketDayEn || '3rd, 8th, 13th, 18th, 23rd, 28th')}
+                                    {language === 'KR' ? (step.marketDayKo || '5일장') : (step.marketDayEn || '5-Day Market')}
                                   </span>
                                 ) : (
                                   <span className="text-slate-600 font-medium text-[11px] sm:text-[11.5px]">
