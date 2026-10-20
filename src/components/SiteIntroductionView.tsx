@@ -281,10 +281,65 @@ export function SiteIntroductionView({
       </div>
 
       {/* 3. 하단 탭별 상세 내용 */}
-      {/* PAGE 1: 운영자 소개 활성화 시 (소개글은 상단에 위치하며, 하단에는 깔끔한 공익 후원/광고 영역 배치) */}
+      {/* PAGE 1: 운영자 소개 활성화 시 (에디터 프로필 & 미니 Q&A) */}
       {activeSubTab === 'about' && (
-        <div className="pt-1 animate-fade-in">
-          <AdSenseUnit currentParams={{ currentTab: 'about', siteSubPage: 'about' }} />
+        <div className="space-y-6 animate-fade-in text-left pt-1 sm:pt-2">
+          {/* Editor Header */}
+          <div className="space-y-1">
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <UserCheck className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
+              <span>{language === 'KR' ? '에디터 : 플로레르' : 'Editor : Floreur'}</span>
+            </h3>
+            <p className="text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
+              {language === 'KR' 
+                ? '“부산에서 나고 자라 매일 걷는 길, 여행자분들의 가벼운 발걸음을 위해 발로 뜁니다.”' 
+                : '“Born and raised in Busan, walking these streets every day to ensure light, joyful steps for all travelers.”'}
+            </p>
+          </div>
+
+          {/* Q&A List - Clean line style without heavy boxes */}
+          <div className="space-y-4 pt-2 border-t border-slate-200/80">
+            <div className="space-y-1.5">
+              <h4 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                <span className="text-[#8EA85E] font-black">Q.</span>
+                <span>{language === 'KR' ? '혼자서 이 넓은 부산을 어떻게 점검하나요?' : 'How do you inspect such a vast city alone?'}</span>
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4 sm:pl-5 border-l-2 border-[#8EA85E]/30">
+                {language === 'KR'
+                  ? '“퇴근길이나 평소에 카페나 공공 장소를 직접 걸어보고, 여행명소를 방문한 여행자분들의 따뜻한 제보 메일로 지도를 함께 다듬어가고 있습니다.”'
+                  : '“I walk on foot during commutes, visits to cafes, and public spots, and refine the guide together with warm feedback emails from travelers.”'}
+              </p>
+            </div>
+
+            <div className="space-y-1.5">
+              <h4 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                <span className="text-[#8EA85E] font-black">Q.</span>
+                <span>{language === 'KR' ? '운영하면서 가장 기뻤던 순간은?' : 'What has been the most rewarding moment?'}</span>
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4 sm:pl-5 border-l-2 border-[#8EA85E]/30">
+                {language === 'KR'
+                  ? '“‘아기 유모차를 끌고 부산에 왔는데, 지하철 출구를 편안하게 이용하며 여행했다’는 메일을 받았을 때 가장 큰 보람을 느낍니다.”'
+                  : '“The greatest reward is receiving emails like: ‘I visited Busan with a baby stroller and traveled comfortably thanks to the station exit guide.’”'}
+              </p>
+            </div>
+
+            <div className="space-y-1.5">
+              <h4 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                <span className="text-[#8EA85E] font-black">Q.</span>
+                <span>{language === 'KR' ? '앞으로 Stepless가 꿈꾸는 바람은?' : 'What is your future hope for Stepless?'}</span>
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4 sm:pl-5 border-l-2 border-[#8EA85E]/30">
+                {language === 'KR'
+                  ? '“계단이나 턱 때문에 누군가의 발걸음이 멈추지 않는 것, 그리고 부산을 다녀간 모든 분들이 ‘참 따뜻하고 다정했던 부산’으로 기억하며 언제든 다시 찾아주시는 것입니다.”'
+                  : '“That no one has to stop their journey because of steps or curbs, and that everyone remembers Busan as a warm, hospitable city they want to visit again.”'}
+              </p>
+            </div>
+          </div>
+
+          {/* AdSense Unit */}
+          <div className="pt-2">
+            <AdSenseUnit currentParams={{ currentTab: 'about', siteSubPage: 'about' }} />
+          </div>
         </div>
       )}
 
