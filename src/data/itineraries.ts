@@ -1883,8 +1883,8 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
     tagEn: 'Museum & Experience',
     difficultyKo: '쉬움',
     difficultyEn: 'Easy',
-    overallTipKo: '부산의 대표적인 박물관, 미술관, 복합문화공간을 카테고리별로 편리하게 둘러보실 수 있도록 정리했습니다.',
-    overallTipEn: 'Busan major museums, art galleries, and cultural spaces are categorized for your convenient barrier-free exploration.',
+    overallTipKo: '부산의 대표 박물관, 미술관, 복합문화공간을 편리하게 둘러보실 수 있도록 테마별로 정리했습니다. 부산119안전체험관, 어린이창의교육관 등 일부 체험 시설은 안전 관리와 원활한 운영을 위해 사전 예약이 반드시 필요한 곳들도 있으니, 방문 전 공식 홈페이지를 통해 미리 예약하고 방문하시길 권장합니다.',
+    overallTipEn: 'Busan major museums, art galleries, and experiential cultural spaces are categorized by theme for your convenience. Please note that certain interactive facilities (such as the Busan 119 Safety Experience Center and Children Creative Education Center) strictly require advance online reservations for safety and entry. Be sure to check and book in advance before your visit.',
     steps: [
       {
         regionId: 'haeundae_gijang',
