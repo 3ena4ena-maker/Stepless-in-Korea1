@@ -229,6 +229,7 @@ app.post("/api/busan-events/sync", async (req, res) => {
 
 // TourAPI 4.0 Endpoints
 const KTO_KOREAN_ENDPOINT = "https://apis.data.go.kr/B551011/KorService2";
+const KTO_ENGLISH_ENDPOINT = "https://apis.data.go.kr/B551011/EngService2";
 const KORWITH_ENDPOINT = "https://apis.data.go.kr/B551011/KorWithService2";
 
 // Active Service Key from environment (No hardcoded credentials)
@@ -514,6 +515,25 @@ app.get("/api/tourapi/test", async (req, res) => {
       });
     }
 
+    // 3. 한국관광공사 영문 관광정보 API (EngService2/areaBasedList2)
+    if (api === "all" || api === "english" || api === "eng") {
+      const endpoint = `${KTO_ENGLISH_ENDPOINT}/areaBasedList2`;
+      const resData = await executeKtoApiCall(endpoint, keyToUse, {
+        numOfRows: String(numOfRows),
+        pageNo: "1",
+        MobileOS: "ETC",
+        MobileApp: "SteplessBusan",
+        _type: "json",
+        areaCode: String(areaCode),
+      });
+      results.push({
+        targetApi: "english",
+        apiName: "한국관광공사 영문 관광정보 API (EngService2/areaBasedList2)",
+        endpoint,
+        result: resData,
+      });
+    }
+
     const allSuccess = results.length > 0 && results.every((r) => r.result.success);
     const anySuccess = results.some((r) => r.result.success);
 
@@ -782,6 +802,35 @@ app.get("/api/tourapi/spots", async (req, res) => {
   } catch (error: any) {
     console.error("TourAPI spots query error:", error);
     res.status(500).json({ error: "Failed to fetch TourAPI barrier-free spots" });
+  }
+});
+
+// Search / Browse Official English Tourism Spots in Busan (한국관광공사 EngService2 연동)
+app.get("/api/tourapi/english/spots", async (req, res) => {
+  try {
+    const { keyword, areaCode = "6", numOfRows = "20", pageNo = "1" } = req.query;
+    const endpoint = keyword && typeof keyword === "string" && keyword.trim().length > 0
+      ? `${KTO_ENGLISH_ENDPOINT}/searchKeyword2`
+      : `${KTO_ENGLISH_ENDPOINT}/areaBasedList2`;
+
+    const params: Record<string, string> = {
+      numOfRows: String(numOfRows),
+      pageNo: String(pageNo),
+      MobileOS: "ETC",
+      MobileApp: "SteplessBusan",
+      _type: "json",
+      areaCode: String(areaCode),
+    };
+
+    if (keyword && typeof keyword === "string" && keyword.trim().length > 0) {
+      params.keyword = keyword.trim();
+    }
+
+    const apiRes = await executeKtoApiCall(endpoint, TOUR_API_SERVICE_KEY, params);
+    res.json(apiRes);
+  } catch (err: any) {
+    console.error("EngService query error:", err);
+    res.status(500).json({ error: "Failed to fetch English tour spots", details: err.message });
   }
 });
 
