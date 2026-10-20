@@ -152,8 +152,35 @@ export function matchTourApiSpotId(titleOrText: string): string | null {
   if (t.includes('뮤지엄원') || t.includes('museum one') || t.includes('museum1')) {
     return 'spot-museum1';
   }
+  if (t.includes('부산과학체험관') || t.includes('과학체험관')) {
+    return 'spot-busan-science-center';
+  }
   if (t.includes('부산박물관') || t.includes('유엔평화')) {
     return 'spot-busan-museum';
+  }
+  if (t.includes('119안전체험') || t.includes('119안전')) {
+    return 'spot-busan-119-safety';
+  }
+  if (t.includes('어촌민속관') || t.includes('부산어촌')) {
+    return 'spot-busan-fishing-folk';
+  }
+  if (t.includes('해양자연사') || t.includes('부산해양자연사')) {
+    return 'spot-busan-marine-natural-history';
+  }
+  if (t.includes('구포시장')) {
+    return 'spot-gupo-market';
+  }
+  if (t.includes('오시게') || t.includes('노포동')) {
+    return 'spot-osige-market';
+  }
+  if (t.includes('다대씨파크') || t.includes('다대포시장')) {
+    return 'spot-dadaepo-market';
+  }
+  if (t.includes('송정시장')) {
+    return 'spot-songjeong-market';
+  }
+  if (t.includes('월내시장') || t.includes('월내')) {
+    return 'spot-wolnae-market';
   }
   if (t.includes('허심청') || t.includes('동래온천')) {
     return 'spot-hurshimcheong';

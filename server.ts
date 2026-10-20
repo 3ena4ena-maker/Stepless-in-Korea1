@@ -1258,33 +1258,51 @@ app.get("/api/tourapi/search", async (req, res) => {
           }
         );
 
-        if (liveRes.success && liveRes.rawItem) {
-          const rawItems = Array.isArray(liveRes.rawItem) ? liveRes.rawItem : [liveRes.rawItem];
-          if (rawItems.length > 0) {
-            isLiveSuccess = true;
-            rawItems.forEach((item: any) => {
-              if (item && item.contentid && !matchedSpotsMap.has(String(item.contentid))) {
-                matchedSpotsMap.set(String(item.contentid), {
-                  contentid: String(item.contentid),
-                  id: String(item.contentid),
-                  titleKo: item.title,
-                  titleEn: item.title,
-                  addr1Ko: item.addr1 || (item.addr2 ? `${item.addr1} ${item.addr2}` : "부산광역시"),
-                  addr1En: "Busan, Republic of Korea",
-                  districtKo: item.addr1?.split(' ')?.[1] || "부산",
-                  districtEn: "Busan",
-                  categoryKo: "관광명소",
-                  categoryEn: "Attraction",
-                  firstimage: item.firstimage || item.firstimage2 || "",
-                  tel: item.tel || "",
-                  mapx: item.mapx ? Number(item.mapx) : undefined,
-                  mapy: item.mapy ? Number(item.mapy) : undefined,
-                  isVerified: false,
-                  source: "한국관광공사 TourAPI 실시간 검색"
-                });
-              }
-            });
+        let rawItems = liveRes.success && liveRes.rawItem ? (Array.isArray(liveRes.rawItem) ? liveRes.rawItem : [liveRes.rawItem]) : [];
+        // If KorWithService2 barrier-free API has no match for keyword, search KorService2 (국문 관광정보)
+        if (rawItems.length === 0) {
+          const generalRes = await executeKtoApiCall(
+            `${KTO_KOREAN_ENDPOINT}/searchKeyword2`,
+            KORWITH_SERVICE_KEY,
+            {
+              MobileOS: "ETC",
+              MobileApp: "SteplessBusan",
+              _type: "json",
+              keyword: rawKeyword,
+              numOfRows: "20",
+              pageNo: "1"
+            }
+          );
+          if (generalRes.success && generalRes.rawItem) {
+            const generalItems = Array.isArray(generalRes.rawItem) ? generalRes.rawItem : [generalRes.rawItem];
+            rawItems = generalItems.filter((item: any) => item.addr1 && (item.addr1.includes("부산") || item.areacode === "6"));
           }
+        }
+
+        if (rawItems.length > 0) {
+          isLiveSuccess = true;
+          rawItems.forEach((item: any) => {
+            if (item && item.contentid && !matchedSpotsMap.has(String(item.contentid))) {
+              matchedSpotsMap.set(String(item.contentid), {
+                contentid: String(item.contentid),
+                id: String(item.contentid),
+                titleKo: item.title,
+                titleEn: item.title,
+                addr1Ko: item.addr1 || (item.addr2 ? `${item.addr1} ${item.addr2}` : "부산광역시"),
+                addr1En: "Busan, Republic of Korea",
+                districtKo: item.addr1?.split(' ')?.[1] || "부산",
+                districtEn: "Busan",
+                categoryKo: "관광명소",
+                categoryEn: "Attraction",
+                firstimage: item.firstimage || item.firstimage2 || "",
+                tel: item.tel || "",
+                mapx: item.mapx ? Number(item.mapx) : undefined,
+                mapy: item.mapy ? Number(item.mapy) : undefined,
+                isVerified: false,
+                source: "한국관광공사 TourAPI 실시간 검색"
+              });
+            }
+          });
         }
       } catch (liveErr) {
         console.warn("Live TourAPI keyword search error:", liveErr);

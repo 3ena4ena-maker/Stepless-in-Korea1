@@ -4317,7 +4317,7 @@ case 'EXPERIENCE': {
                             titleEn: step.titleEn,
                           }) || matchedSpotId;
                           const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
-                          const imageUrl = step.firstImage || ktoDetail?.firstImage;
+                          const imageUrl = ktoDetail?.firstImage || step.firstImage;
                           const isSaved = isBookmarked(step.id || step.titleKo);
 
                           const displayTitle = language === 'KR' ? step.titleKo : step.titleEn;
@@ -4652,6 +4652,7 @@ case 'EXPERIENCE': {
                           titleEn: step.titleEn,
                         }) || matchedSpotId || 'spot-101';
                         const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
+                        const imageUrl = ktoDetail?.firstImage || step.firstImage;
                         const isSaved = isBookmarked(step.id || step.titleKo);
 
                         const rawAddressKo = ktoDetail?.addressRoadKo || step.stationInfoKo || '';
@@ -4672,6 +4673,14 @@ case 'EXPERIENCE': {
                             className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors p-3.5 sm:p-4 flex flex-col justify-between text-left space-y-2"
                           >
                             <div className="space-y-1.5 text-left">
+                              {/* TourAPI Image Thumbnail (When available) */}
+                              {imageUrl && (
+                                <AttractionPhotoThumbnail
+                                  src={imageUrl}
+                                  alt={step.titleKo}
+                                  className="w-full h-28 sm:h-32 mb-1.5"
+                                />
+                              )}
                               {/* Header: Title & Route Button on the SAME line */}
                               <div className="flex items-center justify-between gap-2">
                                 <div className="flex items-center gap-1.5 flex-wrap min-w-0">
