@@ -135,8 +135,23 @@ export function getEventCategoryMeta(evt: BusanEvent): EventCategoryMeta {
       }
     };
   }
-  // 4. 콘서트 - 감성적인 베리 퍼플
-  if (t.includes('록') || t.includes('음악') || t.includes('콘서트') || t.includes('rock') || t.includes('music')) {
+  // 4A. 클래식 - 우아하고 기품 있는 로열 인디고
+  if (t.includes('클래식') || t.includes('classic') || t.includes('오케스트라') || t.includes('교향') || t.includes('독주회') || t.includes('연주회') || t.includes('합창') || t.includes('피아노') || t.includes('바이올린') || t.includes('오페라')) {
+    return { 
+      icon: Music, 
+      label: '클래식', 
+      labelEn: 'Classic',
+      colorTheme: {
+        bg: 'bg-[#4F46E5]/10',
+        hoverBg: 'hover:bg-[#4F46E5]/20',
+        border: 'border-[#4F46E5]/25',
+        text: 'text-[#4338CA]',
+        badgeBg: 'bg-[#4F46E5]/15'
+      }
+    };
+  }
+  // 4B. 콘서트·공연 - 감성적인 베리 퍼플
+  if (t.includes('록') || t.includes('음악') || t.includes('콘서트') || t.includes('rock') || t.includes('music') || t.includes('라이브') || t.includes('live') || t.includes('공연') || t.includes('뮤지컬')) {
     return { 
       icon: Music, 
       label: '콘서트', 
@@ -226,7 +241,7 @@ export function getEventCategoryMeta(evt: BusanEvent): EventCategoryMeta {
     };
   }
   // 10. 미식·전통 - 풍요로운 웜 헤이즐넛 브라운
-  if (t.includes('자갈치') || t.includes('국수') || t.includes('구포나루') || t.includes('food') || t.includes('식')) {
+  if (t.includes('자갈치') || t.includes('국수') || t.includes('구포나루') || t.includes('food') || t.includes('미식') || t.includes('먹거리') || t.includes('음식') || t.includes('맛집')) {
     return { 
       icon: Utensils, 
       label: '미식', 
