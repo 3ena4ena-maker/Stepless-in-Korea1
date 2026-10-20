@@ -516,35 +516,34 @@ export function SiteIntroductionView({
 
       {/* PAGE 4: 이용약관 (Terms of Service) */}
       {activeSubTab === 'terms' && (
-        <div className="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm space-y-6 text-xs sm:text-sm text-slate-700 leading-relaxed animate-fade-in google-anno-skip" data-ad-exclude="true">
-          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <span className="p-2.5 rounded-xl bg-slate-100 text-slate-800">
-              <FileText className="w-6 h-6" />
-            </span>
-            <div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900 font-heading">
-                {language === 'KR' ? '📄 서비스 이용약관 및 면책사항 (Terms of Service)' : '📄 Terms of Service & Disclaimer'}
-              </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                {language === 'KR'
-                  ? '실시간 시설 변동 가능성, 안전 가이드라인 및 면책 기준'
-                  : 'Facility variability, safety guidelines, and limitation of liability.'}
-              </p>
-            </div>
+        <div className="space-y-6 animate-fade-in text-left pt-1 sm:pt-2 text-xs sm:text-sm text-slate-700 leading-relaxed google-anno-skip" data-ad-exclude="true">
+          {/* Header with single clean line icon */}
+          <div className="space-y-1">
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
+              <span>{language === 'KR' ? '서비스 이용약관 및 면책사항' : 'Terms of Service & Disclaimer'}</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium">
+              {language === 'KR'
+                ? '실시간 시설 변동 가능성, 안전 가이드라인 및 면책 기준'
+                : 'Facility variability, safety guidelines, and limitation of liability.'}
+            </p>
           </div>
 
-          <div className="bg-amber-50 p-4 border border-amber-200/80 rounded-2xl text-amber-950 font-medium">
+          {/* Core Notice - Clean line style without box */}
+          <div className="text-xs sm:text-sm font-medium text-slate-700 leading-relaxed border-l-2 border-[#8EA85E] pl-3 sm:pl-4 py-1">
             {language === 'KR'
-              ? '⚠️ 본 서비스는 부산 지하철 이용자의 편의를 돕기 위한 보행 가이드 플랫폼입니다. 이동 시 현장의 실시간 안내 표지판과 안전 규정을 항상 최우선으로 준수해 주시기 바랍니다.'
-              : '⚠️ Stepless is an informational pedestrian guide. Please prioritize on-site transit station signs, staff directions, and local street safety regulations at all times.'}
+              ? '본 서비스는 부산 지하철 이용자의 편의를 돕기 위한 보행 가이드 플랫폼입니다. 이동 시 현장의 실시간 안내 표지판과 안전 규정을 항상 최우선으로 준수해 주시기 바랍니다.'
+              : 'Stepless is an informational pedestrian guide. Please prioritize on-site transit station signs, staff directions, and local street safety regulations at all times.'}
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-5 pt-2 border-t border-slate-200/80">
             <div>
-              <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5">
-                {language === 'KR' ? '제 1 조 (목적)' : 'Article 1 (Purpose)'}
+              <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#8EA85E]"></span>
+                <span>{language === 'KR' ? '제 1 조 (목적)' : 'Article 1 (Purpose)'}</span>
               </h3>
-              <p className="font-medium text-slate-600 leading-relaxed">
+              <p className="font-medium text-slate-600 leading-relaxed pl-3 sm:pl-3.5">
                 {language === 'KR'
                   ? '본 약관은 Stepless(이하 "서비스")가 제공하는 부산 지하철 배리어프리, 엘리베이터 위치, 출구 안내 및 관련 정보 서비스의 이용 조건과 절차, 이용자의 주의사항을 규정함을 목적으로 합니다.'
                   : 'These Terms govern the use of the Stepless barrier-free transit navigation and accessibility guide for Busan metro stations and tourist itineraries.'}
@@ -552,10 +551,11 @@ export function SiteIntroductionView({
             </div>
 
             <div>
-              <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5">
-                {language === 'KR' ? '제 2 조 (실시간 시설 변동 가능성 및 정보의 한계)' : 'Article 2 (Facility Variability & Disclaimer)'}
+              <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#8EA85E]"></span>
+                <span>{language === 'KR' ? '제 2 조 (실시간 시설 변동 가능성 및 정보의 한계)' : 'Article 2 (Facility Variability & Disclaimer)'}</span>
               </h3>
-              <div className="space-y-2 font-medium text-slate-600 leading-relaxed">
+              <div className="space-y-2 font-medium text-slate-600 leading-relaxed pl-3 sm:pl-3.5">
                 <p>
                   {language === 'KR'
                     ? '1. 본 서비스에서 제공하는 승강기(엘리베이터 및 에스컬레이터) 위치, 출구 번호, 휠체어 리프트 및 노선 가이드는 현장 조사, 공식 공공데이터 및 이용자 제보를 바탕으로 정기 수집·검증됩니다.'
@@ -575,10 +575,11 @@ export function SiteIntroductionView({
             </div>
 
             <div>
-              <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5">
-                {language === 'KR' ? '제 3 조 (현장 안전 수칙 및 이용자 주의 의무)' : 'Article 3 (Safety Rules & User Responsibility)'}
+              <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#8EA85E]"></span>
+                <span>{language === 'KR' ? '제 3 조 (현장 안전 수칙 및 이용자 주의 의무)' : 'Article 3 (Safety Rules & User Responsibility)'}</span>
               </h3>
-              <div className="space-y-2 font-medium text-slate-600 leading-relaxed">
+              <div className="space-y-2 font-medium text-slate-600 leading-relaxed pl-3 sm:pl-3.5">
                 <p>
                   {language === 'KR'
                     ? '1. 현장 수칙 우선: 휠체어, 유모차, 보행 보조기 이용자, 노약자 및 모든 통행자는 이동 중 역 내부의 실시간 안내 방송, 안전 요원의 지시, 횡단보도 신호등, 현장 안내 표지판을 항상 최우선으로 따라야 합니다.'
@@ -598,10 +599,11 @@ export function SiteIntroductionView({
             </div>
 
             <div>
-              <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5">
-                {language === 'KR' ? '제 4 조 (서비스의 변경 및 문의)' : 'Article 4 (Updates & Contact)'}
+              <h3 className="font-extrabold text-slate-900 text-sm sm:text-base mb-1.5 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#8EA85E]"></span>
+                <span>{language === 'KR' ? '제 4 조 (서비스의 변경 및 문의)' : 'Article 4 (Updates & Contact)'}</span>
               </h3>
-              <p className="font-medium text-slate-600 leading-relaxed">
+              <p className="font-medium text-slate-600 leading-relaxed pl-3 sm:pl-3.5">
                 {language === 'KR'
                   ? `운영자는 이용자에게 보다 안전하고 정확한 이동 정보를 제공하기 위해 사전 통지 없이 서비스의 일부 또는 전부를 수정·업데이트할 수 있으며, 데이터 오류 제보는 대표 이메일 창구(${officialEmail})를 통해 상시 접수받습니다.`
                   : `Service features may be updated without prior notice to enhance transit accuracy. Data corrections and inquiries are accepted at ${officialEmail}.`}
@@ -613,55 +615,53 @@ export function SiteIntroductionView({
 
       {/* PAGE 5: 데이터 출처 (Data Sources) */}
       {activeSubTab === 'data-source' && (
-        <div className="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm space-y-8 animate-fade-in google-anno-skip" data-ad-exclude="true">
-          <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-            <span className="p-2.5 rounded-xl bg-purple-50 text-purple-700">
-              <Database className="w-6 h-6" />
-            </span>
-            <div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900 font-heading">
-                {language === 'KR' ? '📊 데이터 출처 (Data Sources)' : '📊 Verified Data Sources'}
-              </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                {language === 'KR'
-                  ? '공식 지도, 공공데이터 및 대중교통 데이터 출처 명시'
-                  : 'Official transit authorities and open government data credentials.'}
-              </p>
-            </div>
+        <div className="space-y-6 animate-fade-in text-left pt-1 sm:pt-2 google-anno-skip" data-ad-exclude="true">
+          {/* Header with single clean line icon */}
+          <div className="space-y-1">
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <Database className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
+              <span>{language === 'KR' ? '데이터 출처' : 'Data Sources'}</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium">
+              {language === 'KR'
+                ? '공식 지도, 공공데이터 및 대중교통 데이터 출처 명시'
+                : 'Official transit authorities and open government data credentials.'}
+            </p>
           </div>
 
-          {/* Section 1: Official Data Sources */}
-          <div className="space-y-3 text-xs sm:text-sm">
-            <h3 className="font-black text-slate-900 text-base">
-              {language === 'KR' ? '공식 연계 데이터 출처' : 'Official Data Providers'}
+          {/* Section 1: Official Data Providers - Clean flat layout without boxes */}
+          <div className="space-y-4 pt-2 border-t border-slate-200/80">
+            <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+              {language === 'KR' ? '공식 연계 데이터 제공처' : 'Official Data Providers'}
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-150 space-y-1">
-                <div className="font-extrabold text-blue-600 flex items-center justify-between">
+            
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+              <div className="space-y-1 border-l-2 border-[#8EA85E]/40 pl-3.5">
+                <div className="font-bold text-slate-900 flex items-center gap-1.5 text-sm sm:text-base">
                   <span>네이버지도 (Naver Map)</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
                 </div>
-                <p className="text-slate-500 text-2xs font-medium">
+                <p className="text-slate-500 text-xs font-medium">
                   {language === 'KR' ? '실시간 위치 및 역별 공식 출처 연계' : 'Real-time location & exit reference'}
                 </p>
               </div>
 
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-150 space-y-1">
-                <div className="font-extrabold text-emerald-600 flex items-center justify-between">
+              <div className="space-y-1 border-l-2 border-[#8EA85E]/40 pl-3.5">
+                <div className="font-bold text-slate-900 flex items-center gap-1.5 text-sm sm:text-base">
                   <span>부산교통공사 (Humetro)</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
                 </div>
-                <p className="text-slate-500 text-2xs font-medium">
+                <p className="text-slate-500 text-xs font-medium">
                   {language === 'KR' ? '도시철도 역 구조도 및 출구 규격' : 'Subway blueprints & exit specifications'}
                 </p>
               </div>
 
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-150 space-y-1">
-                <div className="font-extrabold text-slate-800 flex items-center justify-between">
+              <div className="space-y-1 border-l-2 border-[#8EA85E]/40 pl-3.5">
+                <div className="font-bold text-slate-900 flex items-center gap-1.5 text-sm sm:text-base">
                   <span>공공데이터포털 / TourAPI</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
                 </div>
-                <p className="text-slate-500 text-2xs font-medium">
+                <p className="text-slate-500 text-xs font-medium">
                   {language === 'KR' ? '전국 도시철도 승강기 및 무장애 관광 정보' : 'Korea Tourism Organization Barrier-Free TourAPI'}
                 </p>
               </div>
