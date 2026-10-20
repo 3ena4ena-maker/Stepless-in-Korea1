@@ -1240,9 +1240,9 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                       )}
                     </div>
 
-                    {/* Event Icons Area (Distinct Category Icons with Category Labels underneath) */}
-                    <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap mt-1">
-                      {dayEvents.slice(0, 3).map(evt => {
+                    {/* Event Icons Area (Compact, No Bulky Box, 1/4 Size, All Events Visible) */}
+                    <div className="flex items-center gap-0.5 sm:gap-1 flex-wrap mt-1">
+                      {dayEvents.map(evt => {
                         const meta = getEventCategoryMeta(evt);
                         const EventIcon = meta.icon;
                         const catLabel = language === 'KR' ? meta.label : meta.labelEn;
@@ -1253,38 +1253,17 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                               e.stopPropagation();
                               setSelectedEvent(evt);
                             }}
-                            className={`flex flex-col items-center justify-center px-1 sm:px-1.5 py-1 rounded-xl transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-2xs group shrink-0 min-w-[34px] sm:min-w-[42px] border ${meta.colorTheme.bg} ${meta.colorTheme.hoverBg} ${meta.colorTheme.border}`}
+                            className="p-1 rounded-md transition-all hover:scale-135 active:scale-95 cursor-pointer group flex items-center justify-center shrink-0 hover:bg-slate-100/90"
                             title={`${language === 'KR' ? evt.titleKo : evt.titleEn} (${catLabel})`}
+                            aria-label={`${language === 'KR' ? evt.titleKo : evt.titleEn} (${catLabel})`}
                           >
-                            <EventIcon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 transition-colors ${meta.colorTheme.text}`} />
-                            <span className={`text-[7.5px] sm:text-[9px] font-bold mt-0.5 leading-none whitespace-nowrap tracking-tight ${meta.colorTheme.text}`}>
-                              {catLabel}
-                            </span>
+                            <EventIcon className={`w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 ${meta.colorTheme.text} transition-transform`} />
                           </button>
                         );
                       })}
-                      {dayEvents.length > 3 && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setDayEventsModal({ dateStr: cell.dateString, events: dayEvents });
-                          }}
-                          className="px-1.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-[9px] sm:text-[10px] font-bold border border-slate-200 cursor-pointer shrink-0 self-center"
-                        >
-                          +{dayEvents.length - 3}
-                        </button>
-                      )}
                     </div>
 
-                    {/* Subtle dot count for mobile */}
-                    <div className="flex sm:hidden items-center gap-0.5 mt-0.5">
-                      {dayEvents.length > 0 && (
-                        <span className="text-[8px] font-bold text-[#526826]">
-                          {dayEvents.length}건
-                        </span>
-                      )}
                     </div>
-                  </div>
                 );
               })}
             </div>
