@@ -2122,7 +2122,7 @@ export default function App() {
               }}
               className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer"
             >
-              {language === 'KR' ? '🌱 사이트 소개' : 'About Stepless'}
+              {language === 'KR' ? '👤 운영자 소개' : 'Operator'}
             </button>
             <button 
               onClick={() => {

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Shield, FileText, Mail, Database, ExternalLink, CheckCircle2, Send, Heart, Sparkles, Phone, ChevronDown } from 'lucide-react';
+import { UserCheck, Shield, FileText, Mail, Database, ExternalLink, CheckCircle2, Send, Heart, Phone, ChevronDown } from 'lucide-react';
 import { VerificationBadge } from './VerificationBadge';
 import { AdSenseUnit } from './AdSenseManager';
 
@@ -49,7 +49,7 @@ export function SiteIntroductionView({
   };
 
   const subTabs = [
-    { id: 'about', label: language === 'KR' ? '사이트 소개' : 'About Stepless', icon: Heart },
+    { id: 'about', label: language === 'KR' ? '운영자 소개' : 'About Operator', icon: UserCheck },
     { id: 'contact', label: language === 'KR' ? '정보 제보 및 문의' : 'Contact & Feedback', icon: Mail },
     { id: 'privacy', label: language === 'KR' ? '개인정보처리방침' : 'Privacy Policy', icon: Shield },
     { id: 'terms', label: language === 'KR' ? '이용약관' : 'Terms of Service', icon: FileText },
@@ -98,7 +98,7 @@ export function SiteIntroductionView({
       <div className="md:hidden border-b border-[#E5E2DC] pb-2 relative" ref={moreMenuRef}>
         <div className="flex items-center gap-2 justify-between">
           <div className="flex items-center gap-1.5 flex-1 min-w-0">
-            {/* 사이트 소개 (Always First) */}
+            {/* 운영자 소개 (Always First) */}
             <button
               id="site-intro-mobile-tab-about"
               onClick={() => handleSelectTab('about')}
@@ -108,8 +108,8 @@ export function SiteIntroductionView({
                   : 'text-[#4A5568] hover:bg-[#F1EFEC]/60'
               }`}
             >
-              <Heart className={`w-3.5 h-3.5 shrink-0 ${activeSubTab === 'about' ? 'text-[#8EA85E]' : 'text-slate-400'}`} />
-              <span>{language === 'KR' ? '사이트 소개' : 'About Stepless'}</span>
+              <UserCheck className={`w-3.5 h-3.5 shrink-0 ${activeSubTab === 'about' ? 'text-[#8EA85E]' : 'text-slate-400'}`} />
+              <span>{language === 'KR' ? '운영자 소개' : 'About Operator'}</span>
             </button>
 
             {/* If a secondary tab is active, display it next to About */}
@@ -175,59 +175,122 @@ export function SiteIntroductionView({
         </div>
       </div>
 
-      {/* PAGE 1: 사이트 및 운영자 소개 (About Stepless & Operator Story) */}
+      {/* PAGE 1: 운영자 소개 (About Operator & Stepless Story) */}
       {activeSubTab === 'about' && (
-        <div className="bg-white p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xs sm:shadow-sm space-y-8 animate-fade-in">
+        <div className="space-y-6 sm:space-y-8 animate-fade-in text-left">
           
-          {/* SECTION 1: 사이트 소개 — 탄생 계기 및 비전 */}
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8">
-            <div className="w-full md:w-2/3 space-y-4 sm:space-y-5 order-2 md:order-1 text-left">
-              <div>
-                <span className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold px-2.5 py-1 rounded-full bg-[#8EA85E]/15 text-[#2D6A4F] mb-2">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>{language === 'KR' ? 'Stepless in Korea 소개' : 'About Stepless in Korea'}</span>
-                </span>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight leading-snug">
+          <div className="flex flex-col md:flex-row items-start gap-6 sm:gap-8">
+            <div className="flex-1 space-y-4 text-left">
+              <div className="space-y-1">
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-snug">
                   {language === 'KR' ? '모두를 위한 문턱 없는 여행' : 'Barrier-Free Travel for Everyone'}
                 </h2>
-                <p className="mt-1.5 text-sm sm:text-base font-bold text-[#8EA85E] leading-relaxed">
+                <p className="text-sm sm:text-base font-bold text-[#8EA85E] leading-relaxed">
                   {language === 'KR' 
                     ? '계단과 턱 앞에서 누구도 망설이지 않도록, 발로 뛰며 만든 무장애 보행 지도입니다.' 
                     : 'A step-free transit navigation created on foot so no traveler hesitates before stairs.'}
                 </p>
               </div>
 
-              {/* Mobile Only: Inline Hero Image */}
+              {/* Mobile Hero Image */}
               <div className="md:hidden w-full my-2">
-                <div className="relative rounded-2xl overflow-hidden shadow-md border border-slate-100">
+                <div className="relative rounded-2xl overflow-hidden shadow-sm border border-slate-100">
                   <img 
                     src="/images/busan_travelers_about_1782566089566.jpg" 
                     alt="Stepless Busan Walk"
-                    className="w-full aspect-[16/10] sm:aspect-[4/3] object-cover"
+                    className="w-full aspect-[16/10] object-cover"
                   />
-                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-2.5 text-white text-[11px] font-semibold text-center">
-                    {language === 'KR' ? '부산 전 역사 엘리베이터 및 무단차 동선 현장 점검' : 'Direct Field Inspection Across Busan Metro'}
+                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-white text-[11px] font-semibold text-center">
+                    {language === 'KR' ? '부산 전역 엘리베이터 및 무단차 동선 현장 점검' : 'Direct Field Inspection Across Busan Metro'}
                   </div>
                 </div>
               </div>
 
+              {/* Unified Narrative (소개글과 운영자 진심을 담백하고 짧고 임팩트 있게 통합) */}
               <div className="space-y-3 text-slate-700 text-sm sm:text-base leading-relaxed font-medium">
                 <p>
                   {language === 'KR'
-                    ? '매일 걷던 출퇴근길, 무거운 캐리어와 유모차를 든 여행자들이 가파른 지하철 계단 앞에서 막막해하던 모습을 마주했습니다. 바로 옆 출구에 편리한 엘리베이터가 마련되어 있음에도, 명확한 안내가 없어 땀 흘리며 계단을 오르내려야 했던 안타까운 모습들이 오래도록 마음에 남았습니다.'
-                    : 'During daily commutes across Busan, we often witnessed travelers with heavy luggage and baby strollers struggling before steep subway stairs—unaware that a convenient elevator was already located right at the adjacent exit.'}
+                    ? '매일 걷던 출퇴근길, 무거운 캐리어와 유모차를 들고 가파른 지하철 계단 앞에서 막막해하던 여행자들을 마주했습니다. 바로 옆에 편리한 엘리베이터가 있어도 안내가 부족해 땀 흘리는 모습을 보며, 현장 보행 동선을 직접 발로 확인하는 지도를 시작했습니다.'
+                    : 'During daily commutes across Busan, I often witnessed travelers with heavy luggage and baby strollers struggling before steep subway stairs—unaware that a convenient elevator was already located right at the adjacent exit.'}
                 </p>
                 <p>
                   {language === 'KR'
-                    ? 'Stepless는 그렇게 시작되었습니다. 휠체어를 타신 분, 유모차를 끄는 부모님, 걸음이 조심스러운 어르신과 무거운 짐을 든 여행자까지—누구나 제약 없이 부산의 도시와 바다를 온전히 누릴 수 있도록 현장 보행 동선을 직접 발로 확인하며 이 지도를 완성했습니다.'
-                    : 'Stepless was created to bridge this gap. We walked, tested, and mapped real step-free vertical transit paths so that wheelchair users, parents with strollers, seniors, and luggage travelers can explore Busan comfortably and safely.'}
+                    ? '저는 부산에서 나고 자란 부산 사람입니다. 휠체어를 탄 분도, 아이와 함께 온 부모님도 계단이나 턱 때문에 발길을 돌리지 않고 부산의 푸른 바다와 맛있는 골목을 마음껏 누리셨으면 좋겠습니다.'
+                    : 'Born and raised in Busan, I wanted wheelchair users, parents with strollers, seniors, and travelers to explore this city freely without being stopped by steps.'}
+                </p>
+                <p>
+                  {language === 'KR'
+                    ? 'Stepless는 어떠한 대가나 상업적 광고 없이 100% 무료로 운영되는 순수 공익 지도입니다. 부산을 찾는 모든 분들이 지치지 않고 즐거운 추억만 안고 돌아가시길, 그리고 “참 정 많고 따뜻한 부산이었다”는 기억으로 다시 찾아주시길 바라는 진심 하나로 만듭니다.'
+                    : 'Stepless is a 100% free public guide with zero commercial bias. My only hope is that everyone visiting Busan enjoys a joyful, comfortable trip and remembers Busan as a warm and hospitable city they want to visit again.'}
                 </p>
               </div>
+
+              {/* Core Principles - Clean list without boxes */}
+              <div className="pt-3 border-t border-slate-200/80 space-y-2">
+                <div className="flex items-start gap-2 text-xs sm:text-sm text-slate-700">
+                  <span className="text-[#8EA85E] font-bold shrink-0 mt-0.5">✓</span>
+                  <div>
+                    <strong className="text-slate-900 font-bold">{language === 'KR' ? '발로 뛴 실질적 무단차 동선: ' : 'Verified Step-Free Paths: '}</strong>
+                    <span>{language === 'KR' ? '엘리베이터와 경사로를 현장에서 직접 걸으며 검증한 경로만 안내합니다.' : 'Directly walking and verifying elevators and ramps on site.'}</span>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 text-xs sm:text-sm text-slate-700">
+                  <span className="text-[#8EA85E] font-bold shrink-0 mt-0.5">✓</span>
+                  <div>
+                    <strong className="text-slate-900 font-bold">{language === 'KR' ? '100% 무료 열린 공익 가이드: ' : '100% Free Public Guide: '}</strong>
+                    <span>{language === 'KR' ? '상업적 대가나 차별 없이 누구나 자유롭게 이용할 수 있습니다.' : 'Accessible to all travelers without commercial bias or fees.'}</span>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 text-xs sm:text-sm text-slate-700">
+                  <span className="text-[#8EA85E] font-bold shrink-0 mt-0.5">✓</span>
+                  <div>
+                    <strong className="text-slate-900 font-bold">{language === 'KR' ? '정이 넘치는 부산 로컬 큐레이션: ' : 'Warm Local Curation: '}</strong>
+                    <span>{language === 'KR' ? '부산 토박이만이 아는 입구 평평한 맛집, 바다 산책로, 축제 정보를 전합니다.' : 'Authentic local curation with barrier-free spots, seaside paths, and festivals.'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Information & Contact link (Clean line without box) */}
+              <div className="pt-3 border-t border-slate-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs sm:text-sm text-slate-600">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-slate-900">{language === 'KR' ? '정보 제보 & 문의' : 'Feedback & Contact'}</span>
+                    <a href={`mailto:${officialEmail}`} className="font-mono font-bold text-[#2D6A4F] hover:underline">{officialEmail}</a>
+                  </div>
+                  <p className="text-slate-500 text-xs">
+                    {language === 'KR' ? '작은 정보 하나가 누군가에게는 여행의 큰 용기가 됩니다. 편하게 전해주세요.' : 'A single tip can give someone courage. Feel free to contact anytime.'}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+                  <button
+                    type="button"
+                    onClick={handleCopyEmail}
+                    className="flex-1 sm:flex-none px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition-colors cursor-pointer shadow-2xs"
+                  >
+                    {copiedEmail ? (language === 'KR' ? '복사됨' : 'Copied') : (language === 'KR' ? '이메일 복사' : 'Copy Email')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSelectTab('contact')}
+                    className="flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs transition-colors cursor-pointer shadow-2xs"
+                  >
+                    {language === 'KR' ? '문의하기' : 'Contact'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Verification & Legal Badge */}
+              <div className="pt-3 border-t border-slate-200/80">
+                <VerificationBadge language={language} variant="compact" />
+              </div>
+
+              {/* AdSense Allowed on Publisher Author Story */}
+              <AdSenseUnit currentParams={{ currentTab: 'about', siteSubPage: 'about' }} />
             </div>
 
             {/* Desktop Side Hero Image */}
-            <div className="hidden md:block md:w-1/3 md:self-start order-1 md:order-2">
-              <div className="relative rounded-3xl overflow-hidden shadow-lg border border-slate-100 sticky top-24">
+            <div className="hidden md:block md:w-80 shrink-0 sticky top-24">
+              <div className="relative rounded-2xl overflow-hidden shadow-md border border-slate-100">
                 <img 
                   src="/images/busan_travelers_about_1782566089566.jpg" 
                   alt="Stepless Busan Walk"
@@ -239,138 +302,6 @@ export function SiteIntroductionView({
               </div>
             </div>
           </div>
-
-          {/* SECTION 2: 운영자 이야기 — "왜 무료로 남의 사업장을 홍보해 주냐"는 분들께 드리는 진심 */}
-          <div className="p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl bg-[#FBFBF9] border border-[#E5E2DC] text-left space-y-4 shadow-2xs">
-            <div className="flex items-center gap-2.5">
-              <span className="p-2 rounded-xl bg-[#8EA85E] text-white shrink-0">
-                <Heart className="w-4 h-4 fill-white" />
-              </span>
-              <div>
-                <span className="text-[11px] font-mono font-bold text-[#8EA85E] uppercase tracking-wider block">
-                  {language === 'KR' ? '운영자의 편지' : 'Letter from the Operator'}
-                </span>
-                <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
-                  {language === 'KR' ? '“왜 무료로 남의 가게를 홍보해 주나요?” 물으시는 분들께' : '“Why do you promote places for free?”'}
-                </h3>
-              </div>
-            </div>
-
-            <div className="space-y-3 text-xs sm:text-sm md:text-base text-slate-700 leading-relaxed font-medium pl-1 sm:pl-2">
-              <p>
-                {language === 'KR'
-                  ? '어떤 분들은 왜 대가도 없이 다른 사람의 사업장이나 식당, 가게를 무료로 홍보해 주냐며 의아해하거나 비난하기도 합니다.'
-                  : 'Some people ask with skepticism: “Why do you promote other people’s shops and restaurants for free?”'}
-              </p>
-              <p className="p-3.5 sm:p-4 rounded-xl bg-white border border-[#E5E2DC] text-slate-900 font-semibold leading-relaxed border-l-4 border-l-[#8EA85E]">
-                {language === 'KR'
-                  ? '하지만 제 마음은 오직 하나뿐입니다. 저는 부산에서 나고 자란 평범한 부산 사람입니다. 제가 사랑하는 이 도시에 찾아오신 모든 여행자분들이 계단 때문에 지치지 않고, 웃음과 행복이 가득한 여행이 되었으면 좋겠습니다. 그리고 떠나실 때 “참 따뜻하고 정이 넘치는 부산이었어”라고 가슴 깊이 기억되길 바라는 마음, 그 순수하고 다정한 진심 하나로 이 사이트를 만들었습니다.'
-                  : 'My heart has only one simple wish. I was born and raised here in Busan. I want every traveler visiting my beloved hometown to have a joyful journey without being exhausted by stairs. When you leave, I hope you remember Busan as a warm, affectionate city you want to return to. That pure, local hospitality is why Stepless exists.'}
-              </p>
-              <p className="text-slate-600 text-xs sm:text-sm">
-                {language === 'KR'
-                  ? 'Stepless는 어떠한 상업적 광고료나 협찬도 받지 않는 100% 순수 공익 서비스입니다. 오직 부산을 찾아주신 당신의 걸음걸음이 한결 가볍고 행복하기만을 온 마음으로 응원합니다.'
-                  : 'Stepless accepts zero commercial advertisement fees or paid sponsorships. We only wish for your steps in Busan to be peaceful, light, and full of smiles.'}
-              </p>
-            </div>
-          </div>
-
-          {/* SECTION 3: Stepless가 지키는 세 가지 핵심 가치 */}
-          <div className="space-y-4 pt-2 text-left">
-            <h3 className="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
-              <span className="w-2 h-5 bg-[#8EA85E] rounded-full inline-block"></span>
-              <span>{language === 'KR' ? 'Stepless가 약속하는 3가지 원칙' : 'Three Core Principles of Stepless'}</span>
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4 text-xs sm:text-sm">
-              <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#E5E2DC] space-y-1.5 shadow-2xs hover:border-[#8EA85E] transition-colors">
-                <div className="flex items-center gap-2 font-black text-slate-900">
-                  <span className="text-base">🚶</span>
-                  <span>{language === 'KR' ? '발로 뛴 실질적 무단차 동선' : 'Verified Step-Free Paths'}</span>
-                </div>
-                <p className="text-slate-600 leading-relaxed font-medium">
-                  {language === 'KR'
-                    ? '데이터 수치에 그치지 않고, 엘리베이터·경사로·보도 턱을 현장에서 직접 걸으며 검증한 실질적인 편한 경로만 안내합니다.'
-                    : 'Beyond raw maps, we physically inspect station elevators, ramps, and curb cuts to ensure true barrier-free comfort.'}
-                </p>
-              </div>
-
-              <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#E5E2DC] space-y-1.5 shadow-2xs hover:border-[#8EA85E] transition-colors">
-                <div className="flex items-center gap-2 font-black text-slate-900">
-                  <span className="text-base">🤍</span>
-                  <span>{language === 'KR' ? '100% 무료 열린 공익 가이드' : '100% Free Public Guide'}</span>
-                </div>
-                <p className="text-slate-600 leading-relaxed font-medium">
-                  {language === 'KR'
-                    ? '상업적 대가나 차별 없이, 휠체어·유모차·여행자 모두가 언제든 자유롭게 이용할 수 있는 열린 배리어프리 플랫폼을 지향합니다.'
-                    : 'Free of commercial bias, welcoming wheelchair users, families with strollers, and all travelers alike.'}
-                </p>
-              </div>
-
-              <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#E5E2DC] space-y-1.5 shadow-2xs hover:border-[#8EA85E] transition-colors">
-                <div className="flex items-center gap-2 font-black text-slate-900">
-                  <span className="text-base">🌊</span>
-                  <span>{language === 'KR' ? '정이 넘치는 부산 로컬 큐레이션' : 'Warm Local Curation'}</span>
-                </div>
-                <p className="text-slate-600 leading-relaxed font-medium">
-                  {language === 'KR'
-                    ? '부산 토박이만이 아는 입구 평평한 맛집과 카페, 바다 산책로, 전통시장과 축제 팁을 정성껏 모아 소개합니다.'
-                    : 'Curated by Busan locals with authentic food alleys, flat seaside walkways, traditional markets, and seasonal festival tips.'}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* SECTION 4: 정보 제보 및 따뜻한 소통 창구 */}
-          <div className="pt-2 text-left">
-            <div className="p-4 sm:p-5 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="space-y-1 min-w-0 flex-1">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                  {language === 'KR' ? '정보 제보 & 운영자 소통' : 'Feedback & Contact'}
-                </span>
-                <p className="text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed">
-                  {language === 'KR'
-                    ? '작은 정보 하나가 누군가에게는 여행의 큰 용기가 됩니다. 시설 변동이나 응원의 한마디를 언제든 편하게 전해주세요.'
-                    : 'A single tip can give someone the courage to travel. Feel free to send station updates or warm words anytime.'}
-                </p>
-                <a 
-                  href={`mailto:${officialEmail}`}
-                  className="text-xs sm:text-sm font-black text-[#2D6A4F] hover:underline font-mono inline-block pt-0.5"
-                >
-                  {officialEmail}
-                </a>
-              </div>
-              <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
-                <button
-                  type="button"
-                  onClick={handleCopyEmail}
-                  className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-                >
-                  {copiedEmail ? (
-                    <>
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                      <span className="text-emerald-700 font-bold">{language === 'KR' ? '복사됨' : 'Copied'}</span>
-                    </>
-                  ) : (
-                    <span>{language === 'KR' ? '이메일 복사' : 'Copy Email'}</span>
-                  )}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleSelectTab('contact')}
-                  className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-[#8EA85E] hover:bg-[#7b944f] text-white font-extrabold text-xs transition-all shadow-xs cursor-pointer flex items-center justify-center gap-1.5"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                  <span>{language === 'KR' ? '제보 / 문의하기' : 'Send Feedback'}</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <VerificationBadge language={language} variant="card" />
-
-          {/* AdSense Allowed on Publisher Author Story */}
-          <AdSenseUnit currentParams={{ currentTab: 'about', siteSubPage: 'about' }} />
         </div>
       )}
 
