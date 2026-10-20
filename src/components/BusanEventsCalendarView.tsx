@@ -5,7 +5,26 @@
  */
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, MapPin, Tag, Shuffle, Info, Sparkles, CheckCircle2, ExternalLink, X, Train, ArrowRight, Navigation } from 'lucide-react';
+import { 
+  Calendar as CalendarIcon, 
+  ChevronLeft, 
+  ChevronRight, 
+  MapPin, 
+  Tag, 
+  Info, 
+  Sparkles, 
+  CheckCircle2, 
+  ExternalLink, 
+  X, 
+  Train, 
+  ArrowRight, 
+  Navigation,
+  CalendarDays,
+  List,
+  Search,
+  Clock,
+  Compass
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { STATIONS } from '../data';
 
@@ -483,11 +502,17 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
     return `${todayYear}-${String(todayMonth).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`;
   }, [todayYear, todayMonth, todayDate]);
 
+  // View mode: 'calendar' | 'list'
+  const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar');
+
   // Present Year and Month (initialize to current real year and month)
   const [currentYear, setCurrentYear] = useState<number>(todayYear);
   const [currentMonth, setCurrentMonth] = useState<number>(todayMonth);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [quickDetailModal, setQuickDetailModal] = useState<BusanEvent | null>(null);
   
   // Real-time automated sync states
   const [eventsList, setEventsList] = useState<BusanEvent[]>(BUSAN_EVENTS_DATA);
@@ -516,69 +541,22 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
     loadBusanEvents();
     return () => { isMounted = false; };
   }, []);
-  
-  // Interactive day events overlay popup state
-  const [dayEventsPopup, setDayEventsPopup] = useState<{ dateString: string; events: BusanEvent[] } | null>(null);
 
-  // Custom selector with smooth scroll optimization for mobile devices
-  const handleSelectEvent = (eventId: string | null) => {
-    setSelectedEventId(eventId);
-    if (eventId) {
-      setTimeout(() => {
-        const targetElement = document.getElementById('selected-event-details-section');
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      }, 120);
-    }
-  };
-
-  // Handle months logic
-  const handlePrevMonth = () => {
-    if (currentMonth === 1) {
-      setCurrentMonth(12);
-      setCurrentYear(prev => prev - 1);
-    } else {
-      setCurrentMonth(prev => prev - 1);
-    }
-  };
-
-  const handleNextMonth = () => {
-    if (currentMonth === 12) {
-      setCurrentMonth(1);
-      setCurrentYear(prev => prev + 1);
-    } else {
-      setCurrentMonth(prev => prev + 1);
-    }
-  };
-
-  // Switch specifically to a targeted event's month
-  const jumpToEventMonth = (event: BusanEvent) => {
-    const parts = event.startDate.split('-');
-    const yr = parseInt(parts[0], 10);
-    const mo = parseInt(parts[1], 10);
-    setCurrentYear(yr);
-    setCurrentMonth(mo);
-    handleSelectEvent(event.id);
-  };
-
-  // Helper date parsing
+  // Helper date parsing: Check if dateStr is within event's date range
   const isDateInEventRange = (dateStr: string, event: BusanEvent) => {
     const d = new Date(dateStr);
     const start = new Date(event.startDate);
     const end = new Date(event.endDate);
     
-    // Set hours to zero for accurate comparison
-    d.setHours(0,0,0,0);
-    start.setHours(0,0,0,0);
-    end.setHours(0,0,0,0);
+    d.setHours(0, 0, 0, 0);
+    start.setHours(0, 0, 0, 0);
+    end.setHours(0, 0, 0, 0);
     
     return d >= start && d <= end;
   };
 
-  // Generate calendar days
+  // Generate 42 calendar grid cells
   const calendarDays = useMemo(() => {
-    // 1-indexed month logic for JavaScript Dates
     const firstDayIndex = new Date(currentYear, currentMonth - 1, 1).getDay();
     const totalDays = new Date(currentYear, currentMonth, 0).getDate();
     
@@ -610,7 +588,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
       });
     }
 
-    // Next Month padding days to complete calendar grids (generally 42 cells total for clean display)
+    // Next Month padding days to complete 42 cells grid
     const remainingCells = 42 - daysArray.length;
     for (let i = 1; i <= remainingCells; i++) {
       const nmYear = currentMonth === 12 ? currentYear + 1 : currentYear;
@@ -627,32 +605,104 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
     return daysArray;
   }, [currentYear, currentMonth]);
 
-  // Filter events based on currently selected category filter and exclude past events
+  // Filter events based on category, search query, and exclude past events
   const filteredEvents = useMemo(() => {
-    const activeOrUpcoming = eventsList.filter(evt => evt.endDate >= todayDateStr);
+    let list = eventsList.filter(evt => evt.endDate >= todayDateStr);
 
-    if (selectedCategory === 'all') {
-      return activeOrUpcoming;
+    if (selectedCategory !== 'all') {
+      list = list.filter(evt => {
+        if (selectedCategory === 'drone') return evt.category === 'drone';
+        if (selectedCategory === 'festival') return evt.category === 'festival';
+        if (selectedCategory === 'culture') return evt.category === 'culture' || evt.category === 'performance';
+        return true;
+      });
     }
-    return activeOrUpcoming.filter(evt => {
-      if (selectedCategory === 'drone') return evt.category === 'drone';
-      if (selectedCategory === 'festival') return evt.category === 'festival';
-      if (selectedCategory === 'culture') return evt.category === 'culture' || evt.category === 'performance';
-      return true;
-    });
-  }, [selectedCategory, todayDateStr, eventsList]);
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      list = list.filter(evt => {
+        const matchKo = (evt.titleKo + evt.locationKo + evt.stationKo + (evt.descriptionKo || '')).toLowerCase();
+        const matchEn = (evt.titleEn + evt.locationEn + evt.stationEn + (evt.descriptionEn || '')).toLowerCase();
+        return matchKo.includes(q) || matchEn.includes(q);
+      });
+    }
+
+    return list.sort((a, b) => a.startDate.localeCompare(b.startDate));
+  }, [eventsList, todayDateStr, selectedCategory, searchQuery]);
 
   // Helper to find all filtered events active on a specific calendar day cell
   const getEventsForDay = (dateString: string) => {
     return filteredEvents.filter(evt => isDateInEventRange(dateString, evt));
   };
 
+  // Events active during the currently selected month
+  const thisMonthEvents = useMemo(() => {
+    const ym = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
+    return filteredEvents.filter(evt => {
+      const sYm = evt.startDate.slice(0, 7);
+      const eYm = evt.endDate.slice(0, 7);
+      return (sYm <= ym && ym <= eYm);
+    });
+  }, [filteredEvents, currentYear, currentMonth]);
+
+  // Events for specifically selected date
+  const selectedDateEvents = useMemo(() => {
+    if (!selectedDate) return [];
+    return filteredEvents.filter(evt => isDateInEventRange(selectedDate, evt));
+  }, [filteredEvents, selectedDate]);
+
   // Selected event metadata lookup
   const activeEventDetail = useMemo(() => {
     return eventsList.find(evt => evt.id === selectedEventId) || null;
   }, [selectedEventId, eventsList]);
 
-  // Months labels mapped in Korean & English
+  // Month navigation handlers
+  const handlePrevMonth = () => {
+    if (currentMonth === 1) {
+      setCurrentMonth(12);
+      setCurrentYear(prev => prev - 1);
+    } else {
+      setCurrentMonth(prev => prev - 1);
+    }
+    setSelectedDate(null);
+  };
+
+  const handleNextMonth = () => {
+    if (currentMonth === 12) {
+      setCurrentMonth(1);
+      setCurrentYear(prev => prev + 1);
+    } else {
+      setCurrentMonth(prev => prev + 1);
+    }
+    setSelectedDate(null);
+  };
+
+  const handleResetToday = () => {
+    setCurrentYear(todayYear);
+    setCurrentMonth(todayMonth);
+    setSelectedDate(todayDateStr);
+  };
+
+  // Jump specifically to a targeted event's month
+  const jumpToEventMonth = (event: BusanEvent) => {
+    const parts = event.startDate.split('-');
+    const yr = parseInt(parts[0], 10);
+    const mo = parseInt(parts[1], 10);
+    setCurrentYear(yr);
+    setCurrentMonth(mo);
+    setSelectedEventId(event.id);
+    setSelectedDate(event.startDate);
+    setViewMode('calendar');
+
+    setTimeout(() => {
+      const targetElement = document.getElementById('selected-event-details-section');
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }, 120);
+  };
+
+  // Month label formatted
   const monthLabel = useMemo(() => {
     const labelsKo = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
     const labelsEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -661,7 +711,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
       : `${labelsEn[currentMonth - 1]} ${currentYear}`;
   }, [currentYear, currentMonth, language]);
 
-  // Beautiful formatting for calendar badges
+  // Compact label for calendar badges (no emoji)
   const formatBadgeTitle = (evt: BusanEvent, lang: 'KR' | 'EN') => {
     if (lang === 'KR') {
       let text = evt.titleKo;
@@ -669,8 +719,8 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
         text = text.split('」')[1].trim();
       }
       text = text.replace('드론라이트쇼', '드론쇼');
-      if (text.length > 12) {
-        return text.substring(0, 11) + '..';
+      if (text.length > 11) {
+        return text.substring(0, 10) + '..';
       }
       return text;
     } else {
@@ -678,8 +728,8 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
       if (text.includes('(')) {
         text = text.split('(')[1].replace(')', '').trim();
       }
-      if (text.length > 12) {
-        return text.substring(0, 11) + '..';
+      if (text.length > 11) {
+        return text.substring(0, 10) + '..';
       }
       return text;
     }
@@ -702,9 +752,9 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
   };
 
   return (
-    <div className="space-y-8 animate-fade-in text-left max-w-5xl mx-auto" id="busan-events-calendar-container">
+    <div className="space-y-6 animate-fade-in text-left max-w-5xl mx-auto" id="busan-events-calendar-container">
       
-      {/* Intro Header Section */}
+      {/* 1. Intro Header Section */}
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] text-left">
         <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-800 flex items-center gap-2.5">
           <span className="p-2 sm:p-2.5 rounded-2xl bg-sky-50 text-[#004481] border border-sky-100 shadow-2xs shrink-0 inline-flex items-center justify-center">
@@ -751,275 +801,331 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
         </div>
       </div>
 
-      {/* Main Grid: Split view Calendar vs quick event list */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
-        {/* LEFT COLUMN: The Interactive Custom Calendar Grid (lg:col-span-7) */}
-        <div className="lg:col-span-7 bg-white rounded-3xl border border-slate-100 p-5 sm:p-6 shadow-[0_4px_25px_rgba(0,0,0,0.015)] space-y-6">
-          
-          {/* Calendar header control pane */}
-          <div className="flex items-center justify-between gap-2 sm:gap-4 border-b border-slate-50 pb-4">
-            <h3 className="text-sm sm:text-lg font-black text-slate-800 flex items-center gap-1.5 sm:gap-2 font-heading shrink-0 whitespace-nowrap">
-              <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[#004481] shrink-0" />
-              <span className="whitespace-nowrap">{monthLabel}</span>
-            </h3>
-
-            {/* Navigation buttons */}
-            <div className="flex gap-1 sm:gap-2 shrink-0">
+      {/* 2. Top Interactive Filter & View Switcher Bar */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3.5 bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-150 shadow-2xs">
+        {/* Category Pills */}
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+          {[
+            { id: 'all', labelKo: '전체', labelEn: 'All' },
+            { id: 'festival', labelKo: '축제/행사', labelEn: 'Festivals' },
+            { id: 'drone', labelKo: '드론라이트쇼', labelEn: 'Drone Show' },
+            { id: 'culture', labelKo: '문화/공연/예술', labelEn: 'Culture & Arts' }
+          ].map(cat => {
+            const isActive = selectedCategory === cat.id;
+            return (
               <button
-                onClick={handlePrevMonth}
-                className="p-1.5 sm:p-2 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-xl cursor-pointer border border-slate-150 transition-all hover:scale-105 active:scale-95"
-                title={language === 'KR' ? '이전 달' : 'Previous Month'}
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              
-              <button
+                key={cat.id}
                 onClick={() => {
-                  setCurrentYear(todayYear);
-                  setCurrentMonth(todayMonth);
+                  setSelectedCategory(cat.id);
+                  setSelectedEventId(null);
                 }}
-                className="px-2 py-1 text-[10px] sm:text-[11px] font-black hover:bg-slate-50 border border-slate-200 rounded-lg cursor-pointer text-slate-500 hover:text-slate-800 transition-colors whitespace-nowrap"
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+                  isActive
+                    ? 'bg-[#004481] text-white shadow-xs'
+                    : 'bg-slate-100/90 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900'
+                }`}
               >
-                {language === 'KR' ? '오늘' : 'Today'}
+                {language === 'KR' ? cat.labelKo : cat.labelEn}
               </button>
+            );
+          })}
+        </div>
 
+        {/* Search & View Switcher */}
+        <div className="flex items-center gap-2.5 justify-between md:justify-end">
+          {/* Quick Search */}
+          <div className="relative flex-1 md:w-56">
+            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={language === 'KR' ? '축제명, 장소 검색...' : 'Search festivals, venues...'}
+              className="w-full pl-8 pr-7 py-1.5 rounded-xl border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#004481]/30 focus:border-[#004481] transition-all"
+            />
+            {searchQuery && (
               <button
-                onClick={handleNextMonth}
-                className="p-1.5 sm:p-2 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-xl cursor-pointer border border-slate-150 transition-all hover:scale-105 active:scale-95"
-                title={language === 'KR' ? '다음 달' : 'Next Month'}
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 text-slate-400 hover:text-slate-600 cursor-pointer"
               >
-                <ChevronRight className="w-4 h-4" />
+                <X className="w-3.5 h-3.5" />
               </button>
-            </div>
+            )}
           </div>
 
-          {/* Interactive Category Selector & Legend Row */}
-          <div className="flex flex-col gap-3 border-b border-slate-50 pb-4">
-            <span className="text-[11px] font-black uppercase text-slate-400 tracking-wider">
-              {language === 'KR' ? '카테고리 필터 및 일정 구분' : 'Category Filter & Legend'}
-            </span>
-            <div className="flex flex-wrap gap-2 overflow-x-auto no-scrollbar scroll-smooth">
-              {[
-                { id: 'all', labelKo: '전체', labelEn: 'All', badgeClass: 'bg-slate-150 text-slate-800 border-slate-200' },
-                { id: 'drone', labelKo: '드론 연출', labelEn: 'Drone', badgeClass: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
-                { id: 'festival', labelKo: '축제 / 행사', labelEn: 'Festivals', badgeClass: 'bg-sky-50 text-sky-850 border-sky-200' },
-                { id: 'culture', labelKo: '문화 / 공연 / 예술', labelEn: 'Culture & Arts', badgeClass: 'bg-indigo-50 text-indigo-850 border-indigo-200' }
-              ].map(opt => {
-                const isActive = selectedCategory === opt.id;
+          {/* View Mode Toggle: [ 캘린더 ] / [ 전체 목록 ] */}
+          <div className="inline-flex p-1 bg-slate-100 rounded-xl shrink-0 border border-slate-200/60">
+            <button
+              onClick={() => setViewMode('calendar')}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                viewMode === 'calendar'
+                  ? 'bg-white text-[#004481] shadow-2xs'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`}
+              title={language === 'KR' ? '월간 캘린더로 보기' : 'Calendar View'}
+            >
+              <CalendarDays className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{language === 'KR' ? '캘린더' : 'Calendar'}</span>
+            </button>
+
+            <button
+              onClick={() => setViewMode('list')}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                viewMode === 'list'
+                  ? 'bg-white text-[#004481] shadow-2xs'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`}
+              title={language === 'KR' ? '전체 일정 목록으로 보기' : 'All Events List'}
+            >
+              <List className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{language === 'KR' ? '전체 일정' : 'All Events'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 3A. CALENDAR VIEW MODE */}
+      {viewMode === 'calendar' && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+          
+          {/* LEFT COLUMN: The Interactive Calendar Grid (lg:col-span-7) */}
+          <div className="lg:col-span-7 bg-white rounded-3xl border border-slate-150 p-5 sm:p-6 shadow-[0_4px_25px_rgba(0,0,0,0.015)] space-y-4">
+            
+            {/* Calendar header control pane */}
+            <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-3">
+              <h3 className="text-base sm:text-lg font-extrabold text-slate-800 flex items-center gap-2 font-heading">
+                <CalendarIcon className="w-4 h-4 text-[#004481] shrink-0" />
+                <span>{monthLabel}</span>
+              </h3>
+
+              {/* Navigation buttons */}
+              <div className="flex items-center gap-1 sm:gap-1.5">
+                <button
+                  onClick={handlePrevMonth}
+                  className="p-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg cursor-pointer border border-slate-200 transition-all active:scale-95"
+                  title={language === 'KR' ? '이전 달' : 'Previous Month'}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                
+                <button
+                  onClick={handleResetToday}
+                  className="px-2.5 py-1 text-xs font-bold hover:bg-slate-50 border border-slate-200 rounded-lg cursor-pointer text-slate-600 hover:text-slate-900 transition-colors"
+                >
+                  {language === 'KR' ? '오늘' : 'Today'}
+                </button>
+
+                <button
+                  onClick={handleNextMonth}
+                  className="p-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg cursor-pointer border border-slate-200 transition-all active:scale-95"
+                  title={language === 'KR' ? '다음 달' : 'Next Month'}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Days of week labels */}
+            <div className="grid grid-cols-7 gap-1 text-center py-1">
+              {['일', '월', '화', '수', '목', '금', '토'].map((dowStr, dowIdx) => {
+                const dowLabelEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dowIdx];
+                const textCol = dowIdx === 0 ? 'text-rose-500 font-bold' : dowIdx === 6 ? 'text-blue-500 font-bold' : 'text-slate-500 font-medium';
                 return (
-                  <button
-                    key={opt.id}
+                  <div key={dowIdx} className={`text-xs select-none ${textCol}`}>
+                    {language === 'KR' ? dowStr : dowLabelEn}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Calendar Day grid */}
+            <div className="grid grid-cols-7 gap-1 sm:gap-1.5 text-center">
+              {calendarDays.map((cell, idx) => {
+                const dayEvents = getEventsForDay(cell.dateString);
+                const isToday = cell.dateString === todayDateStr;
+                const isSelectedDate = selectedDate === cell.dateString;
+                const isFocusEventDay = selectedEventId ? dayEvents.some(e => e.id === selectedEventId) : false;
+
+                return (
+                  <div
+                    key={idx}
                     onClick={() => {
-                      setSelectedCategory(opt.id);
-                      setSelectedEventId(null); // Clear selected event to avoid confusion
+                      setSelectedDate(cell.dateString);
+                      if (dayEvents.length === 1) {
+                        setSelectedEventId(dayEvents[0].id);
+                      } else {
+                        setSelectedEventId(null);
+                      }
                     }}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black transition-all border shrink-0 cursor-pointer select-none ${
-                      isActive 
-                        ? 'ring-2 ring-[#004481]/40 shadow-sm font-extrabold ' + opt.badgeClass
-                        : 'bg-white text-slate-500 hover:text-slate-800 border-slate-150 hover:bg-slate-50/50'
+                    className={`min-h-[64px] sm:min-h-[88px] p-1 sm:p-1.5 rounded-xl border transition-all text-left flex flex-col justify-between cursor-pointer ${
+                      cell.isPadding 
+                        ? 'bg-slate-50/40 border-slate-100/60 opacity-35' 
+                        : 'bg-white border-slate-200/80 hover:border-[#004481]/50 hover:shadow-2xs'
+                    } ${
+                      isSelectedDate 
+                        ? 'ring-2 ring-[#004481] bg-sky-50/50 border-sky-300 shadow-xs' 
+                        : ''
+                    } ${
+                      isFocusEventDay && !isSelectedDate 
+                        ? 'ring-1.5 ring-blue-300 bg-blue-50/20' 
+                        : ''
                     }`}
                   >
-                    <span className={`w-1.5 h-1.5 rounded-full ${
-                      opt.id === 'all' ? 'bg-slate-400' :
-                      opt.id === 'drone' ? 'bg-emerald-500' :
-                      opt.id === 'festival' ? 'bg-sky-500' : 'bg-indigo-500'
-                    }`} />
-                    <span>{language === 'KR' ? opt.labelKo : opt.labelEn}</span>
-                  </button>
+                    {/* Day Number and Today Sign */}
+                    <div className="flex justify-between items-center">
+                      <span className={`text-[11px] sm:text-xs font-bold ${
+                        isToday 
+                          ? 'w-5 h-5 rounded-full bg-[#004481] text-white flex items-center justify-center text-[10px]' 
+                          : cell.isPadding ? 'text-slate-400' : 'text-slate-700'
+                      }`}>
+                        {cell.dayNumber}
+                      </span>
+                      {isToday && (
+                        <span className="text-[8px] sm:text-[9px] font-bold text-[#004481] hidden sm:inline">
+                          {language === 'KR' ? '오늘' : 'Today'}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Desktop Layout - Render clean pills without emoji */}
+                    <div className="hidden sm:flex flex-col gap-1 mt-1">
+                      {dayEvents.slice(0, 2).map(evt => {
+                        const isSelectedEvt = selectedEventId === evt.id;
+                        return (
+                          <div
+                            key={evt.id}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedEventId(evt.id);
+                              setSelectedDate(cell.dateString);
+                            }}
+                            className={`text-[9.5px] leading-tight px-1.5 py-0.5 rounded-md truncate font-medium flex items-center gap-1 transition-all ${
+                              isSelectedEvt
+                                ? 'bg-[#004481] text-white font-bold shadow-2xs'
+                                : `${evt.colorClass} border border-slate-200/60 hover:opacity-85`
+                            }`}
+                            title={language === 'KR' ? evt.titleKo : evt.titleEn}
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isSelectedEvt ? 'bg-white' : evt.dotClass}`} />
+                            <span className="truncate">{formatBadgeTitle(evt, language)}</span>
+                          </div>
+                        );
+                      })}
+                      {dayEvents.length > 2 && (
+                        <div className="text-[9px] font-bold text-slate-500 px-1 text-right">
+                          +{dayEvents.length - 2}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Mobile Layout - Render clean colored dots */}
+                    <div className="flex sm:hidden items-center justify-center gap-1 mt-1">
+                      {dayEvents.slice(0, 3).map(evt => (
+                        <span key={evt.id} className={`w-1.5 h-1.5 rounded-full ${evt.dotClass}`} />
+                      ))}
+                      {dayEvents.length > 3 && (
+                        <span className="text-[8px] font-bold text-slate-400">+{dayEvents.length - 3}</span>
+                      )}
+                    </div>
+                  </div>
                 );
               })}
             </div>
           </div>
 
-          {/* Calendar Day grid */}
-          <div className="grid grid-cols-7 gap-1 sm:gap-2 text-center">
-            {/* Days of week labels */}
-            {['일', '월', '화', '수', '목', '금', '토'].map((dowStr, dowIdx) => {
-              const dowLabelEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dowIdx];
-              const isWeekend = dowIdx === 0 || dowIdx === 6;
-              const textCol = dowIdx === 0 ? 'text-red-500' : dowIdx === 6 ? 'text-blue-500' : 'text-slate-400';
-              return (
-                <div key={dowIdx} className={`text-[11px] sm:text-xs font-black py-1 select-none ${textCol}`}>
-                  {language === 'KR' ? dowStr : dowLabelEn}
-                </div>
-              );
-            })}
-
-            {/* Calendar Days cells */}
-            {calendarDays.map((cell, idx) => {
-              const dayEvents = getEventsForDay(cell.dateString);
-              const isSelected = selectedEventId ? dayEvents.some(e => e.id === selectedEventId) : false;
-              
-              // Determine if the day is "today" dynamically based on current date
-              const isToday = cell.dateString === todayDateStr;
-
-              return (
-                <div
-                  key={idx}
-                  onClick={() => {
-                    if (dayEvents.length > 1) {
-                      setDayEventsPopup({ dateString: cell.dateString, events: dayEvents });
-                    } else if (dayEvents.length === 1) {
-                      handleSelectEvent(dayEvents[0].id);
-                    }
-                  }}
-                  className={`min-h-[64px] sm:min-h-[105px] h-auto p-1 border rounded-xl sm:rounded-2xl flex flex-col justify-start gap-1 transition-all text-left relative ${
-                    cell.isPadding ? 'opacity-30 border-slate-50' : 'border-slate-100 hover:border-slate-250'
-                  } ${
-                    isToday ? 'bg-amber-500/[0.04] border-amber-300 ring-1 ring-amber-200' : ''
-                  } ${
-                    isSelected ? 'bg-blue-50/[0.3] ring-1.5 sm:ring-2 ring-[#004481]/50 border-blue-200' : 'bg-white'
-                  } ${dayEvents.length > 0 ? 'cursor-pointer hover:shadow-sm' : 'cursor-default'}`}
+          {/* RIGHT COLUMN: Selected Event / Day Schedule Browser (lg:col-span-5) */}
+          <div id="selected-event-details-section" className="lg:col-span-5 space-y-4 scroll-mt-20">
+            <AnimatePresence mode="wait">
+              {activeEventDetail ? (
+                /* 1. Full Event Detail Card */
+                <motion.div
+                  key={activeEventDetail.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="bg-white rounded-3xl border border-slate-150 p-5 sm:p-6 shadow-sm text-left space-y-4"
                 >
-                  {/* Day Number and Today Sign */}
-                  <div className="flex justify-between items-center px-0.5 sm:px-1">
-                    <span className={`text-[10.5px] sm:text-xs font-extrabold ${cell.isPadding ? 'text-slate-400' : 'text-slate-700'}`}>
-                      {cell.dayNumber}
-                    </span>
-                    {isToday && (
-                      <span className="text-[7.5px] sm:text-[8.5px] font-black text-rose-500 px-1 py-0.5 bg-rose-50 rounded select-none uppercase tracking-tight scale-90 origin-right">
-                        Today
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Desktop Layout - Render all text-labeled badges directly without more button */}
-                  <div className="hidden sm:block space-y-1 mt-1 px-0.5">
-                    {dayEvents.map(evt => (
-                      <div
-                        key={evt.id}
-                        onClick={(e) => {
-                          e.stopPropagation(); // Avoid triggering parent cell popover
-                          handleSelectEvent(evt.id);
-                        }}
-                        className={`text-[9.5px] truncate px-1.5 py-0.5 rounded-lg font-black tracking-tight leading-tight transition-transform hover:scale-103 ${evt.colorClass} border cursor-pointer`}
-                        title={language === 'KR' ? evt.titleKo : evt.titleEn}
-                      >
-                        <span className="mr-0.5 select-none text-[9px]">📍</span>
-                        {formatBadgeTitle(evt, language)}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Mobile Layout - Render all colored dots without truncation */}
-                  <div className="flex sm:hidden flex-wrap justify-center items-center gap-1 mt-1 pb-1">
-                    {dayEvents.map(evt => (
-                      <span
-                        key={evt.id}
-                        className={`w-1.5 h-1.5 rounded-full ${evt.dotClass}`}
-                        title={language === 'KR' ? evt.titleKo : evt.titleEn}
-                      />
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* RIGHT COLUMN: Selected Event details / List Browser (lg:col-span-5) */}
-        <div id="selected-event-details-section" className="lg:col-span-5 space-y-6 scroll-mt-20">
-          
-          <AnimatePresence mode="wait">
-            {activeEventDetail ? (
-              /* Event Detail card */
-              <motion.div
-                key={activeEventDetail.id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                className="bg-white rounded-3xl border border-slate-100 p-6 shadow-[0_4px_30px_rgba(0,0,0,0.015)] text-left space-y-5"
-              >
-                {/* Header title block with Close back Option */}
-                <div className="flex justify-between items-start gap-3 border-b border-slate-100 pb-3.5">
-                  <div>
-                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-black ${activeEventDetail.colorClass} border select-none mb-2`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${activeEventDetail.dotClass} inline-block`} />
+                  {/* Top Bar with Back Button */}
+                  <div className="flex justify-between items-start gap-3 border-b border-slate-100 pb-3">
+                    <button
+                      onClick={() => setSelectedEventId(null)}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer transition-colors"
+                    >
+                      <ChevronLeft className="w-3.5 h-3.5" />
+                      <span>{language === 'KR' ? '목록으로' : 'Back to list'}</span>
+                    </button>
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-xs font-bold ${activeEventDetail.colorClass} border border-slate-200/70`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${activeEventDetail.dotClass}`} />
                       <span>{language === 'KR' ? activeEventDetail.categoryKo : activeEventDetail.categoryEn}</span>
                     </span>
-                    <h4 className="text-base sm:text-lg font-extrabold text-slate-800 leading-snug">
-                      {language === 'KR' ? activeEventDetail.titleKo : activeEventDetail.titleEn}
-                    </h4>
                   </div>
-                  <button
-                    onClick={() => setSelectedEventId(null)}
-                    className="p-1.5 hover:bg-slate-50 text-slate-400 hover:text-slate-600 rounded-xl border border-slate-100 cursor-pointer transition-colors text-xs font-bold"
-                  >
-                    {language === 'KR' ? '해제' : 'Clear'}
-                  </button>
-                </div>
 
-                {/* Event core info: Times, Location */}
-                <div className="space-y-3 font-sans">
-                  <div className="flex gap-2.5 items-start">
-                    <span className="text-sm select-none shrink-0 text-[#004481]">📅</span>
-                    <div>
-                      <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wide">Event Period / 축제 기간</span>
-                      <span className="text-xs sm:text-sm font-extrabold text-slate-700">
-                        {activeEventDetail.startDate} ~ {activeEventDetail.endDate}
-                      </span>
+                  {/* Title */}
+                  <h4 className="text-base sm:text-lg font-bold text-slate-900 leading-snug">
+                    {language === 'KR' ? activeEventDetail.titleKo : activeEventDetail.titleEn}
+                  </h4>
+
+                  {/* Core Meta: Date, Location */}
+                  <div className="space-y-2 text-xs">
+                    <div className="flex items-center gap-2 text-slate-700">
+                      <Clock className="w-3.5 h-3.5 text-[#004481] shrink-0" />
+                      <span className="font-semibold text-slate-500">{language === 'KR' ? '행사 기간:' : 'Period:'}</span>
+                      <span className="font-bold text-slate-800">{activeEventDetail.startDate} ~ {activeEventDetail.endDate}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-slate-700">
+                      <MapPin className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                      <span className="font-semibold text-slate-500">{language === 'KR' ? '행사 장소:' : 'Venue:'}</span>
+                      <span className="font-bold text-slate-800">{language === 'KR' ? activeEventDetail.locationKo : activeEventDetail.locationEn}</span>
                     </div>
                   </div>
 
-                  <div className="flex gap-2.5 items-start">
-                    <span className="text-sm select-none shrink-0 text-amber-500">📍</span>
-                    <div>
-                      <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wide">VENUE LOCATION / 상세 장소</span>
-                      <span className="text-xs sm:text-sm font-semibold text-slate-700">
-                        {language === 'KR' ? activeEventDetail.locationKo : activeEventDetail.locationEn}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Nearest Subway Connection info & Exit Details Link */}
+                  {/* Accessible Subway Station Exit Box */}
                   {registeredStationIds.has(activeEventDetail.stationId) && (
-                    <div className="bg-gradient-to-br from-blue-50/70 to-emerald-50/70 p-4 rounded-2xl border border-sky-200/80 space-y-3">
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="p-1.5 bg-[#8EA85E] text-white rounded-lg shadow-2xs shrink-0">
-                            <Train className="w-4 h-4" />
+                          <span className="p-1.5 bg-[#004481] text-white rounded-lg shadow-2xs shrink-0">
+                            <Train className="w-3.5 h-3.5" />
                           </span>
                           <div>
-                            <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wide">SUBWAY EXIT CONNECTION / 인접 지하철역 출구</span>
-                            <span className="text-xs font-black text-slate-800">
-                              {language === 'KR' ? '가장 가까운 무단차 엘리베이터 출구' : 'Nearest Accessible Subway Exit'}
+                            <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wide">
+                              {language === 'KR' ? '무단차 인접 지하철역' : 'Accessible Subway Connection'}
+                            </span>
+                            <span className="text-xs font-bold text-slate-900">
+                              {language === 'KR' ? activeEventDetail.stationKo : activeEventDetail.stationEn}
                             </span>
                           </div>
                         </div>
-                        <span className="text-[11px] font-black px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-200 shrink-0">
+                        <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-200">
                           {activeEventDetail.exitNumber}
                         </span>
                       </div>
 
-                      <div className="bg-white/90 p-3 rounded-xl border border-sky-100 text-xs font-semibold text-slate-700 leading-relaxed space-y-1.5">
-                        <div className="flex items-center gap-2 font-black text-slate-900">
-                          <span className="text-sm">🚇</span>
-                          <span>{language === 'KR' ? activeEventDetail.stationKo : activeEventDetail.stationEn}</span>
-                          <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-800">
-                            {activeEventDetail.metroLine}
-                          </span>
-                        </div>
-                        {activeEventDetail.exitTipKo && (
-                          <p className="text-[11.5px] text-slate-600 font-medium pl-1 border-l-2 border-emerald-400 my-1">
-                            💡 <span className="font-extrabold text-slate-800">{language === 'KR' ? '출구 무단차 동선 팁: ' : 'Exit Route Tip: '}</span>
+                      {activeEventDetail.exitTipKo && (
+                        <div className="bg-white p-3 rounded-xl border border-slate-200/80 text-xs text-slate-700 leading-relaxed space-y-1">
+                          <div className="flex items-center gap-1.5 font-bold text-emerald-800">
+                            <Sparkles className="w-3 h-3 text-emerald-600 shrink-0" />
+                            <span>{language === 'KR' ? '출구 무단차 동선 팁' : 'Barrier-Free Exit Tip'}</span>
+                          </div>
+                          <p className="text-[11.5px] text-slate-600 font-medium pl-4">
                             {language === 'KR' ? activeEventDetail.exitTipKo : activeEventDetail.exitTipEn}
                           </p>
-                        )}
-                      </div>
+                        </div>
+                      )}
 
-                      {/* Interactive Action Buttons to Jump to Station Exit Info */}
+                      {/* Action Buttons */}
                       <div className="flex flex-col sm:flex-row gap-2 pt-1">
                         {onSelectStation && (
                           <button
                             onClick={() => onSelectStation(activeEventDetail.stationId, activeEventDetail.exitNumber)}
-                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#8EA85E] hover:bg-[#7b944f] text-white font-black text-xs transition-colors shadow-sm cursor-pointer active:scale-98"
+                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-[#004481] hover:bg-[#003366] text-white font-bold text-xs transition-colors shadow-2xs cursor-pointer active:scale-98"
                           >
                             <Navigation className="w-3.5 h-3.5" />
                             <span>
                               {language === 'KR' 
-                                ? `${activeEventDetail.stationKo.split(' ')[0]} ${activeEventDetail.exitNumber} 상세 엘리베이터 동선 보기` 
-                                : `View ${activeEventDetail.stationEn} ${activeEventDetail.exitNumber} Guide`}
+                                ? `${activeEventDetail.stationKo.split(' ')[0]} ${activeEventDetail.exitNumber} 동선 보기` 
+                                : `View ${activeEventDetail.exitNumber} Guide`}
                             </span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </button>
@@ -1027,179 +1133,419 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
 
                         <button
                           onClick={() => window.open(`https://map.naver.com/v5/search/${encodeURIComponent(activeEventDetail.stationKo.split(' ')[0] + ' ' + activeEventDetail.exitNumber)}`, '_blank')}
-                          className="px-3 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-extrabold text-xs transition-colors flex items-center justify-center gap-1 shrink-0 cursor-pointer shadow-2xs"
+                          className="px-3 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-bold text-xs transition-colors flex items-center justify-center gap-1 shrink-0 cursor-pointer"
                         >
-                          <span>🗺️ Naver Map</span>
+                          <span>{language === 'KR' ? '네이버 지도' : 'Naver Map'}</span>
                           <ExternalLink className="w-3 h-3 text-slate-400" />
                         </button>
                       </div>
                     </div>
                   )}
-                </div>
 
-                {/* Event Description */}
-                <div className="space-y-1">
-                  <span className="text-[10px] text-slate-450 font-bold block uppercase tracking-wide font-sans">{language === 'KR' ? '행사 소개' : 'Event Description'}</span>
-                  <p className="text-xs sm:text-sm text-slate-650 leading-relaxed font-semibold">
-                    {language === 'KR' ? activeEventDetail.descriptionKo : activeEventDetail.descriptionEn}
-                  </p>
-                </div>
+                  {/* Description */}
+                  <div className="space-y-1.5 pt-1">
+                    <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wide block">
+                      {language === 'KR' ? '행사 소개' : 'Event Description'}
+                    </span>
+                    <p className="text-xs sm:text-sm text-slate-650 leading-relaxed font-normal">
+                      {language === 'KR' ? activeEventDetail.descriptionKo : activeEventDetail.descriptionEn}
+                    </p>
+                  </div>
+                </motion.div>
+              ) : selectedDate ? (
+                /* 2. Specific Selected Date Schedule List */
+                <motion.div
+                  key="selected-date-list"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="bg-white rounded-3xl border border-slate-150 p-5 sm:p-6 shadow-sm text-left space-y-4"
+                >
+                  <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <div>
+                      <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">
+                        {language === 'KR' ? '선택한 날짜' : 'Selected Date'}
+                      </span>
+                      <h4 className="text-sm sm:text-base font-bold text-slate-900">
+                        {formatPopupDate(selectedDate, language)}
+                      </h4>
+                    </div>
+                    <button
+                      onClick={() => setSelectedDate(null)}
+                      className="text-xs font-bold text-[#004481] hover:underline cursor-pointer"
+                    >
+                      {language === 'KR' ? '전체 보기' : 'Show All'}
+                    </button>
+                  </div>
 
-
-              </motion.div>
-            ) : (
-              /* Non-selected default screen: Showcase all events as quick scrollable explorer */
-              <motion.div
-                key="default-list"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="bg-white rounded-3xl border border-slate-100 p-5 sm:p-6 shadow-[0_4px_30px_rgba(0,0,0,0.015)] text-left space-y-4"
-              >
-                <div className="flex justify-between items-center border-b border-slate-50 pb-3">
-                  <h4 className="text-sm font-black text-slate-700 uppercase tracking-widest font-heading flex items-center gap-2">
-                    <Info className="w-4 h-4 text-slate-400" />
-                    <span>{language === 'KR' ? '부산 전체 일정/축제 총람' : 'Busan Events & Festivals Index'}</span>
-                  </h4>
-                  <span className="text-[10px] font-extrabold text-slate-400">
-                    {language === 'KR' ? `총 ${filteredEvents.length}개` : `${filteredEvents.length} active`}
-                  </span>
-                </div>
-
-                <div className="max-h-[380px] sm:max-h-[520px] overflow-y-auto pr-1.5 space-y-3 custom-scrollbar">
-                  {filteredEvents.map(evt => {
-                    const isFocusOnThisEvent = selectedEventId === evt.id;
-                    return (
+                  <div className="max-h-[460px] overflow-y-auto space-y-2.5 pr-1 custom-scrollbar">
+                    {selectedDateEvents.map(evt => (
                       <div
                         key={evt.id}
-                        onClick={() => jumpToEventMonth(evt)}
-                        className={`p-3.5 rounded-2xl border transition-all duration-250 cursor-pointer flex justify-between items-center gap-4 group hover:-translate-y-0.5 ${
-                          isFocusOnThisEvent 
-                            ? 'bg-blue-50/40 border-[#004481]/30 ring-1 ring-[#004481]/20' 
-                            : 'bg-slate-50/50 hover:bg-slate-50 hover:shadow-sm border-slate-150'
-                        }`}
+                        onClick={() => setSelectedEventId(evt.id)}
+                        className="p-3.5 rounded-2xl border border-slate-200 hover:border-[#004481]/50 hover:bg-slate-50/70 transition-all cursor-pointer flex justify-between items-center gap-3 group"
                       >
                         <div className="space-y-1 flex-1">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[9px] font-black ${evt.colorClass} border uppercase tracking-tight`}>
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold ${evt.colorClass} border border-slate-200/60`}>
                               {language === 'KR' ? evt.categoryKo : evt.categoryEn}
                             </span>
                             {registeredStationIds.has(evt.stationId) && (
-                              <span className="text-[9.5px] font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100 flex items-center gap-1">
-                                <span>🚇</span>
+                              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100 flex items-center gap-1">
+                                <Train className="w-3 h-3 text-emerald-600" />
                                 <span>{evt.stationKo.split(' ')[0]} {evt.exitNumber}</span>
                               </span>
                             )}
                           </div>
-                          <h5 className="text-xs sm:text-sm font-black text-slate-800 group-hover:text-[#004481] transition-colors leading-snug">
+                          <h5 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#004481] transition-colors leading-snug">
                             {language === 'KR' ? evt.titleKo : evt.titleEn}
                           </h5>
-                          <p className="text-[10px] text-slate-400 font-bold font-sans">
-                            📅 {evt.startDate} ~ {evt.endDate}
+                          <p className="text-[11px] text-slate-500 font-medium">
+                            {evt.startDate} ~ {evt.endDate}
                           </p>
                         </div>
-                        <div className="shrink-0 text-slate-400 group-hover:text-[#004481] transition-transform group-hover:translate-x-1">
-                          <ChevronRight className="w-4 h-4" />
-                        </div>
+                        <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#004481] transition-transform group-hover:translate-x-0.5 shrink-0" />
                       </div>
-                    );
-                  })}
-                  {filteredEvents.length === 0 && (
-                    <div className="text-center py-10 text-xs font-semibold text-slate-405 font-sans">
-                      {language === 'KR' ? '선택된 카테고리에 해당하는 활성 일정이 없습니다.' : 'No festivals match the active category filter.'}
+                    ))}
+
+                    {selectedDateEvents.length === 0 && (
+                      <div className="text-center py-10 space-y-2">
+                        <Info className="w-6 h-6 text-slate-300 mx-auto" />
+                        <p className="text-xs font-medium text-slate-500">
+                          {language === 'KR' ? '선택하신 날짜에 예정된 축제 일정이 없습니다.' : 'No festivals scheduled on this selected date.'}
+                        </p>
+                        <button
+                          onClick={() => setSelectedDate(null)}
+                          className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 transition-colors cursor-pointer"
+                        >
+                          {language === 'KR' ? '이번 달 전체 축제 보기' : 'View This Month\'s Festivals'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ) : (
+                /* 3. Default: This Month Festival Index */
+                <motion.div
+                  key="month-list"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="bg-white rounded-3xl border border-slate-150 p-5 sm:p-6 shadow-sm text-left space-y-4"
+                >
+                  <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <h4 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                      <Compass className="w-4 h-4 text-[#004481]" />
+                      <span>{language === 'KR' ? `${currentMonth}월 주요 축제 & 행사` : `Festivals in ${monthLabel}`}</span>
+                    </h4>
+                    <span className="text-xs font-bold text-slate-400">
+                      {language === 'KR' ? `총 ${thisMonthEvents.length}개` : `${thisMonthEvents.length} events`}
+                    </span>
+                  </div>
+
+                  <div className="max-h-[460px] overflow-y-auto space-y-2.5 pr-1 custom-scrollbar">
+                    {thisMonthEvents.map(evt => (
+                      <div
+                        key={evt.id}
+                        onClick={() => setSelectedEventId(evt.id)}
+                        className="p-3.5 rounded-2xl border border-slate-200 hover:border-[#004481]/50 hover:bg-slate-50/70 transition-all cursor-pointer flex justify-between items-center gap-3 group"
+                      >
+                        <div className="space-y-1 flex-1">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold ${evt.colorClass} border border-slate-200/60`}>
+                              {language === 'KR' ? evt.categoryKo : evt.categoryEn}
+                            </span>
+                            {registeredStationIds.has(evt.stationId) && (
+                              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100 flex items-center gap-1">
+                                <Train className="w-3 h-3 text-emerald-600" />
+                                <span>{evt.stationKo.split(' ')[0]} {evt.exitNumber}</span>
+                              </span>
+                            )}
+                          </div>
+                          <h5 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#004481] transition-colors leading-snug">
+                            {language === 'KR' ? evt.titleKo : evt.titleEn}
+                          </h5>
+                          <p className="text-[11px] text-slate-500 font-medium flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-slate-400" />
+                            <span>{evt.startDate} ~ {evt.endDate}</span>
+                          </p>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-[#004481] transition-transform group-hover:translate-x-0.5 shrink-0" />
+                      </div>
+                    ))}
+
+                    {thisMonthEvents.length === 0 && (
+                      <div className="text-center py-10 space-y-2">
+                        <Info className="w-6 h-6 text-slate-300 mx-auto" />
+                        <p className="text-xs font-medium text-slate-500">
+                          {language === 'KR' ? '선택하신 월에 예정된 축제 일정이 없습니다.' : 'No festivals scheduled in this month.'}
+                        </p>
+                        <button
+                          onClick={() => setViewMode('list')}
+                          className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 transition-colors cursor-pointer"
+                        >
+                          {language === 'KR' ? '부산 전체 축제 목록 보기' : 'View All Busan Festivals'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      )}
+
+      {/* 3B. ALL EVENTS LIST VIEW MODE */}
+      {viewMode === 'list' && (
+        <div className="space-y-4">
+          <div className="flex justify-between items-center px-1">
+            <span className="text-xs font-bold text-slate-500">
+              {language === 'KR' 
+                ? `총 ${filteredEvents.length}개의 주요 축제 및 행사가 등록되어 있습니다.` 
+                : `Showing ${filteredEvents.length} major festivals in Busan.`}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+            {filteredEvents.map(evt => (
+              <div
+                key={evt.id}
+                className="bg-white rounded-3xl border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-[#004481]/40 transition-all p-5 flex flex-col justify-between group text-left"
+              >
+                <div className="space-y-3">
+                  {/* Top Bar: Category & Station */}
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className={`px-2.5 py-0.5 rounded-lg text-xs font-bold ${evt.colorClass} border border-slate-200/60`}>
+                      {language === 'KR' ? evt.categoryKo : evt.categoryEn}
+                    </span>
+                    {registeredStationIds.has(evt.stationId) && (
+                      <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-100 flex items-center gap-1">
+                        <Train className="w-3 h-3 text-emerald-600" />
+                        <span>{evt.stationKo.split(' ')[0]} {evt.exitNumber}</span>
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Title */}
+                  <h4 className="text-base font-bold text-slate-900 group-hover:text-[#004481] transition-colors leading-snug line-clamp-1">
+                    {language === 'KR' ? evt.titleKo : evt.titleEn}
+                  </h4>
+
+                  {/* Period & Venue */}
+                  <div className="space-y-1.5 text-xs text-slate-600 font-medium">
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>{evt.startDate} ~ {evt.endDate}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span className="truncate">{language === 'KR' ? evt.locationKo : evt.locationEn}</span>
+                    </div>
+                  </div>
+
+                  {/* Description preview */}
+                  <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
+                    {language === 'KR' ? evt.descriptionKo : evt.descriptionEn}
+                  </p>
+
+                  {/* Barrier-Free Tip Preview */}
+                  {(evt.exitTipKo || evt.accessibilityKo) && (
+                    <div className="bg-emerald-50/70 p-2.5 rounded-xl border border-emerald-100/80 text-[11px] text-emerald-900 font-medium flex items-start gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                      <span className="line-clamp-2">
+                        {language === 'KR' ? (evt.exitTipKo || evt.accessibilityKo) : (evt.exitTipEn || evt.accessibilityEn)}
+                      </span>
                     </div>
                   )}
                 </div>
 
-                <div className="p-3.5 bg-slate-50 rounded-2xl border border-dotted border-slate-200">
-                  <p className="text-[11px] font-bold text-slate-500 leading-normal">
-                    💡 <span className="font-extrabold text-[#004481]">{language === 'KR' ? '팁' : 'Tip'}:</span> {language === 'KR' ? '목록 중 축제를 클릭하면 달력이 해당 월로 이동하며 지하철 출구 연계 가이드가 표출됩니다!' : 'Click any list item to jump the calendar view directly to the event month with accessible details loaded.'}
-                  </p>
+                {/* Card Action Buttons */}
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
+                  <button
+                    onClick={() => setQuickDetailModal(evt)}
+                    className="flex-1 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-colors cursor-pointer text-center"
+                  >
+                    {language === 'KR' ? '상세 가이드' : 'Details'}
+                  </button>
+
+                  <button
+                    onClick={() => jumpToEventMonth(evt)}
+                    className="px-3 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#004481] text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
+                    title={language === 'KR' ? '캘린더에서 해당 일정 확인' : 'View in Calendar'}
+                  >
+                    <CalendarDays className="w-3.5 h-3.5" />
+                    <span>{language === 'KR' ? '달력' : 'Calendar'}</span>
+                  </button>
+
+                  {registeredStationIds.has(evt.stationId) && onSelectStation && (
+                    <button
+                      onClick={() => onSelectStation(evt.stationId, evt.exitNumber)}
+                      className="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition-colors cursor-pointer"
+                      title={language === 'KR' ? '지하철역 출구 안내 바로가기' : 'View Station Exit Guide'}
+                    >
+                      <Navigation className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          
+              </div>
+            ))}
+          </div>
+
+          {filteredEvents.length === 0 && (
+            <div className="bg-white rounded-3xl border border-slate-150 p-12 text-center space-y-3">
+              <Info className="w-8 h-8 text-slate-300 mx-auto" />
+              <h5 className="text-sm font-bold text-slate-700">
+                {language === 'KR' ? '검색 조건에 맞는 축제가 없습니다.' : 'No festivals match your search criteria.'}
+              </h5>
+              <button
+                onClick={() => {
+                  setSelectedCategory('all');
+                  setSearchQuery('');
+                }}
+                className="px-4 py-2 rounded-xl bg-[#004481] text-white text-xs font-bold cursor-pointer"
+              >
+                {language === 'KR' ? '필터 초기화' : 'Reset Filters'}
+              </button>
+            </div>
+          )}
         </div>
+      )}
 
-      </div>
-
-      {/* Day Events Selector Popup/Modal */}
+      {/* 4. Quick Detail Modal (from list view) */}
       <AnimatePresence>
-        {dayEventsPopup && (
+        {quickDetailModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setDayEventsPopup(null)}
-              className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs"
+              onClick={() => setQuickDetailModal(null)}
+              className="absolute inset-0 bg-slate-900/50 backdrop-blur-xs"
             />
 
-            {/* Modal Box */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ type: 'spring', duration: 0.4 }}
-              className="relative w-full max-w-md bg-white rounded-3xl border border-slate-100 p-6 shadow-2xl z-10 flex flex-col max-h-[85vh]"
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ type: 'spring', duration: 0.3 }}
+              className="relative w-full max-w-lg bg-white rounded-3xl border border-slate-150 p-6 shadow-2xl z-10 flex flex-col max-h-[85vh] text-left space-y-4"
             >
-              {/* Header */}
-              <div className="flex justify-between items-start border-b border-slate-100 pb-3 mb-4 shrink-0">
-                <div>
-                  <span className="text-[10px] uppercase font-black tracking-widest text-slate-400 font-sans block">
-                    {language === 'KR' ? '오늘의 일정 선택기' : 'Day Schedule Selector'}
+              {/* Modal Header */}
+              <div className="flex justify-between items-start border-b border-slate-100 pb-3">
+                <div className="space-y-1">
+                  <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-xs font-bold ${quickDetailModal.colorClass} border border-slate-200/60`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${quickDetailModal.dotClass}`} />
+                    <span>{language === 'KR' ? quickDetailModal.categoryKo : quickDetailModal.categoryEn}</span>
                   </span>
-                  <h4 className="text-base sm:text-lg font-black text-slate-800 leading-snug">
-                    {formatPopupDate(dayEventsPopup.dateString, language)}
+                  <h4 className="text-lg font-bold text-slate-900 leading-snug">
+                    {language === 'KR' ? quickDetailModal.titleKo : quickDetailModal.titleEn}
                   </h4>
                 </div>
                 <button
-                  onClick={() => setDayEventsPopup(null)}
-                  className="p-1.5 hover:bg-slate-100 text-slate-400 hover:text-slate-600 rounded-xl border border-slate-100 cursor-pointer transition-colors"
+                  onClick={() => setQuickDetailModal(null)}
+                  className="p-1.5 hover:bg-slate-100 text-slate-400 hover:text-slate-600 rounded-xl cursor-pointer transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              {/* Scrollable event cards */}
-              <div className="overflow-y-auto space-y-3 pr-1 py-1 custom-scrollbar flex-1">
-                {dayEventsPopup.events.map(evt => (
-                  <div
-                    key={evt.id}
-                    onClick={() => {
-                      handleSelectEvent(evt.id);
-                      setDayEventsPopup(null);
-                    }}
-                    className={`p-4 rounded-2xl border transition-all hover:-translate-y-0.5 cursor-pointer bg-slate-50/50 hover:bg-white hover:shadow-md border-slate-150 flex justify-between items-center gap-4 group`}
-                  >
-                    <div className="space-y-1 text-left flex-1">
-                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[9px] font-black border uppercase tracking-tight ${evt.colorClass}`}>
-                        <span className={`w-1 h-1 rounded-full ${evt.dotClass}`} />
-                        <span>{language === 'KR' ? evt.categoryKo : evt.categoryEn}</span>
-                      </span>
-                      <h5 className="text-sm font-black text-slate-800 group-hover:text-[#004481] transition-colors leading-snug">
-                        {language === 'KR' ? evt.titleKo : evt.titleEn}
-                      </h5>
-                      {registeredStationIds.has(evt.stationId) && (
-                        <p className="text-[11px] font-bold text-slate-600 flex items-center gap-1.5 font-sans">
-                          <span>🚇</span>
-                          <span className="text-emerald-800 font-extrabold">{language === 'KR' ? evt.stationKo : evt.stationEn}</span>
-                          <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 text-[10px]">{evt.exitNumber}</span>
-                        </p>
-                      )}
-                    </div>
-                    <div className="shrink-0 text-slate-400 group-hover:text-[#004481] transition-transform group-hover:translate-x-1">
-                      <ChevronRight className="w-4 h-4" />
-                    </div>
+              {/* Modal Body */}
+              <div className="overflow-y-auto space-y-4 pr-1 custom-scrollbar">
+                {/* Meta: Period, Venue */}
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center gap-2 text-slate-700">
+                    <Clock className="w-3.5 h-3.5 text-[#004481] shrink-0" />
+                    <span className="font-semibold text-slate-500">{language === 'KR' ? '행사 기간:' : 'Period:'}</span>
+                    <span className="font-bold text-slate-800">{quickDetailModal.startDate} ~ {quickDetailModal.endDate}</span>
                   </div>
-                ))}
+
+                  <div className="flex items-center gap-2 text-slate-700">
+                    <MapPin className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                    <span className="font-semibold text-slate-500">{language === 'KR' ? '행사 장소:' : 'Venue:'}</span>
+                    <span className="font-bold text-slate-800">{language === 'KR' ? quickDetailModal.locationKo : quickDetailModal.locationEn}</span>
+                  </div>
+                </div>
+
+                {/* Subway Exit Guide Box */}
+                {registeredStationIds.has(quickDetailModal.stationId) && (
+                  <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="p-1.5 bg-[#004481] text-white rounded-lg shadow-2xs shrink-0">
+                          <Train className="w-3.5 h-3.5" />
+                        </span>
+                        <div>
+                          <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wide">
+                            {language === 'KR' ? '인접 지하철역 출구' : 'Subway Connection'}
+                          </span>
+                          <span className="text-xs font-bold text-slate-900">
+                            {language === 'KR' ? quickDetailModal.stationKo : quickDetailModal.stationEn}
+                          </span>
+                        </div>
+                      </div>
+                      <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-200">
+                        {quickDetailModal.exitNumber}
+                      </span>
+                    </div>
+
+                    {quickDetailModal.exitTipKo && (
+                      <div className="bg-white p-3 rounded-xl border border-slate-200/80 text-xs text-slate-700 leading-relaxed space-y-1">
+                        <div className="flex items-center gap-1.5 font-bold text-emerald-800">
+                          <Sparkles className="w-3 h-3 text-emerald-600 shrink-0" />
+                          <span>{language === 'KR' ? '출구 무단차 동선 팁' : 'Barrier-Free Exit Tip'}</span>
+                        </div>
+                        <p className="text-[11.5px] text-slate-600 font-medium pl-4">
+                          {language === 'KR' ? quickDetailModal.exitTipKo : quickDetailModal.exitTipEn}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Description */}
+                <div className="space-y-1 pt-1">
+                  <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wide block">
+                    {language === 'KR' ? '행사 소개' : 'Event Description'}
+                  </span>
+                  <p className="text-xs sm:text-sm text-slate-650 leading-relaxed font-normal">
+                    {language === 'KR' ? quickDetailModal.descriptionKo : quickDetailModal.descriptionEn}
+                  </p>
+                </div>
               </div>
 
-              {/* Footer guidance */}
-              <div className="mt-4 pt-3 border-t border-slate-100 text-[10.5px] font-bold text-slate-400 text-center font-sans shrink-0">
-                {language === 'KR' ? '일정을 클릭하면 상세 정보를 바로 아래에 표시합니다.' : 'Click an event to display accessibility-focused guidelines.'}
+              {/* Modal Footer Actions */}
+              <div className="pt-3 border-t border-slate-100 flex items-center gap-2">
+                {registeredStationIds.has(quickDetailModal.stationId) && onSelectStation && (
+                  <button
+                    onClick={() => {
+                      const stationId = quickDetailModal.stationId;
+                      const exitNum = quickDetailModal.exitNumber;
+                      setQuickDetailModal(null);
+                      onSelectStation(stationId, exitNum);
+                    }}
+                    className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-[#004481] hover:bg-[#003366] text-white font-bold text-xs transition-colors shadow-2xs cursor-pointer"
+                  >
+                    <Navigation className="w-3.5 h-3.5" />
+                    <span>
+                      {language === 'KR' 
+                        ? `${quickDetailModal.stationKo.split(' ')[0]} ${quickDetailModal.exitNumber} 동선 보기` 
+                        : `View ${quickDetailModal.exitNumber} Guide`}
+                    </span>
+                  </button>
+                )}
+
+                <button
+                  onClick={() => {
+                    const evt = quickDetailModal;
+                    setQuickDetailModal(null);
+                    jumpToEventMonth(evt);
+                  }}
+                  className="px-3.5 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#004481] font-bold text-xs transition-colors cursor-pointer flex items-center gap-1"
+                >
+                  <CalendarDays className="w-3.5 h-3.5" />
+                  <span>{language === 'KR' ? '캘린더에서 보기' : 'View in Calendar'}</span>
+                </button>
               </div>
             </motion.div>
           </div>
