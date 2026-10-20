@@ -5393,20 +5393,16 @@ case 'EXPERIENCE': {
                                 </p>
                               )}
 
-                              {/* Local Tip Box (부산현지인 팁!) */}
+                              {/* Local Tip Box (부산 현지인 팁) */}
                               {(step.tipKo || step.tipEn) && (
-                                <div className="p-3 rounded-lg bg-[#F8F9FA] border border-[#E2E8F0] text-xs flex items-start gap-2.5 mt-2 shadow-2xs">
-                                  <div className="p-1 rounded bg-[#8EA85E] text-white shrink-0 mt-0.5">
-                                    <Info className="w-3.5 h-3.5 text-amber-300" />
+                                <div className="p-2.5 rounded-lg bg-[#F8F9FA] border border-[#E5E2DC] text-xs mt-2 text-left space-y-1">
+                                  <div className="flex items-center gap-1.5 font-bold text-[#0A2540] text-[11.5px]">
+                                    <Lightbulb className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
+                                    <span>{language === 'KR' ? '부산 현지인 팁' : 'Busan Local Tip'}</span>
                                   </div>
-                                  <div className="space-y-1 leading-relaxed text-left">
-                                    <span className="font-extrabold block text-[#0A2540] text-[11.5px] tracking-tight">
-                                      💡 {language === 'KR' ? '부산현지인 팁!' : 'Busan Local Pro-Tip!'}
-                                    </span>
-                                    <p className="font-medium text-[#334155] text-xs leading-relaxed break-keep">
-                                      {language === 'KR' ? step.tipKo : step.tipEn}
-                                    </p>
-                                  </div>
+                                  <p className="font-medium text-[#4A5568] text-[11.5px] sm:text-xs leading-relaxed break-keep pl-5">
+                                    {language === 'KR' ? step.tipKo : step.tipEn}
+                                  </p>
                                 </div>
                               )}
                             </div>
