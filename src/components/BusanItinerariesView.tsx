@@ -1782,7 +1782,7 @@ export default function BusanItinerariesView({
     { id: 'ART', nameKo: '미술관', nameEn: 'Art Galleries' },
     { id: 'SCIENCE_ECO', nameKo: '과학·생태', nameEn: 'Science & Eco' },
     { id: 'CULTURE', nameKo: '복합문화', nameEn: 'Cultural Spaces' },
-    { id: 'WORKSHOP', nameKo: '체험공방', nameEn: 'Craft Workshops' }
+    { id: 'WORKSHOP', nameKo: '체험관', nameEn: 'Experience Centers' }
   ];
 
     const GOURMET_CATEGORY_TABS = [
