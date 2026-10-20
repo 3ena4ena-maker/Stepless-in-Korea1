@@ -2081,8 +2081,8 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
     tagEn: 'Traditional Market Tour',
     difficultyKo: '쉬움',
     difficultyEn: 'Easy',
-    overallTipKo: '부산의 대표 전통시장인 구포시장, 국제시장, 동래시장, 부전시장, 부평깡통시장, 자갈치시장, 해운대시장은 모두 도시철도 역과 인접해 있어 대중교통으로 방문하기 매우 편리합니다. 주요 통로는 평지로 정비되어 휠체어나 유모차도 편안하게 둘러보실 수 있습니다.',
-    overallTipEn: 'Major traditional markets including Gupo, Gukje, Dongnae, Bujeon, Bupyeong Kkangtong, Jagalchi, and Haeundae are conveniently located near subway stations with flat, accessible passages.',
+    overallTipKo: '부산의 대표 전통시장인 구포시장, 국제시장, 기장시장, 동래시장, 부산진시장, 부전시장, 부평깡통시장, 서면종합시장, 자갈치시장, 해운대시장은 모두 도시철도 역과 인접해 있어 대중교통으로 방문하기 매우 편리합니다. 주요 통로는 평지로 정비되어 휠체어나 유모차도 편안하게 둘러보실 수 있습니다.',
+    overallTipEn: 'Major traditional markets including Gupo, Gukje, Gijang, Dongnae, Busanjin, Bujeon, Bupyeong Kkangtong, Seomyeon, Jagalchi, and Haeundae are conveniently located near subway stations with flat, accessible passages.',
     steps: [
       {
         regionId: 'others',
@@ -2114,6 +2114,21 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         stationInfoEn: '36 Junggu-ro, Jung-gu, Busan'
       },
       {
+        regionId: 'haeundae_gijang',
+        regionNameKo: '기장',
+        regionNameEn: 'Gijang',
+        foodCategory: 'market',
+        contentId: '126077',
+        time: '전통시장',
+        titleKo: '기장시장',
+        titleEn: 'Gijang Market',
+        descKo: '싱싱한 활대게와 킹크랩, 동해안 제철 해산물을 가성비 높게 즐길 수 있는 대표 해안 전통시장입니다.',
+        descEn: 'Famous coastal seafood market celebrated for fresh King crabs, snow crabs, and dynamic Gijang seafood alleys.',
+        icon: 'Food',
+        stationInfoKo: '부산 기장군 기장읍 읍내로104번길 16',
+        stationInfoEn: '16 Eupnae-ro 104beon-gil, Gijang-eup, Gijang-gun, Busan'
+      },
+      {
         regionId: 'others',
         regionNameKo: '동래',
         regionNameEn: 'Dongnae',
@@ -2126,6 +2141,21 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         icon: 'Food',
         stationInfoKo: '부산 동래구 동래시장길 14',
         stationInfoEn: '14 Dongnaesijang-gil, Dongnae-gu, Busan'
+      },
+      {
+        regionId: 'others',
+        regionNameKo: '동구 · 범일',
+        regionNameEn: 'Dong-gu & Beomil',
+        foodCategory: 'market',
+        contentId: '126078',
+        time: '전통시장',
+        titleKo: '부산진시장',
+        titleEn: 'Busanjin Market',
+        descKo: '조선시대부터 이어진 영남 3대 시장 중 하나로 한복, 혼수용품, 원단과 공예품이 특화된 대형 전통시장입니다.',
+        descEn: 'One of the top three historic Joseon-era markets in Yeongnam, famous for traditional Hanbok, fabrics, and bedding crafts.',
+        icon: 'Food',
+        stationInfoKo: '부산 동구 진시장로 24',
+        stationInfoEn: '24 Jinsijang-ro, Dong-gu, Busan'
       },
       {
         regionId: 'seomyeon_jeonpo',
@@ -2155,6 +2185,21 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         icon: 'Food',
         stationInfoKo: '부산 중구 부평1길 48',
         stationInfoEn: '48 Bupyeong 1-gil, Jung-gu, Busan'
+      },
+      {
+        regionId: 'seomyeon_jeonpo',
+        regionNameKo: '서면',
+        regionNameEn: 'Seomyeon',
+        foodCategory: 'market',
+        contentId: '126083',
+        time: '전통시장',
+        titleKo: '서면종합시장',
+        titleEn: 'Seomyeon General Market',
+        descKo: '서면 중심가에 위치하여 돼지국밥 골목, 손칼국수, 통닭 등 부산 대표 서민 미식을 즐기기 좋은 명물 시장입니다.',
+        descEn: 'A bustling historic downtown market in Seomyeon famous for pork soup alleys, handmade noodles, and artisan food stalls.',
+        icon: 'Food',
+        stationInfoKo: '부산 부산진구 서면로 56',
+        stationInfoEn: '56 Seomyeon-ro, Busanjin-gu, Busan'
       },
       {
         regionId: 'nampo_yeongdo',
