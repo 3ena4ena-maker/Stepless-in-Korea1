@@ -1856,19 +1856,59 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
         <div className="w-full h-full" ref={mapElement} id="subway-map-container" />
       </div>
 
-      {/* Information Tip Bar */}
-      <div className="bg-slate-50/80 px-4 py-2.5 flex items-start gap-2.5 border-t border-slate-100">
-        <span className="text-base sm:text-lg leading-none select-none mt-0.5">💡</span>
-        <div className="text-[11.5px] sm:text-xs font-bold text-slate-600 leading-relaxed pt-0.5">
+      {/* Information Tip Bar & Map Outlinks */}
+      <div className="bg-slate-50/80 px-4 py-2.5 flex flex-wrap items-center justify-between gap-2.5 border-t border-slate-100">
+        {/* Left: Crosswalk tip */}
+        <div className="flex items-center gap-2 text-[11.5px] sm:text-xs font-bold text-slate-600 leading-relaxed">
+          <span className="text-base sm:text-lg leading-none select-none">💡</span>
           {language === 'KR' ? (
             <span>
-              지도의 <CrosswalkIcon size={16} className="mx-0.5 -mt-0.5" /> 아이콘은 해당 위치에 횡단보도가 설치되어 있음을 나타냅니다.
+              지도의 <CrosswalkIcon size={16} className="mx-0.5 -mt-0.5 inline-block" /> 아이콘은 해당 위치에 횡단보도가 설치되어 있음을 나타냅니다.
             </span>
           ) : (
             <span>
-              The <CrosswalkIcon size={16} className="mx-0.5 -mt-0.5" /> icon on the map indicates that there is a pedestrian crosswalk located at that position.
+              The <CrosswalkIcon size={16} className="mx-0.5 -mt-0.5 inline-block" /> icon on the map indicates that there is a pedestrian crosswalk located at that position.
             </span>
           )}
+        </div>
+
+        {/* Right: Naver Map & Google Maps Action Buttons */}
+        <div className="flex items-center gap-1.5 shrink-0 ml-auto">
+          {/* Naver Map Button */}
+          <a
+            href={`https://map.naver.com/v5/search/${encodeURIComponent(station.name + (station.name.endsWith('역') ? '' : '역'))}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#03C75A] hover:bg-[#02b350] text-white text-[11px] font-extrabold shadow-2xs hover:scale-105 active:scale-95 transition-all cursor-pointer select-none"
+            title={language === 'KR' ? `네이버지도에서 ${station.name} 보기` : `View on Naver Map`}
+            aria-label="Naver Map"
+          >
+            <svg className="w-2.5 h-2.5 fill-white shrink-0" viewBox="0 0 24 24">
+              <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
+            </svg>
+            <span>{language === 'KR' ? '네이버지도' : 'Naver Map'}</span>
+          </a>
+
+          {/* Google Maps Button */}
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+              (station.englishName || station.name) + ' Station Busan'
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-[11px] font-extrabold shadow-2xs hover:scale-105 active:scale-95 transition-all cursor-pointer select-none"
+            title={language === 'KR' ? `구글맵에서 ${station.name} 보기` : `View on Google Maps`}
+            aria-label="Google Maps"
+          >
+            <svg viewBox="0 0 92 135" className="w-2.5 h-3.5 shrink-0" fill="none">
+              <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
+              <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
+              <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
+              <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
+              <circle cx="46" cy="46" r="18" fill="#FFFFFF"/>
+            </svg>
+            <span>{language === 'KR' ? '구글맵' : 'Google Maps'}</span>
+          </a>
         </div>
       </div>
     </div>

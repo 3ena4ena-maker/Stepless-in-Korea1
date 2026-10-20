@@ -120,29 +120,15 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
     <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-md p-3.5 sm:p-7 space-y-5 sm:space-y-6 text-left my-4 sm:my-6" id={`station-summary-${station.id}`}>
       
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="p-2 rounded-xl bg-[#8EA85E] text-white shadow-xs">
-              <Train className="w-5 h-5" />
-            </span>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 font-heading">
-              {displayName} {language === 'KR' ? '배리어프리 이동 정보' : 'Barrier-Free Route Guide'}
-            </h2>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
-            {lineLabels} {station.isTransferStation ? (language === 'KR' ? '(환승역)' : '(Transfer Station)') : ''} — {language === 'KR' ? '계단 회피 및 엘리베이터 동선' : 'Step-free elevator pathways'}
-          </p>
+      <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-4">
+        <div className="flex items-center gap-2">
+          <span className="p-2 rounded-xl bg-[#8EA85E] text-white shadow-xs">
+            <Train className="w-5 h-5" />
+          </span>
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 font-heading">
+            {displayName} {language === 'KR' ? '배리어프리 이동 정보' : 'Barrier-Free Route Guide'}
+          </h2>
         </div>
-
-        <a
-          href={`https://map.naver.com/v5/search/${encodeURIComponent(station.name)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200/70 px-4 py-2 rounded-xl transition-colors cursor-pointer inline-flex items-center gap-1"
-        >
-          <span>{language === 'KR' ? `네이버지도에서 ${station.name} 보기` : `View ${displayName} on Naver Map`}</span>
-        </a>
       </div>
 
       {/* Summary Table & Step-by-Step Info */}
@@ -177,34 +163,12 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                   </div>
                 </th>
                 <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-800 text-xs sm:text-sm space-y-3">
-                  {/* Top: Recommended Exit & Counts */}
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-extrabold text-slate-900 text-xs sm:text-sm break-keep">
+                  {/* Recommended Exit */}
+                  {recommendedExitsText && (
+                    <div className="font-extrabold text-slate-900 text-xs sm:text-sm break-keep">
                       {recommendedExitsText}
-                    </span>
-                    <span className="text-2xs sm:text-xs font-bold text-emerald-800 bg-[#F2F8F4] border border-[#D3E8D9] px-2 py-0.5 rounded-md inline-flex items-center gap-1 shrink-0">
-                      <span>✓</span>
-                      <span>{language === 'KR' ? '단차 없는 추천 출구' : 'Recommended Step-Free'}</span>
-                    </span>
-                    {station.exits && station.exits.length > 0 && (
-                      <div className="flex flex-wrap items-center gap-1.5 text-2xs sm:text-xs text-slate-500 w-full sm:w-auto sm:ml-auto">
-                        <span>
-                          {language === 'KR' 
-                            ? `총 ${station.exits.length}개 출구:` 
-                            : `Total ${station.exits.length} exits:`}
-                        </span>
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-[#F4F7EE] text-[#55702E] font-bold border border-[#DEE8CD]">
-                          <ElevatorIcon className="w-3 h-3 text-[#55702E]" />
-                          <span>{language === 'KR' ? `엘리베이터 ${station.elevatorCount || station.exits.filter(e => e.hasElevator).length}대` : `EV: ${station.elevatorCount || station.exits.filter(e => e.hasElevator).length}`}</span>
-                        </span>
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-[#F0F5FA] text-[#3B668F] font-bold border border-[#D3E0EA]">
-                          <EscalatorIcon className="w-3 h-3 text-[#3B668F]" />
-                          <span>{language === 'KR' ? `에스컬레이터 ${station.escalatorCount || station.exits.filter(e => e.hasEscalator).length}대` : `ES: ${station.escalatorCount || station.exits.filter(e => e.hasEscalator).length}`}</span>
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
+                    </div>
+                  )}
                   {/* Unified Exit Facilities Badges */}
                   {(bothExits.length > 0 || elevatorOnlyExits.length > 0 || escalatorOnlyExits.length > 0) ? (
                     <div className="space-y-2 pt-1 border-t border-slate-100">
