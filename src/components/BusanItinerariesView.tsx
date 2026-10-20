@@ -3348,7 +3348,7 @@ export default function BusanItinerariesView({
                         </p>
                       </div>
 
-                      {/* Category Filter Pills: 당일치기 | 1박 | 2박 3박 */}
+                      {/* Category Filter Pills: 당일치기 | 1박 | 2박 | 3박 */}
                       <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                         {/* 당일치기 */}
                         <button
@@ -3384,7 +3384,7 @@ export default function BusanItinerariesView({
                           <span>{language === 'KR' ? '1박' : '1 Night'}</span>
                         </button>
 
-                        {/* 2박 3박 */}
+                        {/* 2박 */}
                         <button
                           type="button"
                           onClick={(e) => {
@@ -3393,12 +3393,29 @@ export default function BusanItinerariesView({
                             handleSelectCategory('2NIGHTS');
                           }}
                           className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
-                            activeCategory === '2NIGHTS' || activeCategory === '3NIGHTS' || activeCategory === '4NIGHTS'
+                            activeCategory === '2NIGHTS'
                               ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                               : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
                           }`}
                         >
-                          <span>{language === 'KR' ? '2박 3박' : '2-3 Nights'}</span>
+                          <span>{language === 'KR' ? '2박' : '2 Nights'}</span>
+                        </button>
+
+                        {/* 3박 */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedScheduleDuration('3NIGHTS');
+                            handleSelectCategory('3NIGHTS');
+                          }}
+                          className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
+                            activeCategory === '3NIGHTS'
+                              ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
+                              : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
+                          }`}
+                        >
+                          <span>{language === 'KR' ? '3박' : '3 Nights'}</span>
                         </button>
                       </div>
                     </div>
@@ -3714,11 +3731,12 @@ export default function BusanItinerariesView({
               case '3NIGHTS':
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Header */}
-                    <div className="space-y-2 border-b border-slate-200 pb-5 text-left">
-                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                        {language === 'KR' ? '3박 4일 코스' : '3 Nights 4 Days Course'}
-                      </h2>
+                    {/* Sub-course Title with line icon */}
+                    <div className="space-y-1 text-left pt-1">
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                        <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '3박 4일 코스' : '3 Nights 4 Days Course'}</span>
+                      </h3>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                         {language === 'KR'
                           ? '자연 힐링과 강변 수변 공원을 벗하며 사색과 여유를 즐기는 3박 4일 일정입니다.'
