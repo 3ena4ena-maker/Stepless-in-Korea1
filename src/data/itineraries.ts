@@ -2087,8 +2087,8 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
     tagEn: 'Traditional Market Tour',
     difficultyKo: '쉬움',
     difficultyEn: 'Easy',
-    overallTipKo: '부산의 대표 전통시장 및 정겨운 5일장(구포시장, 노포동 오시게장, 다대포시장, 송정시장, 월내시장 등)은 도시철도 및 대중교통으로 방문하기 편리합니다. 5일장은 장날 일정을 미리 확인하고 방문하시면 더욱 활기차고 풍성한 장터의 매력을 즐기실 수 있습니다.',
-    overallTipEn: 'Busan’s major traditional and periodic 5-day markets (Gupo, Nopo-dong Osige, Dadaepo, Songjeong, Wolnae, etc.) are easily accessible via public transit. Check 5-day market schedules in advance for the liveliest experience.',
+    overallTipKo: '자갈치시장, 국제시장, 부평깡통시장은 부산을 대표하는 핵심 관광시장으로 별도의 장날 없이 매일 열리는 상설시장입니다. 단, 상가 및 점포 개별로 정기 휴무일이 서로 다를 수 있으니 방문 전 확인을 권장합니다. 구포시장·노포동 오시게장 등 5일장은 정해진 장날에 맞춰 방문하시면 더욱 풍성하고 활기찬 장터의 매력을 즐기실 수 있습니다.',
+    overallTipEn: 'Jagalchi Market, Gukje Market, and Bupyeong Kkangtong Market are Busan\'s representative tourist markets operating daily as permanent markets without specific market days. However, regular closing days vary by individual shop and stall. For 5-day periodic markets (Gupo, Osige, Dadaepo, Songjeong, Wolnae), check the dates in advance for the liveliest experience.',
     steps: [
       {
         regionId: 'others',
