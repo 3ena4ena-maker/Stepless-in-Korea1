@@ -44,7 +44,8 @@ import {
   ShieldCheck,
   Landmark,
   Bike,
-  Lightbulb
+  Lightbulb,
+  Store
 } from 'lucide-react';
 import ElegantIllustration from './ElegantIllustration';
 import { BUSAN_ITINERARIES, ItineraryCourse, ItineraryStep, getStepFoodCategories } from '../data/itineraries';
@@ -2817,7 +2818,7 @@ export default function BusanItinerariesView({
                         { id: null, labelKR: '전체 (목록 보기)', labelEN: 'All Categories', icon: Compass },
                         { id: 'GOURMET', labelKR: '식도락', labelEN: 'Gourmet', icon: Utensils },
                         { id: 'EXPERIENCE', labelKR: '체험&박물관', labelEN: 'Experience', icon: Sparkles },
-                        { id: 'MARKET', labelKR: '전통시장', labelEN: 'Traditional Market', icon: Landmark },
+                        { id: 'MARKET', labelKR: '전통시장', labelEN: 'Traditional Market', icon: Store },
                         { id: 'ATTRACTION', labelKR: '명소', labelEN: 'Attractions', icon: MapPin },
                         { id: 'DAY', labelKR: '일정별 여행', labelEN: 'Itinerary Course', icon: Calendar },
                         { id: 'SUBWAY', labelKR: '부산 도시철도', labelEN: 'Subway Course', icon: Train },
@@ -4539,16 +4540,17 @@ case 'EXPERIENCE': {
               // -------------------------------------------------------------
               case 'MARKET': {
                 const marketSteps = course.steps || [];
-                const filteredMarketSteps = selectedMarketRegion === 'ALL'
-                  ? marketSteps
-                  : marketSteps.filter(s => s.regionId === selectedMarketRegion);
+                const sortedMarketSteps = [...marketSteps].sort((a, b) => 
+                  (a.titleKo || '').localeCompare(b.titleKo || '', 'ko')
+                );
 
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
                     {/* Header */}
                     <div className="space-y-2 border-b border-slate-200 pb-5 text-left">
-                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                        {language === 'KR' ? '부산 전통시장' : 'Busan Traditional Markets'}
+                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
+                        <Store className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '부산 전통시장' : 'Busan Traditional Markets'}</span>
                       </h2>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                         {language === 'KR'
@@ -4557,38 +4559,9 @@ case 'EXPERIENCE': {
                       </p>
                     </div>
 
-                    {/* Regional Sub-filter Tabs */}
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap flex-nowrap py-1">
-                        {[
-                          { id: 'ALL', nameKo: '전체 보기', nameEn: 'All Markets' },
-                          { id: 'seomyeon_jeonpo', nameKo: '서면 · 부전 (부전시장)', nameEn: 'Seomyeon · Bujeon' },
-                          { id: 'nampo_yeongdo', nameKo: '남포동 · 자갈치 / 깡통 / 국제시장', nameEn: 'Nampo · Jagalchi / Bupyeong' },
-                          { id: 'gwangalli_centum', nameKo: '광안리 · 민락 (밀락더마켓)', nameEn: 'Gwangalli · Millac' },
-                          { id: 'others', nameKo: '북구 · 구포 (구포시장)', nameEn: 'Buk-gu · Gupo' },
-                        ].map(tab => (
-                          <button
-                            key={tab.id}
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedMarketRegion(tab.id);
-                            }}
-                            className={`px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
-                              selectedMarketRegion === tab.id
-                                ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
-                                : 'bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC] hover:bg-[#FBFBF9]'
-                            }`}
-                          >
-                            {language === 'KR' ? tab.nameKo : tab.nameEn}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
                     {/* Market Cards Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {filteredMarketSteps.map((step, idx) => {
+                      {sortedMarketSteps.map((step, idx) => {
                         const matchedSpotId = matchTourApiSpotId(step.titleKo);
                         const effectiveSpotId = resolvePlaceTargetId({
                           id: step.id,
@@ -4599,92 +4572,114 @@ case 'EXPERIENCE': {
                         const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
                         const isSaved = isBookmarked(step.id || step.titleKo);
 
+                        // Clean address: remove any parenthetical contents like (1호선 ...)
+                        const rawAddressKo = ktoDetail?.addressRoadKo || step.stationInfoKo || '';
+                        const cleanAddressKo = rawAddressKo.replace(/\s*\([^)]*\)/g, '').trim();
+                        const rawAddressEn = ktoDetail?.addressRoadEn || step.stationInfoEn || '';
+                        const cleanAddressEn = rawAddressEn.replace(/\s*\([^)]*\)/g, '').trim();
+
+                        const displayDesc = language === 'KR'
+                          ? step.descKo.replace(/^📍\s*주소:[^\n]*\n?/, '').trim()
+                          : step.descEn.replace(/^📍\s*Address:[^\n]*\n?/, '').trim();
+
                         return (
                           <div
                             key={idx}
-                            className="bg-white rounded-lg border border-[#E5E2DC] p-5 hover:border-[#8EA85E] transition-colors duration-200 flex flex-col justify-between text-left space-y-4"
+                            className="bg-white rounded-2xl border border-[#E5E2DC] p-5 hover:border-[#8EA85E] hover:shadow-xs transition-all duration-200 flex flex-col justify-between text-left space-y-4"
                           >
                             <div className="space-y-3">
+                              {/* Top Bar: Title & Bookmark Star Button */}
                               <div className="flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-1.5 flex-wrap">
-                                  <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-[#F1EFEC] text-[#0A2540]">
-                                    {step.regionNameKo}
-                                  </span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <button
-                                    type="button"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      toggleMyRoute({
-                                        id: step.id || step.titleKo,
-                                        titleKo: step.titleKo,
-                                        titleEn: step.titleEn,
-                                        categoryKo: '전통시장',
-                                        categoryEn: 'Market',
-                                        addressRoadKo: ktoDetail?.addressRoadKo || step.stationInfoKo,
-                                        stationInfoKo: step.stationInfoKo,
-                                        stationInfoEn: step.stationInfoEn,
-                                        descKo: step.descKo,
-                                        descEn: step.descEn,
-                                        firstImage: ktoDetail?.firstImage,
-                                        latitude: ktoDetail?.latitude,
-                                        longitude: ktoDetail?.longitude,
-                                      });
-                                    }}
-                                    className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
-                                      isSaved
-                                        ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
-                                        : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
-                                    }`}
-                                    title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
-                                  >
-                                    <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
-                                    <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
-                                  </button>
-                                  <span className="text-xs text-[#718096] font-medium">
-                                    {step.time}
-                                  </span>
-                                </div>
-                              </div>
-
-                              <div className="space-y-1">
-                                <h4 className="text-base font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors">
+                                <h4 className="text-base sm:text-lg font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors">
                                   {language === 'KR' ? step.titleKo : step.titleEn}
                                 </h4>
-                                <p className="text-xs text-[#4A5568] font-normal leading-relaxed whitespace-pre-line">
-                                  {language === 'KR' ? step.descKo : step.descEn}
-                                </p>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleMyRoute({
+                                      id: step.id || step.titleKo,
+                                      titleKo: step.titleKo,
+                                      titleEn: step.titleEn,
+                                      categoryKo: '전통시장',
+                                      categoryEn: 'Market',
+                                      addressRoadKo: cleanAddressKo,
+                                      stationInfoKo: cleanAddressKo,
+                                      stationInfoEn: cleanAddressEn,
+                                      descKo: step.descKo,
+                                      descEn: step.descEn,
+                                      firstImage: ktoDetail?.firstImage,
+                                      latitude: ktoDetail?.latitude,
+                                      longitude: ktoDetail?.longitude,
+                                    });
+                                  }}
+                                  className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
+                                    isSaved
+                                      ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                      : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
+                                  }`}
+                                  title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                >
+                                  <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                  <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                </button>
                               </div>
+
+                              {/* Description */}
+                              <p className="text-xs sm:text-sm text-[#4A5568] font-normal leading-relaxed whitespace-pre-line">
+                                {displayDesc}
+                              </p>
                             </div>
 
-                            <div className="pt-3 border-t border-[#E5E2DC] space-y-2">
-                              <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-[#11161B] bg-[#FBFBF9] p-2.5 rounded-md border border-[#E5E2DC]">
-                                <CheckCircle2 className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-                                <span>{language === 'KR' ? '평지 보행로 정비 · 지하철역 엘리베이터 접근 용이' : 'Flat pedestrian passage & metro elevator access'}</span>
-                              </div>
-
-                              {step.stationInfoKo && (
-                                <div className="flex items-center justify-between gap-2 pt-0.5 text-[11px] text-[#0A2540]">
-                                  <div className="flex items-center gap-1.5 font-mono truncate">
-                                    <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-                                    <span className="truncate">{language === 'KR' ? step.stationInfoKo : step.stationInfoEn}</span>
-                                  </div>
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      const addr = step.stationInfoKo.split('(')[0].trim();
-                                      navigator.clipboard.writeText(addr);
-                                      setCopiedIndex(`market-${idx}`);
-                                      setTimeout(() => setCopiedIndex(null), 2000);
-                                    }}
-                                    className="text-[10px] font-bold px-2 py-0.5 rounded border border-[#E5E2DC] bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#0A2540] shrink-0 transition-colors cursor-pointer"
-                                  >
-                                    {copiedIndex === `market-${idx}` ? (language === 'KR' ? '복사됨' : 'Copied') : (language === 'KR' ? '주소 복사' : 'Copy')}
-                                  </button>
+                            {/* Address Row + Naver Map & Google Maps Action Buttons */}
+                            {cleanAddressKo && (
+                              <div className="pt-3 border-t border-[#E5E2DC] flex flex-wrap items-center justify-between gap-2 text-xs">
+                                <div className="flex items-center gap-1.5 text-slate-600 font-medium truncate min-w-0 max-w-[calc(100%-175px)]">
+                                  <MapPin className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
+                                  <span className="truncate" title={cleanAddressKo}>
+                                    {language === 'KR' ? cleanAddressKo : cleanAddressEn}
+                                  </span>
                                 </div>
-                              )}
-                            </div>
+
+                                <div className="flex items-center gap-1.5 shrink-0 ml-auto">
+                                  {/* Naver Map Button */}
+                                  <a
+                                    href={`https://map.naver.com/v5/search/${encodeURIComponent(step.titleKo + ' ' + cleanAddressKo)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#03C75A] hover:bg-[#02b350] text-white text-[10px] font-extrabold shadow-2xs hover:scale-105 active:scale-95 transition-all cursor-pointer select-none"
+                                    title={language === 'KR' ? `네이버지도에서 ${step.titleKo} 보기` : 'View on Naver Map'}
+                                    aria-label="Naver Map"
+                                  >
+                                    <svg className="w-2.5 h-2.5 fill-white shrink-0" viewBox="0 0 24 24">
+                                      <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
+                                    </svg>
+                                    <span>{language === 'KR' ? '네이버지도' : 'Naver'}</span>
+                                  </a>
+
+                                  {/* Google Maps Button */}
+                                  <a
+                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                                      (step.titleEn || step.titleKo) + ' ' + (cleanAddressEn || cleanAddressKo || 'Busan')
+                                    )}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-[10px] font-extrabold shadow-2xs hover:scale-105 active:scale-95 transition-all cursor-pointer select-none"
+                                    title={language === 'KR' ? `구글맵에서 ${step.titleKo} 보기` : 'View on Google Maps'}
+                                    aria-label="Google Maps"
+                                  >
+                                    <svg viewBox="0 0 92 135" className="w-2 h-3 shrink-0" fill="none">
+                                      <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
+                                      <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
+                                      <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
+                                      <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
+                                      <circle cx="46" cy="46" r="18" fill="#FFFFFF"/>
+                                    </svg>
+                                    <span>{language === 'KR' ? '구글맵' : 'Google'}</span>
+                                  </a>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         );
                       })}
