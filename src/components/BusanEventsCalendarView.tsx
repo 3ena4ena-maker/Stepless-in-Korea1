@@ -77,42 +77,182 @@ export interface EventCategoryMeta {
   icon: React.ElementType;
   label: string;
   labelEn: string;
+  colorTheme: {
+    bg: string;
+    hoverBg: string;
+    border: string;
+    text: string;
+    badgeBg: string;
+  };
 }
 
-// Helper: Determine a distinct category meta (icon + Korean/English short label) for an event
+// Helper: Determine a distinct category meta with eye-friendly, refined muted color themes
 export function getEventCategoryMeta(evt: BusanEvent): EventCategoryMeta {
   const t = (evt.titleKo + ' ' + (evt.categoryKo || '') + ' ' + evt.id + ' ' + (evt.titleEn || '')).toLowerCase();
+  
+  // 1. 드론쇼 - 신비로운 소프트 바이올렛
   if (t.includes('드론') || t.includes('drone')) {
-    return { icon: Sparkles, label: '드론쇼', labelEn: 'Drone' };
+    return { 
+      icon: Sparkles, 
+      label: '드론쇼', 
+      labelEn: 'Drone',
+      colorTheme: {
+        bg: 'bg-[#7C3AED]/10',
+        hoverBg: 'hover:bg-[#7C3AED]/20',
+        border: 'border-[#7C3AED]/25',
+        text: 'text-[#6D28D9]',
+        badgeBg: 'bg-[#7C3AED]/15'
+      }
+    };
   }
+  // 2. 불꽃쇼 - 화사하고 따뜻한 로즈 코랄
   if (t.includes('불꽃') || t.includes('firework')) {
-    return { icon: Flame, label: '불꽃쇼', labelEn: 'Fireworks' };
+    return { 
+      icon: Flame, 
+      label: '불꽃쇼', 
+      labelEn: 'Fireworks',
+      colorTheme: {
+        bg: 'bg-[#E11D48]/10',
+        hoverBg: 'hover:bg-[#E11D48]/20',
+        border: 'border-[#E11D48]/25',
+        text: 'text-[#BE123C]',
+        badgeBg: 'bg-[#E11D48]/15'
+      }
+    };
   }
+  // 3. 영화제 - 시크한 시네마 슬레이트 차콜
   if (t.includes('영화') || t.includes('movie') || t.includes('film') || t.includes('biff')) {
-    return { icon: Clapperboard, label: '영화제', labelEn: 'Film' };
+    return { 
+      icon: Clapperboard, 
+      label: '영화제', 
+      labelEn: 'Film',
+      colorTheme: {
+        bg: 'bg-[#475569]/10',
+        hoverBg: 'hover:bg-[#475569]/20',
+        border: 'border-[#475569]/25',
+        text: 'text-[#334155]',
+        badgeBg: 'bg-[#475569]/15'
+      }
+    };
   }
+  // 4. 콘서트 - 감성적인 베리 퍼플
   if (t.includes('록') || t.includes('음악') || t.includes('콘서트') || t.includes('rock') || t.includes('music')) {
-    return { icon: Music, label: '콘서트', labelEn: 'Concert' };
+    return { 
+      icon: Music, 
+      label: '콘서트', 
+      labelEn: 'Concert',
+      colorTheme: {
+        bg: 'bg-[#9333EA]/10',
+        hoverBg: 'hover:bg-[#9333EA]/20',
+        border: 'border-[#9333EA]/25',
+        text: 'text-[#7E22CE]',
+        badgeBg: 'bg-[#9333EA]/15'
+      }
+    };
   }
+  // 5. 빛축제 - 은은하고 따스한 골든 앰버
   if (t.includes('빛축제') || t.includes('트리') || t.includes('light') || t.includes('일루미네이션')) {
-    return { icon: SunMedium, label: '빛축제', labelEn: 'Light' };
+    return { 
+      icon: SunMedium, 
+      label: '빛축제', 
+      labelEn: 'Light',
+      colorTheme: {
+        bg: 'bg-[#D97706]/10',
+        hoverBg: 'hover:bg-[#D97706]/20',
+        border: 'border-[#D97706]/25',
+        text: 'text-[#B45309]',
+        badgeBg: 'bg-[#D97706]/15'
+      }
+    };
   }
+  // 6. 전시·박람 - 지적이고 세련된 에메랄드 틸
   if (t.includes('박람회') || t.includes('지스타') || t.includes('전시') || t.includes('expo') || t.includes('gstar') || t.includes('모빌리티')) {
-    return { icon: Landmark, label: '전시·박람', labelEn: 'Exhibition' };
+    return { 
+      icon: Landmark, 
+      label: '전시·박람', 
+      labelEn: 'Exhibition',
+      colorTheme: {
+        bg: 'bg-[#0D9488]/10',
+        hoverBg: 'hover:bg-[#0D9488]/20',
+        border: 'border-[#0D9488]/25',
+        text: 'text-[#0F766E]',
+        badgeBg: 'bg-[#0D9488]/15'
+      }
+    };
   }
+  // 7. 해양축제 - 시원하고 청량한 오션 스카이블루
   if (t.includes('sup') || t.includes('오션') || t.includes('바다축제') || t.includes('해변') || t.includes('해양')) {
-    return { icon: Waves, label: '해양축제', labelEn: 'Marine' };
+    return { 
+      icon: Waves, 
+      label: '해양축제', 
+      labelEn: 'Marine',
+      colorTheme: {
+        bg: 'bg-[#0284C7]/10',
+        hoverBg: 'hover:bg-[#0284C7]/20',
+        border: 'border-[#0284C7]/25',
+        text: 'text-[#0369A1]',
+        badgeBg: 'bg-[#0284C7]/15'
+      }
+    };
   }
+  // 8. 새해·해맞이 - 희망찬 테라코타 오렌지
   if (t.includes('해맞이') || t.includes('sunrise') || t.includes('일출') || t.includes('타종식')) {
-    return { icon: Sunrise, label: '새해·해맞이', labelEn: 'Sunrise' };
+    return { 
+      icon: Sunrise, 
+      label: '새해·해맞이', 
+      labelEn: 'Sunrise',
+      colorTheme: {
+        bg: 'bg-[#EA580C]/10',
+        hoverBg: 'hover:bg-[#EA580C]/20',
+        border: 'border-[#EA580C]/25',
+        text: 'text-[#C2410C]',
+        badgeBg: 'bg-[#EA580C]/15'
+      }
+    };
   }
+  // 9. 겨울이색 - 청량한 윈터 시안
   if (t.includes('북극곰') || t.includes('겨울') || t.includes('winter') || t.includes('철새')) {
-    return { icon: Snowflake, label: '겨울이색', labelEn: 'Winter' };
+    return { 
+      icon: Snowflake, 
+      label: '겨울이색', 
+      labelEn: 'Winter',
+      colorTheme: {
+        bg: 'bg-[#0891B2]/10',
+        hoverBg: 'hover:bg-[#0891B2]/20',
+        border: 'border-[#0891B2]/25',
+        text: 'text-[#0E7490]',
+        badgeBg: 'bg-[#0891B2]/15'
+      }
+    };
   }
+  // 10. 미식·전통 - 풍요로운 웜 헤이즐넛 브라운
   if (t.includes('자갈치') || t.includes('국수') || t.includes('구포나루') || t.includes('food') || t.includes('식')) {
-    return { icon: Utensils, label: '미식·전통', labelEn: 'Food' };
+    return { 
+      icon: Utensils, 
+      label: '미식·전통', 
+      labelEn: 'Food',
+      colorTheme: {
+        bg: 'bg-[#B45309]/10',
+        hoverBg: 'hover:bg-[#B45309]/20',
+        border: 'border-[#B45309]/25',
+        text: 'text-[#92400E]',
+        badgeBg: 'bg-[#B45309]/15'
+      }
+    };
   }
-  return { icon: PartyPopper, label: '문화축제', labelEn: 'Festival' };
+  // 11. 문화축제 - 부드러운 브랜드 올리브 세이지
+  return { 
+    icon: PartyPopper, 
+    label: '문화축제', 
+    labelEn: 'Festival',
+    colorTheme: {
+      bg: 'bg-[#8EA85E]/15',
+      hoverBg: 'hover:bg-[#8EA85E]/25',
+      border: 'border-[#8EA85E]/30',
+      text: 'text-[#526826]',
+      badgeBg: 'bg-[#8EA85E]/20'
+    }
+  };
 }
 
 // Backward-compatible icon getter
@@ -1113,11 +1253,11 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                               e.stopPropagation();
                               setSelectedEvent(evt);
                             }}
-                            className="flex flex-col items-center justify-center px-1 sm:px-1.5 py-1 rounded-xl bg-[#8EA85E]/10 hover:bg-[#8EA85E]/22 text-[#4E6228] border border-[#8EA85E]/20 transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-2xs group shrink-0 min-w-[34px] sm:min-w-[42px]"
+                            className={`flex flex-col items-center justify-center px-1 sm:px-1.5 py-1 rounded-xl transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-2xs group shrink-0 min-w-[34px] sm:min-w-[42px] border ${meta.colorTheme.bg} ${meta.colorTheme.hoverBg} ${meta.colorTheme.border}`}
                             title={`${language === 'KR' ? evt.titleKo : evt.titleEn} (${catLabel})`}
                           >
-                            <EventIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#526826] group-hover:text-[#384A1A] shrink-0" />
-                            <span className="text-[7.5px] sm:text-[9px] font-bold text-[#526826] mt-0.5 leading-none whitespace-nowrap tracking-tight">
+                            <EventIcon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 transition-colors ${meta.colorTheme.text}`} />
+                            <span className={`text-[7.5px] sm:text-[9px] font-bold mt-0.5 leading-none whitespace-nowrap tracking-tight ${meta.colorTheme.text}`}>
                               {catLabel}
                             </span>
                           </button>
@@ -1129,7 +1269,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                             e.stopPropagation();
                             setDayEventsModal({ dateStr: cell.dateString, events: dayEvents });
                           }}
-                          className="px-1.5 py-1 rounded-xl bg-[#8EA85E]/15 text-[#526826] text-[9px] sm:text-[10px] font-bold hover:bg-[#8EA85E]/25 cursor-pointer shrink-0 self-center"
+                          className="px-1.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-[9px] sm:text-[10px] font-bold border border-slate-200 cursor-pointer shrink-0 self-center"
                         >
                           +{dayEvents.length - 3}
                         </button>
@@ -1174,13 +1314,13 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                   className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-xs hover:shadow-md hover:border-[#8EA85E]/50 transition-all flex flex-col justify-between group text-left cursor-pointer"
                 >
                   <div>
-                    {/* Top Illustration/Icon Container (Matches the soft gray box from user's image) */}
-                    <div className="w-full h-36 bg-[#F8F9FA] rounded-2xl flex flex-col items-center justify-center p-4 relative mb-4 group-hover:bg-[#8EA85E]/5 transition-colors">
-                      <EventIcon className="w-11 h-11 text-[#8EA85E] group-hover:scale-110 transition-transform" />
-                      <span className="text-[11px] font-bold text-[#526826] mt-2">
+                    {/* Top Illustration/Icon Container */}
+                    <div className="w-full h-36 bg-[#F8F9FA] rounded-2xl flex flex-col items-center justify-center p-4 relative mb-4 group-hover:bg-slate-50 transition-colors">
+                      <EventIcon className={`w-11 h-11 transition-transform group-hover:scale-110 ${meta.colorTheme.text}`} />
+                      <span className={`text-[11px] font-bold mt-2 ${meta.colorTheme.text}`}>
                         {language === 'KR' ? meta.label : meta.labelEn}
                       </span>
-                      <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-lg text-[11px] font-bold bg-white text-[#526826] border border-slate-200/80 shadow-2xs">
+                      <span className={`absolute top-3 left-3 px-2.5 py-0.5 rounded-lg text-[11px] font-bold border shadow-2xs ${meta.colorTheme.badgeBg} ${meta.colorTheme.text} ${meta.colorTheme.border}`}>
                         {language === 'KR' ? evt.categoryKo : evt.categoryEn}
                       </span>
                     </div>
@@ -1275,17 +1415,17 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                 <X className="w-5 h-5" />
               </button>
 
-              {/* Top Illustration Box (Matching Screenshot Aesthetic) */}
+              {/* Top Illustration Box (Matching Category Color Scheme) */}
               {(() => {
                 const meta = getEventCategoryMeta(selectedEvent);
                 const ModalIcon = meta.icon;
                 return (
                   <div className="w-full h-36 bg-[#F8F9FA] rounded-2xl flex flex-col items-center justify-center p-4 relative shrink-0">
-                    <ModalIcon className="w-12 h-12 text-[#8EA85E]" />
-                    <span className="text-xs font-bold text-[#526826] mt-1.5">
+                    <ModalIcon className={`w-12 h-12 ${meta.colorTheme.text}`} />
+                    <span className={`text-xs font-bold mt-1.5 ${meta.colorTheme.text}`}>
                       {language === 'KR' ? meta.label : meta.labelEn}
                     </span>
-                    <span className="mt-1 px-3 py-0.5 rounded-full text-xs font-bold bg-[#8EA85E]/15 text-[#526826] border border-[#8EA85E]/20">
+                    <span className={`mt-1 px-3 py-0.5 rounded-full text-xs font-bold border ${meta.colorTheme.badgeBg} ${meta.colorTheme.text} ${meta.colorTheme.border}`}>
                       {language === 'KR' ? selectedEvent.categoryKo : selectedEvent.categoryEn}
                     </span>
                   </div>
@@ -1454,9 +1594,9 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                       }}
                       className="p-4 rounded-2xl border border-slate-200/80 hover:border-[#8EA85E]/60 hover:bg-[#8EA85E]/5 transition-all cursor-pointer flex items-center gap-3.5 group"
                     >
-                      <div className="flex flex-col items-center justify-center p-2 rounded-xl bg-[#8EA85E]/15 text-[#526826] shrink-0 min-w-[50px]">
-                        <EventIcon className="w-5 h-5" />
-                        <span className="text-[8.5px] font-bold mt-0.5 text-center leading-none">
+                      <div className={`flex flex-col items-center justify-center p-2 rounded-xl shrink-0 min-w-[50px] border ${meta.colorTheme.bg} ${meta.colorTheme.border}`}>
+                        <EventIcon className={`w-5 h-5 ${meta.colorTheme.text}`} />
+                        <span className={`text-[8.5px] font-bold mt-0.5 text-center leading-none ${meta.colorTheme.text}`}>
                           {language === 'KR' ? meta.label : meta.labelEn}
                         </span>
                       </div>
