@@ -2883,82 +2883,7 @@ export default function BusanItinerariesView({
                 )}
               </div>
 
-              {/* Sub-duration row for "일정별 여행": 당일치기 | 1박 | 2박 3박 | 4박 (Horizontal, no emojis) */}
-              {isScheduleActive && (
-                <div className="pt-2 border-t border-[#F1EFEC] flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap flex-nowrap">
-                  <span className="text-xs font-semibold text-[#4A5568] shrink-0 mr-1 hidden sm:inline">
-                    {language === 'KR' ? '일정 선택:' : 'Duration:'}
-                  </span>
 
-                  {/* 당일치기 */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedScheduleDuration('DAY');
-                      handleSelectCategory('DAY');
-                    }}
-                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
-                      activeCategory === 'DAY'
-                        ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
-                        : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
-                    }`}
-                  >
-                    {language === 'KR' ? '당일치기' : 'Day Trip'}
-                  </button>
-
-                  {/* 1박 */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedScheduleDuration('1NIGHT');
-                      handleSelectCategory('1NIGHT');
-                    }}
-                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
-                      activeCategory === '1NIGHT'
-                        ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
-                        : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
-                    }`}
-                  >
-                    {language === 'KR' ? '1박' : '1 Night'}
-                  </button>
-
-                  {/* 2박 3박 */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedScheduleDuration('2NIGHTS');
-                      handleSelectCategory('2NIGHTS');
-                    }}
-                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
-                      activeCategory === '2NIGHTS' || activeCategory === '3NIGHTS'
-                        ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
-                        : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
-                    }`}
-                  >
-                    {language === 'KR' ? '2박 3박' : '2-3 Nights'}
-                  </button>
-
-                  {/* 4박 */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedScheduleDuration('4NIGHTS');
-                      handleSelectCategory('4NIGHTS');
-                    }}
-                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer border whitespace-nowrap shrink-0 ${
-                      activeCategory === '4NIGHTS'
-                        ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
-                        : 'bg-[#FBFBF9] hover:bg-white text-[#4A5568] hover:text-[#11161B] border-[#E5E2DC]'
-                    }`}
-                  >
-                    {language === 'KR' ? '4박' : '4 Nights'}
-                  </button>
-                </div>
-              )}
             </div>
           )}
 
@@ -3407,6 +3332,78 @@ export default function BusanItinerariesView({
                 </div>
               ) : (
                 <div className="space-y-6 animate-fade-in text-left">
+                  {/* 일정별 여행 Main Header & Category Filter Pills */}
+                  {isScheduleActive && (
+                    <div className="space-y-5 animate-fade-in text-left">
+                      {/* Main Header with line icon */}
+                      <div className="space-y-2 border-b border-slate-200 pb-5 text-left">
+                        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
+                          <Calendar className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0" />
+                          <span>{language === 'KR' ? '일정별 여행' : 'Itinerary Travel'}</span>
+                        </h2>
+                        <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                          {language === 'KR'
+                            ? '여행 일정과 스타일에 맞춰 부산의 핵심 명소와 미식을 알차게 즐기는 맞춤 추천 코스를 만나보세요.'
+                            : 'Explore curated Busan travel itineraries tailored to your schedule and travel pace.'}
+                        </p>
+                      </div>
+
+                      {/* Category Filter Pills: 당일치기 | 1박 | 2박 3박 */}
+                      <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                        {/* 당일치기 */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedScheduleDuration('DAY');
+                            handleSelectCategory('DAY');
+                          }}
+                          className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
+                            activeCategory === 'DAY'
+                              ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
+                              : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
+                          }`}
+                        >
+                          <span>{language === 'KR' ? '당일치기' : 'Day Trip'}</span>
+                        </button>
+
+                        {/* 1박 */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedScheduleDuration('1NIGHT');
+                            handleSelectCategory('1NIGHT');
+                          }}
+                          className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
+                            activeCategory === '1NIGHT'
+                              ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
+                              : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
+                          }`}
+                        >
+                          <span>{language === 'KR' ? '1박' : '1 Night'}</span>
+                        </button>
+
+                        {/* 2박 3박 */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedScheduleDuration('2NIGHTS');
+                            handleSelectCategory('2NIGHTS');
+                          }}
+                          className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
+                            activeCategory === '2NIGHTS' || activeCategory === '3NIGHTS' || activeCategory === '4NIGHTS'
+                              ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
+                              : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
+                          }`}
+                        >
+                          <span>{language === 'KR' ? '2박 3박' : '2-3 Nights'}</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                   {(() => {
                     const course = filteredCourses[0];
                     if (!course) return null;
@@ -3415,11 +3412,12 @@ export default function BusanItinerariesView({
                 case 'DAY':
                   return (
                     <div className="space-y-6 animate-fade-in text-left">
-                      {/* Header */}
-                      <div className="space-y-2 border-b border-slate-200 pb-5 text-left">
-                        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                          {language === 'KR' ? '당일치기 코스' : 'One Day Essential Course'}
-                        </h2>
+                      {/* Sub-course Title with line icon */}
+                      <div className="space-y-1 text-left pt-1">
+                        <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                          <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
+                          <span>{language === 'KR' ? '당일치기 코스' : 'One Day Essential Course'}</span>
+                        </h3>
                         <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                           {language === 'KR'
                             ? '하루 동안 부산의 핵심 명소와 미식을 알차게 둘러보는 추천 일정입니다.'
@@ -3484,11 +3482,12 @@ export default function BusanItinerariesView({
               case '1NIGHT':
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Header */}
-                    <div className="space-y-2 border-b border-slate-200 pb-5 text-left">
-                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                        {language === 'KR' ? '1박 2일 코스' : '1 Night 2 Days Course'}
-                      </h2>
+                    {/* Sub-course Title with line icon */}
+                    <div className="space-y-1 text-left pt-1">
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                        <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '1박 2일 코스' : '1 Night 2 Days Course'}</span>
+                      </h3>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                         {language === 'KR'
                           ? '광안리 밤바다와 도심 속 힐링을 여유롭게 만끽하는 1박 2일 일정입니다.'
@@ -3616,11 +3615,12 @@ export default function BusanItinerariesView({
               case '2NIGHTS':
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Header */}
-                    <div className="space-y-2 border-b border-slate-200 pb-5 text-left">
-                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                        {language === 'KR' ? '2박 3일 코스' : '2 Nights 3 Days Course'}
-                      </h2>
+                    {/* Sub-course Title with line icon */}
+                    <div className="space-y-1 text-left pt-1">
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                        <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '2박 3일 코스' : '2 Nights 3 Days Course'}</span>
+                      </h3>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                         {language === 'KR'
                           ? '감성 카페거리부터 푸른 바다 비경까지 부산 전역을 일주하는 2박 3일 일정입니다.'
