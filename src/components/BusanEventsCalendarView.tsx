@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, MapPin, Tag, Shuffle, Info, Sparkles, CheckCircle2, ExternalLink, X, Train, ArrowRight, Navigation, RefreshCw } from 'lucide-react';
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, MapPin, Tag, Shuffle, Info, Sparkles, CheckCircle2, ExternalLink, X, Train, ArrowRight, Navigation } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { STATIONS } from '../data';
 
@@ -491,8 +491,6 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
   
   // Real-time automated sync states
   const [eventsList, setEventsList] = useState<BusanEvent[]>(BUSAN_EVENTS_DATA);
-  const [isSyncing, setIsSyncing] = useState<boolean>(false);
-  const [autoSyncedCount, setAutoSyncedCount] = useState<number>(0);
 
   // Auto-load live events from Busan Official Portal via background sync API
   useEffect(() => {
@@ -505,13 +503,10 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
           if (Array.isArray(data.events) && data.events.length > 0 && isMounted) {
             const map = new Map<string, BusanEvent>();
             BUSAN_EVENTS_DATA.forEach(e => map.set(e.id, e));
-            let syncedCount = 0;
             data.events.forEach((e: BusanEvent) => {
               map.set(e.id, e);
-              if (e.isAutoSynced) syncedCount++;
             });
             setEventsList(Array.from(map.values()));
-            setAutoSyncedCount(syncedCount);
           }
         }
       } catch (err) {
@@ -521,32 +516,6 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
     loadBusanEvents();
     return () => { isMounted = false; };
   }, []);
-
-  const handleManualSync = async () => {
-    if (isSyncing) return;
-    setIsSyncing(true);
-    try {
-      const res = await fetch('/api/busan-events/sync', { method: 'POST' });
-      if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data.events) && data.events.length > 0) {
-          const map = new Map<string, BusanEvent>();
-          BUSAN_EVENTS_DATA.forEach(e => map.set(e.id, e));
-          let syncedCount = 0;
-          data.events.forEach((e: BusanEvent) => {
-            map.set(e.id, e);
-            if (e.isAutoSynced) syncedCount++;
-          });
-          setEventsList(Array.from(map.values()));
-          setAutoSyncedCount(syncedCount);
-        }
-      }
-    } catch (err) {
-      console.error('Manual sync error:', err);
-    } finally {
-      setIsSyncing(false);
-    }
-  };
   
   // Interactive day events overlay popup state
   const [dayEventsPopup, setDayEventsPopup] = useState<{ dateString: string; events: BusanEvent[] } | null>(null);
@@ -738,53 +707,25 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
       {/* Intro Header Section */}
       <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] text-left">
         <h2 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-800 flex items-center gap-2.5">
-          <span>📅</span>
+          <span className="p-2 sm:p-2.5 rounded-2xl bg-sky-50 text-[#004481] border border-sky-100 shadow-2xs shrink-0 inline-flex items-center justify-center">
+            <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#004481]" />
+          </span>
           <span>{language === 'KR' ? '부산 주요일정표' : 'Busan Main Festival Calendar'}</span>
         </h2>
         <p className="text-sm sm:text-base text-slate-500 mt-2 leading-relaxed font-semibold">
           {language === 'KR' 
-            ? '부산 대표 축제 및 문화 공연, 드론쇼의 행사 일정을 한 눈에!' 
-            : 'Explore high-fidelity seasonal festivals, cultural parades, multi-drone lighting shows, and concerts in Busan with wheel-friendly accessibility guidelines.'}
+            ? '한 눈에 부산 대표 축제 보기' 
+            : 'View Busan\'s Representative Festivals at a Glance'}
         </p>
 
-        {/* Real-time Auto-Sync Status Bar */}
-        <div className="mt-3.5 flex flex-wrap items-center justify-between gap-2.5 p-3 rounded-2xl bg-gradient-to-r from-sky-50/80 via-emerald-50/60 to-blue-50/70 border border-sky-100">
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-            </span>
-            <div className="text-xs">
-              <span className="font-extrabold text-slate-800">
-                {language === 'KR' ? '부산시 공식 문화포털 다봄 실시간 자동 연동 중' : 'Busan City Cultural Portal Live Sync Active'}
-              </span>
-              <span className="text-slate-500 ml-1.5 font-medium">
-                {language === 'KR' 
-                  ? `(현재 총 ${eventsList.length}개 행사 등록 / ${autoSyncedCount > 0 ? `${autoSyncedCount}개 실시간 자동 수집됨` : '12시간 주기 자동 갱신'})`
-                  : `(${eventsList.length} registered events / 12h auto-sync)`}
-              </span>
-            </div>
-          </div>
-
-          <button
-            onClick={handleManualSync}
-            disabled={isSyncing}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-[11px] font-bold shadow-2xs cursor-pointer transition-all active:scale-95 disabled:opacity-50"
-            title={language === 'KR' ? '지금 즉시 최신 행사 동기화' : 'Sync latest events now'}
-          >
-            <RefreshCw className={`w-3 h-3 text-sky-600 ${isSyncing ? 'animate-spin' : ''}`} />
-            <span>{isSyncing ? (language === 'KR' ? '동기화 중...' : 'Syncing...') : (language === 'KR' ? '실시간 갱신' : 'Sync Now')}</span>
-          </button>
-        </div>
-
         {/* Verification Info Notice */}
-        <div className="mt-3 pt-2.5 border-t border-slate-100 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] sm:text-xs text-slate-500">
+        <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] sm:text-xs text-slate-500">
           <span className="font-bold text-slate-700 flex items-center gap-1">
-            <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
             <span>{language === 'KR' ? '검증 정보' : 'Verified Data'}</span>
           </span>
           <span className="text-slate-300">|</span>
-          <span>조사자: <strong className="text-slate-700 font-medium">플로레르 & 부산시 공식망 자동 연동</strong></span>
+          <span>{language === 'KR' ? '조사자: ' : 'Auditor: '}<strong className="text-slate-700 font-medium">{language === 'KR' ? '플로레르' : 'Florer'}</strong></span>
           <span className="text-slate-300">|</span>
           <span>
             {language === 'KR' ? '최근 조사일: ' : 'Last Updated: '}
@@ -792,32 +733,19 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
               {language === 'KR' 
                 ? `${todayYear}년 ${todayMonth}월 ${todayDate}일 기준` 
                 : `As of ${todayYear}-${String(todayMonth).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`}
-            </strong>{' '}
-            <span className="text-blue-600">
-              {language === 'KR' ? '(12시간 주기 자동 갱신)' : '(Updated every 12h)'}
-            </span>
+            </strong>
           </span>
           <span className="text-slate-300">|</span>
           <span>
-            공식 출처:{' '}
+            {language === 'KR' ? '공식 출처: ' : 'Official Source: '}
             <a 
               href="https://www.busan.go.kr" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-blue-600 hover:text-blue-800 font-medium underline inline-flex items-center gap-0.5"
             >
-              <span>부산광역시청</span>
+              <span>{language === 'KR' ? '부산광역시청' : 'Busan Metropolitan City'}</span>
               <ExternalLink className="w-2.5 h-2.5 text-blue-600" />
-            </a>
-            {' '}&{' '}
-            <a 
-              href="https://www.busandabom.net" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-emerald-700 hover:text-emerald-900 font-medium underline inline-flex items-center gap-0.5"
-            >
-              <span>부산문화포털 다봄</span>
-              <ExternalLink className="w-2.5 h-2.5 text-emerald-700" />
             </a>
           </span>
         </div>
