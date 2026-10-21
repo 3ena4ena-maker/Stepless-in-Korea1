@@ -5298,61 +5298,8 @@ case 'EXPERIENCE': {
                       </p>
                     </div>
 
-                    {/* Busan Metro Network Guide - Clean & High Visibility without boxy borders */}
-                    <div className="space-y-3 text-left">
-                      <div className="flex items-center gap-2">
-                        <Train className="w-4 h-4 text-[#8EA85E] shrink-0 stroke-[2.2]" />
-                        <h3 className="font-extrabold text-sm sm:text-base text-slate-900">
-                          {language === 'KR' ? '부산 도시철도 통합 노선 네트워크 안내' : 'Busan Transit Network Guide'}
-                        </h3>
-                      </div>
-                      <p className="text-xs text-slate-600 leading-relaxed">
-                        {language === 'KR'
-                          ? '부산 도시철도는 1호선, 2호선, 3호선, 4호선과 부산김해경전철, 동해선으로 구성되어 부산 시내 전역 및 김해공항, 기장 오시리아, 울산 태화강까지 편리하게 이동할 수 있습니다.'
-                          : 'Busan transit system comprises Lines 1–4, BGL Light Rail, and Donghae Line, conveniently connecting the entire city, Gimhae Airport, Osiria, and Ulsan.'}
-                      </p>
-
-                      <div className="space-y-2.5 pt-1 text-xs">
-                        {/* 1호선 */}
-                        <div className="flex items-start sm:items-center gap-2.5 flex-wrap sm:flex-nowrap p-2.5 rounded-xl bg-orange-50/60 border border-orange-200/70">
-                          <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-[#EA580C] text-white shrink-0 shadow-2xs">
-                            {language === 'KR' ? '1호선' : 'Line 1'}
-                          </span>
-                          <span className="font-extrabold text-[#9A3412] shrink-0">노포역 ↔ 다대포해수욕장역</span>
-                          <span className="text-orange-300 hidden sm:inline">|</span>
-                          <span className="text-slate-600">
-                            {language === 'KR'
-                              ? '총 40개 역 (39.9km) · 원도심, 동래, 남포, 부산역 축'
-                              : '40 stations (39.9km) · Old Downtown, Dongnae, Nampo, Busan Stn'}
-                          </span>
-                        </div>
-
-                        {/* 2호선 */}
-                        <div className="flex items-start sm:items-center gap-2.5 flex-wrap sm:flex-nowrap p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-200/70">
-                          <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-[#16A34A] text-white shrink-0 shadow-2xs">
-                            {language === 'KR' ? '2호선' : 'Line 2'}
-                          </span>
-                          <span className="font-extrabold text-[#166534] shrink-0">장산역 ↔ 양산역</span>
-                          <span className="text-emerald-300 hidden sm:inline">|</span>
-                          <span className="text-slate-600">
-                            {language === 'KR'
-                              ? '총 43개 역 (45.2km) · 해운대, 센텀, 광안리, 서면 축'
-                              : '43 stations (45.2km) · Haeundae, Centum, Gwangalli, Seomyeon'}
-                          </span>
-                        </div>
-
-                        {/* 환승 및 지선 노선 안내 */}
-                        <div className="flex flex-wrap items-center gap-1.5 pt-0.5 text-[11px] text-slate-500">
-                          <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium">3호선 (수영 ↔ 대저)</span>
-                          <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium">4호선 (미남 ↔ 안평)</span>
-                          <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium">부산김해경전철 (사상 ↔ 가야대)</span>
-                          <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium">동해선 (부전 ↔ 태화강)</span>
-                        </div>
-                      </div>
-                    </div>
-
                     {/* Line Switcher & Filter Controller */}
-                    <div className="space-y-4 pt-3 text-left">
+                    <div className="space-y-4 pt-1 text-left">
                       <div className="flex items-center gap-2 border-b border-slate-200 pb-2.5">
                         <Train className="w-4 h-4 text-[#8EA85E] shrink-0 stroke-[2.2]" />
                         <h4 className="text-sm sm:text-base font-extrabold text-slate-900">
@@ -5373,26 +5320,32 @@ case 'EXPERIENCE': {
                             }
                             setSelectedStationGroup('ALL');
                           }}
-                          className={`p-4 rounded-xl border text-left transition-all duration-200 cursor-pointer flex items-center justify-between ${
+                          className={`p-4 rounded-xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between gap-2 ${
                             currentLine === 'LINE1'
                               ? 'bg-[#FFF7ED] border-[#FDBA74] text-[#9A3412] shadow-2xs'
                               : 'bg-white hover:bg-[#FFF7ED]/40 text-slate-700 border-slate-200/90'
                           }`}
                         >
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-md ${
-                                currentLine === 'LINE1' ? 'bg-[#EA580C] text-white shadow-2xs' : 'bg-orange-100 text-[#C2410C]'
-                              }`}>
-                                1호선 (Line 1)
-                              </span>
-                              {currentLine === 'LINE1' && (
-                                <span className="text-xs font-bold text-[#EA580C]">✓ {language === 'KR' ? '선택됨' : 'Selected'}</span>
-                              )}
-                            </div>
-                            <p className="text-xs text-slate-600 font-normal">
-                              {language === 'KR' ? '중앙·남포·자갈치 · 온천장 · 범어사 · 서면·부전 · 부산역' : 'Jungang · Nampo · Oncheonjang · Beomeosa · Seomyeon · Busan Stn'}
-                            </p>
+                          <div className="flex items-center justify-between gap-2 w-full">
+                            <span className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-md ${
+                              currentLine === 'LINE1' ? 'bg-[#EA580C] text-white shadow-2xs' : 'bg-orange-100 text-[#C2410C]'
+                            }`}>
+                              1호선 (Line 1)
+                            </span>
+                            {currentLine === 'LINE1' && (
+                              <span className="text-xs font-bold text-[#EA580C]">✓ {language === 'KR' ? '선택됨' : 'Selected'}</span>
+                            )}
+                          </div>
+                          <div className="text-xs text-slate-600 font-normal leading-relaxed">
+                            <span className="font-bold text-slate-900">
+                              {language === 'KR' ? '노포역 ↔ 다대포해수욕장역' : 'Nopo Stn ↔ Dadaepo Beach Stn'}
+                            </span>
+                            <span className="text-orange-300 mx-1.5 font-bold">|</span>
+                            <span>
+                              {language === 'KR'
+                                ? '총 40개 역 (39.9km) · 원도심, 동래, 남포, 부산역 축'
+                                : '40 stations (39.9km) · Old Downtown, Dongnae, Nampo, Busan Stn'}
+                            </span>
                           </div>
                         </button>
 
@@ -5407,26 +5360,32 @@ case 'EXPERIENCE': {
                             }
                             setSelectedStationGroup('ALL');
                           }}
-                          className={`p-4 rounded-xl border text-left transition-all duration-200 cursor-pointer flex items-center justify-between ${
+                          className={`p-4 rounded-xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between gap-2 ${
                             currentLine === 'LINE2'
                               ? 'bg-[#F0FDF4] border-[#86EFAC] text-[#166534] shadow-2xs'
                               : 'bg-white hover:bg-[#F0FDF4]/40 text-slate-700 border-slate-200/90'
                           }`}
                         >
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-md ${
-                                currentLine === 'LINE2' ? 'bg-[#16A34A] text-white shadow-2xs' : 'bg-emerald-100 text-[#15803D]'
-                              }`}>
-                                2호선 (Line 2)
-                              </span>
-                              {currentLine === 'LINE2' && (
-                                <span className="text-xs font-bold text-[#16A34A]">✓ {language === 'KR' ? '선택됨' : 'Selected'}</span>
-                              )}
-                            </div>
-                            <p className="text-xs text-slate-600 font-normal">
-                              {language === 'KR' ? '화명 · 덕천 · 전포 · 금련산·광안리 · 센텀시티 · 해운대·동백' : 'Hwamyeong · Deokcheon · Jeonpo · Gwangalli · Centum · Haeundae'}
-                            </p>
+                          <div className="flex items-center justify-between gap-2 w-full">
+                            <span className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-md ${
+                              currentLine === 'LINE2' ? 'bg-[#16A34A] text-white shadow-2xs' : 'bg-emerald-100 text-[#15803D]'
+                            }`}>
+                              2호선 (Line 2)
+                            </span>
+                            {currentLine === 'LINE2' && (
+                              <span className="text-xs font-bold text-[#16A34A]">✓ {language === 'KR' ? '선택됨' : 'Selected'}</span>
+                            )}
+                          </div>
+                          <div className="text-xs text-slate-600 font-normal leading-relaxed">
+                            <span className="font-bold text-slate-900">
+                              {language === 'KR' ? '장산역 ↔ 양산역' : 'Jangsan Stn ↔ Yangsan Stn'}
+                            </span>
+                            <span className="text-emerald-300 mx-1.5 font-bold">|</span>
+                            <span>
+                              {language === 'KR'
+                                ? '총 43개 역 (45.2km) · 해운대, 센텀, 광안리, 서면 축'
+                                : '43 stations (45.2km) · Haeundae, Centum, Gwangalli, Seomyeon'}
+                            </span>
                           </div>
                         </button>
                       </div>
