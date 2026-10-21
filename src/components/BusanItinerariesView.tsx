@@ -1378,9 +1378,8 @@ function AttractionPhotoThumbnail({
       <img
         src={src}
         alt={alt || '부산 명소'}
-        className={`w-full h-full object-cover transition-opacity duration-200 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        className="w-full h-full object-cover"
         referrerPolicy="no-referrer"
-        onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
       />
     </div>

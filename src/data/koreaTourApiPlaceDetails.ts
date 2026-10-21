@@ -11,6 +11,7 @@
 
 import { BUSAN_TOUR_API_SPOTS } from './tourApiSpots';
 import { BUSAN_ITINERARIES } from './itineraries';
+import { BARRIER_FREE_PLACES } from './barrierFreeData';
 
 export interface OpenApiBarrierFreeItem {
   available: boolean;
@@ -1233,7 +1234,7 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
     categoryEn: 'Beach/Nature',
     districtKo: '수영구',
     districtEn: 'Suyeong-gu',
-    firstImage: 'https://tong.visitkorea.or.kr/cms/resource/75/2677875_image2_1.jpg',
+    firstImage: 'https://tong.visitkorea.or.kr/cms/resource/45/3311245_image2_1.jpg',
     additionalImages: [],
     addressRoadKo: '부산광역시 수영구 광안해변로 219',
     addressRoadEn: '219 Gwanganhaebyeon-ro, Suyeong-gu, Busan',
@@ -4384,11 +4385,13 @@ export function getKoreaTourApiPlaceDetail(targetId: string): OpenApiPlaceDetail
     };
   }
 
-  // 4. BUSAN_ITINERARIES 검색 (식도락, 전통시장, 체험, 지하철 역세권 명소)
+  // 4. BUSAN_ITINERARIES 검색 (식도락, 전통시장, 체험, 지하철 역세권 명소 - 띄어쓰기 완전 무관 매칭)
   const cleanTarget = normId.replace(/^place-/, '').replace(/-/g, ' ');
+  const cleanTargetNoSpace = cleanTarget.replace(/[\s_\-·~()&/]+/g, '');
   for (const course of BUSAN_ITINERARIES) {
     for (const step of course.steps) {
       const stepKo = step.titleKo.toLowerCase();
+      const stepKoNoSpace = stepKo.replace(/[\s_\-·~()&/]+/g, '');
       const stepEn = step.titleEn.toLowerCase();
       const stepId = step.id ? step.id.toLowerCase() : '';
       const stepContentId = step.contentId ? step.contentId.toLowerCase() : '';
@@ -4398,7 +4401,8 @@ export function getKoreaTourApiPlaceDetail(targetId: string): OpenApiPlaceDetail
         (stepContentId && (stepContentId === normId || normId.includes(stepContentId))) ||
         stepKo.includes(cleanTarget) ||
         cleanTarget.includes(stepKo) ||
-        (stepEn && stepEn.includes(cleanTarget))
+        (stepEn && stepEn.includes(cleanTarget)) ||
+        (cleanTargetNoSpace.length >= 2 && (stepKoNoSpace.includes(cleanTargetNoSpace) || cleanTargetNoSpace.includes(stepKoNoSpace)))
       ) {
         const cleanNameKo = step.titleKo.split(':')[0].trim();
         const cleanNameEn = step.titleEn.split(':')[0].trim();
@@ -4440,6 +4444,53 @@ export function getKoreaTourApiPlaceDetail(targetId: string): OpenApiPlaceDetail
         };
       }
     }
+  }
+
+  // 4-1. BARRIER_FREE_PLACES 검색 (공백 및 특수기호 100% 무관 매칭)
+  const bfPlace = BARRIER_FREE_PLACES.find((p) => {
+    const pCleanKo = (p.nameKo || p.name || '').toLowerCase().replace(/[\s_\-·~()&/]+/g, '');
+    const pCleanEn = (p.nameEn || '').toLowerCase().replace(/[\s_\-·~()&/]+/g, '');
+    return (
+      p.id.toLowerCase() === normId ||
+      (p.contentId && p.contentId.toLowerCase() === normId) ||
+      (p.contentid && p.contentid.toLowerCase() === normId) ||
+      (normClean.length >= 2 && (pCleanKo === normClean || pCleanEn === normClean || pCleanKo.includes(normClean) || normClean.includes(pCleanKo)))
+    );
+  });
+
+  if (bfPlace) {
+    return {
+      id: bfPlace.id,
+      contentId: bfPlace.contentId || bfPlace.contentid || '',
+      nameKo: bfPlace.nameKo || bfPlace.name,
+      nameEn: bfPlace.nameEn || bfPlace.name,
+      categoryKo: bfPlace.categoryKo || '부산 명소',
+      categoryEn: bfPlace.categoryEn || 'Busan Spot',
+      districtKo: bfPlace.districtKo || '부산광역시',
+      districtEn: bfPlace.districtEn || 'Busan',
+      firstImage: bfPlace.image || '',
+      additionalImages: [],
+      addressRoadKo: bfPlace.addressKo || bfPlace.address,
+      addressRoadEn: bfPlace.addressEn || 'Busan, Republic of Korea',
+      addressLotKo: '',
+      addressLotEn: '',
+      zipcode: '',
+      latitude: bfPlace.latitude || 35.1796,
+      longitude: bfPlace.longitude || 129.0756,
+      tel: bfPlace.tel || '',
+      overviewKo: bfPlace.descriptionKo || bfPlace.description || '',
+      overviewEn: bfPlace.descriptionEn || bfPlace.description || '',
+      nearestStationNameKo: bfPlace.transit?.subway?.stationNameKo || '인근 지하철역',
+      nearestStationNameEn: bfPlace.transit?.subway?.stationNameEn || 'Nearby Metro Station',
+      recommendedExit: bfPlace.transit?.subway?.exit || '지하철역 출구',
+      walkingDistanceMeters: bfPlace.transit?.subway?.walkingDistanceMeters || 300,
+      walkingTimeMinutes: bfPlace.transit?.subway?.walkingTimeMinutes || 5,
+      transitTipKo: bfPlace.transit?.subway?.routeGuideKo || '',
+      transitTipEn: bfPlace.transit?.subway?.routeGuideEn || '',
+      barrierFree: {},
+      apiSource: '한국관광공사 TourAPI 공공데이터',
+      modifiedTime: new Date().toISOString()
+    };
   }
 
   // 5. 만약 place- 로 시작하거나 특정 이름이 전달된 경우, 파싱하여 안전한 기본 정보 반환

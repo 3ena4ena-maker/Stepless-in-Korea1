@@ -1982,7 +1982,7 @@ const RAW_BARRIER_FREE_PLACES: TouristPlace[] = [
     description: '광안대교를 가장 아름답게 조망할 수 있는 해변으로, 해안도로를 따라 단차 없는 광폭 보행로와 해변 테라스 쉼터가 이어져 있습니다.',
     descriptionKo: '광안대교를 가장 아름답게 조망할 수 있는 해변으로, 해안도로를 따라 단차 없는 광폭 보행로와 해변 테라스 쉼터가 이어져 있습니다.',
     descriptionEn: 'Famous beachfront offering panoramic views of Gwangandaegyo Bridge with wide, step-free coastal promenade.',
-    image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://tong.visitkorea.or.kr/cms/resource/45/3311245_image2_1.jpg',
     latitude: 35.1532,
     longitude: 129.1186,
     accessibilityGrade: 'COMFORTABLE',

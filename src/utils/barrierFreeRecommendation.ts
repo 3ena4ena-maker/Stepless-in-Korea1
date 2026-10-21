@@ -6,6 +6,7 @@
  * 한국관광공사 무장애 관광 OpenAPI (KorWithAPI) 응답 객체와의 매핑 및 확장이 가능하도록 설계
  */
 
+import { getKoreaTourApiPlaceDetail } from '../data/koreaTourApiPlaceDetails';
 import {
   UserType,
   TouristPlace,
@@ -355,11 +356,30 @@ export function getRecommendedPlaces(
  * 5. 한국관광공사 TourAPI 관광지 이미지 헬퍼
  * contentId 기반으로 이미지를 매핑하거나 fallback 처리
  */
-export function getPlaceImageUrl(contentId: string, fallbackUrl?: string): string {
-  // 등록된 contentId의 기본 이미지 조회
-  const found = BARRIER_FREE_PLACES.find((p) => p.contentId === contentId || p.contentid === contentId);
+export function getPlaceImageUrl(contentIdOrName: string, fallbackUrl?: string): string {
+  if (!contentIdOrName) return fallbackUrl || '';
+
+  // 1. BARRIER_FREE_PLACES에서 contentId, id, 또는 장소명(공백 및 특수기호 100% 무관 정규화) 매칭
+  const cleanKey = contentIdOrName.toLowerCase().replace(/[\s_\-·~()&/]+/g, '');
+  const found = BARRIER_FREE_PLACES.find((p) => {
+    const pCleanKo = (p.nameKo || p.name || '').toLowerCase().replace(/[\s_\-·~()&/]+/g, '');
+    const pCleanEn = (p.nameEn || '').toLowerCase().replace(/[\s_\-·~()&/]+/g, '');
+    return (
+      p.contentId === contentIdOrName ||
+      p.contentid === contentIdOrName ||
+      p.id === contentIdOrName ||
+      (cleanKey.length >= 2 && (pCleanKo === cleanKey || pCleanEn === cleanKey || pCleanKo.includes(cleanKey) || cleanKey.includes(pCleanKo)))
+    );
+  });
   if (found && found.image) {
     return found.image;
   }
+
+  // 2. 한국관광공사 TourAPI 공공데이터/OpenAPI 상세 데이터셋(공백 무시 지원)에서 조회
+  const detail = getKoreaTourApiPlaceDetail(contentIdOrName) || getKoreaTourApiPlaceDetail(cleanKey);
+  if (detail && detail.firstImage) {
+    return detail.firstImage;
+  }
+
   return fallbackUrl || '';
 }

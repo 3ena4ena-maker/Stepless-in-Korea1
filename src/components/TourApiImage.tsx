@@ -25,7 +25,6 @@ export default function TourApiImage({
   fallbackTitle,
 }: TourApiImageProps) {
   const [error, setError] = useState(false);
-  const [loaded, setLoaded] = useState(false);
 
   // contentId가 있으면 해당 이미지 우선, 없거나 실패 시 제공된 src 또는 기본 이미지
   const initialUrl = contentId ? getPlaceImageUrl(contentId, src) : src;
@@ -36,17 +35,13 @@ export default function TourApiImage({
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-slate-100">
-      {!loaded && (
-        <div className="absolute inset-0 bg-slate-100 animate-pulse" />
-      )}
       <img
         src={initialUrl}
         alt={alt}
         loading="lazy"
         referrerPolicy="no-referrer"
-        onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
-        className={`${className} transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        className={className}
       />
     </div>
   );

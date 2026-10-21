@@ -35,12 +35,10 @@ import TourApiImage from './TourApiImage';
 
 function CourseStepThumbnail({ contentId, src, alt }: { contentId?: string; src?: string; alt: string }) {
   const [error, setError] = React.useState(false);
-  const [loaded, setLoaded] = React.useState(false);
   const initialUrl = contentId ? getPlaceImageUrl(contentId, src) : src;
 
   React.useEffect(() => {
     setError(false);
-    setLoaded(false);
   }, [initialUrl]);
 
   if (!initialUrl || error) {
@@ -54,9 +52,8 @@ function CourseStepThumbnail({ contentId, src, alt }: { contentId?: string; src?
         alt={alt}
         loading="lazy"
         referrerPolicy="no-referrer"
-        onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
-        className={`w-full h-full object-cover transition-opacity duration-200 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        className="w-full h-full object-cover"
       />
     </div>
   );
