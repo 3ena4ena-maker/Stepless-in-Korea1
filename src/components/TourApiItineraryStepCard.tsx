@@ -340,29 +340,6 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
             </div>
           </div>
         )}
-
-        {/* 대중교통 및 지하철 연계 정보 (상단 카드 미노출 시에만 폴백) */}
-        {!hasAnyCardInfo && step.stationInfoKo && (
-          <div className="mt-2 text-xs font-medium text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1.5 rounded-lg border border-[#E5E2DC] flex items-center justify-between gap-2 flex-wrap">
-            <div className="flex items-center gap-1.5">
-              <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />
-              <span>{language === 'KR' ? step.stationInfoKo : step.stationInfoEn}</span>
-            </div>
-            {onSelectStation && step.stationInfoKo.includes('역') && (
-              <button
-                type="button"
-                onClick={() => {
-                  const match = step.stationInfoKo.match(/([가-힣]+역)/);
-                  if (match) onSelectStation(match[1]);
-                }}
-                className="text-[10px] font-bold text-[#0A2540] hover:underline flex items-center gap-0.5"
-              >
-                <span>역사 무장애 정보</span>
-                <ExternalLink className="w-3 h-3" />
-              </button>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

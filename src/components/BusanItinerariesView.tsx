@@ -3421,7 +3421,11 @@ export default function BusanItinerariesView({
                     const course = filteredCourses[0];
                     if (!course) return null;
 
-                    switch (activeCategory) {
+                    const effectiveCategory = activeCategory === 'SCHEDULE' 
+                      ? (selectedScheduleDuration || 'DAY') 
+                      : activeCategory;
+
+                    switch (effectiveCategory) {
                 case 'DAY': {
                   const dayCourses = filteredCourses.filter(c => c.category === 'DAY');
                   const currentCourse = dayCourses.find(c => c.id === selectedDayCourseId) || dayCourses[0] || course;

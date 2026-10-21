@@ -2526,7 +2526,8 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         stationInfoEn: 'Hotel Nongshim, 32 Oncheonjang-ro 107beon-gil, Dongnae-gu, Busan (Line 1 Oncheonjang Station Exit 1, 5-min walk)',
         naverMapLinks: [
           {
-            name: '허심청',
+            labelKo: '허심청',
+            labelEn: 'Hurshimchung Spa',
             url: 'https://map.naver.com/v5/search/%ED%97%88%EC%8B%AC%EC%B2%AD'
           }
         ],
