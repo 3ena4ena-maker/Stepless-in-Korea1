@@ -955,7 +955,7 @@ export default function App() {
         canonicalUrl = "https://stepless.kr/tips/taxi";
       } else if (tipsSubPage === 'exploration') {
         pageTitle = "부산 탐구생활 - 핫이슈 & 실전 여행 꿀팁 | 스텝레스 Stepless";
-        pageDesc = "부캉이 포토존부터 캐리어 짐 보관소, 짐 배송 팁까지 로컬만의 실전 노하우를 확인하세요.";
+        pageDesc = "로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지! 부캉이 포토존과 캐리어 짐 보관 가이드.";
         canonicalUrl = "https://stepless.kr/tips/exploration";
       } else if (tipsSubPage === 'courses') {
         pageTitle = "부산 테마별 & 일정별 추천 여행 코스 | 스텝레스 Stepless";

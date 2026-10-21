@@ -2411,7 +2411,7 @@ export default function BusanItinerariesView({
                       {language === 'KR' ? '부산 탐구생활' : 'Busan Life & Tips'}
                     </h3>
                     <span className="text-[10px] text-[#4A5568] font-medium mt-0.5 block truncate">
-                      {language === 'KR' ? '핫이슈·실전 여행 꿀팁' : 'Hot Issues & Hacks'}
+                      {language === 'KR' ? '로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지!' : 'Local hacks & trending Busan news'}
                     </span>
                   </div>
                 </div>
@@ -2584,8 +2584,8 @@ export default function BusanItinerariesView({
                   </div>
                   <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mt-3 mb-4">
                     {language === 'KR'
-                      ? '요즘 부산에서 가장 핫한 부캉이 포토존부터 두 손 가볍게 다니는 캐리어 보관소까지, 로컬만의 실전 꿀팁과 핫이슈를 확인하세요.'
-                      : 'Explore trending hotspots like the Bootech mascot, luggage storage hacks, and local insider tips.'}
+                      ? '로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지!'
+                      : 'From local insider hacks to the hottest trending Busan news!'}
                   </p>
                 </div>
                 <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-800 group-hover:text-[#0A2540]">
@@ -7487,8 +7487,8 @@ case 'EXPERIENCE': {
               </h2>
               <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed mt-1.5 max-w-2xl">
                 {language === 'KR'
-                  ? '요즘 부산에서 가장 핫한 트렌드부터 여행의 피로를 덜어주는 알짜배기 실전 꿀팁까지! 로컬만이 전해줄 수 있는 알찬 정보를 한눈에 살펴보세요.'
-                  : 'From trending hotspots like the Bootech mascot to essential luggage hacks—insider tips curated to make your trip effortless.'}
+                  ? '로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지!'
+                  : 'From local insider hacks to the hottest trending Busan news!'}
               </p>
             </div>
 
