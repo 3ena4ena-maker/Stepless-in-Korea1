@@ -80,9 +80,17 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
   const isSaved = isBookmarked(step.id || step.titleKo);
 
   const bf = detail?.barrierFree;
-  const hasAnyDetailInfo = Boolean(
-    (detail?.firstImage && !imageError) || 
-    detail?.addressRoadKo || 
+  const effectiveImage = (!imageError && detail?.firstImage) ? detail.firstImage : (step.firstImage || '');
+  const effectiveAddressKo = detail?.addressRoadKo || step.addressRoadKo || step.addressKo || '';
+  const effectiveAddressEn = detail?.addressRoadEn || step.addressRoadEn || step.addressEn || effectiveAddressKo;
+  const effectiveAddress = language === 'KR' ? effectiveAddressKo : effectiveAddressEn;
+  const naverMapUrl = step.naverMapUrl || `https://map.naver.com/p/search/${encodeURIComponent(step.titleKo)}`;
+  const googleMapUrl = step.googleMapUrl || `https://maps.google.com/?q=${encodeURIComponent(step.titleKo + ' 부산')}`;
+
+  const hasAnyCardInfo = Boolean(
+    effectiveImage || 
+    effectiveAddress || 
+    step.stationInfoKo || 
     (bf && Object.values(bf).some((v: any) => v?.available))
   );
 
@@ -93,7 +101,7 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
         <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-[10px] shrink-0">
           {stepNumber}
         </span>
-        <span className="font-mono text-[11px] text-[#4A5568]">{step.time}</span>
+        {step.time ? <span className="font-mono text-[11px] text-[#4A5568]">{step.time}</span> : null}
       </div>
 
       {/* 카드 본체 */}
@@ -160,16 +168,15 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
           </div>
         </div>
 
-        {/* 한국관광공사 API 데이터 연동 영역 (등록 장소일 때) */}
-        {hasKtoData && detail && hasAnyDetailInfo && (
+        {/* 사진, 주소, 지도 바로가기 & 대중교통 연계 영역 */}
+        {hasAnyCardInfo && (
           <div className="space-y-3 pt-1">
-            {/* 사진 & 주소 복합 정보 */}
-            <div className="flex flex-col sm:flex-row gap-3 bg-[#FBFBF9] p-3 rounded-lg border border-[#E5E2DC]">
-              {detail.firstImage && !imageError ? (
-                <div className="w-full sm:w-28 sm:h-20 rounded-md overflow-hidden bg-slate-100 shrink-0 border border-[#E5E2DC]">
+            <div className="flex flex-col sm:flex-row gap-3 bg-[#FBFBF9] p-3 sm:p-3.5 rounded-lg border border-[#E5E2DC]">
+              {effectiveImage ? (
+                <div className="w-full sm:w-32 sm:h-24 rounded-md overflow-hidden bg-slate-100 shrink-0 border border-[#E5E2DC]">
                   <img
-                    src={detail.firstImage}
-                    alt={detail.nameKo}
+                    src={effectiveImage}
+                    alt={language === 'KR' ? step.titleKo : step.titleEn}
                     className={`w-full h-full object-cover transition-opacity duration-200 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                     referrerPolicy="no-referrer"
                     onLoad={() => setImageLoaded(true)}
@@ -178,39 +185,100 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
                 </div>
               ) : null}
               
-              <div className="flex-1 space-y-1.5 text-xs">
-                {detail.addressRoadKo && (
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-start gap-1.5 text-[#4A5568]">
+              <div className="flex-1 space-y-2 text-xs min-w-0">
+                {effectiveAddress && (
+                  <div className="flex items-start justify-between gap-2 flex-wrap">
+                    <div className="flex items-start gap-1.5 text-[#4A5568] min-w-0 flex-1">
                       <MapPin className="w-3.5 h-3.5 text-[#0A2540] shrink-0 mt-0.5" />
-                      <span className="line-clamp-2 leading-relaxed">
-                        {language === 'KR' ? detail.addressRoadKo : detail.addressRoadEn}
+                      <span className="leading-relaxed break-words">
+                        {effectiveAddress}
                       </span>
                     </div>
-                    <button
-                      type="button"
-                      onClick={(e) => handleCopy(e, detail.addressRoadKo)}
-                      className="text-[10px] px-2 py-0.5 rounded bg-white border border-[#E5E2DC] text-[#0A2540] hover:bg-[#F4EBE1] shrink-0 flex items-center gap-1 transition-colors"
-                      title="주소 복사"
-                    >
-                      {copied ? (
-                        <>
-                          <Check className="w-3 h-3 text-emerald-600" />
-                          <span className="text-emerald-700 font-bold">복사됨</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3 h-3" />
-                          <span>복사</span>
-                        </>
-                      )}
-                    </button>
+
+                    {/* 주소 복사 + 네이버지도 + 구글맵 바로 연결 아이콘 */}
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button
+                        type="button"
+                        onClick={(e) => handleCopy(e, effectiveAddress)}
+                        className="text-[10px] px-2 py-1 rounded bg-white border border-[#E5E2DC] text-[#0A2540] hover:bg-[#F4EBE1] shrink-0 flex items-center gap-1 transition-colors cursor-pointer"
+                        title={language === 'KR' ? '주소 복사' : 'Copy address'}
+                      >
+                        {copied ? (
+                          <>
+                            <Check className="w-3 h-3 text-emerald-600" />
+                            <span className="text-emerald-700 font-bold">복사됨</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3" />
+                            <span>복사</span>
+                          </>
+                        )}
+                      </button>
+
+                      {/* 네이버 지도 바로 연결 */}
+                      <a
+                        href={naverMapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-6 h-6 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                        title={language === 'KR' ? `${step.titleKo} 네이버 지도에서 길찾기/위치 보기` : 'View on Naver Map'}
+                        aria-label="Naver Map"
+                      >
+                        <svg className="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24">
+                          <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
+                        </svg>
+                      </a>
+
+                      {/* 구글 지도 바로 연결 */}
+                      <a
+                        href={googleMapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-6 h-6 rounded-md bg-white border border-[#E5E2DC] hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                        title={language === 'KR' ? `${step.titleKo} 구글 지도에서 위치 보기` : 'View on Google Maps'}
+                        aria-label="Google Maps"
+                      >
+                        <svg viewBox="0 0 92 135" className="w-3 h-3" fill="none">
+                          <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
+                          <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
+                          <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
+                          <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
+                          <circle cx="46" cy="46" r="18" fill="#FFFFFF"/>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                {/* 주소 바로 아래 KTX / 지하철 / 대중교통 연계 정보 */}
+                {step.stationInfoKo && (
+                  <div className="flex items-center justify-between gap-2 text-xs font-medium text-[#0A2540] bg-white px-2.5 py-1.5 rounded-md border border-[#E5E2DC] flex-wrap">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <Train className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
+                      <span className="leading-snug">{language === 'KR' ? step.stationInfoKo : (step.stationInfoEn || step.stationInfoKo)}</span>
+                    </div>
+                    {onSelectStation && step.stationInfoKo.includes('역') && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const match = step.stationInfoKo?.match(/([가-힣]+역)/);
+                          if (match) onSelectStation(match[1]);
+                        }}
+                        className="text-[10px] font-bold text-[#8EA85E] hover:underline flex items-center gap-0.5 shrink-0 cursor-pointer"
+                      >
+                        <span>역사 정보</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </button>
+                    )}
                   </div>
                 )}
 
                 {/* 무장애 편의시설 주요 뱃지 노출 */}
                 {bf && (
-                  <div className="flex flex-wrap gap-1 pt-1">
+                  <div className="flex flex-wrap gap-1 pt-0.5">
                     {bf.wheelchair?.available && (
                       <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
                         <span>♿</span>
@@ -332,8 +400,8 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
           </div>
         )}
 
-        {/* 대중교통 및 지하철 연계 정보 */}
-        {step.stationInfoKo && (
+        {/* 대중교통 및 지하철 연계 정보 (상단 카드 미노출 시에만 폴백) */}
+        {!hasAnyCardInfo && step.stationInfoKo && (
           <div className="mt-2 text-xs font-medium text-[#0A2540] bg-[#FBFBF9] px-2.5 py-1.5 rounded-lg border border-[#E5E2DC] flex items-center justify-between gap-2 flex-wrap">
             <div className="flex items-center gap-1.5">
               <Train className="w-3.5 h-3.5 text-[#0A2540] shrink-0" />

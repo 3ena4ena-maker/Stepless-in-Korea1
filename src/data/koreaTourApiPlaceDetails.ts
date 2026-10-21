@@ -2063,6 +2063,94 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
     },
   },
 
+  // 18-B. 신세계백화점 센텀시티
+  'spot-shinsegae-centum': {
+    id: 'spot-shinsegae-centum',
+    contentId: '1016443',
+    nameKo: '신세계 센텀시티',
+    nameEn: 'Shinsegae Centum City',
+    categoryKo: '쇼핑/복합문화',
+    categoryEn: 'Shopping/Culture',
+    districtKo: '해운대구',
+    districtEn: 'Haeundae-gu',
+    firstImage: 'https://tong.visitkorea.or.kr/cms/resource/17/3026417_image2_1.JPG',
+    additionalImages: [],
+    addressRoadKo: '부산광역시 해운대구 센텀남대로 35',
+    addressRoadEn: '35 Centumnam-daero, Haeundae-gu, Busan',
+    addressLotKo: '부산광역시 해운대구 우동 1495',
+    addressLotEn: '1495 U-dong, Haeundae-gu, Busan',
+    zipcode: '48058',
+    latitude: 35.1689,
+    longitude: 129.1298,
+    tel: '1588-1234',
+    telDescKo: '신세계 센텀시티 고객센터',
+    overviewKo: '세계 최대 규모의 백화점으로, 쇼핑과 다양한 미식, 스파랜드 등 풍성한 문화 시설을 갖추고 있습니다.',
+    overviewEn: 'World’s largest department store featuring luxury shopping, diverse cuisine, ice rink, and Spa Land.',
+    useTimeKo: '월~목 10:30 ~ 20:00 / 금~일 및 공휴일 10:30 ~ 20:30',
+    useTimeEn: 'Mon~Thu 10:30~20:00 / Fri~Sun & Holidays 10:30~20:30',
+    restDateKo: '백화점 정기휴점일 (월 1회 월요일)',
+    restDateEn: 'Monthly scheduled closed day',
+    feeKo: '무료 입장 (내부 시설별 이용료 상이)',
+    feeEn: 'Free admission (facility fees vary)',
+    homepage: 'https://www.shinsegae.com',
+    subwayLine: '2호선',
+    nearestStationNameKo: '센텀시티역 (2호선)',
+    nearestStationNameEn: 'Centum City Station (Line 2)',
+    recommendedExit: '센텀시티역 지하 직결 연결통로',
+    walkingDistanceMeters: 50,
+    walkingTimeMinutes: 1,
+    transitTipKo: '지하철 2호선 센텀시티역 개찰구에서 백화점 지하 1·2층으로 계단 없이 바로 연결됩니다.',
+    transitTipEn: 'Direct step-free connection from Centum City Station gates to B1/B2 department store levels.',
+    apiSource: '한국관광공사 공공데이터포털 KorWithService2 무장애 관광정보',
+    modifiedTime: new Date().toISOString(),
+    barrierFree: {
+      wheelchair: {
+        available: true,
+        titleKo: '휠체어 대여 및 무단차 평지',
+        titleEn: 'Wheelchair Rental & Flat Corridor',
+        tag: '휠체어 대여 및 전 구역 평지',
+        icon: 'Wheelchair',
+        descKo: '안내데스크에서 유모차 및 휠체어 무료 대여가 가능하며 전 층 엘리베이터가 완비되어 있습니다.',
+        descEn: 'Free wheelchair and stroller rentals at info desk. Elevators accessible on all floors.'
+      },
+      elevator: {
+        available: true,
+        titleKo: '대형 엘리베이터 다수 완비',
+        titleEn: 'Spacious Accessible Elevators',
+        tag: '대형 엘리베이터 다수',
+        icon: 'Elevator',
+        descKo: '백화점 전 층에 유모차 및 휠체어 전용 배려 승강기가 운행됩니다.',
+        descEn: 'Accessible priority elevators operated across all floors.'
+      },
+      restroom: {
+        available: true,
+        titleKo: '장애인 화장실 및 패밀리 라운지',
+        titleEn: 'Accessible Restroom & Nursery',
+        tag: '장애인 화장실 및 수유실',
+        icon: 'Restroom',
+        descKo: '각 층별 장애인 전용 화장실과 패밀리 라운지, 유아휴게실이 완비되어 있습니다.',
+        descEn: 'Accessible restrooms and family nursery rooms available on every floor.'
+      },
+      route: {
+        available: true,
+        titleKo: '지하철역 무단차 직결 통로',
+        titleEn: 'Step-Free Subway Connection',
+        tag: '지하철역 무단차 직결',
+        icon: 'Route',
+        descKo: '센텀시티역에서 백화점 입구까지 100% 무단차 평지 보행로로 연결됩니다.',
+        descEn: '100% barrier-free flat corridor directly from Centum City subway station.'
+      },
+      stroller: {
+        available: true,
+        titleKo: '유모차 무료 대여소',
+        titleEn: 'Stroller Rental Service',
+        tag: '유모차 대여 완비',
+        icon: 'Baby',
+        descKo: '지하 1층 및 1층 컨시어지에서 유아차 무료 대여가 가능합니다.',
+        descEn: 'Free stroller rental available at B1 and 1F concierges.'
+      }
+    }
+  },
   // 18. 해운대 블루라인파크 & 해변열차
   'spot-blueline': {
     id: 'spot-blueline',

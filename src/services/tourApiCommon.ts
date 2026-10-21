@@ -44,7 +44,10 @@ export function matchTourApiSpotId(titleOrText: string): string | null {
   if (t.includes('해양박물관') || t.includes('국립해양')) {
     return 'spot-104';
   }
-  if (t.includes('벡스코') || t.includes('bexco') || t.includes('센텀') || t.includes('시립미술관')) {
+  if (t.includes('신세계') || (t.includes('센텀') && !t.includes('벡스코') && !t.includes('시립미술관') && !t.includes('영화의전당'))) {
+    return 'spot-shinsegae-centum';
+  }
+  if (t.includes('벡스코') || t.includes('bexco') || t.includes('시립미술관')) {
     return 'spot-103';
   }
   if (t.includes('비프광장') || t.includes('biff광장') || t.includes('biff 광장') || t.includes('비프 광장')) {

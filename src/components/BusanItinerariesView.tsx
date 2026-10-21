@@ -1559,6 +1559,7 @@ export default function BusanItinerariesView({
     }
     return 'DAY';
   });
+  const [selectedDayCourseId, setSelectedDayCourseId] = useState<string>('itinerary-day-first-time-1');
 
   const [selectedThemeFilter, setSelectedThemeFilter] = useState<'ALL' | 'GOURMET' | 'EXPERIENCE'>('ALL');
   const [selectedDurationFilter, setSelectedDurationFilter] = useState<'ALL' | 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS'>('ALL');
@@ -3426,35 +3427,66 @@ export default function BusanItinerariesView({
                     if (!course) return null;
 
                     switch (activeCategory) {
-                case 'DAY':
+                case 'DAY': {
+                  const dayCourses = filteredCourses.filter(c => c.category === 'DAY');
+                  const currentCourse = dayCourses.find(c => c.id === selectedDayCourseId) || dayCourses[0] || course;
+
                   return (
                     <div className="space-y-6 animate-fade-in text-left">
-                      {/* Sub-course Title with line icon */}
-                      <div className="space-y-1 text-left pt-1">
-                        <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-                          <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
-                          <span>{language === 'KR' ? '당일치기 코스' : 'One Day Essential Course'}</span>
-                        </h3>
-                        <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
-                          {language === 'KR'
-                            ? '하루 동안 부산의 핵심 명소와 미식을 알차게 둘러보는 추천 일정입니다.'
-                            : 'A curated 1-day itinerary covering essential Busan highlights.'}
-                        </p>
+                      {/* Sub-course Title with line icon & course tabs */}
+                      <div className="space-y-3 text-left pt-1">
+                        <div className="space-y-1 text-left">
+                          <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                            <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
+                            <span>{language === 'KR' ? '당일치기 코스 (부산 처음 방문)' : '1-Day Course (First Time in Busan)'}</span>
+                          </h3>
+                          <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                            {language === 'KR'
+                              ? '부산을 처음 방문하는 여행자를 위해 꼭 둘러봐야 할 핵심 명소만 엄선한 2가지 당일치기 추천 코스입니다.'
+                              : 'Curated 1-day itineraries featuring essential highlights for first-time visitors.'}
+                          </p>
+                        </div>
+
+                        {/* 2개 추천 코스 선택 탭 버튼 */}
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {dayCourses.map((c, idx) => {
+                            const isSelected = currentCourse.id === c.id;
+                            return (
+                              <button
+                                key={c.id}
+                                type="button"
+                                onClick={() => setSelectedDayCourseId(c.id)}
+                                className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer border flex items-center gap-1.5 ${
+                                  isSelected
+                                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-xs'
+                                    : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
+                                }`}
+                              >
+                                <span>
+                                  {idx === 0
+                                    ? (language === 'KR' ? '🌊 코스 1: 해운대 · 광안리 (동부산)' : 'Course 1: Haeundae & Gwangalli')
+                                    : (language === 'KR' ? '🏙️ 코스 2: 감천 · 원도심 · 태종대' : 'Course 2: Gamcheon & Yeongdo')}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
 
                       {/* Day Trip Route Flow & Steps */}
                       <div className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-6 text-left">
+                        {/* 추천 동선 요약 플로우 */}
                         <div className="bg-[#FBFBF9] p-3.5 rounded-lg border border-[#E5E2DC] flex items-center flex-wrap gap-2 text-xs font-bold text-[#11161B]">
                           <span className="text-[10px] font-mono font-bold text-[#0A2540] bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC] uppercase tracking-wider shrink-0 flex items-center gap-1">
-                            <Compass className="w-3.5 h-3.5" />
-                            <span>{language === 'KR' ? '추천 동선' : 'Route Flow'}</span>
+                            <Compass className="w-3.5 h-3.5 text-[#8EA85E]" />
+                            <span>{language === 'KR' ? '추천 동선 요약' : 'Route Flow'}</span>
                           </span>
                           <div className="flex items-center flex-wrap gap-1.5 text-[#11161B]">
-                            {course.steps.map((s, idx) => (
+                            {currentCourse.steps.map((s, idx) => (
                               <React.Fragment key={idx}>
-                                {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-[#4A5568]" />}
-                                <span className="bg-white px-2.5 py-1 rounded-md border border-[#E5E2DC] font-medium text-xs text-[#11161B]">
-                                  {language === 'KR' ? s.titleKo.split(' ')[0] : s.titleEn.split(' ')[0]}
+                                {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-[#8EA85E]" />}
+                                <span className="bg-white px-2.5 py-1 rounded-md border border-[#E5E2DC] font-semibold text-xs text-[#11161B]">
+                                  {language === 'KR' ? (s.shortTitleKo || s.titleKo) : (s.shortTitleEn || s.titleEn)}
                                 </span>
                               </React.Fragment>
                             ))}
@@ -3464,7 +3496,7 @@ export default function BusanItinerariesView({
                         {/* Steps Timeline */}
                         <div className="relative pl-7 sm:pl-9 space-y-6 text-left">
                           <div className="absolute left-[13px] sm:left-[17px] top-3 bottom-3 w-px bg-[#E5E2DC]"></div>
-                          {course.steps.map((st, sidx) => (
+                          {currentCourse.steps.map((st, sidx) => (
                             <TourApiItineraryStepCard
                               key={sidx}
                               stepNumber={sidx + 1}
@@ -3483,15 +3515,16 @@ export default function BusanItinerariesView({
                         </div>
                         <div className="space-y-1 text-left">
                           <span className="text-[11px] font-mono font-bold text-[#0A2540] uppercase tracking-wider block">
-                            {language === 'KR' ? '당일치기 여행 팁' : 'ONE DAY TRAVEL TIP'}
+                            {language === 'KR' ? `${currentCourse.titleKo} 여행 팁` : 'DAY TRIP TIP'}
                           </span>
                           <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
-                            {language === 'KR' ? course.overallTipKo : course.overallTipEn}
+                            {language === 'KR' ? currentCourse.overallTipKo : currentCourse.overallTipEn}
                           </p>
                         </div>
                       </div>
                     </div>
                   );
+                }
 
               // -------------------------------------------------------------
               // PAGE 2: 1 NIGHT (1박)
