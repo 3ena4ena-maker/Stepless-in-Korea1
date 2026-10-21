@@ -342,6 +342,8 @@ interface RegionDetail {
     addressEn?: string;
     tipKo?: string;
     tipEn?: string;
+    imageUrl?: string;
+    isTourApi?: boolean;
   }[];
 }
 
@@ -369,7 +371,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 영도구 영선동4가',
         addressEn: 'Yeongseon-dong 4-ga, Yeongdo-gu, Busan',
         tipKo: '남포역 7번 출구 또는 자갈치역 3번 출구 정류장에서 영도 방향 시내버스(7, 71, 508번 등)로 환승하세요.',
-        tipEn: 'Transfer to city bus (#7, #71, or #508) heading to Yeongdo from Nampo Station Exit 7 or Jagalchi Station Exit 3.'
+        tipEn: 'Transfer to city bus (#7, #71, or #508) heading to Yeongdo from Nampo Station Exit 7 or Jagalchi Station Exit 3.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/70/3561970_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '부산영화체험박물관',
@@ -385,7 +389,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 중구 대청로126번길 12',
         addressEn: '12, Daecheong-ro 126beon-gil, Jung-gu, Busan',
         tipKo: '중앙역 5번 출구(계단)에서 도보 약 5분 거리에 위치하고 있으며 트릭아이 뮤지엄과 함께 관람하기 좋습니다.',
-        tipEn: '5-minute walk from Jungang Station Exit 5 (stairs).'
+        tipEn: '5-minute walk from Jungang Station Exit 5 (stairs).',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/19/3539019_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '부산근현대역사관',
@@ -401,7 +407,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 중구 대청로 104',
         addressEn: '104, Daecheong-ro, Jung-gu, Busan',
         tipKo: '중앙역 5번 출구(계단)에서 직진하여 대청로 사거리 방향으로 올라오시면 편리하게 방문 가능합니다.',
-        tipEn: 'Accessible straight from Jungang Station Exit 5 (stairs).'
+        tipEn: 'Accessible straight from Jungang Station Exit 5 (stairs).',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/54/3492254_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '용두산공원',
@@ -417,7 +425,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 중구 용두산길 37',
         addressEn: '37, Yongdusan-gil, Jung-gu, Busan',
         tipKo: '중앙역 5번 출구 이용 시 계단 산책로로 올라가며, 남포역 7번 출구 이용 시 광복로 에스컬레이터/엘리베이터로 편하게 진입 가능합니다.',
-        tipEn: 'Use Jungang Stn Exit 5 for stairs, or Nampo Stn Exit 7 for the Gwangbok-ro covered escalator & elevator.'
+        tipEn: 'Use Jungang Stn Exit 5 for stairs, or Nampo Stn Exit 7 for the Gwangbok-ro covered escalator & elevator.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/47/4105447_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: 'BIFF광장 길거리음식',
@@ -433,7 +443,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 중구 구덕로 58-1',
         addressEn: '58-1, Gudeok-ro, Jung-gu, Busan',
         tipKo: '자갈치역 3번 출구로 나오면 도보 1분 거리에서 따끈한 씨앗호떡과 다양한 핑거 푸드를 바로 만나볼 수 있습니다.',
-        tipEn: 'Located 1 minute walk from Jagalchi Station Exit 3.'
+        tipEn: 'Located 1 minute walk from Jagalchi Station Exit 3.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/54/2674654_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '국제시장 & 부평깡통시장',
@@ -449,7 +461,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 중구 중구로 36',
         addressEn: '36, Junggu-ro, Jung-gu, Busan',
         tipKo: '자갈치역 3번 출구에서 진입 가능하며, 저녁 시간대 부평깡통야시장의 이색 먹거리를 꼭 맛보세요.',
-        tipEn: 'Accessible via Jagalchi Stn Exit 3. Night market opens every evening.'
+        tipEn: 'Accessible via Jagalchi Stn Exit 3. Night market opens every evening.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/16/1350616_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '자갈치시장',
@@ -465,7 +479,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 중구 자갈치해안로 52',
         addressEn: '52, Jagalchihaean-ro, Jung-gu, Busan',
         tipKo: '자갈치역 3번 출구에서 해안가 방향으로 도보 3분. 현대식 본관 7층 테라스 오션뷰도 무료로 관람해 보세요.',
-        tipEn: '3 mins walk towards the harbor from Jagalchi Stn Exit 3. Visit 7F observatory deck for free.'
+        tipEn: '3 mins walk towards the harbor from Jagalchi Stn Exit 3. Visit 7F observatory deck for free.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/38/1944638_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '광복로 차없는 거리',
@@ -481,7 +497,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 중구 광복로',
         addressEn: 'Gwangbok-ro, Jung-gu, Busan',
         tipKo: '남포역 7번 출구로 나오면 바로 연결되며, 주말 및 공휴일에는 차없는 거리로 여유롭게 도보 쇼핑을 즐길 수 있습니다.',
-        tipEn: 'Directly outside Nampo Station Exit 7. Car-free pedestrian street on weekends.'
+        tipEn: 'Directly outside Nampo Station Exit 7. Car-free pedestrian street on weekends.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/34/3494834_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '허심청 (호텔농심)',
@@ -497,7 +515,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 동래구 온천장로107번길 32 호텔농심',
         addressEn: 'Hotel Nongshim, 32, Oncheonjang-ro 107beon-gil, Dongnae-gu, Busan',
         tipKo: '온천장역 1번 출구에서 육교 엘리베이터를 이용해 평지로 도보 약 5분 이동 가능하며 농심호텔 단지 내에 위치해 있습니다.',
-        tipEn: '5 mins walk from Oncheonjang Stn Exit 1 elevator, located inside Hotel Nongshim complex.'
+        tipEn: '5 mins walk from Oncheonjang Stn Exit 1 elevator, located inside Hotel Nongshim complex.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/37/4090237_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '온천천 (벚꽃시즌)',
@@ -513,7 +533,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 동래구 온천천로',
         addressEn: 'Oncheoncheon-ro, Dongnae-gu, Busan',
         tipKo: '봄철 벚꽃 산책로는 완전 평지로 포장되어 여유롭게 도보 산책이나 자전거 라이딩을 즐기기에 최고입니다.',
-        tipEn: 'Flat and easily walkable paved boardwalk ideal for cherry blossom strolls.'
+        tipEn: 'Flat and easily walkable paved boardwalk ideal for cherry blossom strolls.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/33/2822333_image2_1.png',
+        isTourApi: true
       },
       {
         nameKo: '범어사',
@@ -529,7 +551,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 금정구 범어사로 250',
         addressEn: '250, Beomeosa-ro, Geumjeong-gu, Busan',
         tipKo: '범어사역 5번 출구로 나와 90번 버스로 환승하면 범어사 입구까지 편리하게 올라갈 수 있습니다.',
-        tipEn: 'Take Bus #90 from Beomeosa Station Exit 5 directly to the temple entrance.'
+        tipEn: 'Take Bus #90 from Beomeosa Station Exit 5 directly to the temple entrance.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/35/3342835_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '범어사 성보박물관',
@@ -545,7 +569,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 금정구 범어사로 250',
         addressEn: '250, Beomeosa-ro, Geumjeong-gu, Busan',
         tipKo: '범어사 진입로에 위치하여 90번 버스 이용 시 범어사 참배와 함께 함께 둘러보기 좋습니다.',
-        tipEn: 'Located along the main approach road to Beomeosa Temple.'
+        tipEn: 'Located along the main approach road to Beomeosa Temple.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/18/3342818_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '금정문화회관',
@@ -561,7 +587,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 금정구 체육공원로 7',
         addressEn: '7, Cheyukgongwon-ro, Geumjeong-gu, Busan',
         tipKo: '차량 이용 시 주차 정산 시스템이 잘 되어 있고, 금정구청 바로 옆이라 대중교통 노선 연계성도 아주 양호합니다.',
-        tipEn: 'Conveniently located near Geumjeong-gu Office with superb accessibility by city buses.'
+        tipEn: 'Conveniently located near Geumjeong-gu Office with superb accessibility by city buses.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/52/3336552_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '다대포 해수욕장 & 고우니 생태길',
@@ -577,7 +605,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 사하구 다대동 (다대포해수욕장역 1번 출구)',
         addressEn: 'Dadae-dong, Saha-gu, Busan (Exit 1)',
         tipKo: '해 질 무렵 생태길 중간 전망대에 서면 바다와 억새가 노을에 붉게 물드는 장관을 찍을 수 있습니다.',
-        tipEn: 'Arrive 30 minutes before sunset to capture the reeds turning crimson red.'
+        tipEn: 'Arrive 30 minutes before sunset to capture the reeds turning crimson red.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/15/3497115_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '다대포 꿈의 낙조분수',
@@ -593,7 +623,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 사하구 다대강변대로 14 (다대포해수욕장역 1,2번 출구)',
         addressEn: '14, Dadaegangbyun-daero, Saha-gu, Busan',
         tipKo: '봄부터 가을까지 매일 저녁 상설 무료 분수 공연이 펼쳐지니 정확한 회차 시간을 확인하세요.',
-        tipEn: 'Shows run nightly from spring to autumn for free. Check weekly show schedules online.'
+        tipEn: 'Shows run nightly from spring to autumn for free. Check weekly show schedules online.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/08/3506208_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '초량 이바구길 & 168계단 모노레일',
@@ -609,7 +641,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 동구 초량상로 49',
         addressEn: '49, Choryangsang-ro, Dong-gu, Busan',
         tipKo: '168계단 무료 모노레일을 탑승하면 계단 없이 전망대까지 오를 수 있으며, 부산항과 부산역 전경이 한눈에 펼쳐집니다.',
-        tipEn: 'Ride the free monorail to bypass the stairs and take in sweeping views of Busan Port.'
+        tipEn: 'Ride the free monorail to bypass the stairs and take in sweeping views of Busan Port.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/29/2735629_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '국립해양박물관',
@@ -625,7 +659,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 영도구 해양로301번길 45',
         addressEn: '45, Haeyang-ro 301beon-gil, Yeongdo-gu, Busan',
         tipKo: '부산역 7번 출구 정류장에서 66번 버스를 타시면 박물관 정문 바로 앞까지 이동하며, 휠체어와 유모차 전 구역 평탄 진입이 가능합니다.',
-        tipEn: 'Take Bus #66 from Busan Station Exit 7 directly to the museum gate. Completely step-free.'
+        tipEn: 'Take Bus #66 from Busan Station Exit 7 directly to the museum gate. Completely step-free.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/50/4111450_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '부전시장',
@@ -641,7 +677,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 부산진구 중앙대로783번길 23',
         addressEn: '23, Jungang-daero 783beon-gil, Busanjin-gu, Busan',
         tipKo: '부전역 1번 출구에서 평지로 곧장 연결되며, 따끈한 수제 어묵과 푸짐한 명란김밥은 필수 코스입니다.',
-        tipEn: 'Direct flat connection from Bujeon Station Exit 1. Try handmade fish cakes and gimbap.'
+        tipEn: 'Direct flat connection from Bujeon Station Exit 1. Try handmade fish cakes and gimbap.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/04/3070904_image2_1.JPG',
+        isTourApi: true
       },
       {
         nameKo: '서면 젊음의 거리 & 1번가',
@@ -657,7 +695,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 부산진구 신천대로62번길 61',
         addressEn: '61, Sincheon-daero 62beon-gil, Busanjin-gu, Busan',
         tipKo: '서면 지하상가와 연결되어 날씨에 관계없이 쇼핑하기 좋으며, 주말 저녁에는 활기찬 버스킹 공연이 펼쳐집니다.',
-        tipEn: 'Directly linked to the vast Seomyeon Underground Mall for all-weather strolls.'
+        tipEn: 'Directly linked to the vast Seomyeon Underground Mall for all-weather strolls.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/49/3498549_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '삼정타워 (Samjung Tower)',
@@ -673,7 +713,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 부산진구 중앙대로 672',
         addressEn: '672, Jungang-daero, Busanjin-gu, Busan',
         tipKo: '전 층 엘리베이터 및 완벽한 무장애 편의시설이 갖추어져 있어 유모차와 보행 약자도 편안하게 즐길 수 있습니다.',
-        tipEn: 'Features excellent elevator coverage and barrier-free amenities on every level.'
+        tipEn: 'Features excellent elevator coverage and barrier-free amenities on every level.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/31/3014331_image2_1.JPG',
+        isTourApi: true
       }
     ]
   },
@@ -700,7 +742,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 강서구 낙동남로 1191',
         addressEn: '1191, Nakdongnam-ro, Gangseo-gu, Busan',
         tipKo: '장애인 및 노약자를 위해 입구와 전시실 전체에 계단 없는 이동용 슬로프와 휠체어 대여가 완비되어 있습니다.',
-        tipEn: 'Equipped with barrier-free slopes, automatic doors, and free wheelchair rentals.'
+        tipEn: 'Equipped with barrier-free slopes, automatic doors, and free wheelchair rentals.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/95/3506195_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '감천문화마을',
@@ -716,7 +760,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 사하구 감내2로 203',
         addressEn: '203, Gamnae 2-ro, Saha-gu, Busan',
         tipKo: '마을 안쪽은 가파른 경사가 많으므로, 입구 안내소 부근 평지 전망대에서 경관을 즐기는 편이 좋습니다.',
-        tipEn: 'The village core has steep hills; enjoy the sweeping views from the flat entrance observatory.'
+        tipEn: 'The village core has steep hills; enjoy the sweeping views from the flat entrance observatory.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/16/1350616_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '전포 카페거리 & 전포 사잇길',
@@ -732,7 +778,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 부산진구 전포대로 210 (전포역 7번 출구)',
         addressEn: '210 Jeonpo-daero, Busanjin-gu, Busan (Exit 7)',
         tipKo: '전포역 7번 출구로 나오면 평지 골목을 따라 감성 소품샵과 디자인 공방들이 펼쳐져 편안하게 도보 투어를 즐길 수 있습니다.',
-        tipEn: 'Step directly out from Jeonpo Station Exit 7 for convenient flat alleyway walking.'
+        tipEn: 'Step directly out from Jeonpo Station Exit 7 for convenient flat alleyway walking.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/60/3496960_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '밀락더마켓',
@@ -748,7 +796,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 수영구 민락수변로 17번길 56',
         addressEn: '56, Millaksubyeon-ro 17beon-gil, Suyeong-gu, Busan',
         tipKo: '주말 저녁에는 바다 전망 계단 광장에서 로컬 뮤지션들의 생생한 인디 밴드 공연이 자주 열립니다.',
-        tipEn: 'Catch weekend evening live acoustic bands sitting on the grand sea-view stairs.'
+        tipEn: 'Catch weekend evening live acoustic bands sitting on the grand sea-view stairs.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/36/3495536_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '뮤지엄 원',
@@ -764,7 +814,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 해운대구 센텀서로 20 (센텀시티역 6번 출구)',
         addressEn: '20, Centumseo-ro, Haeundae-gu, Busan',
         tipKo: '내부가 평탄하여 유모차나 휠체어도 수월하게 관람 가능합니다. 편안하게 앉아 빛의 흐름을 즐기세요.',
-        tipEn: 'The entire layout is flat and barrier-free, allowing comfortable strollers or wheelchair visits.'
+        tipEn: 'The entire layout is flat and barrier-free, allowing comfortable strollers or wheelchair visits.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/21/2816421_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '해운대 블루라인파크 & 그린레일웨이',
@@ -780,7 +832,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 해운대구 청사포로 116 (해운대역 3번 출구 / 동백역)',
         addressEn: '116, Cheongsapo-ro, Haeundae-gu, Busan',
         tipKo: '휠체어/유모차 전 구간 진입 가능한 나무 데크 산책로가 조성되어 있습니다.',
-        tipEn: 'All sections are equipped with barrier-free flat boardwalks.'
+        tipEn: 'All sections are equipped with barrier-free flat boardwalks.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/77/2684877_image2_1.jpg',
+        isTourApi: true
       },
       {
         nameKo: '해동용궁사',
@@ -796,7 +850,9 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressKo: '부산 기장군 기장읍 용궁사로 86 (해운대역 7번 출구 버스 연계)',
         addressEn: '86, Yonggungsa-ro, Gijang-eup, Gijang-gun, Busan',
         tipKo: '메인 계단 대신 완만 우회로(교통약자 진입로)를 이용하시면 편하게 참배할 수 있습니다.',
-        tipEn: 'Use the gentle bypass ramp to access the temple grounds easily.'
+        tipEn: 'Use the gentle bypass ramp to access the temple grounds easily.',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/22/3495922_image2_1.jpg',
+        isTourApi: true
       }
     ]
   }
@@ -1691,23 +1747,23 @@ export default function BusanItinerariesView({
   const [showRealPoster, setShowRealPoster] = useState(false);
 
   const LINE1_STATION_TABS = [
-    { id: 'ALL', nameKo: '전체 역 보기', nameEn: 'All Line 1 Stations' },
-    { id: 'LINE1_JUNGANG_NAMPO_JAGALCHI', nameKo: '중앙역 · 남포역 · 자갈치역', nameEn: 'Jungang · Nampo · Jagalchi' },
-    { id: 'LINE1_ONCHEONJANG', nameKo: '온천장역', nameEn: 'Oncheonjang Stn' },
-    { id: 'LINE1_BEOMEOSA', nameKo: '범어사역', nameEn: 'Beomeosa Stn' },
-    { id: 'LINE1_SEOMYEON_BUJEON', nameKo: '서면역 · 부전역', nameEn: 'Seomyeon · Bujeon' },
-    { id: 'LINE1_BUSAN_STN', nameKo: '부산역', nameEn: 'Busan Station' },
-    { id: 'LINE1_DADAEPO', nameKo: '다대포해수욕장역', nameEn: 'Dadaepo Beach Stn' },
+    { id: 'ALL', nameKo: '전체 역 보기', nameEn: 'All Line 1 Stations', englishName: 'All Stations', count: 20 },
+    { id: 'LINE1_JUNGANG_NAMPO_JAGALCHI', nameKo: '중앙 · 남포 · 자갈치', nameEn: 'Jungang · Nampo · Jagalchi', englishName: 'Jungang · Nampo · Jagalchi', count: 8 },
+    { id: 'LINE1_ONCHEONJANG', nameKo: '온천장역', nameEn: 'Oncheonjang Stn', englishName: 'Oncheonjang', count: 2 },
+    { id: 'LINE1_BEOMEOSA', nameKo: '범어사역', nameEn: 'Beomeosa Stn', englishName: 'Beomeosa', count: 3 },
+    { id: 'LINE1_SEOMYEON_BUJEON', nameKo: '서면 · 부전역', nameEn: 'Seomyeon · Bujeon', englishName: 'Seomyeon · Bujeon', count: 3 },
+    { id: 'LINE1_BUSAN_STN', nameKo: '부산역', nameEn: 'Busan Station', englishName: 'Busan Stn', count: 2 },
+    { id: 'LINE1_DADAEPO', nameKo: '다대포해수욕장역', nameEn: 'Dadaepo Beach Stn', englishName: 'Dadaepo Beach', count: 2 },
   ];
 
   const LINE2_STATION_TABS = [
-    { id: 'ALL', nameKo: '전체 역 보기', nameEn: 'All Line 2 Stations' },
-    { id: 'LINE2_HWAMYEONG', nameKo: '화명역', nameEn: 'Hwamyeong Stn' },
-    { id: 'LINE2_DEOKCHEON', nameKo: '덕천역', nameEn: 'Deokcheon Stn' },
-    { id: 'LINE2_JEONPO', nameKo: '전포역', nameEn: 'Jeonpo Stn' },
-    { id: 'LINE2_GEUMRYEONSAN_GWANGALLI', nameKo: '금련산역 · 광안리역', nameEn: 'Geumryeonsan · Gwangalli' },
-    { id: 'LINE2_CENTUM_CITY', nameKo: '센텀시티역', nameEn: 'Centum City Stn' },
-    { id: 'LINE2_HAEUNDAE_DONGBAEK', nameKo: '해운대역 · 동백역', nameEn: 'Haeundae · Dongbaek' },
+    { id: 'ALL', nameKo: '전체 역 보기', nameEn: 'All Line 2 Stations', englishName: 'All Stations', count: 7 },
+    { id: 'LINE2_HWAMYEONG', nameKo: '화명역', nameEn: 'Hwamyeong Stn', englishName: 'Hwamyeong', count: 1 },
+    { id: 'LINE2_DEOKCHEON', nameKo: '덕천역', nameEn: 'Deokcheon Stn', englishName: 'Deokcheon', count: 1 },
+    { id: 'LINE2_JEONPO', nameKo: '전포역', nameEn: 'Jeonpo Stn', englishName: 'Jeonpo', count: 1 },
+    { id: 'LINE2_GEUMRYEONSAN_GWANGALLI', nameKo: '금련산 · 광안리', nameEn: 'Geumryeonsan · Gwangalli', englishName: 'Geumryeonsan · Gwangalli', count: 1 },
+    { id: 'LINE2_CENTUM_CITY', nameKo: '센텀시티역', nameEn: 'Centum City Stn', englishName: 'Centum City', count: 1 },
+    { id: 'LINE2_HAEUNDAE_DONGBAEK', nameKo: '해운대 · 동백', nameEn: 'Haeundae · Dongbaek', englishName: 'Haeundae · Dongbaek', count: 2 },
   ];
 
   const handleAnswerSelect = (optionType: 'A' | 'B') => {
@@ -5017,33 +5073,70 @@ case 'EXPERIENCE': {
                         </button>
                       </div>
 
-                      {/* Station Filter Pills (Pastel Theme matching current line) */}
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
-                        {(currentLine === 'LINE1' ? LINE1_STATION_TABS : LINE2_STATION_TABS).map((tab) => {
-                          const isActive = selectedStationGroup === tab.id;
-                          return (
+                      {/* Station Filter Cards (Subway Station Exit Style matching App.tsx) */}
+                      <div className="space-y-3 pt-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className={`w-2.5 h-2.5 rounded-full ${currentLine === 'LINE1' ? 'bg-[#EA580C]' : 'bg-[#16A34A]'}`} />
+                            <h3 className="font-bold text-sm sm:text-base text-slate-800">
+                              {language === 'KR'
+                                ? (currentLine === 'LINE1' ? '1호선 지하철역 선택' : '2호선 지하철역 선택')
+                                : (currentLine === 'LINE1' ? 'Select Line 1 Station' : 'Select Line 2 Station')}
+                            </h3>
+                          </div>
+                          {selectedStationGroup !== 'ALL' && (
                             <button
-                              key={tab.id}
                               type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedStationGroup(tab.id);
-                              }}
-                              className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer border ${
-                                isActive 
-                                  ? (currentLine === 'LINE1'
-                                      ? 'bg-[#FFF7ED] text-[#C2410C] border-[#FDBA74] shadow-2xs'
-                                      : 'bg-[#F0FDF4] text-[#15803D] border-[#86EFAC] shadow-2xs')
-                                  : 'bg-white hover:bg-slate-50 text-slate-600 border-slate-200/90'
-                              }`}
+                              onClick={() => setSelectedStationGroup('ALL')}
+                              className="text-xs text-slate-500 hover:text-slate-800 font-semibold underline underline-offset-2 cursor-pointer"
                             >
-                              {language === 'KR' ? tab.nameKo : tab.nameEn}
+                              {language === 'KR' ? '전체 역 보기' : 'Show All Stations'}
                             </button>
-                          );
-                        })}
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3">
+                          {(currentLine === 'LINE1' ? LINE1_STATION_TABS : LINE2_STATION_TABS).map((tab) => {
+                            const isActive = selectedStationGroup === tab.id;
+                            return (
+                              <button
+                                key={tab.id}
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedStationGroup(isActive && tab.id !== 'ALL' ? 'ALL' : tab.id);
+                                }}
+                                className={`p-2.5 sm:p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-0.5 active:scale-95 shadow-2xs ${
+                                  isActive
+                                    ? (currentLine === 'LINE1'
+                                        ? 'bg-[#EA580C] border-[#EA580C] text-white shadow-sm ring-2 ring-[#EA580C]/20'
+                                        : 'bg-[#16A34A] border-[#16A34A] text-white shadow-sm ring-2 ring-[#16A34A]/20')
+                                    : 'bg-white border-slate-300 hover:border-[#8EA85E] hover:bg-slate-50 text-slate-800'
+                                }`}
+                              >
+                                <span className={`font-bold text-xs sm:text-sm font-heading truncate max-w-full ${isActive ? 'text-white' : 'text-slate-800'}`}>
+                                  {language === 'KR' ? tab.nameKo : tab.nameEn}
+                                </span>
+                                <div className="text-[11px] sm:text-xs font-semibold inline-flex items-center gap-1">
+                                  <span className={isActive ? 'text-white/90 font-bold' : (currentLine === 'LINE1' ? 'text-orange-600 font-bold' : 'text-emerald-600 font-bold')}>
+                                    {tab.id === 'ALL' ? (language === 'KR' ? '전체' : 'All') : (currentLine === 'LINE1' ? '1호선' : '2호선')}
+                                  </span>
+                                  {tab.count !== undefined && (
+                                    <span className={isActive ? 'text-white/70 text-[10px]' : 'text-slate-400 text-[10px]'}>
+                                      ({tab.count}곳)
+                                    </span>
+                                  )}
+                                </div>
+                                <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold tracking-wider truncate max-w-full ${isActive ? (currentLine === 'LINE1' ? 'text-orange-100' : 'text-emerald-100') : 'text-slate-400'}`}>
+                                  {tab.englishName || tab.nameEn}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
 
-                      {/* Stations and Nearby Places List */}
+                      {/* Stations and Nearby Places List (3 Columns Grid) */}
                       <div className="space-y-8 pt-4">
                         {groupsToRender.map((group) => {
                           const placesInGroup = allLandmarks.filter(item => item.stationGroup === group.id);
@@ -5062,16 +5155,19 @@ case 'EXPERIENCE': {
                                   }`}>
                                     {language === 'KR' ? group.badgeKo : group.badgeEn}
                                   </span>
+                                  <span className="text-xs font-semibold text-slate-400">
+                                    ({placesInGroup.length}{language === 'KR' ? '곳' : ' places'})
+                                  </span>
                                 </div>
                               </div>
 
-                              {/* Places Grid under this station */}
+                              {/* Places Grid under this station - 3 Columns */}
                               {placesInGroup.length === 0 ? (
                                 <div className="text-center py-6 text-slate-400 text-xs font-medium">
                                   {language === 'KR' ? '추천 장소 정보가 준비 중입니다.' : 'Places coming soon.'}
                                 </div>
                               ) : (
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                                   {placesInGroup.map((item, idx) => {
                                     const isSaved = isBookmarked(item.nameKo);
                                     const cleanAddress = (language === 'KR' ? item.addressKo : (item.addressEn || item.addressKo || '')).replace(/\s*\([^)]*\)/g, '').trim();
@@ -5081,75 +5177,117 @@ case 'EXPERIENCE': {
                                     return (
                                       <div
                                         key={idx}
-                                        className="p-4 sm:p-5 rounded-xl border border-slate-200/80 bg-white hover:border-[#8EA85E] transition-all shadow-2xs flex flex-col justify-between gap-3 text-left"
+                                        className="rounded-2xl border border-slate-200/90 bg-white hover:border-[#8EA85E] hover:shadow-md transition-all flex flex-col justify-between overflow-hidden text-left group"
                                       >
-                                        <div className="space-y-2 text-left">
-                                          <div className="flex items-start justify-between gap-2">
-                                            <div className="space-y-0.5 min-w-0 flex-1">
-                                              <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
-                                                {language === 'KR' ? item.nameKo : item.nameEn}
-                                              </h4>
-                                              {item.tagKo && (
-                                                <span className="inline-block text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600">
-                                                  {language === 'KR' ? item.tagKo : item.tagEn}
-                                                </span>
-                                              )}
-                                            </div>
-                                            <button
-                                              type="button"
-                                              onClick={(e) => {
-                                                e.stopPropagation();
-                                                toggleMyRoute({
-                                                  id: item.nameKo,
-                                                  titleKo: item.nameKo,
-                                                  titleEn: item.nameEn,
-                                                  categoryKo: item.stationGroupNameKo || '도시철도 명소',
-                                                  categoryEn: item.stationGroupNameEn || 'Subway Landmark',
-                                                  addressRoadKo: item.addressKo,
-                                                  stationInfoKo: item.tagKo,
-                                                  stationInfoEn: item.tagEn,
-                                                  descKo: item.descKo,
-                                                  descEn: item.descEn,
-                                                });
+                                        {/* Place Photo Header */}
+                                        <div className="relative w-full aspect-[16/10] bg-slate-100 overflow-hidden">
+                                          {item.imageUrl ? (
+                                            <img
+                                              src={item.imageUrl}
+                                              alt={language === 'KR' ? item.nameKo : item.nameEn}
+                                              loading="lazy"
+                                              referrerPolicy="no-referrer"
+                                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                              onError={(e) => {
+                                                (e.currentTarget as HTMLElement).style.display = 'none';
                                               }}
-                                              className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
-                                                isSaved
-                                                  ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
-                                                  : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
-                                              }`}
-                                              title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
-                                            >
-                                              <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
-                                              <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
-                                            </button>
+                                            />
+                                          ) : (
+                                            <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-400">
+                                              <Train className="w-8 h-8 opacity-40" />
+                                            </div>
+                                          )}
+
+                                          {/* TourAPI Badge */}
+                                          {item.isTourApi && (
+                                            <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-bold tracking-tight flex items-center gap-1 shadow-xs">
+                                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                              <span>TourAPI</span>
+                                            </div>
+                                          )}
+
+                                          {/* Category Badge */}
+                                          <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-white/95 backdrop-blur-xs text-slate-800 text-[10px] font-bold shadow-xs">
+                                            {item.category === 'LANDMARK' && (language === 'KR' ? '관광명소' : 'Landmark')}
+                                            {item.category === 'CULTURE' && (language === 'KR' ? '문화예술' : 'Culture')}
+                                            {item.category === 'FOOD' && (language === 'KR' ? '미식·맛집' : 'Gourmet')}
+                                            {!item.category && (language === 'KR' ? '명소' : 'Attraction')}
+                                          </div>
+                                        </div>
+
+                                        {/* Card Content Body */}
+                                        <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-3 text-left">
+                                          <div className="space-y-2 text-left">
+                                            <div className="flex items-start justify-between gap-2">
+                                              <div className="space-y-0.5 min-w-0 flex-1">
+                                                <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
+                                                  {language === 'KR' ? item.nameKo : item.nameEn}
+                                                </h4>
+                                                <span className="text-[11px] font-medium text-slate-400 block font-mono truncate">
+                                                  {item.nameEn}
+                                                </span>
+                                                {item.tagKo && (
+                                                  <span className="inline-block text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600 mt-1">
+                                                    {language === 'KR' ? item.tagKo : item.tagEn}
+                                                  </span>
+                                                )}
+                                              </div>
+                                              <button
+                                                type="button"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  toggleMyRoute({
+                                                    id: item.nameKo,
+                                                    titleKo: item.nameKo,
+                                                    titleEn: item.nameEn,
+                                                    categoryKo: item.stationGroupNameKo || '도시철도 명소',
+                                                    categoryEn: item.stationGroupNameEn || 'Subway Landmark',
+                                                    addressRoadKo: item.addressKo,
+                                                    stationInfoKo: item.tagKo,
+                                                    stationInfoEn: item.tagEn,
+                                                    descKo: item.descKo,
+                                                    descEn: item.descEn,
+                                                  });
+                                                }}
+                                                className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
+                                                  isSaved
+                                                    ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                                    : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
+                                                }`}
+                                                title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                              >
+                                                <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                                <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                              </button>
+                                            </div>
+
+                                            <p className="text-xs text-[#4A5568] font-normal leading-relaxed whitespace-pre-line">
+                                              {language === 'KR' ? item.descKo : item.descEn}
+                                            </p>
+
+                                            {(item.tipKo || item.tipEn) && (
+                                              <div className="text-[11px] text-slate-500 pl-2.5 border-l-2 border-[#8EA85E]/50 leading-relaxed pt-0.5">
+                                                <strong className="text-slate-700 mr-1">{language === 'KR' ? '💡 로컬 팁:' : '💡 Local Tip:'}</strong>
+                                                {language === 'KR' ? item.tipKo : item.tipEn}
+                                              </div>
+                                            )}
                                           </div>
 
-                                          <p className="text-xs text-[#4A5568] font-normal leading-relaxed whitespace-pre-line">
-                                            {language === 'KR' ? item.descKo : item.descEn}
-                                          </p>
-
-                                          {(item.tipKo || item.tipEn) && (
-                                            <div className="text-[11px] text-slate-500 pl-2.5 border-l-2 border-[#8EA85E]/50 leading-relaxed pt-0.5">
-                                              <strong className="text-slate-700 mr-1">{language === 'KR' ? '💡 로컬 팁:' : '💡 Local Tip:'}</strong>
-                                              {language === 'KR' ? item.tipKo : item.tipEn}
+                                          {/* Address with MapAppIcons (No Copy Button) */}
+                                          {(item.addressKo || item.addressEn) && (
+                                            <div className="flex items-center justify-between gap-2 text-xs pt-2.5 border-t border-slate-100 flex-wrap mt-1">
+                                              <div className="flex items-center gap-1.5 text-slate-600 min-w-0 flex-1">
+                                                <MapPin className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
+                                                <span className="truncate font-medium">{language === 'KR' ? item.addressKo : item.addressEn}</span>
+                                              </div>
+                                              <MapAppIcons
+                                                naverUrl={naverUrl}
+                                                googleUrl={googleUrl}
+                                                title={item.nameKo}
+                                              />
                                             </div>
                                           )}
                                         </div>
-
-                                        {/* Address with MapAppIcons (No Copy Button) */}
-                                        {(item.addressKo || item.addressEn) && (
-                                          <div className="flex items-center justify-between gap-2 text-xs pt-2 border-t border-slate-100 flex-wrap">
-                                            <div className="flex items-center gap-1.5 text-slate-600 min-w-0 flex-1">
-                                              <MapPin className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
-                                              <span className="truncate font-medium">{language === 'KR' ? item.addressKo : item.addressEn}</span>
-                                            </div>
-                                            <MapAppIcons
-                                              naverUrl={naverUrl}
-                                              googleUrl={googleUrl}
-                                              title={item.nameKo}
-                                            />
-                                          </div>
-                                        )}
                                       </div>
                                     );
                                   })}
