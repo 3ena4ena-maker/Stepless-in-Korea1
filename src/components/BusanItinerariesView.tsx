@@ -372,7 +372,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: 'Yeongseon-dong 4-ga, Yeongdo-gu, Busan',
         tipKo: '남포역 7번 출구 또는 자갈치역 3번 출구 정류장에서 영도 방향 시내버스(7, 71, 508번 등)로 환승하세요.',
         tipEn: 'Transfer to city bus (#7, #71, or #508) heading to Yeongdo from Nampo Station Exit 7 or Jagalchi Station Exit 3.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/70/3561970_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/23/4111423_image2_1.jpg',
         isTourApi: true
       },
       {
@@ -408,7 +408,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: '104, Daecheong-ro, Jung-gu, Busan',
         tipKo: '중앙역 5번 출구(계단)에서 직진하여 대청로 사거리 방향으로 올라오시면 편리하게 방문 가능합니다.',
         tipEn: 'Accessible straight from Jungang Station Exit 5 (stairs).',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/54/3492254_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/02/4113502_image2_1.jpg',
         isTourApi: true
       },
       {
@@ -426,7 +426,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: '37, Yongdusan-gil, Jung-gu, Busan',
         tipKo: '중앙역 5번 출구 이용 시 계단 산책로로 올라가며, 남포역 7번 출구 이용 시 광복로 에스컬레이터/엘리베이터로 편하게 진입 가능합니다.',
         tipEn: 'Use Jungang Stn Exit 5 for stairs, or Nampo Stn Exit 7 for the Gwangbok-ro covered escalator & elevator.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/47/4105447_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/34/3494834_image2_1.jpg',
         isTourApi: true
       },
       {
@@ -444,7 +444,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: '58-1, Gudeok-ro, Jung-gu, Busan',
         tipKo: '자갈치역 3번 출구로 나오면 도보 1분 거리에서 따끈한 씨앗호떡과 다양한 핑거 푸드를 바로 만나볼 수 있습니다.',
         tipEn: 'Located 1 minute walk from Jagalchi Station Exit 3.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/54/2674654_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/19/3493419_image2_1.jpg',
         isTourApi: true
       },
       {
@@ -462,7 +462,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: '36, Junggu-ro, Jung-gu, Busan',
         tipKo: '자갈치역 3번 출구에서 진입 가능하며, 저녁 시간대 부평깡통야시장의 이색 먹거리를 꼭 맛보세요.',
         tipEn: 'Accessible via Jagalchi Stn Exit 3. Night market opens every evening.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/16/1350616_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/70/3561970_image2_1.jpg',
         isTourApi: true
       },
       {
@@ -480,7 +480,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: '52, Jagalchihaean-ro, Jung-gu, Busan',
         tipKo: '자갈치역 3번 출구에서 해안가 방향으로 도보 3분. 현대식 본관 7층 테라스 오션뷰도 무료로 관람해 보세요.',
         tipEn: '3 mins walk towards the harbor from Jagalchi Stn Exit 3. Visit 7F observatory deck for free.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/38/1944638_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource_photo/05/4108305_image2_1.JPG',
         isTourApi: true
       },
       {
@@ -498,7 +498,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: 'Gwangbok-ro, Jung-gu, Busan',
         tipKo: '남포역 7번 출구로 나오면 바로 연결되며, 주말 및 공휴일에는 차없는 거리로 여유롭게 도보 쇼핑을 즐길 수 있습니다.',
         tipEn: 'Directly outside Nampo Station Exit 7. Car-free pedestrian street on weekends.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/34/3494834_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/11/3049611_image2_1.JPG',
         isTourApi: true
       },
       {
@@ -552,7 +552,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: '250, Beomeosa-ro, Geumjeong-gu, Busan',
         tipKo: '범어사역 5번 출구로 나와 90번 버스로 환승하면 범어사 입구까지 편리하게 올라갈 수 있습니다.',
         tipEn: 'Take Bus #90 from Beomeosa Station Exit 5 directly to the temple entrance.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/35/3342835_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/92/3561492_image2_1.jpg',
         isTourApi: true
       },
       {
@@ -642,7 +642,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: '49, Choryangsang-ro, Dong-gu, Busan',
         tipKo: '168계단 무료 모노레일을 탑승하면 계단 없이 전망대까지 오를 수 있으며, 부산항과 부산역 전경이 한눈에 펼쳐집니다.',
         tipEn: 'Ride the free monorail to bypass the stairs and take in sweeping views of Busan Port.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/29/2735629_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/42/3496842_image2_1.jpg',
         isTourApi: true
       },
       {
@@ -696,7 +696,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: '61, Sincheon-daero 62beon-gil, Busanjin-gu, Busan',
         tipKo: '서면 지하상가와 연결되어 날씨에 관계없이 쇼핑하기 좋으며, 주말 저녁에는 활기찬 버스킹 공연이 펼쳐집니다.',
         tipEn: 'Directly linked to the vast Seomyeon Underground Mall for all-weather strolls.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/49/3498549_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/33/3496933_image2_1.jpg',
         isTourApi: true
       },
       {
@@ -761,7 +761,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: '203, Gamnae 2-ro, Saha-gu, Busan',
         tipKo: '마을 안쪽은 가파른 경사가 많으므로, 입구 안내소 부근 평지 전망대에서 경관을 즐기는 편이 좋습니다.',
         tipEn: 'The village core has steep hills; enjoy the sweeping views from the flat entrance observatory.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/16/1350616_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/91/3365491_image2_1.jpg',
         isTourApi: true
       },
       {
@@ -815,7 +815,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: '20, Centumseo-ro, Haeundae-gu, Busan',
         tipKo: '내부가 평탄하여 유모차나 휠체어도 수월하게 관람 가능합니다. 편안하게 앉아 빛의 흐름을 즐기세요.',
         tipEn: 'The entire layout is flat and barrier-free, allowing comfortable strollers or wheelchair visits.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/21/2816421_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/01/3493601_image2_1.jpg',
         isTourApi: true
       },
       {
@@ -833,7 +833,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: '116, Cheongsapo-ro, Haeundae-gu, Busan',
         tipKo: '휠체어/유모차 전 구간 진입 가능한 나무 데크 산책로가 조성되어 있습니다.',
         tipEn: 'All sections are equipped with barrier-free flat boardwalks.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/77/2684877_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/99/3546099_image2_1.jpg',
         isTourApi: true
       },
       {
@@ -851,7 +851,7 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         addressEn: '86, Yonggungsa-ro, Gijang-eup, Gijang-gun, Busan',
         tipKo: '메인 계단 대신 완만 우회로(교통약자 진입로)를 이용하시면 편하게 참배할 수 있습니다.',
         tipEn: 'Use the gentle bypass ramp to access the temple grounds easily.',
-        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/22/3495922_image2_1.jpg',
+        imageUrl: 'https://tong.visitkorea.or.kr/cms/resource/35/3499335_image2_1.jpg',
         isTourApi: true
       }
     ]
@@ -5117,16 +5117,11 @@ case 'EXPERIENCE': {
                                 <span className={`font-bold text-xs sm:text-sm font-heading truncate max-w-full ${isActive ? 'text-white' : 'text-slate-800'}`}>
                                   {language === 'KR' ? tab.nameKo : tab.nameEn}
                                 </span>
-                                <div className="text-[11px] sm:text-xs font-semibold inline-flex items-center gap-1">
-                                  <span className={isActive ? 'text-white/90 font-bold' : (currentLine === 'LINE1' ? 'text-orange-600 font-bold' : 'text-emerald-600 font-bold')}>
-                                    {tab.id === 'ALL' ? (language === 'KR' ? '전체' : 'All') : (currentLine === 'LINE1' ? '1호선' : '2호선')}
+                                {tab.count !== undefined && (
+                                  <span className={`text-[11px] sm:text-xs font-semibold ${isActive ? 'text-white/80 font-bold' : (currentLine === 'LINE1' ? 'text-orange-600 font-bold' : 'text-emerald-600 font-bold')}`}>
+                                    ({tab.count}곳)
                                   </span>
-                                  {tab.count !== undefined && (
-                                    <span className={isActive ? 'text-white/70 text-[10px]' : 'text-slate-400 text-[10px]'}>
-                                      ({tab.count}곳)
-                                    </span>
-                                  )}
-                                </div>
+                                )}
                                 <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold tracking-wider truncate max-w-full ${isActive ? (currentLine === 'LINE1' ? 'text-orange-100' : 'text-emerald-100') : 'text-slate-400'}`}>
                                   {tab.englishName || tab.nameEn}
                                 </span>
@@ -5150,11 +5145,6 @@ case 'EXPERIENCE': {
                                   <h3 className="font-extrabold text-base sm:text-lg text-slate-900 tracking-tight">
                                     {language === 'KR' ? group.nameKo : group.nameEn}
                                   </h3>
-                                  <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
-                                    currentLine === 'LINE1' ? 'bg-orange-50 text-[#C2410C] border border-orange-200/60' : 'bg-emerald-50 text-[#15803D] border border-emerald-200/60'
-                                  }`}>
-                                    {language === 'KR' ? group.badgeKo : group.badgeEn}
-                                  </span>
                                   <span className="text-xs font-semibold text-slate-400">
                                     ({placesInGroup.length}{language === 'KR' ? '곳' : ' places'})
                                   </span>
@@ -5197,22 +5187,6 @@ case 'EXPERIENCE': {
                                               <Train className="w-8 h-8 opacity-40" />
                                             </div>
                                           )}
-
-                                          {/* TourAPI Badge */}
-                                          {item.isTourApi && (
-                                            <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-bold tracking-tight flex items-center gap-1 shadow-xs">
-                                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                              <span>TourAPI</span>
-                                            </div>
-                                          )}
-
-                                          {/* Category Badge */}
-                                          <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-white/95 backdrop-blur-xs text-slate-800 text-[10px] font-bold shadow-xs">
-                                            {item.category === 'LANDMARK' && (language === 'KR' ? '관광명소' : 'Landmark')}
-                                            {item.category === 'CULTURE' && (language === 'KR' ? '문화예술' : 'Culture')}
-                                            {item.category === 'FOOD' && (language === 'KR' ? '미식·맛집' : 'Gourmet')}
-                                            {!item.category && (language === 'KR' ? '명소' : 'Attraction')}
-                                          </div>
                                         </div>
 
                                         {/* Card Content Body */}
