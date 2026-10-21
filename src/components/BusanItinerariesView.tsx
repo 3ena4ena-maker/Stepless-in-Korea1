@@ -5157,110 +5157,120 @@ case 'EXPERIENCE': {
                                   {language === 'KR' ? '추천 장소 정보가 준비 중입니다.' : 'Places coming soon.'}
                                 </div>
                               ) : (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                   {placesInGroup.map((item, idx) => {
                                     const isSaved = isBookmarked(item.nameKo);
                                     const cleanAddress = (language === 'KR' ? item.addressKo : (item.addressEn || item.addressKo || '')).replace(/\s*\([^)]*\)/g, '').trim();
                                     const naverUrl = `https://map.naver.com/v5/search/${encodeURIComponent(item.nameKo + ' ' + cleanAddress)}`;
-                                    const googleUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.nameKo + ' ' + cleanAddress)}`;
+                                    const googleUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((item.nameEn || item.nameKo) + ' ' + cleanAddress)}`;
+
+                                    const isPaid = ['영화체험박물관', '허심청', '뮤지엄 원', '뮤지엄원', '블루라인파크'].some(k => item.nameKo.includes(k));
+                                    const isFree = !isPaid;
+
+                                    const feeText = (
+                                      <span className={`text-xs sm:text-sm font-bold shrink-0 ${
+                                        isFree
+                                          ? 'text-emerald-600'
+                                          : 'text-orange-600'
+                                      }`}>
+                                        {isFree ? (language === 'KR' ? '무료' : 'Free') : (language === 'KR' ? '유료' : 'Paid')}
+                                      </span>
+                                    );
+
+                                    const displayTitle = language === 'KR' ? item.nameKo : item.nameEn;
+                                    const isLongTitle = displayTitle.length > 12;
+
+                                    const renderRouteButton = () => (
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          toggleMyRoute({
+                                            id: item.nameKo,
+                                            titleKo: item.nameKo,
+                                            titleEn: item.nameEn,
+                                            categoryKo: item.stationGroupNameKo || '도시철도 명소',
+                                            categoryEn: item.stationGroupNameEn || 'Subway Landmark',
+                                            addressRoadKo: item.addressKo,
+                                            stationInfoKo: item.tagKo,
+                                            stationInfoEn: item.tagEn,
+                                            descKo: item.descKo,
+                                            descEn: item.descEn,
+                                            firstImage: item.imageUrl,
+                                          });
+                                        }}
+                                        className={`shrink-0 px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
+                                          isSaved
+                                            ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                            : 'bg-white text-slate-500 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
+                                        }`}
+                                        title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                      >
+                                        <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                        <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                      </button>
+                                    );
 
                                     return (
                                       <div
                                         key={idx}
-                                        className="rounded-2xl border border-slate-200/90 bg-white hover:border-[#8EA85E] hover:shadow-md transition-all flex flex-col justify-between overflow-hidden text-left group"
+                                        className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors p-5 flex flex-col justify-between text-left space-y-4 shadow-xs"
                                       >
-                                        {/* Place Photo Header */}
-                                        <div className="relative w-full aspect-[16/10] bg-slate-100 overflow-hidden">
-                                          {item.imageUrl ? (
-                                            <img
+                                        <div className="space-y-3 text-left">
+                                          {/* TourAPI Image Thumbnail */}
+                                          {item.imageUrl && (
+                                            <AttractionPhotoThumbnail
                                               src={item.imageUrl}
-                                              alt={language === 'KR' ? item.nameKo : item.nameEn}
-                                              loading="lazy"
-                                              referrerPolicy="no-referrer"
-                                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                              onError={(e) => {
-                                                (e.currentTarget as HTMLElement).style.display = 'none';
-                                              }}
+                                              alt={displayTitle}
+                                              className="w-full h-32 sm:h-36"
                                             />
+                                          )}
+
+                                          {/* Title & Route Button */}
+                                          {isLongTitle ? (
+                                            <div className="space-y-1.5">
+                                              <div className="flex items-center gap-1.5 flex-wrap">
+                                                <h4 className="text-base font-bold text-[#11161B] leading-snug">
+                                                  {displayTitle}
+                                                </h4>
+                                                {feeText}
+                                              </div>
+                                              <div className="flex justify-end pt-0.5">
+                                                {renderRouteButton()}
+                                              </div>
+                                            </div>
                                           ) : (
-                                            <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-400">
-                                              <Train className="w-8 h-8 opacity-40" />
+                                            <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
+                                              <div className="flex items-center gap-1.5 flex-wrap">
+                                                <h4 className="text-base font-bold text-[#11161B] leading-snug">
+                                                  {displayTitle}
+                                                </h4>
+                                                {feeText}
+                                              </div>
+                                              {renderRouteButton()}
                                             </div>
                                           )}
+
+                                          {/* Description */}
+                                          <p className="text-xs text-[#4A5568] font-normal leading-relaxed text-left">
+                                            {language === 'KR' ? item.descKo : item.descEn}
+                                          </p>
                                         </div>
 
-                                        {/* Card Content Body */}
-                                        <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-3 text-left">
-                                          <div className="space-y-2 text-left">
-                                            <div className="flex items-start justify-between gap-2">
-                                              <div className="space-y-0.5 min-w-0 flex-1">
-                                                <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
-                                                  {language === 'KR' ? item.nameKo : item.nameEn}
-                                                </h4>
-                                                <span className="text-[11px] font-medium text-slate-400 block font-mono truncate">
-                                                  {item.nameEn}
-                                                </span>
-                                                {item.tagKo && (
-                                                  <span className="inline-block text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600 mt-1">
-                                                    {language === 'KR' ? item.tagKo : item.tagEn}
-                                                  </span>
-                                                )}
-                                              </div>
-                                              <button
-                                                type="button"
-                                                onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  toggleMyRoute({
-                                                    id: item.nameKo,
-                                                    titleKo: item.nameKo,
-                                                    titleEn: item.nameEn,
-                                                    categoryKo: item.stationGroupNameKo || '도시철도 명소',
-                                                    categoryEn: item.stationGroupNameEn || 'Subway Landmark',
-                                                    addressRoadKo: item.addressKo,
-                                                    stationInfoKo: item.tagKo,
-                                                    stationInfoEn: item.tagEn,
-                                                    descKo: item.descKo,
-                                                    descEn: item.descEn,
-                                                  });
-                                                }}
-                                                className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
-                                                  isSaved
-                                                    ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
-                                                    : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
-                                                }`}
-                                                title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
-                                              >
-                                                <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
-                                                <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
-                                              </button>
-                                            </div>
-
-                                            <p className="text-xs text-[#4A5568] font-normal leading-relaxed whitespace-pre-line">
-                                              {language === 'KR' ? item.descKo : item.descEn}
+                                        {/* Bottom Address + MapAppIcons */}
+                                        <div className="pt-3 border-t border-[#E5E2DC] text-left">
+                                          <div className="flex items-center justify-between gap-2">
+                                            <p className="text-[11px] sm:text-[11.5px] text-[#4A5568] flex items-center gap-1 leading-snug min-w-0 flex-1">
+                                              <span className="shrink-0 text-slate-400">📍</span>
+                                              <span className="truncate">{cleanAddress}</span>
                                             </p>
 
-                                            {(item.tipKo || item.tipEn) && (
-                                              <div className="text-[11px] text-slate-500 pl-2.5 border-l-2 border-[#8EA85E]/50 leading-relaxed pt-0.5">
-                                                <strong className="text-slate-700 mr-1">{language === 'KR' ? '💡 로컬 팁:' : '💡 Local Tip:'}</strong>
-                                                {language === 'KR' ? item.tipKo : item.tipEn}
-                                              </div>
-                                            )}
+                                            <MapAppIcons
+                                              naverUrl={naverUrl}
+                                              googleUrl={googleUrl}
+                                              title={item.nameKo}
+                                            />
                                           </div>
-
-                                          {/* Address with MapAppIcons (No Copy Button) */}
-                                          {(item.addressKo || item.addressEn) && (
-                                            <div className="flex items-center justify-between gap-2 text-xs pt-2.5 border-t border-slate-100 flex-wrap mt-1">
-                                              <div className="flex items-center gap-1.5 text-slate-600 min-w-0 flex-1">
-                                                <MapPin className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
-                                                <span className="truncate font-medium">{language === 'KR' ? item.addressKo : item.addressEn}</span>
-                                              </div>
-                                              <MapAppIcons
-                                                naverUrl={naverUrl}
-                                                googleUrl={googleUrl}
-                                                title={item.nameKo}
-                                              />
-                                            </div>
-                                          )}
                                         </div>
                                       </div>
                                     );
