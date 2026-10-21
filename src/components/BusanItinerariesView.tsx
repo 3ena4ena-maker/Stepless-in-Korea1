@@ -3442,7 +3442,7 @@ export default function BusanItinerariesView({
                           </p>
                         </div>
 
-                        {/* 2개 추천 코스 선택 탭 버튼 */}
+                        {/* 2개 추천 코스 선택 탭 버튼 (통일된 브랜드 초록색 & 테두리 제거) */}
                         <div className="flex items-center gap-2 flex-wrap">
                           {dayCourses.map((c, idx) => {
                             const isSelected = currentCourse.id === c.id;
@@ -3451,10 +3451,10 @@ export default function BusanItinerariesView({
                                 key={c.id}
                                 type="button"
                                 onClick={() => setSelectedDayCourseId(c.id)}
-                                className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer border flex items-center gap-1.5 ${
+                                className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs ${
                                   isSelected
-                                    ? 'bg-[#0A2540] text-white border-[#0A2540] shadow-xs'
-                                    : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
+                                    ? 'bg-[#8EA85E] text-white shadow-sm ring-2 ring-[#8EA85E]/20'
+                                    : 'bg-white hover:bg-slate-50 text-slate-700'
                                 }`}
                               >
                                 <span>
@@ -3468,19 +3468,19 @@ export default function BusanItinerariesView({
                         </div>
                       </div>
 
-                      {/* Day Trip Route Flow & Steps */}
-                      <div className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-6 text-left">
-                        {/* 추천 동선 요약 플로우 */}
-                        <div className="bg-[#FBFBF9] p-3.5 rounded-lg border border-[#E5E2DC] flex items-center flex-wrap gap-2 text-xs font-bold text-[#11161B]">
-                          <span className="text-[10px] font-mono font-bold text-[#0A2540] bg-white px-2 py-0.5 rounded-md border border-[#E5E2DC] uppercase tracking-wider shrink-0 flex items-center gap-1">
+                      {/* Day Trip Route Flow & Steps (외곽 박스 테두리 제거) */}
+                      <div className="space-y-6 text-left">
+                        {/* 추천 동선 요약 플로우 (박스 테두리 제거, 깔끔한 플랫 디자인) */}
+                        <div className="bg-slate-50/80 p-3 sm:p-4 rounded-2xl flex items-center flex-wrap gap-2 text-xs font-bold text-slate-800">
+                          <span className="text-[11px] font-bold text-[#8EA85E] bg-white px-2.5 py-1 rounded-xl shadow-2xs uppercase tracking-wider shrink-0 flex items-center gap-1.5">
                             <Compass className="w-3.5 h-3.5 text-[#8EA85E]" />
                             <span>{language === 'KR' ? '추천 동선 요약' : 'Route Flow'}</span>
                           </span>
-                          <div className="flex items-center flex-wrap gap-1.5 text-[#11161B]">
+                          <div className="flex items-center flex-wrap gap-1.5 text-slate-800">
                             {currentCourse.steps.map((s, idx) => (
                               <React.Fragment key={idx}>
-                                {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-[#8EA85E]" />}
-                                <span className="bg-white px-2.5 py-1 rounded-md border border-[#E5E2DC] font-semibold text-xs text-[#11161B]">
+                                {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-slate-400" />}
+                                <span className="bg-white px-3 py-1 rounded-xl font-bold text-xs text-slate-800 shadow-2xs">
                                   {language === 'KR' ? (s.shortTitleKo || s.titleKo) : (s.shortTitleEn || s.titleEn)}
                                 </span>
                               </React.Fragment>
@@ -3490,7 +3490,7 @@ export default function BusanItinerariesView({
 
                         {/* Steps Timeline */}
                         <div className="relative pl-7 sm:pl-9 space-y-6 text-left">
-                          <div className="absolute left-[13px] sm:left-[17px] top-3 bottom-3 w-px bg-[#E5E2DC]"></div>
+                          <div className="absolute left-[13px] sm:left-[17px] top-3 bottom-3 w-px bg-slate-200"></div>
                           {currentCourse.steps.map((st, sidx) => (
                             <TourApiItineraryStepCard
                               key={sidx}
@@ -3504,15 +3504,15 @@ export default function BusanItinerariesView({
                       </div>
 
                       {/* Overall Tip */}
-                      <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
-                        <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
+                      <div className="bg-emerald-50/50 p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-2xl border border-emerald-100">
+                        <div className="p-2 rounded-xl bg-[#8EA85E] text-white shrink-0 mt-0.5">
                           <Info className="w-4 h-4" />
                         </div>
                         <div className="space-y-1 text-left">
-                          <span className="text-[11px] font-mono font-bold text-[#0A2540] uppercase tracking-wider block">
+                          <span className="text-[11px] font-bold text-[#8EA85E] uppercase tracking-wider block">
                             {language === 'KR' ? `${currentCourse.titleKo} 여행 팁` : 'DAY TRIP TIP'}
                           </span>
-                          <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
+                          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
                             {language === 'KR' ? currentCourse.overallTipKo : currentCourse.overallTipEn}
                           </p>
                         </div>

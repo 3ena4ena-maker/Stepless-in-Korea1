@@ -104,19 +104,14 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
         {step.time ? <span className="font-mono text-[11px] text-[#4A5568]">{step.time}</span> : null}
       </div>
 
-      {/* 카드 본체 */}
-      <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#E5E2DC] space-y-3 text-left shadow-xs hover:border-[#0A2540]/40 transition-all">
+      {/* 카드 본체 (불필요한 중첩 박스 테두리 제거) */}
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 space-y-3 text-left shadow-2xs hover:border-[#8EA85E] transition-all">
         {/* 제목 & 즐겨찾기 & 아이콘 헤더 */}
         <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1 min-w-0 flex-1">
-            <h5 className="text-sm sm:text-base font-bold text-[#11161B] leading-snug">
+          <div className="space-y-0.5 min-w-0 flex-1">
+            <h5 className="text-base sm:text-lg font-bold text-slate-900 leading-snug">
               {language === 'KR' ? step.titleKo : step.titleEn}
             </h5>
-            {hasKtoData && detail && (
-              <p className="text-[11px] text-[#0A2540] font-medium truncate">
-                {language === 'KR' ? detail.nameKo : detail.nameEn} · {detail.categoryKo}
-              </p>
-            )}
           </div>
 
           <div className="flex items-center gap-1.5 shrink-0">
@@ -162,35 +157,40 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
               </span>
             </button>
 
-            <div className="p-1.5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] shrink-0 text-[#4A5568]">
+            <div className="p-1.5 rounded-xl bg-slate-100/70 shrink-0 text-[#8EA85E]">
               <ElegantIllustration type={getIllustrationType(step.titleKo)} size="sm" className="w-5 h-5 stroke-[1.8]" />
             </div>
           </div>
         </div>
 
-        {/* 사진, 주소, 지도 바로가기 & 대중교통 연계 영역 */}
+        {/* 사진, 주소, 지도 바로가기 & 대중교통 연계 영역 (박스 테두리 제거) */}
         {hasAnyCardInfo && (
           <div className="space-y-3 pt-1">
-            <div className="flex flex-col sm:flex-row gap-3 bg-[#FBFBF9] p-3 sm:p-3.5 rounded-lg border border-[#E5E2DC]">
+            <div className="flex flex-col sm:flex-row gap-3 bg-slate-50/70 p-3 sm:p-3.5 rounded-xl">
               {effectiveImage ? (
-                <div className="w-full sm:w-32 sm:h-24 rounded-md overflow-hidden bg-slate-100 shrink-0 border border-[#E5E2DC]">
+                <div className="w-full sm:w-36 sm:h-28 rounded-xl overflow-hidden bg-slate-100 shrink-0 relative shadow-2xs">
                   <img
                     src={effectiveImage}
                     alt={language === 'KR' ? step.titleKo : step.titleEn}
                     className={`w-full h-full object-cover transition-opacity duration-200 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                     referrerPolicy="no-referrer"
+                    loading="lazy"
                     onLoad={() => setImageLoaded(true)}
                     onError={() => setImageError(true)}
                   />
+                  <div className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded-full bg-slate-900/75 backdrop-blur-xs text-white text-[9px] font-bold flex items-center gap-1 shadow-xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                    <span>TourAPI</span>
+                  </div>
                 </div>
               ) : null}
               
               <div className="flex-1 space-y-2 text-xs min-w-0">
                 {effectiveAddress && (
                   <div className="flex items-start justify-between gap-2 flex-wrap">
-                    <div className="flex items-start gap-1.5 text-[#4A5568] min-w-0 flex-1">
-                      <MapPin className="w-3.5 h-3.5 text-[#0A2540] shrink-0 mt-0.5" />
-                      <span className="leading-relaxed break-words">
+                    <div className="flex items-start gap-1.5 text-slate-600 min-w-0 flex-1">
+                      <MapPin className="w-3.5 h-3.5 text-[#8EA85E] shrink-0 mt-0.5" />
+                      <span className="leading-relaxed break-words font-medium">
                         {effectiveAddress}
                       </span>
                     </div>
@@ -200,7 +200,7 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
                       <button
                         type="button"
                         onClick={(e) => handleCopy(e, effectiveAddress)}
-                        className="text-[10px] px-2 py-1 rounded bg-white border border-[#E5E2DC] text-[#0A2540] hover:bg-[#F4EBE1] shrink-0 flex items-center gap-1 transition-colors cursor-pointer"
+                        className="text-[10px] px-2 py-1 rounded-md bg-white text-slate-600 hover:bg-slate-100 shadow-2xs shrink-0 flex items-center gap-1 transition-colors cursor-pointer"
                         title={language === 'KR' ? '주소 복사' : 'Copy address'}
                       >
                         {copied ? (
@@ -237,7 +237,7 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="w-6 h-6 rounded-md bg-white border border-[#E5E2DC] hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                        className="w-6 h-6 rounded-md bg-white border border-slate-200 hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
                         title={language === 'KR' ? `${step.titleKo} 구글 지도에서 위치 보기` : 'View on Google Maps'}
                         aria-label="Google Maps"
                       >
@@ -253,9 +253,9 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
                   </div>
                 )}
 
-                {/* 주소 바로 아래 KTX / 지하철 / 대중교통 연계 정보 */}
+                {/* 주소 바로 아래 KTX / 지하철 / 대중교통 연계 정보 (테두리 제거) */}
                 {step.stationInfoKo && (
-                  <div className="flex items-center justify-between gap-2 text-xs font-medium text-[#0A2540] bg-white px-2.5 py-1.5 rounded-md border border-[#E5E2DC] flex-wrap">
+                  <div className="flex items-center justify-between gap-2 text-xs font-medium text-slate-700 bg-white px-2.5 py-1.5 rounded-lg shadow-2xs flex-wrap">
                     <div className="flex items-center gap-1.5 min-w-0">
                       <Train className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
                       <span className="leading-snug">{language === 'KR' ? step.stationInfoKo : (step.stationInfoEn || step.stationInfoKo)}</span>
@@ -272,42 +272,6 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
                         <span>역사 정보</span>
                         <ExternalLink className="w-3 h-3" />
                       </button>
-                    )}
-                  </div>
-                )}
-
-                {/* 무장애 편의시설 주요 뱃지 노출 */}
-                {bf && (
-                  <div className="flex flex-wrap gap-1 pt-0.5">
-                    {bf.wheelchair?.available && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
-                        <span>♿</span>
-                        <span>{bf.wheelchair.tag || '휠체어 접근 가능'}</span>
-                      </span>
-                    )}
-                    {bf.elevator?.available && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-200">
-                        <span>🛗</span>
-                        <span>{bf.elevator.tag || '엘리베이터 완비'}</span>
-                      </span>
-                    )}
-                    {bf.restroom?.available && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-indigo-50 text-indigo-800 border border-indigo-200">
-                        <span>🚻</span>
-                        <span>장애인화장실</span>
-                      </span>
-                    )}
-                    {bf.route?.available && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">
-                        <span>🛣️</span>
-                        <span>{bf.route.tag || '무단차 경사로'}</span>
-                      </span>
-                    )}
-                    {bf.stroller?.available && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded bg-rose-50 text-rose-800 border border-rose-200">
-                        <span>👶</span>
-                        <span>유아차 동반</span>
-                      </span>
                     )}
                   </div>
                 )}

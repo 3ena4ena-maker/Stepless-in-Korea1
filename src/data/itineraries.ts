@@ -141,7 +141,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '264 Haeundaehaebyeon-ro, Haeundae-gu, Busan',
         stationInfoKo: '지하철 2호선 해운대역 3·5번 출구 도보 7분, 무단차 해변 데크길',
         stationInfoEn: 'Subway Line 2 Haeundae Station Exit 3 or 5, 7 mins flat walk to the beach boardwalk.',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/47/4105447_image2_1.jpg',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/68/3026468_image2_1.JPG',
         naverMapUrl: 'https://map.naver.com/p/search/%ED%95%B4%EC%9A%B4%EB%8C%80%ED%95%B4%EC%88%98%EC%9A%95%EC%9E%A5',
         googleMapUrl: 'https://maps.google.com/?q=%ED%95%B4%EC%9A%B4%EB%8C%80%ED%95%B4%EC%88%98%EC%9A%95%EC%9E%A5'
       },
@@ -189,7 +189,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '86 Yonggungsa-ro, Gijang-eup, Gijang-gun, Busan',
         stationInfoKo: '동해선 오시리아역 1번 출구에서 139번 시내버스 또는 택시(약 5분)',
         stationInfoEn: 'Donghae Line Osiria Station Exit 1, transfer to bus 139 or taxi (approx. 5 mins).',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/09/128509_image2_1.jpg',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/35/3499335_image2_1.jpg',
         naverMapUrl: 'https://map.naver.com/p/search/%ED%95%B4%EB%8F%99%EC%9A%A9%EA%B6%81%EC%82%AC',
         googleMapUrl: 'https://maps.google.com/?q=%ED%95%B4%EB%8F%99%EC%9A%A9%EA%B6%81%EC%82%AC'
       },
@@ -271,7 +271,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '36 Junggu-ro (Gukje) / 48 Bupyeong 1-gil, Jung-gu, Busan',
         stationInfoKo: '지하철 1호선 자갈치역 7번 출구 / 남포역 1번 출구 도보 5분',
         stationInfoEn: 'Subway Line 1 Jagalchi Station Exit 7 or Nampo Station Exit 1, 5 mins walk.',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/70/3561970_image2_1.jpg',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/30/3476830_image2_1.jpg',
         naverMapUrl: 'https://map.naver.com/p/search/%EA%B5%AD%EC%A0%9C%EC%8B%9C%EC%9E%A5%20%EB%B6%80%ED%8F%89%EA%B9%A1%ED%86%B5%EC%8B%9C%EC%9E%A5',
         googleMapUrl: 'https://maps.google.com/?q=%EA%B5%AD%EC%A0%9C%EC%8B%9C%EC%9E%A5%20%EB%B6%80%ED%8F%89%EA%B9%A1%ED%86%B5%EC%8B%9C%EC%9E%A5'
       },
@@ -303,7 +303,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '379 Huinnyeoul-gil, Yeongdo-gu, Busan',
         stationInfoKo: '지하철 1호선 남포역 6번 출구에서 영도 방면 시내버스(6, 9, 82, 85번) 환승',
         stationInfoEn: 'Subway Line 1 Nampo Station Exit 6, transfer to local bus 6, 9, 82, or 85.',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/74/3495874_image2_1.jpg',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/70/3561970_image2_1.jpg',
         naverMapUrl: 'https://map.naver.com/p/search/%ED%9D%B0%EC%97%AC%EC%9A%B8%EB%AC%B8%ED%99%94%EB%A7%88%EC%9D%84',
         googleMapUrl: 'https://maps.google.com/?q=%ED%9D%B0%EC%97%AC%EC%9A%B8%EB%AC%B8%ED%99%94%EB%A7%88%EC%9D%84'
       },
@@ -319,7 +319,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '24 Jeonmang-ro, Yeongdo-gu, Busan',
         stationInfoKo: '지하철 1호선 부산역·남포역에서 8번, 30번, 88번, 101번 시내버스 종점 하차',
         stationInfoEn: 'From Subway Line 1 Busan or Nampo Station, take bus 8, 30, 88, or 101 to the terminus.',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/88/126088_image2_1.jpg',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/26/3501426_image2_1.jpg',
         naverMapUrl: 'https://map.naver.com/p/search/%ED%83%9C%EC%A2%85%EB%8C%80',
         googleMapUrl: 'https://maps.google.com/?q=%ED%83%9C%EC%A2%85%EB%8C%80'
       }
