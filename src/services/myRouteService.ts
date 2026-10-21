@@ -123,6 +123,8 @@ export const KNOWN_COORDINATES: Record<string, { lat: number; lng: number; addre
   '오시리아': { lat: 35.1952, lng: 129.2152, addressKo: '부산광역시 기장군 기장읍 동부산관광로 42', categoryKo: '관광단지' },
   '이재모피자': { lat: 35.1022, lng: 129.0305, addressKo: '부산광역시 중구 광복중앙로 31', categoryKo: '식도락/맛집' },
   '모모스커피': { lat: 35.2285, lng: 129.0875, addressKo: '부산광역시 금정구 오시게로 20', categoryKo: '식도락/카페' },
+  '블랙업커피': { lat: 35.1555, lng: 129.0608, addressKo: '부산광역시 부산진구 서전로10번길 41', categoryKo: '식도락/카페' },
+  '스트럿커피': { lat: 35.1559, lng: 129.0667, addressKo: '부산광역시 부산진구 동성로39번길 28', categoryKo: '식도락/카페' },
   '톤쇼우': { lat: 35.1578, lng: 129.1142, addressKo: '부산광역시 수영구 광안해변로279번길 13', categoryKo: '식도락/맛집' },
   '수변최고돼지국밥': { lat: 35.1558, lng: 129.1305, addressKo: '부산광역시 수영구 광안해변로370번길 9-32', categoryKo: '식도락/맛집' },
   '수변최고돼지국밥 민락본점': { lat: 35.1558, lng: 129.1305, addressKo: '부산광역시 수영구 광안해변로370번길 9-32', categoryKo: '식도락/맛집' },
