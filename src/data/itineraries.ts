@@ -1256,12 +1256,12 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         ]
       },
       {
-        regionId: 'famous',
-        regionNameKo: '부산 대표 유명 맛집',
-        regionNameEn: 'Famous Cuisines',
+        regionId: 'seomyeon_jeonpo',
+        regionNameKo: '서면 · 전포',
+        regionNameEn: 'Seomyeon & Jeonpo',
         foodCategory: 'restaurant',
         time: '음식점',
-        foodCategories: ["famous", "restaurant"],
+        foodCategories: ["restaurant"],
         titleKo: '원조할매낙지',
         titleEn: 'Wonjo Halmae Nakji',
         descKo: '1963년부터 50년 넘게 명맥을 이어온 부산 대표 향토음식 조방낙지(낙곱새)의 원조 명가로 자작하고 칼칼한 양념과 푸짐한 산낙지·곱창·새우의 조화가 일품입니다.',
