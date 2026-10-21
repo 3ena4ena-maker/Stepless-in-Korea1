@@ -532,20 +532,20 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         tipEn: 'Cross Yeongdo Bridge from Nampo Stn Exit 7 or take a short bus ride.'
       },
       {
-        nameKo: '허심청 (동래온천)',
-        nameEn: 'Heosimcheong Spa (Oncheonjang)',
-        descKo: '이름이 곧 목적인 곳, 사계절 내내 목욕 덕후들의 천국! 동양 최대 규모의 온천 휴양 시설에서 피로를 시원하게 풀 수 있습니다.',
-        descEn: 'The ultimate hot spring paradise for bath lovers year-round! One of Asia’s largest natural hot spring spa complexes.',
+        nameKo: '허심청 (호텔농심)',
+        nameEn: 'Heosimcheong Spa (Hotel Nongshim)',
+        descKo: '호텔농심 내에 위치한 동양 최대 규모의 천연 온천 건강랜드로, 40여 종의 다양한 효능별 온천탕과 대형 찜질시설을 갖춘 힐링 온천 체험 명소입니다.',
+        descEn: 'Asia’s largest natural hot spring spa located inside Hotel Nongshim, featuring over 40 therapeutic mineral baths, cave baths, and expansive sauna facilities.',
         category: 'LANDMARK',
         stationGroup: 'LINE1_ONCHEONJANG',
         stationGroupNameKo: '온천장역',
         stationGroupNameEn: 'Oncheonjang Stn',
-        tagKo: '사계절 목욕 덕후 천국',
-        tagEn: 'Hot Spring Spa',
-        addressKo: '부산 동래구 온천장로107번길 32',
-        addressEn: '32, Oncheonjang-ro 107beon-gil, Dongnae-gu, Busan',
-        tipKo: '온천장역 1번 출구에서 도보 약 7분 거리, 농심호텔 단지 내에 위치해 있습니다.',
-        tipEn: '7 mins walk from Oncheonjang Stn Exit 1, located inside Hotel Nongshim complex.'
+        tagKo: '호텔농심 내 도심 온천',
+        tagEn: 'Hot Spring Spa in Hotel Nongshim',
+        addressKo: '부산 동래구 온천장로107번길 32 호텔농심',
+        addressEn: 'Hotel Nongshim, 32, Oncheonjang-ro 107beon-gil, Dongnae-gu, Busan',
+        tipKo: '온천장역 1번 출구에서 육교 엘리베이터를 이용해 평지로 도보 약 5분 이동 가능하며 농심호텔 단지 내에 위치해 있습니다.',
+        tipEn: '5 mins walk from Oncheonjang Stn Exit 1 elevator, located inside Hotel Nongshim complex.'
       },
       {
         nameKo: '모모스커피 온천장본점',
@@ -708,20 +708,68 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         tipEn: 'Shows run nightly from spring to autumn for free. Check weekly show schedules online.'
       },
       {
-        nameKo: '신기산업',
-        nameEn: 'Singi Industry',
-        descKo: '영도 산복도로 높은 곳에 위치한 카페로, 통창 너머로 부산항대교의 일곱빛깔 무지개 조명 야경을 완벽히 감상합니다.',
-        descEn: 'A high-perched scenic cafe on Yeongdo hills with a brilliant panoramic view of Busan Port Bridge.',
-        category: 'CAFE',
+        nameKo: '초량 이바구길 & 168계단 모노레일',
+        nameEn: 'Choryang Ibagu-gil & 168 Stairs Monorail',
+        descKo: '부산 원도심의 근현대 역사와 피란민의 삶을 품은 골목길로, 168계단을 편안하게 오를 수 있는 무료 모노레일과 전망대가 조성되어 있습니다.',
+        descEn: 'A historic hillside trail showcasing Busan’s modern history, featuring a free monorail up the steep 168 stairs with panoramic harbor views.',
+        category: 'LANDMARK',
         stationGroup: 'LINE1_BUSAN_STN',
         stationGroupNameKo: '부산역',
         stationGroupNameEn: 'Busan Station',
-        tagKo: '부산항대교 야경',
-        tagEn: 'Port Bridge View',
-        addressKo: '부산 영도구 와치로 51',
-        addressEn: '51, Wachi-ro, Yeongdo-gu, Busan',
-        tipKo: '오르막 경사가 심해 대중교통 이용 시 부산역이나 남포역에서 영도 영선동 방향 9번 버스를 타시면 바로 정류장 앞 하차합니다.',
-        tipEn: 'The hill is steep; take local bus #9 from Busan Station to drop off directly outside the entrance.'
+        tagKo: '부산역 7번출구 도보 7분',
+        tagEn: 'Busan Stn Exit 7 (7-min walk)',
+        addressKo: '부산 동구 초량상로 49',
+        addressEn: '49, Choryangsang-ro, Dong-gu, Busan',
+        tipKo: '168계단 무료 모노레일을 탑승하면 계단 없이 전망대까지 오를 수 있으며, 부산항과 부산역 전경이 한눈에 펼쳐집니다.',
+        tipEn: 'Ride the free monorail to bypass the stairs and take in sweeping views of Busan Port.'
+      },
+      {
+        nameKo: '본전돼지국밥',
+        nameEn: 'Bonjeon Pork Soup',
+        descKo: '부산역 바로 옆에서 40년 넘게 사랑받아 온 대표 돼지국밥 노포로, 맑고 잡내 없는 깊은 육수와 부드러운 수육이 일품입니다.',
+        descEn: 'A legendary 40-year pork soup restaurant right beside Busan Station, famous for its clean, rich broth and tender sliced pork.',
+        category: 'FOOD',
+        stationGroup: 'LINE1_BUSAN_STN',
+        stationGroupNameKo: '부산역',
+        stationGroupNameEn: 'Busan Station',
+        tagKo: '부산역 5·6번출구 도보 2분',
+        tagEn: 'Busan Stn Exit 5/6 (2-min walk)',
+        addressKo: '부산 동구 중앙대로214번길 3-8',
+        addressEn: '3-8, Jungang-daero 214beon-gil, Dong-gu, Busan',
+        tipKo: '기본 국물에 신선한 부추무침(정구지)을 듬뿍 넣어 드시면 더욱 풍미가 살아납니다. 식사 시간대에는 약간의 대기가 있습니다.',
+        tipEn: 'Add fresh chives into the soup for authentic local flavor.'
+      },
+      {
+        nameKo: '초량밀면',
+        nameEn: 'Choryang Milmyeon',
+        descKo: '부산 3대 밀면으로 손꼽히는 가성비 만점의 밀면 명소로, 살얼음 동동 뜬 시원한 물밀면과 달콤매콤한 비빔밀면, 푸짐한 왕만두가 인기입니다.',
+        descEn: 'One of Busan’s top three wheat noodle spots, renowned for icy refreshingly savory broth, spicy mixed noodles, and jumbo handmade dumplings.',
+        category: 'FOOD',
+        stationGroup: 'LINE1_BUSAN_STN',
+        stationGroupNameKo: '부산역',
+        stationGroupNameEn: 'Busan Station',
+        tagKo: '부산역 7번출구 도보 3분',
+        tagEn: 'Busan Stn Exit 7 (3-min walk)',
+        addressKo: '부산 동구 중앙대로 225',
+        addressEn: '225, Jungang-daero, Dong-gu, Busan',
+        tipKo: '테이블마다 따끈하게 제공되는 온육수가 일품이며, 얇은 피의 수제 왕만두를 밀면과 곁들여 드시는 것을 추천합니다.',
+        tipEn: 'Enjoy the complementary warm meat broth and pair the noodles with large steamed dumplings.'
+      },
+      {
+        nameKo: '차이나타운 특구 & 신발원',
+        nameEn: 'Chinatown & Sinbalwon Bakery',
+        descKo: '부산역 정면에 위치한 이국적인 차이나타운 특구로, 1951년부터 이어져 온 백년가게 수제 만두 명가 신발원과 다양한 전통 중식당이 모여 있습니다.',
+        descEn: 'An exotic cultural district facing Busan Station, featuring Sinbalwon (since 1951), celebrated for authentic handmade fried dumplings.',
+        category: 'FOOD',
+        stationGroup: 'LINE1_BUSAN_STN',
+        stationGroupNameKo: '부산역',
+        stationGroupNameEn: 'Busan Station',
+        tagKo: '부산역 1번출구 도보 1분',
+        tagEn: 'Busan Stn Exit 1 (1-min walk)',
+        addressKo: '부산 동구 대영로243번길 62',
+        addressEn: '62, Daeyeong-ro 243beon-gil, Dong-gu, Busan',
+        tipKo: '신발원의 군만두와 콩국&과자(요우티아오) 조합이 시그니처입니다. 포장 대기도 빠르게 마감되니 미리 방문하세요.',
+        tipEn: 'Crispy fried dumplings paired with sweet warm soy milk are the top must-try items.'
       },
       {
         nameKo: '국립해양박물관',
@@ -732,60 +780,124 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
         stationGroup: 'LINE1_BUSAN_STN',
         stationGroupNameKo: '부산역',
         stationGroupNameEn: 'Busan Station',
-        tagKo: '해양 박물관',
-        tagEn: 'Ocean Museum',
+        tagKo: '부산역 7번출구 → 버스 66번',
+        tagEn: 'Busan Stn Exit 7 → Bus #66',
         addressKo: '부산 영도구 해양로301번길 45',
         addressEn: '45, Haeyang-ro 301beon-gil, Yeongdo-gu, Busan',
-        tipKo: '휠체어 리프트와 완만한 경사로가 완벽히 설계되어 있으며, 매주 월요일은 정기 휴관일입니다.',
-        tipEn: 'Offers perfect wheelchair access and flat design. Closed on Mondays.'
+        tipKo: '부산역 7번 출구 정류장에서 66번 버스를 타시면 박물관 정문 바로 앞까지 이동하며, 휠체어와 유모차 전 구역 평탄 진입이 가능합니다.',
+        tipEn: 'Take Bus #66 from Busan Station Exit 7 directly to the museum gate. Completely step-free.'
       },
       {
         nameKo: '영도 피아크 P.ARK',
         nameEn: 'Piark Cultural Complex',
-        descKo: '부산 최대 규모의 크루즈선을 형상화한 초대형 문화복합공간으로 기획 현대미술전, 도서전, 디자인 마켓이 상시 개최됩니다.',
-        descEn: 'A mega cultural complex designed like a cruise ship, hosting high-profile art and design pop-ups.',
+        descKo: '부산 최대 규모의 크루즈선을 형상화한 초대형 문화복합공간으로 기획 현대미술전, 도서전, 디자인 마켓과 바다 뷰 야외 잔디 광장이 펼쳐집니다.',
+        descEn: 'A mega cultural complex designed like a cruise ship, hosting high-profile art pop-ups and ocean lawn gardens.',
         category: 'CULTURE',
         stationGroup: 'LINE1_BUSAN_STN',
         stationGroupNameKo: '부산역',
         stationGroupNameEn: 'Busan Station',
-        tagKo: '기획 아트 전시',
-        tagEn: 'Creative Hub',
+        tagKo: '부산역 → 시내버스 환승',
+        tagEn: 'Busan Stn → Bus Transfer',
         addressKo: '부산 영도구 해양로195번길 180',
         addressEn: '180, Haeyang-ro 195beon-gil, Yeongdo-gu, Busan',
         tipKo: '넓은 야외 인조잔디 광장에서 바다를 드나드는 대형 화물선들을 구경하며 자유롭게 휴식을 취하기 좋습니다.',
         tipEn: 'Enjoy the ocean harbor breeze on the massive outdoor synthetic grass plaza.'
       },
       {
-        nameKo: '구포시장',
-        nameEn: 'Gupo Traditional Market',
-        descKo: '낙동강 물길을 따라 형성된 400년 역사의 영남권 최대 전통시장으로, 쫄깃한 구포국수와 어묵, 각종 시장 먹거리가 가득한 활기찬 미식의 천국입니다.',
-        descEn: 'A vibrant, 400-year-old historic market near the Nakdong River, famous for its legendary chewy Gupo noodles, fish cakes, and diverse street food delicacies.',
-        category: 'FOOD',
-        stationGroup: 'LINE1_SEOMYEON_BUJEON',
-        stationGroupNameKo: '서면역 · 부전역',
-        stationGroupNameEn: 'Seomyeon · Bujeon',
-        tagKo: '400년 역사 미식 시장',
-        tagEn: 'Historic Street Food Market',
-        addressKo: '부산 북구 구포시장1길 17',
-        addressEn: '17, Guposijang 1-gil, Buk-gu, Busan',
-        tipKo: '장날(매월 3, 8, 13, 18, 23, 28일)에 방문하면 길거리 간식과 활기 넘치는 전통 오일장의 진수를 만날 수 있습니다.',
-        tipEn: 'Visit on five-day market dates (ending in 3 or 8) to experience the ultimate bustling local street food.'
+        nameKo: '신기산업',
+        nameEn: 'Singi Industry',
+        descKo: '영도 산복도로 높은 곳에 위치한 카페로, 통창 너머로 부산항대교의 일곱빛깔 무지개 조명 야경을 완벽히 감상합니다.',
+        descEn: 'A high-perched scenic cafe on Yeongdo hills with a brilliant panoramic view of Busan Port Bridge.',
+        category: 'CAFE',
+        stationGroup: 'LINE1_BUSAN_STN',
+        stationGroupNameKo: '부산역',
+        stationGroupNameEn: 'Busan Station',
+        tagKo: '부산역 → 시내버스 환승',
+        tagEn: 'Busan Stn → Bus Transfer',
+        addressKo: '부산 영도구 와치로 51',
+        addressEn: '51, Wachi-ro, Yeongdo-gu, Busan',
+        tipKo: '오르막 경사가 심해 대중교통 이용 시 부산역이나 남포역에서 영도 영선동 방향 9번 버스를 타시면 바로 정류장 앞 하차합니다.',
+        tipEn: 'The hill is steep; take local bus #9 from Busan Station to drop off directly outside the entrance.'
       },
       {
-        nameKo: '이원화구포국시',
-        nameEn: 'Yi Won-hwa Gupo Guksi',
-        descKo: '60년 전통 구포국수의 명맥을 잇는 백년가게로, 낙동강 해풍에 말려 쫄깃함이 남다른 명품 면발과 깊고 진한 남해안 멸치 육수의 진한 조화를 선보입니다.',
-        descEn: 'A designated historic "Hundred-Year Store" preserving the 60-year Gupo noodle legacy, boasting wind-dried chewy noodles in deeply savory anchovy broth.',
+        nameKo: '부전시장',
+        nameEn: 'Bujeon Traditional Market',
+        descKo: '부산 최대 규모의 종합 전통시장으로, 신선한 수산물과 청과, 건어물 및 줄 서서 먹는 즉석 명란김밥과 수제 어묵 등 서민 미식이 가득합니다.',
+        descEn: 'Busan’s largest traditional market complex packed with fresh produce, dried seafood, and famous local street foods like pollack roe gimbap.',
         category: 'FOOD',
         stationGroup: 'LINE1_SEOMYEON_BUJEON',
         stationGroupNameKo: '서면역 · 부전역',
         stationGroupNameEn: 'Seomyeon · Bujeon',
-        tagKo: '60년 전통 백년가게 국수',
-        tagEn: '60-Year Anchovy Noodles',
-        addressKo: '부산 북구 낙동대로1776번길 4',
-        addressEn: '4, Nakdong-daero 1776beon-gil, Buk-gu, Busan',
-        tipKo: '주문 즉시 삶아내는 생면 비빔국수와 뜨끈한 온국수가 시그니처입니다.',
-        tipEn: 'The warm anchovy soup noodles and chewy spicy cold mixed noodles are made to order.'
+        tagKo: '부전역 1번출구 바로 앞',
+        tagEn: 'Bujeon Stn Exit 1 (Immediate)',
+        addressKo: '부산 부산진구 중앙대로783번길 23',
+        addressEn: '23, Jungang-daero 783beon-gil, Busanjin-gu, Busan',
+        tipKo: '부전역 1번 출구에서 평지로 곧장 연결되며, 따끈한 수제 어묵과 푸짐한 명란김밥은 필수 코스입니다.',
+        tipEn: 'Direct flat connection from Bujeon Station Exit 1. Try handmade fish cakes and gimbap.'
+      },
+      {
+        nameKo: '서면 젊음의 거리 & 1번가',
+        nameEn: 'Seomyeon Youth Street & 1st Street',
+        descKo: '부산 최대의 중심 번화가로 최신 패션 로드샵, 감성 카페, 길거리 먹거리와 버스킹 공연이 활발한 청춘의 거리입니다.',
+        descEn: 'The beating downtown heart of Busan lined with fashion shops, cozy cafes, street stalls, and lively weekend street buskers.',
+        category: 'LANDMARK',
+        stationGroup: 'LINE1_SEOMYEON_BUJEON',
+        stationGroupNameKo: '서면역 · 부전역',
+        stationGroupNameEn: 'Seomyeon · Bujeon',
+        tagKo: '서면역 1·2번출구',
+        tagEn: 'Seomyeon Stn Exits 1/2',
+        addressKo: '부산 부산진구 신천대로62번길 61',
+        addressEn: '61, Sincheon-daero 62beon-gil, Busanjin-gu, Busan',
+        tipKo: '서면 지하상가와 연결되어 날씨에 관계없이 쇼핑하기 좋으며, 주말 저녁에는 활기찬 버스킹 공연이 펼쳐집니다.',
+        tipEn: 'Directly linked to the vast Seomyeon Underground Mall for all-weather strolls.'
+      },
+      {
+        nameKo: '삼정타워 (Samjung Tower)',
+        nameEn: 'Samjung Tower Lifestyle Mall',
+        descKo: '런닝맨 체험관, 건담베이스, 대형 멀티플렉스 영화관 및 트렌디한 F&B 브랜드가 집결된 서면의 대표 복합문화 라이프스타일 몰입니다.',
+        descEn: 'A premier lifestyle complex in Seomyeon housing the Running Man Experience Center, Gundam Base, cinema, and dining.',
+        category: 'CULTURE',
+        stationGroup: 'LINE1_SEOMYEON_BUJEON',
+        stationGroupNameKo: '서면역 · 부전역',
+        stationGroupNameEn: 'Seomyeon · Bujeon',
+        tagKo: '서면역 2번출구 도보 5분',
+        tagEn: 'Seomyeon Stn Exit 2 (5-min walk)',
+        addressKo: '부산 부산진구 중앙대로 672',
+        addressEn: '672, Jungang-daero, Busanjin-gu, Busan',
+        tipKo: '전 층 엘리베이터 및 완벽한 무장애 편의시설이 갖추어져 있어 유모차와 보행 약자도 편안하게 즐길 수 있습니다.',
+        tipEn: 'Features excellent elevator coverage and barrier-free amenities on every level.'
+      },
+      {
+        nameKo: '송정3대국밥',
+        nameEn: 'Songjeong 3-Generation Pork Soup',
+        descKo: '1946년부터 3대째 이어져 온 서면 돼지국밥 골목의 터줏대감으로, 맑고 담백한 육수에 뚝배기 가득 푸짐한 돼지고기가 들어갑니다.',
+        descEn: 'Serving soul-warming pork soup since 1946 in Seomyeon Food Alley, known for tender sliced pork and clean comforting broth.',
+        category: 'FOOD',
+        stationGroup: 'LINE1_SEOMYEON_BUJEON',
+        stationGroupNameKo: '서면역 · 부전역',
+        stationGroupNameEn: 'Seomyeon · Bujeon',
+        tagKo: '서면역 1번출구 돼지국밥 골목',
+        tagEn: 'Seomyeon Stn Exit 1 (Pork Soup Alley)',
+        addressKo: '부산 부산진구 서면로68번길 33',
+        addressEn: '33, Seomyeon-ro 68beon-gil, Busanjin-gu, Busan',
+        tipKo: '취향에 따라 수육 백반이나 섞어국밥을 선택할 수 있으며 부추와 다진 양념을 곁들여 먹으면 깊은 풍미를 자랑합니다.',
+        tipEn: 'Try the Boiled Pork Slices Set (Suyuk Baekban) paired with seasoned chives.'
+      },
+      {
+        nameKo: '이재모피자 서면점',
+        nameEn: 'Lee Jae-mo Pizza (Seomyeon)',
+        descKo: '남포본점의 명성을 잇는 서면 직영점으로, 고소한 100% 자연산 임실 치즈를 아낌없이 올린 명품 피자 전문점입니다.',
+        descEn: 'The popular Seomyeon branch of Busan’s iconic pizzeria, smothered in premium 100% domestic Imsil mozzarella.',
+        category: 'FOOD',
+        stationGroup: 'LINE1_SEOMYEON_BUJEON',
+        stationGroupNameKo: '서면역 · 부전역',
+        stationGroupNameEn: 'Seomyeon · Bujeon',
+        tagKo: '서면역 2번출구 도보 5분',
+        tagEn: 'Seomyeon Stn Exit 2 (5-min walk)',
+        addressKo: '부산 부산진구 전포대로209번길 21',
+        addressEn: '21, Jeonpo-daero 209beon-gil, Busanjin-gu, Busan',
+        tipKo: '웨이팅 등록 앱을 미리 확인하시고, 치즈 크러스트 피자와 오븐 치즈 스파게티 조합을 추천합니다.',
+        tipEn: 'Check the mobile waiting app in advance. The cheese crust pizza is legendary.'
       }
     ]
   },
@@ -1931,17 +2043,17 @@ export default function BusanItinerariesView({
   const [showRealPoster, setShowRealPoster] = useState(false);
 
   const LINE1_STATION_TABS = [
-    { id: 'ALL', nameKo: '전체 역 보기 🚇', nameEn: 'All Line 1 Stations 🚇' },
+    { id: 'ALL', nameKo: '전체 역 보기', nameEn: 'All Line 1 Stations' },
     { id: 'LINE1_JUNGANG_NAMPO_JAGALCHI', nameKo: '중앙역 · 남포역 · 자갈치역', nameEn: 'Jungang · Nampo · Jagalchi' },
     { id: 'LINE1_ONCHEONJANG', nameKo: '온천장역', nameEn: 'Oncheonjang Stn' },
     { id: 'LINE1_BEOMEOSA', nameKo: '범어사역', nameEn: 'Beomeosa Stn' },
-    { id: 'LINE1_DADAEPO', nameKo: '다대포해수욕장역', nameEn: 'Dadaepo Beach Stn' },
-    { id: 'LINE1_BUSAN_STN', nameKo: '부산역', nameEn: 'Busan Station' },
     { id: 'LINE1_SEOMYEON_BUJEON', nameKo: '서면역 · 부전역', nameEn: 'Seomyeon · Bujeon' },
+    { id: 'LINE1_BUSAN_STN', nameKo: '부산역', nameEn: 'Busan Station' },
+    { id: 'LINE1_DADAEPO', nameKo: '다대포해수욕장역', nameEn: 'Dadaepo Beach Stn' },
   ];
 
   const LINE2_STATION_TABS = [
-    { id: 'ALL', nameKo: '전체 역 보기 🚇', nameEn: 'All Line 2 Stations 🚇' },
+    { id: 'ALL', nameKo: '전체 역 보기', nameEn: 'All Line 2 Stations' },
     { id: 'LINE2_HWAMYEONG', nameKo: '화명역', nameEn: 'Hwamyeong Stn' },
     { id: 'LINE2_DEOKCHEON', nameKo: '덕천역', nameEn: 'Deokcheon Stn' },
     { id: 'LINE2_JEONPO', nameKo: '전포역', nameEn: 'Jeonpo Stn' },
@@ -5052,12 +5164,132 @@ case 'EXPERIENCE': {
               case 'SUBWAY': {
                 const currentLine = activeRegionPage === 'LINE2' ? 'LINE2' : 'LINE1';
 
+                const LINE1_GROUPS_CONFIG = [
+                  {
+                    id: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+                    nameKo: '중앙역 · 남포역 · 자갈치역',
+                    nameEn: 'Jungang · Nampo · Jagalchi',
+                    badgeKo: '지하상가 연결 코스',
+                    badgeEn: 'Underground Concourse Walk',
+                    exitGuideKo: '중앙역에서 자갈치역까지 전 구간 지하상가로 연결되어 있어 날씨에 관계없이 계단 없이 평지로 이동 가능합니다. (중앙역 5번출구, 남포역 7번출구 에스컬레이터, 자갈치역 3번출구)',
+                    exitGuideEn: 'An underground shopping concourse connects Jungang to Jagalchi with step-free walking corridors.',
+                  },
+                  {
+                    id: 'LINE1_ONCHEONJANG',
+                    nameKo: '온천장역',
+                    nameEn: 'Oncheonjang Station',
+                    badgeKo: '온천 힐링 & 벚꽃 산책',
+                    badgeEn: 'Hot Springs & Cherry Blossoms',
+                    exitGuideKo: '온천장역 1번 출구 엘리베이터로 나오면 도보 약 5분 거리에 허심청(호텔농심)과 모모스커피 본점, 온천천 수변 산책로가 직결됩니다.',
+                    exitGuideEn: 'Line 1 Oncheonjang Station Exit 1 elevator connects directly to Heosimcheong (Hotel Nongshim) and Oncheoncheon stream.',
+                  },
+                  {
+                    id: 'LINE1_BEOMEOSA',
+                    nameKo: '범어사역',
+                    nameEn: 'Beomeosa Station',
+                    badgeKo: '천년 고찰 & 피톤치드 힐링',
+                    badgeEn: 'Ancient Sanctuary & Pine Forest',
+                    exitGuideKo: '범어사역 5·7번 출구 엘리베이터로 나와 90번 저상버스로 환승하시면 범어사 및 성보박물관 평탄 입구까지 편리하게 이동할 수 있습니다.',
+                    exitGuideEn: 'Exit 5/7 elevator at Beomeosa Station connects to Bus #90 directly to the temple entrance.',
+                  },
+                  {
+                    id: 'LINE1_SEOMYEON_BUJEON',
+                    nameKo: '서면역 · 부전역',
+                    nameEn: 'Seomyeon & Bujeon Stations',
+                    badgeKo: '전통시장 & 중심 번화가',
+                    badgeEn: 'Traditional Market & Downtown',
+                    exitGuideKo: '1호선과 2호선 환승 중심역으로, 부전역 1번 출구 앞 부산 최대 부전시장과 서면역 1·2번 출구 앞 서면 젊음의 거리, 돼지국밥 골목, 삼정타워가 펼쳐집니다.',
+                    exitGuideEn: 'Major transfer hub for Lines 1 & 2. Bujeon Exit 1 leads to Bujeon Market, and Seomyeon Exits 1/2 lead to youth avenue and dining alleys.',
+                  },
+                  {
+                    id: 'LINE1_BUSAN_STN',
+                    nameKo: '부산역',
+                    nameEn: 'Busan Station',
+                    badgeKo: '부산의 관문 & 북항 친수공원',
+                    badgeEn: 'Gateway of Busan & North Port',
+                    exitGuideKo: 'KTX와 지하철 1호선 직결 관문으로, 9·10번 출구 보행데크를 통한 북항 친수공원, 1번 출구 차이나타운, 7번 출구 초량 이바구길 및 영도 방면 버스로 연결됩니다.',
+                    exitGuideEn: 'Direct transit hub for KTX and Metro Line 1. Exit 9/10 pedestrian bridge leads to North Port Waterfront Park, Exit 1 to Chinatown, Exit 7 to Ibagu-gil.',
+                  },
+                  {
+                    id: 'LINE1_DADAEPO',
+                    nameKo: '다대포해수욕장역',
+                    nameEn: 'Dadaepo Beach Station',
+                    badgeKo: '일몰 낙조 & 생태 산책로',
+                    badgeEn: 'Sunset & Wetland Boardwalk',
+                    exitGuideKo: '1호선의 종착역으로 1·2번 출구에서 드넓은 다대포 백사장, 무장애 고우니 생태 데크로드 및 세계 최대 꿈의 낙조분수로 바로 연결됩니다.',
+                    exitGuideEn: 'Terminus of Line 1. Exits 1 & 2 lead directly to Dadaepo Beach, Gouny Eco Trail, and Sunset Fountain.',
+                  },
+                ];
+
+                const LINE2_GROUPS_CONFIG = [
+                  {
+                    id: 'LINE2_HWAMYEONG',
+                    nameKo: '화명역',
+                    nameEn: 'Hwamyeong Station',
+                    badgeKo: '생태 공원 & 장미 힐링',
+                    badgeEn: 'Eco Park & Rose Gardens',
+                    exitGuideKo: '화명역 1·2번 출구에서 낙동강 화명생태공원과 장미공원, 부산어촌민속관으로 편리하게 연결됩니다.',
+                    exitGuideEn: 'Hwamyeong Station Exits 1 & 2 connect to Hwamyeong Eco Park, Rose Park, and Folk Museum.',
+                  },
+                  {
+                    id: 'LINE2_DEOKCHEON',
+                    nameKo: '덕천역',
+                    nameEn: 'Deokcheon Station',
+                    badgeKo: '환승 거점 & 전통 구포시장',
+                    badgeEn: 'Transfer Hub & Gupo Market',
+                    exitGuideKo: '2호선과 3호선 환승역으로, 덕천역 및 구포역 인근 400년 전통 구포시장 먹거리와 덕천 젊음의 거리로 이어집니다.',
+                    exitGuideEn: 'Transfer hub for Lines 2 & 3, leading to historic Gupo Market and Deokcheon downtown.',
+                  },
+                  {
+                    id: 'LINE2_JEONPO',
+                    nameKo: '전포역',
+                    nameEn: 'Jeonpo Station',
+                    badgeKo: '감성 카페거리 & 소품샵',
+                    badgeEn: 'Cafe Street & Boutique Alleys',
+                    exitGuideKo: '전포역 4·7·8번 출구에서 개성 넘치는 전포 카페거리와 사잇길 공방, 빈티지 편집숍으로 바로 이어집니다.',
+                    exitGuideEn: 'Exits 4, 7, and 8 lead right into Jeonpo Cafe Street and boutique designer shops.',
+                  },
+                  {
+                    id: 'LINE2_GEUMRYEONSAN_GWANGALLI',
+                    nameKo: '금련산역 · 광안리역',
+                    nameEn: 'Geumryeonsan · Gwangalli',
+                    badgeKo: '광안대교 오션뷰 & 드론쇼',
+                    badgeEn: 'Gwangandaegyo View & Drone Show',
+                    exitGuideKo: '광안리 해변으로 가는 가장 빠른 역으로, 광안리 M 드론라이트쇼와 오션뷰 카페, 밀락더마켓을 즐길 수 있습니다.',
+                    exitGuideEn: 'Closest stations to Gwangalli Beach, famous for drone light shows and seaside cafes.',
+                  },
+                  {
+                    id: 'LINE2_CENTUM_CITY',
+                    nameKo: '센텀시티역',
+                    nameEn: 'Centum City Station',
+                    badgeKo: '세계 최대 백화점 & 영화의전당',
+                    badgeEn: 'World Record Mall & Cinema Center',
+                    exitGuideKo: '지하철역과 신세계 센텀시티, 벡스코가 지하 통로로 직결되며, 영화의전당과 뮤지엄원으로 연결됩니다.',
+                    exitGuideEn: 'Direct underground connection to Shinsegae Centum City, BEXCO, and Busan Cinema Center.',
+                  },
+                  {
+                    id: 'LINE2_HAEUNDAE_DONGBAEK',
+                    nameKo: '해운대역 · 동백역',
+                    nameEn: 'Haeundae · Dongbaek',
+                    badgeKo: '해운대 해변 & 블루라인파크',
+                    badgeEn: 'Haeundae Beach & Blueline Park',
+                    exitGuideKo: '해운대역 3·5번 출구에서 구남로 보행전용거리와 백사장, 동백역 1번 출구에서 동백섬 해안산책로로 직결됩니다.',
+                    exitGuideEn: 'Haeundae Station Exits 3/5 lead to Gunam-ro pedestrian avenue, and Dongbaek Exit 1 to Dongbaekseom trail.',
+                  },
+                ];
+
+                const currentRegion = REGION_RECOMMENDATIONS.find(r => r.id === currentLine);
+                const allLandmarks = currentRegion?.landmarks || [];
+                const groupsToRender = (currentLine === 'LINE1' ? LINE1_GROUPS_CONFIG : LINE2_GROUPS_CONFIG)
+                  .filter(g => selectedStationGroup === 'ALL' || g.id === selectedStationGroup);
+
                 return (
                   <div className="space-y-6 animate-fade-in text-left">
-                    {/* Header */}
+                    {/* Header with Line Icon */}
                     <div className="space-y-2 border-b border-slate-200 pb-5 text-left">
-                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                        {language === 'KR' ? '부산 도시철도 코스' : 'Busan Metro Course'}
+                      <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
+                        <Train className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+                        <span>{language === 'KR' ? '부산 도시철도 코스' : 'Busan Metro Course'}</span>
                       </h2>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                         {language === 'KR'
@@ -5066,84 +5298,72 @@ case 'EXPERIENCE': {
                       </p>
                     </div>
 
-                    {/* Busan Metro Network Division Summary Banner */}
-                    <div className="bg-white p-5 sm:p-6 rounded-lg border border-[#E5E2DC] text-left space-y-4 animate-fade-in">
-                      <div className="flex items-center gap-2 font-bold text-[#11161B] text-base border-b border-[#E5E2DC] pb-3">
-                        <Train className="w-5 h-5 text-[#0A2540]" />
-                        <span>{language === 'KR' ? '부산 도시철도 통합 노선 네트워크 안내' : 'Busan Transit Network Guide'}</span>
+                    {/* Busan Metro Network Guide - Clean & High Visibility without boxy borders */}
+                    <div className="space-y-3 text-left">
+                      <div className="flex items-center gap-2">
+                        <Train className="w-4 h-4 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+                        <h3 className="font-extrabold text-sm sm:text-base text-slate-900">
+                          {language === 'KR' ? '부산 도시철도 통합 노선 네트워크 안내' : 'Busan Transit Network Guide'}
+                        </h3>
                       </div>
-
-                      <p className="text-[#4A5568] leading-relaxed bg-[#FBFBF9] p-3.5 rounded-md border border-[#E5E2DC] text-xs">
+                      <p className="text-xs text-slate-600 leading-relaxed">
                         {language === 'KR'
                           ? '부산 도시철도는 1호선, 2호선, 3호선, 4호선과 부산김해경전철, 동해선으로 구성되어 부산 시내 전역 및 김해공항, 기장 오시리아, 울산 태화강까지 편리하게 이동할 수 있습니다.'
-                          : 'Busan urban transit system comprises Lines 1, 2, 3, 4, BGL Light Rail, and Donghae Line.'}
+                          : 'Busan transit system comprises Lines 1–4, BGL Light Rail, and Donghae Line, conveniently connecting the entire city, Gimhae Airport, Osiria, and Ulsan.'}
                       </p>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <div className="bg-[#FBFBF9] p-3 rounded-md border border-[#E5E2DC] space-y-1">
-                          <div className="flex items-center justify-between gap-1">
-                            <span className="bg-[#8EA85E] text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded-md shrink-0">
-                              {language === 'KR' ? '1호선' : 'Line 1'}
-                            </span>
-                            <span className="font-bold text-[#11161B] text-xs">
-                              노포역 ↔ 다대포해수욕장역
-                            </span>
-                          </div>
-                          <p className="text-[#4A5568] text-xs leading-relaxed">
+                      <div className="space-y-2.5 pt-1 text-xs">
+                        {/* 1호선 */}
+                        <div className="flex items-start sm:items-center gap-2.5 flex-wrap sm:flex-nowrap p-2.5 rounded-xl bg-orange-50/60 border border-orange-200/70">
+                          <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-[#EA580C] text-white shrink-0 shadow-2xs">
+                            {language === 'KR' ? '1호선' : 'Line 1'}
+                          </span>
+                          <span className="font-extrabold text-[#9A3412] shrink-0">노포역 ↔ 다대포해수욕장역</span>
+                          <span className="text-orange-300 hidden sm:inline">|</span>
+                          <span className="text-slate-600">
                             {language === 'KR'
-                              ? '총 40개 역, 39.9km (원도심, 동래, 남포, 부산역)'
-                              : 'Nopo Station to Dadaepo Beach Station (40 stations)'}
-                          </p>
+                              ? '총 40개 역 (39.9km) · 원도심, 동래, 남포, 부산역 축'
+                              : '40 stations (39.9km) · Old Downtown, Dongnae, Nampo, Busan Stn'}
+                          </span>
                         </div>
 
-                        <div className="bg-[#FBFBF9] p-3 rounded-md border border-[#E5E2DC] space-y-1">
-                          <div className="flex items-center justify-between gap-1">
-                            <span className="bg-[#8EA85E] text-white font-mono font-bold text-[10px] px-2 py-0.5 rounded-md shrink-0">
-                              {language === 'KR' ? '2호선' : 'Line 2'}
-                            </span>
-                            <span className="font-bold text-[#11161B] text-xs">
-                              장산역 ↔ 양산역
-                            </span>
-                          </div>
-                          <p className="text-[#4A5568] text-xs leading-relaxed">
+                        {/* 2호선 */}
+                        <div className="flex items-start sm:items-center gap-2.5 flex-wrap sm:flex-nowrap p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-200/70">
+                          <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-[#16A34A] text-white shrink-0 shadow-2xs">
+                            {language === 'KR' ? '2호선' : 'Line 2'}
+                          </span>
+                          <span className="font-extrabold text-[#166534] shrink-0">장산역 ↔ 양산역</span>
+                          <span className="text-emerald-300 hidden sm:inline">|</span>
+                          <span className="text-slate-600">
                             {language === 'KR'
-                              ? '총 43개 역, 45.2km (해운대, 센텀, 광안리, 서면)'
-                              : 'Jangsan Station to Yangsan Station (43 stations)'}
-                          </p>
+                              ? '총 43개 역 (45.2km) · 해운대, 센텀, 광안리, 서면 축'
+                              : '43 stations (45.2km) · Haeundae, Centum, Gwangalli, Seomyeon'}
+                          </span>
                         </div>
-                      </div>
 
-                      {/* Lines 3, 4, BGL, Donghae Line */}
-                      <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-mono font-medium text-[#4A5568] pt-1">
-                        <span className="bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                          {language === 'KR' ? '3호선 (수영 ↔ 대저)' : 'Line 3 (Suyeong↔Daejeo)'}
-                        </span>
-                        <span className="bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                          {language === 'KR' ? '4호선 (미남 ↔ 안평)' : 'Line 4 (Minam↔Anpyeong)'}
-                        </span>
-                        <span className="bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                          {language === 'KR' ? '부산김해 경전철' : 'BGL Light Rail'}
-                        </span>
-                        <span className="bg-[#FBFBF9] px-2 py-0.5 rounded-md border border-[#E5E2DC]">
-                          {language === 'KR' ? '동해선 (부전 ↔ 태화강)' : 'Donghae Line'}
-                        </span>
+                        {/* 환승 및 지선 노선 안내 */}
+                        <div className="flex flex-wrap items-center gap-1.5 pt-0.5 text-[11px] text-slate-500">
+                          <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium">3호선 (수영 ↔ 대저)</span>
+                          <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium">4호선 (미남 ↔ 안평)</span>
+                          <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium">부산김해경전철 (사상 ↔ 가야대)</span>
+                          <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium">동해선 (부전 ↔ 태화강)</span>
+                        </div>
                       </div>
                     </div>
 
                     {/* Line Switcher & Filter Controller */}
-                    <div className="bg-white p-5 rounded-lg border border-[#E5E2DC] space-y-4 text-left">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E5E2DC] pb-3">
-                        <div className="space-y-0.5">
-                          <h4 className="text-base font-bold text-[#11161B] flex items-center gap-2">
-                            <Train className="w-4 h-4 text-[#0A2540]" />
-                            <span>{language === 'KR' ? '노선 선택 (1호선 / 2호선)' : 'Select Metro Line (Line 1 / Line 2)'}</span>
-                          </h4>
-                        </div>
+                    <div className="space-y-4 pt-3 text-left">
+                      <div className="flex items-center gap-2 border-b border-slate-200 pb-2.5">
+                        <Train className="w-4 h-4 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+                        <h4 className="text-sm sm:text-base font-extrabold text-slate-900">
+                          {language === 'KR' ? '노선 선택 (1호선 / 2호선)' : 'Select Metro Line (Line 1 / Line 2)'}
+                        </h4>
                       </div>
 
-                      {/* 1호선 / 2호선 Line Tabs */}
+                      {/* 1호선 / 2호선 Line Tabs with Soft Eye-friendly Pastel Colors */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <button
+                          type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             if (setActiveRegionPage) {
@@ -5152,32 +5372,32 @@ case 'EXPERIENCE': {
                               setLocalActiveRegionPage('LINE1');
                             }
                             setSelectedStationGroup('ALL');
-                            setCopiedIndex(null);
                           }}
-                          className={`p-4 rounded-lg border text-left transition-colors cursor-pointer flex items-center justify-between ${
+                          className={`p-4 rounded-xl border text-left transition-all duration-200 cursor-pointer flex items-center justify-between ${
                             currentLine === 'LINE1'
-                              ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
-                              : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                              ? 'bg-[#FFF7ED] border-[#FDBA74] text-[#9A3412] shadow-2xs'
+                              : 'bg-white hover:bg-[#FFF7ED]/40 text-slate-700 border-slate-200/90'
                           }`}
                         >
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
-                              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-md border ${
-                                currentLine === 'LINE1' ? 'bg-white/10 text-white border-white/20' : 'bg-[#FBFBF9] text-[#0A2540] border-[#E5E2DC]'
+                              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-md ${
+                                currentLine === 'LINE1' ? 'bg-[#EA580C] text-white shadow-2xs' : 'bg-orange-100 text-[#C2410C]'
                               }`}>
                                 1호선 (Line 1)
                               </span>
                               {currentLine === 'LINE1' && (
-                                <span className="text-xs font-mono text-[#E5E2DC]">✓ {language === 'KR' ? '선택됨' : 'Selected'}</span>
+                                <span className="text-xs font-bold text-[#EA580C]">✓ {language === 'KR' ? '선택됨' : 'Selected'}</span>
                               )}
                             </div>
-                            <p className={`text-xs font-normal ${currentLine === 'LINE1' ? 'text-[#E5E2DC]' : 'text-[#4A5568]'}`}>
-                              {language === 'KR' ? '중앙·남포·자갈치 · 온천장 · 범어사 · 다대포 · 부산역 · 서면·부전' : 'Jungang · Nampo · Oncheonjang · Beomeosa · Dadaepo'}
+                            <p className="text-xs text-slate-600 font-normal">
+                              {language === 'KR' ? '중앙·남포·자갈치 · 온천장 · 범어사 · 서면·부전 · 부산역' : 'Jungang · Nampo · Oncheonjang · Beomeosa · Seomyeon · Busan Stn'}
                             </p>
                           </div>
                         </button>
 
                         <button
+                          type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             if (setActiveRegionPage) {
@@ -5186,49 +5406,49 @@ case 'EXPERIENCE': {
                               setLocalActiveRegionPage('LINE2');
                             }
                             setSelectedStationGroup('ALL');
-                            setCopiedIndex(null);
                           }}
-                          className={`p-4 rounded-lg border text-left transition-colors cursor-pointer flex items-center justify-between ${
+                          className={`p-4 rounded-xl border text-left transition-all duration-200 cursor-pointer flex items-center justify-between ${
                             currentLine === 'LINE2'
-                              ? 'bg-[#8EA85E] text-white border-[#8EA85E]'
-                              : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
+                              ? 'bg-[#F0FDF4] border-[#86EFAC] text-[#166534] shadow-2xs'
+                              : 'bg-white hover:bg-[#F0FDF4]/40 text-slate-700 border-slate-200/90'
                           }`}
                         >
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
-                              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-md border ${
-                                currentLine === 'LINE2' ? 'bg-white/10 text-white border-white/20' : 'bg-[#FBFBF9] text-[#0A2540] border-[#E5E2DC]'
+                              <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded-md ${
+                                currentLine === 'LINE2' ? 'bg-[#16A34A] text-white shadow-2xs' : 'bg-emerald-100 text-[#15803D]'
                               }`}>
                                 2호선 (Line 2)
                               </span>
                               {currentLine === 'LINE2' && (
-                                <span className="text-xs font-mono text-[#E5E2DC]">✓ {language === 'KR' ? '선택됨' : 'Selected'}</span>
+                                <span className="text-xs font-bold text-[#16A34A]">✓ {language === 'KR' ? '선택됨' : 'Selected'}</span>
                               )}
                             </div>
-                            <p className={`text-xs font-normal ${currentLine === 'LINE2' ? 'text-[#E5E2DC]' : 'text-[#4A5568]'}`}>
+                            <p className="text-xs text-slate-600 font-normal">
                               {language === 'KR' ? '화명 · 덕천 · 전포 · 금련산·광안리 · 센텀시티 · 해운대·동백' : 'Hwamyeong · Deokcheon · Jeonpo · Gwangalli · Centum · Haeundae'}
                             </p>
                           </div>
                         </button>
                       </div>
 
-                      {/* Station category selector tabs */}
-                      <div className="flex flex-wrap gap-2 pt-2 border-t border-[#E5E2DC]">
+                      {/* Station Filter Pills (Pastel Theme matching current line) */}
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
                         {(currentLine === 'LINE1' ? LINE1_STATION_TABS : LINE2_STATION_TABS).map((tab) => {
                           const isActive = selectedStationGroup === tab.id;
-                          
                           return (
                             <button
                               key={tab.id}
+                              type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedStationGroup(tab.id);
-                                setCopiedIndex(null);
                               }}
-                              className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors cursor-pointer text-center border ${
+                              className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer border ${
                                 isActive 
-                                  ? 'bg-[#8EA85E] text-white border-[#8EA85E]' 
-                                  : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
+                                  ? (currentLine === 'LINE1'
+                                      ? 'bg-[#FFF7ED] text-[#C2410C] border-[#FDBA74] shadow-2xs'
+                                      : 'bg-[#F0FDF4] text-[#15803D] border-[#86EFAC] shadow-2xs')
+                                  : 'bg-white hover:bg-slate-50 text-slate-600 border-slate-200/90'
                               }`}
                             >
                               {language === 'KR' ? tab.nameKo : tab.nameEn}
@@ -5237,274 +5457,121 @@ case 'EXPERIENCE': {
                         })}
                       </div>
 
-                      {/* Station Exit Guide Card for 중앙역 · 남포역 · 자갈치역 */}
-                      {(selectedStationGroup === 'LINE1_JUNGANG_NAMPO_JAGALCHI' || (selectedStationGroup === 'ALL' && currentLine === 'LINE1')) && (
-                        <div id="jungang-nampo-jagalchi-guide" className="bg-[#FBFBF9] border border-[#E5E2DC] p-5 rounded-lg space-y-4 text-left animate-fade-in">
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E5E2DC] pb-3">
-                            <div className="flex items-center gap-2">
-                              <span className="bg-[#8EA85E] text-white font-mono font-bold text-xs px-2.5 py-0.5 rounded-md">
-                                1호선
-                              </span>
-                              <h3 className="font-bold text-[#11161B] text-base">
-                                중앙역 · 남포역 · 자갈치역
-                              </h3>
-                            </div>
-                            <span className="text-xs font-mono text-[#0A2540] bg-white px-2.5 py-0.5 rounded-md border border-[#E5E2DC]">
-                              지하상가 연결 코스
-                            </span>
-                          </div>
-
-                          <div className="bg-white p-3 rounded-md border border-[#E5E2DC] text-xs text-[#4A5568] font-normal leading-relaxed">
-                            {language === 'KR' 
-                              ? '중앙역에서 자갈치역까지 지하상가가 연결되어 있어 계단 걱정 없이 평지 보행이 가능합니다.' 
-                              : 'An underground shopping mall connects Jungang Station to Jagalchi Station.'}
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                            <div className="bg-white p-4 rounded-md border border-[#E5E2DC] space-y-2">
-                              <span className="font-bold text-[#11161B] text-xs block border-b border-[#E5E2DC] pb-1.5">
-                                중앙역 5번출구
-                              </span>
-                              <ul className="text-xs text-[#4A5568] space-y-1.5 font-normal">
-                                <li>• 부산영화체험박물관</li>
-                                <li>• 부산근현대역사관</li>
-                                <li>• 용두산공원</li>
-                              </ul>
-                            </div>
-
-                            <div className="bg-white p-4 rounded-md border border-[#E5E2DC] space-y-2">
-                              <span className="font-bold text-[#11161B] text-xs block border-b border-[#E5E2DC] pb-1.5">
-                                자갈치역 3번출구
-                              </span>
-                              <ul className="text-xs text-[#4A5568] space-y-1.5 font-normal">
-                                <li>• BIFF광장 길거리음식</li>
-                                <li>• 국제시장 / 부평깡통시장</li>
-                                <li>• 자갈치시장</li>
-                              </ul>
-                            </div>
-
-                            <div className="bg-white p-4 rounded-md border border-[#E5E2DC] space-y-2">
-                              <span className="font-bold text-[#11161B] text-xs block border-b border-[#E5E2DC] pb-1.5">
-                                남포역 7번출구
-                              </span>
-                              <ul className="text-xs text-[#4A5568] space-y-1.5 font-normal">
-                                <li>• 용두산 공원 (엘리베이터)</li>
-                                <li>• 광복로 차없는 거리</li>
-                                <li>• 흰여울문화마을 (버스 환승)</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Station Exit Guide Card for 온천장역 */}
-                      {(selectedStationGroup === 'LINE1_ONCHEONJANG' || (selectedStationGroup === 'ALL' && currentLine === 'LINE1')) && (
-                        <div id="oncheonjang-guide" className="bg-[#FBFBF9] border border-[#E5E2DC] p-5 rounded-lg space-y-4 text-left animate-fade-in">
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E5E2DC] pb-3">
-                            <div className="flex items-center gap-2">
-                              <span className="bg-[#8EA85E] text-white font-mono font-bold text-xs px-2.5 py-0.5 rounded-md">
-                                1호선
-                              </span>
-                              <h3 className="font-bold text-[#11161B] text-base">
-                                온천장역
-                              </h3>
-                            </div>
-                            <span className="text-xs font-mono text-[#0A2540] bg-white px-2.5 py-0.5 rounded-md border border-[#E5E2DC]">
-                              목욕 & 벚꽃 힐링
-                            </span>
-                          </div>
-
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                            <div className="bg-white p-4 rounded-md border border-[#E5E2DC] space-y-1">
-                              <span className="font-bold text-[#11161B] text-xs block border-b border-[#E5E2DC] pb-1.5">
-                                허심청 (동래온천)
-                              </span>
-                              <p className="text-xs text-[#4A5568] font-normal">
-                                {language === 'KR' ? '사계절 내내 피로를 날려버리는 온천 휴양 스팟' : 'Asia’s iconic hot spring spa resort'}
-                              </p>
-                            </div>
-                            <div className="bg-white p-4 rounded-md border border-[#E5E2DC] space-y-1">
-                              <span className="font-bold text-[#11161B] text-xs block border-b border-[#E5E2DC] pb-1.5">
-                                온천천 (벚꽃시즌)
-                              </span>
-                              <p className="text-xs text-[#4A5568] font-normal">
-                                {language === 'KR' ? '봄철 화사한 벚꽃 터널과 수변 산책로' : 'Lush riverside stroll & spring cherry blossoms'}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Station Exit Guide Card for 범어사역 */}
-                      {(selectedStationGroup === 'LINE1_BEOMEOSA' || (selectedStationGroup === 'ALL' && currentLine === 'LINE1')) && (
-                        <div id="beomeosa-guide" className="bg-[#FBFBF9] border border-[#E5E2DC] p-5 rounded-lg space-y-4 text-left animate-fade-in">
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E5E2DC] pb-3">
-                            <div className="flex items-center gap-2">
-                              <span className="bg-[#8EA85E] text-white font-mono font-bold text-xs px-2.5 py-0.5 rounded-md">
-                                1호선
-                              </span>
-                              <h3 className="font-bold text-[#11161B] text-base">
-                                범어사역
-                              </h3>
-                            </div>
-                            <span className="text-xs font-mono text-[#0A2540] bg-white px-2.5 py-0.5 rounded-md border border-[#E5E2DC]">
-                              계곡 & 피톤치드 힐링
-                            </span>
-                          </div>
-
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                            <div className="bg-white p-4 rounded-md border border-[#E5E2DC] space-y-1">
-                              <span className="font-bold text-[#11161B] text-xs block border-b border-[#E5E2DC] pb-1.5">
-                                범어사 (5번출구 → 버스 90번)
-                              </span>
-                              <p className="text-xs text-[#4A5568] font-normal">
-                                {language === 'KR' ? '범어사역 5번출구에서 90번 버스 환승' : 'Transfer to Bus #90 from Exit 5'}
-                              </p>
-                            </div>
-                            <div className="bg-white p-4 rounded-md border border-[#E5E2DC] space-y-1">
-                              <span className="font-bold text-[#11161B] text-xs block border-b border-[#E5E2DC] pb-1.5">
-                                성보박물관
-                              </span>
-                              <p className="text-xs text-[#4A5568] font-normal">
-                                {language === 'KR' ? '국보·보물급 불교 문화재 및 귀중한 유물 전시' : 'Exhibition of Buddhist national treasures'}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Display items for the selected subway line & station category */}
-                      <div className="space-y-6 pt-2">
-                        {REGION_RECOMMENDATIONS.filter(r => r.id === currentLine).map((r) => {
-                          const filteredItems = r.landmarks.filter(item => {
-                            if (selectedStationGroup === 'ALL') return true;
-                            return item.stationGroup === selectedStationGroup;
-                          });
-
-                          if (filteredItems.length === 0) {
-                            return (
-                              <div key={r.id} className="text-center py-12 text-[#4A5568] font-medium text-xs">
-                                {language === 'KR' ? '해당 역 카테고리의 추천 정보가 아직 준비 중입니다.' : 'No recommendations available for this station.'}
-                              </div>
-                            );
-                          }
+                      {/* Stations and Nearby Places List */}
+                      <div className="space-y-8 pt-4">
+                        {groupsToRender.map((group) => {
+                          const placesInGroup = allLandmarks.filter(item => item.stationGroup === group.id);
 
                           return (
-                            <div key={r.id} className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
-                              {filteredItems.map((item, idx) => {
-                                const isCopied = copiedIndex === item.nameKo;
-                                const isSaved = isBookmarked(item.nameKo);
-                                return (
-                                  <div 
-                                    key={idx} 
-                                    className="p-5 sm:p-6 rounded-lg border border-[#E5E2DC] bg-white hover:border-[#8EA85E] transition-colors flex flex-col justify-between gap-4 text-left"
-                                  >
-                                    <div className="space-y-3 text-left">
-                                      <div className="flex items-start justify-between gap-2 border-b border-[#E5E2DC] pb-2.5">
-                                        <div className="space-y-1">
-                                          <h4 className="font-bold text-[#11161B] text-base leading-snug">
-                                            {language === 'KR' ? item.nameKo : item.nameEn}
-                                          </h4>
-                                          <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-                                            <span className="inline-block text-[10px] font-mono font-bold px-2 py-0.5 rounded-md border bg-[#FBFBF9] text-[#0A2540] border-[#E5E2DC]">
-                                              {language === 'KR' ? item.stationGroupNameKo : item.stationGroupNameEn}
-                                            </span>
-                                            <span className="inline-block text-[10px] font-mono font-bold px-2 py-0.5 rounded-md border bg-white text-[#4A5568] border-[#E5E2DC]">
-                                              {language === 'KR' ? item.tagKo : item.tagEn}
-                                            </span>
+                            <div key={group.id} className="space-y-4 animate-fade-in">
+                              {/* Station Group Header */}
+                              <div className="space-y-1.5 pb-2.5 border-b border-slate-200">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className={`w-2.5 h-2.5 rounded-full ${currentLine === 'LINE1' ? 'bg-[#EA580C]' : 'bg-[#16A34A]'} shrink-0`} />
+                                  <h3 className="font-extrabold text-base sm:text-lg text-slate-900 tracking-tight">
+                                    {language === 'KR' ? group.nameKo : group.nameEn}
+                                  </h3>
+                                  <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
+                                    currentLine === 'LINE1' ? 'bg-orange-50 text-[#C2410C] border border-orange-200/60' : 'bg-emerald-50 text-[#15803D] border border-emerald-200/60'
+                                  }`}>
+                                    {language === 'KR' ? group.badgeKo : group.badgeEn}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-slate-600 leading-relaxed pl-4.5">
+                                  {language === 'KR' ? group.exitGuideKo : group.exitGuideEn}
+                                </p>
+                              </div>
+
+                              {/* Places Grid under this station */}
+                              {placesInGroup.length === 0 ? (
+                                <div className="text-center py-6 text-slate-400 text-xs font-medium">
+                                  {language === 'KR' ? '추천 장소 정보가 준비 중입니다.' : 'Places coming soon.'}
+                                </div>
+                              ) : (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                                  {placesInGroup.map((item, idx) => {
+                                    const isSaved = isBookmarked(item.nameKo);
+                                    const cleanAddress = (language === 'KR' ? item.addressKo : (item.addressEn || item.addressKo || '')).replace(/\s*\([^)]*\)/g, '').trim();
+                                    const naverUrl = `https://map.naver.com/v5/search/${encodeURIComponent(item.nameKo + ' ' + cleanAddress)}`;
+                                    const googleUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.nameKo + ' ' + cleanAddress)}`;
+
+                                    return (
+                                      <div
+                                        key={idx}
+                                        className="p-4 sm:p-5 rounded-xl border border-slate-200/80 bg-white hover:border-[#8EA85E] transition-all shadow-2xs flex flex-col justify-between gap-3 text-left"
+                                      >
+                                        <div className="space-y-2 text-left">
+                                          <div className="flex items-start justify-between gap-2">
+                                            <div className="space-y-0.5 min-w-0 flex-1">
+                                              <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
+                                                {language === 'KR' ? item.nameKo : item.nameEn}
+                                              </h4>
+                                              {item.tagKo && (
+                                                <span className="inline-block text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600">
+                                                  {language === 'KR' ? item.tagKo : item.tagEn}
+                                                </span>
+                                              )}
+                                            </div>
+                                            <button
+                                              type="button"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                toggleMyRoute({
+                                                  id: item.nameKo,
+                                                  titleKo: item.nameKo,
+                                                  titleEn: item.nameEn,
+                                                  categoryKo: item.stationGroupNameKo || '도시철도 명소',
+                                                  categoryEn: item.stationGroupNameEn || 'Subway Landmark',
+                                                  addressRoadKo: item.addressKo,
+                                                  stationInfoKo: item.tagKo,
+                                                  stationInfoEn: item.tagEn,
+                                                  descKo: item.descKo,
+                                                  descEn: item.descEn,
+                                                });
+                                              }}
+                                              className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
+                                                isSaved
+                                                  ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                                  : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
+                                              }`}
+                                              title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                            >
+                                              <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                              <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                            </button>
                                           </div>
+
+                                          <p className="text-xs text-[#4A5568] font-normal leading-relaxed whitespace-pre-line">
+                                            {language === 'KR' ? item.descKo : item.descEn}
+                                          </p>
+
+                                          {(item.tipKo || item.tipEn) && (
+                                            <div className="text-[11px] text-slate-500 pl-2.5 border-l-2 border-[#8EA85E]/50 leading-relaxed pt-0.5">
+                                              <strong className="text-slate-700 mr-1">{language === 'KR' ? '💡 로컬 팁:' : '💡 Local Tip:'}</strong>
+                                              {language === 'KR' ? item.tipKo : item.tipEn}
+                                            </div>
+                                          )}
                                         </div>
-                                        <button
-                                          type="button"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            toggleMyRoute({
-                                              id: item.nameKo,
-                                              titleKo: item.nameKo,
-                                              titleEn: item.nameEn,
-                                              categoryKo: item.stationGroupNameKo || '도시철도 명소',
-                                              categoryEn: item.stationGroupNameEn || 'Subway Landmark',
-                                              addressRoadKo: item.addressKo,
-                                              stationInfoKo: item.tagKo,
-                                              stationInfoEn: item.tagEn,
-                                              descKo: item.descKo,
-                                              descEn: item.descEn,
-                                            });
-                                          }}
-                                          className={`px-2 py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
-                                            isSaved
-                                              ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
-                                              : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
-                                          }`}
-                                          title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
-                                        >
-                                          <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
-                                          <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
-                                        </button>
+
+                                        {/* Address with MapAppIcons (No Copy Button) */}
+                                        {(item.addressKo || item.addressEn) && (
+                                          <div className="flex items-center justify-between gap-2 text-xs pt-2 border-t border-slate-100 flex-wrap">
+                                            <div className="flex items-center gap-1.5 text-slate-600 min-w-0 flex-1">
+                                              <MapPin className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
+                                              <span className="truncate font-medium">{language === 'KR' ? item.addressKo : item.addressEn}</span>
+                                            </div>
+                                            <MapAppIcons
+                                              naverUrl={naverUrl}
+                                              googleUrl={googleUrl}
+                                              title={item.nameKo}
+                                            />
+                                          </div>
+                                        )}
                                       </div>
-
-                                      <p className="text-xs text-[#4A5568] font-normal leading-relaxed whitespace-pre-line">
-                                        {language === 'KR' ? item.descKo : item.descEn}
-                                      </p>
-
-                                      {(item.addressKo || item.addressEn) && (
-                                        <div className="flex items-center justify-between gap-3 bg-[#FBFBF9] p-2.5 rounded-md border border-[#E5E2DC] text-xs">
-                                          <a
-                                            href={`https://map.naver.com/v5/search/${encodeURIComponent(item.addressKo || item.addressEn || '')}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex items-center gap-1.5 text-[#4A5568] hover:text-[#0A2540] hover:underline overflow-hidden cursor-pointer"
-                                            title={language === 'KR' ? '네이버 지도로 바로가기' : 'View on Naver Map'}
-                                          >
-                                            <MapPin className="w-3.5 h-3.5 shrink-0 text-[#0A2540]" />
-                                            <span className="truncate font-medium text-[#11161B]">
-                                              {language === 'KR' ? item.addressKo : item.addressEn}
-                                            </span>
-                                          </a>
-                                          <button
-                                            onClick={() => {
-                                              const addressText = language === 'KR' ? item.addressKo : item.addressEn;
-                                              if (addressText) {
-                                                navigator.clipboard.writeText(addressText);
-                                                setCopiedIndex(item.nameKo);
-                                                setTimeout(() => setCopiedIndex(null), 1500);
-                                              }
-                                            }}
-                                            className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-md bg-white border border-[#E5E2DC] hover:bg-[#F1EFEC] transition-colors text-[#11161B] font-bold cursor-pointer shrink-0"
-                                            title={language === 'KR' ? '주소 복사' : 'Copy Address'}
-                                          >
-                                            {isCopied ? (
-                                              <>
-                                                <Check className="w-3 h-3 text-[#0A2540]" />
-                                                <span className="text-[#0A2540]">{language === 'KR' ? '복사됨' : 'Copied'}</span>
-                                              </>
-                                            ) : (
-                                              <>
-                                                <Copy className="w-3 h-3 text-[#4A5568]" />
-                                                <span>{language === 'KR' ? '복사' : 'Copy'}</span>
-                                              </>
-                                            )}
-                                          </button>
-                                        </div>
-                                      )}
-                                    </div>
-
-                                    {(item.tipKo || item.tipEn) && (
-                                      <div className="p-3 rounded-md bg-[#FBFBF9] border border-[#E5E2DC] text-xs flex items-start gap-2 mt-2">
-                                        <Info className="w-4 h-4 text-[#0A2540] shrink-0 mt-0.5" />
-                                        <div className="space-y-0.5 leading-relaxed text-left">
-                                          <span className="font-bold block text-[#11161B]">
-                                            {language === 'KR' ? '현지인 이용 팁' : 'Local Pro-Tip'}
-                                          </span>
-                                          <span className="font-normal text-[#4A5568]">
-                                            {language === 'KR' ? item.tipKo : item.tipEn}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    )}
-                                  </div>
-                                );
-                              })}
+                                    );
+                                  })}
+                                </div>
+                              )}
                             </div>
                           );
                         })}
