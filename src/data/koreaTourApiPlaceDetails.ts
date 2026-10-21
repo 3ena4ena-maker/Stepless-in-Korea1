@@ -4271,25 +4271,38 @@ export function getKoreaTourApiPlaceDetail(targetId: string): OpenApiPlaceDetail
     return KOREA_TOUR_API_PLACE_DETAILS['spot-biff'] || null;
   }
 
-  // 2. contentId 또는 별칭 검색
+  // 2. contentId 또는 별칭 검색 (공백 및 특수기호 차이를 완전 허용하여 100% 매칭)
+  const normClean = normId.replace(/[\s_\-·~()&/]+/g, '');
   const values = Object.values(KOREA_TOUR_API_PLACE_DETAILS);
   const found = values.find(
-    (item) =>
-      item.id.toLowerCase() === normId ||
-      item.contentId.toLowerCase() === normId ||
-      item.nameKo.toLowerCase().includes(normId) ||
-      normId.includes(item.id.toLowerCase())
+    (item) => {
+      const itemClean = item.nameKo.toLowerCase().replace(/[\s_\-·~()&/]+/g, '');
+      return (
+        item.id.toLowerCase() === normId ||
+        item.contentId.toLowerCase() === normId ||
+        item.nameKo.toLowerCase().includes(normId) ||
+        normId.includes(item.id.toLowerCase()) ||
+        (normClean.length >= 2 && itemClean.includes(normClean)) ||
+        (normClean.length >= 2 && normClean.includes(itemClean))
+      );
+    }
   );
 
   if (found) return found;
 
-  // 3. BUSAN_TOUR_API_SPOTS 검색
+  // 3. BUSAN_TOUR_API_SPOTS 검색 (공백 무관 검색)
   const spot = BUSAN_TOUR_API_SPOTS.find(
-    (s) =>
-      s.contentid.toLowerCase() === normId ||
-      normId.includes(s.contentid.toLowerCase()) ||
-      s.titleKo.toLowerCase().includes(normId) ||
-      normId.includes(s.titleKo.toLowerCase())
+    (s) => {
+      const sClean = s.titleKo.toLowerCase().replace(/[\s_\-·~()&/]+/g, '');
+      return (
+        s.contentid.toLowerCase() === normId ||
+        normId.includes(s.contentid.toLowerCase()) ||
+        s.titleKo.toLowerCase().includes(normId) ||
+        normId.includes(s.titleKo.toLowerCase()) ||
+        (normClean.length >= 2 && sClean.includes(normClean)) ||
+        (normClean.length >= 2 && normClean.includes(sClean))
+      );
+    }
   );
 
   if (spot) {
@@ -4402,7 +4415,7 @@ export function getKoreaTourApiPlaceDetail(targetId: string): OpenApiPlaceDetail
           categoryEn: course.tagEn || 'Busan Spot',
           districtKo: step.regionNameKo || '부산광역시',
           districtEn: step.regionNameEn || 'Busan',
-          firstImage: '',
+          firstImage: step.firstImage || '',
           additionalImages: [],
           addressRoadKo: address,
           addressRoadEn: 'Busan, Republic of Korea',

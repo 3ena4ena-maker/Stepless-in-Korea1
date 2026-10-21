@@ -53,7 +53,6 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
 }) => {
   const [copied, setCopied] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   const { matchedSpotId, hasKtoData, detail } = useTourApiSpot(step.titleKo);
   const effectiveTargetId = resolvePlaceTargetId({
@@ -65,8 +64,7 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
 
   useEffect(() => {
     setImageError(false);
-    setImageLoaded(false);
-  }, [detail?.firstImage]);
+  }, [detail?.firstImage, step.firstImage]);
 
   const handleCopy = (e: React.MouseEvent, text: string) => {
     e.stopPropagation();
@@ -80,7 +78,7 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
   const isSaved = isBookmarked(step.id || step.titleKo);
 
   const bf = detail?.barrierFree;
-  const effectiveImage = (!imageError && (step.firstImage || detail?.firstImage)) ? (step.firstImage || detail?.firstImage) : '';
+  const effectiveImage = (!imageError && (detail?.firstImage || step.firstImage)) ? (detail?.firstImage || step.firstImage) : '';
   const effectiveAddressKo = detail?.addressRoadKo || step.addressRoadKo || step.addressKo || '';
   const effectiveAddressEn = detail?.addressRoadEn || step.addressRoadEn || step.addressEn || effectiveAddressKo;
   const effectiveAddress = language === 'KR' ? effectiveAddressKo : effectiveAddressEn;
@@ -106,10 +104,9 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
               <img
                 src={effectiveImage}
                 alt={language === 'KR' ? step.titleKo : step.titleEn}
-                className={`w-full h-full object-cover transition-opacity duration-200 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                className="w-full h-full object-cover transition-opacity duration-200"
                 referrerPolicy="no-referrer"
                 loading="lazy"
-                onLoad={() => setImageLoaded(true)}
                 onError={() => setImageError(true)}
               />
             </div>

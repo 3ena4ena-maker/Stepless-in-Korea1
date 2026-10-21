@@ -1384,6 +1384,7 @@ const KTO_SPOT_CONTENT_ID_MAP: Record<string, string | null> = {
   'spot-jagalchi-rooftop': '132190', // 부산 자갈치시장
   'spot-107': '132190', // 부산 자갈치시장
   'spot-bupyeong-market': '1878218', // 부평깡통시장
+  'spot-gukje-market': '1013716', // 국제시장
   'spot-108': '1918263', // 누리마루 APEC하우스
   'spot-111': '126082', // 광안리 해수욕장
   'spot-103': '130668', // 벡스코(BEXCO)
@@ -1393,6 +1394,9 @@ const KTO_SPOT_CONTENT_ID_MAP: Record<string, string | null> = {
   'spot-gamcheon': '1350616', // 감천문화마을
   'spot-huinnyeoul': '2545831', // 흰여울문화마을
   'spot-blueline': '2684877', // 해운대 블루라인파크
+  'spot-yonggungsa': '128509', // 해동용궁사
+  'spot-shinsegae-centum': '775586', // 신세계 센텀시티
+  'spot-taejongdae': '126658', // 태종대
   'spot-f1963': '2496738', // F1963 복합문화공간
   'spot-busanstn': '126093', // 부산역
   'spot-city-tour-bus': null, // 한국관광공사 무장애 관광정보 API 미등록 (대중교통/시티투어버스 프로그램)
@@ -1502,8 +1506,8 @@ app.get("/api/tourapi/detail/:id", async (req, res) => {
       }
     }
 
-    // API firstimage 우선 적용 (없으면 빈 문자열로 처리하여 가짜 이미지 배제)
-    const apiFirstImage = liveDetail?.representativeImage?.firstimage || "";
+    // API firstimage 우선 적용, 없으면 검증된 데이터셋 이미지 유지하여 공백 방지
+    const apiFirstImage = liveDetail?.representativeImage?.firstimage || detail.firstImage || "";
 
     const mergedData = {
       ...detail,
@@ -1525,28 +1529,49 @@ app.get("/api/tourapi/detail/:id", async (req, res) => {
       ...(liveDetail?.operatingInfo?.useFee ? { feeKo: liveDetail.operatingInfo.useFee } : {}),
     };
 
-    // 무장애 시설 정보 실시간 보강 (API detailWithTour2 항목이 있을 경우 원문 그대로 반영)
+    // 무장애 시설 정보 실시간 보강 (API detailWithTour2 항목이 있을 경우 원문 그대로 반영, 속성 부재 시 안전하게 생성)
     if (liveDetail?.barrierFree && mergedData.barrierFree) {
       const bf = liveDetail.barrierFree;
       if (bf.wheelchair) {
+        if (!mergedData.barrierFree.wheelchair) {
+          mergedData.barrierFree.wheelchair = { available: true, titleKo: '휠체어 접근 및 주출입구', titleEn: 'Wheelchair Access', descKo: '', descEn: '', icon: '♿', tag: '단차 없는 평탄 출입로' };
+        }
         mergedData.barrierFree.wheelchair.descKo = bf.wheelchair;
       }
       if (bf.parking) {
+        if (!mergedData.barrierFree.parking) {
+          mergedData.barrierFree.parking = { available: true, titleKo: '장애인 전용 주차구역', titleEn: 'Accessible Parking', descKo: '', descEn: '', icon: '🅿️', tag: '전용 주차면 완비' };
+        }
         mergedData.barrierFree.parking.descKo = bf.parking;
       }
       if (bf.restroom) {
+        if (!mergedData.barrierFree.restroom) {
+          mergedData.barrierFree.restroom = { available: true, titleKo: '장애인 화장실', titleEn: 'Accessible Restroom', descKo: '', descEn: '', icon: '🚻', tag: '남녀 구분 장애인 화장실' };
+        }
         mergedData.barrierFree.restroom.descKo = bf.restroom;
       }
       if (bf.route || bf.exit) {
+        if (!mergedData.barrierFree.route) {
+          mergedData.barrierFree.route = { available: true, titleKo: '출입로 및 이동 동선', titleEn: 'Ramps & Pathways', descKo: '', descEn: '', icon: '🛣️', tag: '완만한 경사로 / 단차 없음' };
+        }
         mergedData.barrierFree.route.descKo = [bf.route, bf.exit].filter(Boolean).join(' / ');
       }
       if (bf.elevator) {
+        if (!mergedData.barrierFree.elevator) {
+          mergedData.barrierFree.elevator = { available: true, titleKo: '엘리베이터 시설', titleEn: 'Elevator', descKo: '', descEn: '', icon: '🛗', tag: '장애인용 엘리베이터' };
+        }
         mergedData.barrierFree.elevator.descKo = bf.elevator;
       }
       if (bf.braileblock || bf.brailepromotion) {
+        if (!mergedData.barrierFree.tactilePaving) {
+          mergedData.barrierFree.tactilePaving = { available: true, titleKo: '점자블록 및 유도안내', titleEn: 'Tactile Paving', descKo: '', descEn: '', icon: '🦯', tag: '점자블록 완비' };
+        }
         mergedData.barrierFree.tactilePaving.descKo = [bf.braileblock, bf.brailepromotion].filter(Boolean).join(' / ');
       }
       if (bf.stroller || bf.lactationroom || bf.babysparechair) {
+        if (!mergedData.barrierFree.stroller) {
+          mergedData.barrierFree.stroller = { available: true, titleKo: '유아차 및 수유 편의시설', titleEn: 'Stroller & Nursery', descKo: '', descEn: '', icon: '👶', tag: '유아차 동반 친화' };
+        }
         mergedData.barrierFree.stroller.descKo = [bf.stroller, bf.lactationroom, bf.babysparechair].filter(Boolean).join(' / ');
       }
     }

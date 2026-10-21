@@ -8,7 +8,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { OpenApiPlaceDetail, getKoreaTourApiPlaceDetail } from '../data/koreaTourApiPlaceDetails';
+import { OpenApiPlaceDetail, getKoreaTourApiPlaceDetail, KOREA_TOUR_API_PLACE_DETAILS } from '../data/koreaTourApiPlaceDetails';
 import { fetchTourApiPlaceDetail, TourApiDetailResponse } from './tourApiService';
 
 /**
@@ -21,203 +21,213 @@ const tourApiDetailCache = new Map<string, TourApiDetailResponse>();
  */
 export function matchTourApiSpotId(titleOrText: string): string | null {
   if (!titleOrText) return null;
-  const t = titleOrText.toLowerCase().trim();
+  const raw = titleOrText.trim();
+  const t = raw.toLowerCase();
 
   // 1. 직접 ID 지정된 경우
   if (t.startsWith('spot-') || t.startsWith('tour-')) {
     if (getKoreaTourApiPlaceDetail(t)) return t;
   }
 
+  // 띄어쓰기, 하이픈, 괄호, 특수기호를 제거하여 "해운대 해수욕장"과 "해운대해수욕장"을 완전히 동일하게 처리
+  const clean = t.replace(/[\s_\-·~()&/]+/g, '');
+  if (!clean) return null;
+
+  // 1-2. KOREA_TOUR_API_PLACE_DETAILS의 nameKo와 공백 무시 일치 확인
+  for (const [id, item] of Object.entries(KOREA_TOUR_API_PLACE_DETAILS)) {
+    const itemClean = item.nameKo.toLowerCase().replace(/[\s_\-·~()&/]+/g, '');
+    if (itemClean === clean) {
+      return id;
+    }
+  }
+
   // 2. 키워드 기반 정밀 매칭 규칙 (우선순위 높은 구체적 단어부터)
-  if (t.includes('누리마루') || t.includes('동백섬') || t.includes('동백공원')) {
+  if (clean.includes('누리마루') || clean.includes('동백섬') || clean.includes('동백공원')) {
     return 'spot-108';
   }
-  if (t.includes('블루라인') || t.includes('해변열차') || t.includes('스카이캡슐') || t.includes('미포정거장') || t.includes('청사포')) {
+  if (clean.includes('블루라인') || clean.includes('해변열차') || clean.includes('스카이캡슐') || clean.includes('미포정거장') || clean.includes('청사포')) {
     return 'spot-blueline';
   }
-  if (t.includes('아쿠아리움') || t.includes('sea life') || t.includes('sealife')) {
+  if (clean.includes('아쿠아리움') || clean.includes('sealife')) {
     return 'spot-aquarium';
   }
-  if (t.includes('엑스더스카이') || t.includes('x the sky') || t.includes('xthesky') || t.includes('엘시티 전망대')) {
+  if (clean.includes('엑스더스카이') || clean.includes('xthesky') || clean.includes('엘시티전망대')) {
     return 'spot-xthesky';
   }
-  if (t.includes('해양박물관') || t.includes('국립해양')) {
+  if (clean.includes('해양박물관') || clean.includes('국립해양')) {
     return 'spot-104';
   }
-  if (t.includes('신세계') || (t.includes('센텀') && !t.includes('벡스코') && !t.includes('시립미술관') && !t.includes('영화의전당'))) {
+  if (clean.includes('신세계') || (clean.includes('센텀') && !clean.includes('벡스코') && !clean.includes('시립미술관') && !clean.includes('영화의전당'))) {
     return 'spot-shinsegae-centum';
   }
-  if (t.includes('벡스코') || t.includes('bexco') || t.includes('시립미술관')) {
+  if (clean.includes('벡스코') || clean.includes('bexco') || clean.includes('시립미술관')) {
     return 'spot-103';
   }
-  if (t.includes('비프광장') || t.includes('biff광장') || t.includes('biff 광장') || t.includes('비프 광장')) {
+  if (clean.includes('비프광장') || clean.includes('biff광장')) {
     return 'spot-biff';
   }
-  if (t.includes('영화의전당')) {
+  if (clean.includes('영화의전당')) {
     return 'spot-112';
   }
-  if (t.includes('과학관') || t.includes('부산과학관')) {
+  if (clean.includes('과학관') || clean.includes('부산과학관')) {
     return 'spot-sciencemuseum';
   }
-  if (t.includes('f1963') || t.includes('키스와이어')) {
+  if (clean.includes('f1963') || clean.includes('키스와이어')) {
     return 'spot-f1963';
   }
-  if (t.includes('감천문화마을') || t.includes('감천')) {
+  if (clean.includes('감천문화마을') || clean.includes('감천')) {
     return 'spot-gamcheon';
   }
-  if (t.includes('흰여울') || t.includes('흰여울문화마을') || t.includes('절영해안')) {
+  if (clean.includes('흰여울') || clean.includes('절영해안')) {
     return 'spot-huinnyeoul';
   }
-  if (t.includes('태종대') || t.includes('다누비')) {
+  if (clean.includes('태종대') || clean.includes('다누비')) {
     return 'spot-taejongdae';
   }
-  if (t.includes('이기대') || t.includes('동생말') || t.includes('어울마당')) {
+  if (clean.includes('이기대') || clean.includes('동생말') || clean.includes('어울마당')) {
     return 'spot-igidae';
   }
-  if (t.includes('해동용궁사') || t.includes('용궁사')) {
+  if (clean.includes('해동용궁사') || clean.includes('용궁사')) {
     return 'spot-yonggungsa';
   }
-  if (t.includes('용두산') || t.includes('부산타워') || t.includes('다이아몬드타워')) {
+  if (clean.includes('용두산') || clean.includes('부산타워') || clean.includes('다이아몬드타워')) {
     return 'spot-105';
   }
-  if (t.includes('황령산')) {
+  if (clean.includes('황령산')) {
     return 'spot-hwangnyeongsan';
   }
-  if (t.includes('영도대교')) {
+  if (clean.includes('영도대교')) {
     return 'spot-yeongdodaegyo';
   }
-  if (t.includes('국제시장')) {
+  if (clean.includes('국제시장')) {
     return 'spot-gukje-market';
   }
-  if (t.includes('부평깡통') || t.includes('깡통시장') || t.includes('부평시장')) {
+  if (clean.includes('부평깡통') || clean.includes('깡통시장') || clean.includes('부평시장')) {
     return 'spot-bupyeong-market';
   }
-  if (t.includes('서면종합시장') || t.includes('서면시장')) {
+  if (clean.includes('서면종합시장') || clean.includes('서면시장')) {
     return 'spot-seomyeon-market';
   }
-  if (t.includes('해운대시장')) {
+  if (clean.includes('해운대시장')) {
     return 'spot-haeundae-market';
   }
-  if (t.includes('부산진시장')) {
+  if (clean.includes('부산진시장')) {
     return 'spot-busanjin-market';
   }
-  if (t.includes('자갈치') || t.includes('남포동 biff') || t.includes('유라리광장')) {
+  if (clean.includes('자갈치') || clean.includes('남포동biff') || clean.includes('유라리광장')) {
     return 'spot-107';
   }
-  if (t.includes('광안리') || t.includes('민락수변') || t.includes('민락더마켓')) {
+  if (clean.includes('광안리') || clean.includes('민락수변') || clean.includes('민락더마켓')) {
     return 'spot-111';
   }
-  if (t.includes('송정해수욕장') || t.includes('송정 해수욕장') || t.includes('송정')) {
+  if (clean.includes('송정해수욕장') || clean.includes('송정')) {
     return 'spot-songjeong';
   }
-  if (t.includes('다대포') || t.includes('고우니')) {
+  if (clean.includes('다대포') || clean.includes('고우니')) {
     return 'spot-106';
   }
-  if (t.includes('삼락생태공원') || t.includes('삼락')) {
+  if (clean.includes('삼락생태공원') || clean.includes('삼락')) {
     return 'spot-samnak';
   }
-  if (t.includes('을숙도') || t.includes('현대미술관')) {
+  if (clean.includes('을숙도') || clean.includes('현대미술관')) {
     return 'spot-eulsukdo';
   }
-  if (t.includes('범어사') || t.includes('금정산')) {
+  if (clean.includes('범어사') || clean.includes('금정산')) {
     return 'spot-110';
   }
-  if (t.includes('40계단') || t.includes('사십계단')) {
+  if (clean.includes('40계단') || clean.includes('사십계단')) {
     return 'spot-109';
   }
-  if (t.includes('해운대') || t.includes('구남로')) {
+  if (clean.includes('해운대') || clean.includes('구남로')) {
     return 'spot-101';
   }
-  if (t.includes('시티투어') || t.includes('buti')) {
+  if (clean.includes('시티투어') || clean.includes('buti')) {
     return 'spot-city-tour-bus';
   }
-  if (t.includes('부산역')) {
+  if (clean.includes('부산역')) {
     return 'spot-busanstn';
   }
-  if (t.includes('부전시장') || t.includes('부전마켓')) {
+  if (clean.includes('부전시장') || clean.includes('부전마켓')) {
     return 'spot-bujeon-market';
   }
-  if (t.includes('국제시장')) {
-    return 'spot-bupyeong-market';
-  }
-  if (t.includes('기장시장')) {
+  if (clean.includes('기장시장')) {
     return 'spot-gijang-market';
   }
-  if (t.includes('동래시장')) {
+  if (clean.includes('동래시장')) {
     return 'spot-dongnae-market';
   }
-  if (t.includes('이재모') || t.includes('leejaemo')) {
+  if (clean.includes('이재모') || clean.includes('leejaemo')) {
     return 'spot-leejaemo';
   }
-  if (t.includes('모모스') || t.includes('momos')) {
+  if (clean.includes('모모스') || clean.includes('momos')) {
     return 'spot-momos';
   }
-  if (t.includes('톤쇼우') || t.includes('tonshou')) {
+  if (clean.includes('톤쇼우') || clean.includes('tonshou')) {
     return 'spot-tonshou';
   }
-  if (t.includes('초량밀면')) {
+  if (clean.includes('초량밀면')) {
     return 'spot-choryang-milmyeon';
   }
-  if (t.includes('쌍둥이돼지국밥') || t.includes('쌍둥이 국밥')) {
+  if (clean.includes('쌍둥이돼지국밥') || clean.includes('쌍둥이국밥')) {
     return 'spot-twin-pork';
   }
-  if (t.includes('본전돼지국밥') || t.includes('본전국밥')) {
+  if (clean.includes('본전돼지국밥') || clean.includes('본전국밥')) {
     return 'spot-bonjeon';
   }
-  if (t.includes('금수복국')) {
+  if (clean.includes('금수복국')) {
     return 'spot-gumsubokguk';
   }
-  if (t.includes('옵스') || t.includes('ops')) {
+  if (clean.includes('옵스') || clean.includes('ops')) {
     return 'spot-ops-bakery';
   }
-  if (t.includes('뮤지엄원') || t.includes('museum one') || t.includes('museum1')) {
+  if (clean.includes('뮤지엄원') || clean.includes('museumone') || clean.includes('museum1')) {
     return 'spot-museum1';
   }
-  if (t.includes('부산과학체험관') || t.includes('과학체험관')) {
+  if (clean.includes('부산과학체험관') || clean.includes('과학체험관')) {
     return 'spot-busan-science-center';
   }
-  if (t.includes('부산박물관') || t.includes('유엔평화')) {
+  if (clean.includes('부산박물관') || clean.includes('유엔평화')) {
     return 'spot-busan-museum';
   }
-  if (t.includes('119안전체험') || t.includes('119안전')) {
+  if (clean.includes('119안전체험') || clean.includes('119안전')) {
     return 'spot-busan-119-safety';
   }
-  if (t.includes('어촌민속관') || t.includes('부산어촌')) {
+  if (clean.includes('어촌민속관') || clean.includes('부산어촌')) {
     return 'spot-busan-fishing-folk';
   }
-  if (t.includes('해양자연사') || t.includes('부산해양자연사')) {
+  if (clean.includes('해양자연사') || clean.includes('부산해양자연사')) {
     return 'spot-busan-marine-natural-history';
   }
-  if (t.includes('구포시장')) {
+  if (clean.includes('구포시장')) {
     return 'spot-gupo-market';
   }
-  if (t.includes('오시게') || t.includes('노포동')) {
+  if (clean.includes('오시게') || clean.includes('노포동')) {
     return 'spot-osige-market';
   }
-  if (t.includes('다대씨파크') || t.includes('다대포시장')) {
+  if (clean.includes('다대씨파크') || clean.includes('다대포시장')) {
     return 'spot-dadaepo-market';
   }
-  if (t.includes('송정시장')) {
+  if (clean.includes('송정시장')) {
     return 'spot-songjeong-market';
   }
-  if (t.includes('월내시장') || t.includes('월내')) {
+  if (clean.includes('월내시장') || clean.includes('월내')) {
     return 'spot-wolnae-market';
   }
-  if (t.includes('허심청') || t.includes('동래온천')) {
+  if (clean.includes('허심청') || clean.includes('동래온천')) {
     return 'spot-hurshimcheong';
   }
-  if (t.includes('온천천')) {
+  if (clean.includes('온천천')) {
     return 'spot-oncheoncheon';
   }
-  if (t.includes('성보박물관')) {
+  if (clean.includes('성보박물관')) {
     return 'spot-seongbo';
   }
-  if (t.includes('오시리아') || t.includes('롯데월드')) {
+  if (clean.includes('오시리아') || clean.includes('롯데월드')) {
     return 'spot-osiria';
   }
 
   // 3. getKoreaTourApiPlaceDetail를 통한 폴백 조회
-  const found = getKoreaTourApiPlaceDetail(t);
+  const found = getKoreaTourApiPlaceDetail(t) || getKoreaTourApiPlaceDetail(clean);
   if (found) return found.id;
 
   return null;
