@@ -1747,23 +1747,23 @@ export default function BusanItinerariesView({
   const [showRealPoster, setShowRealPoster] = useState(false);
 
   const LINE1_STATION_TABS = [
-    { id: 'ALL', nameKo: '전체 역 보기', nameEn: 'All Line 1 Stations', englishName: 'All Stations', count: 20 },
-    { id: 'LINE1_JUNGANG_NAMPO_JAGALCHI', nameKo: '중앙 · 남포 · 자갈치', nameEn: 'Jungang · Nampo · Jagalchi', englishName: 'Jungang · Nampo · Jagalchi', count: 8 },
-    { id: 'LINE1_ONCHEONJANG', nameKo: '온천장역', nameEn: 'Oncheonjang Stn', englishName: 'Oncheonjang', count: 2 },
-    { id: 'LINE1_BEOMEOSA', nameKo: '범어사역', nameEn: 'Beomeosa Stn', englishName: 'Beomeosa', count: 3 },
-    { id: 'LINE1_SEOMYEON_BUJEON', nameKo: '서면 · 부전역', nameEn: 'Seomyeon · Bujeon', englishName: 'Seomyeon · Bujeon', count: 3 },
-    { id: 'LINE1_BUSAN_STN', nameKo: '부산역', nameEn: 'Busan Station', englishName: 'Busan Stn', count: 2 },
-    { id: 'LINE1_DADAEPO', nameKo: '다대포해수욕장역', nameEn: 'Dadaepo Beach Stn', englishName: 'Dadaepo Beach', count: 2 },
+    { id: 'ALL', nameKo: '전체 역 보기', nameEn: 'All Stations', englishName: 'ALL STATIONS' },
+    { id: 'LINE1_JUNGANG_NAMPO_JAGALCHI', nameKo: '중앙 · 남포 · 자갈치역', nameEn: 'Jungang · Nampo · Jagalchi', englishName: 'JUNGANG · NAMPO · JAGALCHI' },
+    { id: 'LINE1_ONCHEONJANG', nameKo: '온천장역', nameEn: 'Oncheonjang Stn', englishName: 'ONCHEONJANG' },
+    { id: 'LINE1_BEOMEOSA', nameKo: '범어사역', nameEn: 'Beomeosa Stn', englishName: 'BEOMEOSA' },
+    { id: 'LINE1_SEOMYEON_BUJEON', nameKo: '서면 · 부전역', nameEn: 'Seomyeon · Bujeon', englishName: 'SEOMYEON · BUJEON' },
+    { id: 'LINE1_BUSAN_STN', nameKo: '부산역', nameEn: 'Busan Station', englishName: 'BUSAN STN' },
+    { id: 'LINE1_DADAEPO', nameKo: '다대포해수욕장역', nameEn: 'Dadaepo Beach Stn', englishName: 'DADAEPO BEACH' },
   ];
 
   const LINE2_STATION_TABS = [
-    { id: 'ALL', nameKo: '전체 역 보기', nameEn: 'All Line 2 Stations', englishName: 'All Stations', count: 7 },
-    { id: 'LINE2_HWAMYEONG', nameKo: '화명역', nameEn: 'Hwamyeong Stn', englishName: 'Hwamyeong', count: 1 },
-    { id: 'LINE2_DEOKCHEON', nameKo: '덕천역', nameEn: 'Deokcheon Stn', englishName: 'Deokcheon', count: 1 },
-    { id: 'LINE2_JEONPO', nameKo: '전포역', nameEn: 'Jeonpo Stn', englishName: 'Jeonpo', count: 1 },
-    { id: 'LINE2_GEUMRYEONSAN_GWANGALLI', nameKo: '금련산 · 광안리', nameEn: 'Geumryeonsan · Gwangalli', englishName: 'Geumryeonsan · Gwangalli', count: 1 },
-    { id: 'LINE2_CENTUM_CITY', nameKo: '센텀시티역', nameEn: 'Centum City Stn', englishName: 'Centum City', count: 1 },
-    { id: 'LINE2_HAEUNDAE_DONGBAEK', nameKo: '해운대 · 동백', nameEn: 'Haeundae · Dongbaek', englishName: 'Haeundae · Dongbaek', count: 2 },
+    { id: 'ALL', nameKo: '전체 역 보기', nameEn: 'All Stations', englishName: 'ALL STATIONS' },
+    { id: 'LINE2_HWAMYEONG', nameKo: '화명역', nameEn: 'Hwamyeong Stn', englishName: 'HWAMYEONG' },
+    { id: 'LINE2_DEOKCHEON', nameKo: '덕천역', nameEn: 'Deokcheon Stn', englishName: 'DEOKCHEON' },
+    { id: 'LINE2_JEONPO', nameKo: '전포역', nameEn: 'Jeonpo Stn', englishName: 'JEONPO' },
+    { id: 'LINE2_GEUMRYEONSAN_GWANGALLI', nameKo: '금련산 · 광안리역', nameEn: 'Geumryeonsan · Gwangalli', englishName: 'GEUMRYEONSAN · GWANGALLI' },
+    { id: 'LINE2_CENTUM_CITY', nameKo: '센텀시티역', nameEn: 'Centum City Stn', englishName: 'CENTUM CITY' },
+    { id: 'LINE2_HAEUNDAE_DONGBAEK', nameKo: '해운대 · 동백역', nameEn: 'Haeundae · Dongbaek', englishName: 'HAEUNDAE · DONGBAEK' },
   ];
 
   const handleAnswerSelect = (optionType: 'A' | 'B') => {
@@ -5094,7 +5094,7 @@ case 'EXPERIENCE': {
                           )}
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-2.5">
                           {(currentLine === 'LINE1' ? LINE1_STATION_TABS : LINE2_STATION_TABS).map((tab) => {
                             const isActive = selectedStationGroup === tab.id;
                             return (
@@ -5105,7 +5105,7 @@ case 'EXPERIENCE': {
                                   e.stopPropagation();
                                   setSelectedStationGroup(isActive && tab.id !== 'ALL' ? 'ALL' : tab.id);
                                 }}
-                                className={`p-2.5 sm:p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-0.5 active:scale-95 shadow-2xs ${
+                                className={`px-1.5 py-2.5 sm:px-2 sm:py-3 rounded-xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-1 active:scale-95 shadow-2xs min-h-[66px] sm:min-h-[72px] ${
                                   isActive
                                     ? (currentLine === 'LINE1'
                                         ? 'bg-[#EA580C] border-[#EA580C] text-white shadow-sm ring-2 ring-[#EA580C]/20'
@@ -5113,15 +5113,10 @@ case 'EXPERIENCE': {
                                     : 'bg-white border-slate-300 hover:border-[#8EA85E] hover:bg-slate-50 text-slate-800'
                                 }`}
                               >
-                                <span className={`font-bold text-xs sm:text-sm font-heading truncate max-w-full ${isActive ? 'text-white' : 'text-slate-800'}`}>
+                                <span className={`font-bold text-xs sm:text-[13px] font-heading leading-tight break-keep text-center select-none ${isActive ? 'text-white' : 'text-slate-800'}`}>
                                   {language === 'KR' ? tab.nameKo : tab.nameEn}
                                 </span>
-                                {tab.count !== undefined && (
-                                  <span className={`text-[11px] sm:text-xs font-semibold ${isActive ? 'text-white/80 font-bold' : (currentLine === 'LINE1' ? 'text-orange-600 font-bold' : 'text-emerald-600 font-bold')}`}>
-                                    ({tab.count}곳)
-                                  </span>
-                                )}
-                                <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold tracking-wider truncate max-w-full ${isActive ? (currentLine === 'LINE1' ? 'text-orange-100' : 'text-emerald-100') : 'text-slate-400'}`}>
+                                <span className={`text-[9.5px] sm:text-[10px] font-mono uppercase font-semibold tracking-tight text-center leading-tight break-words select-none ${isActive ? (currentLine === 'LINE1' ? 'text-orange-100' : 'text-emerald-100') : 'text-slate-400'}`}>
                                   {tab.englishName || tab.nameEn}
                                 </span>
                               </button>
@@ -5144,9 +5139,6 @@ case 'EXPERIENCE': {
                                   <h3 className="font-extrabold text-base sm:text-lg text-slate-900 tracking-tight">
                                     {language === 'KR' ? group.nameKo : group.nameEn}
                                   </h3>
-                                  <span className="text-xs font-semibold text-slate-400">
-                                    ({placesInGroup.length}{language === 'KR' ? '곳' : ' places'})
-                                  </span>
                                 </div>
                               </div>
 
