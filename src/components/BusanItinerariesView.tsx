@@ -3446,7 +3446,7 @@ export default function BusanItinerariesView({
                           </p>
                         </div>
 
-                        {/* 2개 추천 코스 선택 탭 버튼 (통일된 브랜드 초록색 & 테두리 제거) */}
+                        {/* 2개 추천 코스 선택 탭 버튼 (통일된 브랜드 초록색 & 모바일 최적화) */}
                         <div className="flex items-center gap-2 flex-wrap">
                           {dayCourses.map((c, idx) => {
                             const isSelected = currentCourse.id === c.id;
@@ -3455,7 +3455,7 @@ export default function BusanItinerariesView({
                                 key={c.id}
                                 type="button"
                                 onClick={() => setSelectedDayCourseId(c.id)}
-                                className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs ${
+                                className={`w-full sm:w-auto flex-1 min-w-[200px] justify-center px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs text-center ${
                                   isSelected
                                     ? 'bg-[#8EA85E] text-white shadow-sm ring-2 ring-[#8EA85E]/20'
                                     : 'bg-white hover:bg-slate-50 text-slate-700'
@@ -3473,18 +3473,18 @@ export default function BusanItinerariesView({
                       </div>
 
                       {/* Day Trip Route Flow & Steps */}
-                      <div className="space-y-3.5 text-left">
-                        {/* 추천 동선 요약 플로우 (박스 테두리 제거, 깔끔한 플랫 디자인) */}
-                        <div className="bg-slate-50/80 p-3 sm:p-4 rounded-2xl flex items-center flex-wrap gap-2 text-xs font-bold text-slate-800">
-                          <span className="text-[11px] font-bold text-[#8EA85E] bg-white px-2.5 py-1 rounded-xl shadow-2xs uppercase tracking-wider shrink-0 flex items-center gap-1.5">
+                      <div className="space-y-3 sm:space-y-3.5 text-left">
+                        {/* 추천 동선 요약 플로우 (박스 테두리 제거, 모바일 최적화) */}
+                        <div className="bg-slate-50/80 p-2.5 sm:p-4 rounded-xl sm:rounded-2xl flex items-center flex-wrap gap-1.5 sm:gap-2 text-xs font-bold text-slate-800">
+                          <span className="text-[10.5px] sm:text-[11px] font-bold text-[#8EA85E] bg-white px-2.5 py-1 rounded-lg sm:rounded-xl shadow-2xs uppercase tracking-wider shrink-0 flex items-center gap-1.5">
                             <Compass className="w-3.5 h-3.5 text-[#8EA85E]" />
                             <span>{language === 'KR' ? '추천 동선 요약' : 'Route Flow'}</span>
                           </span>
-                          <div className="flex items-center flex-wrap gap-1.5 text-slate-800">
+                          <div className="flex items-center flex-wrap gap-1 sm:gap-1.5 text-slate-800">
                             {currentCourse.steps.map((s, idx) => (
                               <React.Fragment key={idx}>
-                                {idx > 0 && <ChevronRight className="w-3.5 h-3.5 text-slate-400" />}
-                                <span className="bg-white px-3 py-1 rounded-xl font-bold text-xs text-slate-800 shadow-2xs">
+                                {idx > 0 && <ChevronRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-400 shrink-0" />}
+                                <span className="bg-white px-2.5 sm:px-3 py-1 rounded-lg sm:rounded-xl font-bold text-[11px] sm:text-xs text-slate-800 shadow-2xs break-keep">
                                   {language === 'KR' ? (s.shortTitleKo || s.titleKo) : (s.shortTitleEn || s.titleEn)}
                                 </span>
                               </React.Fragment>

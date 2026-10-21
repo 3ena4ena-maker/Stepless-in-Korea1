@@ -99,10 +99,10 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
 
       {/* 카드 본체 (불필요한 공백 최소화 & 컴팩트 레이아웃) */}
       <div className="bg-white p-3 sm:p-3.5 rounded-xl border border-slate-200/80 space-y-2.5 text-left shadow-2xs hover:border-[#8EA85E] transition-all">
-        <div className="flex flex-row items-start gap-3">
-          {/* 축소된 컴팩트 사진 (TourAPI 뱃지 삭제) */}
+        <div className="flex flex-row items-start gap-2.5 sm:gap-3">
+          {/* 축소된 컴팩트 사진 (TourAPI 뱃지 삭제 & 모바일 최적화) */}
           {effectiveImage ? (
-            <div className="w-24 h-20 sm:w-28 sm:h-22 rounded-lg overflow-hidden bg-slate-100 shrink-0 border border-[#E5E2DC] shadow-2xs">
+            <div className="w-20 h-18 sm:w-24 sm:h-20 md:w-28 md:h-22 rounded-lg overflow-hidden bg-slate-100 shrink-0 border border-[#E5E2DC] shadow-2xs">
               <img
                 src={effectiveImage}
                 alt={language === 'KR' ? step.titleKo : step.titleEn}
@@ -118,8 +118,8 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
           {/* 본문 정보 영역 */}
           <div className="flex-1 min-w-0 space-y-1.5 text-left">
             {/* 제목 & 루트 추가 버튼 */}
-            <div className="flex items-center justify-between gap-2">
-              <h5 className="text-sm sm:text-base font-bold text-slate-900 leading-snug truncate">
+            <div className="flex items-start justify-between gap-1.5">
+              <h5 className="text-xs sm:text-sm md:text-base font-bold text-slate-900 leading-snug break-keep">
                 {language === 'KR' ? step.titleKo : step.titleEn}
               </h5>
 
@@ -145,7 +145,7 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
                     longitude: detail?.longitude,
                   });
                 }}
-                className={`px-2 py-0.5 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
+                className={`px-2 py-0.5 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[10.5px] sm:text-[11px] font-bold shrink-0 ${
                   isSaved
                     ? 'bg-amber-50 text-amber-600 border-amber-300 hover:bg-amber-100 shadow-2xs'
                     : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
@@ -156,8 +156,8 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
                     : (language === 'KR' ? '내 여행 루트(지도)에 추가' : 'Add to My Route')
                 }
               >
-                <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
-                <span className="text-[10.5px] sm:text-[11px] font-bold">
+                <Star className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                <span className="font-bold">
                   {isSaved
                     ? (language === 'KR' ? '루트 담김' : 'In Route')
                     : (language === 'KR' ? '루트 추가' : 'Add')}
@@ -165,18 +165,20 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
               </button>
             </div>
 
-            {/* 설명 (간결하고 공백 없는 2줄) */}
-            <p className="text-[11.5px] sm:text-xs text-[#4A5568] leading-relaxed line-clamp-2">
+            {/* 설명 (간결하고 공백 없는 설명) */}
+            <p className="text-[11px] sm:text-xs text-[#4A5568] leading-relaxed break-keep">
               {language === 'KR' ? step.descKo : step.descEn}
             </p>
 
             {/* 대중교통/지하철 정보 */}
             {step.stationInfoKo && (
-              <div className="flex items-center gap-1.5 text-[11px] text-slate-600">
-                <Train className="w-3 h-3 text-[#8EA85E] shrink-0" />
-                <span className="truncate leading-tight font-medium">
-                  {language === 'KR' ? step.stationInfoKo : (step.stationInfoEn || step.stationInfoKo)}
-                </span>
+              <div className="flex items-center gap-1.5 text-[10.5px] sm:text-[11px] text-slate-600 flex-wrap">
+                <div className="flex items-center gap-1 min-w-0 flex-1">
+                  <Train className="w-3 h-3 text-[#8EA85E] shrink-0" />
+                  <span className="leading-snug font-medium break-keep">
+                    {language === 'KR' ? step.stationInfoKo : (step.stationInfoEn || step.stationInfoKo)}
+                  </span>
+                </div>
                 {onSelectStation && step.stationInfoKo.includes('역') && (
                   <button
                     type="button"
@@ -197,10 +199,10 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
 
         {/* 하단 주소 & 지도 연결 (공백 최소화) */}
         {effectiveAddress && (
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-1.5 text-xs flex-wrap">
             <div className="flex items-center gap-1 text-slate-600 min-w-0 flex-1">
               <MapPin className="w-3 h-3 text-[#8EA85E] shrink-0" />
-              <span className="truncate text-[11px] font-medium leading-tight">
+              <span className="text-[10.5px] sm:text-[11px] font-medium leading-tight break-keep">
                 {effectiveAddress}
               </span>
             </div>
