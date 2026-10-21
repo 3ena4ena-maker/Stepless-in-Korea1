@@ -141,7 +141,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '264 Haeundaehaebyeon-ro, Haeundae-gu, Busan',
         stationInfoKo: '지하철 2호선 해운대역 3·5번 출구 도보 7분, 무단차 해변 데크길',
         stationInfoEn: 'Subway Line 2 Haeundae Station Exit 3 or 5, 7 mins flat walk to the beach boardwalk.',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/68/3026468_image2_1.JPG',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/47/4105447_image2_1.jpg',
         naverMapUrl: 'https://map.naver.com/p/search/%ED%95%B4%EC%9A%B4%EB%8C%80%ED%95%B4%EC%88%98%EC%9A%95%EC%9E%A5',
         googleMapUrl: 'https://maps.google.com/?q=%ED%95%B4%EC%9A%B4%EB%8C%80%ED%95%B4%EC%88%98%EC%9A%95%EC%9E%A5'
       },
@@ -157,7 +157,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '13 Dalmaji-gil 62beon-gil, Haeundae-gu, Busan',
         stationInfoKo: '지하철 2호선 중동역 7번 출구 도보 12분 / 해운대 미포 입구',
         stationInfoEn: 'Subway Line 2 Jungdong Station Exit 7, 12 mins walk to Mipo station.',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/77/2684877_image2_1.jpg',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/99/3546099_image2_1.jpg',
         naverMapUrl: 'https://map.naver.com/p/search/%ED%95%B4%EC%9A%B4%EB%8C%80%EB%B8%94%EB%A3%A8%EB%9D%BC%EC%9D%B8%ED%8C%8C%ED%81%AC%20%EB%AF%B8%ED%8F%AC%EC%A0%95%EA%B1%B0%EC%9E%A5',
         googleMapUrl: 'https://maps.google.com/?q=%ED%95%B4%EC%9A%B4%EB%8C%80%EB%B8%94%EB%A3%A8%EB%9D%BC%EC%9D%B8%ED%8C%8C%ED%81%AC%20%EB%AF%B8%ED%8F%AC%EC%A0%95%EA%B1%B0%EC%9E%A5'
       },
@@ -221,7 +221,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '219 Gwanganhaebyeon-ro, Suyeong-gu, Busan',
         stationInfoKo: '지하철 2호선 광안역 3·5번 출구 도보 10분, 해변 평탄 산책로',
         stationInfoEn: 'Subway Line 2 Gwangan Station Exit 3 or 5, 10 mins flat walk to the beach.',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/75/2677875_image2_1.jpg',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/45/3311245_image2_1.jpg',
         naverMapUrl: 'https://map.naver.com/p/search/%EA%B4%91%EC%95%88%EB%A6%AC%ED%95%B4%EC%88%98%EC%9A%95%EC%9E%A5',
         googleMapUrl: 'https://maps.google.com/?q=%EA%B4%91%EC%95%88%EB%A6%AC%ED%95%B4%EC%88%98%EC%9A%95%EC%9E%A5'
       }
@@ -255,7 +255,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '203 Gamnae 2-ro, Saha-gu, Busan',
         stationInfoKo: '지하철 1호선 토성역 6번 출구 앞 마을버스(사하1-1, 서구2) 환승',
         stationInfoEn: 'Subway Line 1 Toseong Station Exit 6, transfer to mini bus Saha 1-1 or Seo-gu 2.',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/16/1350616_image2_1.jpg',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/91/3365491_image2_1.jpg',
         naverMapUrl: 'https://map.naver.com/p/search/%EA%B0%90%EC%B2%9C%EB%AC%B8%ED%99%94%EB%A7%88%EC%9D%84',
         googleMapUrl: 'https://maps.google.com/?q=%EA%B0%90%EC%B2%9C%EB%AC%B8%ED%99%94%EB%A7%88%EC%9D%84'
       },
@@ -271,7 +271,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '36 Junggu-ro (Gukje) / 48 Bupyeong 1-gil, Jung-gu, Busan',
         stationInfoKo: '지하철 1호선 자갈치역 7번 출구 / 남포역 1번 출구 도보 5분',
         stationInfoEn: 'Subway Line 1 Jagalchi Station Exit 7 or Nampo Station Exit 1, 5 mins walk.',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/30/3476830_image2_1.jpg',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/70/3561970_image2_1.jpg',
         naverMapUrl: 'https://map.naver.com/p/search/%EA%B5%AD%EC%A0%9C%EC%8B%9C%EC%9E%A5%20%EB%B6%80%ED%8F%89%EA%B9%A1%ED%86%B5%EC%8B%9C%EC%9E%A5',
         googleMapUrl: 'https://maps.google.com/?q=%EA%B5%AD%EC%A0%9C%EC%8B%9C%EC%9E%A5%20%EB%B6%80%ED%8F%89%EA%B9%A1%ED%86%B5%EC%8B%9C%EC%9E%A5'
       },
@@ -287,7 +287,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '52 Jagalchihaean-ro, Jung-gu, Busan',
         stationInfoKo: '지하철 1호선 자갈치역 10번 출구 도보 3분 (유라리광장 수변데크 연결)',
         stationInfoEn: 'Subway Line 1 Jagalchi Station Exit 10, 3 mins walk (connected to Yurari Plaza).',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/38/1944638_image2_1.jpg',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource_photo/05/4108305_image2_1.JPG',
         naverMapUrl: 'https://map.naver.com/p/search/%EC%9E%90%EA%B0%88%EC%B9%98%EC%8B%9C%EC%9E%A5',
         googleMapUrl: 'https://maps.google.com/?q=%EC%9E%90%EA%B0%88%EC%B9%98%EC%8B%9C%EC%9E%A5'
       },
@@ -303,7 +303,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '379 Huinnyeoul-gil, Yeongdo-gu, Busan',
         stationInfoKo: '지하철 1호선 남포역 6번 출구에서 영도 방면 시내버스(6, 9, 82, 85번) 환승',
         stationInfoEn: 'Subway Line 1 Nampo Station Exit 6, transfer to local bus 6, 9, 82, or 85.',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/70/3561970_image2_1.jpg',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/23/4111423_image2_1.jpg',
         naverMapUrl: 'https://map.naver.com/p/search/%ED%9D%B0%EC%97%AC%EC%9A%B8%EB%AC%B8%ED%99%94%EB%A7%88%EC%9D%84',
         googleMapUrl: 'https://maps.google.com/?q=%ED%9D%B0%EC%97%AC%EC%9A%B8%EB%AC%B8%ED%99%94%EB%A7%88%EC%9D%84'
       },
@@ -319,7 +319,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         addressRoadEn: '24 Jeonmang-ro, Yeongdo-gu, Busan',
         stationInfoKo: '지하철 1호선 부산역·남포역에서 8번, 30번, 88번, 101번 시내버스 종점 하차',
         stationInfoEn: 'From Subway Line 1 Busan or Nampo Station, take bus 8, 30, 88, or 101 to the terminus.',
-        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/26/3501426_image2_1.jpg',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/83/3506383_image2_1.jpg',
         naverMapUrl: 'https://map.naver.com/p/search/%ED%83%9C%EC%A2%85%EB%8C%80',
         googleMapUrl: 'https://maps.google.com/?q=%ED%83%9C%EC%A2%85%EB%8C%80'
       }

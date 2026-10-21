@@ -80,210 +80,187 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
   const isSaved = isBookmarked(step.id || step.titleKo);
 
   const bf = detail?.barrierFree;
-  const effectiveImage = (!imageError && detail?.firstImage) ? detail.firstImage : (step.firstImage || '');
+  const effectiveImage = (!imageError && (step.firstImage || detail?.firstImage)) ? (step.firstImage || detail?.firstImage) : '';
   const effectiveAddressKo = detail?.addressRoadKo || step.addressRoadKo || step.addressKo || '';
   const effectiveAddressEn = detail?.addressRoadEn || step.addressRoadEn || step.addressEn || effectiveAddressKo;
   const effectiveAddress = language === 'KR' ? effectiveAddressKo : effectiveAddressEn;
   const naverMapUrl = step.naverMapUrl || `https://map.naver.com/p/search/${encodeURIComponent(step.titleKo)}`;
   const googleMapUrl = step.googleMapUrl || `https://maps.google.com/?q=${encodeURIComponent(step.titleKo + ' 부산')}`;
 
-  const hasAnyCardInfo = Boolean(
-    effectiveImage || 
-    effectiveAddress || 
-    step.stationInfoKo || 
-    (bf && Object.values(bf).some((v: any) => v?.available))
-  );
-
   return (
-    <div className="relative group text-left space-y-2">
-      {/* 타임라인 인덱스 및 시간 (복잡한 인증 뱃지 삭제 및 정갈한 여백) */}
-      <div className="flex items-center gap-2 text-xs font-bold text-[#8EA85E]">
-        <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-[10px] shrink-0">
+    <div className="relative group text-left space-y-1.5">
+      {/* 타임라인 인덱스 및 시간 */}
+      <div className="flex items-center gap-1.5 text-xs font-bold text-[#8EA85E]">
+        <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-[10px] shrink-0 font-bold">
           {stepNumber}
         </span>
         {step.time ? <span className="font-mono text-[11px] text-[#4A5568]">{step.time}</span> : null}
       </div>
 
-      {/* 카드 본체 (불필요한 중첩 박스 테두리 제거) */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 space-y-3 text-left shadow-2xs hover:border-[#8EA85E] transition-all">
-        {/* 제목 & 즐겨찾기 & 아이콘 헤더 */}
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-0.5 min-w-0 flex-1">
-            <h5 className="text-base sm:text-lg font-bold text-slate-900 leading-snug">
-              {language === 'KR' ? step.titleKo : step.titleEn}
-            </h5>
-          </div>
-
-          <div className="flex items-center gap-1.5 shrink-0">
-            {/* 즐겨찾기(내 여행 루트) 토글 버튼 */}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                toggle({
-                  id: step.id || step.titleKo,
-                  titleKo: step.titleKo,
-                  titleEn: step.titleEn,
-                  categoryKo: detail?.categoryKo || '추천코스',
-                  categoryEn: detail?.categoryEn || 'Course',
-                  addressRoadKo: detail?.addressRoadKo,
-                  addressRoadEn: detail?.addressRoadEn,
-                  stationInfoKo: step.stationInfoKo,
-                  stationInfoEn: step.stationInfoEn,
-                  descKo: step.descKo,
-                  descEn: step.descEn,
-                  firstImage: detail?.firstImage,
-                  time: step.time,
-                  latitude: detail?.latitude,
-                  longitude: detail?.longitude,
-                });
-              }}
-              className={`px-2 py-1 rounded-lg border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
-                isSaved
-                  ? 'bg-amber-50 text-amber-600 border-amber-300 hover:bg-amber-100 shadow-2xs'
-                  : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
-              }`}
-              title={
-                isSaved
-                  ? (language === 'KR' ? '내 여행 루트에서 제거' : 'Remove from My Route')
-                  : (language === 'KR' ? '내 여행 루트(지도)에 추가' : 'Add to My Route')
-              }
-            >
-              <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
-              <span className="hidden sm:inline">
-                {isSaved
-                  ? (language === 'KR' ? '루트 담김' : 'In Route')
-                  : (language === 'KR' ? '루트 추가' : 'Add Route')}
-              </span>
-            </button>
-
-            <div className="p-1.5 rounded-xl bg-slate-100/70 shrink-0 text-[#8EA85E]">
-              <ElegantIllustration type={getIllustrationType(step.titleKo)} size="sm" className="w-5 h-5 stroke-[1.8]" />
+      {/* 카드 본체 (불필요한 공백 최소화 & 컴팩트 레이아웃) */}
+      <div className="bg-white p-3 sm:p-3.5 rounded-xl border border-slate-200/80 space-y-2.5 text-left shadow-2xs hover:border-[#8EA85E] transition-all">
+        <div className="flex flex-row items-start gap-3">
+          {/* 축소된 컴팩트 사진 (TourAPI 뱃지 삭제) */}
+          {effectiveImage ? (
+            <div className="w-24 h-20 sm:w-28 sm:h-22 rounded-lg overflow-hidden bg-slate-100 shrink-0 border border-[#E5E2DC] shadow-2xs">
+              <img
+                src={effectiveImage}
+                alt={language === 'KR' ? step.titleKo : step.titleEn}
+                className={`w-full h-full object-cover transition-opacity duration-200 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                referrerPolicy="no-referrer"
+                loading="lazy"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageError(true)}
+              />
             </div>
+          ) : null}
+
+          {/* 본문 정보 영역 */}
+          <div className="flex-1 min-w-0 space-y-1.5 text-left">
+            {/* 제목 & 루트 추가 버튼 */}
+            <div className="flex items-center justify-between gap-2">
+              <h5 className="text-sm sm:text-base font-bold text-slate-900 leading-snug truncate">
+                {language === 'KR' ? step.titleKo : step.titleEn}
+              </h5>
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggle({
+                    id: step.id || step.titleKo,
+                    titleKo: step.titleKo,
+                    titleEn: step.titleEn,
+                    categoryKo: detail?.categoryKo || '추천코스',
+                    categoryEn: detail?.categoryEn || 'Course',
+                    addressRoadKo: detail?.addressRoadKo,
+                    addressRoadEn: detail?.addressRoadEn,
+                    stationInfoKo: step.stationInfoKo,
+                    stationInfoEn: step.stationInfoEn,
+                    descKo: step.descKo,
+                    descEn: step.descEn,
+                    firstImage: effectiveImage,
+                    time: step.time,
+                    latitude: detail?.latitude,
+                    longitude: detail?.longitude,
+                  });
+                }}
+                className={`px-2 py-0.5 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
+                  isSaved
+                    ? 'bg-amber-50 text-amber-600 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                    : 'bg-white text-slate-400 border-slate-200 hover:text-amber-500 hover:border-amber-200 hover:bg-amber-50/40'
+                }`}
+                title={
+                  isSaved
+                    ? (language === 'KR' ? '내 여행 루트에서 제거' : 'Remove from My Route')
+                    : (language === 'KR' ? '내 여행 루트(지도)에 추가' : 'Add to My Route')
+                }
+              >
+                <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                <span className="text-[10.5px] sm:text-[11px] font-bold">
+                  {isSaved
+                    ? (language === 'KR' ? '루트 담김' : 'In Route')
+                    : (language === 'KR' ? '루트 추가' : 'Add')}
+                </span>
+              </button>
+            </div>
+
+            {/* 설명 (간결하고 공백 없는 2줄) */}
+            <p className="text-[11.5px] sm:text-xs text-[#4A5568] leading-relaxed line-clamp-2">
+              {language === 'KR' ? step.descKo : step.descEn}
+            </p>
+
+            {/* 대중교통/지하철 정보 */}
+            {step.stationInfoKo && (
+              <div className="flex items-center gap-1.5 text-[11px] text-slate-600">
+                <Train className="w-3 h-3 text-[#8EA85E] shrink-0" />
+                <span className="truncate leading-tight font-medium">
+                  {language === 'KR' ? step.stationInfoKo : (step.stationInfoEn || step.stationInfoKo)}
+                </span>
+                {onSelectStation && step.stationInfoKo.includes('역') && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const match = step.stationInfoKo?.match(/([가-힣]+역)/);
+                      if (match) onSelectStation(match[1]);
+                    }}
+                    className="text-[10px] font-bold text-[#8EA85E] hover:underline flex items-center gap-0.5 shrink-0 ml-auto cursor-pointer"
+                  >
+                    <span>역사 정보</span>
+                    <ExternalLink className="w-2.5 h-2.5" />
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* 사진, 주소, 지도 바로가기 & 대중교통 연계 영역 (박스 테두리 제거) */}
-        {hasAnyCardInfo && (
-          <div className="space-y-3 pt-1">
-            <div className="flex flex-col sm:flex-row gap-3 bg-slate-50/70 p-3 sm:p-3.5 rounded-xl">
-              {effectiveImage ? (
-                <div className="w-full sm:w-36 sm:h-28 rounded-xl overflow-hidden bg-slate-100 shrink-0 relative shadow-2xs">
-                  <img
-                    src={effectiveImage}
-                    alt={language === 'KR' ? step.titleKo : step.titleEn}
-                    className={`w-full h-full object-cover transition-opacity duration-200 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-                    referrerPolicy="no-referrer"
-                    loading="lazy"
-                    onLoad={() => setImageLoaded(true)}
-                    onError={() => setImageError(true)}
-                  />
-                  <div className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded-full bg-slate-900/75 backdrop-blur-xs text-white text-[9px] font-bold flex items-center gap-1 shadow-xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                    <span>TourAPI</span>
-                  </div>
-                </div>
-              ) : null}
-              
-              <div className="flex-1 space-y-2 text-xs min-w-0">
-                {effectiveAddress && (
-                  <div className="flex items-start justify-between gap-2 flex-wrap">
-                    <div className="flex items-start gap-1.5 text-slate-600 min-w-0 flex-1">
-                      <MapPin className="w-3.5 h-3.5 text-[#8EA85E] shrink-0 mt-0.5" />
-                      <span className="leading-relaxed break-words font-medium">
-                        {effectiveAddress}
-                      </span>
-                    </div>
+        {/* 하단 주소 & 지도 연결 (공백 최소화) */}
+        {effectiveAddress && (
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
+            <div className="flex items-center gap-1 text-slate-600 min-w-0 flex-1">
+              <MapPin className="w-3 h-3 text-[#8EA85E] shrink-0" />
+              <span className="truncate text-[11px] font-medium leading-tight">
+                {effectiveAddress}
+              </span>
+            </div>
 
-                    {/* 주소 복사 + 네이버지도 + 구글맵 바로 연결 아이콘 */}
-                    <div className="flex items-center gap-1 shrink-0">
-                      <button
-                        type="button"
-                        onClick={(e) => handleCopy(e, effectiveAddress)}
-                        className="text-[10px] px-2 py-1 rounded-md bg-white text-slate-600 hover:bg-slate-100 shadow-2xs shrink-0 flex items-center gap-1 transition-colors cursor-pointer"
-                        title={language === 'KR' ? '주소 복사' : 'Copy address'}
-                      >
-                        {copied ? (
-                          <>
-                            <Check className="w-3 h-3 text-emerald-600" />
-                            <span className="text-emerald-700 font-bold">복사됨</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3 h-3" />
-                            <span>복사</span>
-                          </>
-                        )}
-                      </button>
-
-                      {/* 네이버 지도 바로 연결 */}
-                      <a
-                        href={naverMapUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="w-6 h-6 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
-                        title={language === 'KR' ? `${step.titleKo} 네이버 지도에서 길찾기/위치 보기` : 'View on Naver Map'}
-                        aria-label="Naver Map"
-                      >
-                        <svg className="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24">
-                          <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
-                        </svg>
-                      </a>
-
-                      {/* 구글 지도 바로 연결 */}
-                      <a
-                        href={googleMapUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="w-6 h-6 rounded-md bg-white border border-slate-200 hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
-                        title={language === 'KR' ? `${step.titleKo} 구글 지도에서 위치 보기` : 'View on Google Maps'}
-                        aria-label="Google Maps"
-                      >
-                        <svg viewBox="0 0 92 135" className="w-3 h-3" fill="none">
-                          <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
-                          <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
-                          <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
-                          <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
-                          <circle cx="46" cy="46" r="18" fill="#FFFFFF"/>
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
+            <div className="flex items-center gap-1 shrink-0">
+              <button
+                type="button"
+                onClick={(e) => handleCopy(e, effectiveAddress)}
+                className="text-[10px] px-1.5 py-0.5 rounded bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200 flex items-center gap-0.5 transition-colors cursor-pointer"
+                title={language === 'KR' ? '주소 복사' : 'Copy address'}
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-2.5 h-2.5 text-emerald-600" />
+                    <span className="text-emerald-700 font-bold">복사됨</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-2.5 h-2.5" />
+                    <span>복사</span>
+                  </>
                 )}
+              </button>
 
-                {/* 주소 바로 아래 KTX / 지하철 / 대중교통 연계 정보 (테두리 제거) */}
-                {step.stationInfoKo && (
-                  <div className="flex items-center justify-between gap-2 text-xs font-medium text-slate-700 bg-white px-2.5 py-1.5 rounded-lg shadow-2xs flex-wrap">
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <Train className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
-                      <span className="leading-snug">{language === 'KR' ? step.stationInfoKo : (step.stationInfoEn || step.stationInfoKo)}</span>
-                    </div>
-                    {onSelectStation && step.stationInfoKo.includes('역') && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const match = step.stationInfoKo?.match(/([가-힣]+역)/);
-                          if (match) onSelectStation(match[1]);
-                        }}
-                        className="text-[10px] font-bold text-[#8EA85E] hover:underline flex items-center gap-0.5 shrink-0 cursor-pointer"
-                      >
-                        <span>역사 정보</span>
-                        <ExternalLink className="w-3 h-3" />
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
+              {/* 네이버 지도 바로 연결 */}
+              <a
+                href={naverMapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="w-5.5 h-5.5 rounded-md bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                title={language === 'KR' ? `${step.titleKo} 네이버 지도에서 보기` : 'View on Naver Map'}
+                aria-label="Naver Map"
+              >
+                <svg className="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24">
+                  <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
+                </svg>
+              </a>
+
+              {/* 구글 지도 바로 연결 */}
+              <a
+                href={googleMapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="w-5.5 h-5.5 rounded-md bg-white border border-slate-200 hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+                title={language === 'KR' ? `${step.titleKo} 구글 지도에서 보기` : 'View on Google Maps'}
+                aria-label="Google Maps"
+              >
+                <svg viewBox="0 0 92 135" className="w-2.5 h-2.5" fill="none">
+                  <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
+                  <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
+                  <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
+                  <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
+                  <circle cx="46" cy="46" r="18" fill="#FFFFFF"/>
+                </svg>
+              </a>
             </div>
           </div>
         )}
-
-        {/* 기본 코스 설명 */}
-        <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed whitespace-pre-line">
-          {language === 'KR' ? step.descKo : step.descEn}
-        </p>
 
         {/* 다수 매장/프랜차이즈 지점별 주소 목록 & 네이버지도 / 구글맵 버튼 */}
         {step.branches && step.branches.length > 0 && (

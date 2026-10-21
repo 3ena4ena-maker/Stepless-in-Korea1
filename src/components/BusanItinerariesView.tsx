@@ -3459,8 +3459,8 @@ export default function BusanItinerariesView({
                               >
                                 <span>
                                   {idx === 0
-                                    ? (language === 'KR' ? '🌊 코스 1: 해운대 · 광안리 (동부산)' : 'Course 1: Haeundae & Gwangalli')
-                                    : (language === 'KR' ? '🏙️ 코스 2: 감천 · 원도심 · 태종대' : 'Course 2: Gamcheon & Yeongdo')}
+                                    ? (language === 'KR' ? '코스 1: 해운대 · 광안리 (동부산)' : 'Course 1: Haeundae & Gwangalli')
+                                    : (language === 'KR' ? '코스 2: 감천 · 원도심 · 태종대' : 'Course 2: Gamcheon & Yeongdo')}
                                 </span>
                               </button>
                             );
@@ -3468,8 +3468,8 @@ export default function BusanItinerariesView({
                         </div>
                       </div>
 
-                      {/* Day Trip Route Flow & Steps (외곽 박스 테두리 제거) */}
-                      <div className="space-y-6 text-left">
+                      {/* Day Trip Route Flow & Steps */}
+                      <div className="space-y-3.5 text-left">
                         {/* 추천 동선 요약 플로우 (박스 테두리 제거, 깔끔한 플랫 디자인) */}
                         <div className="bg-slate-50/80 p-3 sm:p-4 rounded-2xl flex items-center flex-wrap gap-2 text-xs font-bold text-slate-800">
                           <span className="text-[11px] font-bold text-[#8EA85E] bg-white px-2.5 py-1 rounded-xl shadow-2xs uppercase tracking-wider shrink-0 flex items-center gap-1.5">
@@ -3488,9 +3488,8 @@ export default function BusanItinerariesView({
                           </div>
                         </div>
 
-                        {/* Steps Timeline */}
-                        <div className="relative pl-7 sm:pl-9 space-y-6 text-left">
-                          <div className="absolute left-[13px] sm:left-[17px] top-3 bottom-3 w-px bg-slate-200"></div>
+                        {/* Steps Timeline (세로선 제거 & 컴팩트한 간격) */}
+                        <div className="space-y-3 sm:space-y-3.5 text-left">
                           {currentCourse.steps.map((st, sidx) => (
                             <TourApiItineraryStepCard
                               key={sidx}
