@@ -251,6 +251,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedItineraryCategory, setSelectedItineraryCategory] = useState<string | null>(null);
   const [tipsSubPage, setTipsSubPage] = useState<'index' | 'courses' | 'transit' | 'child-free' | 'bus-qr' | 'transfer' | 'taxi' | 'schedule' | 'community' | 'exploration'>('index');
+  const [explorationItemId, setExplorationItemId] = useState<string | null>(null);
   const [activeRegionPage, setActiveRegionPage] = useState<'LINE1' | 'LINE2' | null>(null);
   const [siteSubPage, setSiteSubPage] = useState<'about' | 'privacy' | 'terms' | 'contact' | 'data-source'>('about');
   const [barrierFreeCourseId, setBarrierFreeCourseId] = useState<string | null>(null);
@@ -499,6 +500,11 @@ export default function App() {
         } else if (sub === 'exploration' || sub === 'life-tips' || sub === 'hot-issues') {
           setTipsSubPage('exploration');
           setActiveRegionPage(null);
+          if (parts[2]) {
+            setExplorationItemId(parts[2].toLowerCase());
+          } else {
+            setExplorationItemId(null);
+          }
         } else if (sub === 'transfer') {
           setTipsSubPage('transit');
           setActiveRegionPage(null);
@@ -662,6 +668,16 @@ export default function App() {
                   setSelectedItineraryCategory(null);
                   setTipsSubPage('exploration');
                   setActiveRegionPage(null);
+                  if (parts[3]) {
+                    setExplorationItemId(parts[3].toLowerCase());
+                  } else {
+                    setExplorationItemId(null);
+                  }
+                } else if (['bootech', 'luggage', 'rental', 'korean-cheat-codes', 'metro-reentry'].includes(parts[2].toLowerCase())) {
+                  setSelectedItineraryCategory(null);
+                  setTipsSubPage('exploration');
+                  setActiveRegionPage(null);
+                  setExplorationItemId(parts[2].toLowerCase());
                 } else if (['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
                   setSelectedItineraryCategory(null);
                   setTipsSubPage('courses');
@@ -771,7 +787,11 @@ export default function App() {
           } else if (tipsSubPage === 'taxi') {
             expectedPath = '/tips/taxi';
           } else if (tipsSubPage === 'exploration') {
-            expectedPath = '/tips/exploration';
+            if (explorationItemId) {
+              expectedPath = `/tips/exploration/${explorationItemId}`;
+            } else {
+              expectedPath = '/tips/exploration';
+            }
           } else if (tipsSubPage === 'schedule') {
             expectedPath = '/schedule';
           } else {
@@ -804,7 +824,7 @@ export default function App() {
         }
         const currentUrlPath = window.location.pathname + window.location.search;
         if (currentUrlPath !== expectedPath && window.location.pathname !== expectedPath) {
-          window.history.pushState({ tab: currentTab, category: selectedItineraryCategory, subPage: tipsSubPage, regionPage: activeRegionPage, siteSubPage, searchViewMode, stationId: selectedStationId }, '', expectedPath);
+          window.history.pushState({ tab: currentTab, category: selectedItineraryCategory, subPage: tipsSubPage, regionPage: activeRegionPage, siteSubPage, searchViewMode, stationId: selectedStationId, explorationItemId }, '', expectedPath);
         }
       }
     } catch (e) {
@@ -954,9 +974,27 @@ export default function App() {
         pageDesc = "부산 주요 콜택시 전화번호 및 임산부·교통약자를 위한 바우처 택시, 안심 귀가 서비스 안내.";
         canonicalUrl = "https://stepless.kr/tips/taxi";
       } else if (tipsSubPage === 'exploration') {
-        pageTitle = "부산 탐구생활 - 핫이슈 & 실전 여행 꿀팁 | 스텝레스 Stepless";
-        pageDesc = "로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지! 부캉이 포토존과 캐리어 짐 보관 가이드.";
-        canonicalUrl = "https://stepless.kr/tips/exploration";
+        if (explorationItemId === 'bootech') {
+          pageTitle = "부산 북항 상어 '부캉이' 실전 관찰 가이드 - 부산 탐구생활 | 스텝레스 Stepless";
+          pageDesc = "부산항 북항 친수공원 인공수로에 나타난 3m 암컷 흑상어 '부캉이' 관찰 요령, 명당 위치, 실시간 위치 확인 안내.";
+          canonicalUrl = "https://stepless.kr/tips/exploration/bootech";
+        } else if (explorationItemId === 'luggage') {
+          pageTitle = "부산 무료 짐 보관소 총정리 (부산역·서면·해운대·광안리) - 부산 탐구생활 | 스텝레스 Stepless";
+          pageDesc = "부산에서 무료로 짐 보관할 수 있는 4곳(부산트레블라운지, 롯데백화점 부산본점, 해운대 플랫폼, 광안리 안내소) 운영시간, 주소, 지도 위치 총정리.";
+          canonicalUrl = "https://stepless.kr/tips/exploration/luggage";
+        } else if (explorationItemId === 'rental') {
+          pageTitle = "보행 약자 & 가족을 위한 유모차·휠체어 무료 대여소 안내 - 부산 탐구생활 | 스텝레스 Stepless";
+          pageDesc = "광안리 관광안내소, 태종대유원지, 롯데백화점 등 부산 유모차 및 휠체어 무료 대여 장소, 이용시간, 위치 총정리.";
+          canonicalUrl = "https://stepless.kr/tips/exploration/rental";
+        } else if (explorationItemId === 'korean-cheat-codes' || explorationItemId === 'metro-reentry') {
+          pageTitle = "5초 만에 배우는 초간단 실전 한국어 발음 꿀팁 - 부산 탐구생활 | 스텝레스 Stepless";
+          pageDesc = "외국인 친구도 바로 써먹는 초간단 실전 한국어 스피드 학습 치트키 발음 가이드.";
+          canonicalUrl = "https://stepless.kr/tips/exploration/korean-cheat-codes";
+        } else {
+          pageTitle = "부산 탐구생활 - 핫이슈 & 실전 여행 꿀팁 | 스텝레스 Stepless";
+          pageDesc = "로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지! 북항 상어 부캉이와 무료 짐 보관, 대여소 총정리.";
+          canonicalUrl = "https://stepless.kr/tips/exploration";
+        }
       } else if (tipsSubPage === 'courses') {
         pageTitle = "부산 테마별 & 일정별 추천 여행 코스 | 스텝레스 Stepless";
         pageDesc = "식도락, 체험, 전통시장, 명소 및 당일치기부터 2박 3일까지 부산 추천 여행 코스 안내.";
@@ -1005,7 +1043,7 @@ export default function App() {
       const canonical = document.querySelector('link[rel="canonical"]');
       if (canonical) canonical.setAttribute('href', "https://stepless.kr/");
     }
-  }, [selectedStationId, currentTab, isHomeLanding, searchViewMode, selectedItineraryCategory, tipsSubPage, activeRegionPage, siteSubPage, language]);
+  }, [selectedStationId, currentTab, isHomeLanding, searchViewMode, selectedItineraryCategory, tipsSubPage, activeRegionPage, siteSubPage, language, explorationItemId]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -1019,7 +1057,7 @@ export default function App() {
     }, 50);
 
     return () => clearTimeout(timer);
-  }, [currentTab, selectedStationId, isHomeLanding, selectedItineraryCategory, tipsSubPage, activeRegionPage]);
+  }, [currentTab, selectedStationId, isHomeLanding, selectedItineraryCategory, tipsSubPage, activeRegionPage, explorationItemId]);
 
   useEffect(() => {
     localStorage.setItem('busan_traveler_upvotes', JSON.stringify(hasUpvoted));
@@ -1914,6 +1952,7 @@ export default function App() {
                     setSelectedItineraryCategory(null);
                     setBarrierFreeCourseId(null);
                     setBarrierFreePlaceId(null);
+                    setExplorationItemId(null);
                     setTipsSubPage('index');
                     if (currentTab === 'schedule' || currentTab === 'tourapi') {
                       setCurrentTab('tips');
@@ -1954,6 +1993,8 @@ export default function App() {
                     navigateToSpa('/barrier-free', { tab: 'tourapi' });
                   }}
                   tipsSubPage={currentTab === 'schedule' ? 'schedule' : tipsSubPage}
+                  initialExplorationItemId={explorationItemId}
+                  onSelectExplorationItem={setExplorationItemId}
                   setTipsSubPage={(page) => {
                     if (page === 'schedule') {
                       setCurrentTab('schedule');
@@ -1984,6 +2025,7 @@ export default function App() {
                     } else if (page === 'taxi') {
                       navigateToSpa('/tips/taxi', { tab: 'tips', subPage: 'taxi' });
                     } else if (page === 'exploration') {
+                      setExplorationItemId(null);
                       navigateToSpa('/tips/exploration', { tab: 'tips', subPage: 'exploration' });
                     }
                   }}

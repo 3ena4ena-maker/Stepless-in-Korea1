@@ -45,7 +45,9 @@ import {
   Landmark,
   Bike,
   Lightbulb,
-  Store
+  Store,
+  Luggage,
+  Phone
 } from 'lucide-react';
 import ElegantIllustration from './ElegantIllustration';
 import { BUSAN_ITINERARIES, ItineraryCourse, ItineraryStep, getStepFoodCategories } from '../data/itineraries';
@@ -83,8 +85,62 @@ export const getStepIllustrationType = (titleKo: string, cat: string): 'temple' 
   return 'default';
 };
 
+export const MapAppIcons: React.FC<{ naverUrl?: string; googleUrl?: string; title?: string }> = ({ naverUrl, googleUrl, title }) => (
+  <div className="inline-flex items-center gap-1.5 shrink-0 align-middle">
+    {naverUrl && (
+      <a
+        href={naverUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+        className="w-6 h-6 rounded-[7px] bg-[#03C75A] hover:bg-[#02b350] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+        title={title ? `${title} 네이버지도에서 위치 보기` : '네이버지도에서 위치 보기'}
+        aria-label="Naver Map"
+      >
+        <svg className="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24">
+          <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
+        </svg>
+      </a>
+    )}
+    {googleUrl && (
+      <a
+        href={googleUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+        className="w-6 h-6 rounded-[7px] bg-white border border-[#E2DFD8] hover:border-[#4285F4]/50 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer"
+        title={title ? `${title} 구글맵에서 위치 보기` : '구글맵에서 위치 보기'}
+        aria-label="Google Maps"
+      >
+        <svg viewBox="0 0 92 135" className="w-2.5 h-3.5" fill="none">
+          <path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/>
+          <path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/>
+          <path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/>
+          <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
+          <circle cx="46" cy="46" r="18" fill="#FFFFFF"/>
+        </svg>
+      </a>
+    )}
+  </div>
+);
 
 
+
+
+export const KOREAN_CHEAT_CODES = [
+  { kr: '안녕하세요', en: 'Hello', sound: 'Onion Hot Sale', action: 'really fast' },
+  { kr: '감사합니다', en: 'Thank you', sound: 'Come Some Duh', action: 'really fast' },
+  { kr: '죄송해요', en: 'Sorry', sound: 'Joy Song Hey Yo', action: 'really fast' },
+  { kr: '지나갈게요', en: 'Excuse me, coming through', sound: 'Jams Man Yo~', action: 'with a little bow' },
+  { kr: '주세요', en: 'Please / Give me', sound: 'Juicy Yo!', action: 'with your hand out' },
+  { kr: '어디예요?', en: 'Where is it?', sound: 'Oh, D.E. Yo?', action: 'while looking around' },
+  { kr: '얼마예요?', en: 'How much is it?', sound: 'All My Yo?', action: 'while counting money' },
+  { kr: '물 주세요', en: 'Water, please', sound: 'More, Juicy Yo!', action: 'while pretending to drink' },
+  { kr: '도와주세요', en: 'Help me', sound: 'Do I Juicy Yo?', action: 'with both hands reaching out' },
+  { kr: '진짜요?', en: 'Really?', sound: 'Jean, Cha Yo?', action: 'with a surprised face' },
+  { kr: '대박!', en: 'Amazing! / No way!', sound: 'Day Back!', action: 'while stepping back dramatically' },
+  { kr: '좋아요', en: 'I like it / Sounds good', sound: 'Joe Are Yo', action: 'with a thumbs-up' },
+];
 
 type CategoryType = 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'MARKET' | 'SCHEDULE' | 'EXPERIENCE' | 'SUBWAY' | 'BARRIER_FREE' | 'ATTRACTION' | 'MY_ROUTE';
 
@@ -96,8 +152,8 @@ interface BusanItinerariesViewProps {
   initialCategory?: CategoryType | null;
   onBack?: () => void;
   onSelectCategory?: (category: CategoryType | null) => void;
-  tipsSubPage?: 'index' | 'courses' | 'transit' | 'child-free' | 'bus-qr' | 'transfer' | 'taxi' | 'schedule' | 'community';
-  setTipsSubPage?: (page: 'index' | 'courses' | 'transit' | 'child-free' | 'bus-qr' | 'transfer' | 'taxi' | 'schedule' | 'community') => void;
+  tipsSubPage?: 'index' | 'courses' | 'transit' | 'child-free' | 'bus-qr' | 'transfer' | 'taxi' | 'schedule' | 'community' | 'exploration';
+  setTipsSubPage?: (page: 'index' | 'courses' | 'transit' | 'child-free' | 'bus-qr' | 'transfer' | 'taxi' | 'schedule' | 'community' | 'exploration') => void;
   activeRegionPage?: 'LINE1' | 'LINE2' | null;
   setActiveRegionPage?: (region: 'LINE1' | 'LINE2' | null) => void;
   onSelectStation?: (stationId: string, exitNum?: string) => void;
@@ -105,6 +161,8 @@ interface BusanItinerariesViewProps {
   initialBarrierFreePlaceId?: string | null;
   onOpenBarrierFreeDetail?: (placeId: string) => void;
   onBackToBarrierFreeList?: () => void;
+  initialExplorationItemId?: string | null;
+  onSelectExplorationItem?: (itemId: string | null) => void;
 }
 
 interface CategoryConfig {
@@ -1527,6 +1585,8 @@ export default function BusanItinerariesView({
   initialBarrierFreePlaceId,
   onOpenBarrierFreeDetail,
   onBackToBarrierFreeList,
+  initialExplorationItemId,
+  onSelectExplorationItem,
 }: BusanItinerariesViewProps) {
   // Navigation Section: 'SELECTION' (Travel Tips Hub) | 'TRANSIT_TIPS' (transit guide) | 'RECOMMENDATIONS' (itineraries list) | 'SCHEDULE' (events) | 'COMMUNITY' (live tips) | 'EXPLORATION' (busan exploration)
   const [activeSection, setActiveSection] = useState<'SELECTION' | 'TRANSIT_TIPS' | 'RECOMMENDATIONS' | 'SCHEDULE' | 'COMMUNITY' | 'EXPLORATION'>(() => {
@@ -1544,8 +1604,43 @@ export default function BusanItinerariesView({
       (initialCategory ? 'RECOMMENDATIONS' : 'SELECTION');
   });
 
-  // Exploration detailed item selection state: null (overview 2 columns) | 'bootech' | 'drone-show' | 'jeonpo' | 'luggage' | 'rental' | 'metro-reentry'
-  const [selectedExplorationItem, setSelectedExplorationItem] = useState<string | null>(null);
+  // Exploration detailed item selection state: null (overview 2 columns) | 'bootech' | 'drone-show' | 'jeonpo' | 'luggage' | 'rental' | 'korean-cheat-codes'
+  const [selectedExplorationItem, setSelectedExplorationItem] = useState<string | null>(() => {
+    if (initialExplorationItemId) return initialExplorationItemId;
+    if (typeof window !== 'undefined') {
+      const parts = window.location.pathname.split('/');
+      if (parts[1] === 'tips' && parts[2] === 'exploration' && parts[3]) {
+        return parts[3].toLowerCase();
+      }
+      if (parts[1] === 'tips' && ['bootech', 'luggage', 'rental', 'korean-cheat-codes', 'metro-reentry'].includes(parts[2]?.toLowerCase())) {
+        return parts[2].toLowerCase();
+      }
+    }
+    return null;
+  });
+
+  React.useEffect(() => {
+    if (initialExplorationItemId !== undefined) {
+      setSelectedExplorationItem(initialExplorationItemId);
+    }
+  }, [initialExplorationItemId]);
+
+  const handleSelectExplorationItem = (itemId: string | null) => {
+    setSelectedExplorationItem(itemId);
+    if (onSelectExplorationItem) {
+      onSelectExplorationItem(itemId);
+    }
+    if (itemId) {
+      navigateToSpa(`/tips/exploration/${itemId}`, { tab: 'tips', subPage: 'exploration', explorationItemId: itemId });
+    } else {
+      navigateToSpa('/tips/exploration', { tab: 'tips', subPage: 'exploration', explorationItemId: null });
+    }
+    try {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    } catch {
+      window.scrollTo(0, 0);
+    }
+  };
 
   // Initially activeCategory defaults to initialCategory or null (Category Overview)
   const [activeCategory, setActiveCategory] = useState<CategoryType | null>(() => {
@@ -2230,7 +2325,7 @@ export default function BusanItinerariesView({
             type="button"
             onClick={() => {
               if (selectedExplorationItem && activeSection === 'EXPLORATION') {
-                setSelectedExplorationItem(null);
+                handleSelectExplorationItem(null);
               } else if (activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU') {
                 navigateToSubPage('transit');
               } else {
@@ -2304,19 +2399,17 @@ export default function BusanItinerariesView({
                     <>
                       <button
                         type="button"
-                        onClick={() => setSelectedExplorationItem(null)}
+                        onClick={() => handleSelectExplorationItem(null)}
                         className="hover:underline text-[#4A5568] cursor-pointer font-normal"
                       >
                         {language === 'KR' ? '부산 탐구생활' : 'Busan Exploration'}
                       </button>
                       <span className="mx-1 font-normal text-[#4A5568]">/</span>
                       <span className="font-bold text-[#11161B]">
-                        {selectedExplorationItem === 'bootech' && (language === 'KR' ? '부캉이 포토존 & 굿즈' : 'Bootech Mascot')}
-                        {selectedExplorationItem === 'drone-show' && (language === 'KR' ? '광안리 드론쇼' : 'Drone Show')}
-                        {selectedExplorationItem === 'jeonpo' && (language === 'KR' ? '전포사잇길 소품샵' : 'Jeonpo Sai-gil')}
-                        {selectedExplorationItem === 'luggage' && (language === 'KR' ? '캐리어 & 짐 보관' : 'Luggage Storage')}
+                        {selectedExplorationItem === 'bootech' && (language === 'KR' ? "북항 상어 '부캉이'" : 'North Port Shark Bukangi')}
+                        {selectedExplorationItem === 'luggage' && (language === 'KR' ? '부산 무료 짐보관소' : 'Free Luggage Storage')}
                         {selectedExplorationItem === 'rental' && (language === 'KR' ? '유모차·휠체어 대여' : 'Stroller & Wheelchair')}
-                        {selectedExplorationItem === 'metro-reentry' && (language === 'KR' ? '30분 내 동일역 무료 재개표' : 'Metro Free Re-entry')}
+                        {(selectedExplorationItem === 'korean-cheat-codes' || selectedExplorationItem === 'metro-reentry') && (language === 'KR' ? '5초 한국어 발음 치트키' : 'Korean Cheat Codes')}
                       </span>
                     </>
                   ) : (language === 'KR' ? '부산 탐구생활' : 'Busan Exploration')
@@ -2428,7 +2521,7 @@ export default function BusanItinerariesView({
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
                     <div className="w-8 h-8 rounded-lg bg-[#8EA85E] text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
-                      <Sparkles className="w-4 h-4" />
+                      <Compass className="w-4 h-4" />
                     </div>
                     <ArrowRight className="w-3.5 h-3.5 text-[#718096] group-hover:text-[#0A2540] group-hover:translate-x-0.5 transition-all shrink-0" />
                   </div>
@@ -2595,7 +2688,7 @@ export default function BusanItinerariesView({
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3.5">
                       <div className="w-11 h-11 rounded-xl bg-[#8EA85E] text-white flex items-center justify-center shrink-0 shadow-xs">
-                        <Sparkles className="w-5 h-5" />
+                        <Compass className="w-5 h-5" />
                       </div>
                       <div>
                         <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase block mb-0.5">
@@ -7512,188 +7605,99 @@ case 'EXPERIENCE': {
           {/* OVERVIEW: 2 Large Side-by-Side Boxes (부산 핫이슈 | 실전 여행 꿀팁) */}
           {!selectedExplorationItem && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-stretch animate-fade-in">
-              {/* Box 1: 부산 핫이슈 (No emojis) */}
+              {/* Box 1: 부산 핫이슈 */}
               <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-2xs space-y-4 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                  <div className="pb-3 border-b border-slate-100">
                     <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
                       {language === 'KR' ? '부산 핫이슈' : 'Busan Hot Issues'}
                     </h2>
-                    <span className="text-xs font-semibold text-slate-400">
-                      {language === 'KR' ? '3개 핫스팟' : '3 Highlights'}
-                    </span>
                   </div>
 
                   <div className="space-y-3 mt-3.5">
                     {/* Item 1: 부캉이 */}
                     <div
-                      onClick={() => setSelectedExplorationItem('bootech')}
-                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between space-y-2"
+                      onClick={() => handleSelectExplorationItem('bootech')}
+                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
                     >
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200">
-                            {language === 'KR' ? '인증샷 성지' : 'Photo Spot'}
-                          </span>
-                          <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors">
-                            <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
-                            <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                          </div>
-                        </div>
+                      <div className="flex items-center justify-between gap-2">
                         <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
-                          {language === 'KR' ? '요즘 대세! \'부캉이\' 포토존 & 굿즈' : 'Trending Mascot "Bootech" Photo Spots & Goods'}
+                          {language === 'KR' ? "전국적인 핫이슈! 북항 상어 '부캉이' 관찰 가이드" : 'Viral Sensation: North Port Shark "Bukangi" Guide'}
                         </h3>
-                        <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                          {language === 'KR'
-                            ? '광안리 해변, KTX 부산역 2층 유라시아 플랫폼, 남포동 유라리광장 대형 조형물 및 동백상회 굿즈 안내'
-                            : 'Giant Bootech mascot photo spots at Gwangalli Beach, Busan Station 2F, and Yurari Plaza.'}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Item 2: 드론쇼 */}
-                    <div
-                      onClick={() => setSelectedExplorationItem('drone-show')}
-                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between space-y-2"
-                    >
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
-                            {language === 'KR' ? '야간 상설' : 'Night Show'}
-                          </span>
-                          <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors">
-                            <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
-                            <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                          </div>
+                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
+                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
+                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
                         </div>
-                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
-                          {language === 'KR' ? '광안리 M 드론 라이트쇼 상설 가이드' : 'Gwangalli M Drone Light Show'}
-                        </h3>
-                        <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                          {language === 'KR'
-                            ? '매주 토요일 밤 700대 드론이 펼치는 무료 야경 쇼 공연 시간 & 추천 관람 명당 안내'
-                            : 'Free permanent drone art show every Saturday with over 700 drones over the sea.'}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Item 3: 전포사잇길 */}
-                    <div
-                      onClick={() => setSelectedExplorationItem('jeonpo')}
-                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between space-y-2"
-                    >
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200">
-                            {language === 'KR' ? '감성 골목' : 'Boutique Alley'}
-                          </span>
-                          <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors">
-                            <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
-                            <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                          </div>
-                        </div>
-                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
-                          {language === 'KR' ? '전포사잇길 감성 소품샵 & 팝업 골목' : 'Jeonpo Sai-gil Boutique Goods Alley'}
-                        </h3>
-                        <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                          {language === 'KR'
-                            ? '전포역 8번 출구 주택가 감성 소품샵, 빈티지 숍, 독립 서점 골목 탐방 (스트럿·블랙업 인접)'
-                            : 'Charming indie bookstores, handcrafted stationery shops, and seasonal popups in Jeonpo.'}
-                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
+
+                {/* Notice at bottom of Box 1 */}
+                <div className="pt-3 border-t border-slate-100 text-xs text-slate-500 font-medium leading-relaxed">
+                  {language === 'KR'
+                    ? '부산 핫이슈는 계속 업데이트되니 자주 확인해 주세요!'
+                    : 'Busan hot issues are constantly updated. Check back often!'}
+                </div>
               </div>
 
-              {/* Box 2: 실전 여행 꿀팁 (No emojis) */}
+              {/* Box 2: 실전 여행 꿀팁 */}
               <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-2xs space-y-4 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                  <div className="pb-3 border-b border-slate-100">
                     <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
                       {language === 'KR' ? '실전 여행 꿀팁' : 'Practical Travel Tips'}
                     </h2>
-                    <span className="text-xs font-semibold text-slate-400">
-                      {language === 'KR' ? '3개 꿀팁' : '3 Hacks'}
-                    </span>
                   </div>
 
                   <div className="space-y-3 mt-3.5">
                     {/* Item 1: 캐리어 보관 */}
                     <div
-                      onClick={() => setSelectedExplorationItem('luggage')}
-                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between space-y-2"
+                      onClick={() => handleSelectExplorationItem('luggage')}
+                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
                     >
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            {language === 'KR' ? '필수 보관 팁' : 'Luggage Hack'}
-                          </span>
-                          <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors">
-                            <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
-                            <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                          </div>
-                        </div>
+                      <div className="flex items-center justify-between gap-2">
                         <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
-                          {language === 'KR' ? '부산 주요 거점 캐리어 & 짐 보관 가이드' : 'Luggage Storage & Hands-Free Guide'}
+                          {language === 'KR' ? '부산 무료 짐보관소' : 'Free Luggage Storage in Busan'}
                         </h3>
-                        <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                          {language === 'KR'
-                            ? 'KTX 부산역 짐캐리 호텔 당일 배송, 서면 롯데백화점 무료 보관소, 해운대·광안리 락커 총정리'
-                            : 'Hands-free travel with Zimcarry station-to-hotel delivery and free department store storage.'}
-                        </p>
+                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
+                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
+                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </div>
                       </div>
                     </div>
 
                     {/* Item 2: 유모차 & 휠체어 */}
                     <div
-                      onClick={() => setSelectedExplorationItem('rental')}
-                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between space-y-2"
+                      onClick={() => handleSelectExplorationItem('rental')}
+                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
                     >
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
-                            {language === 'KR' ? '무장애 편의' : 'Barrier-Free'}
-                          </span>
-                          <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors">
-                            <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
-                            <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                          </div>
-                        </div>
+                      <div className="flex items-center justify-between gap-2">
                         <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
                           {language === 'KR' ? '보행 약자 & 가족을 위한 유모차 / 휠체어 무료 대여소' : 'Free Stroller & Wheelchair Rental Locations'}
                         </h3>
-                        <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                          {language === 'KR'
-                            ? '부산역 관광안내소, 해운대 백사장 안내소, 시내 주요 백화점 신분증 확인 무료 대여'
-                            : 'Major tourist info centers and department stores offering free rentals with valid ID.'}
-                        </p>
+                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
+                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
+                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </div>
                       </div>
                     </div>
 
-                    {/* Item 3: 30분 무료 재개표 */}
+                    {/* Item 3: 5초 한국어 발음 치트키 */}
                     <div
-                      onClick={() => setSelectedExplorationItem('metro-reentry')}
-                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between space-y-2"
+                      onClick={() => handleSelectExplorationItem('korean-cheat-codes')}
+                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
                     >
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">
-                            {language === 'KR' ? '교통비 절약' : 'Metro Hack'}
-                          </span>
-                          <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors">
-                            <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
-                            <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                          </div>
-                        </div>
+                      <div className="flex items-center justify-between gap-2">
                         <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
-                          {language === 'KR' ? '지하철 반대 방향 탑승 시 30분 내 무료 재개표' : 'Wrong Direction? Free Metro Re-entry within 30 Mins'}
-                        </h3>
-                        <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
                           {language === 'KR'
-                            ? '개찰구 잘못 진입 시 30분 이내 동일역 태그로 추가 요금 없이 반대편 건너가는 꿀팁'
-                            : 'Tap out and re-enter the correct gate within 30 minutes at the same station without penalty.'}
-                        </p>
+                            ? '5초 만에 끝내는 한국어 발음 치트키'
+                            : '5-Second Korean Pronunciation Cheat Codes'}
+                        </h3>
+                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
+                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
+                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -7709,7 +7713,7 @@ case 'EXPERIENCE': {
               <div className="flex items-center justify-between">
                 <button
                   type="button"
-                  onClick={() => setSelectedExplorationItem(null)}
+                  onClick={() => handleSelectExplorationItem(null)}
                   className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors cursor-pointer border border-slate-200"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
@@ -7719,498 +7723,664 @@ case 'EXPERIENCE': {
 
               {/* 1. 부캉이 DETAIL */}
               {selectedExplorationItem === 'bootech' && (
-                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-7 space-y-5 shadow-2xs">
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-black bg-rose-50 text-rose-700 border border-rose-200">
-                        {language === 'KR' ? '인증샷 성지' : 'Must-Visit Photo Spot'}
-                      </span>
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-sky-50 text-sky-800 border border-sky-200">
-                        {language === 'KR' ? '부산 공식 캐릭터' : 'Official Busan Seagull'}
-                      </span>
+                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-8 space-y-6 shadow-2xs">
+                  {/* Header Title & Intro */}
+                  <div className="space-y-2.5">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+                      <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
+                        {language === 'KR'
+                          ? "부산 북항 상어 '부캉이' 실전 관찰 가이드"
+                          : 'Busan North Port Shark "Bukangi" Spotting Guide'}
+                      </h3>
                     </div>
-                    <span className="text-xs text-slate-400 font-medium">
-                      {language === 'KR' ? 'SNS 화제의 마스코트' : 'SNS Viral Phenomenon'}
-                    </span>
-                  </div>
-
-                  <div className="space-y-2">
-                    <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
-                      {language === 'KR' ? '요즘 부산의 귀염둥이, \'부캉이\' 포토존 & 굿즈 완전 정복' : 'Trending: "Bootech" Mascot Photo Spots & Goods'}
-                    </h3>
                     <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
                       {language === 'KR'
-                        ? '부산의 시조인 갈매기를 모티브로 탄생한 부산 대표 캐릭터 \'부캉이\'! 통통하고 귀여운 외모로 인스타그램과 숏폼에서 인증샷 릴레이가 이어지며, 부산을 찾는 관광객들의 필수 코스로 자리 잡았습니다. 주요 출몰 스팟과 포토존을 안내해 드립니다.'
-                        : 'Meet "Bootech", the lovable chubby Busan seagull mascot sweeping social media! Discover where to spot giant Bootech installations and capture the best photo memories.'}
+                        ? "부캉이는 지난 9월 18일 부산 북항 친수공원 인공수로에서 처음 발견된 암컷 상어예요. 한 달째 수로에 머무는 동안 전국적인 관심을 끌며 현재 한국에서 가장 핫한 화제의 주인공이랍니다. 부캉이를 만나러 가실 분들을 위해 보러 가는 방법과 명당 위치, 관찰 요령을 친근하게 정리해 드려요."
+                        : 'First spotted on September 18 in the canal at Busan North Port Waterfront Park, this female shark dubbed "Bukangi" has stayed over a month, drawing nationwide attention as one of the hottest topics. Here is a friendly guide on how to get there, the best viewing spots, and tips for watching her.'}
                     </p>
                   </div>
 
-                  {/* 3 Major Bootech Spots */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
-                    {/* Spot 1: 광안리 */}
-                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-[#8EA85E] transition-colors">
-                      <div className="space-y-1.5">
-                        <div className="flex items-center gap-1.5 text-xs font-black text-[#0A2540]">
-                          <MapPin className="w-3.5 h-3.5 text-[#8EA85E]" />
-                          <span>{language === 'KR' ? '광안리 해변 만남의 광장' : 'Gwangalli Beach Plaza'}</span>
-                        </div>
-                        <p className="text-xs text-[#4A5568] leading-relaxed">
+                  {/* 수로 주소 + 네이버지도 / 구글맵 아이콘 */}
+                  <div className="flex items-center gap-2 flex-wrap text-xs sm:text-sm py-2.5 px-3.5 bg-[#FAF9F6] rounded-xl border border-[#E5E2DC]">
+                    <div className="flex items-center gap-1.5 text-slate-700 min-w-0">
+                      <MapPin className="w-4 h-4 text-[#8EA85E] shrink-0" />
+                      <span className="font-bold text-[#0A2540]">{language === 'KR' ? '부산항 북항 친수공원 인공수로' : 'Busan North Port Waterfront Park Canal'}:</span>
+                      <span className="font-medium text-slate-600">{language === 'KR' ? '부산 동구 초량동 1185-1' : '1185-1, Choryang-dong, Dong-gu'}</span>
+                    </div>
+                    <MapAppIcons
+                      naverUrl="https://map.naver.com/v5/search/%EB%B6%81%ED%95%AD%EC%B9%9C%EC%88%98%EA%B3%B5%EC%9B%90"
+                      googleUrl="https://www.google.com/maps/search/?api=1&query=Busan+North+Port+Waterfront+Park"
+                      title={language === 'KR' ? '부산항 북항 친수공원' : 'Busan North Port Waterfront Park'}
+                    />
+                  </div>
+
+                  {/* Natural Flowing Content (No separate boxes, continuous reading down) */}
+                  <div className="space-y-6 pt-1 text-xs sm:text-sm text-[#4A5568] leading-relaxed">
+                    {/* 1. 부캉이 정보 */}
+                    <div className="space-y-2 border-b border-slate-100 pb-5">
+                      <h4 className="font-extrabold text-base sm:text-lg text-[#0A2540] flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '부캉이 정보' : 'About Bukangi'}</span>
+                      </h4>
+                      <ul className="space-y-2 pl-3.5 border-l-2 border-slate-200">
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '종류' : 'Species'}:</strong>{' '}
                           {language === 'KR'
-                            ? '푸른 바다와 광안대교를 배경으로 서 있는 거대 부캉이 포토존! 일몰 시간대와 토요일 드론라이트쇼와 함께 촬영하기에 최고입니다.'
-                            : 'Giant Bootech statue on the sandy beach with Gwangan Bridge backdrop. Best during sunset and Saturday drone shows.'}
-                        </p>
-                        <div className="text-[11px] text-slate-500 font-medium">
-                          {language === 'KR' ? '지하철 2호선 광안역 도보 10분' : 'Subway Line 2 Gwangan Stn, 10m walk'}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 pt-2 border-t border-slate-200/70">
-                        <a
-                          href="https://map.naver.com/v5/search/%EA%B4%91%EC%95%88%EB%A6%AC%20%EB%A7%8C%EB%82%A8%EC%9D%98%EA%B4%91%EC%9E%A5"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 py-1.5 px-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-[11px] font-bold text-center border border-emerald-200"
-                        >
-                          네이버지도
-                        </a>
-                        <a
-                          href="https://www.google.com/maps/search/?api=1&query=Gwangalli+Beach+Busan"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 py-1.5 px-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 text-[11px] font-bold text-center border border-blue-200"
-                        >
-                          구글맵
-                        </a>
-                      </div>
-                    </div>
-
-                    {/* Spot 2: KTX 부산역 유라시아 플랫폼 */}
-                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-[#8EA85E] transition-colors">
-                      <div className="space-y-1.5">
-                        <div className="flex items-center gap-1.5 text-xs font-black text-[#0A2540]">
-                          <MapPin className="w-3.5 h-3.5 text-[#8EA85E]" />
-                          <span>{language === 'KR' ? 'KTX 부산역 유라시아 플랫폼' : 'Busan Station Eurasia Platform'}</span>
-                        </div>
-                        <p className="text-xs text-[#4A5568] leading-relaxed">
+                            ? '3m 길이의 온순한 암컷 흑상어로 확인'
+                            : 'Confirmed as a 3-meter female dusky shark'}
+                        </li>
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '위치 확인' : 'Live Status'}:</strong>{' '}
                           {language === 'KR'
-                            ? '부산에 발을 디디자마자 만나는 환영 부캉이! 바로 옆 동백상회에서 인형, 키링, 마그넷 등 공식 굿즈를 구매할 수 있습니다.'
-                            : 'Welcome Bootech at the main station plaza! Official merchandise (plushies, keyrings) available at Dongbaek Sanghoe.'}
-                        </p>
-                        <div className="text-[11px] text-slate-500 font-medium">
-                          {language === 'KR' ? 'KTX 부산역 2층 야외 광장' : 'KTX Busan Station 2F Plaza'}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 pt-2 border-t border-slate-200/70">
-                        <a
-                          href="https://map.naver.com/v5/search/%EB%B6%80%EC%82%B0%EC%9C%A0%EB%9D%BC%EC%8B%9C%EC%95%84%ED%94%8C%EB%9E%AB%ED%8F%BC"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 py-1.5 px-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-[11px] font-bold text-center border border-emerald-200"
-                        >
-                          네이버지도
-                        </a>
-                        <a
-                          href="https://www.google.com/maps/search/?api=1&query=Busan+Eurasia+Platform"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 py-1.5 px-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 text-[11px] font-bold text-center border border-blue-200"
-                        >
-                          구글맵
-                        </a>
-                      </div>
+                            ? "시민 제보 기반의 '부캉이 지금 있나' 웹사이트를 통해 실시간 위치 정보를 참고하실 수 있습니다."
+                            : 'Check the citizen-powered "Is Bukangi there now?" website for real-time location updates.'}
+                        </li>
+                        <li className="pt-0.5">
+                          <a
+                            href="https://bukangi.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#8EA85E] hover:bg-[#7D9650] text-white font-bold text-xs transition-colors shadow-2xs cursor-pointer"
+                          >
+                            <span>{language === 'KR' ? "'부캉이 지금 있나' 실시간 위치 확인" : 'Check "bukangi.com" Live Tracker'}</span>
+                            <ExternalLink className="w-3.5 h-3.5" />
+                          </a>
+                        </li>
+                      </ul>
                     </div>
 
-                    {/* Spot 3: 남포동 유라리광장 & 영도대교 앞 */}
-                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-[#8EA85E] transition-colors">
-                      <div className="space-y-1.5">
-                        <div className="flex items-center gap-1.5 text-xs font-black text-[#0A2540]">
-                          <MapPin className="w-3.5 h-3.5 text-[#8EA85E]" />
-                          <span>{language === 'KR' ? '남포동 유라리광장 (영도대교)' : 'Nampo Yurari Plaza (Yeongdo)'}</span>
-                        </div>
-                        <p className="text-xs text-[#4A5568] leading-relaxed">
+                    {/* 2. 부캉이 보러 가는 방법 */}
+                    <div className="space-y-2 border-b border-slate-100 pb-5">
+                      <h4 className="font-extrabold text-base sm:text-lg text-[#0A2540] flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '부캉이 보러 가는 방법' : 'How to Get There'}</span>
+                      </h4>
+                      <ul className="space-y-2 pl-3.5 border-l-2 border-slate-200">
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '대중교통' : 'Public Transit'}:</strong>{' '}
                           {language === 'KR'
-                            ? '영도 바다와 자갈치 시장의 활기찬 풍경을 바라보며 바닷바람을 맞는 낭만 부캉이! 주말 영도대교 도개 행사와 함께 방문하기 좋습니다.'
-                            : 'Seaside promenade viewing Yeongdo Bridge. Great spot to combine with Jagalchi Market and Yeongdo Bridge opening events.'}
-                        </p>
-                        <div className="text-[11px] text-slate-500 font-medium">
-                          {language === 'KR' ? '지하철 1호선 남포역 2번 출구 도보 3분' : 'Line 1 Nampo Stn Exit 2, 3m walk'}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 pt-2 border-t border-slate-200/70">
-                        <a
-                          href="https://map.naver.com/v5/search/%EC%9C%A0%EB%9D%BC%EB%A6%AC%EA%B4%91%EC%9E%A5"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 py-1.5 px-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-[11px] font-bold text-center border border-emerald-200"
-                        >
-                          네이버지도
-                        </a>
-                        <a
-                          href="https://www.google.com/maps/search/?api=1&query=Yurari+Plaza+Busan"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 py-1.5 px-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 text-[11px] font-bold text-center border border-blue-200"
-                        >
-                          구글맵
-                        </a>
-                      </div>
+                            ? 'KTX 부산역 하차 후 9번 또는 10번 출구로 나와서 북항 친수공원 방향 안내를 따라 도보로 약 10분 정도 이동'
+                            : 'Exit 9 or 10 at KTX Busan Station, then follow pedestrian bridge signs toward North Port Waterfront Park for about a 10-minute walk.'}
+                        </li>
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '자가용' : 'By Car'}:</strong>{' '}
+                            {language === 'KR'
+                              ? '부산항 북항 친수공원으로 바로 이동, 인근 부산항 국제여객터미널 주차장이나 주변 유료주차장을 이용'
+                              : 'Drive to Busan North Port Waterfront Park and use the nearby Busan Port International Passenger Terminal parking lot or neighboring paid lots.'}
+                        </li>
+                      </ul>
                     </div>
-                  </div>
 
-                  {/* Practical Photo & Goods Tips Box */}
-                  <div className="bg-amber-50/70 border border-amber-200/80 rounded-xl p-4 text-xs text-amber-950 space-y-1.5">
-                    <div className="font-extrabold flex items-center gap-1.5 text-amber-900">
-                      <Sparkles className="w-4 h-4 text-amber-600" />
-                      <span>{language === 'KR' ? '부캉이 100% 즐기는 로컬 꿀팁' : 'Pro Tips for Bootech Fans'}</span>
+                    {/* 3. 명당 위치 & 관찰 요령 */}
+                    <div className="space-y-2 border-b border-slate-100 pb-5">
+                      <h4 className="font-extrabold text-base sm:text-lg text-[#0A2540] flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '명당 위치 & 관찰 요령' : 'Best Viewing Spots & Tips'}</span>
+                      </h4>
+                      <ul className="space-y-2 pl-3.5 border-l-2 border-slate-200">
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '명당 위치' : 'Best Spot'}:</strong>{' '}
+                          {language === 'KR'
+                            ? '제4보도교와 제5보도교 사이 수로 근처에서 기다리는 것이 관찰에 유리하다는 후기'
+                            : 'Waiting near the canal between Footbridge 4 and Footbridge 5 offers the best chance of spotting her.'}
+                        </li>
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '관찰 요령' : 'Viewing Tips'}:</strong>{' '}
+                          {language === 'KR'
+                            ? '상어가 수로 벽 쪽을 따라 움직이는 경향이 있으므로, 수면 위 지느러미뿐 아니라 물속도 자세히 살피는 것이 좋음'
+                            : 'The shark tends to move along the canal walls, so be sure to look into the water as well as keeping an eye out for dorsal fins on the surface.'}
+                        </li>
+                      </ul>
                     </div>
-                    <ul className="list-disc list-inside space-y-1 text-slate-700 pl-0.5">
-                      <li>
-                        <strong className="text-slate-900">{language === 'KR' ? '골든아워 촬영' : 'Golden Hour'}:</strong>{' '}
-                        {language === 'KR' ? '오후 4시~6시 해 질 무렵 노을빛과 바다가 어우러질 때 가장 따뜻하고 감성적인 사진이 나옵니다.' : 'Visit around 4-6 PM for warm sunset glow over the sea.'}
-                      </li>
-                      <li>
-                        <strong className="text-slate-900">{language === 'KR' ? '야간 조명 연출' : 'Night Lighting'}:</strong>{' '}
-                        {language === 'KR' ? '광안리 해변 부캉이는 일몰 후 조명이 들어와 밤바다 및 광안대교 야경과 함께 찍기 좋습니다.' : 'Gwangalli statue features night illumination complementing the ocean night view.'}
-                      </li>
-                      <li>
-                        <strong className="text-slate-900">{language === 'KR' ? '공식 굿즈 구입처' : 'Official Merch'}:</strong>{' '}
-                        {language === 'KR' ? 'KTX 부산역 2층 유라시아 플랫폼 \'동백상회\', 광안리 관광안내소 굿즈 코너에서 구매 가능합니다.' : 'Available at Dongbaek Sanghoe in Busan Station 2F and Gwangalli Tourist Information Center.'}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              )}
 
-              {/* 2. 드론쇼 DETAIL */}
-              {selectedExplorationItem === 'drone-show' && (
-                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-7 space-y-4 shadow-2xs">
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-black bg-indigo-50 text-indigo-700 border border-indigo-200">
-                        {language === 'KR' ? '야간 대표 핫이슈' : 'Night Attraction'}
-                      </span>
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-100 text-slate-700">
-                        {language === 'KR' ? '무료 상설 공연' : 'Free Weekly Show'}
-                      </span>
-                    </div>
-                    <span className="text-xs text-slate-400 font-medium">
-                      {language === 'KR' ? '매주 토요일 2회' : 'Every Saturday (2 Shows)'}
-                    </span>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
-                      {language === 'KR' ? '광안리 밤하늘을 수놓는 환상의 빛! \'광안리 M 드론 라이트쇼\'' : 'Gwangalli M Drone Light Show'}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
-                      {language === 'KR'
-                        ? '700대 이상의 드론이 광안리 해변 상공에서 매주 다른 테마로 입체적인 군집 비행을 선보입니다. 전국 최초 상설 드론쇼로 광안대교 야경과 어우러지는 환상적인 장관을 무료로 관람할 수 있습니다.'
-                        : 'Korea\'s premier weekly permanent drone show with over 700 illuminated drones forming 3D aerial art over Gwangalli beach.'}
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
-                    <div className="bg-[#FAF9F6] p-3.5 rounded-xl border border-[#E5E2DC] space-y-1">
-                      <span className="font-extrabold text-[#0A2540] block">{language === 'KR' ? '공연 시간' : 'Schedule'}</span>
-                      <p className="text-slate-600">
-                        {language === 'KR' ? '• 동절기(10월~2월): 19:00 / 21:00 (각 10~15분)' : '• Winter (Oct-Feb): 19:00 / 21:00 (10-15 mins each)'}<br />
-                        {language === 'KR' ? '• 하절기(3월~9월): 20:00 / 22:00 (각 10~15분)' : '• Summer (Mar-Sep): 20:00 / 22:00 (10-15 mins each)'}
-                      </p>
-                    </div>
-                    <div className="bg-[#FAF9F6] p-3.5 rounded-xl border border-[#E5E2DC] space-y-1">
-                      <span className="font-extrabold text-[#0A2540] block">{language === 'KR' ? '추천 명당' : 'Best Viewpoints'}</span>
-                      <p className="text-slate-600">
-                        {language === 'KR' ? '• 만남의 광장 앞 모래사장 (정면 뷰)' : '• Central Meeting Plaza beach (front view)'}<br />
-                        {language === 'KR' ? '• 민락회타운 앞 스탠드 계단 (탁 트인 시야)' : '• Millak Raw Fish Town terrace steps (wide angle)'}
+                    {/* 4. 주의사항 & 마무리 */}
+                    <div className="pt-1 text-slate-600 font-medium">
+                      <p>
+                        {language === 'KR'
+                          ? '부캉이는 소중한 야생 해양 생물이니 수로에 돌이나 먹이를 던지지 마시고, 난간 너머로 안전거리를 유지하며 따뜻한 시선으로 관찰해 주세요!'
+                          : 'Bukangi is a wild marine animal. Please do not throw stones, food, or trash into the canal, and observe safely from the boardwalk railings!'}
                       </p>
                     </div>
                   </div>
-
-                  <div className="flex items-center gap-2 pt-2">
-                    <a
-                      href="https://map.naver.com/v5/search/%EA%B4%91%EC%95%88%EB%A6%AC%20%ED%95%B4%EC%88%98%EC%9A%95%EC%9E%A5"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200 flex items-center gap-1.5"
-                    >
-                      <MapPin className="w-3.5 h-3.5" />
-                      <span>{language === 'KR' ? '광안리 해변 네이버지도' : 'Naver Map'}</span>
-                    </a>
-                    <a
-                      href="https://www.google.com/maps/search/?api=1&query=Gwangalli+Beach+Busan"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="py-2 px-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-bold border border-blue-200 flex items-center gap-1.5"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5" />
-                      <span>{language === 'KR' ? '구글맵' : 'Google Map'}</span>
-                    </a>
-                  </div>
                 </div>
               )}
 
-              {/* 3. 전포사잇길 DETAIL */}
-              {selectedExplorationItem === 'jeonpo' && (
-                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-7 space-y-4 shadow-2xs">
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-black bg-purple-50 text-purple-700 border border-purple-200">
-                        {language === 'KR' ? 'MZ 로컬 골목' : 'MZ Trend Alley'}
-                      </span>
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-100 text-slate-700">
-                        {language === 'KR' ? '전포역 8번 출구' : 'Jeonpo Station Exit 8'}
-                      </span>
-                    </div>
-                    <span className="text-xs text-slate-400 font-medium">
-                      {language === 'KR' ? '감성 소품샵 & 편집숍' : 'Boutique Goods & Cafes'}
-                    </span>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
-                      {language === 'KR' ? '아기자기한 감성이 가득한 \'전포사잇길\' 소품샵 & 팝업 골목' : 'Jeonpo Sai-gil Boutique & Goods Alley'}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
-                      {language === 'KR'
-                        ? '전포 카페거리 건너편 조용한 주택가 골목길에 자리잡은 독립 서점, 개성 넘치는 감성 소품샵, 빈티지 편집숍이 밀집된 로컬 핫플입니다. 앞서 소개해드린 \'스트럿커피\', \'블랙업커피\' 서면본점과 도보 5~10분 거리로 함께 엮어 즐기기 좋습니다.'
-                        : 'Charming alleys lined with indie bookstores, handcrafted stationery shops, and seasonal popups in Jeonpo, adjacent to Strut Coffee and Blackup Coffee.'}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-2 pt-2">
-                    <a
-                      href="https://map.naver.com/v5/search/%EC%A0%84%ED%8F%AC%EC%82%AC%EC%9E%87%EA%B8%B8"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200 flex items-center gap-1.5"
-                    >
-                      <MapPin className="w-3.5 h-3.5" />
-                      <span>{language === 'KR' ? '전포사잇길 네이버지도' : 'Naver Map'}</span>
-                    </a>
-                  </div>
-                </div>
-              )}
-
-              {/* 4. 캐리어 보관 DETAIL */}
+              {/* 2. 캐리어 보관 DETAIL */}
               {selectedExplorationItem === 'luggage' && (
                 <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-7 space-y-5 shadow-2xs">
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-black bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        {language === 'KR' ? '여행 필수 꿀팁' : 'Essential Travel Hack'}
-                      </span>
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
-                        {language === 'KR' ? '캐리어 보관 & 배송' : 'Luggage Storage & Delivery'}
-                      </span>
-                    </div>
-                    <span className="text-xs text-slate-400 font-medium">
-                      {language === 'KR' ? '양손 자유로운 부산 여행' : 'Hands-free Travel'}
-                    </span>
-                  </div>
-
                   <div className="space-y-2">
-                    <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
-                      {language === 'KR' ? '두 손 가볍게 다니자! 부산 주요 거점 캐리어 & 짐 보관 가이드' : 'Luggage Storage & Hands-Free Travel Guide'}
-                    </h3>
+                    <div className="flex items-center gap-2">
+                      <Luggage className="w-5 h-5 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+                      <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
+                        {language === 'KR' ? '부산에서 무료로 짐 맡길 수 있는 곳이 있다고요?' : 'Free Luggage Storage in Busan?'}
+                      </h3>
+                    </div>
                     <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
                       {language === 'KR'
-                        ? '체크인 전이나 체크아웃 후 무거운 캐리어 때문에 계단을 오르내리기 힘드셨나요? KTX 부산역부터 서면, 해운대, 광안리까지 짐을 보관하거나 당일 호텔로 바로 부칠 수 있는 실전 꿀팁을 총정리했습니다.'
-                        : 'Never let heavy luggage hold you back. Complete guide to train station lockers, hotel delivery services, and free department store storage across Busan.'}
+                        ? '부산 지하철역마다 유료 보관함이 있지만, 사실 무료로 짐을 맡아주거나 일정 시간 무료 혜택을 주는 고마운 곳들도 있어요! 무료로 운영되는 만큼 자리가 일찍 찰 수 있으니, 방문하시기 전에 미리 전화로 확인해보시는 걸 추천드려요.'
+                        : 'Most subway stations in Busan have paid luggage lockers, but there are also a few places where you can store your luggage for free or enjoy free hours! Since these services can fill up quickly, I recommend calling ahead to check availability.'}
                     </p>
                   </div>
 
-                  {/* 4 Station / Area Hubs */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
-                    {/* Hub 1: KTX 부산역 */}
-                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <span className="font-black text-sm text-[#0A2540] flex items-center gap-1.5">
-                          <Train className="w-4 h-4 text-[#8EA85E]" />
-                          {language === 'KR' ? 'KTX 부산역 (도착 즉시 짐 해결)' : 'KTX Busan Station'}
-                        </span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
-                          {language === 'KR' ? '호텔 당일배송 추천' : 'Hotel Delivery Available'}
-                        </span>
+                  {/* 4 Free Luggage Storage Spots (2x2 Grid) */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                    {/* Spot 1: 부산트레블라운지 */}
+                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 sm:p-5 flex flex-col justify-between space-y-3 hover:border-[#8EA85E] transition-colors">
+                      <div className="space-y-2.5">
+                        <div className="border-b border-slate-200/70 pb-2.5 space-y-1.5">
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="font-extrabold text-base text-[#0A2540]">
+                              {language === 'KR' ? '부산트레블라운지' : 'Busan Travel Lounge'}
+                            </h4>
+                            <span className="text-[11px] font-bold text-[#8EA85E] shrink-0">
+                              {language === 'KR' ? '비용: 무료 (당일 보관 전용)' : 'Cost: Free (Same-day only)'}
+                            </span>
+                          </div>
+                          {/* 주소 + 네이버지도 / 구글맵 아이콘 */}
+                          <div className="flex items-center gap-2 flex-wrap text-xs pt-0.5">
+                            <div className="flex items-center gap-1 text-slate-600 min-w-0">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span className="font-medium text-slate-700">
+                                {language === 'KR' ? '부산 동구 대영로243번길 38 (부산역 인근)' : '38, Daeyeong-ro 243beon-gil, Dong-gu'}
+                              </span>
+                            </div>
+                            <MapAppIcons
+                              naverUrl="https://naver.me/GWeyUeg3"
+                              googleUrl="https://www.google.com/maps/search/?api=1&query=%EB%B6%80%EC%82%B0%ED%8A%B8%EB%9E%98%EB%B8%94%EB%9D%BC%EC%9A%B4%EC%A7%80"
+                              title={language === 'KR' ? '부산트레블라운지' : 'Busan Travel Lounge'}
+                            />
+                          </div>
+                        </div>
+
+                        <ul className="text-xs text-[#4A5568] space-y-1.5 leading-relaxed pt-0.5">
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '운영 시간' : 'Hours'}:</strong>{' '}
+                            10:00 ~ 16:50 / 17:00
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '크기 제한' : 'Size'}:</strong>{' '}
+                            {language === 'KR' ? '제한 없음 (대형 캐리어 가능)' : 'No size limit — large suitcases accepted'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '점심시간' : 'Break Time'}:</strong>{' '}
+                            {language === 'KR' ? '12:00 ~ 13:00 (보관 및 픽업 불가)' : '12:00–1:00 PM (no drop-off or pickup)'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '전화' : 'Phone'}:</strong>{' '}
+                            <a href="tel:051-441-3121" className="text-slate-800 hover:text-[#0A2540] font-bold underline decoration-slate-300">
+                              051-441-3121
+                            </a>
+                          </li>
+                        </ul>
                       </div>
-                      <ul className="text-xs text-[#4A5568] space-y-1.5 leading-relaxed pl-1">
-                        <li>
-                          <strong className="text-slate-900">짐캐리 (Zimcarry):</strong> KTX 부산역 2층(5번 출구 부근). 역에서 짐을 맡기면 숙소(호텔)로 당일 직배송 (보관 4,000~6,000원 / 호텔 배송 약 10,000~15,000원).
-                        </li>
-                        <li>
-                          <strong className="text-slate-900">부산역사 내 물품보관함:</strong> 2층 맞이방 및 1층 출구 통로 (소형부터 특대형 락커까지 다수 구비, QR/카드 결제 가능).
-                        </li>
-                        <li>
-                          <strong className="text-slate-900">지하철 1호선 부산역 보관함:</strong> 지하 개찰구 밖 대합실 (교통카드/앱 결제 가능).
-                        </li>
-                      </ul>
                     </div>
 
-                    {/* Hub 2: 서면역 */}
-                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <span className="font-black text-sm text-[#0A2540] flex items-center gap-1.5">
-                          <Train className="w-4 h-4 text-[#8EA85E]" />
-                          {language === 'KR' ? '서면역 (환승 통로 & 쇼핑몰)' : 'Seomyeon Station Hub'}
-                        </span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
-                          {language === 'KR' ? '백화점 무료 보관' : 'Free Dept Store Storage'}
-                        </span>
+                    {/* Spot 2: 롯데백화점 부산본점 (서면) */}
+                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 sm:p-5 flex flex-col justify-between space-y-3 hover:border-[#8EA85E] transition-colors">
+                      <div className="space-y-2.5">
+                        <div className="border-b border-slate-200/70 pb-2.5 space-y-1.5">
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="font-extrabold text-base text-[#0A2540]">
+                              {language === 'KR' ? '롯데백화점 부산본점 물품보관소' : 'Lotte Dept Store Busan Main'}
+                            </h4>
+                            <span className="text-[11px] font-bold text-[#8EA85E] shrink-0">
+                              {language === 'KR' ? '기본 3시간 무료' : 'First 3 hrs Free'}
+                            </span>
+                          </div>
+                          {/* 주소 + 네이버지도 / 구글맵 아이콘 */}
+                          <div className="flex items-center gap-2 flex-wrap text-xs pt-0.5">
+                            <div className="flex items-center gap-1 text-slate-600 min-w-0">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span className="font-medium text-slate-700">
+                                {language === 'KR' ? '부산 부산진구 가야대로 772 (서면역 연결)' : '772, Gaya-daero, Busanjin-gu'}
+                              </span>
+                            </div>
+                            <MapAppIcons
+                              naverUrl="https://map.naver.com/v5/search/%EB%A1%AF%EB%8D%B0%EB%B0%B1%ED%99%94%EC%A0%90%20%EB%B6%80%EC%82%B0%EB%B3%B8%EC%A0%90"
+                              googleUrl="https://www.google.com/maps/search/?api=1&query=Lotte+Department+Store+Busan+Main"
+                              title={language === 'KR' ? '롯데백화점 부산본점' : 'Lotte Dept Store Busan Main'}
+                            />
+                          </div>
+                        </div>
+
+                        <ul className="text-xs text-[#4A5568] space-y-1.5 leading-relaxed pt-0.5">
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '이용 시간' : 'Hours'}:</strong>{' '}
+                            {language === 'KR'
+                              ? '당일 백화점 폐점 30분 전까지 (월~목 10:30~20:00 / 금~일 10:30~20:30)'
+                              : 'Until 30 mins before closing (Mon–Thu 10:30–20:00 / Fri–Sun 10:30–20:30)'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '이용 요금' : 'Fee'}:</strong>{' '}
+                            {language === 'KR' ? '기본 3시간 무료 (이후 시간당 1,000원, 당일 보관만 가능)' : 'First 3 hrs free, then 1,000 KRW/hr (same-day only)'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '보관 위치' : 'Location'}:</strong>{' '}
+                            {language === 'KR' ? '지하 1층 및 지하 2층 무인물품보관소' : 'B1 & B2 Automated Lockers'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '보관 금지' : 'Prohibited'}:</strong>{' '}
+                            {language === 'KR' ? '현금, 귀중품, 냉장·냉동 상품' : 'Cash, valuables, refrigerated/frozen items'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '전화' : 'Phone'}:</strong>{' '}
+                            <a href="tel:051-810-2500" className="text-slate-800 hover:text-[#0A2540] font-bold underline decoration-slate-300">
+                              051-810-2500
+                            </a>
+                          </li>
+                        </ul>
                       </div>
-                      <ul className="text-xs text-[#4A5568] space-y-1.5 leading-relaxed pl-1">
-                        <li>
-                          <strong className="text-slate-900">롯데백화점 부산본점(서면) 무료 보관:</strong> 지하 1층 또는 1층 안내데스크에서 당일 백화점/지하상가 방문 고객 짐 무료 보관 가능 (영업시간 내).
-                        </li>
-                        <li>
-                          <strong className="text-slate-900">서면역 지하철 보관함:</strong> 1호선·2호선 환승 통로 및 7번·9번 출구 방면에 대형 보관함 다수 비치.
-                        </li>
-                      </ul>
                     </div>
 
-                    {/* Hub 3: 해운대역 & 백사장 */}
-                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <span className="font-black text-sm text-[#0A2540] flex items-center gap-1.5">
-                          <MapPin className="w-4 h-4 text-[#8EA85E]" />
-                          {language === 'KR' ? '해운대역 & 해수욕장' : 'Haeundae Station & Beach'}
-                        </span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">
-                          {language === 'KR' ? '관광안내소 활용' : 'Tourist Info Center'}
-                        </span>
+                    {/* Spot 3: 해운대 플랫폼 (구 해운대역) */}
+                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 sm:p-5 flex flex-col justify-between space-y-3 hover:border-[#8EA85E] transition-colors">
+                      <div className="space-y-2.5">
+                        <div className="border-b border-slate-200/70 pb-2.5 space-y-1.5">
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="font-extrabold text-base text-[#0A2540]">
+                              {language === 'KR' ? '해운대 플랫폼 (구 해운대역)' : 'Haeundae Platform (Former Station)'}
+                            </h4>
+                            <span className="text-[11px] font-bold text-[#8EA85E] shrink-0">
+                              {language === 'KR' ? '비용: 무료 (당일 보관 전용)' : 'Cost: Free (Same-day only)'}
+                            </span>
+                          </div>
+                          {/* 주소 + 네이버지도 / 구글맵 아이콘 */}
+                          <div className="flex items-center gap-2 flex-wrap text-xs pt-0.5">
+                            <div className="flex items-center gap-1 text-slate-600 min-w-0">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span className="font-medium text-slate-700">
+                                {language === 'KR' ? '부산 해운대구 해운대로 626 (구 해운대역)' : '626, Haeundae-ro, Haeundae-gu'}
+                              </span>
+                            </div>
+                            <MapAppIcons
+                              naverUrl="https://naver.me/Fy2F6rJr"
+                              googleUrl="https://www.google.com/maps/search/?api=1&query=%ED%95%B4%EC%9A%B4%EB%8C%80%ED%94%8C%EB%9E%AB%ED%8F%BC+%EA%B5%AC%ED%95%B4%EC%9A%B4%EB%8C%80%EC%97%AD"
+                              title={language === 'KR' ? '해운대 플랫폼' : 'Haeundae Platform'}
+                            />
+                          </div>
+                        </div>
+
+                        <ul className="text-xs text-[#4A5568] space-y-1.5 leading-relaxed pt-0.5">
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '운영 시간' : 'Hours'}:</strong>{' '}
+                            10:00 ~ 18:00
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '휴무' : 'Closed'}:</strong>{' '}
+                            {language === 'KR' ? '매주 월요일' : 'Every Monday'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '이용 안내' : 'Info'}:</strong>{' '}
+                            {language === 'KR' ? '관광객 대상 무료 짐 보관 서비스' : 'Free luggage storage available for tourists'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '전화' : 'Phone'}:</strong>{' '}
+                            <a href="tel:051-746-9995" className="text-slate-800 hover:text-[#0A2540] font-bold underline decoration-slate-300">
+                              051-746-9995
+                            </a>
+                          </li>
+                        </ul>
                       </div>
-                      <ul className="text-xs text-[#4A5568] space-y-1.5 leading-relaxed pl-1">
-                        <li>
-                          <strong className="text-slate-900">해운대 종합관광안내소:</strong> 구남로 끝 백사장 진입로 위치. 짐 보관함 및 휠체어/유모차 무료 대여 운영.
-                        </li>
-                        <li>
-                          <strong className="text-slate-900">지하철 2호선 해운대역 보관함:</strong> 1·3·5번 출구 방면 대합실 내 락커 구비.
-                        </li>
-                      </ul>
                     </div>
 
-                    {/* Hub 4: 광안리 해변 */}
-                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <span className="font-black text-sm text-[#0A2540] flex items-center gap-1.5">
-                          <MapPin className="w-4 h-4 text-[#8EA85E]" />
-                          {language === 'KR' ? '광안리 해변' : 'Gwangalli Beach'}
-                        </span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-100 text-sky-800">
-                          {language === 'KR' ? '해변 산책로 인근' : 'Beach Promenade'}
-                        </span>
+                    {/* Spot 4: 광안리 관광안내소 */}
+                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 sm:p-5 flex flex-col justify-between space-y-3 hover:border-[#8EA85E] transition-colors">
+                      <div className="space-y-2.5">
+                        <div className="border-b border-slate-200/70 pb-2.5 space-y-1.5">
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="font-extrabold text-base text-[#0A2540]">
+                              {language === 'KR' ? '광안리 관광안내소' : 'Gwangalli Tourist Information'}
+                            </h4>
+                            <span className="text-[11px] font-bold text-[#8EA85E] shrink-0">
+                              {language === 'KR' ? '비용: 무료 (당일 보관 전용)' : 'Cost: Free (Same-day only)'}
+                            </span>
+                          </div>
+                          {/* 주소 + 네이버지도 / 구글맵 아이콘 */}
+                          <div className="flex items-center gap-2 flex-wrap text-xs pt-0.5">
+                            <div className="flex items-center gap-1 text-slate-600 min-w-0">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span className="font-medium text-slate-700">
+                                {language === 'KR' ? '부산 수영구 광안해변로 218 (광안리 해변)' : '218, Gwanganhaebyeon-ro, Suyeong-gu'}
+                              </span>
+                            </div>
+                            <MapAppIcons
+                              naverUrl="https://naver.me/xzxmTb5m"
+                              googleUrl="https://www.google.com/maps/search/?api=1&query=%EA%B4%91%EC%95%88%EB%A6%AC%EA%B4%80%EA%B4%91%EC%95%88%EB%82%B4%EC%86%8C"
+                              title={language === 'KR' ? '광안리 관광안내소' : 'Gwangalli Tourist Information'}
+                            />
+                          </div>
+                        </div>
+
+                        <ul className="text-xs text-[#4A5568] space-y-1.5 leading-relaxed pt-0.5">
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '운영 시간' : 'Hours'}:</strong>{' '}
+                            {language === 'KR' ? '평시 10:00~18:00 / 성수기(7~8월) 10:00~21:00' : '10:00 AM–6:00 PM / Peak (Jul–Aug): 10:00 AM–9:00 PM'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '휴게시간' : 'Break Times'}:</strong>{' '}
+                            13:00 ~ 14:00, 15:00 ~ 15:50
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '추가 편의' : 'Bonus'}:</strong>{' '}
+                            {language === 'KR' ? '유모차 및 휠체어 대여 가능 (오전 중 조기 마감 주의)' : 'Strollers & wheelchairs available (often fills early)'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '전화' : 'Phone'}:</strong>{' '}
+                            <a href="tel:051-610-4848" className="text-slate-800 hover:text-[#0A2540] font-bold underline decoration-slate-300">
+                              051-610-4848
+                            </a>
+                          </li>
+                        </ul>
                       </div>
-                      <ul className="text-xs text-[#4A5568] space-y-1.5 leading-relaxed pl-1">
-                        <li>
-                          <strong className="text-slate-900">수영구 관광안내소 & 생활문화센터:</strong> 광안리 해변 중앙 산책로에 위치하여 바다 산책 전 짐 보관에 용이.
-                        </li>
-                        <li>
-                          <strong className="text-slate-900">지하철 2호선 광안역 보관함:</strong> 개찰구 밖 대합실 내 락커 이용 가능.
-                        </li>
-                      </ul>
                     </div>
                   </div>
 
-                  {/* Storage Pro Tip Callout */}
-                  <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-xl p-4 text-xs text-emerald-950 space-y-1">
-                    <div className="font-extrabold flex items-center gap-1.5 text-emerald-900">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      <span>{language === 'KR' ? '대형 캐리어 보관 실전 팁' : 'Pro Tip for Large Suitcases'}</span>
-                    </div>
-                    <p className="text-slate-700 leading-relaxed">
-                      {language === 'KR'
-                        ? '28인치 이상 대형 캐리어는 지하철역 락커 크기가 맞지 않거나 주말 오전에 일찍 마감될 수 있습니다. KTX 부산역 짐캐리 매장이나 서면 롯데백화점 무료 보관소를 이용하시면 규격 걱정 없이 안전하게 맡길 수 있습니다.'
-                        : 'For suitcases 28 inches and larger, train station lockers may be tight or full on weekends. Utilize Zimcarry at Busan Station or Lotte Department Store free cloakroom.'}
-                    </p>
+                  {/* Friendly Local Outro */}
+                  <div className="text-xs sm:text-sm text-slate-600 font-medium pt-1 text-center sm:text-left">
+                    {language === 'KR'
+                      ? '캐리어 들고 다니시느라 힘 빼지 마시고, 가볍고 편안한 부산 여행 되세요!'
+                      : 'Hope this helps if you’re traveling around Busan with a suitcase! Travel hands-free and enjoy Busan!'}
                   </div>
                 </div>
               )}
 
               {/* 5. 유모차 & 휠체어 DETAIL */}
               {selectedExplorationItem === 'rental' && (
-                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-7 space-y-4 shadow-2xs">
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-black bg-blue-50 text-blue-700 border border-blue-200">
-                        {language === 'KR' ? '배리어프리 꿀팁' : 'Barrier-Free Hack'}
-                      </span>
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-100 text-slate-700">
-                        {language === 'KR' ? '신분증 지참 시 무료' : 'Free with Valid ID'}
-                      </span>
+                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-7 space-y-5 shadow-2xs">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Users className="w-5 h-5 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+                      <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
+                        {language === 'KR' ? '보행 약자 & 가족을 위한 유모차 / 휠체어 무료 대여소' : 'Free Stroller & Wheelchair Rental Locations'}
+                      </h3>
                     </div>
-                    <span className="text-xs text-slate-400 font-medium">
-                      {language === 'KR' ? '보행 약자 & 영유아 동반' : 'Stroller & Wheelchair'}
-                    </span>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
-                      {language === 'KR' ? '보행 약자 & 가족을 위한 유모차 / 휠체어 무료 대여소' : 'Free Stroller & Wheelchair Rental Locations'}
-                    </h3>
                     <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
                       {language === 'KR'
-                        ? '부산 주요 관광안내소와 대형 백화점에서는 신분증 확인 후 휠체어와 유모차를 무료로 대여해 드립니다.'
-                        : 'Major tourist information centers and department stores offer complimentary stroller and wheelchair rentals.'}
+                        ? '유모차나 휠체어 없이 부산에 오셨더라도 걱정하지 마세요! 광안리 해변 관광안내소, 태종대유원지, 시내 주요 백화점에서 신분증 확인 후 무료로 대여해 드리고 있어요. 대여 수량이 한정되어 있으니 방문 전 전화로 잔여 수량을 확인해 보시는 것을 추천드려요.'
+                        : 'Traveling without a stroller or wheelchair? Popular scenic spots like Gwangalli Beach, Taejongdae, and major department stores offer complimentary rentals with a valid ID! Since quantities are limited, calling ahead is recommended.'}
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-1">
-                    <div className="bg-[#FAF9F6] p-3.5 rounded-xl border border-[#E5E2DC] space-y-1">
-                      <span className="font-extrabold text-[#0A2540] block">{language === 'KR' ? '부산역 종합관광안내소' : 'Busan Stn Tourist Info'}</span>
-                      <p className="text-slate-600">
-                        {language === 'KR' ? '1층 맞이방 위치. 휠체어 및 유모차 무료 대여 (신분증 필수 지참).' : '1F Arrival Hall. Free wheelchair & stroller rental with ID.'}
-                      </p>
+                  {/* 4 Stroller & Wheelchair Rental Spots (2x2 Grid) */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                    {/* Spot 1: 태종대유원지 */}
+                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 sm:p-5 flex flex-col justify-between space-y-3 hover:border-[#8EA85E] transition-colors">
+                      <div className="space-y-2.5">
+                        <div className="border-b border-slate-200/70 pb-2.5 space-y-1.5">
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="font-extrabold text-base text-[#0A2540]">
+                              {language === 'KR' ? '태종대유원지' : 'Taejongdae Resort Park'}
+                            </h4>
+                            <span className="text-[11px] font-bold text-[#8EA85E] shrink-0">
+                              {language === 'KR' ? '비용: 무료 (신분증 필수)' : 'Cost: Free (ID Required)'}
+                            </span>
+                          </div>
+                          {/* 주소 + 네이버지도 / 구글맵 아이콘 */}
+                          <div className="flex items-center gap-2 flex-wrap text-xs pt-0.5">
+                            <div className="flex items-center gap-1 text-slate-600 min-w-0">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span className="font-medium text-slate-700">
+                                {language === 'KR' ? '부산 영도구 전망로 24 (태종대 입구 관광안내소)' : '24, Jeonmang-ro, Yeongdo-gu (Taejongdae Entrance)'}
+                              </span>
+                            </div>
+                            <MapAppIcons
+                              naverUrl="https://map.naver.com/v5/search/%ED%83%9C%EC%A2%85%EB%8C%80%EC%9C%A0%EC%9B%90%EC%A7%80"
+                              googleUrl="https://www.google.com/maps/search/?api=1&query=Taejongdae+Resort+Park+Busan"
+                              title={language === 'KR' ? '태종대유원지' : 'Taejongdae Resort Park'}
+                            />
+                          </div>
+                        </div>
+
+                        <ul className="text-xs text-[#4A5568] space-y-1.5 leading-relaxed pt-0.5">
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '대여 시간' : 'Hours'}:</strong>{' '}
+                            10:00 ~ 17:00
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '대여 품목' : 'Items'}:</strong>{' '}
+                            {language === 'KR' ? '유모차, 휠체어 무료 대여' : 'Strollers & wheelchairs (complimentary)'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '대여 조건' : 'Requirement'}:</strong>{' '}
+                            {language === 'KR' ? '신분증 제시 후 간단한 인적사항 기재 후 대여' : 'Present valid ID and fill out simple form'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '전화' : 'Phone'}:</strong>{' '}
+                            <a href="tel:051-403-4685" className="text-slate-800 hover:text-[#0A2540] font-bold underline decoration-slate-300">
+                              051-403-4685
+                            </a>
+                            <span className="mx-1 text-slate-400">,</span>
+                            <a href="tel:051-860-7866" className="text-slate-800 hover:text-[#0A2540] font-bold underline decoration-slate-300">
+                              051-860-7866
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                    <div className="bg-[#FAF9F6] p-3.5 rounded-xl border border-[#E5E2DC] space-y-1">
-                      <span className="font-extrabold text-[#0A2540] block">{language === 'KR' ? '해운대 관광안내소' : 'Haeundae Tourist Info'}</span>
-                      <p className="text-slate-600">
-                        {language === 'KR' ? '백사장 입구. 모래사장 전용 휠체어 및 일반 휠체어/유모차 무료 지원.' : 'Beach entrance. Beach terrain wheelchairs & strollers.'}
-                      </p>
+
+                    {/* Spot 2: 광안리 관광안내소 */}
+                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 sm:p-5 flex flex-col justify-between space-y-3 hover:border-[#8EA85E] transition-colors">
+                      <div className="space-y-2.5">
+                        <div className="border-b border-slate-200/70 pb-2.5 space-y-1.5">
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="font-extrabold text-base text-[#0A2540]">
+                              {language === 'KR' ? '광안리 관광안내소' : 'Gwangalli Tourist Information'}
+                            </h4>
+                            <span className="text-[11px] font-bold text-[#8EA85E] shrink-0">
+                              {language === 'KR' ? '비용: 무료 (신분증 필수)' : 'Cost: Free (ID Required)'}
+                            </span>
+                          </div>
+                          {/* 주소 + 네이버지도 / 구글맵 아이콘 */}
+                          <div className="flex items-center gap-2 flex-wrap text-xs pt-0.5">
+                            <div className="flex items-center gap-1 text-slate-600 min-w-0">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span className="font-medium text-slate-700">
+                                {language === 'KR' ? '부산 수영구 광안해변로 218 (광안리 해변)' : '218, Gwanganhaebyeon-ro, Suyeong-gu'}
+                              </span>
+                            </div>
+                            <MapAppIcons
+                              naverUrl="https://naver.me/xzxmTb5m"
+                              googleUrl="https://www.google.com/maps/search/?api=1&query=%EA%B4%91%EC%95%88%EB%A6%AC%EA%B4%80%EA%B4%91%EC%95%88%EB%82%B4%EC%86%8C"
+                              title={language === 'KR' ? '광안리 관광안내소' : 'Gwangalli Tourist Information'}
+                            />
+                          </div>
+                        </div>
+
+                        <ul className="text-xs text-[#4A5568] space-y-1.5 leading-relaxed pt-0.5">
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '운영 시간' : 'Hours'}:</strong>{' '}
+                            {language === 'KR' ? '평시 10:00~18:00 / 성수기(7~8월) 10:00~21:00' : '10:00 AM–6:00 PM / Peak (Jul–Aug): 10:00 AM–9:00 PM'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '대여 품목' : 'Items'}:</strong>{' '}
+                            {language === 'KR' ? '일반 휠체어, 유모차 (오전 조기 마감 주의)' : 'Wheelchairs & strollers (often fills early in morning)'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '대여 조건' : 'Requirement'}:</strong>{' '}
+                            {language === 'KR' ? '신분증 지참 필수 (당일 대여 및 반납)' : 'Valid ID required (Same-day only)'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '전화' : 'Phone'}:</strong>{' '}
+                            <a href="tel:051-610-4848" className="text-slate-800 hover:text-[#0A2540] font-bold underline decoration-slate-300">
+                              051-610-4848
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                    <div className="bg-[#FAF9F6] p-3.5 rounded-xl border border-[#E5E2DC] space-y-1">
-                      <span className="font-extrabold text-[#0A2540] block">{language === 'KR' ? '시내 주요 백화점' : 'Major Dept Stores'}</span>
-                      <p className="text-slate-600">
-                        {language === 'KR' ? '센텀 신세계, 서면 롯데, 광복 롯데 고객센터 유모차 무료 대여 데스크.' : 'Centum Shinsegae, Seomyeon & Gwangbok Lotte customer desks.'}
-                      </p>
+
+                    {/* Spot 3: 신세계백화점 센텀시티점 */}
+                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 sm:p-5 flex flex-col justify-between space-y-3 hover:border-[#8EA85E] transition-colors">
+                      <div className="space-y-2.5">
+                        <div className="border-b border-slate-200/70 pb-2.5 space-y-1.5">
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="font-extrabold text-base text-[#0A2540]">
+                              {language === 'KR' ? '신세계백화점 센텀시티점' : 'Shinsegae Centum City'}
+                            </h4>
+                            <span className="text-[11px] font-bold text-[#8EA85E] shrink-0">
+                              {language === 'KR' ? '비용: 무료 (실내 이용)' : 'Cost: Free (Indoor Only)'}
+                            </span>
+                          </div>
+                          {/* 주소 + 네이버지도 / 구글맵 아이콘 */}
+                          <div className="flex items-center gap-2 flex-wrap text-xs pt-0.5">
+                            <div className="flex items-center gap-1 text-slate-600 min-w-0">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span className="font-medium text-slate-700">
+                                {language === 'KR' ? '부산 해운대구 센텀남대로 35 (센텀시티역 연결)' : '35, Centumnam-daero, Haeundae-gu'}
+                              </span>
+                            </div>
+                            <MapAppIcons
+                              naverUrl="https://map.naver.com/v5/search/%EC%8B%A0%EC%84%B8%EA%B3%84%EB%B0%B1%ED%99%94%EC%A0%90%20%EC%84%BC%ED%85%80%EC%8B%9C%ED%8B%B0%EC%A0%90"
+                              googleUrl="https://www.google.com/maps/search/?api=1&query=Shinsegae+Centum+City+Busan"
+                              title={language === 'KR' ? '신세계백화점 센텀시티점' : 'Shinsegae Centum City'}
+                            />
+                          </div>
+                        </div>
+
+                        <ul className="text-xs text-[#4A5568] space-y-1.5 leading-relaxed pt-0.5">
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '이용 시간' : 'Hours'}:</strong>{' '}
+                            {language === 'KR' ? '월~목 10:30~20:00 / 금~일 10:30~20:30' : 'Mon–Thu 10:30–20:00 / Fri–Sun 10:30–20:30'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '대여 위치' : 'Location'}:</strong>{' '}
+                            {language === 'KR' ? '백화점 1층 안내데스크 및 몰 1층 컨시어지 데스크' : 'Dept Store 1F Info Desk & Mall 1F Concierge'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '대여 품목' : 'Items'}:</strong>{' '}
+                            {language === 'KR' ? '유모차(생후 24개월 이하), 휠체어 무료 대여' : 'Strollers (under 24 mos) & wheelchairs'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '전화' : 'Phone'}:</strong>{' '}
+                            <a href="tel:1588-1234" className="text-slate-800 hover:text-[#0A2540] font-bold underline decoration-slate-300">
+                              1588-1234
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
+
+                    {/* Spot 4: 롯데백화점 부산본점 */}
+                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 sm:p-5 flex flex-col justify-between space-y-3 hover:border-[#8EA85E] transition-colors">
+                      <div className="space-y-2.5">
+                        <div className="border-b border-slate-200/70 pb-2.5 space-y-1.5">
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="font-extrabold text-base text-[#0A2540]">
+                              {language === 'KR' ? '롯데백화점 부산본점' : 'Lotte Dept Store Busan Main'}
+                            </h4>
+                            <span className="text-[11px] font-bold text-[#8EA85E] shrink-0">
+                              {language === 'KR' ? '비용: 무료 (실내 이용)' : 'Cost: Free (Indoor Only)'}
+                            </span>
+                          </div>
+                          {/* 주소 + 네이버지도 / 구글맵 아이콘 */}
+                          <div className="flex items-center gap-2 flex-wrap text-xs pt-0.5">
+                            <div className="flex items-center gap-1 text-slate-600 min-w-0">
+                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                              <span className="font-medium text-slate-700">
+                                {language === 'KR' ? '부산 부산진구 가야대로 772 (서면역 연결)' : '772, Gaya-daero, Busanjin-gu'}
+                              </span>
+                            </div>
+                            <MapAppIcons
+                              naverUrl="https://map.naver.com/v5/search/%EB%A1%AF%EB%8D%B0%EB%B0%B1%ED%99%94%EC%A0%90%20%EB%B6%80%EC%82%B0%EB%B3%B8%EC%A0%90"
+                              googleUrl="https://www.google.com/maps/search/?api=1&query=Lotte+Department+Store+Busan+Main"
+                              title={language === 'KR' ? '롯데백화점 부산본점' : 'Lotte Dept Store Busan Main'}
+                            />
+                          </div>
+                        </div>
+
+                        <ul className="text-xs text-[#4A5568] space-y-1.5 leading-relaxed pt-0.5">
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '이용 시간' : 'Hours'}:</strong>{' '}
+                            {language === 'KR' ? '월~목 10:30~20:00 / 금~일 10:30~20:30' : 'Mon–Thu 10:30–20:00 / Fri–Sun 10:30–20:30'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '대여 위치' : 'Location'}:</strong>{' '}
+                            {language === 'KR' ? '1층 고객서비스센터 / 안내데스크' : '1F Customer Service Desk'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '대여 품목' : 'Items'}:</strong>{' '}
+                            {language === 'KR' ? '유모차, 휠체어 무료 대여 (신분증 또는 앱 확인)' : 'Strollers & wheelchairs with ID/app'}
+                          </li>
+                          <li>
+                            <strong className="text-slate-800">{language === 'KR' ? '전화' : 'Phone'}:</strong>{' '}
+                            <a href="tel:051-810-2500" className="text-slate-800 hover:text-[#0A2540] font-bold underline decoration-slate-300">
+                              051-810-2500
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Friendly Local Outro */}
+                  <div className="text-xs sm:text-sm text-slate-600 font-medium pt-1 text-center sm:text-left">
+                    {language === 'KR'
+                      ? '유모차와 휠체어는 대여 수량이 한정되어 있으니, 방문하시기 전 전화로 잔여 수량을 미리 확인해 보시는 것을 추천드려요!'
+                      : 'Strollers and wheelchairs have limited availability, so we recommend calling ahead to check before visiting!'}
                   </div>
                 </div>
               )}
 
-              {/* 6. 지하철 재개표 DETAIL */}
-              {selectedExplorationItem === 'metro-reentry' && (
-                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-7 space-y-4 shadow-2xs">
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-black bg-amber-50 text-amber-800 border border-amber-200">
-                        {language === 'KR' ? '교통비 절약 요령' : 'Fare Saving Hack'}
-                      </span>
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-100 text-slate-700">
-                        {language === 'KR' ? '30분 이내 무료' : 'Free within 30 mins'}
-                      </span>
+              {/* 3. 5초 한국어 발음 치트키 DETAIL */}
+              {(selectedExplorationItem === 'korean-cheat-codes' || selectedExplorationItem === 'metro-reentry') && (
+                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-7 space-y-6 shadow-2xs">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+                      <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
+                        {language === 'KR'
+                          ? '5초 만에 끝내는 한국어 발음 치트키 😂'
+                          : 'How I teach Korean to my American friends in 5 seconds!! Korean pronunciation cheat codes 😂'}
+                      </h3>
                     </div>
-                    <span className="text-xs text-slate-400 font-medium">
-                      {language === 'KR' ? '부산 도시철도 공식 서비스' : 'Busan Metro Policy'}
-                    </span>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
-                      {language === 'KR' ? '지하철 반대 방향 탑승 시 \'30분 내 동일역 무료 재개표\'' : 'Wrong Metro Direction? Free Re-entry Within 30 Mins'}
-                    </h3>
                     <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
                       {language === 'KR'
-                        ? '부산 지하철을 탈 때 실수로 반대 방향 개찰구로 카드를 찍고 들어갔더라도 당황하지 마세요. 30분 이내에 동일한 역 개찰구에 카드를 다시 찍고 나오면 추가 요금 차감 없이 반대편 승강장으로 건너갈 수 있습니다. (동일 교통카드 태그 필수)'
-                        : 'If you accidentally tap into the wrong subway gate, tap out and re-enter within 30 minutes at the same station for free using the same transit card.'}
+                        ? '외국인 친구들에게 기초 한국어를 알려주려다 발음 때문에 뒷목 잡고 😂 재미 삼아 만들어본 초간단 비공식 “초고속 한국어 발음 치트키”를 공개합니다!'
+                        : 'I was trying to teach my American friends some basic Korean, but their pronunciation was driving me crazy 😂 So I came up with this completely unofficial “speed-learning” method:'}
                     </p>
                   </div>
 
-                  <div className="bg-amber-50/70 border border-amber-200/80 rounded-xl p-4 text-xs text-amber-950 space-y-1">
-                    <div className="font-extrabold flex items-center gap-1.5 text-amber-900">
-                      <CheckCircle2 className="w-4 h-4 text-amber-600" />
-                      <span>{language === 'KR' ? '이용 시 꼭 알아둘 점' : 'Important Note'}</span>
-                    </div>
-                    <p className="text-slate-700 leading-relaxed">
+                  {/* 12 Cheat Codes Cards (Grid) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {KOREAN_CHEAT_CODES.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-3.5 space-y-2 hover:border-[#8EA85E] transition-colors"
+                      >
+                        <div className="flex items-baseline justify-between gap-2 border-b border-slate-200/60 pb-1.5">
+                          <span className="font-black text-base text-[#0A2540]">{item.kr}</span>
+                          <span className="text-xs font-semibold text-slate-500">{item.en}</span>
+                        </div>
+                        <div className="space-y-1 pt-0.5">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pronounce</span>
+                            <span className="font-extrabold text-[#8EA85E] text-xs sm:text-sm bg-white px-2 py-0.5 rounded-md border border-slate-200 shadow-2xs">
+                              "{item.sound}"
+                            </span>
+                          </div>
+                          {item.action && (
+                            <div className="text-xs sm:text-sm font-bold text-slate-700 flex items-center gap-1.5 pt-1">
+                              <span className="text-[#8EA85E] font-extrabold text-sm shrink-0">👉</span>
+                              <span>{item.action}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Friendly Local Outro (No Box) */}
+                  <div className="pt-2 text-xs sm:text-sm text-slate-600 leading-relaxed space-y-1 text-center sm:text-left">
+                    <p className="font-extrabold text-slate-800">
                       {language === 'KR'
-                        ? '반드시 최초 개표한 카드와 동일한 교통카드로 태그하셔야 하며, 30분이 초과되면 기본운임이 추가로 부과되니 착오 진입을 인지한 즉시 역무원 호출 또는 재개표 태그를 진행하세요.'
-                        : 'You must use the exact same transit card. If 30 minutes pass, standard base fare will be charged.'}
+                        ? '정석 한국어 공부법이냐고요? 절대 아니죠. 😂'
+                        : 'Is this how you’re supposed to learn Korean? Absolutely not. 😂'}
+                    </p>
+                    <p className="font-medium text-slate-600">
+                      {language === 'KR'
+                        ? '하지만 외국인 친구들이 이 단어들을 기억해서 바로 써먹었냐고요? 신기하게도, 네! 효과 만점이었습니다.'
+                        : 'Did my friends remember the words? Somehow, yes.'}
                     </p>
                   </div>
                 </div>
@@ -8220,7 +8390,7 @@ case 'EXPERIENCE': {
               <div className="pt-3 flex justify-center">
                 <button
                   type="button"
-                  onClick={() => setSelectedExplorationItem(null)}
+                  onClick={() => handleSelectExplorationItem(null)}
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-[#8EA85E] text-white font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4" />
