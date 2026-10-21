@@ -124,6 +124,8 @@ export const KNOWN_COORDINATES: Record<string, { lat: number; lng: number; addre
   '이재모피자': { lat: 35.1022, lng: 129.0305, addressKo: '부산광역시 중구 광복중앙로 31', categoryKo: '식도락/맛집' },
   '모모스커피': { lat: 35.2285, lng: 129.0875, addressKo: '부산광역시 금정구 오시게로 20', categoryKo: '식도락/카페' },
   '톤쇼우': { lat: 35.1578, lng: 129.1142, addressKo: '부산광역시 수영구 광안해변로279번길 13', categoryKo: '식도락/맛집' },
+  '수변최고돼지국밥': { lat: 35.1558, lng: 129.1305, addressKo: '부산광역시 수영구 광안해변로370번길 9-32', categoryKo: '식도락/맛집' },
+  '수변최고돼지국밥 민락본점': { lat: 35.1558, lng: 129.1305, addressKo: '부산광역시 수영구 광안해변로370번길 9-32', categoryKo: '식도락/맛집' },
   '금수복국': { lat: 35.1618, lng: 129.1642, addressKo: '부산광역시 해운대구 중동2로10번길 23', categoryKo: '식도락/맛집' },
   '원조할매낙지': { lat: 35.1415, lng: 129.0601, addressKo: '부산광역시 부산진구 골드테마길 12', categoryKo: '식도락/맛집' },
   '새벽숯불가든': { lat: 35.1868, lng: 129.0825, addressKo: '부산광역시 연제구 고분로31번길 7', categoryKo: '식도락/맛집' },

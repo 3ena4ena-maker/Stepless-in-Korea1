@@ -1114,6 +1114,107 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         foodCategory: 'restaurant',
         time: '음식점',
         foodCategories: ["famous", "restaurant"],
+        titleKo: '수변최고돼지국밥',
+        titleEn: 'Subyeon Choego Pork Soup',
+        descKo: '잡내 없이 진하고 깊은 뽀얀 사골 육수에 야들야들한 항정살이 가득 들어간 항정국밥으로 전국적인 명성을 얻은 부산 대표 돼지국밥 맛집입니다.',
+        descEn: '🍲 Famous Busan pork soup institution celebrated for its rich bone broth and tender pork jowl (Hangjeong) soup, featuring 8 branches across Busan.',
+        icon: 'Food',
+        stationInfoKo: '민락본점(광안리) 외 8개 매장 운영 (광안·해운대·미포·마린시티·센텀·송정·서면롯데)',
+        stationInfoEn: 'Millak Main (Gwangalli) & 8 branches across Busan',
+        addressRoadKo: '부산광역시 수영구 광안해변로370번길 9-32 (민락본점)',
+        addressRoadEn: '9-32 Gwanganhaebyeon-ro 370beon-gil, Suyeong-gu, Busan',
+        naverMapUrl: 'https://map.naver.com/v5/search/%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%AF%BC%EB%9D%BD%EB%B3%B8%EC%A0%90',
+        googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%AF%BC%EB%9D%BD%EB%B3%B8%EC%A0%90',
+        branches: [
+          {
+            nameKo: '민락본점 (본점)',
+            nameEn: 'Millak Main Branch (Original)',
+            addressKo: '부산 수영구 광안해변로370번길 9-32',
+            addressEn: '9-32 Gwanganhaebyeon-ro 370beon-gil, Suyeong-gu, Busan',
+            stationInfoKo: '민락수변공원 인근 / 광안리 해변 도보',
+            stationInfoEn: 'Near Millak Waterfront Park, Gwangalli Beach',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%AF%BC%EB%9D%BD%EB%B3%B8%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%AF%BC%EB%9D%BD%EB%B3%B8%EC%A0%90'
+          },
+          {
+            nameKo: '광안점',
+            nameEn: 'Gwangalli Branch',
+            addressKo: '부산 수영구 광안로 63',
+            addressEn: '63 Gwangan-ro, Suyeong-gu, Busan',
+            stationInfoKo: '지하철 2호선 광안역 3·5번 출구 / 광안리 해변 사거리',
+            stationInfoEn: 'Subway Line 2 Gwangan Station Exit 3/5',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EA%B4%91%EC%95%88%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EA%B4%91%EC%95%88%EC%A0%90'
+          },
+          {
+            nameKo: '해운대점',
+            nameEn: 'Haeundae Branch',
+            addressKo: '부산 해운대구 구남로 39',
+            addressEn: '39 Gunam-ro, Haeundae-gu, Busan',
+            stationInfoKo: '지하철 2호선 해운대역 3번 출구 구남로 문화광장',
+            stationInfoEn: 'Subway Line 2 Haeundae Station Exit 3',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%ED%95%B4%EC%9A%B4%EB%8C%80%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%ED%95%B4%EC%9A%B4%EB%8C%80%EC%A0%90'
+          },
+          {
+            nameKo: '해운대미포점',
+            nameEn: 'Haeundae Mipo Branch',
+            addressKo: '부산 해운대구 달맞이길62번길 27 운람빌딩 1층',
+            addressEn: '1F, 27 Dalmaji-gil 62beon-gil, Haeundae-gu, Busan',
+            stationInfoKo: '해운대 블루라인파크 미포정거장 도보 2분',
+            stationInfoEn: '2 mins walk to Blueline Park Mipo Station',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%AF%B8%ED%8F%AC%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%AF%B8%ED%8F%AC%EC%A0%90'
+          },
+          {
+            nameKo: '마린시티점',
+            nameEn: 'Marine City Branch',
+            addressKo: '부산 해운대구 마린시티3로 51 해운대아델리스 111호',
+            addressEn: 'Suite 111, 51 Marine city 3-ro, Haeundae-gu, Busan',
+            stationInfoKo: '동백역 1번 출구 / 마린시티 영화의거리',
+            stationInfoEn: 'Dongbaek Station Exit 1 / Marine City',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%A7%88%EB%A6%B0%EC%8B%9C%ED%8B%B0%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%A7%88%EB%A6%B0%EC%8B%9C%ED%8B%B0%EC%A0%90'
+          },
+          {
+            nameKo: '센텀점',
+            nameEn: 'Centum City Branch',
+            addressKo: '부산 해운대구 센텀3로 26 2층',
+            addressEn: '2F, 26 Centum 3-ro, Haeundae-gu, Busan',
+            stationInfoKo: '지하철 2호선 센텀시티역 3번 출구 도보 3분',
+            stationInfoEn: 'Subway Line 2 Centum City Station Exit 3, 3 mins walk',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EC%84%BC%ED%85%80%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EC%84%BC%ED%85%80%EC%A0%90'
+          },
+          {
+            nameKo: '송정직영점',
+            nameEn: 'Songjeong Direct Branch',
+            addressKo: '부산 해운대구 송정중앙로9번길 8 1층',
+            addressEn: '1F, 8 Songjeongjungang-ro 9beon-gil, Haeundae-gu, Busan',
+            stationInfoKo: '동해선 송정역 1번 출구 / 송정해수욕장 도보 5분',
+            stationInfoEn: 'Donghae Line Songjeong Station Exit 1, near Songjeong Beach',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EC%86%A1%EC%A0%95%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EC%86%A1%EC%A0%95%EC%A0%90'
+          },
+          {
+            nameKo: '롯데백화점 부산본점 (서면)',
+            nameEn: 'Lotte Dept. Store Busan Main (Seomyeon)',
+            addressKo: '부산 부산진구 가야대로 772 롯데백화점 부산본점 9층',
+            addressEn: '9F Lotte Department Store, 772 Gaya-daero, Busanjin-gu, Busan',
+            stationInfoKo: '지하철 1·2호선 서면역 7번 출구 지하 직결',
+            stationInfoEn: 'Subway Line 1 & 2 Seomyeon Station Exit 7 direct link',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%A1%AF%EB%8D%B0%EB%B0%B1%ED%99%94%EC%A0%90%20%EB%B6%80%EC%82%B0%EB%B3%B8%EC%A0%90',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%A1%AF%EB%8D%B0%EB%B0%B1%ED%99%94%EC%A0%90%20%EC%84%9C%EB%A9%B4'
+          }
+        ]
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 대표 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'restaurant',
+        time: '음식점',
+        foodCategories: ["famous", "restaurant"],
         titleKo: '금수복국',
         titleEn: 'Geumsu Bokguk',
         descKo: '1970년부터 뚝배기 복국의 원조로 명성을 이어온 부산 대표 맛집으로 깊고 시원한 맑은 복지리와 매콤한 복불고기가 일품입니다.',
