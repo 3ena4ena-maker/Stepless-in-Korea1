@@ -250,7 +250,7 @@ export default function App() {
   const [activePathFilter, setActivePathFilter] = useState<'ALL' | 'ACCESSIBLE' | 'CARRY'>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedItineraryCategory, setSelectedItineraryCategory] = useState<string | null>(null);
-  const [tipsSubPage, setTipsSubPage] = useState<'index' | 'courses' | 'transit' | 'child-free' | 'bus-qr' | 'transfer' | 'taxi' | 'schedule' | 'community'>('index');
+  const [tipsSubPage, setTipsSubPage] = useState<'index' | 'courses' | 'transit' | 'child-free' | 'bus-qr' | 'transfer' | 'taxi' | 'schedule' | 'community' | 'exploration'>('index');
   const [activeRegionPage, setActiveRegionPage] = useState<'LINE1' | 'LINE2' | null>(null);
   const [siteSubPage, setSiteSubPage] = useState<'about' | 'privacy' | 'terms' | 'contact' | 'data-source'>('about');
   const [barrierFreeCourseId, setBarrierFreeCourseId] = useState<string | null>(null);
@@ -496,6 +496,9 @@ export default function App() {
         } else if (sub === 'bus-qr' || sub === 'qr-pay' || sub === 'qr') {
           setTipsSubPage('bus-qr');
           setActiveRegionPage(null);
+        } else if (sub === 'exploration' || sub === 'life-tips' || sub === 'hot-issues') {
+          setTipsSubPage('exploration');
+          setActiveRegionPage(null);
         } else if (sub === 'transfer') {
           setTipsSubPage('transit');
           setActiveRegionPage(null);
@@ -655,6 +658,10 @@ export default function App() {
                   setSelectedItineraryCategory(null);
                   setTipsSubPage('taxi');
                   setActiveRegionPage(null);
+                } else if (parts[2] === 'exploration' || parts[2] === 'life-tips' || parts[2] === 'hot-issues') {
+                  setSelectedItineraryCategory(null);
+                  setTipsSubPage('exploration');
+                  setActiveRegionPage(null);
                 } else if (['line1', 'line2', 'east', 'west', 'south', 'north'].includes(parts[2].toLowerCase())) {
                   setSelectedItineraryCategory(null);
                   setTipsSubPage('courses');
@@ -763,6 +770,8 @@ export default function App() {
             expectedPath = '/tips/bus-qr';
           } else if (tipsSubPage === 'taxi') {
             expectedPath = '/tips/taxi';
+          } else if (tipsSubPage === 'exploration') {
+            expectedPath = '/tips/exploration';
           } else if (tipsSubPage === 'schedule') {
             expectedPath = '/schedule';
           } else {
@@ -944,6 +953,10 @@ export default function App() {
         pageTitle = "부산 콜택시 & 교통약자 바우처 택시 이용 안내 | 스텝레스 Stepless";
         pageDesc = "부산 주요 콜택시 전화번호 및 임산부·교통약자를 위한 바우처 택시, 안심 귀가 서비스 안내.";
         canonicalUrl = "https://stepless.kr/tips/taxi";
+      } else if (tipsSubPage === 'exploration') {
+        pageTitle = "부산 탐구생활 - 핫이슈 & 실전 여행 꿀팁 | 스텝레스 Stepless";
+        pageDesc = "부캉이 포토존부터 캐리어 짐 보관소, 짐 배송 팁까지 로컬만의 실전 노하우를 확인하세요.";
+        canonicalUrl = "https://stepless.kr/tips/exploration";
       } else if (tipsSubPage === 'courses') {
         pageTitle = "부산 테마별 & 일정별 추천 여행 코스 | 스텝레스 Stepless";
         pageDesc = "식도락, 체험, 전통시장, 명소 및 당일치기부터 2박 3일까지 부산 추천 여행 코스 안내.";
@@ -1970,6 +1983,8 @@ export default function App() {
                       navigateToSpa('/tips/bus-qr', { tab: 'tips', subPage: 'bus-qr' });
                     } else if (page === 'taxi') {
                       navigateToSpa('/tips/taxi', { tab: 'tips', subPage: 'taxi' });
+                    } else if (page === 'exploration') {
+                      navigateToSpa('/tips/exploration', { tab: 'tips', subPage: 'exploration' });
                     }
                   }}
                   activeRegionPage={activeRegionPage}
