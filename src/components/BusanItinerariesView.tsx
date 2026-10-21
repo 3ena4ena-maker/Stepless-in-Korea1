@@ -4819,8 +4819,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Jungang · Nampo · Jagalchi',
                     badgeKo: '지하상가 연결 코스',
                     badgeEn: 'Underground Concourse Walk',
-                    exitGuideKo: '중앙역에서 자갈치역까지 전 구간 지하상가로 연결되어 있어 날씨에 관계없이 계단 없이 평지로 이동 가능합니다. (중앙역 5번출구, 남포역 7번출구 에스컬레이터, 자갈치역 3번출구)',
-                    exitGuideEn: 'An underground shopping concourse connects Jungang to Jagalchi with step-free walking corridors.',
                   },
                   {
                     id: 'LINE1_ONCHEONJANG',
@@ -4828,8 +4826,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Oncheonjang Station',
                     badgeKo: '온천 힐링 & 벚꽃 산책',
                     badgeEn: 'Hot Springs & Cherry Blossoms',
-                    exitGuideKo: '온천장역 1번 출구 엘리베이터로 나오면 도보 약 5분 거리에 허심청(호텔농심)과 온천천 수변 산책로가 직결됩니다.',
-                    exitGuideEn: 'Line 1 Oncheonjang Station Exit 1 elevator connects directly to Heosimcheong (Hotel Nongshim) and Oncheoncheon stream.',
                   },
                   {
                     id: 'LINE1_BEOMEOSA',
@@ -4837,8 +4833,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Beomeosa Station',
                     badgeKo: '천년 고찰 & 피톤치드 힐링',
                     badgeEn: 'Ancient Sanctuary & Pine Forest',
-                    exitGuideKo: '범어사역 5·7번 출구 엘리베이터로 나와 90번 저상버스로 환승하시면 범어사 및 성보박물관 평탄 입구까지 편리하게 이동할 수 있습니다.',
-                    exitGuideEn: 'Exit 5/7 elevator at Beomeosa Station connects to Bus #90 directly to the temple entrance.',
                   },
                   {
                     id: 'LINE1_SEOMYEON_BUJEON',
@@ -4846,8 +4840,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Seomyeon & Bujeon Stations',
                     badgeKo: '전통시장 & 중심 번화가',
                     badgeEn: 'Traditional Market & Downtown',
-                    exitGuideKo: '1호선과 2호선 환승 중심역으로, 부전역 1번 출구 앞 부산 최대 부전시장과 서면역 1·2번 출구 앞 서면 젊음의 거리, 삼정타워가 펼쳐집니다.',
-                    exitGuideEn: 'Major transfer hub for Lines 1 & 2. Bujeon Exit 1 leads to Bujeon Market, and Seomyeon Exits 1/2 lead to youth avenue and dining alleys.',
                   },
                   {
                     id: 'LINE1_BUSAN_STN',
@@ -4855,8 +4847,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Busan Station',
                     badgeKo: '부산의 관문 & 북항 친수공원',
                     badgeEn: 'Gateway of Busan & North Port',
-                    exitGuideKo: 'KTX와 지하철 1호선 직결 관문으로, 9·10번 출구 보행데크를 통한 북항 친수공원, 7번 출구 초량 이바구길 및 영도 국립해양박물관 방면 버스로 연결됩니다.',
-                    exitGuideEn: 'Direct transit hub for KTX and Metro Line 1. Exit 9/10 pedestrian bridge leads to North Port Waterfront Park, Exit 7 to Ibagu-gil and Yeongdo Maritime Museum.',
                   },
                   {
                     id: 'LINE1_DADAEPO',
@@ -4864,8 +4854,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Dadaepo Beach Station',
                     badgeKo: '일몰 낙조 & 생태 산책로',
                     badgeEn: 'Sunset & Wetland Boardwalk',
-                    exitGuideKo: '1호선의 종착역으로 1·2번 출구에서 드넓은 다대포 백사장, 무장애 고우니 생태 데크로드 및 세계 최대 꿈의 낙조분수로 바로 연결됩니다.',
-                    exitGuideEn: 'Terminus of Line 1. Exits 1 & 2 lead directly to Dadaepo Beach, Gouny Eco Trail, and Sunset Fountain.',
                   },
                 ];
 
@@ -4876,8 +4864,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Hwamyeong Station',
                     badgeKo: '생태 공원 & 장미 힐링',
                     badgeEn: 'Eco Park & Rose Gardens',
-                    exitGuideKo: '화명역 1·2번 출구에서 낙동강 화명생태공원과 장미공원, 부산어촌민속관으로 편리하게 연결됩니다.',
-                    exitGuideEn: 'Hwamyeong Station Exits 1 & 2 connect to Hwamyeong Eco Park, Rose Park, and Folk Museum.',
                   },
                   {
                     id: 'LINE2_DEOKCHEON',
@@ -4885,8 +4871,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Deokcheon Station',
                     badgeKo: '환승 거점 & 전통 구포시장',
                     badgeEn: 'Transfer Hub & Gupo Market',
-                    exitGuideKo: '2호선과 3호선 환승역으로, 덕천역 및 구포역 인근 400년 전통 구포시장 먹거리와 덕천 젊음의 거리로 이어집니다.',
-                    exitGuideEn: 'Transfer hub for Lines 2 & 3, leading to historic Gupo Market and Deokcheon downtown.',
                   },
                   {
                     id: 'LINE2_JEONPO',
@@ -4894,8 +4878,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Jeonpo Station',
                     badgeKo: '감성 카페거리 & 소품샵',
                     badgeEn: 'Cafe Street & Boutique Alleys',
-                    exitGuideKo: '전포역 4·7·8번 출구에서 개성 넘치는 전포 카페거리와 사잇길 공방, 빈티지 편집숍으로 바로 이어집니다.',
-                    exitGuideEn: 'Exits 4, 7, and 8 lead right into Jeonpo Cafe Street and boutique designer shops.',
                   },
                   {
                     id: 'LINE2_GEUMRYEONSAN_GWANGALLI',
@@ -4903,8 +4885,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Geumryeonsan · Gwangalli',
                     badgeKo: '광안대교 오션뷰 & 드론쇼',
                     badgeEn: 'Gwangandaegyo View & Drone Show',
-                    exitGuideKo: '광안리 해변으로 가는 가장 빠른 역으로, 광안리 해수욕장, 광안리 M 드론라이트쇼와 복합문화공간 밀락더마켓을 즐길 수 있습니다.',
-                    exitGuideEn: 'Closest stations to Gwangalli Beach, famous for drone light shows and Millac the Market cultural complex.',
                   },
                   {
                     id: 'LINE2_CENTUM_CITY',
@@ -4912,8 +4892,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Centum City Station',
                     badgeKo: '세계 최대 백화점 & 영화의전당',
                     badgeEn: 'World Record Mall & Cinema Center',
-                    exitGuideKo: '지하철역과 신세계 센텀시티, 벡스코가 지하 통로로 직결되며, 영화의전당과 뮤지엄원으로 연결됩니다.',
-                    exitGuideEn: 'Direct underground connection to Shinsegae Centum City, BEXCO, and Busan Cinema Center.',
                   },
                   {
                     id: 'LINE2_HAEUNDAE_DONGBAEK',
@@ -4921,8 +4899,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Haeundae · Dongbaek',
                     badgeKo: '해운대 해변 & 블루라인파크',
                     badgeEn: 'Haeundae Beach & Blueline Park',
-                    exitGuideKo: '해운대역 3·5번 출구에서 구남로 보행전용거리와 백사장, 동백역 1번 출구에서 동백섬 해안산책로로 직결됩니다.',
-                    exitGuideEn: 'Haeundae Station Exits 3/5 lead to Gunam-ro pedestrian avenue, and Dongbaek Exit 1 to Dongbaekseom trail.',
                   },
                 ];
 
@@ -5075,7 +5051,7 @@ case 'EXPERIENCE': {
                           return (
                             <div key={group.id} className="space-y-4 animate-fade-in">
                               {/* Station Group Header */}
-                              <div className="space-y-1.5 pb-2.5 border-b border-slate-200">
+                              <div className="pb-2.5 border-b border-slate-200">
                                 <div className="flex items-center gap-2 flex-wrap">
                                   <span className={`w-2.5 h-2.5 rounded-full ${currentLine === 'LINE1' ? 'bg-[#EA580C]' : 'bg-[#16A34A]'} shrink-0`} />
                                   <h3 className="font-extrabold text-base sm:text-lg text-slate-900 tracking-tight">
@@ -5087,9 +5063,6 @@ case 'EXPERIENCE': {
                                     {language === 'KR' ? group.badgeKo : group.badgeEn}
                                   </span>
                                 </div>
-                                <p className="text-xs text-slate-600 leading-relaxed pl-4.5">
-                                  {language === 'KR' ? group.exitGuideKo : group.exitGuideEn}
-                                </p>
                               </div>
 
                               {/* Places Grid under this station */}
