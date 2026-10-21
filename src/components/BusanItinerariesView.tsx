@@ -5300,14 +5300,7 @@ case 'EXPERIENCE': {
 
                     {/* Line Switcher & Filter Controller */}
                     <div className="space-y-4 pt-1 text-left">
-                      <div className="flex items-center gap-2 border-b border-slate-200 pb-2.5">
-                        <Train className="w-4 h-4 text-[#8EA85E] shrink-0 stroke-[2.2]" />
-                        <h4 className="text-sm sm:text-base font-extrabold text-slate-900">
-                          {language === 'KR' ? '노선 선택 (1호선 / 2호선)' : 'Select Metro Line (Line 1 / Line 2)'}
-                        </h4>
-                      </div>
-
-                      {/* 1호선 / 2호선 Line Tabs with Soft Eye-friendly Pastel Colors */}
+                      {/* 1호선 / 2호선 Line Tabs with Soft Eye-friendly Pastel Colors - Borderless */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <button
                           type="button"
@@ -5320,20 +5313,25 @@ case 'EXPERIENCE': {
                             }
                             setSelectedStationGroup('ALL');
                           }}
-                          className={`p-4 rounded-xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between gap-2 ${
+                          className={`p-4 rounded-xl text-left transition-all duration-200 cursor-pointer flex flex-col justify-between gap-2.5 ${
                             currentLine === 'LINE1'
-                              ? 'bg-[#FFF7ED] border-[#FDBA74] text-[#9A3412] shadow-2xs'
-                              : 'bg-white hover:bg-[#FFF7ED]/40 text-slate-700 border-slate-200/90'
+                              ? 'bg-[#FFF7ED] text-[#9A3412] shadow-2xs'
+                              : 'bg-orange-50/40 hover:bg-[#FFF7ED]/70 text-slate-700'
                           }`}
                         >
                           <div className="flex items-center justify-between gap-2 w-full">
-                            <span className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-md ${
-                              currentLine === 'LINE1' ? 'bg-[#EA580C] text-white shadow-2xs' : 'bg-orange-100 text-[#C2410C]'
-                            }`}>
-                              1호선 (Line 1)
-                            </span>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-lg sm:text-xl font-black text-[#EA580C] tracking-tight">
+                                {language === 'KR' ? '1호선' : 'Line 1'}
+                              </span>
+                              <span className="text-xs sm:text-sm font-bold text-[#EA580C]/80">
+                                {language === 'KR' ? '(Line 1)' : ''}
+                              </span>
+                            </div>
                             {currentLine === 'LINE1' && (
-                              <span className="text-xs font-bold text-[#EA580C]">✓ {language === 'KR' ? '선택됨' : 'Selected'}</span>
+                              <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-orange-100 text-[#EA580C]">
+                                ✓ {language === 'KR' ? '선택됨' : 'Selected'}
+                              </span>
                             )}
                           </div>
                           <div className="text-xs text-slate-600 font-normal leading-relaxed">
@@ -5360,20 +5358,25 @@ case 'EXPERIENCE': {
                             }
                             setSelectedStationGroup('ALL');
                           }}
-                          className={`p-4 rounded-xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between gap-2 ${
+                          className={`p-4 rounded-xl text-left transition-all duration-200 cursor-pointer flex flex-col justify-between gap-2.5 ${
                             currentLine === 'LINE2'
-                              ? 'bg-[#F0FDF4] border-[#86EFAC] text-[#166534] shadow-2xs'
-                              : 'bg-white hover:bg-[#F0FDF4]/40 text-slate-700 border-slate-200/90'
+                              ? 'bg-[#F0FDF4] text-[#166534] shadow-2xs'
+                              : 'bg-emerald-50/40 hover:bg-[#F0FDF4]/70 text-slate-700'
                           }`}
                         >
                           <div className="flex items-center justify-between gap-2 w-full">
-                            <span className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-md ${
-                              currentLine === 'LINE2' ? 'bg-[#16A34A] text-white shadow-2xs' : 'bg-emerald-100 text-[#15803D]'
-                            }`}>
-                              2호선 (Line 2)
-                            </span>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-lg sm:text-xl font-black text-[#16A34A] tracking-tight">
+                                {language === 'KR' ? '2호선' : 'Line 2'}
+                              </span>
+                              <span className="text-xs sm:text-sm font-bold text-[#16A34A]/80">
+                                {language === 'KR' ? '(Line 2)' : ''}
+                              </span>
+                            </div>
                             {currentLine === 'LINE2' && (
-                              <span className="text-xs font-bold text-[#16A34A]">✓ {language === 'KR' ? '선택됨' : 'Selected'}</span>
+                              <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-[#16A34A]">
+                                ✓ {language === 'KR' ? '선택됨' : 'Selected'}
+                              </span>
                             )}
                           </div>
                           <div className="text-xs text-slate-600 font-normal leading-relaxed">
