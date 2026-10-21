@@ -785,5 +785,75 @@ export const BUSAN_TOUR_API_SPOTS: TourApiSpot[] = [
         descEn: 'Easy stroller navigation in museum and lower courtyard.'
       }
     }
+  },
+  {
+    contentid: '127419',
+    titleKo: '허심청',
+    titleEn: 'Heosimcheong Spa (Hotel Nongshim)',
+    categoryKo: '문화시설',
+    categoryEn: 'Culture',
+    districtKo: '동래구',
+    districtEn: 'Dongnae-gu',
+    addr1Ko: '부산광역시 동래구 온천장로107번길 32 (온천동, 호텔농심)',
+    addr1En: '32 Oncheonjang-ro 107beon-gil, Dongnae-gu, Busan (Hotel Nongshim)',
+    tel: '051-550-2200',
+    firstimage: 'https://tong.visitkorea.or.kr/cms/resource/37/4090237_image2_1.jpg',
+    mapx: 129.082687,
+    mapy: 35.221155,
+    overviewKo: '동양 최대 규모를 자랑하는 도심형 천연 온천 건강랜드로 호텔농심에서 운영합니다. 4,297.54㎡ 규모의 대온천탕에 장수탕, 회목탕, 청자탕, 동굴탕, 노천탕 등 40여 종의 다양한 효능별 온천탕과 대형 찜질시설을 갖추고 있습니다.',
+    overviewEn: 'Asia’s largest natural hot spring spa facility operated by Hotel Nongshim. Features a grand bath hall with 40 themed therapeutic mineral pools, cave baths, open-air baths, and saunas.',
+    homepage: 'http://www.hotelnongshim.com',
+    useTimeKo: '온천시설 05:30 ~ 22:00 (입장마감 21:30) / 찜질시설 06:30 ~ 21:00',
+    useTimeEn: 'Spa 05:30 - 22:00 (Last entry 21:30) / Jjimjilbang 06:30 - 21:00',
+    restDateKo: '연중무휴',
+    restDateEn: 'Open year-round',
+    feeKo: '유료 (성인 주중 15,000원 / 주말·공휴일 18,000원 / 초등학생 11,000원 / 소아 7,000원)',
+    feeEn: 'Paid (Adult weekday 15,000 KRW / weekend 18,000 KRW / Child 11,000 KRW)',
+    nearestStationId: 'oncheonjang',
+    nearestStationNameKo: '온천장역 (1호선)',
+    nearestStationNameEn: 'Oncheonjang Station (Line 1)',
+    recommendedElevatorExit: '1번 출구 엘리베이터',
+    exitDistanceTextKo: '도보 약 5분 (약 350m)',
+    exitDistanceTextEn: '5-minute walk (approx. 350m)',
+    transitTipKo: '1호선 온천장역 1번 출구 엘리베이터로 나온 후 온천장로를 따라 호텔농심 방향으로 도보 약 5분 이동하면 허심청 입구로 연결됩니다.',
+    transitTipEn: 'From Line 1 Oncheonjang Station Exit 1 elevator, walk approx. 5 minutes along Oncheonjang-ro toward Hotel Nongshim.',
+    barrierFree: {
+      parking: {
+        hasParking: true,
+        descKo: '호텔농심 및 허심청 전용 주차장 완비 (장애인 전용 주차구역 구비)',
+        descEn: 'Dedicated parking at Hotel Nongshim and Heosimcheong with accessible parking spaces.'
+      },
+      route: {
+        hasRamp: true,
+        hasNoStep: true,
+        descKo: '호텔 및 허심청 주출입구에 단차 없는 평탄 진입로 및 완만한 경사로 구비',
+        descEn: 'Step-free main entrance and gentle access ramps at Hotel Nongshim and Heosimcheong.'
+      },
+      elevator: {
+        hasElevator: true,
+        descKo: '전 층 엘리베이터 운행 (장애인용 승강기 구비)',
+        descEn: 'Elevators operating to all floors with accessible buttons.'
+      },
+      toilet: {
+        hasToilet: true,
+        descKo: '허심청 1층 및 호텔 로비 내 장애인 화장실 구비',
+        descEn: 'Accessible restrooms located on 1F Heosimcheong and Hotel lobby.'
+      },
+      wheelchair: {
+        hasRental: true,
+        descKo: '호텔 로비 및 안내데스크 휠체어 무료 대여',
+        descEn: 'Wheelchair rental support at hotel lobby and front desk.'
+      },
+      tactilePaving: {
+        hasTactile: true,
+        descKo: '주출입구 점자블록 및 안내 표지 구비',
+        descEn: 'Tactile paving at main entrance and guide signage.'
+      },
+      stroller: {
+        hasStroller: true,
+        descKo: '유모차 진입 가능 (로비 보관 및 엘리베이터 이용)',
+        descEn: 'Strollers allowed with elevator access and lobby storage.'
+      }
+    }
   }
 ];

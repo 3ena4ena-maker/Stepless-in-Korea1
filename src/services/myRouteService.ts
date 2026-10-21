@@ -86,6 +86,8 @@ const BUSAN_AREA_FALLBACKS: Record<string, { lat: number; lng: number; addressKo
 
 // 부산 주요 명소 기본 정밀 좌표 사전 (TourAPI 미매칭 시 안정적 폴백)
 export const KNOWN_COORDINATES: Record<string, { lat: number; lng: number; addressKo: string; categoryKo: string }> = {
+  '허심청': { lat: 35.221155, lng: 129.082687, addressKo: '부산광역시 동래구 온천장로107번길 32 호텔농심', categoryKo: '체험/온천' },
+  '호텔농심': { lat: 35.221155, lng: 129.082687, addressKo: '부산광역시 동래구 온천장로107번길 32', categoryKo: '체험/온천' },
   '부산역': { lat: 35.1154, lng: 129.0422, addressKo: '부산광역시 동구 중앙대로 206', categoryKo: '교통/명소' },
   '해운대': { lat: 35.1587, lng: 129.1604, addressKo: '부산광역시 해운대구 우동 해운대해변로 264', categoryKo: '해변/자연' },
   '해운대해수욕장': { lat: 35.1587, lng: 129.1604, addressKo: '부산광역시 해운대구 우동 해운대해변로 264', categoryKo: '해변/자연' },

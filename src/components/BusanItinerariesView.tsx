@@ -4605,7 +4605,7 @@ case 'EXPERIENCE': {
                                 {(() => {
                                   const isFree = typeof step.isFree === 'boolean'
                                     ? step.isFree
-                                    : !['뮤지엄원', '아르떼뮤지엄', '영화체험박물관', '과학관'].some(k => step.titleKo.includes(k));
+                                    : !['뮤지엄원', '아르떼뮤지엄', '영화체험박물관', '과학관', '허심청'].some(k => step.titleKo.includes(k));
 
                                   const feeText = (
                                     <span className={`text-xs sm:text-sm font-bold shrink-0 ${

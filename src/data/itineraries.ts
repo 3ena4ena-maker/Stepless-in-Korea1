@@ -2506,6 +2506,31 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         icon: 'Waves',
         stationInfoKo: '부산 동래구 우장춘로 175 (1호선 온천장역 1번 출구 도보 15분 또는 금강공원 입구)',
         stationInfoEn: '175 Ujangchun-ro, Dongnae-gu, Busan (Line 1 Oncheonjang Station Exit 1, near Geumgang Park entrance)'
+      },
+      {
+        id: 'experience-heosimcheong',
+        contentId: '127419',
+        regionId: 'others',
+        regionNameKo: '동래 · 온천장',
+        regionNameEn: 'Dongnae & Oncheonjang',
+        categoryType: 'WORKSHOP',
+        time: '도심온천체험',
+        titleKo: '허심청',
+        titleEn: 'Heosimcheong Spa (Hotel Nongshim)',
+        isFree: false,
+        descKo: '호텔농심 내에 위치한 동양 최대 규모의 천연 온천 건강랜드로, 40여 종의 다양한 효능별 온천탕과 대형 찜질시설을 갖춘 대표 힐링 온천 체험 명소입니다.',
+        descEn: 'Asia’s largest natural hot spring spa located inside Hotel Nongshim, featuring over 40 therapeutic mineral pools, cave baths, and expansive sauna facilities.',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/37/4090237_image2_1.jpg',
+        icon: 'Sparkles',
+        stationInfoKo: '부산 동래구 온천장로107번길 32 호텔농심 (1호선 온천장역 1번 출구 도보 5분)',
+        stationInfoEn: 'Hotel Nongshim, 32 Oncheonjang-ro 107beon-gil, Dongnae-gu, Busan (Line 1 Oncheonjang Station Exit 1, 5-min walk)',
+        naverMapLinks: [
+          {
+            name: '허심청',
+            url: 'https://map.naver.com/v5/search/%ED%97%88%EC%8B%AC%EC%B2%AD'
+          }
+        ],
+        googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%ED%97%88%EC%8B%AC%EC%B2%AD+%ED%98%B8%ED%85%94%EB%86%8D%EC%8B%AC'
       }
     ]
   },
