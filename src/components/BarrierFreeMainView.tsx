@@ -143,8 +143,8 @@ export default function BarrierFreeMainView({
     return getRecommendedCourses(selectedUserTypes.length > 0 ? selectedUserTypes : selectedUserType);
   }, [selectedUserTypes, selectedUserType]);
 
-  // 8개 무장애 관광지 ID 목록
-  // (해운대 해수욕장, SEA LIFE 부산아쿠아리움, 부산 엑스더스카이 전망대, 다대포 해수욕장, 송정 해수욕장, 자갈치시장, 부평 깡통 국제 시장, 부산 시티투어버스)
+  // 13개 무장애 추천 관광지 ID 목록
+  // (해운대 해수욕장, 아쿠아리움, 엑스더스카이, 다대포, 송정, 자갈치, 부평깡통시장, 시티투어버스, 동백섬&누리마루, 국립해양박물관, 영화의전당, F1963, 허심청)
   const TARGET_PLACE_IDS = useMemo(
     () => [
       'spot-101',
@@ -155,6 +155,11 @@ export default function BarrierFreeMainView({
       'spot-jagalchi-rooftop',
       'spot-bupyeong-market',
       'spot-city-tour-bus',
+      'spot-108',
+      'spot-104',
+      'spot-112',
+      'spot-f1963',
+      'spot-heosimcheong',
     ],
     []
   );

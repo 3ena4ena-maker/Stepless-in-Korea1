@@ -172,11 +172,11 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
     modifiedTime: new Date().toISOString()
   },
 
-  // 허심청 (호텔농심)
+  // 동래 온천 허심청 (호텔농심)
   'spot-heosimcheong': {
     id: 'spot-heosimcheong',
     contentId: '127419',
-    nameKo: '허심청',
+    nameKo: '동래 온천 허심청 (호텔농심)',
     nameEn: 'Heosimcheong Spa (Hotel Nongshim)',
     categoryKo: '문화/체험',
     categoryEn: 'Culture/Attraction',

@@ -73,6 +73,10 @@ export function calculateAccessibilityScore(
       // 휠체어 리프트/저상 버스 및 실내 전용 슬로프 우수 시설
       if (place.id === 'spot-city-tour-bus') score += 5;
       if (place.id === 'spot-aquarium') score += 4;
+      if (place.id === 'spot-108') score += 10; // 무단차 해안 목재 데크 및 누리마루 승강기 우수
+      if (place.id === 'spot-104') score += 8;  // 실내 전 층 완만 슬로프 및 대형 승강기
+      if (place.id === 'spot-112') score += 6;  // 영화의전당 빅루프 광장 무단차 데크 및 휠체어 전용석
+      if (place.id === 'spot-f1963') score += 6; // 전 구역 단차 0cm 평면 및 중정 승강기
       break;
     }
 
@@ -95,6 +99,9 @@ export function calculateAccessibilityScore(
 
       // 유아차 및 아동 가족 친화 공간 (아쿠아리움 실내 관람 및 수유실)
       if (place.id === 'spot-aquarium') score += 7;
+      if (place.id === 'spot-104') score += 9; // 어린이박물관, 수유실 및 완만 나선형 경사로
+      if (place.id === 'spot-108') score += 6; // 솔숲 목재 데크로드
+      if (place.id === 'spot-f1963') score += 5; // 소리길 대나무 숲 데크 및 넓은 서점
       if (place.id === 'spot-106') score += 4;
       // 좁은 골목과 인파로 유아차 통행이 불편한 전통시장
       if (place.id === 'spot-bupyeong-market') score -= 16;
@@ -121,6 +128,8 @@ export function calculateAccessibilityScore(
       if (place.id === 'spot-city-tour-bus') score += 12;
       // 신관 건물 내 물품보관함
       if (place.id === 'spot-jagalchi-rooftop') score += 5;
+      if (place.id === 'spot-104') score += 6; // 입구 안내데스크 무료 대형 물품보관함
+      if (place.id === 'spot-heosimcheong') score += 6; // 호텔 컨시어지 짐보관
       // 해변 모래사장은 캐리어 이동이 극히 불리함
       if (place.categoryKo.includes('해변')) score -= 12;
       break;
@@ -145,6 +154,9 @@ export function calculateAccessibilityScore(
 
       // 시티투어버스는 착석형 관광으로 도보 피로 최소화
       if (place.id === 'spot-city-tour-bus') score += 12;
+      if (place.id === 'spot-heosimcheong') score += 12; // 동양 최대 천연 온천 및 힐링 찜질시설
+      if (place.id === 'spot-108') score += 8; // 솔숲 피톤치드와 바다 파도 소리 여유로운 산책로
+      if (place.id === 'spot-104') score += 6; // 실내 바다 전망 휴게 라운지
       if (place.id === 'spot-106') score += 4;
       break;
     }
@@ -357,6 +369,10 @@ export function getRecommendedPlaces(
     if (types.includes('stroller') && selectedCompanions.includes('family') && place.id === 'spot-aquarium') {
       finalScore += 7;
     }
+    // 유아차/가족 동반 -> 국립해양박물관 (어린이박물관, 실내 대형 수족관, 전 층 나선형 완만 슬로프)
+    if (selectedCompanions.includes('family') && place.id === 'spot-104') {
+      finalScore += (types.includes('stroller') ? 8 : 6);
+    }
     // 연인 동반 -> 부산 엑스더스카이 전망대 (초고층 파노라마 오션뷰 야경)
     if (selectedCompanions.includes('couple') && place.id === 'spot-xthesky') {
       finalScore += 6;
@@ -364,6 +380,31 @@ export function getRecommendedPlaces(
     // 휠체어 + 첫 부산 방문 -> 해운대 해수욕장 (무단차 백사장 매트 및 해안 데크)
     if (types.includes('wheelchair') && selectedExperiences.includes('first') && place.id === 'spot-101') {
       finalScore += 5;
+    }
+    // 연인/사색 산책 -> 동백섬 해안산책로 & 누리마루 APEC하우스 (솔숲 동백꽃, 광안대교 조망, 무단차 목재 데크)
+    if ((selectedCompanions.includes('couple') || selectedCompanions.includes('solo')) && place.id === 'spot-108') {
+      finalScore += 7;
+    }
+    if (types.includes('wheelchair') && place.id === 'spot-108') {
+      finalScore += 5;
+    }
+    // 재방문 + 트렌디 문화/카페 -> F1963 복합문화공간 (테라로사 카페, 예술서점, 소리길 대나무숲)
+    if (selectedExperiences.includes('revisit') && place.id === 'spot-f1963') {
+      finalScore += 7;
+    }
+    if ((selectedCompanions.includes('couple') || selectedCompanions.includes('friends')) && place.id === 'spot-f1963') {
+      finalScore += 5;
+    }
+    // 재방문 or 친구 동반 -> 부산 영화의전당 (센텀 핫플, BIFF 영상문화, 빅루프 야경)
+    if ((selectedExperiences.includes('revisit') || selectedCompanions.includes('friends')) && place.id === 'spot-112') {
+      finalScore += 7;
+    }
+    // 어르신 or 가족 동반 온천 힐링 -> 동래 온천 허심청 (호텔농심) (동양 최대 천연 온천, 피로 회복, 엘리베이터 완비)
+    if (types.includes('senior') && place.id === 'spot-heosimcheong') {
+      finalScore += 8;
+    }
+    if (selectedCompanions.includes('family') && place.id === 'spot-heosimcheong') {
+      finalScore += 6;
     }
     // 어르신 or 무거운 짐 -> 부산 시티투어버스 (도보 피로 제로, 부산역 직결)
     if ((types.includes('senior') || types.includes('luggage')) && place.id === 'spot-city-tour-bus') {
@@ -386,19 +427,33 @@ export function getRecommendedPlaces(
       finalScore += 7;
     }
 
-    // 점수 상하한선 정규화 (최대 99점, 최소 45점)
-    finalScore = Math.min(99, Math.max(45, finalScore));
-
     const highlight = place.recommendationReasons[primaryType];
     results.push({
       place,
-      score: finalScore,
+      score: finalScore, // 정렬을 위한 원시 적합도 점수
       highlightKo: highlight ? highlight.ko : place.descriptionKo,
       highlightEn: highlight ? highlight.en : place.descriptionEn,
     });
   }
 
-  return results.sort((a, b) => b.score - a.score);
+  // 1차: 세부 매칭 및 시너지 가중치가 반영된 원시 점수 기준 내림차순 정렬
+  results.sort((a, b) => b.score - a.score);
+
+  // 2차: UI용 점수 분포 보정 (1위는 98~99점, 상위권 90점대, 하위권은 50~70점대로 자연스럽고 유려하게 차등 분포)
+  if (results.length > 0) {
+    const maxRaw = results[0].score;
+    const minRaw = results[results.length - 1].score;
+    const range = Math.max(1, maxRaw - minRaw);
+
+    results.forEach((item, idx) => {
+      const rankDeduction = idx * 1.5;
+      const scoreRatio = (maxRaw - item.score) / range;
+      const displayScore = Math.round(99 - rankDeduction - scoreRatio * 15);
+      item.score = Math.max(48, Math.min(idx === 0 ? 99 : 98, displayScore));
+    });
+  }
+
+  return results;
 }
 
 /**
