@@ -20,6 +20,8 @@ import {
   Navigation,
   Sparkles,
   Award,
+  Waves,
+  Landmark,
 } from 'lucide-react';
 import {
   TravelCourse,
@@ -35,26 +37,28 @@ import TourApiImage from './TourApiImage';
 
 function CourseStepThumbnail({ contentId, src, alt }: { contentId?: string; src?: string; alt: string }) {
   const [error, setError] = React.useState(false);
-  const initialUrl = contentId ? getPlaceImageUrl(contentId, src) : src;
+  const initialUrl = src || (contentId ? getPlaceImageUrl(contentId) : undefined);
 
   React.useEffect(() => {
     setError(false);
   }, [initialUrl]);
 
-  if (!initialUrl || error) {
-    return null;
-  }
-
   return (
-    <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 hidden sm:block">
-      <img
-        src={initialUrl}
-        alt={alt}
-        loading="lazy"
-        referrerPolicy="no-referrer"
-        onError={() => setError(true)}
-        className="w-full h-full object-cover"
-      />
+    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
+      {initialUrl && !error ? (
+        <img
+          src={initialUrl}
+          alt={alt}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          onError={() => setError(true)}
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <div className="w-full h-full flex flex-col items-center justify-center bg-slate-50 text-slate-400 p-1 text-center">
+          <MapPin className="w-5 h-5 text-[#8EA85E]" />
+        </div>
+      )}
     </div>
   );
 }
@@ -113,6 +117,7 @@ export default function BarrierFreeCourseDetailView({
       ktoDetail,
       targetId,
       contentId,
+      imageUrl: item.imageUrl,
       orderName: language === 'KR' ? item.nameKo : item.nameEn,
       note: language === 'KR' ? item.noteKo : item.noteEn,
       transitAccess: language === 'KR' ? item.transitAccessKo : item.transitAccessEn,
@@ -165,8 +170,13 @@ export default function BarrierFreeCourseDetailView({
 
           {/* 타이틀 오버레이 */}
           <div className="absolute bottom-5 left-5 right-5 text-white space-y-1">
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-snug drop-shadow-sm">
-              {language === 'KR' ? course.titleKo : course.titleEn}
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-snug drop-shadow-sm flex items-center gap-2">
+              {course.id === 'course-haeundae-ocean' ? (
+                <Waves className="w-6 h-6 sm:w-7 sm:h-7 text-amber-300 shrink-0 stroke-[2.2]" />
+              ) : (
+                <Landmark className="w-6 h-6 sm:w-7 sm:h-7 text-amber-300 shrink-0 stroke-[2.2]" />
+              )}
+              <span>{language === 'KR' ? course.titleKo : course.titleEn}</span>
             </h1>
             <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-slate-200 font-medium">
               <span className="flex items-center gap-1 font-bold text-amber-300">
@@ -224,8 +234,8 @@ export default function BarrierFreeCourseDetailView({
 
         <div className="space-y-4 relative">
           {coursePlaces.map((item, idx) => {
-            const { place, ktoDetail, targetId, contentId, orderName, note, transitAccess, transitRoutes } = item;
-            const placeImage = ktoDetail?.firstImage || place?.image || '';
+            const { place, ktoDetail, targetId, contentId, imageUrl, orderName, note, transitAccess, transitRoutes } = item;
+            const placeImage = ktoDetail?.firstImage || imageUrl || place?.image || '';
             const stationGuide = ktoDetail?.nearestStationNameKo || place?.transit?.subway?.stationNameKo;
 
             return (

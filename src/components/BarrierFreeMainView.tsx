@@ -24,6 +24,8 @@ import {
   AlertCircle,
   CheckCircle2,
   Accessibility,
+  Waves,
+  Landmark,
 } from 'lucide-react';
 import {
   searchTourApiSpots,
@@ -273,8 +275,13 @@ export default function BarrierFreeMainView({
               >
                 <div className="space-y-2">
                   {/* 코스 타이틀 */}
-                  <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug">
-                    {language === 'KR' ? course.titleKo : course.titleEn}
+                  <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug flex items-center gap-1.5">
+                    {course.id === 'course-haeundae-ocean' ? (
+                      <Waves className="w-4 h-4 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+                    ) : (
+                      <Landmark className="w-4 h-4 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+                    )}
+                    <span>{language === 'KR' ? course.titleKo : course.titleEn}</span>
                   </h3>
 
                   {/* 소요 시간 & 이동 거리 */}

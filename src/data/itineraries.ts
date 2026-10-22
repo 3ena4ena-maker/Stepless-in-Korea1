@@ -2406,7 +2406,7 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         regionNameEn: 'Gwangalli & Centum',
         categoryType: 'CULTURE',
         time: '영화도서관',
-        contentId: '126085',
+        contentId: '2456837',
         firstImage: 'https://tong.visitkorea.or.kr/cms/resource/52/3035052_image2_1.jpg',
         titleKo: '영화의전당 라이브러리',
         titleEn: 'Busan Cinema Center Library',

@@ -1539,7 +1539,7 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
   // 12. 부산 영화의전당 (BIFF)
   'spot-112': {
     id: 'spot-112',
-    contentId: '126085',
+    contentId: '2456837',
     nameKo: '부산 영화의전당',
     nameEn: 'Busan Cinema Center',
     categoryKo: '문화시설',
@@ -4564,6 +4564,7 @@ export function getKoreaTourApiPlaceDetail(targetId: string): OpenApiPlaceDetail
   if (!targetId) return null;
   const decoded = decodeURIComponent(targetId).trim();
   const normId = decoded.toLowerCase();
+  const normClean = normId.replace(/[\s_\-·~()&/]+/g, '');
 
   // 1. 직접 ID 일치
   if (KOREA_TOUR_API_PLACE_DETAILS[normId]) {
@@ -4574,15 +4575,39 @@ export function getKoreaTourApiPlaceDetail(targetId: string): OpenApiPlaceDetail
   if (normId === 'spot-gwanganli' || normId === 'gwanganli') {
     return KOREA_TOUR_API_PLACE_DETAILS['spot-111'] || null;
   }
-  if (normId === 'spot-centum' || normId === 'centum') {
-    return KOREA_TOUR_API_PLACE_DETAILS['spot-103'] || null;
+  if (
+    normId === 'spot-centum' ||
+    normId === 'centum' ||
+    normId === 'spot-shinsegae-centum' ||
+    normId === 'shinsegae-centum' ||
+    normId === '1016443'
+  ) {
+    return KOREA_TOUR_API_PLACE_DETAILS['spot-shinsegae-centum'] || null;
+  }
+  if (
+    normId === 'spot-gukje-market' ||
+    normId === 'gukje-market' ||
+    normId === 'spot-gukje' ||
+    normId === 'gukje' ||
+    normId === '1013716'
+  ) {
+    return KOREA_TOUR_API_PLACE_DETAILS['spot-gukje-market'] || null;
   }
   if (normId === 'spot-biff' || normId === 'biff') {
     return KOREA_TOUR_API_PLACE_DETAILS['spot-biff'] || null;
   }
+  if (
+    normId === 'spot-112' ||
+    normId === '2456837' ||
+    normId === 'spot-cinema-center' ||
+    normId === 'cinema-center' ||
+    normClean.includes('영화의전당') ||
+    normClean.includes('cinemacenter')
+  ) {
+    return KOREA_TOUR_API_PLACE_DETAILS['spot-112'] || null;
+  }
 
   // 2. contentId 또는 별칭 검색 (공백 및 특수기호 차이를 완전 허용하여 100% 매칭)
-  const normClean = normId.replace(/[\s_\-·~()&/]+/g, '');
   const values = Object.values(KOREA_TOUR_API_PLACE_DETAILS);
   const found = values.find(
     (item) => {

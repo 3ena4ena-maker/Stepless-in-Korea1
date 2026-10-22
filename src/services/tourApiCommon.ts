@@ -66,7 +66,7 @@ export function matchTourApiSpotId(titleOrText: string): string | null {
   if (clean.includes('비프광장') || clean.includes('biff광장')) {
     return 'spot-biff';
   }
-  if (clean.includes('영화의전당')) {
+  if (clean.includes('영화의전당') || clean.includes('cinemacenter')) {
     return 'spot-112';
   }
   if (clean.includes('과학관') || clean.includes('부산과학관')) {

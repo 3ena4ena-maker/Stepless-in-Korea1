@@ -462,8 +462,15 @@ export function getRecommendedPlaces(
 export function getPlaceImageUrl(contentIdOrName: string, fallbackUrl?: string): string {
   if (!contentIdOrName) return fallbackUrl || '';
 
-  // 1. BARRIER_FREE_PLACES에서 contentId, id, 또는 장소명(공백 및 특수기호 100% 무관 정규화) 매칭
   const cleanKey = contentIdOrName.toLowerCase().replace(/[\s_\-·~()&/]+/g, '');
+
+  // 1. 한국관광공사 TourAPI 공공데이터/OpenAPI 상세 데이터셋에서 먼저 조회 (최우선 공식 이미지)
+  const detail = getKoreaTourApiPlaceDetail(contentIdOrName) || getKoreaTourApiPlaceDetail(cleanKey);
+  if (detail && detail.firstImage) {
+    return detail.firstImage;
+  }
+
+  // 2. BARRIER_FREE_PLACES에서 contentId, id, 또는 장소명(공백 및 특수기호 100% 무관 정규화) 매칭
   const found = BARRIER_FREE_PLACES.find((p) => {
     const pCleanKo = (p.nameKo || p.name || '').toLowerCase().replace(/[\s_\-·~()&/]+/g, '');
     const pCleanEn = (p.nameEn || '').toLowerCase().replace(/[\s_\-·~()&/]+/g, '');
@@ -476,12 +483,6 @@ export function getPlaceImageUrl(contentIdOrName: string, fallbackUrl?: string):
   });
   if (found && found.image) {
     return found.image;
-  }
-
-  // 2. 한국관광공사 TourAPI 공공데이터/OpenAPI 상세 데이터셋(공백 무시 지원)에서 조회
-  const detail = getKoreaTourApiPlaceDetail(contentIdOrName) || getKoreaTourApiPlaceDetail(cleanKey);
-  if (detail && detail.firstImage) {
-    return detail.firstImage;
   }
 
   return fallbackUrl || '';
