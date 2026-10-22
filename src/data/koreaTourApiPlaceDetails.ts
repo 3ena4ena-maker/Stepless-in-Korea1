@@ -1082,7 +1082,7 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
     categoryEn: 'Transit/Tour',
     districtKo: '동구',
     districtEn: 'Dong-gu',
-    firstImage: '',
+    firstImage: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80',
     additionalImages: [],
     addressRoadKo: '부산광역시 동구 중앙대로 206 KTX 부산역 광장 시티투어 승차장',
     addressRoadEn: 'KTX Busan Station Plaza, 206 Jungang-daero, Dong-gu, Busan',

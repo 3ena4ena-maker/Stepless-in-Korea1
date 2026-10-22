@@ -168,6 +168,8 @@ export const KNOWN_COORDINATES: Record<string, { lat: number; lng: number; addre
   '임시수도기념관': { lat: 35.1052, lng: 129.0185, addressKo: '부산광역시 서구 임시수도기념로 45', categoryKo: '역사관' },
   '보수동책방골목': { lat: 35.1035, lng: 129.0255, addressKo: '부산광역시 중구 대청로 67-1', categoryKo: '문화거리' },
   '화명생태공원': { lat: 35.2285, lng: 129.0041, addressKo: '부산광역시 북구 화명동 1718-17', categoryKo: '생태공원' },
+  '부산 시티투어버스 (BUTI 순환형 코스)': { lat: 35.1152, lng: 129.0422, addressKo: '부산광역시 동구 중앙대로 206 KTX 부산역 광장', categoryKo: '체험/투어' },
+  '부산 시티투어버스': { lat: 35.1152, lng: 129.0422, addressKo: '부산광역시 동구 중앙대로 206 KTX 부산역 광장', categoryKo: '체험/투어' },
   '송도해상케이블카': { lat: 35.0760, lng: 129.0195, addressKo: '부산광역시 서구 송도해변로 171', categoryKo: '체험/관광' },
   '오륙도': { lat: 35.1275, lng: 129.1235, addressKo: '부산광역시 남구 오륙도로 137', categoryKo: '자연/명소' },
   '오륙도스카이워크': { lat: 35.1275, lng: 129.1235, addressKo: '부산광역시 남구 오륙도로 137', categoryKo: '자연/명소' },

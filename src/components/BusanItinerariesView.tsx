@@ -14,6 +14,7 @@ import {
   HelpCircle, 
   Compass, 
   ExternalLink,
+  Bus,
   MapPin,
   Map,
   Train,
@@ -4486,6 +4487,53 @@ case 'EXPERIENCE': {
                                 <p className="text-xs text-[#4A5568] font-normal leading-relaxed text-left">
                                   {language === 'KR' ? step.descKo : step.descEn}
                                 </p>
+
+                                {step.cityTourInfo && (
+                                  <div className="bg-[#F8FAFC] p-3 rounded-lg border border-slate-200/80 space-y-2 text-left mt-2">
+                                    <div className="flex items-center justify-between gap-1 border-b border-slate-200/60 pb-1.5">
+                                      <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+                                        <Bus className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
+                                        <span>{language === 'KR' ? '순환형 3개 노선 안내' : '3 Loop Lines Guide'}</span>
+                                      </div>
+                                      <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded">
+                                        {language === 'KR' ? step.cityTourInfo.closedDaysKo : step.cityTourInfo.closedDaysEn}
+                                      </span>
+                                    </div>
+
+                                    {/* 3개 노선 리스트 */}
+                                    <div className="space-y-1.5 text-xs">
+                                      {step.cityTourInfo.routes?.map((rt, rIdx) => (
+                                        <div key={rIdx} className="flex items-start gap-1.5 text-[11px] leading-tight">
+                                          <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0 border ${rt.badgeColor || 'bg-slate-100 text-slate-700'}`}>
+                                            {language === 'KR' ? rt.nameKo : rt.nameEn}
+                                          </span>
+                                          <span className="text-slate-700 font-medium pt-0.5">
+                                            {language === 'KR' ? rt.routeKo : rt.routeEn}
+                                          </span>
+                                        </div>
+                                      ))}
+                                    </div>
+
+                                    {/* 안내 팁 & 공식 홈페이지 링크 */}
+                                    <div className="pt-1.5 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-2">
+                                      <p className="text-[10.5px] font-semibold text-emerald-700">
+                                        💡 {language === 'KR' ? step.cityTourInfo.bookingTipKo : step.cityTourInfo.bookingTipEn}
+                                      </p>
+                                      {step.cityTourInfo.websiteUrl && (
+                                        <a
+                                          href={step.cityTourInfo.websiteUrl}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          onClick={(e) => e.stopPropagation()}
+                                          className="inline-flex items-center gap-1 text-[11px] font-bold text-[#8EA85E] hover:text-[#748c48] underline underline-offset-2 ml-auto cursor-pointer"
+                                        >
+                                          <span>{language === 'KR' ? '공식 예매 및 노선안내' : 'Official Booking & Info'}</span>
+                                          <ExternalLink className="w-3 h-3" />
+                                        </a>
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
                               </div>
 
                               {/* Bottom Transit & Station Info (Clean Address & Square Map Buttons) */}

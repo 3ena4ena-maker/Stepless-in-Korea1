@@ -62,6 +62,21 @@ export interface ItineraryStep {
     naverMapUrl?: string;
     googleMapUrl?: string;
   }[];
+  cityTourInfo?: {
+    websiteUrl?: string;
+    closedDaysKo?: string;
+    closedDaysEn?: string;
+    bookingTipKo?: string;
+    bookingTipEn?: string;
+    routes?: {
+      nameKo: string;
+      nameEn?: string;
+      badgeColor?: string;
+      dotColor?: string;
+      routeKo: string;
+      routeEn?: string;
+    }[];
+  };
 }
 
 export interface ItineraryBranch {
@@ -2300,6 +2315,57 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
     overallTipKo: '부산의 대표 박물관, 미술관, 복합문화공간을 편리하게 둘러보실 수 있도록 테마별로 정리했습니다. 부산119안전체험관, 어린이창의교육관 등 일부 체험 시설은 안전 관리와 원활한 운영을 위해 사전 예약이 반드시 필요한 곳들도 있으니, 방문 전 공식 홈페이지를 통해 미리 예약하고 방문하시길 권장합니다.',
     overallTipEn: 'Busan major museums, art galleries, and experiential cultural spaces are categorized by theme for your convenience. Please note that certain interactive facilities (such as the Busan 119 Safety Experience Center and Children Creative Education Center) strictly require advance online reservations for safety and entry. Be sure to check and book in advance before your visit.',
     steps: [
+      {
+        id: 'experience-busan-city-tour-bus',
+        contentId: 'tour-citybus-105',
+        regionId: 'others',
+        regionNameKo: '부산역 · 시티투어',
+        regionNameEn: 'Busan Station & City Tour',
+        categoryType: 'WORKSHOP',
+        time: '시티투어',
+        titleKo: '부산 시티투어버스 (BUTI 순환형 코스)',
+        titleEn: 'Busan City Tour Bus (BUTI Loop Route)',
+        isFree: false,
+        descKo: '부산의 주요 관광 명소를 당일권 티켓 1장으로 자유롭게 승하차하며 즐길 수 있는 부산 대표 시티투어입니다. 레드라인(부산역↔해운대), 그린라인(부산역↔태종대), 오렌지라인(부산역↔다대포)의 3가지 순환 노선을 모두 이용할 수 있습니다. 매주 월요일과 화요일은 정기 휴무이며, 조기 매진 방지를 위해 공식 홈페이지에서 미리 예매하시는 것을 추천합니다.',
+        descEn: 'Busan premier hop-on hop-off sightseeing tour connecting key landmarks with a single 1-day pass. Freely transfer across 3 loop lines: Red Line (Busan Station ↔ Haeundae), Green Line (Busan Station ↔ Taejongdae), and Orange Line (Busan Station ↔ Dadaepo). Closed every Monday & Tuesday. Advance booking via the official website is highly recommended.',
+        firstImage: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80',
+        icon: 'Bus',
+        stationInfoKo: '부산 동구 중앙대로 206 (KTX 부산역 1층 광장 시티투어 전용 승강장)',
+        stationInfoEn: '206 Jungang-daero, Dong-gu, Busan (KTX Busan Station 1F Plaza City Tour Bus Stop)',
+        cityTourInfo: {
+          websiteUrl: 'https://www.citytourbusan.com/ko/02course/01.php',
+          closedDaysKo: '매주 월요일, 화요일 휴무',
+          closedDaysEn: 'Closed every Monday & Tuesday',
+          bookingTipKo: '당일권 1장으로 3개 노선 환승 가능 · 조기 매진 방지를 위해 사전 예매 추천!',
+          bookingTipEn: '1 ticket for all 3 lines · Advance booking recommended!',
+          routes: [
+            {
+              nameKo: '레드라인 (RED)',
+              nameEn: 'Red Line',
+              badgeColor: 'bg-red-50 text-red-700 border-red-200',
+              dotColor: 'bg-red-500',
+              routeKo: '부산역 ↔ 해운대 (광안리, 마린시티, 동백섬, 벡스코, 평화공원)',
+              routeEn: 'Busan Station ↔ Haeundae (Gwangalli, Marine City, Centum)'
+            },
+            {
+              nameKo: '그린라인 (GREEN)',
+              nameEn: 'Green Line',
+              badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+              dotColor: 'bg-emerald-500',
+              routeKo: '부산역 ↔ 태종대 (흰여울문화마을, 국립해양박물관, 오륙도)',
+              routeEn: 'Busan Station ↔ Taejongdae (Huinnyeoul, Maritime Museum, Oryukdo)'
+            },
+            {
+              nameKo: '오렌지라인 (ORANGE)',
+              nameEn: 'Orange Line',
+              badgeColor: 'bg-orange-50 text-orange-700 border-orange-200',
+              dotColor: 'bg-orange-500',
+              routeKo: '부산역 ↔ 다대포 (송도해수욕장, 암남공원, 다대포해수욕장, 감천문화마을)',
+              routeEn: 'Busan Station ↔ Dadaepo (Songdo, Amnam Park, Dadaepo, Gamcheon)'
+            }
+          ]
+        }
+      },
       {
         regionId: 'haeundae_gijang',
         regionNameKo: '해운대 · 기장',
