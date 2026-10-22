@@ -833,8 +833,8 @@ export const TOUR_TRAVEL_GUIDE_DATA: Record<string, TourTravelGuideItem> = {
         spotNameEn: 'Yurari Plaza & Yeongdo Bridge Opening',
         distanceTextKo: '도보 3분 (자갈치시장 바로 옆 해안 데크)',
         distanceTextEn: '3 mins flat walk along adjacent seaside terrace',
-        whyPairKo: '자갈치시장 건물 바로 옆 유라리광장은 바다와 맞닿은 완전 평지 광장으로, 매일 오후 2시 펼쳐지는 영도대교 도개 행사를 휠체어와 유모차도 가장 편안하게 관람할 수 있습니다.',
-        whyPairEn: 'Flat seaside plaza right next to Jagalchi, perfect for watching the daily 2 PM Yeongdo Bridge lift.'
+        whyPairKo: '자갈치시장 건물 바로 옆 유라리광장은 바다와 맞닿은 완전 평지 광장으로, 매주 토요일 오후 2시(토요일만 도개) 펼쳐지는 영도대교 도개 행사를 휠체어와 유모차도 가장 편안하게 관람할 수 있습니다.',
+        whyPairEn: 'Flat seaside plaza right next to Jagalchi, perfect for watching the Yeongdo Bridge lift held only on Saturdays at 2 PM.'
       }
     ]
   },

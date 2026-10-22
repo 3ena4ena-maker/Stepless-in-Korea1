@@ -3026,8 +3026,8 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         titleEn: 'Yeongdodaegyo Bridge',
         descKo: '1934년 개통된 대한민국 최초의 연륙교이자 도개교(단애식 도개식 다리)로, 웅장한 다리 상판이 번쩍 들리는 역사적인 도개 행사가 유명합니다. 자갈치시장과 유라리광장에서 넓고 평탄한 수변 데크를 따라 가까이서 조망할 수 있습니다.',
         descEn: 'Korea first drawbridge opened in 1934 connecting Jung-gu to Yeongdo Island. Visitors can watch the iconic bridge-lifting ceremony from the spacious step-free Yurari Plaza.',
-        tipKo: '남포역 8·10번 엘리베이터로 나와 유라리광장 평탄 보행로를 이용하면 다리 전경과 도개를 가장 편하게 볼 수 있습니다.',
-        tipEn: 'Exit via Nampo Station elevator (Exit 8/10) to the flat waterfront promenade at Yurari Plaza for easy viewing.',
+        tipKo: '영도대교 도개 행사는 매주 토요일 오후 2시(14:00~14:15, 15분간)에만 진행됩니다(평일·일요일 도개 없음). 남포역 8·10번 엘리베이터로 나와 유라리광장 평탄 수변 보행로를 이용하시면 휠체어나 유아차도 계단 없이 다리 전경과 도개를 가장 편하게 감상할 수 있습니다.',
+        tipEn: 'The Yeongdodaegyo bridge-lifting ceremony takes place only on Saturdays at 2:00 PM (14:00 - 14:15, for 15 mins; no lifting on weekdays or Sundays). Take Nampo Station Exit 8/10 elevator to Yurari Plaza flat promenade for the best step-free viewing.',
         icon: 'Waves',
         stationInfoKo: '부산 영도구 태종로 14',
         stationInfoEn: '14 Taejong-ro, Yeongdo-gu, Busan'

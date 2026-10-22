@@ -1191,7 +1191,7 @@ export const STATION_CURATIONS: Record<string, StationCurationData> = {
       {
         name: '🌉 영도대교 (도개 행사 관람)',
         tag: '도보 3분 · 4번 출구 엘리베이터 / 8번 출구',
-        whyVisit: '매주 토요일 오후 다리가 들어올려지는 장관을 감상할 수 있는 부산 유일의 도개교입니다.',
+        whyVisit: '매주 토요일 오후 2시(14:00~14:15)에만 다리가 들어올려지는 장관을 감상할 수 있는 부산 유일의 도개교입니다 (평일·일요일 도개 없음).',
         exitInfo: '4번 출구 엘리베이터'
       },
       {

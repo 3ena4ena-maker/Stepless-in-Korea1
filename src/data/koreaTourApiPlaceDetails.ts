@@ -3792,8 +3792,8 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
     recommendedExit: '남포역 8번 또는 10번 출구 (유라리광장 방면)',
     walkingDistanceMeters: 120,
     walkingTimeMinutes: 2,
-    transitTipKo: '지하철 1호선 남포역 8번 또는 10번 출구 엘리베이터를 이용하시면 단차 없이 바로 유라리광장 수변 데크로 연결되어 휠체어와 유아차 모두 안전하고 쾌적하게 영도대교 전경을 감상할 수 있습니다.',
-    transitTipEn: 'Take the elevator at Nampo Station Exit 8 or 10 for direct, step-free access to Yurari Plaza waterfront deck with great open views of the bridge.',
+    transitTipKo: '영도대교 도개 행사는 매주 토요일 오후 2시(14:00~14:15, 15분간)에만 진행됩니다(평일·일요일 도개 없음). 지하철 1호선 남포역 8번 또는 10번 출구 엘리베이터를 이용하시면 단차 없이 바로 유라리광장 수변 데크로 연결되어 휠체어와 유아차 모두 안전하고 쾌적하게 영도대교 전경과 도개 행사를 감상할 수 있습니다.',
+    transitTipEn: 'The Yeongdodaegyo bridge-lifting ceremony takes place only on Saturdays at 2:00 PM (14:00 - 14:15, for 15 mins; no lifting on weekdays or Sundays). Take the elevator at Nampo Station Exit 8 or 10 for direct, step-free access to Yurari Plaza waterfront deck.',
     apiSource: '한국관광공사 공공데이터포털 KorWithService2 무장애 관광정보',
     modifiedTime: '2026-06-15',
     barrierFree: {
