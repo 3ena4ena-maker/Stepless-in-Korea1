@@ -45,6 +45,10 @@ export function romanizeKoreanWord(word: string): string {
 
 // Full dictionary of common travel/eating words to translate traveler tips
 const TRAVEL_WORDS_MAP: Record<string, string> = {
+  '옥생관': 'Oksaenggwan',
+  '바람': 'Wish (Baram)',
+  '탕수육': 'Tangsuyuk (Sweet & Sour Pork)',
+  '간짜장': 'Ganjajang',
   '안목': 'Anmok',
   '안목 돼지국밥': 'Anmok Pork Soup',
   '안목 수영본점': 'Anmok Suyeong Main Branch',

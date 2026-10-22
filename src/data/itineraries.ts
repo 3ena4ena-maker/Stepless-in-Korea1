@@ -99,7 +99,7 @@ export function getStepFoodCategories(step: ItineraryStep): string[] {
   }
   const cats: string[] = [];
   const title = step.titleKo || '';
-  if (title.includes('모모스') || title === '이재모피자' || title.includes('톤쇼우') || title.includes('옵스') || title.includes('안목')) {
+  if (title.includes('모모스') || title === '이재모피자' || title.includes('톤쇼우') || title.includes('옵스') || title.includes('안목') || title.includes('옥생관')) {
     cats.push('famous');
   }
   if (step.foodCategory === 'restaurant') cats.push('restaurant');
@@ -1376,6 +1376,25 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
             googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EA%B8%88%EC%88%98%EB%B3%B5%EA%B5%AD%20%EC%84%BC%ED%85%80%EC%A0%90'
           }
         ]
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 대표 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'restaurant',
+        time: '중식당',
+        foodCategories: ["famous", "restaurant"],
+        titleKo: '옥생관',
+        titleEn: 'Oksaenggwan Chinese Restaurant',
+        descKo: '1951년 개업해 70년 넘는 전통을 이어온 부평동 대표 노포 중식당으로, 영화 《바람》의 명장면 촬영지이자 바삭한 탕수육과 불향 가득한 간짜장이 일품입니다.',
+        descEn: '🥢 Legendary 1951 Chinese heritage restaurant in Bupyeong-dong, iconic filming location of the movie <Wish (Baram)>, famous for traditional crispy sweet and sour pork and rich ganjajang.',
+        icon: 'Food',
+        stationInfoKo: '부산 중구 대청로 66 (지하철 1호선 자갈치역 7번 출구 도보 8분 / 보수동 책방골목 맞은편)',
+        stationInfoEn: '66 Daecheong-ro, Jung-gu, Busan (Subway Line 1 Jagalchi Station Exit 7, 8 mins walk)',
+        addressRoadKo: '부산광역시 중구 대청로 66 (부평동1가)',
+        addressRoadEn: '66 Daecheong-ro, Jung-gu, Busan',
+        naverMapUrl: 'https://map.naver.com/v5/search/%EB%B6%80%ED%8F%89%EB%8F%99%20%EC%98%A5%EC%83%9D%EA%B4%80',
+        googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%98%A5%EC%83%9D%EA%B4%80%20%EB%B6%80%EC%82%B0',
       },
       {
         regionId: 'seomyeon_jeonpo',

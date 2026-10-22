@@ -4315,6 +4315,75 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
       }
     }
   },
+  'spot-oksaenggwan': {
+    id: 'spot-oksaenggwan',
+    contentId: 'oksaenggwan-busan',
+    nameKo: '옥생관 (부평동 중식 노포)',
+    nameEn: 'Oksaenggwan Chinese Heritage Restaurant',
+    categoryKo: '식도락/맛집',
+    categoryEn: 'Gourmet Restaurant',
+    districtKo: '중구',
+    districtEn: 'Jung-gu',
+    firstImage: 'https://tong.visitkorea.or.kr/cms/resource/35/3499335_image2_1.jpg',
+    additionalImages: [],
+    addressRoadKo: '부산광역시 중구 대청로 66',
+    addressRoadEn: '66 Daecheong-ro, Jung-gu, Busan',
+    addressLotKo: '부산광역시 중구 부평동1가 2-25',
+    addressLotEn: '2-25 Bupyeong-dong 1-ga, Jung-gu, Busan',
+    zipcode: '48979',
+    latitude: 35.1028,
+    longitude: 129.0270,
+    tel: '051-245-8890',
+    telDescKo: '옥생관 고객센터',
+    overviewKo: '1951년 개업하여 70년 넘는 전통을 이어온 부산 중구 부평동의 대표적인 화상(華商) 중식 노포입니다. 영화 《바람》의 명장면 촬영지로 널리 알려져 있으며, SBS 《생활의 달인》에 탕수육·간짜장 달인으로 소개되었습니다. 두툼한 고기에 바삭하고 쫄깃한 튀김옷과 맑고 새콤달콤한 소스가 어우러진 옛날식 탕수육, 불향과 달걀프라이가 올라간 간짜장이 대표 시그니처 메뉴입니다.',
+    overviewEn: 'Established in 1951 with over 70 years of history, Oksaenggwan is an iconic Chinese heritage restaurant in Bupyeong-dong, Busan. Famous as the memorable filming location of the acclaimed Korean movie <Wish (Baram)> and featured on Master of Living for its traditional crispy sweet-and-sour pork (Tangsuyuk) and fragrant stir-fried black bean sauce noodles (Ganjajang) topped with a fried egg.',
+    useTimeKo: '11:30 ~ 20:50 (브레이크타임 14:20 ~ 16:00 변동 가능)',
+    useTimeEn: '11:30 - 20:50 (Break time 14:20 - 16:00)',
+    restDateKo: '매주 화요일 정기휴무',
+    restDateEn: 'Closed every Tuesday',
+    feeKo: '탕수육, 간짜장, 짬뽕 등 단품',
+    feeEn: 'Tangsuyuk, Ganjajang, Jjamppong dishes',
+    homepage: 'https://map.naver.com/v5/search/%EB%B6%80%ED%8F%89%EB%8F%99%20%EC%98%A5%EC%83%9D%EA%B4%80',
+    subwayLine: '1호선',
+    nearestStationNameKo: '자갈치역 (1호선)',
+    nearestStationNameEn: 'Jagalchi Station (Line 1)',
+    recommendedExit: '7번 출구 / 3번 출구 엘리베이터',
+    walkingDistanceMeters: 550,
+    walkingTimeMinutes: 8,
+    transitTipKo: '지하철 1호선 자갈치역 7번 출구(또는 3번 출구 엘리베이터)로 나와 부평깡통시장 및 보수동 책방골목 방면 평탄 보도를 따라 도보 약 8분 이동하시면 대로변에 위치해 있습니다.',
+    transitTipEn: 'From Line 1 Jagalchi Station Exit 7 (or Exit 3 elevator), walk approx. 8 mins along the flat sidewalk toward Bupyeong Kkangtong Market and Bosu-dong Book Street.',
+    apiSource: '한국관광공사 TourAPI 연계 데이터',
+    modifiedTime: new Date().toISOString(),
+    barrierFree: {
+      wheelchair: {
+        available: true,
+        titleKo: '1층 평탄 진입로',
+        titleEn: 'Ground Floor Level Entrance',
+        descKo: '대로변 1층에 위치하여 휠체어 및 유아차 접근이 수월하며 진입로 턱이 낮습니다.',
+        descEn: 'Located on 1F along the street with low-threshold level sidewalk entrance.',
+        icon: '♿',
+        tag: '1층 평탄 진입'
+      },
+      elevator: {
+        available: true,
+        titleKo: '자갈치역 교통약자 엘리베이터 연계',
+        titleEn: 'Jagalchi Station Elevator Connection',
+        descKo: '1호선 자갈치역 3번·7번 출구 방면 외부 엘리베이터를 통해 지상으로 계단 없이 이동할 수 있습니다.',
+        descEn: 'Step-free access from Line 1 Jagalchi Station Exit 3 elevator to ground street.',
+        icon: '🛗',
+        tag: '지하철 EV 연계'
+      },
+      restroom: {
+        available: true,
+        titleKo: '매장 내 화장실',
+        titleEn: 'Interior Restroom',
+        descKo: '매장 내부 화장실 완비',
+        descEn: 'Clean restroom facilities inside the restaurant.',
+        icon: '🚻',
+        tag: '내부 화장실'
+      }
+    }
+  },
 };
 
 /**

@@ -135,6 +135,8 @@ export const KNOWN_COORDINATES: Record<string, { lat: number; lng: number; addre
   '안목 수영본점': { lat: 35.1458, lng: 129.1105, addressKo: '부산광역시 수영구 광남로22번길 3', categoryKo: '식도락/맛집' },
   '안목 부산역점': { lat: 35.1147, lng: 129.0414, addressKo: '부산광역시 동구 중앙대로214번길 7-1', categoryKo: '식도락/맛집' },
   '안목 서면점': { lat: 35.1572, lng: 129.0645, addressKo: '부산광역시 부산진구 서전로38번길 62', categoryKo: '식도락/맛집' },
+  '옥생관': { lat: 35.1028, lng: 129.0270, addressKo: '부산광역시 중구 대청로 66', categoryKo: '식도락/맛집' },
+  '부평동 옥생관': { lat: 35.1028, lng: 129.0270, addressKo: '부산광역시 중구 대청로 66', categoryKo: '식도락/맛집' },
   '금수복국': { lat: 35.1618, lng: 129.1642, addressKo: '부산광역시 해운대구 중동2로10번길 23', categoryKo: '식도락/맛집' },
   '원조할매낙지': { lat: 35.1415, lng: 129.0601, addressKo: '부산광역시 부산진구 골드테마길 12', categoryKo: '식도락/맛집' },
   '새벽숯불가든': { lat: 35.1868, lng: 129.0825, addressKo: '부산광역시 연제구 고분로31번길 7', categoryKo: '식도락/맛집' },

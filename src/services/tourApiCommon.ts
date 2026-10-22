@@ -177,6 +177,9 @@ export function matchTourApiSpotId(titleOrText: string): string | null {
   if (clean.includes('안목') || clean.includes('anmok')) {
     return 'spot-anmok';
   }
+  if (clean.includes('옥생관') || clean.includes('oksaenggwan')) {
+    return 'spot-oksaenggwan';
+  }
   if (clean.includes('금수복국')) {
     return 'spot-gumsubokguk';
   }
