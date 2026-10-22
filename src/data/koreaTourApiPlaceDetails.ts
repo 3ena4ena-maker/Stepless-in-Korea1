@@ -92,6 +92,86 @@ export interface OpenApiPlaceDetail {
 }
 
 export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = {
+  'spot-hwamyeong-ecopark': {
+    id: 'spot-hwamyeong-ecopark',
+    contentId: '2488018',
+    nameKo: '화명생태공원',
+    nameEn: 'Hwamyeong Ecological Park',
+    categoryKo: '자연/생태공원',
+    categoryEn: 'Ecological Park',
+    districtKo: '북구',
+    districtEn: 'Buk-gu',
+    firstImage: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=54c84f31-742f-46f5-b0a8-ace5b3d853e6',
+    additionalImages: [
+      'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=1c0b89ca-0d16-4816-975d-ddb7119eb039'
+    ],
+    addressRoadKo: '부산광역시 북구 강변대로 1629 (화명동)',
+    addressRoadEn: '1629 Gangbyeon-daero, Buk-gu, Busan',
+    addressLotKo: '부산광역시 북구 화명동 1718-17',
+    addressLotEn: '1718-17 Hwamyeong-dong, Buk-gu, Busan',
+    zipcode: '46522',
+    latitude: 35.2285,
+    longitude: 129.0041,
+    tel: '051-364-4127',
+    telDescKo: '화명생태공원 관리사무소',
+    overviewKo: '낙동강 좌안 둔치를 따라 넓게 펼쳐진 친환경 도심 수변 생태공원입니다. 계절마다 피어나는 야생화 단지와 연꽃습지, 수생식물원, 메타세쿼이아 산책로가 턱 없는 평탄로와 목재 데크로 완만하게 이어져 휠체어와 유아차도 막힘없이 자연을 즐길 수 있습니다.',
+    overviewEn: 'A vast riverside eco park along the Nakdong River featuring flat wooden boardwalks, seasonal flower gardens, lotus wetlands, and scenic metasequoia trails, offering step-free access for wheelchairs and strollers.',
+    useTimeKo: '06:00 ~ 21:00 (연중무휴)',
+    useTimeEn: '06:00 - 21:00 (Open all year round)',
+    restDateKo: '연중무휴',
+    restDateEn: 'Open year-round',
+    feeKo: '무료 입장',
+    feeEn: 'Free admission',
+    subwayLine: '2호선',
+    nearestStationNameKo: '2호선 화명역 2번 출구',
+    nearestStationNameEn: 'Hwamyeong Station (Line 2) Exit 2',
+    recommendedExit: '화명역 2번 출구 엘리베이터 (도보 7분)',
+    walkingDistanceMeters: 450,
+    walkingTimeMinutes: 7,
+    transitTipKo: '지하철 2호선 화명역 2번 출구 엘리베이터를 이용해 지상으로 나온 뒤 강변 방면으로 도보 7분 평지 이동하시면 완만한 경사로와 목재 데크로 연결됩니다.',
+    transitTipEn: 'Take elevator from Line 2 Hwamyeong Station Exit 2 and walk 7 minutes towards the riverside along level pavements to the gentle entry ramp.',
+    barrierFree: {
+      entrance: {
+        available: true,
+        titleKo: '무단차 진입로 & 완만 경사로',
+        titleEn: 'Step-free entrance & gentle ramps',
+        descKo: '공원 진입로 전체가 계단 없는 평탄로 및 완만한 목재 램프로 연결되어 있습니다.',
+        descEn: 'All main entry points feature step-free level paths and gentle wooden boardwalk ramps.',
+        icon: '♿',
+        tag: '무단차 진입'
+      },
+      elevator: {
+        available: true,
+        titleKo: '지하철역 연계 승강기',
+        titleEn: 'Station connecting elevator',
+        descKo: '화명역 2번 출구 지상 수직 엘리베이터로 휠체어와 유아차가 편리하게 이동 가능합니다.',
+        descEn: 'Direct elevator available at Hwamyeong Station Exit 2 for wheelchairs and strollers.',
+        icon: '🛗',
+        tag: '역사 엘리베이터'
+      },
+      restroom: {
+        available: true,
+        titleKo: '장애인 공중화장실 구비',
+        titleEn: 'Accessible public restrooms',
+        descKo: '생태공원 관리사무소 및 체육공원 구역에 휠체어 진입 가능한 무장애 화장실이 마련되어 있습니다.',
+        descEn: 'Accessible restrooms available near management office and main plazas.',
+        icon: '🚻',
+        tag: '장애인 화장실'
+      },
+      parking: {
+        available: true,
+        titleKo: '넓은 장애인 전용 주차구역',
+        titleEn: 'Accessible parking lot',
+        descKo: '공원 진입 주차장 곳곳에 전용 주차구역이 넉넉하게 설치되어 있습니다.',
+        descEn: 'Spacious accessible parking lots available near each park sector.',
+        icon: '🅿️',
+        tag: '전용 주차장'
+      }
+    },
+    apiSource: '한국관광공사 TourAPI 공공데이터',
+    modifiedTime: new Date().toISOString()
+  },
+
   // 허심청 (호텔농심)
   'spot-heosimcheong': {
     id: 'spot-heosimcheong',

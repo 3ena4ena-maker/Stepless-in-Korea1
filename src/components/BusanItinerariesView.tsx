@@ -725,9 +725,27 @@ const REGION_RECOMMENDATIONS: RegionDetail[] = [
     nameEn: 'Line 2 Line (Jangsan Stn ↔ Yangsan Stn)',
     color: 'bg-emerald-600',
     badgeColor: 'bg-emerald-100 text-emerald-900 border-emerald-200',
-    descKo: '2호선(장산역 ↔ 양산역, 총 43개 역 45.2km 축)을 따라 펼쳐지는 부산 대표 여행 스팟 (해운대 블루라인파크, 해동용궁사, 밀락더마켓, 뮤지엄 원, 부산현대미술관, 감천문화마을 등).',
+    descKo: '2호선(장산역 ↔ 양산역, 총 43개 역 45.2km 축)을 따라 펼쳐지는 부산 대표 여행 스팟 (화명생태공원, 해운대 블루라인파크, 해동용궁사, 밀락더마켓, 뮤지엄 원, 부산현대미술관, 감천문화마을 등).',
     descEn: 'Connecting Busan east-to-west along Line 2 (43 stations, 45.2km): Haeundae Blue Line Park, Haedong Yonggungsa, Millac the Market, Museum 1, Museum of Contemporary Art Busan, Gamcheon Culture Village, etc.',
     landmarks: [
+      {
+        nameKo: '화명생태공원',
+        nameEn: 'Hwamyeong Ecological Park',
+        descKo: '낙동강 강변을 따라 드넓게 펼쳐진 친환경 수변 생태공원으로, 봄 벚꽃과 튤립, 여름 연꽃습지, 가을 코스모스 초원과 메타세쿼이아 산책로가 턱 없이 평탄하게 이어집니다.',
+        descEn: 'A vast riverside ecological park along the Nakdong River featuring flat wooden boardwalks, seasonal flower gardens, lotus wetlands, and scenic metasequoia trails.',
+        category: 'LANDMARK',
+        stationGroup: 'LINE2_HWAMYEONG',
+        stationGroupNameKo: '화명역',
+        stationGroupNameEn: 'Hwamyeong Stn',
+        tagKo: '화명역 2번 출구 도보 7분 · 연꽃단지',
+        tagEn: 'Hwamyeong Stn Exit 2 (7-min walk)',
+        addressKo: '부산 북구 강변대로 1629 (화명동 1718-17)',
+        addressEn: '1629 Gangbyeon-daero, Buk-gu, Busan',
+        tipKo: '공원 전 구역이 계단 없는 평탄한 흙길과 목재 데크로 조성되어 있어 휠체어와 유아차 산책에 최적이며, 화명역 2번 출구 엘리베이터를 이용해 진입로로 연결됩니다.',
+        tipEn: 'Features flat dirt paths and wooden boardwalks without steps, ideal for wheelchairs and strollers. Exit 2 has elevator access.',
+        imageUrl: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=54c84f31-742f-46f5-b0a8-ace5b3d853e6',
+        isTourApi: true
+      },
       {
         nameKo: '부산현대미술관',
         nameEn: 'Museum of Contemporary Art Busan',
