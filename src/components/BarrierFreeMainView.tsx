@@ -243,7 +243,77 @@ export default function BarrierFreeMainView({
         </p>
       </div>
 
-      {/* 2. 여행 맞춤 기준 선택 섹션 (모던하고 컴팩트한 칩/토글 레이아웃) */}
+      {/* 2. 추천 여행 코스 (컴팩트 반응형 리스트/그리드) */}
+      <section className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <span>{language === 'KR' ? '추천 여행 코스' : 'Recommended Travel Courses'}</span>
+            </h2>
+            <p className="text-xs text-slate-600 font-medium">
+              {language === 'KR'
+                ? '계단 없는 최적 동선으로 연결된 부산 무장애 대표 코스입니다.'
+                : 'Curated step-free itineraries through Busan top scenic sights.'}
+            </p>
+          </div>
+        </div>
+
+        {/* 세로형 반응형 그리드 리스트 (모바일 1열, 태블릿/데스크톱 2열) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {recommendedCourses.map((course) => {
+            const placesSummary = course.places
+              .map((p) => (language === 'KR' ? p.nameKo : p.nameEn))
+              .join(' → ');
+
+            return (
+              <div
+                key={course.id}
+                className="bg-white rounded-xl border border-slate-200 shadow-xs hover:border-slate-300 transition-all p-3.5 sm:p-4 flex flex-col justify-between gap-3"
+              >
+                <div className="space-y-2">
+                  {/* 코스 타이틀 */}
+                  <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug">
+                    {language === 'KR' ? course.titleKo : course.titleEn}
+                  </h3>
+
+                  {/* 소요 시간 & 이동 거리 */}
+                  <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
+                    <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                    <span className="font-bold text-slate-800">
+                      {language === 'KR' ? course.durationKo : course.durationEn}
+                    </span>
+                    <span>·</span>
+                    <span>{language === 'KR' ? course.distanceTextKo : course.distanceTextEn}</span>
+                  </div>
+
+                  {/* 주요 코스 경로 */}
+                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100 text-xs">
+                    <span className="text-[10px] font-bold text-slate-400 block mb-0.5">
+                      {language === 'KR' ? '주요 코스 경로' : 'Key Route Spots'}
+                    </span>
+                    <p className="font-bold text-[#8EA85E] line-clamp-2 leading-relaxed">
+                      {placesSummary}
+                    </p>
+                  </div>
+                </div>
+
+                {/* ‘코스 자세히 보기’ 버튼 */}
+                <button
+                  type="button"
+                  onClick={() => onNavigateToCourse(course.id)}
+                  className="w-full py-2 rounded-lg bg-[#8EA85E] hover:bg-[#7b944f] text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                >
+                  <span>{language === 'KR' ? '코스 자세히 보기' : 'View Course Details'}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 3. 여행 맞춤 기준 선택 섹션 (모던하고 컴팩트한 칩/토글 레이아웃) */}
       <section className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
@@ -370,78 +440,6 @@ export default function BarrierFreeMainView({
               })}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* 3. 추천 여행 코스 (컴팩트 반응형 리스트/그리드) */}
-      <section className="space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h2 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-amber-500" />
-              <span>{language === 'KR' ? '추천 여행 코스' : 'Recommended Travel Courses'}</span>
-            </h2>
-            <p className="text-xs text-slate-600 font-medium">
-              {language === 'KR'
-                ? '계단 없는 최적 동선으로 연결된 부산 무장애 대표 코스입니다.'
-                : 'Curated step-free itineraries through Busan top scenic sights.'}
-            </p>
-          </div>
-        </div>
-
-        {/* 세로형 반응형 그리드 리스트 (모바일 1열, 태블릿/데스크톱 2열) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {recommendedCourses.map((course) => {
-            const placesSummary = course.places
-              .map((p) => (language === 'KR' ? p.nameKo : p.nameEn))
-              .join(' → ');
-
-            return (
-              <div
-                key={course.id}
-                className="bg-white rounded-xl border border-slate-200 shadow-xs hover:border-slate-300 transition-all p-3.5 sm:p-4 flex flex-col justify-between gap-3"
-              >
-                <div className="space-y-2">
-                  
-
-                  {/* 코스 타이틀 */}
-                  <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug">
-                    {language === 'KR' ? course.titleKo : course.titleEn}
-                  </h3>
-
-                  {/* 소요 시간 & 이동 거리 */}
-                  <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
-                    <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                    <span className="font-bold text-slate-800">
-                      {language === 'KR' ? course.durationKo : course.durationEn}
-                    </span>
-                    <span>·</span>
-                    <span>{language === 'KR' ? course.distanceTextKo : course.distanceTextEn}</span>
-                  </div>
-
-                  {/* 주요 코스 경로 */}
-                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100 text-xs">
-                    <span className="text-[10px] font-bold text-slate-400 block mb-0.5">
-                      {language === 'KR' ? '주요 코스 경로' : 'Key Route Spots'}
-                    </span>
-                    <p className="font-bold text-[#8EA85E] line-clamp-2 leading-relaxed">
-                      {placesSummary}
-                    </p>
-                  </div>
-                </div>
-
-                {/* ‘코스 자세히 보기’ 버튼 */}
-                <button
-                  type="button"
-                  onClick={() => onNavigateToCourse(course.id)}
-                  className="w-full py-2 rounded-lg bg-[#8EA85E] hover:bg-[#7b944f] text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-                >
-                  <span>{language === 'KR' ? '코스 자세히 보기' : 'View Course Details'}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            );
-          })}
         </div>
       </section>
 
