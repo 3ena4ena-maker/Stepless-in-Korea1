@@ -23,6 +23,7 @@ import {
   Loader2,
   AlertCircle,
   CheckCircle2,
+  Accessibility,
 } from 'lucide-react';
 import {
   searchTourApiSpots,
@@ -224,9 +225,12 @@ export default function BarrierFreeMainView({
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-10 text-left pb-24">
       {/* 1. 페이지 소개 헤더 */}
       <div className="space-y-2 border-b border-slate-200 pb-5">
-        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+        <div className="flex items-center gap-2.5">
+          <Accessibility className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
           {language === 'KR' ? '부산 무장애 관광' : 'Busan Barrier-Free Travel'}
         </h1>
+        </div>
         <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
           {language === 'KR'
             ? '누구나 편안하게 즐길 수 있는 맞춤형 여행 코스와 관광지를 만나보세요.'
@@ -371,17 +375,6 @@ export default function BarrierFreeMainView({
             <h2 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-500" />
               <span>{language === 'KR' ? '추천 여행 코스' : 'Recommended Travel Courses'}</span>
-              {selectedUserTypes.length > 0 ? (
-                <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-                  {language === 'KR'
-                    ? `${selectedUserTypes.map((t) => USER_TYPES.find((u) => u.id === t)?.titleKo).filter(Boolean).join('·')} 맞춤 순`
-                    : `Tailored for ${selectedUserTypes.map((t) => USER_TYPES.find((u) => u.id === t)?.titleEn).filter(Boolean).join(', ')}`}
-                </span>
-              ) : (
-                <span className="text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
-                  {language === 'KR' ? '종합 추천 순' : 'General Ranking'}
-                </span>
-              )}
             </h2>
             <p className="text-xs text-slate-600 font-medium">
               {language === 'KR'
@@ -404,15 +397,7 @@ export default function BarrierFreeMainView({
                 className="bg-white rounded-xl border border-slate-200 shadow-xs hover:border-slate-300 transition-all p-3.5 sm:p-4 flex flex-col justify-between gap-3"
               >
                 <div className="space-y-2">
-                  {/* 상단 태그 & 난이도 뱃지 */}
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="px-2 py-0.5 rounded-md bg-[#8EA85E] text-white text-[10px] font-bold">
-                      {language === 'KR' ? course.tagKo : course.tagEn}
-                    </span>
-                    <span className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">
-                      {language === 'KR' ? course.difficultyTextKo : course.difficultyTextEn}
-                    </span>
-                  </div>
+                  
 
                   {/* 코스 타이틀 */}
                   <h3 className="text-sm sm:text-base font-black text-slate-900 leading-snug">
@@ -669,7 +654,7 @@ export default function BarrierFreeMainView({
           {recommendedPlaces.map(({ place }) => (
             <div
               key={place.id}
-              className="bg-white rounded-2xl border-2 border-slate-900 p-4 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] flex flex-col justify-between hover:translate-y-[-2px] transition-all"
+              className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] p-4 flex flex-col justify-between transition-all shadow-xs"
             >
               <div className="space-y-2">
                 {/* 상단: 구/지역 배지 + 지하철 호선 */}

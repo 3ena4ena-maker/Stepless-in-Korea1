@@ -297,48 +297,97 @@ export function getRecommendedPlaces(
   const results: PlaceRecommendationResult[] = [];
 
   for (const place of sourcePlaces) {
-    let accessibilityScore = 0;
-
+    // 1. 기본 물리적 접근성 점수 계산 (30 ~ 100점 범위)
+    let physicalScore = 55;
     if (types.length === 0) {
-      // 아무 유형도 선택되지 않은 경우 기본 종합 접근성 점수
-      let base = 85;
-      if (place.accessibility.elevator) base += 3;
-      if (place.accessibility.accessibleRestroom) base += 3;
-      if (place.accessibility.restAreas) base += 3;
-      if (place.transit.subway.hasElevator) base += 3;
-      if (place.transit.subway.walkingDistanceMeters <= 300) base += 3;
-      accessibilityScore = Math.min(100, base);
+      if (place.accessibility.elevator) physicalScore += 8;
+      if (place.accessibility.accessibleRestroom) physicalScore += 8;
+      if (place.accessibility.restAreas) physicalScore += 8;
+      if (place.transit.subway.hasElevator) physicalScore += 8;
+      if (place.transit.subway.walkingDistanceMeters <= 300) physicalScore += 8;
     } else {
-      // 선택된 모든 유형의 점수를 계산하여 종합
       const typeScores = types.map((t) => calculateAccessibilityScore(place, t));
       const avgScore = typeScores.reduce((sum, s) => sum + s, 0) / typeScores.length;
       const minScore = Math.min(...typeScores);
+      physicalScore = Math.round(0.6 * avgScore + 0.4 * minScore);
 
-      // 평균 적합도 60% + 가장 제약이 큰 취약 항목 40% 반영하여 복수 조건 모두 엄격 검토
-      accessibilityScore = Math.round(0.6 * avgScore + 0.4 * minScore);
-
-      // 실제 접근성이 현저히 낮은 장소(적합도 점수 68점 미만)는 추천 대상에서 자연스럽게 제외
-      if (accessibilityScore < 68) {
+      if (!candidateIds && physicalScore < 68) {
         continue;
       }
     }
 
-    let finalScore = accessibilityScore;
+    // 물리적 접근성 점수를 가중치(40%)로 환산: 약 20 ~ 40점 기여
+    let finalScore = Math.round(physicalScore * 0.4) + 15;
 
-    // 부산 여행 경험 매칭 가산점 (+12)
+    // 2. 여행자 유형 적합도 (최대 18점)
+    if (types.length > 0) {
+      const isPrimaryType = types.some((t) => place.bestFor?.includes(t));
+      if (isPrimaryType) {
+        finalScore += 18;
+      } else {
+        finalScore += 8;
+      }
+    }
+
+    // 3. 부산 여행 경험 매칭 (최대 16점)
     if (selectedExperiences.length > 0 && place.experienceTraits) {
-      const matchExp = selectedExperiences.some((exp) => place.experienceTraits?.includes(exp));
-      if (matchExp) finalScore += 12;
+      const isExpMatch = selectedExperiences.some((exp) => place.experienceTraits?.includes(exp));
+      if (isExpMatch) {
+        finalScore += 16;
+      } else {
+        finalScore -= 4;
+      }
     }
 
-    // 함께하는 여행 매칭 가산점 (+12)
+    // 4. 함께하는 여행 동행인 매칭 (최대 18점)
     if (selectedCompanions.length > 0 && place.companionTraits) {
-      const matchComp = selectedCompanions.some((comp) => place.companionTraits?.includes(comp));
-      if (matchComp) finalScore += 12;
+      const isTopTrait = place.companionTraits[0] && selectedCompanions.includes(place.companionTraits[0]);
+      const isAnyTrait = selectedCompanions.some((comp) => place.companionTraits?.includes(comp));
+      if (isTopTrait) {
+        finalScore += 18;
+      } else if (isAnyTrait) {
+        finalScore += 11;
+      } else {
+        finalScore -= 6;
+      }
     }
 
-    // UI 표시용 점수 (최대 100점 상한)
-    finalScore = Math.min(100, finalScore);
+    // 5. 직관적이고 정확한 맞춤 시너지 보너스
+    // 유아차 + 가족 동반 -> SEA LIFE 부산아쿠아리움 (수유실, 완만한 램프, 키즈 친화)
+    if (types.includes('stroller') && selectedCompanions.includes('family') && place.id === 'spot-aquarium') {
+      finalScore += 7;
+    }
+    // 연인 동반 -> 부산 엑스더스카이 전망대 (초고층 파노라마 오션뷰 야경)
+    if (selectedCompanions.includes('couple') && place.id === 'spot-xthesky') {
+      finalScore += 6;
+    }
+    // 휠체어 + 첫 부산 방문 -> 해운대 해수욕장 (무단차 백사장 매트 및 해안 데크)
+    if (types.includes('wheelchair') && selectedExperiences.includes('first') && place.id === 'spot-101') {
+      finalScore += 5;
+    }
+    // 어르신 or 무거운 짐 -> 부산 시티투어버스 (도보 피로 제로, 부산역 직결)
+    if ((types.includes('senior') || types.includes('luggage')) && place.id === 'spot-city-tour-bus') {
+      finalScore += 6;
+    }
+    // 어르신 + 가족 동반 -> 자갈치시장 하늘전망대 (엘리베이터 직행, 남항 바다 조망)
+    if (types.includes('senior') && selectedCompanions.includes('family') && place.id === 'spot-jagalchi-rooftop') {
+      finalScore += 5;
+    }
+    // 재방문 + 친구/연인 -> 송정 해수욕장 (서핑, 죽도공원, 한적한 오션뷰)
+    if (selectedExperiences.includes('revisit') && selectedCompanions.includes('friends') && place.id === 'spot-songjeong') {
+      finalScore += 7;
+    }
+    // 친구 + 먹거리 투어 -> 부평 깡통·국제 시장
+    if (selectedCompanions.includes('friends') && place.id === 'spot-bupyeong-market') {
+      finalScore += 7;
+    }
+    // 나홀로 사색 & 산책 -> 다대포 고우니 생태길
+    if (selectedCompanions.includes('solo') && place.id === 'spot-106') {
+      finalScore += 7;
+    }
+
+    // 점수 상하한선 정규화 (최대 99점, 최소 45점)
+    finalScore = Math.min(99, Math.max(45, finalScore));
 
     const highlight = place.recommendationReasons[primaryType];
     results.push({
@@ -354,7 +403,6 @@ export function getRecommendedPlaces(
 
 /**
  * 5. 한국관광공사 TourAPI 관광지 이미지 헬퍼
- * contentId 기반으로 이미지를 매핑하거나 fallback 처리
  */
 export function getPlaceImageUrl(contentIdOrName: string, fallbackUrl?: string): string {
   if (!contentIdOrName) return fallbackUrl || '';

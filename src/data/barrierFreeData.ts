@@ -533,6 +533,13 @@ const RAW_BARRIER_FREE_PLACES: TouristPlace[] = [
       },
     },
     bestFor: ['wheelchair', 'stroller', 'luggage', 'senior'],
+    experienceTraits: ['first'],
+    companionTraits: ['couple', 'friends', 'family'],
+    criteriaTags: {
+      userTypes: ['wheelchair', 'stroller', 'luggage'],
+      experiences: ['first'],
+      companions: ['couple', 'friends', 'family'],
+    },
   },
   {
     id: 'spot-108',
@@ -1049,6 +1056,13 @@ const RAW_BARRIER_FREE_PLACES: TouristPlace[] = [
       },
     },
     bestFor: ['wheelchair', 'stroller', 'luggage', 'senior'],
+    experienceTraits: ['revisit'],
+    companionTraits: ['family', 'solo', 'couple'],
+    criteriaTags: {
+      userTypes: ['wheelchair', 'senior', 'stroller'],
+      experiences: ['revisit'],
+      companions: ['family', 'solo', 'couple'],
+    },
   },
   {
     id: 'spot-107',
@@ -1354,7 +1368,7 @@ const RAW_BARRIER_FREE_PLACES: TouristPlace[] = [
     },
     bestFor: ['wheelchair', 'stroller', 'luggage', 'senior'],
     experienceTraits: ['first', 'revisit'],
-    companionTraits: ['family', 'couple', 'friends'],
+    companionTraits: ['family', 'couple'],
     criteriaTags: {
       userTypes: ['wheelchair', 'stroller', 'luggage', 'senior'],
       experiences: ['first', 'revisit'],
@@ -1459,7 +1473,7 @@ const RAW_BARRIER_FREE_PLACES: TouristPlace[] = [
     },
     bestFor: ['wheelchair', 'stroller', 'luggage', 'senior'],
     experienceTraits: ['first', 'revisit'],
-    companionTraits: ['couple', 'friends', 'family', 'solo'],
+    companionTraits: ['couple', 'solo'],
     criteriaTags: {
       userTypes: ['wheelchair', 'stroller', 'luggage', 'senior'],
       experiences: ['first', 'revisit'],
@@ -1563,8 +1577,8 @@ const RAW_BARRIER_FREE_PLACES: TouristPlace[] = [
       },
     },
     bestFor: ['wheelchair', 'stroller', 'luggage', 'senior'],
-    experienceTraits: ['revisit', 'first'],
-    companionTraits: ['friends', 'couple', 'family', 'solo'],
+    experienceTraits: ['revisit'],
+    companionTraits: ['friends', 'couple'],
     criteriaTags: {
       userTypes: ['wheelchair', 'stroller', 'luggage', 'senior'],
       experiences: ['revisit', 'first'],
@@ -1668,8 +1682,8 @@ const RAW_BARRIER_FREE_PLACES: TouristPlace[] = [
       },
     },
     bestFor: ['wheelchair', 'stroller', 'luggage', 'senior'],
-    experienceTraits: ['first', 'revisit'],
-    companionTraits: ['family', 'couple', 'friends', 'solo'],
+    experienceTraits: ['first'],
+    companionTraits: ['family', 'couple'],
     criteriaTags: {
       userTypes: ['wheelchair', 'stroller', 'luggage', 'senior'],
       experiences: ['first', 'revisit'],
@@ -1774,7 +1788,7 @@ const RAW_BARRIER_FREE_PLACES: TouristPlace[] = [
     },
     bestFor: ['wheelchair', 'stroller', 'luggage', 'senior'],
     experienceTraits: ['first', 'revisit'],
-    companionTraits: ['friends', 'family', 'couple', 'solo'],
+    companionTraits: ['friends', 'solo'],
     criteriaTags: {
       userTypes: ['wheelchair', 'stroller', 'luggage', 'senior'],
       experiences: ['first', 'revisit'],
@@ -1878,8 +1892,8 @@ const RAW_BARRIER_FREE_PLACES: TouristPlace[] = [
       },
     },
     bestFor: ['wheelchair', 'stroller', 'luggage', 'senior'],
-    experienceTraits: ['first', 'revisit'],
-    companionTraits: ['family', 'couple', 'friends', 'solo'],
+    experienceTraits: ['first'],
+    companionTraits: ['family', 'solo', 'couple'],
     criteriaTags: {
       userTypes: ['wheelchair', 'stroller', 'luggage', 'senior'],
       experiences: ['first', 'revisit'],
