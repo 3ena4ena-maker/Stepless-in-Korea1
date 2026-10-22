@@ -45,6 +45,10 @@ export function romanizeKoreanWord(word: string): string {
 
 // Full dictionary of common travel/eating words to translate traveler tips
 const TRAVEL_WORDS_MAP: Record<string, string> = {
+  '안목': 'Anmok',
+  '안목 돼지국밥': 'Anmok Pork Soup',
+  '안목 수영본점': 'Anmok Suyeong Main Branch',
+  '수영본점': 'Suyeong Main Branch',
   '이재모피자': 'Lee Jae Mo Pizza',
   '서면점': 'Seomyeon Branch',
   '부산역본점': 'Busan Station Main Branch',

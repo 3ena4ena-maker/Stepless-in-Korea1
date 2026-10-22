@@ -4246,6 +4246,75 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
       }
     }
   },
+  'spot-anmok': {
+    id: 'spot-anmok',
+    contentId: 'anmok-gukbap',
+    nameKo: '안목 (돼지국밥)',
+    nameEn: 'Anmok Pork Soup',
+    categoryKo: '식도락/맛집',
+    categoryEn: 'Gourmet Restaurant',
+    districtKo: '수영구',
+    districtEn: 'Suyeong-gu',
+    firstImage: 'https://tong.visitkorea.or.kr/cms/resource/14/2797514_image2_1.JPG',
+    additionalImages: [],
+    addressRoadKo: '부산 수영구 광남로22번길 3 (수영본점)',
+    addressRoadEn: '3 Gwangnam-ro 22beon-gil, Suyeong-gu, Busan',
+    addressLotKo: '부산 수영구 남천동 3-58',
+    addressLotEn: '3-58 Namcheon-dong, Suyeong-gu, Busan',
+    zipcode: '48316',
+    latitude: 35.1458,
+    longitude: 129.1105,
+    tel: '0507-1461-0523',
+    telDescKo: '안목 수영본점',
+    overviewKo: '현대적인 분위기에 깔끔한 국물이 특징인 부산 대표 돼지국밥 맛집입니다. 미쉐린 가이드 빕 구르망에 등재되었으며, 돼지 뼈를 정성껏 우려내어 잡내 없이 맑고 깊은 감칠맛을 자랑합니다. 수영본점 외에도 부산역점과 서면점을 함께 운영하고 있습니다.',
+    overviewEn: 'Renowned modern Busan pork soup restaurant featured in the Michelin Guide Bib Gourmand, celebrated for its clean, refined broth and contemporary aesthetic atmosphere. Operates Suyeong Main, Busan Station, and Seomyeon branches.',
+    useTimeKo: '11:00 ~ 21:00 (라스트오더 20:30, 재료 소진 시 조기 마감)',
+    useTimeEn: '11:00 - 21:00 (Last order 20:30)',
+    restDateKo: '연중무휴',
+    restDateEn: 'Open year-round',
+    feeKo: '돼지국밥 및 수육 단품',
+    feeEn: 'Pork Soup & Boiled Pork Dishes',
+    homepage: 'https://map.naver.com/v5/search/%EC%95%88%EB%AA%A9%20%EC%88%98%EC%98%81',
+    subwayLine: '2호선',
+    nearestStationNameKo: '금련산역 (2호선)',
+    nearestStationNameEn: 'Geumryeonsan Station (Line 2)',
+    recommendedExit: '1번 출구 엘리베이터',
+    walkingDistanceMeters: 320,
+    walkingTimeMinutes: 5,
+    transitTipKo: '지하철 2호선 금련산역 1번 출구 엘리베이터 이용 후 평탄 보도를 따라 도보 약 5분 거리에 위치해 있습니다.',
+    transitTipEn: 'From Line 2 Geumryeonsan Station Exit 1 elevator, walk 5 mins along the level pedestrian sidewalk.',
+    apiSource: '한국관광공사 TourAPI 연계 데이터',
+    modifiedTime: new Date().toISOString(),
+    barrierFree: {
+      wheelchair: {
+        available: true,
+        titleKo: '1층 평탄 진입로',
+        titleEn: 'Level Ground Floor Entrance',
+        descKo: '지상 1층에 위치하여 휠체어 및 유아차 접근이 수월하며 진입 단차가 없습니다.',
+        descEn: 'Located on 1F with step-free level sidewalk entrance for wheelchairs and strollers.',
+        icon: '♿',
+        tag: '1층 평탄 진입'
+      },
+      elevator: {
+        available: true,
+        titleKo: '금련산역 엘리베이터 연계',
+        titleEn: 'Station Elevator Connection',
+        descKo: '2호선 금련산역 1번 출구 외부 엘리베이터를 통해 지상으로 단차 없이 올라올 수 있습니다.',
+        descEn: 'Step-free access from Line 2 Geumryeonsan Station Exit 1 elevator.',
+        icon: '🛗',
+        tag: '지하철 EV 연계'
+      },
+      restroom: {
+        available: true,
+        titleKo: '매장 내 화장실',
+        titleEn: 'Interior Restroom',
+        descKo: '매장 내부 화장실 완비',
+        descEn: 'Clean restroom facilities inside the venue.',
+        icon: '🚻',
+        tag: '내부 화장실'
+      }
+    }
+  },
 };
 
 /**

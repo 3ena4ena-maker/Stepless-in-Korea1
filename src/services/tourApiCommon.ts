@@ -174,6 +174,9 @@ export function matchTourApiSpotId(titleOrText: string): string | null {
   if (clean.includes('본전돼지국밥') || clean.includes('본전국밥')) {
     return 'spot-bonjeon';
   }
+  if (clean.includes('안목') || clean.includes('anmok')) {
+    return 'spot-anmok';
+  }
   if (clean.includes('금수복국')) {
     return 'spot-gumsubokguk';
   }

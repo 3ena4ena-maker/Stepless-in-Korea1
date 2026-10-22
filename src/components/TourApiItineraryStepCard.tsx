@@ -35,7 +35,7 @@ function getIllustrationType(title: string): 'temple' | 'park' | 'food' | 'cafe'
   if (title.includes('해수욕장') || title.includes('바다') || title.includes('비치') || title.includes('광안리') || title.includes('해운대') || title.includes('송도') || title.includes('다대포')) return 'sea';
   if (title.includes('사') || title.includes('용궁사') || title.includes('범어사')) return 'temple';
   if (title.includes('공원') || title.includes('수목원') || title.includes('숲') || title.includes('온천천')) return 'park';
-  if (title.includes('시장') || title.includes('식당') || title.includes('갈비') || title.includes('밀면') || title.includes('국밥')) return 'food';
+  if (title.includes('시장') || title.includes('식당') || title.includes('갈비') || title.includes('밀면') || title.includes('국밥') || title.includes('안목')) return 'food';
   if (title.includes('카페') || title.includes('커피')) return 'cafe';
   if (title.includes('마을') || title.includes('문화마을') || title.includes('흰여울')) return 'village';
   if (title.includes('박물관') || title.includes('역사') || title.includes('기념관')) return 'history';

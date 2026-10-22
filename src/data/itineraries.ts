@@ -99,7 +99,7 @@ export function getStepFoodCategories(step: ItineraryStep): string[] {
   }
   const cats: string[] = [];
   const title = step.titleKo || '';
-  if (title.includes('모모스') || title === '이재모피자' || title.includes('톤쇼우') || title.includes('옵스')) {
+  if (title.includes('모모스') || title === '이재모피자' || title.includes('톤쇼우') || title.includes('옵스') || title.includes('안목')) {
     cats.push('famous');
   }
   if (step.foodCategory === 'restaurant') cats.push('restaurant');
@@ -1276,6 +1276,57 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
             stationInfoEn: 'Subway Line 1 & 2 Seomyeon Station Exit 7 direct link',
             naverMapUrl: 'https://map.naver.com/v5/search/%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%A1%AF%EB%8D%B0%EB%B0%B1%ED%99%94%EC%A0%90%20%EB%B6%80%EC%82%B0%EB%B3%B8%EC%A0%90',
             googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%88%98%EB%B3%80%EC%B5%9C%EA%B3%A0%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%A1%AF%EB%8D%B0%EB%B0%B1%ED%99%94%EC%A0%90%20%EC%84%9C%EB%A9%B4'
+          }
+        ]
+      },
+      {
+        regionId: 'famous',
+        regionNameKo: '부산 대표 유명 맛집',
+        regionNameEn: 'Famous Cuisines',
+        foodCategory: 'restaurant',
+        time: '음식점',
+        foodCategories: ["famous", "restaurant"],
+        titleKo: '안목',
+        titleEn: 'Anmok Pork Soup',
+        descKo: '현대적인 분위기에 깔끔한 국물이 특징인 부산 대표 돼지국밥 맛집입니다.',
+        descEn: '🍲 Renowned modern Busan pork soup restaurant celebrated for its clean, refined broth and contemporary aesthetic atmosphere.',
+        icon: 'Food',
+        stationInfoKo: '수영본점 / 부산역점 / 서면점',
+        stationInfoEn: 'Suyeong Main / Busan Station / Seomyeon',
+        addressRoadKo: '부산 수영구 광남로22번길 3 (수영본점)',
+        addressRoadEn: '3 Gwangnam-ro 22beon-gil, Suyeong-gu, Busan',
+        naverMapUrl: 'https://map.naver.com/v5/search/%EC%95%88%EB%AA%A9%20%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5',
+        googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%95%88%EB%AA%A9%20%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5%20%EB%B6%80%EC%82%B0',
+        branches: [
+          {
+            nameKo: '안목 수영본점',
+            nameEn: 'Anmok Suyeong Main Branch',
+            addressKo: '부산 수영구 광남로22번길 3',
+            addressEn: '3 Gwangnam-ro 22beon-gil, Suyeong-gu, Busan',
+            stationInfoKo: '지하철 2호선 금련산역 1번 출구 도보 5분 / 남천역 인근',
+            stationInfoEn: 'Subway Line 2 Geumryeonsan Station Exit 1, 5 mins walk',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%95%88%EB%AA%A9%20%EC%88%98%EC%98%81',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%95%88%EB%AA%A9%20%EC%88%98%EC%98%81%20%EB%B6%80%EC%82%B0'
+          },
+          {
+            nameKo: '안목 부산역점',
+            nameEn: 'Anmok Busan Station Branch',
+            addressKo: '부산 동구 중앙대로214번길 7-1',
+            addressEn: '7-1 Jungang-daero 214beon-gil, Dong-gu, Busan',
+            stationInfoKo: '지하철 1호선 부산역 6번 출구 도보 3분 / KTX 부산역 광장 맞은편',
+            stationInfoEn: 'Subway Line 1 Busan Station Exit 6, 3 mins walk',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%95%88%EB%AA%A9%20%EB%B6%80%EC%82%B0%EC%97%AD',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%95%88%EB%AA%A9%20%EB%B6%80%EC%82%B0%EC%97%AD%20%EB%B6%80%EC%82%B0'
+          },
+          {
+            nameKo: '안목 서면점',
+            nameEn: 'Anmok Seomyeon Branch',
+            addressKo: '부산 부산진구 서전로38번길 62',
+            addressEn: '62 Seojeon-ro 38beon-gil, Busanjin-gu, Busan',
+            stationInfoKo: '지하철 2호선 전포역 7번 출구 도보 4분 / 서면역 도보 8분',
+            stationInfoEn: 'Subway Line 2 Jeonpo Station Exit 7, 4 mins walk',
+            naverMapUrl: 'https://map.naver.com/v5/search/%EC%95%88%EB%AA%A9%20%EC%84%9C%EB%A9%B4',
+            googleMapUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%95%88%EB%AA%A9%20%EC%84%9C%EB%A9%B4%20%EB%B6%80%EC%82%B0'
           }
         ]
       },
