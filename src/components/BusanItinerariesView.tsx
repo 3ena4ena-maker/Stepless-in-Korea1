@@ -1747,11 +1747,11 @@ export default function BusanItinerariesView({
 
   const LINE1_STATION_TABS = [
     { id: 'ALL', nameKo: '전체 역 보기', nameEn: 'All Stations', englishName: 'ALL STATIONS' },
-    { id: 'LINE1_JUNGANG_NAMPO_JAGALCHI', nameKo: '중앙 · 남포 · 자갈치역', nameEn: 'Jungang · Nampo · Jagalchi', englishName: 'JUNGANG · NAMPO · JAGALCHI' },
-    { id: 'LINE1_ONCHEONJANG', nameKo: '온천장역', nameEn: 'Oncheonjang Stn', englishName: 'ONCHEONJANG' },
     { id: 'LINE1_BEOMEOSA', nameKo: '범어사역', nameEn: 'Beomeosa Stn', englishName: 'BEOMEOSA' },
+    { id: 'LINE1_ONCHEONJANG', nameKo: '온천장역', nameEn: 'Oncheonjang Stn', englishName: 'ONCHEONJANG' },
     { id: 'LINE1_SEOMYEON_BUJEON', nameKo: '서면 · 부전역', nameEn: 'Seomyeon · Bujeon', englishName: 'SEOMYEON · BUJEON' },
     { id: 'LINE1_BUSAN_STN', nameKo: '부산역', nameEn: 'Busan Station', englishName: 'BUSAN STN' },
+    { id: 'LINE1_JUNGANG_NAMPO_JAGALCHI', nameKo: '중앙 · 남포 · 자갈치역', nameEn: 'Jungang · Nampo · Jagalchi', englishName: 'JUNGANG · NAMPO · JAGALCHI' },
     { id: 'LINE1_DADAEPO', nameKo: '다대포해수욕장역', nameEn: 'Dadaepo Beach Stn', englishName: 'DADAEPO BEACH' },
   ];
 
@@ -4872,11 +4872,11 @@ case 'EXPERIENCE': {
 
                 const LINE1_GROUPS_CONFIG = [
                   {
-                    id: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
-                    nameKo: '중앙역 · 남포역 · 자갈치역',
-                    nameEn: 'Jungang · Nampo · Jagalchi',
-                    badgeKo: '지하상가 연결 코스',
-                    badgeEn: 'Underground Concourse Walk',
+                    id: 'LINE1_BEOMEOSA',
+                    nameKo: '범어사역',
+                    nameEn: 'Beomeosa Station',
+                    badgeKo: '천년 고찰 & 피톤치드 힐링',
+                    badgeEn: 'Ancient Sanctuary & Pine Forest',
                   },
                   {
                     id: 'LINE1_ONCHEONJANG',
@@ -4884,13 +4884,6 @@ case 'EXPERIENCE': {
                     nameEn: 'Oncheonjang Station',
                     badgeKo: '온천 힐링 & 벚꽃 산책',
                     badgeEn: 'Hot Springs & Cherry Blossoms',
-                  },
-                  {
-                    id: 'LINE1_BEOMEOSA',
-                    nameKo: '범어사역',
-                    nameEn: 'Beomeosa Station',
-                    badgeKo: '천년 고찰 & 피톤치드 힐링',
-                    badgeEn: 'Ancient Sanctuary & Pine Forest',
                   },
                   {
                     id: 'LINE1_SEOMYEON_BUJEON',
@@ -4905,6 +4898,13 @@ case 'EXPERIENCE': {
                     nameEn: 'Busan Station',
                     badgeKo: '부산의 관문 & 북항 친수공원',
                     badgeEn: 'Gateway of Busan & North Port',
+                  },
+                  {
+                    id: 'LINE1_JUNGANG_NAMPO_JAGALCHI',
+                    nameKo: '중앙역 · 남포역 · 자갈치역',
+                    nameEn: 'Jungang · Nampo · Jagalchi',
+                    badgeKo: '지하상가 연결 코스',
+                    badgeEn: 'Underground Concourse Walk',
                   },
                   {
                     id: 'LINE1_DADAEPO',
