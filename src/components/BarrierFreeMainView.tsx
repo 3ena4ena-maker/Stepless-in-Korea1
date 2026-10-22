@@ -282,13 +282,13 @@ export default function BarrierFreeMainView({
                     key={type.id}
                     type="button"
                     onClick={() => handleToggleUserType(type.id)}
-                    className={`px-3 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center text-center cursor-pointer select-none border ${
+                    className={`px-2.5 py-2 sm:py-2.5 min-h-[44px] rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center text-center cursor-pointer select-none border ${
                       isSelected
                         ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-xs'
                         : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
                     }`}
                   >
-                    <span className="truncate">{language === 'KR' ? type.titleKo : type.titleEn}</span>
+                    <span className="break-keep leading-tight text-center">{language === 'KR' ? type.titleKo : type.titleEn}</span>
                   </button>
                 );
               })}
@@ -320,13 +320,13 @@ export default function BarrierFreeMainView({
                     key={exp.id}
                     type="button"
                     onClick={() => handleToggleExperience(exp.id)}
-                    className={`px-3 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center text-center cursor-pointer select-none border ${
+                    className={`px-2.5 py-2 sm:py-2.5 min-h-[44px] rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center text-center cursor-pointer select-none border ${
                       isSelected
                         ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
                         : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
                     }`}
                   >
-                    <span className="truncate">{language === 'KR' ? exp.titleKo : exp.titleEn}</span>
+                    <span className="break-keep leading-tight text-center">{language === 'KR' ? exp.titleKo : exp.titleEn}</span>
                   </button>
                 );
               })}
@@ -358,13 +358,13 @@ export default function BarrierFreeMainView({
                     key={comp.id}
                     type="button"
                     onClick={() => handleToggleCompanion(comp.id)}
-                    className={`px-3 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center text-center cursor-pointer select-none border ${
+                    className={`px-2.5 py-2 sm:py-2.5 min-h-[44px] rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center text-center cursor-pointer select-none border ${
                       isSelected
                         ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs'
                         : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
                     }`}
                   >
-                    <span className="truncate">{language === 'KR' ? comp.titleKo : comp.titleEn}</span>
+                    <span className="break-keep leading-tight text-center">{language === 'KR' ? comp.titleKo : comp.titleEn}</span>
                   </button>
                 );
               })}

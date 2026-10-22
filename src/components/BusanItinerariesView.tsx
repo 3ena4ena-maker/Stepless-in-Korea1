@@ -2587,10 +2587,10 @@ export default function BusanItinerariesView({
           {/* Top Primary Category Navigation Bar: Only visible inside sub-categories to eliminate duplicate lists on main screen */}
           {activeCategory !== null && (
             <div className="bg-white p-2.5 sm:p-3.5 rounded-xl border border-[#E5E2DC] shadow-[0_1px_4px_rgba(0,0,0,0.03)] space-y-2.5 animate-fade-in text-left">
-              {/* DESKTOP (md+): Full horizontal category nav bar */}
+              {/* DESKTOP (md+): Full horizontal category nav bar with responsive wrapping (no cut-off in any language) */}
               <div 
                 ref={quickPillsRef}
-                className="hidden md:flex items-center gap-1.5 sm:gap-2 w-full overflow-x-auto no-scrollbar scrollbar-none whitespace-nowrap flex-nowrap py-0.5"
+                className="hidden md:flex flex-wrap items-center gap-1.5 sm:gap-2 w-full py-0.5"
                 id="main-categories-nav-bar"
               >
                 {/* 1. 전체 */}
@@ -2600,7 +2600,7 @@ export default function BusanItinerariesView({
                     e.stopPropagation();
                     handleSelectCategory(null);
                   }}
-                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === null
                       ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
@@ -2616,7 +2616,7 @@ export default function BusanItinerariesView({
                     e.stopPropagation();
                     handleSelectCategory('GOURMET');
                   }}
-                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'GOURMET'
                       ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
@@ -2632,7 +2632,7 @@ export default function BusanItinerariesView({
                     e.stopPropagation();
                     handleSelectCategory('EXPERIENCE');
                   }}
-                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'EXPERIENCE'
                       ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
@@ -2648,7 +2648,7 @@ export default function BusanItinerariesView({
                     e.stopPropagation();
                     handleSelectCategory('MARKET');
                   }}
-                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'MARKET'
                       ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
@@ -2664,7 +2664,7 @@ export default function BusanItinerariesView({
                     e.stopPropagation();
                     handleSelectCategory('ATTRACTION');
                   }}
-                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'ATTRACTION'
                       ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
@@ -2681,7 +2681,7 @@ export default function BusanItinerariesView({
                     const targetDuration = selectedScheduleDuration || 'DAY';
                     handleSelectCategory(targetDuration);
                   }}
-                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     isScheduleActive
                       ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
@@ -2697,7 +2697,7 @@ export default function BusanItinerariesView({
                     e.stopPropagation();
                     handleSelectCategory('SUBWAY');
                   }}
-                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'SUBWAY'
                       ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
@@ -2713,7 +2713,7 @@ export default function BusanItinerariesView({
                     e.stopPropagation();
                     handleSelectCategory('BARRIER_FREE');
                   }}
-                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
+                  className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center ${
                     activeCategory === 'BARRIER_FREE'
                       ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                       : 'bg-white hover:bg-[#FBFBF9] text-[#11161B] border-[#E5E2DC]'
@@ -2729,7 +2729,7 @@ export default function BusanItinerariesView({
                     e.stopPropagation();
                     handleSelectCategory('MY_ROUTE');
                   }}
-                  className={`px-3.5 py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center flex items-center gap-1.5 ${
+                  className={`px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border whitespace-nowrap shrink-0 text-center flex items-center gap-1.5 ${
                     activeCategory === 'MY_ROUTE'
                       ? 'bg-amber-500 text-white border-amber-500 shadow-2xs'
                       : 'bg-amber-50/70 hover:bg-amber-100 text-amber-950 border-amber-300'
@@ -2776,17 +2776,17 @@ export default function BusanItinerariesView({
                       <button
                         type="button"
                         onClick={() => setIsCategoryMoreOpen(prev => !prev)}
-                        className="flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold bg-[#8EA85E] text-white border border-[#8EA85E] truncate max-w-[170px] shadow-2xs cursor-pointer text-left"
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold bg-[#8EA85E] text-white border border-[#8EA85E] shadow-2xs cursor-pointer text-left flex-1 min-w-0 overflow-hidden"
                         title={language === 'KR' ? '카테고리 목록 열기' : 'View all categories'}
                       >
                         <span className="truncate">
                           {activeCategory === 'GOURMET' && (language === 'KR' ? '식도락' : 'Gourmet')}
-                          {activeCategory === 'EXPERIENCE' && (language === 'KR' ? '체험&박물관' : 'Experience')}
-                          {activeCategory === 'MARKET' && (language === 'KR' ? '전통시장' : 'Market')}
-                          {activeCategory === 'ATTRACTION' && (language === 'KR' ? '명소' : 'Attraction')}
-                          {isScheduleActive && (language === 'KR' ? '일정별 여행' : 'Itinerary')}
-                          {activeCategory === 'SUBWAY' && (language === 'KR' ? '부산 도시철도' : 'Subway')}
-                          {activeCategory === 'BARRIER_FREE' && (language === 'KR' ? '무장애 관광지' : 'Barrier-Free')}
+                          {activeCategory === 'EXPERIENCE' && (language === 'KR' ? '체험&박물관' : 'Experience & Museum')}
+                          {activeCategory === 'MARKET' && (language === 'KR' ? '전통시장' : 'Traditional Market')}
+                          {activeCategory === 'ATTRACTION' && (language === 'KR' ? '명소' : 'Attractions')}
+                          {isScheduleActive && (language === 'KR' ? '일정별 여행' : 'Itinerary Course')}
+                          {activeCategory === 'SUBWAY' && (language === 'KR' ? '부산 도시철도' : 'Subway Course')}
+                          {activeCategory === 'BARRIER_FREE' && (language === 'KR' ? '무장애 관광지' : 'Barrier-Free Spots')}
                           {activeCategory === 'MY_ROUTE' && (language === 'KR' ? '내 여행 루트' : 'My Route')}
                         </span>
                       </button>
@@ -2832,12 +2832,12 @@ export default function BusanItinerariesView({
                       {[
                         { id: null, labelKR: '전체 (목록 보기)', labelEN: 'All Categories', icon: Compass },
                         { id: 'GOURMET', labelKR: '식도락', labelEN: 'Gourmet', icon: Utensils },
-                        { id: 'EXPERIENCE', labelKR: '체험&박물관', labelEN: 'Experience', icon: Sparkles },
+                        { id: 'EXPERIENCE', labelKR: '체험&박물관', labelEN: 'Experience & Museum', icon: Sparkles },
                         { id: 'MARKET', labelKR: '전통시장', labelEN: 'Traditional Market', icon: Store },
                         { id: 'ATTRACTION', labelKR: '명소', labelEN: 'Attractions', icon: MapPin },
                         { id: 'DAY', labelKR: '일정별 여행', labelEN: 'Itinerary Course', icon: Calendar },
                         { id: 'SUBWAY', labelKR: '부산 도시철도', labelEN: 'Subway Course', icon: Train },
-                        { id: 'BARRIER_FREE', labelKR: '무장애 관광지', labelEN: 'Barrier-Free', icon: Footprints },
+                        { id: 'BARRIER_FREE', labelKR: '무장애 관광지', labelEN: 'Barrier-Free Spots', icon: Footprints },
                         { id: 'MY_ROUTE', labelKR: '내 여행 루트', labelEN: 'My Route', icon: Star },
                       ].map((catItem) => {
                         const isCatActive = catItem.id === null 
@@ -2861,7 +2861,7 @@ export default function BusanItinerariesView({
                                 handleSelectCategory(catItem.id as any);
                               }
                             }}
-                            className={`w-full flex items-center justify-between p-2.5 rounded-lg text-xs font-bold transition-all cursor-pointer border text-left ${
+                            className={`w-full flex items-center justify-between p-2 sm:p-2.5 rounded-lg text-xs font-bold transition-all cursor-pointer border text-left min-h-[46px] ${
                               isMyRoute
                                 ? (isCatActive 
                                     ? 'bg-amber-500 text-white border-amber-500 shadow-2xs' 
@@ -2877,10 +2877,10 @@ export default function BusanItinerariesView({
                                   ? 'text-white' 
                                   : (isMyRoute ? 'text-amber-600' : 'text-[#8EA85E]')
                               }`} />
-                              <span className="truncate">{language === 'KR' ? catItem.labelKR : catItem.labelEN}</span>
+                              <span className="text-[11px] sm:text-xs font-bold leading-tight break-keep whitespace-normal">{language === 'KR' ? catItem.labelKR : catItem.labelEN}</span>
                             </div>
                             {isMyRoute && myRouteCount > 0 && (
-                              <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full font-bold ml-1 ${
+                              <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full font-bold ml-1 shrink-0 ${
                                 isCatActive ? 'bg-white text-amber-700' : 'bg-amber-200 text-amber-900'
                               }`}>
                                 {myRouteCount}
@@ -2914,14 +2914,14 @@ export default function BusanItinerariesView({
                       e.stopPropagation();
                       handleSelectCategory('GOURMET');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-1.5 sm:p-2 text-center min-h-[92px] sm:min-h-[96px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
-                      <FoodieIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-13 sm:h-14 w-full overflow-hidden pointer-events-none">
+                      <FoodieIllustration className="w-full h-10 sm:h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5 pointer-events-none w-full">
-                      <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
-                        {language === 'KR' ? '식도락' : 'Foodie'}
+                    <div className="pt-1 sm:pt-1.5 min-h-[26px] sm:min-h-[28px] flex items-center justify-center pointer-events-none w-full px-0.5">
+                      <h3 className="text-[10px] sm:text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tighter leading-tight text-center break-keep">
+                        {language === 'KR' ? '식도락' : 'Gourmet'}
                       </h3>
                     </div>
                   </button>
@@ -2933,13 +2933,13 @@ export default function BusanItinerariesView({
                       e.stopPropagation();
                       handleSelectCategory('EXPERIENCE');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-1.5 sm:p-2 text-center min-h-[92px] sm:min-h-[96px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
-                      <ExperienceIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-13 sm:h-14 w-full overflow-hidden pointer-events-none">
+                      <ExperienceIllustration className="w-full h-10 sm:h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5 pointer-events-none w-full">
-                      <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
+                    <div className="pt-1 sm:pt-1.5 min-h-[26px] sm:min-h-[28px] flex items-center justify-center pointer-events-none w-full px-0.5">
+                      <h3 className="text-[10px] sm:text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tighter leading-tight text-center break-keep">
                         {language === 'KR' ? '체험&박물관' : 'Experience'}
                       </h3>
                     </div>
@@ -2952,13 +2952,13 @@ export default function BusanItinerariesView({
                       e.stopPropagation();
                       handleSelectCategory('MARKET');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-1.5 sm:p-2 text-center min-h-[92px] sm:min-h-[96px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
-                      <TraditionalMarketIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-13 sm:h-14 w-full overflow-hidden pointer-events-none">
+                      <TraditionalMarketIllustration className="w-full h-10 sm:h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5 pointer-events-none w-full">
-                      <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
+                    <div className="pt-1 sm:pt-1.5 min-h-[26px] sm:min-h-[28px] flex items-center justify-center pointer-events-none w-full px-0.5">
+                      <h3 className="text-[10px] sm:text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tighter leading-tight text-center break-keep">
                         {language === 'KR' ? '전통시장' : 'Market'}
                       </h3>
                     </div>
@@ -2971,13 +2971,13 @@ export default function BusanItinerariesView({
                       e.stopPropagation();
                       handleSelectCategory('ATTRACTION');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-1.5 sm:p-2 text-center min-h-[92px] sm:min-h-[96px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
-                      <AttractionIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-13 sm:h-14 w-full overflow-hidden pointer-events-none">
+                      <AttractionIllustration className="w-full h-10 sm:h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5 pointer-events-none w-full">
-                      <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
+                    <div className="pt-1 sm:pt-1.5 min-h-[26px] sm:min-h-[28px] flex items-center justify-center pointer-events-none w-full px-0.5">
+                      <h3 className="text-[10px] sm:text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tighter leading-tight text-center break-keep">
                         {language === 'KR' ? '명소' : 'Attractions'}
                       </h3>
                     </div>
@@ -2991,13 +2991,13 @@ export default function BusanItinerariesView({
                       const targetDuration = selectedScheduleDuration || 'DAY';
                       handleSelectCategory(targetDuration);
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-1.5 sm:p-2 text-center min-h-[92px] sm:min-h-[96px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
-                      <ItineraryIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-13 sm:h-14 w-full overflow-hidden pointer-events-none">
+                      <ItineraryIllustration className="w-full h-10 sm:h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5 pointer-events-none w-full">
-                      <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
+                    <div className="pt-1 sm:pt-1.5 min-h-[26px] sm:min-h-[28px] flex items-center justify-center pointer-events-none w-full px-0.5">
+                      <h3 className="text-[10px] sm:text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tighter leading-tight text-center break-keep">
                         {language === 'KR' ? '일정별 여행' : 'Itinerary'}
                       </h3>
                     </div>
@@ -3010,13 +3010,13 @@ export default function BusanItinerariesView({
                       e.stopPropagation();
                       handleSelectCategory('SUBWAY');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-1.5 sm:p-2 text-center min-h-[92px] sm:min-h-[96px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
-                      <SubwayCourseIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-13 sm:h-14 w-full overflow-hidden pointer-events-none">
+                      <SubwayCourseIllustration className="w-full h-10 sm:h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5 pointer-events-none w-full">
-                      <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
+                    <div className="pt-1 sm:pt-1.5 min-h-[26px] sm:min-h-[28px] flex items-center justify-center pointer-events-none w-full px-0.5">
+                      <h3 className="text-[10px] sm:text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tighter leading-tight text-center break-keep">
                         {language === 'KR' ? '부산 도시철도' : 'Subway'}
                       </h3>
                     </div>
@@ -3029,13 +3029,13 @@ export default function BusanItinerariesView({
                       e.stopPropagation();
                       handleSelectCategory('BARRIER_FREE');
                     }}
-                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
+                    className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-1.5 sm:p-2 text-center min-h-[92px] sm:min-h-[96px] w-full focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 active:scale-[0.98]"
                   >
-                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-14 w-full overflow-hidden pointer-events-none">
-                      <BarrierFreeIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
+                    <div className="bg-[#FBFBF9] rounded-lg p-1 flex items-center justify-center group-hover:bg-[#F1EFEC] transition-colors border border-[#E5E2DC] h-13 sm:h-14 w-full overflow-hidden pointer-events-none">
+                      <BarrierFreeIllustration className="w-full h-10 sm:h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5 pointer-events-none w-full">
-                      <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tight whitespace-nowrap text-center">
+                    <div className="pt-1 sm:pt-1.5 min-h-[26px] sm:min-h-[28px] flex items-center justify-center pointer-events-none w-full px-0.5">
+                      <h3 className="text-[10px] sm:text-[11px] font-bold text-[#11161B] group-hover:text-[#0A2540] transition-colors tracking-tighter leading-tight text-center break-keep">
                         {language === 'KR' ? '무장애 관광지' : 'Barrier-Free'}
                       </h3>
                     </div>
@@ -3048,17 +3048,17 @@ export default function BusanItinerariesView({
                       e.stopPropagation();
                       handleSelectCategory('MY_ROUTE');
                     }}
-                    className="bg-white rounded-xl border border-amber-300 hover:border-amber-500 hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-2 text-center min-h-[95px] relative w-full focus:outline-none focus:ring-2 focus:ring-amber-400 active:scale-[0.98]"
+                    className="bg-white rounded-xl border border-amber-300 hover:border-amber-500 hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group p-1.5 sm:p-2 text-center min-h-[92px] sm:min-h-[96px] relative w-full focus:outline-none focus:ring-2 focus:ring-amber-400 active:scale-[0.98]"
                   >
-                    <div className="bg-amber-50/60 rounded-lg p-1 flex items-center justify-center group-hover:bg-amber-100/60 transition-colors border border-amber-200 h-14 w-full overflow-hidden pointer-events-none">
-                      <MyRouteIllustration className="w-full h-11 max-w-[85px] mx-auto object-contain" />
+                    <div className="bg-amber-50/60 rounded-lg p-1 flex items-center justify-center group-hover:bg-amber-100/60 transition-colors border border-amber-200 h-13 sm:h-14 w-full overflow-hidden pointer-events-none">
+                      <MyRouteIllustration className="w-full h-10 sm:h-11 max-w-[85px] mx-auto object-contain" />
                     </div>
-                    <div className="pt-1.5 flex items-center justify-center gap-1 pointer-events-none w-full">
-                      <h3 className="text-[11px] font-bold text-[#11161B] group-hover:text-amber-800 transition-colors tracking-tight whitespace-nowrap text-center">
+                    <div className="pt-1 sm:pt-1.5 min-h-[26px] sm:min-h-[28px] flex items-center justify-center gap-1 pointer-events-none w-full px-0.5">
+                      <h3 className="text-[10px] sm:text-[11px] font-bold text-[#11161B] group-hover:text-amber-800 transition-colors tracking-tighter leading-tight text-center break-keep">
                         {language === 'KR' ? '내 여행 루트' : 'My Route'}
                       </h3>
                       {myRouteCount > 0 && (
-                        <span className="text-[9px] px-1 py-0.2 rounded-full bg-amber-500 text-white font-mono font-bold leading-none">
+                        <span className="text-[9px] px-1 py-0.2 rounded-full bg-amber-500 text-white font-mono font-bold leading-none shrink-0">
                           {myRouteCount}
                         </span>
                       )}
