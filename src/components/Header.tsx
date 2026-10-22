@@ -62,7 +62,7 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
             onClick={handleLogoClick} 
             className="flex items-center gap-2 cursor-pointer group select-none py-1"
             id="header-logo-container"
-            title="Stepless in Korea 홈으로 이동"
+            title="STEPLESS IN BUSAN 홈으로 이동"
           >
             <div className="flex items-center gap-2">
               <span className="text-lg sm:text-xl font-black font-heading tracking-tight text-[#11161B] group-hover:text-[#8EA85E] transition-colors">

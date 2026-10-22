@@ -2080,7 +2080,7 @@ export default function App() {
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
               <span className="text-lg font-black font-heading tracking-tight text-slate-900">
-                STEPLESS IN KOREA
+                STEPLESS IN BUSAN
               </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-700 leading-relaxed max-w-sm font-medium">

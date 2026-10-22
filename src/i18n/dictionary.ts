@@ -2,7 +2,7 @@ export type Language = 'KR' | 'EN';
 
 export const DICTIONARY = {
   KR: {
-    brand: 'STEPLESS IN KOREA',
+    brand: 'STEPLESS IN BUSAN',
     nav: {
       home: '홈',
       search: '출구 정보 및 역 검색',
@@ -75,7 +75,7 @@ export const DICTIONARY = {
     },
   },
   EN: {
-    brand: 'STEPLESS IN KOREA',
+    brand: 'STEPLESS IN BUSAN',
     nav: {
       home: 'Home',
       search: 'Station & Exit Guide',
