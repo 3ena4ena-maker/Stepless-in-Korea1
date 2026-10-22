@@ -5362,8 +5362,8 @@ case 'EXPERIENCE': {
                       </h2>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                         {language === 'KR'
-                          ? '해동 용궁사, 이기대 해안산책로, 태종대, 황령산전망대, 부산용두산공원, 영도대교 등 부산을 대표하는 핵심 명소를 만나보세요.'
-                          : 'Explore iconic scenic landmarks including Haedong Yonggungsa, Igidae, Taejongdae, Hwangnyeongsan, Yongdusan, and Yeongdodaegyo.'}
+                          ? '해동 용궁사, 이기대 해안산책로, 태종대, 황령산전망대, 부산용두산공원, 영도대교, 보수동책방골목 등 부산을 대표하는 핵심 명소를 만나보세요.'
+                          : 'Explore iconic scenic landmarks including Haedong Yonggungsa, Igidae, Taejongdae, Hwangnyeongsan, Yongdusan, Yeongdodaegyo, and Bosudong Book Alley.'}
                       </p>
                     </div>
 

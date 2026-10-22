@@ -4464,6 +4464,97 @@ export const KOREA_TOUR_API_PLACE_DETAILS: Record<string, OpenApiPlaceDetail> = 
       }
     }
   },
+
+  // 49. 보수동책방골목
+  'spot-bosudong': {
+    id: 'spot-bosudong',
+    contentId: '1608633',
+    nameKo: '보수동책방골목',
+    nameEn: 'Bosudong Book Alley',
+    categoryKo: '문화시설',
+    categoryEn: 'Culture/Attraction',
+    districtKo: '중구',
+    districtEn: 'Jung-gu',
+    firstImage: 'https://tong.visitkorea.or.kr/cms/resource/32/4055732_image2_1.png',
+    additionalImages: [
+      'https://tong.visitkorea.or.kr/cms/resource/32/4055732_image3_1.png'
+    ],
+    addressRoadKo: '부산광역시 중구 대청로 67-1',
+    addressRoadEn: '67-1 Daecheong-ro, Jung-gu, Busan',
+    addressLotKo: '부산광역시 중구 보수동1가 124-15',
+    addressLotEn: '124-15 Bosu-dong 1-ga, Jung-gu, Busan',
+    zipcode: '48967',
+    latitude: 35.1031742254,
+    longitude: 129.0272841727,
+    tel: '051-600-6376',
+    telDescKo: '보수동책방골목문화관',
+    overviewKo: '켜켜이 쌓인 빛바랜 책들 사이에서 오래된 시간을 걷는 부산의 상징적인 문화 골목입니다. 6·25전쟁 당시 부산이 임시수도가 되었을 때 피난 온 부부가 박스를 깔고 헌책과 잡지를 팔던 노점에서 시작되었습니다. 전쟁 중 천막 수업을 이어가던 수많은 학생들이 이 골목을 통학로로 이용하며 책방골목이 형성되었고, 오늘날 고서·소설·만화·외국 원서까지 전문 헌책방들이 밀집해 있습니다. 골목 중심길은 평탄하며, 보수동책방골목문화관에 엘리베이터와 장애인 전용 화장실이 완비되어 있습니다.',
+    overviewEn: 'Korea’s oldest secondary bookstore alley dating back to the Korean War refugee era. Features countless vintage books, manga, art literature, and the barrier-free Bosudong Cultural Center.',
+    useTimeKo: '골목 상시 개방 / 문화관 09:00 ~ 18:00 (월요일 휴관)',
+    useTimeEn: 'Alley open daily / Cultural Center 09:00 - 18:00 (Closed on Mondays)',
+    restDateKo: '서점별 상이 (문화관 매주 월요일 휴관)',
+    restDateEn: 'Varies by shop (Cultural Center closed on Mondays)',
+    feeKo: '무료 관람',
+    feeEn: 'Free Admission',
+    homepage: 'http://www.bosubook.com',
+    subwayLine: '1호선',
+    nearestStationNameKo: '자갈치역 (1호선)',
+    nearestStationNameEn: 'Jagalchi Station (Line 1)',
+    recommendedExit: '3번 출구 엘리베이터',
+    walkingDistanceMeters: 550,
+    walkingTimeMinutes: 8,
+    transitTipKo: '지하철 1호선 자갈치역 3번 출구 엘리베이터로 나와 부평깡통시장 방향으로 직진 후 대청로 사거리 횡단보도를 건너면 보수동책방골목 입구와 문화관에 단차 없이 도보 8분 거리입니다.',
+    transitTipEn: 'From Jagalchi Station (Line 1) Exit 3 elevator, walk north along the flat sidewalk past Kkangtong Market, cross Daecheong-ro to Bosudong Book Alley.',
+    apiSource: '한국관광공사 공공데이터포털 KorWithService2 무장애 관광정보',
+    modifiedTime: '2026-10-22',
+    barrierFree: {
+      wheelchair: {
+        available: true,
+        titleKo: '골목 주 통로 평탄 진입 & 문화관 완비',
+        titleEn: 'Flat Main Alley & Cultural Center Access',
+        descKo: '대청로 방면 골목 메인 통로는 평탄한 보도블록으로 단차가 없어 휠체어와 유아차 이동이 가능하며 문화관 1층 로비 경사로가 완비되어 있습니다.',
+        descEn: 'The central alleyway is flat without steps; Bosudong Cultural Center features a ramped ground entrance.',
+        icon: '♿',
+        tag: '골목 중심길 평탄 / 문화관 경사로'
+      },
+      elevator: {
+        available: true,
+        titleKo: '보수동책방골목문화관 전용 엘리베이터',
+        titleEn: 'Cultural Center Passenger Elevator',
+        descKo: '문화관 건물 내 전시실과 어린이도서관, 옥상 하늘공원까지 엘리베이터로 단차 없이 이동할 수 있습니다.',
+        descEn: 'Spacious passenger elevator serving all exhibition floors, library, and rooftop garden.',
+        icon: '🛗',
+        tag: '문화관 전 층 승강기'
+      },
+      restroom: {
+        available: true,
+        titleKo: '장애인 전용 화장실',
+        titleEn: 'Accessible Restroom',
+        descKo: '보수동책방골목문화관 내 남녀 분리 장애인 전용 화장실이 완비되어 있습니다.',
+        descEn: 'Accessible restrooms available inside the Bosudong Cultural Center building.',
+        icon: '🚻',
+        tag: '문화관 장애인 화장실'
+      },
+      route: {
+        available: true,
+        titleKo: '자갈치역~책방골목 평탄 보행로',
+        titleEn: 'Flat Route from Jagalchi Station',
+        descKo: '자갈치역 3번 출구에서 부평깡통시장을 거쳐 책방골목까지 턱 낮춤 횡단보도와 평지 보행로로 이어집니다.',
+        descEn: 'Sidewalks from Jagalchi Station are level with dropped curbs across all crosswalks.',
+        icon: '🛣️',
+        tag: '보행로 턱 낮춤 완비'
+      },
+      stroller: {
+        available: true,
+        titleKo: '유아차 동반 및 어린이도서관',
+        titleEn: 'Stroller Access & Children Library',
+        descKo: '문화관 내에 어린이도서관과 쉼터가 조성되어 있어 아이와 함께 책을 읽으며 쉬어가기 좋습니다.',
+        descEn: 'Children’s library and family lounge inside the Cultural Center.',
+        icon: '👶',
+        tag: '어린이도서관 & 휴게 쉼터'
+      }
+    }
+  },
 };
 
 /**

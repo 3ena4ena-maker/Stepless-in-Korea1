@@ -99,6 +99,9 @@ export function matchTourApiSpotId(titleOrText: string): string | null {
   if (clean.includes('영도대교')) {
     return 'spot-yeongdodaegyo';
   }
+  if (clean.includes('보수동') || clean.includes('책방골목')) {
+    return 'spot-bosudong';
+  }
   if (clean.includes('국제시장')) {
     return 'spot-gukje-market';
   }

@@ -2973,16 +2973,16 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
     category: 'ATTRACTION',
     titleKo: '부산 대표 명소 베스트 가이드',
     titleEn: 'Busan Iconic Attractions Best Guide',
-    subtitleKo: '해동 용궁사, 이기대, 태종대, 황령산전망대, 부산용두산공원, 영도대교 등 푸른 바다와 도심 전망이 어우러진 부산의 핵심 명소 추천 가이드예요.',
-    subtitleEn: 'Explore Busan’s iconic attractions including Haedong Yonggungsa Temple, Igidae Coastal Walk, and Taejongdae Resort Park.',
+    subtitleKo: '해동 용궁사, 이기대, 태종대, 황령산전망대, 부산용두산공원, 영도대교, 보수동책방골목 등 푸른 바다와 도심 전망이 어우러진 부산의 핵심 명소 추천 가이드예요.',
+    subtitleEn: 'Explore Busan’s iconic attractions including Haedong Yonggungsa Temple, Igidae Coastal Walk, Taejongdae Resort Park, and Bosudong Book Alley.',
     durationKo: '명소 탐방',
     durationEn: 'Attraction Visit',
     tagKo: '부산 대표 명소 🌊',
     tagEn: 'Busan Top Attractions 🌊',
     difficultyKo: '쉬움',
     difficultyEn: 'Easy',
-    overallTipKo: '해동 용궁사, 이기대 해안산책로, 태종대, 황령산전망대, 부산용두산공원, 영도대교 등 부산의 대표 명소들은 다누비열차 순환 운행, 에스컬레이터, 완만한 무단차 데크로드 및 평탄한 수변 광장 등 교통약자를 위한 보행 편의와 대중교통 연계가 잘 갖추어져 있습니다.',
-    overallTipEn: 'Busan’s iconic attractions such as Haedong Yonggungsa, Igidae Coastal Walk, and Taejongdae are equipped with accessible paths, scenic trains, and public transit links.',
+    overallTipKo: '해동 용궁사, 이기대 해안산책로, 태종대, 황령산전망대, 부산용두산공원, 영도대교, 보수동책방골목 등 부산의 대표 명소들은 다누비열차 순환 운행, 에스컬레이터, 완만한 무단차 데크로드 및 평탄한 수변 광장 등 교통약자를 위한 보행 편의와 대중교통 연계가 잘 갖추어져 있습니다.',
+    overallTipEn: 'Busan’s iconic attractions such as Haedong Yonggungsa, Igidae Coastal Walk, Taejongdae, and Bosudong Book Alley are equipped with accessible paths, scenic trains, and public transit links.',
     steps: [
       {
         id: 'spot-yonggungsa',
@@ -3097,6 +3097,25 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         icon: 'Waves',
         stationInfoKo: '부산 영도구 태종로 14',
         stationInfoEn: '14 Taejong-ro, Yeongdo-gu, Busan'
+      },
+      {
+        id: 'spot-bosudong',
+        contentId: '1608633',
+        regionId: 'nampo_yeongdo',
+        regionNameKo: '중구 · 원도심',
+        regionNameEn: 'Junggu & Downtown',
+        categoryType: 'CULTURE',
+        time: '헌책 문화골목',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/32/4055732_image2_1.png',
+        titleKo: '보수동책방골목',
+        titleEn: 'Bosudong Book Alley',
+        descKo: '6·25전쟁 피란 시절부터 이어져 온 국내 유일의 헌책방 골목입니다. 좁은 골목길을 따라 고서, 인문학, 소설, 만화 등 수많은 책들이 빼곡하게 쌓여 있어 아날로그 감성과 시간의 향기가 가득하며, 보수동책방골목문화관과 어린이도서관이 함께 자리하고 있습니다.',
+        descEn: 'Korea’s oldest secondary bookstore alley dating back to the Korean War refugee era. Filled with vintage paper aroma, comics, art books, and the Bosudong Cultural Center.',
+        tipKo: '지하철 1호선 자갈치역 3번 출구 엘리베이터로 나와 부평깡통시장을 지나 평탄한 대청로 보도를 따라가면 계단 없이 골목 입구와 문화관에 도착할 수 있습니다. 골목 중심길은 평지이며 문화관 내에 엘리베이터와 장애인 화장실이 완비되어 있습니다.',
+        tipEn: 'Take Subway Line 1 Jagalchi Station Exit 3 elevator, walk along the flat sidewalk past Kkangtong Market to Bosudong Book Alley. The Cultural Center is equipped with elevators and accessible restrooms.',
+        icon: 'BookOpen',
+        stationInfoKo: '부산 중구 대청로 67-1',
+        stationInfoEn: '67-1 Daecheong-ro, Jung-gu, Busan'
       }
     ]
   }
