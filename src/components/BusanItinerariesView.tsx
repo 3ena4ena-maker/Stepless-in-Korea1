@@ -2137,7 +2137,7 @@ export default function BusanItinerariesView({
   const activeCategoryConfig = categoriesConfig.find(c => c.id === activeCategory);
 
   return (
-    <div className={`${activeSection === 'SELECTION' || activeSection === 'SCHEDULE' ? 'space-y-1 sm:space-y-2' : 'space-y-6 sm:space-y-8'} text-left animate-fade-in max-w-5xl mx-auto`} id="busan-itineraries-container">
+    <div className={`${activeSection === 'SELECTION' || activeSection === 'SCHEDULE' ? 'space-y-1 sm:space-y-2' : 'space-y-6 sm:space-y-8'} text-left animate-fade-in max-w-6xl mx-auto`} id="busan-itineraries-container">
       {/* Dynamic Seagull & Sea Styles Injector */}
       <style>{`
         @keyframes subtle-boat {
@@ -5579,8 +5579,8 @@ case 'EXPERIENCE': {
           </div>
 
           {transitSection === 'SUBMENU' && (
-            <div className="space-y-8 max-w-4xl mx-auto">
-              {/* SPECIAL BENEFITS / TRANSIT TIPS HEADER SECTION (Style 1: Centered Brand Title) */}
+            <div className="space-y-8 max-w-6xl mx-auto">
+              {/* SPECIAL BENEFITS / TRANSIT TIPS HEADER SECTION */}
               <div className="text-center py-4 sm:py-6 max-w-3xl mx-auto space-y-2 overflow-hidden">
                 <h1 className="text-base xs:text-lg min-[410px]:text-xl sm:text-3xl font-black text-slate-900 tracking-tight font-heading leading-tight whitespace-nowrap">
                   {language === 'KR' 
@@ -5589,413 +5589,290 @@ case 'EXPERIENCE': {
                 </h1>
               </div>
 
-              {/* CARD GRID (Style 1: Minimalist outline illustrations with numbers) */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4 lg:gap-3.5 xl:gap-4">
+              {/* CARD GRID: Clean, unified cards with aligned emoji illustrations & details buttons */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4 items-stretch">
                 {/* CARD 01: 어린이 대중교통 요금 무료 */}
                 <div
                   onClick={() => navigateToSubPage('child-free')}
-                  className="relative group bg-white p-3 sm:p-5 lg:p-4 xl:p-6 rounded-2xl sm:rounded-3xl border-2 border-slate-900 hover:border-[#004481] cursor-pointer shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,68,129,1)] transition-all duration-300 text-center flex flex-col justify-between min-h-[235px] sm:min-h-[380px]"
+                  className="relative group bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 hover:border-[#8EA85E] cursor-pointer shadow-2xs hover:shadow-md transition-all duration-200 text-center flex flex-col justify-between"
                 >
                   <div>
                     {/* Number Badge */}
-                    <div className="relative sm:absolute mx-auto sm:mx-0 sm:top-4 sm:left-4 w-5.5 h-5.5 sm:w-7 sm:h-7 bg-slate-900 text-white rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black tracking-tight mb-1.5 sm:mb-0 shrink-0">
+                    <div className="absolute top-3.5 left-3.5 w-6 h-6 rounded-full bg-slate-100 group-hover:bg-[#8EA85E]/15 text-slate-600 group-hover:text-[#526b2b] flex items-center justify-center text-[11px] font-black tracking-tight transition-colors">
                       01
                     </div>
 
-                    {/* Title */}
-                    <div className="mt-0 sm:mt-4">
-                      <h3 className="text-[12px] min-[370px]:text-[13px] sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 tracking-tight leading-tight">
-                        {language === 'KR' ? (
-                          <>
-                            <span className="sm:hidden">어린이 요금 무료</span>
-                            <span className="hidden sm:inline">모든 어린이 무료 혜택</span>
-                          </>
-                        ) : (
-                          <>
-                            <span className="sm:hidden">Free Child Fare</span>
-                            <span className="hidden sm:inline">All Children Free Benefit</span>
-                          </>
-                        )}
+                    {/* Title (Unified Height) */}
+                    <div className="h-11 sm:h-12 flex items-center justify-center text-center mt-3 sm:mt-2 px-1">
+                      <h3 className="text-xs min-[370px]:text-[13px] sm:text-sm xl:text-base font-extrabold text-slate-900 tracking-tight leading-snug">
+                        {language === 'KR' ? '모든 어린이 무료 혜택' : 'All Children Free Benefit'}
                       </h3>
                     </div>
-                  </div>
 
-                  {/* Minimalist Line-Art Illustration */}
-                  <div className="my-2 sm:my-6 flex justify-center items-center">
-                    <div className="p-2 sm:p-4 bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200 group-hover:bg-blue-50 group-hover:border-blue-200 transition-colors">
-                      <svg className="w-10 h-10 sm:w-20 sm:h-20 lg:w-16 lg:h-16 xl:w-20 xl:h-20 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="50" cy="45" r="22" />
-                        <path d="M28 45c0-10 10-18 22-18s22 8 22 18" />
-                        <path d="M50 27v-5M44 22h12" />
-                        <circle cx="42" cy="42" r="2" fill="currentColor" />
-                        <circle cx="58" cy="42" r="2" fill="currentColor" />
-                        <path d="M44 51c2 4 10 4 12 0" />
-                        <circle cx="36" cy="48" r="1.5" fill="currentColor" opacity="0.5" />
-                        <circle cx="64" cy="48" r="1.5" fill="currentColor" opacity="0.5" />
-                        <path d="M25 80c5-12 12-13 25-13s20 1 25 13" />
-                        <path d="M18 25l2 2m0-2l-2 2M82 25l2 2m0-2l-2 2" strokeWidth="1" />
-                        <path d="M50 12l1 3h3l-2.5 2 1 3-2.5-2-2.5 2 1-3-2.5-2h3z" strokeWidth="1" fill="currentColor" />
-                      </svg>
+                    {/* Line-Art Illustration (Unified Frame) */}
+                    <div className="h-20 sm:h-24 flex items-center justify-center my-2 sm:my-3">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:bg-[#8EA85E]/10 group-hover:border-[#8EA85E]/30 transition-all duration-200">
+                        <svg className="w-10 h-10 sm:w-13 sm:h-13 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="50" cy="45" r="22" />
+                          <path d="M28 45c0-10 10-18 22-18s22 8 22 18" />
+                          <path d="M50 27v-5M44 22h12" />
+                          <circle cx="42" cy="42" r="2" fill="currentColor" />
+                          <circle cx="58" cy="42" r="2" fill="currentColor" />
+                          <path d="M44 51c2 4 10 4 12 0" />
+                          <circle cx="36" cy="48" r="1.5" fill="currentColor" opacity="0.5" />
+                          <circle cx="64" cy="48" r="1.5" fill="currentColor" opacity="0.5" />
+                          <path d="M25 80c5-12 12-13 25-13s20 1 25 13" />
+                          <path d="M18 25l2 2m0-2l-2 2M82 25l2 2m0-2l-2 2" strokeWidth="1" />
+                          <path d="M50 12l1 3h3l-2.5 2 1 3-2.5-2-2.5 2 1-3-2.5-2h3z" strokeWidth="1" fill="currentColor" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Subtext (Unified Height) */}
+                    <div className="h-14 sm:h-16 flex items-center justify-center text-center px-1 my-1">
+                      <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-relaxed">
+                        {language === 'KR'
+                          ? '만 6세~12세 요금 0원 무료 혜택 등록 및 교통카드 사용법 상세 안내'
+                          : 'Registering for ₩0 fares & using transit cards for kids aged 6 to 12.'}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Subtext */}
-                  <div className="space-y-2 sm:space-y-4">
-                    <p className="text-[10px] min-[370px]:text-[11px] sm:text-xs xl:text-sm text-slate-500 font-bold leading-tight sm:leading-relaxed">
-                      {language === 'KR' ? (
-                        <>
-                          <span className="sm:hidden">만 6~12세 0원<br />(카드 등록 필수)</span>
-                          <span className="hidden sm:inline">만 6세~12세 요금 0원 무료 혜택 등록 및 교통카드 사용법 상세 안내</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="sm:hidden">Ages 6-12 Free<br />(Card required)</span>
-                          <span className="hidden sm:inline">Registering for ₩0 fares & using transit cards for kids aged 6 to 12.</span>
-                        </>
-                      )}
-                    </p>
-                    <div className="inline-flex items-center justify-center gap-1 sm:gap-2 w-full bg-[#8EA85E] hover:bg-[#7b944f] text-white border-2 border-slate-900 text-[11px] sm:text-xs xl:text-sm font-black py-1.5 sm:py-2.5 px-2 sm:px-3 rounded-lg sm:rounded-xl shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] sm:shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-all duration-200 group-hover:scale-[1.02]">
-                      <span>
-                        {language === 'KR' ? (
-                          <>
-                            <span className="sm:hidden">상세 정보</span>
-                            <span className="hidden sm:inline">상세 가이드 보기</span>
-                          </>
-                        ) : (
-                          <>
-                            <span className="sm:hidden">Guide</span>
-                            <span className="hidden sm:inline">View Full Guide</span>
-                          </>
-                        )}
-                      </span>
-                      <span className="text-xs sm:text-sm">➔</span>
+                  {/* Clean Simple Details Button (No Arrow) */}
+                  <div className="w-full mt-2 sm:mt-3">
+                    <div className="w-full py-2 sm:py-2.5 px-3 rounded-xl bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs sm:text-sm transition-all duration-200 text-center shadow-2xs">
+                      {language === 'KR' ? '상세보기' : 'Details'}
                     </div>
                   </div>
                 </div>
 
-                {/* CARD 02: 부산 시내버스 모바일 QR 간편결제 (Zero Pay 글로벌 연동) */}
+                {/* CARD 02: 부산 버스 QR 간편결제 */}
                 <div
                   id="card-bus-qr"
                   onClick={() => navigateToSubPage('bus-qr')}
-                  className="relative group bg-white p-3 sm:p-5 lg:p-4 xl:p-6 rounded-2xl sm:rounded-3xl border-2 border-slate-900 hover:border-[#004481] cursor-pointer shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,68,129,1)] transition-all duration-300 text-center flex flex-col justify-between min-h-[235px] sm:min-h-[380px]"
+                  className="relative group bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 hover:border-[#8EA85E] cursor-pointer shadow-2xs hover:shadow-md transition-all duration-200 text-center flex flex-col justify-between"
                 >
                   <div>
                     {/* Number Badge */}
-                    <div className="relative sm:absolute mx-auto sm:mx-0 sm:top-4 sm:left-4 w-5.5 h-5.5 sm:w-7 sm:h-7 bg-slate-900 text-white rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black tracking-tight mb-1.5 sm:mb-0 shrink-0">
+                    <div className="absolute top-3.5 left-3.5 w-6 h-6 rounded-full bg-slate-100 group-hover:bg-[#8EA85E]/15 text-slate-600 group-hover:text-[#526b2b] flex items-center justify-center text-[11px] font-black tracking-tight transition-colors">
                       02
                     </div>
 
-                    {/* Title */}
-                    <div className="mt-0 sm:mt-4">
-                      <h3 className="text-[12px] min-[370px]:text-[13px] sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 tracking-tight leading-tight">
-                        {language === 'KR' ? (
-                          <>
-                            <span className="sm:hidden">버스 QR 간편결제</span>
-                            <span className="hidden sm:inline">부산 버스 QR 간편결제</span>
-                          </>
-                        ) : (
-                          <>
-                            <span className="sm:hidden">Bus QR Pay</span>
-                            <span className="hidden sm:inline">Busan Bus QR Pay</span>
-                          </>
-                        )}
+                    {/* Title (Unified Height) */}
+                    <div className="h-11 sm:h-12 flex items-center justify-center text-center mt-3 sm:mt-2 px-1">
+                      <h3 className="text-xs min-[370px]:text-[13px] sm:text-sm xl:text-base font-extrabold text-slate-900 tracking-tight leading-snug">
+                        {language === 'KR' ? '부산 버스 QR 간편결제' : 'Busan Bus QR Pay'}
                       </h3>
                     </div>
-                  </div>
 
-                  {/* Minimalist Line-Art Illustration (Smartphone QR scanner) */}
-                  <div className="my-2 sm:my-6 flex justify-center items-center">
-                    <div className="p-2 sm:p-4 bg-sky-50/70 rounded-xl sm:rounded-2xl border border-sky-200 group-hover:bg-sky-100/80 transition-colors">
-                      <svg className="w-10 h-10 sm:w-20 sm:h-20 lg:w-16 lg:h-16 xl:w-20 xl:h-20 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        {/* Smartphone body */}
-                        <rect x="28" y="14" width="44" height="72" rx="8" strokeWidth="2" />
-                        <line x1="44" y1="20" x2="56" y2="20" strokeWidth="1.5" />
-                        <circle cx="50" cy="79" r="2.5" fill="currentColor" />
-                        {/* Screen */}
-                        <rect x="33" y="25" width="34" height="48" rx="3" fill="#ffffff" strokeWidth="1" stroke="#cbd5e1" />
-                        {/* QR Code finder corners */}
-                        <rect x="37" y="29" width="10" height="10" rx="1.5" strokeWidth="1.5" stroke="#004481" />
-                        <rect x="40" y="32" width="4" height="4" fill="#004481" />
-                        <rect x="53" y="29" width="10" height="10" rx="1.5" strokeWidth="1.5" stroke="#004481" />
-                        <rect x="56" y="32" width="4" height="4" fill="#004481" />
-                        <rect x="37" y="45" width="10" height="10" rx="1.5" strokeWidth="1.5" stroke="#004481" />
-                        <rect x="40" y="48" width="4" height="4" fill="#004481" />
-                        {/* QR code data bits */}
-                        <rect x="53" y="45" width="3" height="3" fill="#004481" />
-                        <rect x="60" y="45" width="3" height="3" fill="#004481" />
-                        <rect x="56" y="52" width="7" height="3" fill="#004481" />
-                        {/* Scan laser line */}
-                        <line x1="31" y1="41" x2="69" y2="41" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="2 1.5" />
-                        {/* Signal waves on top right */}
-                        <path d="M76 34c3 3 3 8 0 11" stroke="#004481" strokeWidth="1.5" />
-                        <path d="M81 30c5 5 5 16 0 21" stroke="#004481" strokeWidth="1.5" />
-                      </svg>
+                    {/* Line-Art Illustration (Unified Frame) */}
+                    <div className="h-20 sm:h-24 flex items-center justify-center my-2 sm:my-3">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:bg-[#8EA85E]/10 group-hover:border-[#8EA85E]/30 transition-all duration-200">
+                        <svg className="w-10 h-10 sm:w-13 sm:h-13 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="28" y="14" width="44" height="72" rx="8" strokeWidth="2" />
+                          <line x1="44" y1="20" x2="56" y2="20" strokeWidth="1.5" />
+                          <circle cx="50" cy="79" r="2.5" fill="currentColor" />
+                          <rect x="33" y="25" width="34" height="48" rx="3" fill="#ffffff" strokeWidth="1" stroke="#cbd5e1" />
+                          <rect x="37" y="29" width="10" height="10" rx="1.5" strokeWidth="1.5" stroke="#004481" />
+                          <rect x="40" y="32" width="4" height="4" fill="#004481" />
+                          <rect x="53" y="29" width="10" height="10" rx="1.5" strokeWidth="1.5" stroke="#004481" />
+                          <rect x="56" y="32" width="4" height="4" fill="#004481" />
+                          <rect x="37" y="45" width="10" height="10" rx="1.5" strokeWidth="1.5" stroke="#004481" />
+                          <rect x="40" y="48" width="4" height="4" fill="#004481" />
+                          <rect x="53" y="45" width="3" height="3" fill="#004481" />
+                          <rect x="60" y="45" width="3" height="3" fill="#004481" />
+                          <rect x="56" y="52" width="7" height="3" fill="#004481" />
+                          <line x1="31" y1="41" x2="69" y2="41" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="2 1.5" />
+                          <path d="M76 34c3 3 3 8 0 11" stroke="#004481" strokeWidth="1.5" />
+                          <path d="M81 30c5 5 5 16 0 21" stroke="#004481" strokeWidth="1.5" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Subtext (Unified Height) */}
+                    <div className="h-14 sm:h-16 flex items-center justify-center text-center px-1 my-1">
+                      <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-relaxed">
+                        {language === 'KR'
+                          ? '현금·카드 없이 알리·위챗·제로페이 등 차내 QR 스캔으로 1,700원 간편 결제'
+                          : 'No cash or card needed: Scan Zero Pay QR with Alipay, WeChat Pay (₩1,700).'}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Subtext */}
-                  <div className="space-y-2 sm:space-y-4">
-                    <p className="text-[10px] min-[370px]:text-[11px] sm:text-xs xl:text-sm text-slate-500 font-bold leading-tight sm:leading-relaxed">
-                      {language === 'KR' ? (
-                        <>
-                          <span className="sm:hidden">현금·카드 없이 탑승<br />차내 제로페이 QR 스캔 (1,700원)</span>
-                          <span className="hidden sm:inline">현금·카드 없이 알리·위챗·제로페이 등 차내 QR 스캔으로 1,700원 간편 결제</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="sm:hidden">No cash, no card<br />Scan Zero Pay QR (₩1,700)</span>
-                          <span className="hidden sm:inline">No cash or card needed: Scan Zero Pay QR with Alipay, WeChat Pay, PayPay (₩1,700)</span>
-                        </>
-                      )}
-                    </p>
-                    <div className="inline-flex items-center justify-center gap-1 sm:gap-2 w-full bg-[#8EA85E] hover:bg-[#7b944f] text-white border-2 border-slate-900 text-[11px] sm:text-xs xl:text-sm font-black py-1.5 sm:py-2.5 px-2 sm:px-3 rounded-lg sm:rounded-xl shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] sm:shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-all duration-200 group-hover:scale-[1.02]">
-                      <span>
-                        {language === 'KR' ? (
-                          <>
-                            <span className="sm:hidden">상세 정보</span>
-                            <span className="hidden sm:inline">상세 가이드 보기</span>
-                          </>
-                        ) : (
-                          <>
-                            <span className="sm:hidden">Guide</span>
-                            <span className="hidden sm:inline">View Full Guide</span>
-                          </>
-                        )}
-                      </span>
-                      <span className="text-xs sm:text-sm">➔</span>
+                  {/* Clean Simple Details Button (No Arrow) */}
+                  <div className="w-full mt-2 sm:mt-3">
+                    <div className="w-full py-2 sm:py-2.5 px-3 rounded-xl bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs sm:text-sm transition-all duration-200 text-center shadow-2xs">
+                      {language === 'KR' ? '상세보기' : 'Details'}
                     </div>
                   </div>
                 </div>
 
-                {/* CARD 03: 부산 지하철 & 무료 환승 제도 (기존 CARD 02) */}
+                {/* CARD 03: 부산 대중교통 환승 혜택 */}
                 <div
-                  className="relative group bg-white p-3 sm:p-5 lg:p-4 xl:p-6 rounded-2xl sm:rounded-3xl border-2 border-slate-900 hover:border-[#004481] shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-all duration-300 text-center flex flex-col justify-between min-h-[235px] sm:min-h-[380px]"
+                  onClick={() => {
+                    document.getElementById('transfer-rules-section')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="relative group bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 hover:border-[#8EA85E] cursor-pointer shadow-2xs hover:shadow-md transition-all duration-200 text-center flex flex-col justify-between"
                 >
                   <div>
                     {/* Number Badge */}
-                    <div className="relative sm:absolute mx-auto sm:mx-0 sm:top-4 sm:left-4 w-5.5 h-5.5 sm:w-7 sm:h-7 bg-slate-900 text-white rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black tracking-tight mb-1.5 sm:mb-0 shrink-0">
+                    <div className="absolute top-3.5 left-3.5 w-6 h-6 rounded-full bg-slate-100 group-hover:bg-[#8EA85E]/15 text-slate-600 group-hover:text-[#526b2b] flex items-center justify-center text-[11px] font-black tracking-tight transition-colors">
                       03
                     </div>
 
-                    {/* Title */}
-                    <div className="mt-0 sm:mt-4">
-                      <h3 className="text-[12px] min-[370px]:text-[13px] sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 tracking-tight leading-tight">
-                        {language === 'KR' ? (
-                          <>
-                            <span className="sm:hidden">대중교통 무료 환승</span>
-                            <span className="hidden sm:inline">부산 대중교통 환승 혜택</span>
-                          </>
-                        ) : (
-                          <>
-                            <span className="sm:hidden">Free Transfer</span>
-                            <span className="hidden sm:inline">Busan Transit Transfer Benefits</span>
-                          </>
-                        )}
+                    {/* Title (Unified Height) */}
+                    <div className="h-11 sm:h-12 flex items-center justify-center text-center mt-3 sm:mt-2 px-1">
+                      <h3 className="text-xs min-[370px]:text-[13px] sm:text-sm xl:text-base font-extrabold text-slate-900 tracking-tight leading-snug">
+                        {language === 'KR' ? '부산 대중교통 환승 혜택' : 'Busan Transit Transfer Benefits'}
                       </h3>
                     </div>
-                  </div>
 
-                  {/* Minimalist Line-Art Illustration */}
-                  <div className="my-2 sm:my-6 flex justify-center items-center">
-                    <div className="p-2 sm:p-4 bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200 transition-colors">
-                      <svg className="w-10 h-10 sm:w-20 sm:h-20 lg:w-16 lg:h-16 xl:w-20 xl:h-20 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M15 80V40c0-20 15-30 35-30s35 10 35 30v40" strokeDasharray="2 2" stroke="#cbd5e1" />
-                        <rect x="25" y="30" width="50" height="42" rx="10" />
-                        <rect x="30" y="36" width="40" height="18" rx="4" />
-                        <circle cx="37" cy="62" r="3" fill="currentColor" />
-                        <circle cx="63" cy="62" r="3" fill="currentColor" />
-                        <path d="M10 88h80M25 88l-5 6M75 88l5 6" />
-                        <path d="M45 62h10" />
-                        <path d="M50 30V18m-10 0h20" />
-                      </svg>
+                    {/* Line-Art Illustration (Unified Frame with centered SVG) */}
+                    <div className="h-20 sm:h-24 flex items-center justify-center my-2 sm:my-3">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:bg-[#8EA85E]/10 group-hover:border-[#8EA85E]/30 transition-all duration-200">
+                        <svg className="w-10 h-10 sm:w-13 sm:h-13 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                          <g transform="translate(0, -6)">
+                            <path d="M15 80V40c0-20 15-30 35-30s35 10 35 30v40" strokeDasharray="2 2" stroke="#cbd5e1" />
+                            <rect x="25" y="26" width="50" height="42" rx="10" />
+                            <rect x="30" y="32" width="40" height="18" rx="4" />
+                            <circle cx="37" cy="58" r="3" fill="currentColor" />
+                            <circle cx="63" cy="58" r="3" fill="currentColor" />
+                            <path d="M10 84h80M25 84l-5 6M75 84l5 6" />
+                            <path d="M45 58h10" />
+                            <path d="M50 26V14m-10 0h20" />
+                          </g>
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Subtext (Unified Height) */}
+                    <div className="h-14 sm:h-16 flex items-center justify-center text-center px-1 my-1">
+                      <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-relaxed">
+                        {language === 'KR'
+                          ? '30분 이내 무료 환승 및 4대 지하철 노선 거점 주요 수칙 가이드'
+                          : 'Free transfers within 30 minutes & key stations overview for 4 lines.'}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Subtext */}
-                  <div>
-                    <p className="text-[10px] min-[370px]:text-[11px] sm:text-xs xl:text-sm text-slate-500 font-bold leading-tight sm:leading-relaxed mb-2 sm:mb-4">
-                      {language === 'KR' ? (
-                        <>
-                          <span className="sm:hidden">30분 내 무료 환승<br />(최대 3회 적용)</span>
-                          <span className="hidden sm:inline">30분 이내 무료 환승 및 4대 지하철 노선 거점 주요 수칙 가이드</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="sm:hidden">Within 30 mins<br />(Max 3 transfers)</span>
-                          <span className="hidden sm:inline">Free transfers within 30 minutes & key stations overview for 4 lines.</span>
-                        </>
-                      )}
-                    </p>
-                    <span className="text-[9.5px] sm:text-[10px] bg-slate-100 text-slate-600 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full font-black uppercase">
-                      {language === 'KR' ? (
-                        <>
-                          <span className="sm:hidden">상세 정보</span>
-                          <span className="hidden sm:inline">아래 상세 안내 포함</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="sm:hidden">Details</span>
-                          <span className="hidden sm:inline">Detailed below</span>
-                        </>
-                      )}
-                    </span>
+                  {/* Clean Simple Details Button (No Arrow) */}
+                  <div className="w-full mt-2 sm:mt-3">
+                    <div className="w-full py-2 sm:py-2.5 px-3 rounded-xl bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs sm:text-sm transition-all duration-200 text-center shadow-2xs">
+                      {language === 'KR' ? '상세보기' : 'Details'}
+                    </div>
                   </div>
                 </div>
 
-                {/* CARD 04: 버스 휴대품 반입 기준 (기존 CARD 03) */}
+                {/* CARD 04: 버스 휴대품 반입 기준 */}
                 <div
-                  className="relative group bg-white p-3 sm:p-5 lg:p-4 xl:p-6 rounded-2xl sm:rounded-3xl border-2 border-slate-900 hover:border-[#004481] shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-all duration-300 text-center flex flex-col justify-between min-h-[235px] sm:min-h-[380px]"
+                  onClick={() => {
+                    document.getElementById('bus-luggage-rules-section')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="relative group bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 hover:border-[#8EA85E] cursor-pointer shadow-2xs hover:shadow-md transition-all duration-200 text-center flex flex-col justify-between"
                 >
                   <div>
                     {/* Number Badge */}
-                    <div className="relative sm:absolute mx-auto sm:mx-0 sm:top-4 sm:left-4 w-5.5 h-5.5 sm:w-7 sm:h-7 bg-slate-900 text-white rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black tracking-tight mb-1.5 sm:mb-0 shrink-0">
+                    <div className="absolute top-3.5 left-3.5 w-6 h-6 rounded-full bg-slate-100 group-hover:bg-[#8EA85E]/15 text-slate-600 group-hover:text-[#526b2b] flex items-center justify-center text-[11px] font-black tracking-tight transition-colors">
                       04
                     </div>
 
-                    {/* Title */}
-                    <div className="mt-0 sm:mt-4">
-                      <h3 className="text-[12px] min-[370px]:text-[13px] sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 tracking-tight leading-tight">
-                        {language === 'KR' ? (
-                          <>
-                            <span className="sm:hidden">버스 휴대품 기준</span>
-                            <span className="hidden sm:inline">버스 휴대품 반입 기준</span>
-                          </>
-                        ) : (
-                          <>
-                            <span className="sm:hidden">Bus Carry-on Limits</span>
-                            <span className="hidden sm:inline">Bus Carry-on Limits</span>
-                          </>
-                        )}
+                    {/* Title (Unified Height) */}
+                    <div className="h-11 sm:h-12 flex items-center justify-center text-center mt-3 sm:mt-2 px-1">
+                      <h3 className="text-xs min-[370px]:text-[13px] sm:text-sm xl:text-base font-extrabold text-slate-900 tracking-tight leading-snug">
+                        {language === 'KR' ? '버스 휴대품 반입 기준' : 'Bus Carry-on Limits'}
                       </h3>
                     </div>
-                  </div>
 
-                  {/* Minimalist Line-Art Illustration */}
-                  <div className="my-2 sm:my-6 flex justify-center items-center">
-                    <div className="p-2 sm:p-4 bg-slate-50 rounded-xl sm:rounded-2xl border border-slate-200 transition-colors">
-                      <svg className="w-10 h-10 sm:w-20 sm:h-20 lg:w-16 lg:h-16 xl:w-20 xl:h-20 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="28" y="32" width="44" height="48" rx="6" />
-                        <path d="M42 32V20h16v12" />
-                        <path d="M34 44h32M34 54h32M34 64h32" strokeWidth="1" strokeDasharray="1 1" />
-                        <circle cx="36" cy="83" r="3" />
-                        <circle cx="64" cy="83" r="3" />
-                        <path d="M64 40l6 10-4 2-6-10z" fill="currentColor" opacity="0.1" />
-                        <path d="M18 32v48M14 32h8M14 80h8" strokeWidth="1" stroke="#94a3b8" />
-                        <text x="8" y="60" fontSize="8" fill="#64748b" fontWeight="bold" stroke="none" fontFamily="monospace">H</text>
-                        <path d="M28 90h44M28 86v8M72 86v8" strokeWidth="1" stroke="#94a3b8" />
-                        <text x="46" y="98" fontSize="8" fill="#64748b" fontWeight="bold" stroke="none" fontFamily="monospace">W</text>
-                      </svg>
+                    {/* Line-Art Illustration (Unified Frame with centered SVG) */}
+                    <div className="h-20 sm:h-24 flex items-center justify-center my-2 sm:my-3">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:bg-[#8EA85E]/10 group-hover:border-[#8EA85E]/30 transition-all duration-200">
+                        <svg className="w-10 h-10 sm:w-13 sm:h-13 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                          <g transform="translate(0, -4)">
+                            <rect x="28" y="28" width="44" height="48" rx="6" />
+                            <path d="M42 28V16h16v12" />
+                            <path d="M34 40h32M34 50h32M34 60h32" strokeWidth="1" strokeDasharray="1 1" />
+                            <circle cx="36" cy="79" r="3" />
+                            <circle cx="64" cy="79" r="3" />
+                            <path d="M64 36l6 10-4 2-6-10z" fill="currentColor" opacity="0.1" />
+                            <path d="M18 28v48M14 28h8M14 76h8" strokeWidth="1" stroke="#94a3b8" />
+                            <text x="8" y="56" fontSize="8" fill="#64748b" fontWeight="bold" stroke="none" fontFamily="monospace">H</text>
+                            <path d="M28 86h44M28 82v8M72 82v8" strokeWidth="1" stroke="#94a3b8" />
+                            <text x="46" y="94" fontSize="8" fill="#64748b" fontWeight="bold" stroke="none" fontFamily="monospace">W</text>
+                          </g>
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Subtext (Unified Height) */}
+                    <div className="h-14 sm:h-16 flex items-center justify-center text-center px-1 my-1">
+                      <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-relaxed">
+                        {language === 'KR'
+                          ? '시내버스 내 20kg 미만, 50×40×20cm 규격 등 승차 허용 수하물 상세'
+                          : 'Allowed carry-on bag sizes (under 20kg, 50×40×20cm) guidelines.'}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Subtext */}
-                  <div>
-                    <p className="text-[10px] min-[370px]:text-[11px] sm:text-xs xl:text-sm text-slate-500 font-bold leading-tight sm:leading-relaxed mb-2 sm:mb-4">
-                      {language === 'KR' ? (
-                        <>
-                          <span className="sm:hidden">20kg 미만 제한<br />50×40×20cm 규격</span>
-                          <span className="hidden sm:inline">시내버스 내 20kg 미만, 50×40×20cm 규격 등 승차 허용 수하물 상세</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="sm:hidden">Under 20kg Limit<br />50×40×20cm Size</span>
-                          <span className="hidden sm:inline">Allowed carry-on bag sizes (under 20kg, 50x40x20cm) guidelines.</span>
-                        </>
-                      )}
-                    </p>
-                    <span className="text-[9.5px] sm:text-[10px] bg-slate-100 text-slate-600 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full font-black uppercase">
-                      {language === 'KR' ? (
-                        <>
-                          <span className="sm:hidden">상세 정보</span>
-                          <span className="hidden sm:inline">아래 상세 안내 포함</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="sm:hidden">Details</span>
-                          <span className="hidden sm:inline">Detailed below</span>
-                        </>
-                      )}
-                    </span>
+                  {/* Clean Simple Details Button (No Arrow) */}
+                  <div className="w-full mt-2 sm:mt-3">
+                    <div className="w-full py-2 sm:py-2.5 px-3 rounded-xl bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs sm:text-sm transition-all duration-200 text-center shadow-2xs">
+                      {language === 'KR' ? '상세보기' : 'Details'}
+                    </div>
                   </div>
                 </div>
 
-                {/* CARD 05: 부산 택시 이용 팁 & 호출 앱 (기존 CARD 04, 모바일에서는 하단 2열 전폭 배치로 최적화) */}
+                {/* CARD 05: 부산 택시 이용 & 호출 팁 */}
                 <div
                   onClick={() => navigateToSubPage('taxi')}
-                  className="col-span-2 sm:col-span-1 md:col-span-1 lg:col-span-1 relative group bg-white p-3 sm:p-5 lg:p-4 xl:p-6 rounded-2xl sm:rounded-3xl border-2 border-slate-900 hover:border-[#004481] cursor-pointer shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,68,129,1)] transition-all duration-300 text-center flex flex-col justify-between min-h-[190px] sm:min-h-[380px]"
+                  className="relative group bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 hover:border-[#8EA85E] cursor-pointer shadow-2xs hover:shadow-md transition-all duration-200 text-center flex flex-col justify-between"
                 >
                   <div>
                     {/* Number Badge */}
-                    <div className="relative sm:absolute mx-auto sm:mx-0 sm:top-4 sm:left-4 w-5.5 h-5.5 sm:w-7 sm:h-7 bg-slate-900 text-white rounded-full flex items-center justify-center text-[11px] sm:text-xs font-black tracking-tight mb-1.5 sm:mb-0 shrink-0">
+                    <div className="absolute top-3.5 left-3.5 w-6 h-6 rounded-full bg-slate-100 group-hover:bg-[#8EA85E]/15 text-slate-600 group-hover:text-[#526b2b] flex items-center justify-center text-[11px] font-black tracking-tight transition-colors">
                       05
                     </div>
 
-                    {/* Title */}
-                    <div className="mt-0 sm:mt-4">
-                      <h3 className="text-[12px] min-[370px]:text-[13px] sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 tracking-tight leading-tight">
-                        {language === 'KR' ? (
-                          <>
-                            <span className="sm:hidden">부산 택시 이용 팁</span>
-                            <span className="hidden sm:inline">부산 택시 이용 & 호출 팁</span>
-                          </>
-                        ) : (
-                          <>
-                            <span className="sm:hidden">Busan Taxi Tips</span>
-                            <span className="hidden sm:inline">Busan Taxi & Calling Apps</span>
-                          </>
-                        )}
+                    {/* Title (Unified Height) */}
+                    <div className="h-11 sm:h-12 flex items-center justify-center text-center mt-3 sm:mt-2 px-1">
+                      <h3 className="text-xs min-[370px]:text-[13px] sm:text-sm xl:text-base font-extrabold text-slate-900 tracking-tight leading-snug">
+                        {language === 'KR' ? '부산 택시 이용 & 호출 팁' : 'Busan Taxi & Calling Apps'}
                       </h3>
                     </div>
-                  </div>
 
-                  {/* Minimalist Line-Art Illustration */}
-                  <div className="my-2 sm:my-6 flex justify-center items-center">
-                    <div className="p-2 sm:p-4 bg-amber-50/60 rounded-xl sm:rounded-2xl border border-amber-200 group-hover:bg-amber-100/80 transition-colors">
-                      <svg className="w-10 h-10 sm:w-20 sm:h-20 lg:w-16 lg:h-16 xl:w-20 xl:h-20 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M42 22h16v6H42z" fill="#f59e0b" stroke="#1e293b" strokeWidth="1.5" />
-                        <text x="44" y="27" fontSize="5" fontWeight="bold" fill="#1e293b" stroke="none">TAXI</text>
-                        <path d="M25 45l8-14h34l8 14" strokeWidth="2" />
-                        <rect x="18" y="45" width="64" height="28" rx="6" fill="#fef3c7" stroke="#1e293b" strokeWidth="2" />
-                        <rect x="30" y="34" width="40" height="11" rx="2" fill="#ffffff" stroke="#1e293b" strokeWidth="1.5" />
-                        <circle cx="26" cy="58" r="4" fill="#fbbf24" stroke="#1e293b" strokeWidth="1.5" />
-                        <circle cx="74" cy="58" r="4" fill="#fbbf24" stroke="#1e293b" strokeWidth="1.5" />
-                        <path d="M38 58h24M38 62h24" stroke="#1e293b" strokeWidth="1.5" />
-                        <circle cx="28" cy="73" r="5" fill="#1e293b" />
-                        <circle cx="72" cy="73" r="5" fill="#1e293b" />
-                      </svg>
+                    {/* Line-Art Illustration (Unified Frame with centered SVG) */}
+                    <div className="h-20 sm:h-24 flex items-center justify-center my-2 sm:my-3">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:bg-[#8EA85E]/10 group-hover:border-[#8EA85E]/30 transition-all duration-200">
+                        <svg className="w-10 h-10 sm:w-13 sm:h-13 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                          <g transform="translate(0, -3)">
+                            <path d="M42 22h16v6H42z" fill="#f59e0b" stroke="#1e293b" strokeWidth="1.5" />
+                            <text x="44" y="27" fontSize="5" fontWeight="bold" fill="#1e293b" stroke="none">TAXI</text>
+                            <path d="M25 45l8-14h34l8 14" strokeWidth="2" />
+                            <rect x="18" y="45" width="64" height="28" rx="6" fill="#fef3c7" stroke="#1e293b" strokeWidth="2" />
+                            <rect x="30" y="34" width="40" height="11" rx="2" fill="#ffffff" stroke="#1e293b" strokeWidth="1.5" />
+                            <circle cx="26" cy="58" r="4" fill="#fbbf24" stroke="#1e293b" strokeWidth="1.5" />
+                            <circle cx="74" cy="58" r="4" fill="#fbbf24" stroke="#1e293b" strokeWidth="1.5" />
+                            <path d="M38 58h24M38 62h24" stroke="#1e293b" strokeWidth="1.5" />
+                            <circle cx="28" cy="73" r="5" fill="#1e293b" />
+                            <circle cx="72" cy="73" r="5" fill="#1e293b" />
+                          </g>
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Subtext (Unified Height) */}
+                    <div className="h-14 sm:h-16 flex items-center justify-center text-center px-1 my-1">
+                      <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-relaxed">
+                        {language === 'KR'
+                          ? '기본요금 4,800원, 카카오T/k.ride/우버 호출, 대형 수하물 및 영수증 팁'
+                          : 'Base fare ₩4,800, Kakao T/k.ride/Uber apps, luggage & receipt tips.'}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Subtext */}
-                  <div className="space-y-2 sm:space-y-4">
-                    <p className="text-[10px] min-[370px]:text-[11px] sm:text-xs xl:text-sm text-slate-500 font-bold leading-tight sm:leading-relaxed">
-                      {language === 'KR' ? (
-                        <>
-                          <span className="sm:hidden">기본요금 4,800원<br />k.ride · 우버 · 카카오T</span>
-                          <span className="hidden sm:inline">기본요금 4,800원, 카카오T/k.ride/우버 호출, 대형 수하물 및 영수증 팁</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="sm:hidden">Base Fare ₩4,800<br />k.ride · Uber · Kakao T</span>
-                          <span className="hidden sm:inline">Base fare ₩4,800, Kakao T/k.ride/Uber apps, luggage & receipt safety.</span>
-                        </>
-                      )}
-                    </p>
-                    <div className="inline-flex items-center justify-center gap-1 sm:gap-2 w-full bg-[#8EA85E] hover:bg-[#7b944f] text-white border-2 border-slate-900 text-[11px] sm:text-xs xl:text-sm font-black py-1.5 sm:py-2.5 px-2 sm:px-3 rounded-lg sm:rounded-xl shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] sm:shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-all duration-200 group-hover:scale-[1.02]">
-                      <span>
-                        {language === 'KR' ? (
-                          <>
-                            <span className="sm:hidden">상세 정보</span>
-                            <span className="hidden sm:inline">상세 가이드 보기</span>
-                          </>
-                        ) : (
-                          <>
-                            <span className="sm:hidden">Guide</span>
-                            <span className="hidden sm:inline">View Full Guide</span>
-                          </>
-                        )}
-                      </span>
-                      <span className="text-xs sm:text-sm">➔</span>
+                  {/* Clean Simple Details Button (No Arrow) */}
+                  <div className="w-full mt-2 sm:mt-3">
+                    <div className="w-full py-2 sm:py-2.5 px-3 rounded-xl bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs sm:text-sm transition-all duration-200 text-center shadow-2xs">
+                      {language === 'KR' ? '상세보기' : 'Details'}
                     </div>
                   </div>
                 </div>
@@ -6004,7 +5881,7 @@ case 'EXPERIENCE': {
               {/* HIGH-VISIBILITY DETAIL PANELS (Style 2: Layout like the brochure flyers in image 2) */}
               <div className="space-y-8 pt-8 border-t border-slate-100">
                 {/* Sub-panel 1: High-contrast split scorecard for transfer guidelines */}
-                <div className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs">
+                <div id="transfer-rules-section" className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs scroll-mt-24">
                   <div className="p-6 sm:p-8 bg-[#8EA85E]/10 border-b border-slate-100 flex items-center gap-2.5">
                     <span className="text-xl">🔄</span>
                     <div>
@@ -6089,7 +5966,7 @@ case 'EXPERIENCE': {
                 </div>
 
                 {/* Sub-panel 3: Illustrated luggage & food allowance comparison block based on provided regulations */}
-                <div className="bg-[#fcfcfd] p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-xs space-y-6">
+                <div id="bus-luggage-rules-section" className="bg-[#fcfcfd] p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-xs space-y-6 scroll-mt-24">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 pb-3 gap-2">
                     <div className="flex items-center gap-2">
                       <span className="text-lg">🚌</span>
