@@ -915,7 +915,7 @@ export default function App() {
         if (ogDesc) ogDesc.setAttribute('content', descText);
 
         const canonical = document.querySelector('link[rel="canonical"]');
-        if (canonical) canonical.setAttribute('href', `https://stepless.kr/search/${selectedStationId}`);
+        if (canonical) canonical.setAttribute('href', `https://stepless.kr/station/${selectedStationId}`);
       }
     } else if (currentTab === 'about') {
       let pageTitle = "운영자 소개 | 스텝레스 Stepless";
@@ -943,7 +943,13 @@ export default function App() {
 
       const ogDesc = document.querySelector('meta[property="og:description"]');
       if (ogDesc) ogDesc.setAttribute('content', pageDesc);
-    } else if (currentTab === 'tips') {
+
+      const canonical = document.querySelector('link[rel="canonical"]');
+      const aboutCanonical = siteSubPage && siteSubPage !== 'about'
+        ? `https://stepless.kr/about/${siteSubPage}`
+        : 'https://stepless.kr/about';
+      if (canonical) canonical.setAttribute('href', aboutCanonical);
+    } else if (['tips', 'transit', 'courses', 'schedule', 'exploration'].includes(currentTab)) {
       let pageTitle = "부산 여행 코스 추천 & 실시간 여행 팁 | 스텝레스 Stepless";
       let pageDesc = "부산 식도락, 명소, 전통시장, 무장애 여행 코스 추천 및 나만의 맞춤 루트 만들기, 실시간 대중교통 길찾기 가이드.";
       let canonicalUrl = "https://stepless.kr/tips";
