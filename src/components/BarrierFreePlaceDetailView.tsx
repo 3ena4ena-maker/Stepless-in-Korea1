@@ -27,6 +27,8 @@ import {
   ChevronUp,
   Train,
   Info,
+  ExternalLink,
+  Navigation,
 } from 'lucide-react';
 import {
   OpenApiPlaceDetail,
@@ -177,6 +179,11 @@ export default function BarrierFreePlaceDetailView({
 
   const currentOverview = language === 'KR' ? currentPlace.overviewKo : currentPlace.overviewEn;
   const isOverviewLong = (currentOverview?.length || 0) > 160;
+
+  // 지도 길찾기 및 위치 검색 URL (한국어: 네이버 지도, 영어: Google Maps)
+  const mapSearchUrl = language === 'KR'
+    ? `https://map.naver.com/v5/search/${encodeURIComponent((currentPlace.nameKo ? currentPlace.nameKo + ' ' : '') + (currentPlace.addressRoadKo || ''))}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((currentPlace.nameEn ? currentPlace.nameEn + ' ' : '') + (currentPlace.addressRoadEn || `${currentPlace.latitude},${currentPlace.longitude}`))}`;
 
   // 한국관광공사 KorWithService2 API 실제 데이터 기반 무장애 정보 파싱 및 정제
   interface ParsedBarrierFreeItem {
@@ -394,12 +401,19 @@ export default function BarrierFreePlaceDetailView({
           {language === 'KR' ? '주소' : 'Address'}
         </h2>
         <div className="flex items-start justify-between gap-3 text-sm text-slate-800">
-          <div className="flex items-start gap-2">
-            <MapPin className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium leading-relaxed">
-                {language === 'KR' ? currentPlace.addressRoadKo : currentPlace.addressRoadEn}
-              </p>
+          <div className="flex items-start gap-2 min-w-0 flex-1">
+            <MapPin className="w-4 h-4 text-[#8EA85E] shrink-0 mt-0.5" />
+            <div className="min-w-0 flex-1">
+              <a
+                href={mapSearchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium leading-relaxed text-slate-900 hover:text-blue-700 hover:underline cursor-pointer inline-flex items-center gap-1.5 group break-words text-left transition-colors"
+                title={language === 'KR' ? '네이버 지도에서 위치 및 길찾기 보기' : 'View location on Google Maps'}
+              >
+                <span>{language === 'KR' ? currentPlace.addressRoadKo : currentPlace.addressRoadEn}</span>
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 shrink-0 inline-block transition-colors" />
+              </a>
               {currentPlace.addressLotKo && (
                 <p className="text-xs text-slate-400 mt-0.5">
                   ({language === 'KR' ? currentPlace.addressLotKo : currentPlace.addressLotEn})
@@ -407,14 +421,27 @@ export default function BarrierFreePlaceDetailView({
               )}
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => handleCopyAddress(currentPlace.addressRoadKo)}
-            className="shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-600 transition-colors"
-          >
-            {copiedAddress ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
-            <span>{copiedAddress ? (language === 'KR' ? '복사됨' : 'Copied') : (language === 'KR' ? '복사' : 'Copy')}</span>
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <a
+              href={mapSearchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold border border-blue-200 transition-colors shadow-2xs cursor-pointer"
+              title={language === 'KR' ? '네이버 지도에서 열기' : 'Open in Google Maps'}
+            >
+              <Navigation className="w-3 h-3 text-blue-600" />
+              <span>{language === 'KR' ? '지도' : 'Map'}</span>
+            </a>
+            <button
+              type="button"
+              onClick={() => handleCopyAddress(currentPlace.addressRoadKo)}
+              className="inline-flex items-center gap-1 px-2 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-600 transition-colors shadow-2xs cursor-pointer"
+              title={language === 'KR' ? '주소 복사' : 'Copy address'}
+            >
+              {copiedAddress ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+              <span>{copiedAddress ? (language === 'KR' ? '복사됨' : 'Copied') : (language === 'KR' ? '복사' : 'Copy')}</span>
+            </button>
+          </div>
         </div>
       </section>
 
