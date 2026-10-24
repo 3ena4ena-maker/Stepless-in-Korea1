@@ -78,9 +78,14 @@ export default function Header({ currentTab, tipsSubPage, setCurrentTab, languag
             title="STEPLESS IN BUSAN 홈으로 이동"
           >
             <div className="flex items-center gap-2">
-              <span className="text-lg sm:text-xl font-black font-heading tracking-tight text-[#11161B] group-hover:text-[#8EA85E] transition-colors">
-                {d.brand}
-              </span>
+              <div className="flex flex-col text-left leading-[0.92]">
+                <span className="text-sm sm:text-base font-black font-heading tracking-tight text-[#11161B] group-hover:text-[#8EA85E] transition-colors">
+                  STEPLESS
+                </span>
+                <span className="text-sm sm:text-base font-black font-heading tracking-tight text-[#11161B] group-hover:text-[#8EA85E] transition-colors">
+                  IN BUSAN
+                </span>
+              </div>
               {isAdminMode && (
                 <span className="text-[10px] bg-rose-600 text-white font-mono px-1.5 py-0.5 rounded-sm font-bold animate-pulse">
                   ADMIN

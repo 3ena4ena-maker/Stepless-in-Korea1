@@ -2166,9 +2166,14 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <span className="text-lg font-black font-heading tracking-tight text-slate-900">
-                STEPLESS IN BUSAN
-              </span>
+              <div className="flex flex-col text-left leading-[0.92]">
+                <span className="text-base font-black font-heading tracking-tight text-slate-900">
+                  STEPLESS
+                </span>
+                <span className="text-base font-black font-heading tracking-tight text-slate-900">
+                  IN BUSAN
+                </span>
+              </div>
             </div>
             <p className="text-xs sm:text-sm text-slate-700 leading-relaxed max-w-sm font-medium">
               {language === 'KR' 

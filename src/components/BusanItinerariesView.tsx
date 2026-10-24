@@ -2167,46 +2167,24 @@ export default function BusanItinerariesView({
         }
       `}</style>
 
-      {/* Top Breadcrumb & Back Bar for Detailed Views */}
-      {activeSection !== 'SELECTION' && (
+      {/* Top Breadcrumb & Back Bar ONLY for Nested Detailed Sub-Pages */}
+      {((activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU') || (activeSection === 'RECOMMENDATIONS' && activeCategory !== null)) && (
         <div className="flex items-center justify-between gap-4 pb-4 mb-6 border-b border-[#E5E2DC] font-sans text-left">
-          <button
-            type="button"
-            onClick={() => {
-              if (selectedExplorationItem && activeSection === 'EXPLORATION') {
-                handleSelectExplorationItem(null);
-              } else if (activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU') {
-                navigateToSubPage('transit');
-              } else {
-                navigateToSubPage('index');
-              }
-            }}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#F1EFEC] hover:bg-[#E5E2DC] text-[#0A2540] font-bold text-xs sm:text-sm transition-all cursor-pointer border border-[#E5E2DC]"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>
-              {selectedExplorationItem && activeSection === 'EXPLORATION'
-                ? (language === 'KR' ? '탐구생활 목록으로 돌아가기' : 'Back to Exploration List')
-                : (activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU'
-                  ? (language === 'KR' ? '대중교통 이용 팁으로 돌아가기' : 'Back to Public Transit Tips')
-                  : (language === 'KR' ? '여행 팁 허브로 돌아가기' : 'Back to Travel Tips Hub'))}
-            </span>
-          </button>
+          {activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU' && (
+            <>
+              <button
+                type="button"
+                onClick={() => setTransitSection('SUBMENU')}
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#F1EFEC] hover:bg-[#E5E2DC] text-[#0A2540] font-bold text-xs sm:text-sm transition-all cursor-pointer border border-[#E5E2DC]"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>{language === 'KR' ? '대중교통 이용 팁으로 돌아가기' : 'Back to Public Transit Tips'}</span>
+              </button>
 
-          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-[#4A5568]">
-            <button
-              type="button"
-              onClick={() => navigateToSubPage('index')}
-              className="hover:underline text-[#4A5568] cursor-pointer"
-            >
-              {language === 'KR' ? '여행 팁' : 'Travel Tips'}
-            </button>
-            <span>/</span>
-            {activeSection === 'TRANSIT_TIPS' && transitSection !== 'SUBMENU' ? (
-              <>
+              <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-[#4A5568]">
                 <button
                   type="button"
-                  onClick={() => navigateToSubPage('transit')}
+                  onClick={() => setTransitSection('SUBMENU')}
                   className="hover:underline text-[#4A5568] cursor-pointer"
                 >
                   {language === 'KR' ? '대중교통 이용 팁' : 'Public Transit Tips'}
@@ -2217,55 +2195,42 @@ export default function BusanItinerariesView({
                   {transitSection === 'BUS_QR' && (language === 'KR' ? '부산 버스 QR 간편결제 가이드' : 'Busan Bus QR Pay Guide')}
                   {transitSection === 'TAXI' && (language === 'KR' ? '부산 택시 이용 팁' : 'Busan Taxi Tips')}
                 </span>
-              </>
-            ) : (
-              <span className="font-bold text-[#11161B]">
-                {activeSection === 'TRANSIT_TIPS' && (language === 'KR' ? '대중교통 이용 팁' : 'Public Transit Tips')}
-                {activeSection === 'RECOMMENDATIONS' && (
-                  activeCategory ? (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setActiveCategory(null);
-                          navigateToSubPage('courses');
-                        }}
-                        className="hover:underline text-[#4A5568] cursor-pointer font-normal"
-                      >
-                        {language === 'KR' ? '여행 코스 추천' : 'Recommended Itineraries'}
-                      </button>
-                      <span className="mx-1 font-normal text-[#4A5568]">/</span>
-                      <span className="font-bold text-[#11161B]">
-                        {activeCategoryConfig ? (language === 'KR' ? activeCategoryConfig.titleKo : activeCategoryConfig.titleEn) : activeCategory}
-                      </span>
-                    </>
-                  ) : (language === 'KR' ? '여행 코스 추천' : 'Recommended Itineraries')
-                )}
-                {activeSection === 'SCHEDULE' && (language === 'KR' ? '부산 주요 일정표' : 'Busan Events & Schedule')}
-                {activeSection === 'COMMUNITY' && (language === 'KR' ? '실시간 부산 여행 팁 커뮤니티' : 'Live Busan Travel Tips')}
-                {(activeSection === 'EXPLORATION' || activeSection === 'COMMUNITY') && (
-                  selectedExplorationItem ? (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => handleSelectExplorationItem(null)}
-                        className="hover:underline text-[#4A5568] cursor-pointer font-normal"
-                      >
-                        {language === 'KR' ? '부산 탐구생활' : 'Busan Exploration'}
-                      </button>
-                      <span className="mx-1 font-normal text-[#4A5568]">/</span>
-                      <span className="font-bold text-[#11161B]">
-                        {selectedExplorationItem === 'bootech' && (language === 'KR' ? "북항 상어 '부캉이'" : 'North Port Shark Bukangi')}
-                        {selectedExplorationItem === 'luggage' && (language === 'KR' ? '부산 무료 짐보관소' : 'Free Luggage Storage')}
-                        {selectedExplorationItem === 'rental' && (language === 'KR' ? '유모차·휠체어 대여' : 'Stroller & Wheelchair')}
-                        {(selectedExplorationItem === 'korean-cheat-codes' || selectedExplorationItem === 'metro-reentry') && (language === 'KR' ? '5초 한국어 발음 치트키' : 'Korean Cheat Codes')}
-                      </span>
-                    </>
-                  ) : (language === 'KR' ? '부산 탐구생활' : 'Busan Exploration')
-                )}
-              </span>
-            )}
-          </div>
+              </div>
+            </>
+          )}
+
+          {activeSection === 'RECOMMENDATIONS' && activeCategory !== null && (
+            <>
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveCategory(null);
+                  navigateToSubPage('courses');
+                }}
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#F1EFEC] hover:bg-[#E5E2DC] text-[#0A2540] font-bold text-xs sm:text-sm transition-all cursor-pointer border border-[#E5E2DC]"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>{language === 'KR' ? '여행 코스 목록으로 돌아가기' : 'Back to Itineraries List'}</span>
+              </button>
+
+              <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-[#4A5568]">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveCategory(null);
+                    navigateToSubPage('courses');
+                  }}
+                  className="hover:underline text-[#4A5568] cursor-pointer font-normal"
+                >
+                  {language === 'KR' ? '여행 코스 추천' : 'Recommended Itineraries'}
+                </button>
+                <span className="mx-1 font-normal text-[#4A5568]">/</span>
+                <span className="font-bold text-[#11161B]">
+                  {activeCategoryConfig ? (language === 'KR' ? activeCategoryConfig.titleKo : activeCategoryConfig.titleEn) : activeCategory}
+                </span>
+              </div>
+            </>
+          )}
         </div>
       )}
 
