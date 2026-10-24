@@ -5590,7 +5590,201 @@ case 'EXPERIENCE': {
               </div>
 
               {/* CARD GRID: Clean, unified cards with aligned emoji illustrations & details buttons */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4 items-stretch">
+              {/* [모바일 전용] 여행코스 추천 스타일 초경량 컴팩트 카드 (부가설명 생략, 한눈에 파악) */}
+              <div className="md:hidden space-y-2.5">
+                <div className="grid grid-cols-2 gap-2.5 w-full mx-auto">
+                  {/* CARD 01: 어린이 대중교통 요금 무료 */}
+                  <div
+                    onClick={() => navigateToSubPage('child-free')}
+                    className="relative group bg-white p-2.5 rounded-xl border border-slate-200/90 hover:border-[#8EA85E] active:scale-[0.98] transition-all cursor-pointer shadow-3xs flex flex-col justify-between text-center min-h-[105px]"
+                  >
+                    <div className="absolute top-1.5 left-1.5 w-4.5 h-4.5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-[9px] font-black">
+                      01
+                    </div>
+
+                    <div className="bg-slate-50/80 rounded-lg p-1.5 flex items-center justify-center border border-slate-100 h-12 w-full mt-1">
+                      <svg className="w-8 h-8 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="50" cy="45" r="22" />
+                        <path d="M28 45c0-10 10-18 22-18s22 8 22 18" />
+                        <path d="M50 27v-5M44 22h12" />
+                        <circle cx="42" cy="42" r="2" fill="currentColor" />
+                        <circle cx="58" cy="42" r="2" fill="currentColor" />
+                        <path d="M44 51c2 4 10 4 12 0" />
+                        <circle cx="36" cy="48" r="1.5" fill="currentColor" opacity="0.5" />
+                        <circle cx="64" cy="48" r="1.5" fill="currentColor" opacity="0.5" />
+                        <path d="M25 80c5-12 12-13 25-13s20 1 25 13" />
+                        <path d="M18 25l2 2m0-2l-2 2M82 25l2 2m0-2l-2 2" strokeWidth="1" />
+                        <path d="M50 12l1 3h3l-2.5 2 1 3-2.5-2-2.5 2 1-3-2.5-2h3z" strokeWidth="1" fill="currentColor" />
+                      </svg>
+                    </div>
+
+                    <div className="pt-1.5 flex flex-col items-center justify-center">
+                      <h3 className="text-[11px] font-bold text-slate-900 tracking-tight leading-tight">
+                        {language === 'KR' ? '모든 어린이 무료 혜택' : 'All Children Free'}
+                      </h3>
+                      <span className="text-[9px] font-bold text-[#8EA85E] mt-0.5">
+                        {language === 'KR' ? '상세보기' : 'Details'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* CARD 02: 부산 버스 QR 간편결제 */}
+                  <div
+                    id="card-bus-qr-mobile"
+                    onClick={() => navigateToSubPage('bus-qr')}
+                    className="relative group bg-white p-2.5 rounded-xl border border-slate-200/90 hover:border-[#8EA85E] active:scale-[0.98] transition-all cursor-pointer shadow-3xs flex flex-col justify-between text-center min-h-[105px]"
+                  >
+                    <div className="absolute top-1.5 left-1.5 w-4.5 h-4.5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-[9px] font-black">
+                      02
+                    </div>
+
+                    <div className="bg-slate-50/80 rounded-lg p-1.5 flex items-center justify-center border border-slate-100 h-12 w-full mt-1">
+                      <svg className="w-8 h-8 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="28" y="14" width="44" height="72" rx="8" strokeWidth="2" />
+                        <line x1="44" y1="20" x2="56" y2="20" strokeWidth="1.5" />
+                        <circle cx="50" cy="79" r="2.5" fill="currentColor" />
+                        <rect x="33" y="25" width="34" height="48" rx="3" fill="#ffffff" strokeWidth="1" stroke="#cbd5e1" />
+                        <rect x="37" y="29" width="10" height="10" rx="1.5" strokeWidth="1.5" stroke="#004481" />
+                        <rect x="40" y="32" width="4" height="4" fill="#004481" />
+                        <rect x="53" y="29" width="10" height="10" rx="1.5" strokeWidth="1.5" stroke="#004481" />
+                        <rect x="56" y="32" width="4" height="4" fill="#004481" />
+                        <rect x="37" y="45" width="10" height="10" rx="1.5" strokeWidth="1.5" stroke="#004481" />
+                        <rect x="40" y="48" width="4" height="4" fill="#004481" />
+                        <rect x="53" y="45" width="3" height="3" fill="#004481" />
+                        <rect x="60" y="45" width="3" height="3" fill="#004481" />
+                        <rect x="56" y="52" width="7" height="3" fill="#004481" />
+                        <line x1="31" y1="41" x2="69" y2="41" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="2 1.5" />
+                        <path d="M76 34c3 3 3 8 0 11" stroke="#004481" strokeWidth="1.5" />
+                        <path d="M81 30c5 5 5 16 0 21" stroke="#004481" strokeWidth="1.5" />
+                      </svg>
+                    </div>
+
+                    <div className="pt-1.5 flex flex-col items-center justify-center">
+                      <h3 className="text-[11px] font-bold text-slate-900 tracking-tight leading-tight">
+                        {language === 'KR' ? '부산 버스 QR 간편결제' : 'Busan Bus QR Pay'}
+                      </h3>
+                      <span className="text-[9px] font-bold text-[#8EA85E] mt-0.5">
+                        {language === 'KR' ? '상세보기' : 'Details'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* CARD 03: 부산 대중교통 환승 혜택 */}
+                  <div
+                    onClick={() => {
+                      document.getElementById('transfer-rules-section')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="relative group bg-white p-2.5 rounded-xl border border-slate-200/90 hover:border-[#8EA85E] active:scale-[0.98] transition-all cursor-pointer shadow-3xs flex flex-col justify-between text-center min-h-[105px]"
+                  >
+                    <div className="absolute top-1.5 left-1.5 w-4.5 h-4.5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-[9px] font-black">
+                      03
+                    </div>
+
+                    <div className="bg-slate-50/80 rounded-lg p-1.5 flex items-center justify-center border border-slate-100 h-12 w-full mt-1">
+                      <svg className="w-8 h-8 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <g transform="translate(0, -6)">
+                          <path d="M15 80V40c0-20 15-30 35-30s35 10 35 30v40" strokeDasharray="2 2" stroke="#cbd5e1" />
+                          <rect x="25" y="26" width="50" height="42" rx="10" />
+                          <rect x="30" y="32" width="40" height="18" rx="4" />
+                          <circle cx="37" cy="58" r="3" fill="currentColor" />
+                          <circle cx="63" cy="58" r="3" fill="currentColor" />
+                          <path d="M10 84h80M25 84l-5 6M75 84l5 6" />
+                          <path d="M45 58h10" />
+                          <path d="M50 26V14m-10 0h20" />
+                        </g>
+                      </svg>
+                    </div>
+
+                    <div className="pt-1.5 flex flex-col items-center justify-center">
+                      <h3 className="text-[11px] font-bold text-slate-900 tracking-tight leading-tight">
+                        {language === 'KR' ? '부산 대중교통 환승 혜택' : 'Transit Transfer Benefits'}
+                      </h3>
+                      <span className="text-[9px] font-bold text-[#8EA85E] mt-0.5">
+                        {language === 'KR' ? '상세보기' : 'Details'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* CARD 04: 버스 휴대품 반입 기준 */}
+                  <div
+                    onClick={() => {
+                      document.getElementById('bus-luggage-rules-section')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="relative group bg-white p-2.5 rounded-xl border border-slate-200/90 hover:border-[#8EA85E] active:scale-[0.98] transition-all cursor-pointer shadow-3xs flex flex-col justify-between text-center min-h-[105px]"
+                  >
+                    <div className="absolute top-1.5 left-1.5 w-4.5 h-4.5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-[9px] font-black">
+                      04
+                    </div>
+
+                    <div className="bg-slate-50/80 rounded-lg p-1.5 flex items-center justify-center border border-slate-100 h-12 w-full mt-1">
+                      <svg className="w-8 h-8 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <g transform="translate(0, -4)">
+                          <rect x="28" y="28" width="44" height="48" rx="6" />
+                          <path d="M42 28V16h16v12" />
+                          <path d="M34 40h32M34 50h32M34 60h32" strokeWidth="1" strokeDasharray="1 1" />
+                          <circle cx="36" cy="79" r="3" />
+                          <circle cx="64" cy="79" r="3" />
+                          <path d="M64 36l6 10-4 2-6-10z" fill="currentColor" opacity="0.1" />
+                          <path d="M18 28v48M14 28h8M14 76h8" strokeWidth="1" stroke="#94a3b8" />
+                          <text x="8" y="56" fontSize="8" fill="#64748b" fontWeight="bold" stroke="none" fontFamily="monospace">H</text>
+                          <path d="M28 86h44M28 82v8M72 82v8" strokeWidth="1" stroke="#94a3b8" />
+                          <text x="46" y="94" fontSize="8" fill="#64748b" fontWeight="bold" stroke="none" fontFamily="monospace">W</text>
+                        </g>
+                      </svg>
+                    </div>
+
+                    <div className="pt-1.5 flex flex-col items-center justify-center">
+                      <h3 className="text-[11px] font-bold text-slate-900 tracking-tight leading-tight">
+                        {language === 'KR' ? '버스 휴대품 반입 기준' : 'Bus Carry-on Limits'}
+                      </h3>
+                      <span className="text-[9px] font-bold text-[#8EA85E] mt-0.5">
+                        {language === 'KR' ? '상세보기' : 'Details'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* CARD 05: 부산 택시 이용 & 호출 팁 (중앙 정렬 50% 너비) */}
+                  <div className="col-span-2 flex justify-center">
+                    <div
+                      onClick={() => navigateToSubPage('taxi')}
+                      className="relative group bg-white p-2.5 rounded-xl border border-slate-200/90 hover:border-[#8EA85E] active:scale-[0.98] transition-all cursor-pointer shadow-3xs flex flex-col justify-between text-center min-h-[105px] w-full max-w-[calc(50%-5px)]"
+                    >
+                      <div className="absolute top-1.5 left-1.5 w-4.5 h-4.5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-[9px] font-black">
+                        05
+                      </div>
+
+                      <div className="bg-slate-50/80 rounded-lg p-1.5 flex items-center justify-center border border-slate-100 h-12 w-full mt-1">
+                        <svg className="w-8 h-8 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                          <g transform="translate(0, -3)">
+                            <path d="M42 22h16v6H42z" fill="#f59e0b" stroke="#1e293b" strokeWidth="1.5" />
+                            <text x="44" y="27" fontSize="5" fontWeight="bold" fill="#1e293b" stroke="none">TAXI</text>
+                            <path d="M25 45l8-14h34l8 14" strokeWidth="2" />
+                            <rect x="18" y="45" width="64" height="28" rx="6" fill="#fef3c7" stroke="#1e293b" strokeWidth="2" />
+                            <rect x="30" y="34" width="40" height="11" rx="2" fill="#ffffff" stroke="#1e293b" strokeWidth="1.5" />
+                            <circle cx="26" cy="58" r="4" fill="#fbbf24" stroke="#1e293b" strokeWidth="1.5" />
+                            <circle cx="74" cy="58" r="4" fill="#fbbf24" stroke="#1e293b" strokeWidth="1.5" />
+                            <path d="M38 58h24M38 62h24" stroke="#1e293b" strokeWidth="1.5" />
+                            <circle cx="28" cy="73" r="5" fill="#1e293b" />
+                            <circle cx="72" cy="73" r="5" fill="#1e293b" />
+                          </g>
+                        </svg>
+                      </div>
+
+                      <div className="pt-1.5 flex flex-col items-center justify-center">
+                        <h3 className="text-[11px] font-bold text-slate-900 tracking-tight leading-tight">
+                          {language === 'KR' ? '부산 택시 이용 & 호출 팁' : 'Busan Taxi Tips'}
+                        </h3>
+                        <span className="text-[9px] font-bold text-[#8EA85E] mt-0.5">
+                          {language === 'KR' ? '상세보기' : 'Details'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* [웹/데스크톱 전용] 정돈된 5열 카드 그리드 (설명 및 상세보기 버튼 포함) */}
+              <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 items-stretch">
                 {/* CARD 01: 어린이 대중교통 요금 무료 */}
                 <div
                   onClick={() => navigateToSubPage('child-free')}
