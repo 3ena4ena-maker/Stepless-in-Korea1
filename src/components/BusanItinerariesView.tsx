@@ -7253,87 +7253,24 @@ case 'EXPERIENCE': {
             </div>
 
               {/* 실시간 부산 여행 팁 커뮤니티 (부산 탐구생활 핫이슈 & 실전 여행 꿀팁 바로 아래) */}
-              <div className="space-y-6 animate-fade-in text-left font-sans" id="community-section-container">
-                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xs">
-                  <div className="space-y-2">
-                    <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
-                      {language === 'KR' ? '실시간 커뮤니티' : 'LIVE TRAVEL COMMUNITY'}
-                    </div>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-[#11161B] tracking-tight">
+              <div className="animate-fade-in text-left font-sans" id="community-section-container">
+                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-xl">💬</span>
+                    <h2 className="text-base sm:text-lg font-black text-[#11161B] tracking-tight">
                       {language === 'KR' ? '실시간 부산 여행 팁 커뮤니티' : 'Live Busan Travel Tips Community'}
                     </h2>
-                    <p className="text-sm text-[#4A5568] leading-relaxed max-w-2xl">
-                      {language === 'KR'
-                        ? '부산 현지 여행자와 주민들이 실시간으로 주고받는 질문과 답변, 이동 꿀팁 및 현장 상황을 확인해 보세요.'
-                        : 'Explore real-time questions, local travel advice, and field updates shared by Busan travelers and locals.'}
-                    </p>
                   </div>
 
-                  {/* Official Reddit Banner */}
-                  <div className="border border-[#E5E2DC] rounded-xl p-6 bg-[#FBFBF9] hover:border-[#8EA85E] transition-colors flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div className="space-y-2 max-w-xl">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-[#11161B] text-base">
-                          {language === 'KR' ? 'r/BusanTravelTips 레딧 커뮤니티' : 'r/BusanTravelTips Reddit Community'}
-                        </span>
-                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#E5E2DC] text-[#0A2540]">
-                          Official
-                        </span>
-                      </div>
-                      <p className="text-xs text-[#4A5568] leading-relaxed">
-                        {language === 'KR'
-                          ? '부산 지하철 엘리베이터 상태, 날씨별 추천 경로, 로컬 식도락 정보를 레딧 커뮤니티에서 자유롭게 이야기해 보세요.'
-                          : 'Ask questions about station accessibility, weather routes, and local food spots in our Reddit forum.'}
-                      </p>
-                    </div>
-
-                    <a
-                      href="https://www.reddit.com/r/BusanTravelTips/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-5 py-3 rounded-xl bg-[#11161B] hover:bg-[#8EA85E] text-white font-semibold text-xs transition-colors whitespace-nowrap cursor-pointer flex items-center gap-2 shrink-0 shadow-2xs"
-                    >
-                      <span>{language === 'KR' ? 'r/BusanTravelTips 레딧 커뮤니티 바로가기' : 'Visit r/BusanTravelTips Reddit'}</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-
-                  {/* Live Tips Cards / Highlights */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-[#E5E2DC]">
-                    <div className="p-5 rounded-xl border border-[#E5E2DC] space-y-2 bg-white shadow-3xs">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-mono font-bold text-[#0A2540]">
-                          {language === 'KR' ? '현장 이동 팁' : 'Transit Hack'}
-                        </span>
-                        <span className="text-[10px] text-[#718096]">Updated Today</span>
-                      </div>
-                      <h3 className="font-bold text-[#11161B] text-sm">
-                        {language === 'KR' ? '서면역 환승 시 엘리베이터 직통 출구 활용법' : 'Seomyeon Station Elevator Transfer Direct Exit'}
-                      </h3>
-                      <p className="text-xs text-[#4A5568] leading-relaxed">
-                        {language === 'KR'
-                          ? '1호선과 2호선 환승 구역 중앙 게이트 부근 와이드 개찰구를 이용하시면 유모차 및 대형 캐리어 소지자도 계단 없이 편리하게 이동할 수 있습니다.'
-                          : 'Use the wide turnstiles near the central transfer gate for Lines 1 & 2 to move step-free with strollers and large suitcases.'}
-                      </p>
-                    </div>
-
-                    <div className="p-5 rounded-xl border border-[#E5E2DC] space-y-2 bg-white shadow-3xs">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-mono font-bold text-[#0A2540]">
-                          {language === 'KR' ? '우천 시 팁' : 'Rainy Day Route'}
-                        </span>
-                        <span className="text-[10px] text-[#718096]">Local Favorite</span>
-                      </div>
-                      <h3 className="font-bold text-[#11161B] text-sm">
-                        {language === 'KR' ? '비 오는 날 실내 무장애 코스' : 'Rainy Day Step-Free Indoor Experience'}
-                      </h3>
-                      <p className="text-xs text-[#4A5568] leading-relaxed">
-                        {language === 'KR'
-                          ? '비가 오는 날은 센텀시티 지하철 직통 연결 몰이나 영도 국립해양박물관의 실내 엘리베이터 동선을 활용하면 쾌적하게 여행할 수 있습니다.'
-                          : 'On rainy days, opt for Centum City direct subway mall connections or National Maritime Museum indoor elevators.'}
-                      </p>
-                    </div>
-                  </div>
+                  <a
+                    href="https://www.reddit.com/r/BusanTravelTips/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#11161B] hover:bg-[#8EA85E] text-white font-bold text-xs sm:text-sm transition-colors whitespace-nowrap cursor-pointer shrink-0 shadow-2xs"
+                  >
+                    <span>{language === 'KR' ? 'r/BusanTravelTips 레딧 커뮤니티 바로가기' : 'Visit r/BusanTravelTips Reddit'}</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
                 </div>
               </div>
             </div>
