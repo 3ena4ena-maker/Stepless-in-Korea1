@@ -3,31 +3,31 @@
   <!-- Core Main Service -->
   <url>
     <loc>https://stepless.kr/</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://stepless.kr/search</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/schedule</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/barrier-free</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/my-route</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -35,19 +35,19 @@
   <!-- Travel Courses & Recommendations Hub -->
   <url>
     <loc>https://stepless.kr/tips</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/itineraries</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/courses</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
@@ -55,217 +55,271 @@
   <!-- Theme Specific Courses -->
   <url>
     <loc>https://stepless.kr/tips/courses/gourmet</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/courses/experience</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/courses/market</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/courses/attraction</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/courses/day</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/courses/1night</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/courses/2nights</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/courses/3nights</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/courses/4nights</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/courses/subway</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/courses/barrier-free</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- Travel Guides & Public Transit Navigation -->
+  <!-- Travel Guides, Public Transit Navigation & Local Exploration Magazine -->
   <url>
     <loc>https://stepless.kr/tips/transit</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/child-free</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/bus-qr</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/tips/taxi</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://stepless.kr/tips/exploration</loc>
+    <lastmod>2026-10-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://stepless.kr/tips/exploration/bootech</loc>
+    <lastmod>2026-10-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stepless.kr/tips/exploration/luggage</loc>
+    <lastmod>2026-10-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stepless.kr/tips/exploration/rental</loc>
+    <lastmod>2026-10-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stepless.kr/tips/exploration/korean-cheat-codes</loc>
+    <lastmod>2026-10-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stepless.kr/tips/exploration/metro-reentry</loc>
+    <lastmod>2026-10-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-  <!-- Major Subway Stations (Elevator & Barrier-Free Information) -->
+  <!-- All 15 Major Subway Stations (Elevator & Barrier-Free Information) -->
   <url>
     <loc>https://stepless.kr/station/seomyeon</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/station/jeonpo</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/station/bujeon</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/station/haeundae</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/station/gwangan</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/station/nampo</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/station/busan</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://stepless.kr/station/suyeong</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/station/jagalchi</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/station/geumnyeonsan</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/station/dongbaek</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://stepless.kr/station/bexco</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://stepless.kr/station/jungang</loc>
+    <lastmod>2026-10-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stepless.kr/station/dadaepo</loc>
+    <lastmod>2026-10-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stepless.kr/station/beomeosa</loc>
+    <lastmod>2026-10-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <!-- Site Policy, Legal & About (Google AdSense Compliance Standards) -->
   <url>
     <loc>https://stepless.kr/about</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://stepless.kr/about/privacy</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://stepless.kr/about/terms</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://stepless.kr/about/contact</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://stepless.kr/about/data-source</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://stepless.kr/privacy.html</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://stepless.kr/terms.html</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://stepless.kr/about.html</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

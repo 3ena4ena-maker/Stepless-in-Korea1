@@ -105,5 +105,21 @@ button, a, input, select, textarea, [role="button"], .smooth-transition {
   touch-action: pan-x pan-y pinch-zoom;
 }
 
+/* Collapse unfilled or empty Google AdSense containers so they never create blank whitespace */
+ins.adsbygoogle[data-ad-status="unfilled"],
+ins.adsbygoogle:empty {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
 
-
+.adsense-content-container:has(ins.adsbygoogle[data-ad-status="unfilled"]),
+.adsense-content-container:has(ins.adsbygoogle:empty) {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}

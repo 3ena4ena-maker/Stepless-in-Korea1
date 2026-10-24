@@ -18,20 +18,6 @@ export interface AdEligibilityParams {
 /**
  * Pure predicate to determine if current screen qualifies as a rich publisher content page
  * for Google AdSense compliance.
- *
- * STRICTLY EXCLUDED (Returns false):
- * - Utility / Tool screens: Station search tab ('search'), exit lookup, Naver map view, bento grid station picker
- * - Policy / Legal screens: Privacy policy ('privacy'), Terms of service ('terms')
- * - Form / Input screens: Contact inquiry ('contact'), Error/Data report form ('data-source')
- * - Modal overlays: Privacy modal, Terms modal, confirmation dialogs
- * - System / Loading / Error states: Report submitting, geolocation loading, offline/error screens
- *
- * APPROVED CONTENT (Returns true):
- * - Home overview editorial guide ('home' / HomeOverviewSection)
- * - Curated travel tips & subway guide articles ('tips')
- * - Busan major festival & events magazine calendar ('schedule')
- * - Barrier-free curated tourism spots ('tourapi')
- * - Operator / Author introduction story ('about' tab with siteSubPage === 'about')
  */
 export function isAdEligibleScreen(params: AdEligibilityParams): boolean {
   // 1. If any modal or form submission/loading state is active, strictly NO ADS
@@ -65,9 +51,12 @@ export function isAdEligibleScreen(params: AdEligibilityParams): boolean {
     return params.siteSubPage === 'about' || !params.siteSubPage;
   }
 
-  // 4. Approved rich content tabs
+  // 4. Approved rich content tabs (including refactored top-level tabs)
   if (
     params.currentTab === 'home' ||
+    params.currentTab === 'transit' ||
+    params.currentTab === 'courses' ||
+    params.currentTab === 'exploration' ||
     params.currentTab === 'tips' ||
     params.currentTab === 'schedule' ||
     params.currentTab === 'tourapi' ||
@@ -94,9 +83,8 @@ interface AdSenseUnitProps {
 
 /**
  * AdSenseUnit Component
- * Renders an ad unit ONLY when the active screen is verified as an eligible content page.
- * If the current view is a utility/policy/form/modal/loading screen, it returns null
- * and completely prevents ad requests.
+ * Renders an ad unit ONLY when the active screen is verified as an eligible content page
+ * and after the surrounding view has finished mounting (never during Suspense/loading fallbacks).
  */
 export const AdSenseUnit: React.FC<AdSenseUnitProps> = ({
   slotId,
@@ -117,23 +105,28 @@ export const AdSenseUnit: React.FC<AdSenseUnitProps> = ({
       return;
     }
 
-    // Attempt to push ad only once when mounted on an eligible content screen
-    if (!isPushedRef.current && adRef.current) {
-      try {
-        if (typeof window !== 'undefined') {
-          // Initialize window.adsbygoogle safely
-          const adsbygoogle = (window as unknown as { adsbygoogle?: unknown[] }).adsbygoogle || [];
-          (window as unknown as { adsbygoogle: unknown[] }).adsbygoogle = adsbygoogle;
-          
-          // Request ad rendering for this verified container
-          adsbygoogle.push({});
-          isPushedRef.current = true;
-        }
-      } catch (err) {
-        // Suppress benign iframe or duplicate push errors in dev/preview
-        console.warn('[AdSenseUnit] Safely handled ad push lifecycle:', err);
+    const timer = window.setTimeout(() => {
+      // Never push ads if a loading fallback is currently visible in the DOM
+      const activeLoader = document.querySelector('[data-loading-fallback="true"]');
+      if (activeLoader) {
+        return;
       }
-    }
+
+      if (!isPushedRef.current && adRef.current) {
+        try {
+          if (typeof window !== 'undefined') {
+            const adsbygoogle = (window as unknown as { adsbygoogle?: unknown[] }).adsbygoogle || [];
+            (window as unknown as { adsbygoogle: unknown[] }).adsbygoogle = adsbygoogle;
+            adsbygoogle.push({});
+            isPushedRef.current = true;
+          }
+        } catch (err) {
+          console.warn('[AdSenseUnit] Safely handled ad push lifecycle:', err);
+        }
+      }
+    }, 150);
+
+    return () => window.clearTimeout(timer);
   }, [isEligible, currentParams.currentTab, currentParams.tipsSubPage, currentParams.siteSubPage]);
 
   // If not eligible, strictly do NOT render any ad tags or markup
@@ -143,7 +136,7 @@ export const AdSenseUnit: React.FC<AdSenseUnitProps> = ({
 
   return (
     <div 
-      className={`adsense-content-container my-6 text-center overflow-hidden transition-all ${className}`}
+      className={`adsense-content-container text-center overflow-hidden transition-all ${className}`}
       data-ad-eligible="true"
     >
       <ins
@@ -151,7 +144,6 @@ export const AdSenseUnit: React.FC<AdSenseUnitProps> = ({
         className="adsbygoogle"
         style={{
           display: 'block',
-          minHeight: '90px',
           ...style
         }}
         data-ad-client={ADSENSE_CLIENT_ID}

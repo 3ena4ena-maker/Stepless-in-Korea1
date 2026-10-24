@@ -336,102 +336,110 @@
     }
     </script>
   </head>
-  <body>
-    <!-- Initial Loading Screen (shown before JS mounts) -->
-    <div id="app-loading-screen" class="google-anno-skip" data-ad-exclude="true" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #f8fafc; font-family: system-ui, -apple-system, sans-serif;">
-      <div style="position: relative; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;">
-        <div style="width: 48px; height: 48px; border: 4px solid #e2e8f0; border-top-color: #004481; border-radius: 50%; animation: stepless-spin 0.8s linear infinite;"></div>
-      </div>
-      <style>
-        @keyframes stepless-spin { to { transform: rotate(360deg); } }
-      </style>
-      <div style="margin-top: 18px; text-align: center;">
-        <p style="margin: 0; font-size: 15px; font-weight: 700; color: #004481; letter-spacing: -0.3px;">Stepless 스텝레스</p>
-        <p style="margin: 4px 0 0 0; font-size: 12px; color: #64748b; font-weight: 500;">부산 지하철 배리어프리 이동 경로 안내 중...</p>
+  <body style="margin: 0; background-color: #FBFBF9; color: #11161B; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+    <!-- React Root Mount Target with Pre-rendered Publisher Content for Search Engines & AdSense Crawlers -->
+    <div id="root">
+      <div style="max-width: 1120px; margin: 0 auto; padding: 24px 16px; line-height: 1.65;">
+        <header style="border-bottom: 1px solid #E5E2DC; padding-bottom: 16px; margin-bottom: 24px;">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;">
+            <a href="/" style="font-size: 20px; font-weight: 900; color: #11161B; text-decoration: none;">STEPLESS IN BUSAN · 계단 없는 부산여행 스탭리스</a>
+            <nav aria-label="주요 메뉴" style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 14px; font-weight: 700;">
+              <a href="/" style="color: #5B7332; text-decoration: none;">홈</a>
+              <a href="/search" style="color: #334155; text-decoration: none;">지하철역 검색</a>
+              <a href="/tips/transit" style="color: #334155; text-decoration: none;">대중교통 이용 팁</a>
+              <a href="/tips/courses" style="color: #334155; text-decoration: none;">여행코스 추천</a>
+              <a href="/schedule" style="color: #334155; text-decoration: none;">축제·행사 일정</a>
+              <a href="/tips/exploration" style="color: #334155; text-decoration: none;">부산 탐구생활</a>
+              <a href="/about" style="color: #334155; text-decoration: none;">서비스 소개</a>
+            </nav>
+          </div>
+          <h1 style="font-size: 28px; font-weight: 900; margin: 20px 0 8px 0; color: #11161B;">계단 없는 부산여행 로컬 가이드 스탭리스 (Stepless in Busan)</h1>
+          <p style="margin: 0; font-size: 15px; color: #475569;">부산 주요 15개 지하철역 엘리베이터·에스컬레이터 출구 번호, 유모차·휠체어·캐리어 배리어프리 무단차 동선, 권역별 추천 여행 코스 및 대중교통 환승 가이드를 한눈에 제공합니다.</p>
+        </header>
+
+        <main>
+          <section aria-label="부산 무장애 지하철 및 배리어프리 여행 종합 가이드" style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 800; margin-top: 0; color: #11161B;">부산 무장애(배리어프리) 지하철 &amp; 계단 없는 여행 동선 종합 가이드</h2>
+            <p style="font-size: 14px; color: #475569;">부산은 바다와 산이 어우러진 입체적인 지형을 가진 해양 관광 도시로, 지하철역 출구 선택과 환승 동선에 따라 이동의 편리함이 크게 달라집니다. 스텝리스(Stepless)는 휠체어 이용자, 유모차 동반 가족, 대형 캐리어 여행객이 계단과 단차 걱정 없이 부산의 핵심 명소를 여행할 수 있도록 부산교통공사 공식 시설 데이터와 현장 실사를 결합한 무장애 이동 정보를 안내합니다.</p>
+            <article style="margin-top: 14px;">
+              <h3 style="font-size: 16px; font-weight: 800; color: #11161B; margin-bottom: 4px;">1. 부산 도시철도 1~4호선·동해선 주요 거점역 엘리베이터 및 환승 기준</h3>
+              <p style="font-size: 14px; color: #475569; margin-top: 0;">1·2호선 최대 환승역인 서면역(7·11·12·13번 출구 지상 엘리베이터)과 KTX·SRT 부산역(1호선 4·6번 출구 엘리베이터 및 지상 보행 데크 연결)은 승강장에서 대합실, 지상 보도까지 계단 없이 이어지는 1동선 엘리베이터 확인이 중요합니다. 해운대역(1·3번 출구), 광안역(3·5번 출구), 남포역(1·7번 출구), 자갈치역(3·6·10번 출구), 다대포해수욕장역(2·3·4번 출구) 등 주요 관광지 역사의 엘리베이터 출구를 사전에 확인하면 불필요한 우회를 줄일 수 있습니다.</p>
+            </article>
+            <article style="margin-top: 14px;">
+              <h3 style="font-size: 16px; font-weight: 800; color: #11161B; margin-bottom: 4px;">2. 유모차·휠체어·캐리어 여행자를 위한 부산 권역별 무장애 추천 동선</h3>
+              <p style="font-size: 14px; color: #475569; margin-top: 0;">동부산(해운대·센텀·기장) 권역은 구남로 문화광장부터 해운대 해수욕장 호안도로 우든 데크길, 동백섬 APEC나루공원 평지 산책로, 벡스코(BEXCO) 전시장까지 단차 없는 보행로가 잘 조성되어 있습니다. 원도심(남포·자갈치·중앙·영도) 권역은 자갈치시장 현대화 건물 엘리베이터, 부평깡통시장·국제시장의 평탄한 아케이드 통로, 국립해양박물관 무장애 관람 동선을 연계하면 보행 약자도 쾌적하게 부산의 역사와 미식을 경험할 수 있습니다.</p>
+            </article>
+            <article style="margin-top: 14px;">
+              <h3 style="font-size: 16px; font-weight: 800; color: #11161B; margin-bottom: 4px;">3. 부산 대중교통 무료 환승·어린이 요금 무료화 및 수하물 실전 팁</h3>
+              <p style="font-size: 14px; color: #475569; margin-top: 0;">부산 대중교통은 도시철도와 시내버스·마을버스 간 하차 태그 후 30분 이내 환승 시 최대 2회까지 무료 환승 혜택이 적용됩니다. 만 6세~12세 어린이는 어린이 교통카드 등록 시 부산 도시철도와 시내버스 요금이 무료이며, 시내버스 단말기 QR 코드로 모바일 간편 결제도 가능합니다. 28인치 이상 대형 캐리어는 시내버스 반입이 제한될 수 있으므로 지하철역 내 물품보관함(T-Luggage)을 활용하는 것을 권장합니다.</p>
+            </article>
+          </section>
+
+          <section aria-label="부산 주요 15개 지하철역 엘리베이터 최단 출구 안내" style="margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 800; color: #11161B;">부산 주요 15개 지하철역 엘리베이터 &amp; 무장애 출구 일람</h2>
+            <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; border-color: #E5E2DC; font-size: 14px; background: #FFFFFF;">
+              <thead>
+                <tr style="background: #F4F6F0; text-align: left;">
+                  <th>지하철역</th>
+                  <th>노선</th>
+                  <th>주요 엘리베이터 / 에스컬레이터 출구</th>
+                  <th>연계 명소 및 이동 특징</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><a href="/station/seomyeon">서면역 (Seomyeon)</a></td><td>1호선·2호선</td><td>7번, 11번, 12번, 13번 출구</td><td>서면 젊음의거리, 부전몰 지하상가, 1·2호선 환승 거점</td></tr>
+                <tr><td><a href="/station/busan">부산역 (Busan Station)</a></td><td>1호선</td><td>4번, 5번, 6번 출구</td><td>KTX·SRT 부산역 대합실 지상 보행 데크, 초량 차이나타운</td></tr>
+                <tr><td><a href="/station/haeundae">해운대역 (Haeundae)</a></td><td>2호선</td><td>1번, 3번 출구 인근 엘리베이터</td><td>구남로 문화광장, 해운대 해수욕장 평지 직결</td></tr>
+                <tr><td><a href="/station/gwangan">광안역 (Gwangan)</a></td><td>2호선</td><td>3번, 5번 출구</td><td>광안리 해수욕장 해변 테마거리 완만한 평지 이동</td></tr>
+                <tr><td><a href="/station/nampo">남포역 (Nampo)</a></td><td>1호선</td><td>4번, 8·10번 백화점 연계 출구</td><td>롯데백화점 광복점, 용두산공원 에스컬레이터, 영도대교</td></tr>
+                <tr><td><a href="/station/jagalchi">자갈치역 (Jagalchi)</a></td><td>1호선</td><td>3번, 6번, 10번 출구</td><td>자갈치시장, 비프(BIFF)광장, 부평깡통시장·국제시장</td></tr>
+                <tr><td><a href="/station/jeonpo">전포역 (Jeonpo)</a></td><td>2호선</td><td>3번, 4번, 7번, 8번 출구</td><td>전포 카페거리, 전포 사잇길 소품샵 및 공방 골목</td></tr>
+                <tr><td><a href="/station/bujeon">부전역 (Bujeon)</a></td><td>1호선·동해선</td><td>3번, 6번 출구, 부전몰 3·5번</td><td>부전마켓타운 전통시장, 동해선 광역전철 환승</td></tr>
+                <tr><td><a href="/station/dongbaek">동백역 (Dongbaek)</a></td><td>2호선</td><td>4번 출구 인근 엘리베이터</td><td>동백섬 APEC나루공원, 더베이101, 마린시티</td></tr>
+                <tr><td><a href="/station/bexco">벡스코역 (BEXCO)</a></td><td>2호선·동해선</td><td>2·4번, 6번, 7번, 9·11번 출구</td><td>BEXCO 제1·2전시장, 부산시립미술관, 센텀시티</td></tr>
+                <tr><td><a href="/station/suyeong">수영역 (Suyeong)</a></td><td>2호선·3호선</td><td>1번, 10번, 11번, 15번 출구</td><td>2·3호선 환승, 팔도시장, F1963 복합문화공간 버스 연계</td></tr>
+                <tr><td><a href="/station/geumnyeonsan">금련산역 (Geumnyeonsan)</a></td><td>2호선</td><td>3번, 4번 출구 인근 엘리베이터</td><td>광안리 해변 남측 산책로, 청소년수련원 방면</td></tr>
+                <tr><td><a href="/station/jungang">중앙역 (Jungang)</a></td><td>1호선</td><td>8번, 12번, 13번 출구</td><td>40계단 문화관광테마거리, 부산항 국제여객터미널 방면</td></tr>
+                <tr><td><a href="/station/dadaepo">다대포해수욕장역 (Dadaepo Beach)</a></td><td>1호선</td><td>2번, 3번, 4번 출구</td><td>다대포 해변공원 무장애 생태탐방로, 꿈의 낙조분수</td></tr>
+                <tr><td><a href="/station/beomeosa">범어사역 (Beomeosa)</a></td><td>1호선</td><td>3번, 4번 출구 인근 엘리베이터</td><td>금정산 범어사 연계 시내버스(90번) 환승 거점</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section aria-label="부산 테마별 추천 여행 코스 및 대중교통 가이드" style="margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 800; color: #11161B;">부산 테마별 추천 여행 코스 &amp; 대중교통 실전 가이드</h2>
+            <ul style="font-size: 14px; color: #334155; padding-left: 20px;">
+              <li><a href="/tips/courses/day"><strong>추천 여행 코스 (일정별 당일치기·1박2일·2박3일)</strong></a>: 원도심·해운대·기장까지 알짜배기 힐링 명소 코스</li>
+              <li><a href="/tips/courses/subway"><strong>부산도시철도 무장애 테마 코스</strong></a>: 1호선·2호선 엘리베이터 출구로 턱 없이 편안하게 달리는 쾌속 동선</li>
+              <li><a href="/tips/courses/gourmet"><strong>식도락 (부산 맛집 가이드)</strong></a>: 원조 돼지국밥 노포, 밀면, 씨앗호떡, 자갈치 해산물부터 오션뷰 카페까지</li>
+              <li><a href="/tips/courses/experience"><strong>체험 &amp; 문화 공간</strong></a>: 국립해양박물관, 부산근현대역사관, 뮤지엄원, 아르떼뮤지엄, F1963 복합문화공간</li>
+              <li><a href="/tips/courses/market"><strong>전통시장 투어 코스</strong></a>: 부평깡통야시장, 국제시장, 자갈치시장, 부전시장 무장애 아케이드 투어</li>
+              <li><a href="/tips/courses/attraction"><strong>부산 핵심 명소 코스</strong></a>: 해운대 해수욕장, 광안리 해변 &amp; 드론쇼, 영도 흰여울문화마을, 해동용궁사</li>
+              <li><a href="/barrier-free"><strong>무장애(배리어프리) 열린관광지</strong></a>: 계단과 턱이 없는 휠체어·유모차 친화 관광 명소 상세 정보</li>
+              <li><a href="/my-route"><strong>내 여행 루트 (맞춤 코스 생성)</strong></a>: 경유지 직선거리 계산 및 네이버 지도·구글맵 실시간 대중교통 길찾기</li>
+              <li><a href="/tips/transit"><strong>부산 대중교통 이용 팁 (5대 핵심 가이드)</strong></a>: 지하철-버스 무료 환승, 캐리어 반입 규격, 물품보관함 총정리</li>
+              <li><a href="/tips/child-free"><strong>어린이 대중교통 요금 무료 가이드</strong></a>: 만 6세~12세 어린이 교통카드 혜택 및 유모차 이동 팁</li>
+              <li><a href="/tips/bus-qr"><strong>시내버스 QR 간편 결제 안내</strong></a>: 교통카드 없이 스마트폰 QR로 부산 버스 탑승하는 방법</li>
+              <li><a href="/tips/taxi"><strong>부산 콜택시·교통약자 바우처 택시 안내</strong></a>: 동백택시, 두리발 및 외국인·가족 여행객 택시 이용 팁</li>
+              <li><a href="/schedule"><strong>부산 주요 축제·행사 월별 캘린더</strong></a>: 광안리 M 드론라이트쇼, 부산불꽃축제, 바다축제 등 연간 일정</li>
+              <li><a href="/tips/exploration"><strong>부산 탐구생활 로컬 매거진</strong></a>: 영수증 사진기, 무인 캐리어 보관소, 부산 사투리 치트키, 지하철 게이트 재진입 팁</li>
+            </ul>
+          </section>
+        </main>
+
+        <footer style="border-top: 1px solid #E5E2DC; padding-top: 16px; margin-top: 24px; font-size: 13px; color: #475569;">
+          <p style="margin: 0 0 8px 0;">운영: <strong>스텝레스 (Stepless)</strong> · 총괄: <strong>플로레르 (Floreur)</strong> · 문의: <a href="mailto:floreur88@gmail.com">floreur88@gmail.com</a></p>
+          <p style="margin: 0; display: flex; flex-wrap: wrap; gap: 12px;">
+            <a href="/about">운영자 소개</a>
+            <a href="/about/privacy">개인정보처리방침 (Privacy Policy)</a>
+            <a href="/about/terms">서비스 이용약관 (Terms of Service)</a>
+            <a href="/about/contact">정보 오류 제보 및 제휴 문의</a>
+            <a href="/about/data-source">공공데이터 출처 및 검증 안내</a>
+            <a href="/sitemap.xml">사이트맵(XML)</a>
+          </p>
+        </footer>
       </div>
     </div>
-
-    <!-- Semantic Fallback for Search Engine Crawlers & AI Bots (Naver Yeti, Googlebot, GPTBot, PerplexityBot, ClaudeBot, Bingbot) -->
-    <noscript>
-      <header style="padding:20px; font-family:sans-serif;">
-        <h1>부산 여행 코스 추천 &amp; 지하철 배리어프리 무장애 가이드 - 스텝레스 (Stepless)</h1>
-        <p>부산 명소·맛집·전통시장 추천 여행 코스부터 주요 15개 지하철역 엘리베이터 위치, 유모차·휠체어 배리어프리 무단차 동선 및 실시간 맞춤 대중교통 길찾기 가이드를 제공합니다.</p>
-        <p>
-          <a href="/sitemap.xml">사이트맵(XML)</a> | 
-          <a href="/llms.txt">AI Search LLM Reference (llms.txt)</a> | 
-          <a href="/privacy.html">개인정보처리방침</a> | 
-          <a href="/terms.html">서비스이용약관</a> | 
-          <a href="/about.html">서비스소개</a>
-        </p>
-      </header>
-      <main style="padding:0 20px; font-family:sans-serif;">
-        <section>
-          <h2>부산 테마별 추천 여행 코스</h2>
-          <ul>
-            <li><a href="/tips/courses/gourmet"><strong>식도락 여행 코스</strong></a>: 부산 대표 돼지국밥, 씨앗호떡, 밀면, 자갈치 해산물 미식 투어, 전포 카페거리 맛집</li>
-            <li><a href="/tips/courses/experience"><strong>체험 및 박물관 코스</strong></a>: 국립해양박물관, 국립부산과학관, 뮤지엄원, 아르떼뮤지엄 부산, 증권박물관, F1963 복합문화공간</li>
-            <li><a href="/tips/courses/market"><strong>전통시장 투어 코스</strong></a>: 부평깡통시장 야시장, 국제시장, 자갈치시장, 부전시장 투어</li>
-            <li><a href="/tips/courses/attraction"><strong>부산 핵심 명소 코스</strong></a>: 해운대 해수욕장, 광안리 해변 &amp; 드론쇼, 영도 흰여울문화마을, 기장 해동용궁사</li>
-            <li><a href="/tips/courses/day"><strong>당일치기 추천 코스</strong></a>: 알짜 부산 원데이 코스</li>
-            <li><a href="/tips/courses/1night"><strong>1박 2일 추천 코스</strong></a>: 부산 바다 &amp; 미식 힐링 코스</li>
-            <li><a href="/tips/courses/2nights"><strong>2박 3일 추천 코스</strong></a>: 부산 2박 3일 알찬 여행 코스</li>
-            <li><a href="/tips/courses/3nights"><strong>3박 4일 추천 코스</strong></a>: 여유로운 부산 힐링 코스</li>
-            <li><a href="/tips/courses/4nights"><strong>4박 5일 추천 코스</strong></a>: 부산 전역 완전정복 여행 코스</li>
-            <li><a href="/tips/courses/subway"><strong>부산도시철도 테마 코스</strong></a>: 1호선·2호선 환승 연계 알짜 여행 코스</li>
-            <li><a href="/barrier-free"><strong>무장애(배리어프리) 관광 코스</strong></a>: 계단과 턱이 없는 휠체어·유모차 친화 열린관광지</li>
-            <li><a href="/my-route"><strong>내 여행 루트 (맞춤 코스 생성)</strong></a>: 장소 간 직선거리 확인 및 네이버 지도·구글맵 실시간 대중교통 길찾기</li>
-            <li><a href="/tips/transit"><strong>대중교통 &amp; 환승 팁</strong></a>: 부산 시내버스 환승, 캐리어 물품보관함 가이드</li>
-            <li><a href="/tips/child-free"><strong>영유아·어린이 교통 편의</strong></a>: 부산 어린이 대중교통 요금 무료화 및 유모차 동선</li>
-            <li><a href="/tips/bus-qr"><strong>시내버스 QR 결제</strong></a>: 모바일 간편 결제 이용 가이드</li>
-            <li><a href="/tips/taxi"><strong>부산 콜택시 &amp; 바우처 택시</strong></a>: 교통약자 바우처 택시 및 안심 귀가 안내</li>
-          </ul>
-        </section>
-        <section>
-          <h2>부산 주요 지하철역 엘리베이터 최단 출구 일람표</h2>
-          <table border="1" cellpadding="8" style="border-collapse:collapse; width:100%; max-width:800px;">
-            <thead>
-              <tr style="background:#f1f5f9;">
-                <th>지하철역</th>
-                <th>호선</th>
-                <th>엘리베이터 출구</th>
-                <th>연계 명소 / 비고</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td><a href="/station/seomyeon">서면역</a></td><td>1호선, 2호선</td><td>7번, 11번, 12번, 13번 출구</td><td>서면 젊음의거리, 롯데백화점, 1·2호선 환승</td></tr>
-              <tr><td><a href="/station/busan">부산역</a></td><td>1호선</td><td>4번, 6번 출구</td><td>KTX·SRT 대합실 지상 연결 데크, 초량 차이나타운</td></tr>
-              <tr><td><a href="/station/haeundae">해운대역</a></td><td>2호선</td><td>1번, 3번 출구</td><td>구남로 문화광장, 해운대 해수욕장 백사장</td></tr>
-              <tr><td><a href="/station/gwangan">광안역</a></td><td>2호선</td><td>3번, 5번 출구</td><td>광안리 해변 방면 보도 평지 이동</td></tr>
-              <tr><td><a href="/station/nampo">남포역</a></td><td>1호선</td><td>1번, 7번 출구</td><td>롯데백화점 광복점, 용두산공원, 영도대교</td></tr>
-              <tr><td><a href="/station/jagalchi">자갈치역</a></td><td>1호선</td><td>4번, 10번 출구</td><td>자갈치시장, 부평깡통시장, 비프광장</td></tr>
-              <tr><td><a href="/station/dongbaek">동백역</a></td><td>2호선</td><td>1번 출구</td><td>동백섬, 더베이101, 마린시티</td></tr>
-              <tr><td><a href="/station/bexco">벡스코역</a></td><td>2호선, 동해선</td><td>1번, 9번 출구</td><td>BEXCO 제1·2전시장, 부산시립미술관</td></tr>
-              <tr><td><a href="/station/suyeong">수영역</a></td><td>2호선, 3호선</td><td>2번, 14번 출구</td><td>F1963 복합문화공간 연계 환승 버스 정류장</td></tr>
-              <tr><td><a href="/station/jeonpo">전포역</a></td><td>2호선</td><td>1번, 7번 출구</td><td>전포 카페거리, 소품샵 골목</td></tr>
-              <tr><td><a href="/station/bujeon">부전역</a></td><td>1호선, 동해선</td><td>1번 출구</td><td>부전시장, 동해선 광역전철</td></tr>
-              <tr><td><a href="/station/geumnyeonsan">금련산역</a></td><td>2호선</td><td>1번, 6번 출구</td><td>광안리 남측 산책로, 황령산 방면</td></tr>
-            </tbody>
-          </table>
-        </section>
-        <section>
-          <h2>경유지 이동 구간 네이버 지도 &amp; 구글맵 길찾기 가이드</h2>
-          <p>내 여행 루트에서 경유지 간 이동 시 한국어 환경에서는 <strong>[네이버지도 길찾기]</strong> 버튼을 통해 실시간 버스 노선, 환승 정류장, 소요시간을 바로 열람할 수 있으며, 영문 환경에서는 <strong>[Google Maps Directions]</strong>로 이동할 수 있습니다.</p>
-        </section>
-        <section>
-          <h2>서비스 운영 정보 및 이용자 정책 (AdSense Compliance)</h2>
-          <p>
-            <a href="/about">운영자 소개</a> |
-            <a href="/about/privacy">개인정보처리방침 (Privacy Policy)</a> |
-            <a href="/about/terms">서비스 이용약관 (Terms)</a> |
-            <a href="/about/contact">문의 및 제휴 (Contact)</a> |
-            <a href="/about/data-source">데이터 출처 및 정정 제보</a>
-          </p>
-        </section>
-      </main>
-    </noscript>
-
-    <!-- React Root Mount Target -->
-    <div id="root"></div>
 
     <script type="module" src="/src/main.tsx"></script>
   </body>

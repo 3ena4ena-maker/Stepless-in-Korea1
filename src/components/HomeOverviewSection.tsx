@@ -1,30 +1,15 @@
 import React from 'react';
 import { 
-  Baby, 
   Accessibility, 
   Luggage, 
   Compass, 
   ShieldCheck, 
   Train, 
-  AlertCircle,
-  FileCheck,
   ChevronRight,
   UtensilsCrossed,
   Building2,
-  CheckCircle2,
-  UserCheck,
-  Calendar,
-  AlertTriangle,
-  Info,
-  MapPin,
-  Route,
-  RefreshCw,
-  Layers,
-  Sparkles,
-  HelpCircle,
   ArrowUpRight
 } from 'lucide-react';
-import { getTodayDateKR } from '../utils';
 import StationSearchBar from './StationSearchBar';
 import { DICTIONARY, Language } from '../i18n/dictionary';
 import { STATIONS } from '../data';
@@ -36,6 +21,7 @@ interface HomeOverviewSectionProps {
   onNavigateToReport?: () => void;
   onNavigateToNearby?: () => void;
   onNavigateToItinerary?: (category?: 'GOURMET' | 'EXPERIENCE' | 'DAY' | 'SUBWAY') => void;
+  onNavigateToGuide?: (subPage: 'transit' | 'child-free' | 'bus-qr' | 'taxi' | 'exploration' | 'schedule' | 'barrier-free') => void;
   searchQuery?: string;
   setSearchQuery?: (q: string) => void;
   onNavigateToAbout?: () => void;
@@ -45,9 +31,8 @@ export function HomeOverviewSection({
   language = 'KR',
   onSelectStation,
   onNavigateToSearch,
-  onNavigateToReport,
-  onNavigateToNearby,
   onNavigateToItinerary,
+  onNavigateToGuide,
   onNavigateToAbout,
   searchQuery = '',
   setSearchQuery
@@ -128,6 +113,7 @@ export function HomeOverviewSection({
   const recommendedCourses = [
     {
       id: 'DAY' as const,
+      href: '/tips/courses/day',
       icon: Compass,
       title: language === 'KR' ? '추천 여행 코스' : 'RECOMMENDED ITINERARY',
       tag: language === 'KR' ? '바다·투어' : 'OCEAN TRIP',
@@ -144,6 +130,7 @@ export function HomeOverviewSection({
     },
     {
       id: 'SUBWAY' as const,
+      href: '/tips/courses/subway',
       icon: Train,
       title: language === 'KR' ? '지하철 무장애 코스' : 'STEP-FREE METRO ROUTE',
       tag: language === 'KR' ? '계단 ZERO' : 'STEP-FREE',
@@ -160,6 +147,7 @@ export function HomeOverviewSection({
     },
     {
       id: 'GOURMET' as const,
+      href: '/tips/courses/gourmet',
       icon: UtensilsCrossed,
       title: language === 'KR' ? '식도락 (부산 맛집)' : 'BUSAN FOOD GUIDE',
       tag: language === 'KR' ? '부산 미식' : 'FOODIE',
@@ -176,6 +164,7 @@ export function HomeOverviewSection({
     },
     {
       id: 'EXPERIENCE' as const,
+      href: '/tips/courses/experience',
       icon: Building2,
       title: language === 'KR' ? '체험 & 문화 공간' : 'CULTURE & MUSEUM',
       tag: language === 'KR' ? '문화·핫플' : 'HOT SPOTS',
@@ -296,15 +285,18 @@ export function HomeOverviewSection({
           </div>
         </div>
 
-        {/* Subway Station Buttons Grid: Mobile-optimized, compact, no color lines */}
+        {/* Subway Station Links Grid: Mobile-optimized, compact, crawler-friendly <a> tags */}
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5 sm:gap-2.5 pt-1">
           {filteredStations.map((st) => (
-            <button
+            <a
               key={st.id}
-              type="button"
-              onClick={() => onSelectStation(st.id)}
+              href={`/station/${st.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                onSelectStation(st.id);
+              }}
               aria-label={`${st.name} ${st.lines.join(', ')}호선 출구 안내`}
-              className="group flex flex-col items-center justify-center bg-white hover:bg-[#F9F9F7] border border-slate-200/90 hover:border-[#8EA85E] rounded-xl py-2 px-1 sm:py-2.5 sm:px-2 transition-all duration-150 hover:-translate-y-0.5 hover:shadow-xs cursor-pointer text-center active:scale-95 min-h-[60px] sm:min-h-[68px]"
+              className="group flex flex-col items-center justify-center bg-white hover:bg-[#F9F9F7] border border-slate-200/90 hover:border-[#8EA85E] rounded-xl py-2 px-1 sm:py-2.5 sm:px-2 transition-all duration-150 hover:-translate-y-0.5 hover:shadow-xs cursor-pointer text-center active:scale-95 min-h-[60px] sm:min-h-[68px] no-underline"
             >
               {/* Station Name */}
               <div className="font-extrabold text-[#11161B] text-xs sm:text-sm tracking-tight group-hover:text-[#8EA85E] transition-colors leading-tight truncate max-w-full">
@@ -325,7 +317,7 @@ export function HomeOverviewSection({
                   );
                 })}
               </div>
-            </button>
+            </a>
           ))}
         </div>
       </section>
@@ -341,37 +333,42 @@ export function HomeOverviewSection({
           </h2>
         </div>
 
-        {/* 4 Pastel Soft Activity Cards (글자를 이모지 옆으로 가로 배치) */}
+        {/* 4 Pastel Soft Activity Cards (Crawler-friendly <a> tags with subtitle description) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3.5 pt-1">
           {recommendedCourses.map((course) => {
             const IconComponent = course.icon;
             return (
-              <div 
+              <a 
                 key={course.id}
-                onClick={() => {
+                href={course.href}
+                onClick={(e) => {
+                  e.preventDefault();
                   if (onNavigateToItinerary) {
                     onNavigateToItinerary(course.id);
                   }
                 }}
-                className={`${course.bg} border ${course.border} rounded-2xl p-2.5 sm:p-3.5 flex items-center gap-2 sm:gap-2.5 cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 group shadow-2xs select-none active:scale-95 min-h-[58px] sm:min-h-[68px]`}
+                className={`${course.bg} border ${course.border} rounded-2xl p-2.5 sm:p-3.5 flex items-center gap-2 sm:gap-2.5 cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 group shadow-2xs select-none active:scale-95 min-h-[58px] sm:min-h-[68px] no-underline`}
               >
-                {/* Left: Icon (이모지) */}
+                {/* Left: Icon */}
                 <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl ${course.iconBg} ${course.iconColor} flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 shadow-2xs`}>
                   <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
 
-                {/* Right: Title next to Icon */}
+                {/* Right: Title & Description next to Icon */}
                 <div className="flex-1 min-w-0">
                   <h3 className="font-black text-[#11161B] text-xs sm:text-sm md:text-[15px] group-hover:text-[#0A2540] transition-colors leading-tight break-keep">
                     {course.title}
                   </h3>
+                  <p className="hidden sm:block text-[11px] text-slate-500 mt-0.5 line-clamp-1 break-keep">
+                    {course.desc}
+                  </p>
                 </div>
 
                 {/* Far Right: Arrow */}
                 <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/70 flex items-center justify-center text-slate-400 group-hover:text-[#11161B] group-hover:bg-white shadow-2xs transition-all shrink-0">
                   <ArrowUpRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
-              </div>
+              </a>
             );
           })}
         </div>
@@ -379,7 +376,104 @@ export function HomeOverviewSection({
 
 
       {/* ==========================================
-          4. COMPACT ABOUT & VERIFICATION BANNER
+          4. COMPACT 3-PILLAR GUIDE (심플 2~3줄 요약 카드 · AdSense 본문 충족)
+         ========================================== */}
+      <section 
+        className="space-y-3 pt-6 sm:pt-8 border-t border-[#E5E2DC]" 
+        id="editorial-guide-section"
+        aria-label={language === 'KR' ? '부산 무장애 여행 핵심 가이드' : 'Busan Step-Free Travel Core Guide'}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+          <h2 className="text-base sm:text-lg font-black text-[#11161B] tracking-tight">
+            {language === 'KR' 
+              ? '계단 없는 부산여행 핵심 포인트' 
+              : 'Key Points for Step-Free Busan Travel'}
+          </h2>
+          <p className="text-xs text-slate-500 break-keep">
+            {language === 'KR'
+              ? '휠체어·유모차·캐리어 여행객을 위한 부산 지하철 및 무장애 이동 기준입니다.'
+              : 'Essential step-free transit and accessibility standards for Busan travelers.'}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-3.5">
+          {/* Card 1 */}
+          <a
+            href="/tips/courses/subway"
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigateToItinerary?.('SUBWAY');
+            }}
+            className="bg-white hover:bg-[#FAF9F6] border border-[#E5E2DC] hover:border-[#8EA85E] rounded-2xl p-3.5 sm:p-4 transition-all space-y-1.5 shadow-2xs no-underline group"
+          >
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-[#EDF4E3] text-[#5B7332] shrink-0">
+                <Train className="w-3.5 h-3.5" />
+              </span>
+              <h3 className="font-bold text-xs sm:text-sm text-[#11161B] group-hover:text-[#6B853E] transition-colors">
+                {language === 'KR' ? '주요 환승역 1동선 엘리베이터' : 'Direct Station Elevators'}
+              </h3>
+            </div>
+            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed break-keep">
+              {language === 'KR'
+                ? '서면역(7·11·12·13번), 부산역(4·6번), 해운대역(1·3번), 광안역(3·5번) 등 15개 주요 역사의 승강장부터 지상 보도까지 계단 없이 직결되는 엘리베이터 출구 번호를 안내합니다.'
+                : 'Find direct platform-to-street elevator exits across 15 major stations including Seomyeon, Busan Station, Haeundae, and Gwangan.'}
+            </p>
+          </a>
+
+          {/* Card 2 */}
+          <a
+            href="/barrier-free"
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigateToGuide?.('barrier-free');
+            }}
+            className="bg-white hover:bg-[#FAF9F6] border border-[#E5E2DC] hover:border-[#8EA85E] rounded-2xl p-3.5 sm:p-4 transition-all space-y-1.5 shadow-2xs no-underline group"
+          >
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-[#E8F2F8] text-[#2F668A] shrink-0">
+                <Accessibility className="w-3.5 h-3.5" />
+              </span>
+              <h3 className="font-bold text-xs sm:text-sm text-[#11161B] group-hover:text-[#2F668A] transition-colors">
+                {language === 'KR' ? '유모차·휠체어 권역별 평지 동선' : 'Flat Regional Boardwalks'}
+              </h3>
+            </div>
+            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed break-keep">
+              {language === 'KR'
+                ? '해운대·동백섬 우든 데크길과 다대포 생태탐방로, 자갈치·국제시장 평지 아케이드 및 국립해양박물관 등 단차 없이 쾌적하게 둘러볼 수 있는 열린관광지 코스를 선별했습니다.'
+                : 'Explore step-free coastal boardwalks at Haeundae & Dadaepo, flat market arcades in Nampo, and barrier-free museums.'}
+            </p>
+          </a>
+
+          {/* Card 3 */}
+          <a
+            href="/tips/transit"
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigateToGuide?.('transit');
+            }}
+            className="bg-white hover:bg-[#FAF9F6] border border-[#E5E2DC] hover:border-[#8EA85E] rounded-2xl p-3.5 sm:p-4 transition-all space-y-1.5 shadow-2xs no-underline group"
+          >
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-[#F7EFE6] text-[#855834] shrink-0">
+                <Luggage className="w-3.5 h-3.5" />
+              </span>
+              <h3 className="font-bold text-xs sm:text-sm text-[#11161B] group-hover:text-[#855834] transition-colors">
+                {language === 'KR' ? '무료 환승·어린이 혜택 & 캐리어 팁' : 'Free Transfers & Luggage Tips'}
+              </h3>
+            </div>
+            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed break-keep">
+              {language === 'KR'
+                ? '하차 후 30분 이내 도시철도·버스 무료 환승(최대 2회), 만 6~12세 어린이 요금 무료 혜택, 시내버스 QR 결제 및 28인치 이상 대형 캐리어 물품보관함(T-Luggage) 정보를 제공합니다.'
+                : 'Learn about 30-minute free transit transfers, free fares for children aged 6–12, bus QR payment, and metro luggage lockers.'}
+            </p>
+          </a>
+        </div>
+      </section>
+
+
+      {/* ==========================================
+          5. COMPACT ABOUT & VERIFICATION BANNER
          ========================================== */}
       <section className="pt-4 border-t border-[#E5E2DC]" id="about-verification-banner">
         <div className="bg-[#FAF8F5] border border-[#EBE8E2] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
@@ -399,18 +493,19 @@ export function HomeOverviewSection({
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => {
+          <a
+            href="/about"
+            onClick={(e) => {
+              e.preventDefault();
               if (onNavigateToAbout) {
                 onNavigateToAbout();
               }
             }}
-            className="self-end sm:self-center shrink-0 px-4 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 hover:text-[#8EA85E] font-bold text-xs transition-colors shadow-2xs flex items-center gap-1 cursor-pointer"
+            className="self-end sm:self-center shrink-0 px-4 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 hover:text-[#8EA85E] font-bold text-xs transition-colors shadow-2xs flex items-center gap-1 cursor-pointer no-underline"
           >
             <span>{language === 'KR' ? '자세히 보기' : 'Learn More'}</span>
             <ChevronRight className="w-3.5 h-3.5" />
-          </button>
+          </a>
         </div>
       </section>
 

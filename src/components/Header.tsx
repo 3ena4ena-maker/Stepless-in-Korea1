@@ -20,18 +20,18 @@ interface HeaderProps {
 export default function Header({ currentTab, tipsSubPage, setCurrentTab, language, toggleLanguage, onToggleAdminMode, isAdminMode }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const clickCountRef = React.useRef(0);
-  const clickTimerRef = React.useRef<any>(null);
+  const clickTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const d = DICTIONARY[language];
 
   const menuItems = [
-    { id: 'home', label: d.nav.home, icon: Compass },
-    { id: 'search', label: d.nav.search, icon: Train },
-    { id: 'transit', label: d.nav.transit, icon: Bus },
-    { id: 'courses', label: d.nav.courses, icon: Map },
-    { id: 'schedule', label: d.nav.schedule, icon: Calendar },
-    { id: 'exploration', label: d.nav.exploration, icon: Sparkles },
-    { id: 'about', label: d.nav.about, icon: Info },
+    { id: 'home', href: '/', label: d.nav.home, icon: Compass },
+    { id: 'search', href: '/search', label: d.nav.search, icon: Train },
+    { id: 'transit', href: '/tips/transit', label: d.nav.transit, icon: Bus },
+    { id: 'courses', href: '/tips/courses', label: d.nav.courses, icon: Map },
+    { id: 'schedule', href: '/schedule', label: d.nav.schedule, icon: Calendar },
+    { id: 'exploration', href: '/tips/exploration', label: d.nav.exploration, icon: Sparkles },
+    { id: 'about', href: '/about', label: d.nav.about, icon: Info },
   ];
 
   const isItemActive = (id: string) => {
@@ -43,7 +43,8 @@ export default function Header({ currentTab, tipsSubPage, setCurrentTab, languag
     return false;
   };
 
-  const handleLogoClick = () => {
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
@@ -71,9 +72,10 @@ export default function Header({ currentTab, tipsSubPage, setCurrentTab, languag
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 sm:h-20">
           {/* Logo */}
-          <div 
+          <a 
+            href="/"
             onClick={handleLogoClick} 
-            className="flex items-center gap-2 cursor-pointer group select-none py-1"
+            className="flex items-center gap-2 cursor-pointer group select-none py-1 no-underline"
             id="header-logo-container"
             title="STEPLESS IN BUSAN 홈으로 이동"
           >
@@ -92,7 +94,7 @@ export default function Header({ currentTab, tipsSubPage, setCurrentTab, languag
                 </span>
               )}
             </div>
-          </div>
+          </a>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1 lg:space-x-1.5" aria-label="Global Navigation">
@@ -100,16 +102,18 @@ export default function Header({ currentTab, tipsSubPage, setCurrentTab, languag
               const Icon = item.icon;
               const isActive = isItemActive(item.id);
               return (
-                <button
+                <a
                   key={item.id}
+                  href={item.href}
                   id={`nav-btn-${item.id}`}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     window.scrollTo(0, 0);
                     document.documentElement.scrollTop = 0;
                     document.body.scrollTop = 0;
                     setCurrentTab(item.id);
                   }}
-                  className={`flex items-center gap-1.5 px-2.5 lg:px-3 py-2 rounded-md text-xs lg:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
+                  className={`flex items-center gap-1.5 px-2.5 lg:px-3 py-2 rounded-md text-xs lg:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap no-underline ${
                     isActive
                       ? 'text-[#8EA85E] bg-[#F1EFEC] font-bold'
                       : 'text-[#4A5568] hover:text-[#11161B] hover:bg-[#F1EFEC]/60'
@@ -117,7 +121,7 @@ export default function Header({ currentTab, tipsSubPage, setCurrentTab, languag
                 >
                   <Icon className={`w-3.5 h-3.5 lg:w-4 lg:h-4 shrink-0 ${isActive ? 'text-[#8EA85E]' : 'text-slate-400'}`} />
                   <span>{item.label}</span>
-                </button>
+                </a>
               );
             })}
           </nav>
@@ -126,6 +130,7 @@ export default function Header({ currentTab, tipsSubPage, setCurrentTab, languag
           <div className="hidden md:flex items-center gap-3 border-l border-[#E5E2DC] pl-5">
             <div className="flex items-center text-xs font-mono tracking-wider select-none">
               <button
+                type="button"
                 onClick={() => { if (language !== 'KR') toggleLanguage(); }}
                 className={`transition-colors cursor-pointer px-1.5 py-1 ${
                   language === 'KR' 
@@ -137,6 +142,7 @@ export default function Header({ currentTab, tipsSubPage, setCurrentTab, languag
               </button>
               <span className="text-slate-300 mx-0.5">|</span>
               <button
+                type="button"
                 onClick={() => { if (language !== 'EN') toggleLanguage(); }}
                 className={`transition-colors cursor-pointer px-1.5 py-1 ${
                   language === 'EN' 
@@ -153,6 +159,7 @@ export default function Header({ currentTab, tipsSubPage, setCurrentTab, languag
           <div className="flex md:hidden items-center gap-3">
             <div className="flex items-center text-xs font-mono select-none">
               <button
+                type="button"
                 onClick={toggleLanguage}
                 className="px-2 py-1 text-xs font-semibold text-[#8EA85E] bg-[#F1EFEC] rounded-md border border-[#E5E2DC]"
               >
@@ -160,6 +167,7 @@ export default function Header({ currentTab, tipsSubPage, setCurrentTab, languag
               </button>
             </div>
             <button
+              type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-md text-[#11161B] hover:bg-[#F1EFEC] transition-all flex items-center justify-center cursor-pointer"
               aria-label="Toggle menu"
@@ -178,17 +186,19 @@ export default function Header({ currentTab, tipsSubPage, setCurrentTab, languag
               const Icon = item.icon;
               const isActive = isItemActive(item.id);
               return (
-                <button
+                <a
                   key={item.id}
+                  href={item.href}
                   id={`mobile-nav-btn-${item.id}`}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     window.scrollTo(0, 0);
                     document.documentElement.scrollTop = 0;
                     document.body.scrollTop = 0;
                     setCurrentTab(item.id);
                     setMobileMenuOpen(false);
                   }}
-                  className={`flex items-center gap-3 w-full px-4 py-3 rounded-md text-sm font-semibold transition-all cursor-pointer ${
+                  className={`flex items-center gap-3 w-full px-4 py-3 rounded-md text-sm font-semibold transition-all cursor-pointer no-underline ${
                     isActive
                       ? 'text-[#8EA85E] bg-[#F1EFEC] font-bold'
                       : 'text-[#4A5568] hover:bg-[#F1EFEC]/60'
@@ -196,7 +206,7 @@ export default function Header({ currentTab, tipsSubPage, setCurrentTab, languag
                 >
                   <Icon className={`w-4 h-4 ${isActive ? 'text-[#8EA85E]' : 'text-slate-400'}`} />
                   <span>{item.label}</span>
-                </button>
+                </a>
               );
             })}
           </div>

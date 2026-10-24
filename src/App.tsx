@@ -117,7 +117,7 @@ const SubwayStationMap = lazyWithRetry(() => import('./components/SubwayStationM
 
 // Dynamic tab loading fallback component for code-split views
 const TabLoadingFallback = ({ text = "정보를 신속하게 불러오는 중..." }: { text?: string }) => (
-  <div className="flex flex-col items-center justify-center min-h-[360px] p-8 text-center space-y-3 animate-fade-in">
+  <div className="flex flex-col items-center justify-center min-h-[360px] p-8 text-center space-y-3 animate-fade-in google-anno-skip" data-ad-exclude="true" data-loading-fallback="true">
     <div className="w-9 h-9 border-3 border-emerald-100 border-t-[#8EA85E] rounded-full animate-spin"></div>
     <p className="text-sm font-bold text-slate-600">{text}</p>
   </div>
@@ -1707,6 +1707,7 @@ export default function App() {
                       setSearchViewMode('DETAIL');
                       setCurrentTab('search');
                       setIsHomeLanding(false);
+                      navigateToSpa(`/station/${stId}`, { tab: 'search', stationId: stId });
                       try {
                         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
                       } catch (e) {
@@ -1741,9 +1742,12 @@ export default function App() {
                     }}
                     onNavigateToReport={() => {
                       setCurrentTab('about');
+                      navigateToSpa('/about', { tab: 'about' });
                     }}
                     onNavigateToAbout={() => {
                       setCurrentTab('about');
+                      setSiteSubPage('about');
+                      navigateToSpa('/about', { tab: 'about' });
                       window.scrollTo(0, 0);
                     }}
                     onNavigateToNearby={() => {
@@ -1753,13 +1757,36 @@ export default function App() {
                       if (category) {
                         setSelectedItineraryCategory(category);
                       }
-                      setCurrentTab('tips');
+                      setCurrentTab('courses');
                       setTipsSubPage('courses');
+                      const catSlug = category ? categoryToUrlSlug(category) : '';
+                      navigateToSpa(catSlug ? `/tips/courses/${catSlug}` : '/tips/courses', { tab: 'courses', subPage: 'courses', category: category || null });
                       try {
                         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
                       } catch (e) {
                         window.scrollTo(0, 0);
                       }
+                    }}
+                    onNavigateToGuide={(subPage) => {
+                      setIsHomeLanding(false);
+                      if (subPage === 'barrier-free') {
+                        setCurrentTab('tourapi');
+                        setSelectedItineraryCategory('BARRIER_FREE');
+                        navigateToSpa('/barrier-free', { tab: 'tourapi' });
+                      } else if (subPage === 'schedule') {
+                        setCurrentTab('schedule');
+                        setTipsSubPage('schedule');
+                        navigateToSpa('/schedule', { tab: 'schedule', subPage: 'schedule' });
+                      } else if (subPage === 'exploration') {
+                        setCurrentTab('exploration');
+                        setTipsSubPage('exploration');
+                        navigateToSpa('/tips/exploration', { tab: 'exploration', subPage: 'exploration' });
+                      } else {
+                        setCurrentTab('transit');
+                        setTipsSubPage(subPage);
+                        navigateToSpa(`/tips/${subPage}`, { tab: 'transit', subPage });
+                      }
+                      window.scrollTo(0, 0);
                     }}
                   />
                 </>
@@ -2136,11 +2163,11 @@ export default function App() {
                     }, 100);
                   }}
                 />
+                {/* Google AdSense Unit rendered strictly INSIDE Suspense so it never fires on loading screens */}
+                {(currentTab !== 'tips' || tipsSubPage !== 'index') && currentTab !== 'schedule' && (
+                  <AdSenseUnit currentParams={adParams} />
+                )}
               </Suspense>
-              {/* Google AdSense Unit for Verified Guides / Magazine / Content Hub */}
-              {(currentTab !== 'tips' || tipsSubPage !== 'index') && currentTab !== 'schedule' && (
-                <AdSenseUnit currentParams={adParams} />
-              )}
             </div>
           )}
 
@@ -2153,6 +2180,9 @@ export default function App() {
                   initialPage={siteSubPage}
                   onSubTabChange={(sub) => setSiteSubPage(sub)}
                 />
+                {siteSubPage === 'about' && (
+                  <AdSenseUnit currentParams={adParams} />
+                )}
               </Suspense>
             </div>
           )}
@@ -2162,7 +2192,7 @@ export default function App() {
       </div>
 
       {/* Footer information section */}
-      <footer className="mt-3 sm:mt-4 bg-[#8EA85E]/15 backdrop-blur-md text-slate-700 text-left border-t border-[#8EA85E]/30 pt-6 sm:pt-7 pb-10 sm:pb-12 md:pb-14 rounded-t-[2rem]">
+      <footer className="mt-2 bg-[#8EA85E]/15 backdrop-blur-md text-slate-700 text-left border-t border-[#8EA85E]/30 pt-6 sm:pt-7 pb-10 sm:pb-12 md:pb-14 rounded-t-[2rem]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
@@ -2228,16 +2258,19 @@ export default function App() {
                 : 'For comments or suggesting accessibility paths, contact the support team.'}
             </p>
             <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => {
+              <a
+                href="/about/contact"
+                onClick={(e) => {
+                  e.preventDefault();
                   setCurrentTab('about');
                   setSiteSubPage('contact');
+                  navigateToSpa('/about/contact', { tab: 'about', subPage: 'contact' });
                   window.scrollTo(0, 0);
                 }}
-                className="px-3.5 py-1.5 rounded-lg bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs transition-colors cursor-pointer shadow-xs"
+                className="px-3.5 py-1.5 rounded-lg bg-[#8EA85E] hover:bg-[#7b944f] text-white font-bold text-xs transition-colors cursor-pointer shadow-xs no-underline inline-flex items-center"
               >
                 ✉️ {language === 'KR' ? '문의 보내기' : 'Contact Us'}
-              </button>
+              </a>
               <a
                 href="mailto:floreur88@gmail.com"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/80 hover:bg-white text-slate-800 font-mono text-xs font-bold transition-colors border border-[#8EA85E]/30 shadow-2xs backdrop-blur-sm"
@@ -2251,7 +2284,7 @@ export default function App() {
         {/* AdSense & Cookie Privacy Policy Notice */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 pt-4 border-t border-[#8EA85E]/20">
           <p className="text-2xs sm:text-xs text-slate-600 leading-relaxed font-sans text-left">
-            📢 <strong>안내:</strong> 구글 맞춤형 광고 및 쿠키 설정 안내는 <button onClick={() => { setCurrentTab('about'); setSiteSubPage('privacy'); window.scrollTo(0, 0); }} className="text-[#6C8540] hover:text-[#526630] underline font-bold cursor-pointer">개인정보처리방침</button>에서 확인하실 수 있습니다.
+            📢 <strong>안내:</strong> 구글 맞춤형 광고 및 쿠키 설정 안내는 <a href="/about/privacy" onClick={(e) => { e.preventDefault(); setCurrentTab('about'); setSiteSubPage('privacy'); navigateToSpa('/about/privacy', { tab: 'about', subPage: 'privacy' }); window.scrollTo(0, 0); }} className="text-[#6C8540] hover:text-[#526630] underline font-bold cursor-pointer">개인정보처리방침</a>에서 확인하실 수 있습니다.
           </p>
         </div>
 
@@ -2260,56 +2293,71 @@ export default function App() {
           
           {/* Prominent Legal Links Bar */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 justify-center sm:justify-end">
-            <button 
-              onClick={() => {
+            <a 
+              href="/about"
+              onClick={(e) => {
+                e.preventDefault();
                 setCurrentTab('about');
                 setSiteSubPage('about');
+                navigateToSpa('/about', { tab: 'about', subPage: 'about' });
                 window.scrollTo(0, 0);
               }}
-              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer no-underline"
             >
               {language === 'KR' ? '👤 운영자 소개' : 'Operator'}
-            </button>
-            <button 
-              onClick={() => {
+            </a>
+            <a 
+              href="/about/contact"
+              onClick={(e) => {
+                e.preventDefault();
                 setCurrentTab('about');
                 setSiteSubPage('contact');
+                navigateToSpa('/about/contact', { tab: 'about', subPage: 'contact' });
                 window.scrollTo(0, 0);
               }}
-              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer no-underline"
             >
               {language === 'KR' ? '✉️ 정보 오류 요청 제보 및 문의' : 'Inquiries & Edits'}
-            </button>
-            <button 
-              onClick={() => {
+            </a>
+            <a 
+              href="/about/privacy"
+              onClick={(e) => {
+                e.preventDefault();
                 setCurrentTab('about');
                 setSiteSubPage('privacy');
+                navigateToSpa('/about/privacy', { tab: 'about', subPage: 'privacy' });
                 window.scrollTo(0, 0);
               }}
-              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer no-underline"
             >
               {language === 'KR' ? '🔒 개인정보처리방침' : 'Privacy'}
-            </button>
-            <button 
-              onClick={() => {
+            </a>
+            <a 
+              href="/about/terms"
+              onClick={(e) => {
+                e.preventDefault();
                 setCurrentTab('about');
                 setSiteSubPage('terms');
+                navigateToSpa('/about/terms', { tab: 'about', subPage: 'terms' });
                 window.scrollTo(0, 0);
               }}
-              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer no-underline"
             >
               {language === 'KR' ? '📄 이용약관' : 'Terms'}
-            </button>
-            <button 
-              onClick={() => {
+            </a>
+            <a 
+              href="/about/data-source"
+              onClick={(e) => {
+                e.preventDefault();
                 setCurrentTab('about');
                 setSiteSubPage('data-source');
+                navigateToSpa('/about/data-source', { tab: 'about', subPage: 'data-source' });
                 window.scrollTo(0, 0);
               }}
-              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white hover:text-[#8EA85E] border border-[#8EA85E]/30 text-slate-700 font-bold text-xs transition-colors shadow-2xs backdrop-blur-sm cursor-pointer no-underline"
             >
               {language === 'KR' ? '📊 데이터 출처' : 'Data Sources'}
-            </button>
+            </a>
             <a 
               href="https://www.reddit.com/r/BusanTravelTips/" 
               target="_blank" 
