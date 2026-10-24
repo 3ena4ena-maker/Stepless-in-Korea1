@@ -6,8 +6,12 @@ export const DICTIONARY = {
     nav: {
       home: '홈',
       search: '출구 정보 및 역 검색',
-      tips: '여행 팁',
+      transit: '대중교통 이용 팁',
+      courses: '여행코스 추천',
+      schedule: '부산 주요 일정표',
+      exploration: '부산 탐구생활',
       about: '사이트 소개',
+      tips: '여행 팁',
     },
     hero: {
       eyebrow: '부산 로컬 가이드',
@@ -79,8 +83,12 @@ export const DICTIONARY = {
     nav: {
       home: 'Home',
       search: 'Station & Exit Guide',
-      tips: 'Travel Tips',
+      transit: 'Transit Tips',
+      courses: 'Recommended Courses',
+      schedule: 'Schedule & Events',
+      exploration: 'Busan Exploration',
       about: 'About',
+      tips: 'Travel Tips',
     },
     hero: {
       eyebrow: 'LOCAL SPECIALIST GUIDE',

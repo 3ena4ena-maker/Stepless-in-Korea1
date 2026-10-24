@@ -1432,7 +1432,7 @@ export default function BusanItinerariesView({
     }
     return tipsSubPage === 'courses' ? 'RECOMMENDATIONS' :
       tipsSubPage === 'schedule' ? 'SCHEDULE' :
-      tipsSubPage === 'community' ? 'COMMUNITY' :
+      tipsSubPage === 'community' ? 'EXPLORATION' :
       tipsSubPage === 'exploration' ? 'EXPLORATION' :
       (tipsSubPage === 'transit' || tipsSubPage === 'child-free' || tipsSubPage === 'taxi' || tipsSubPage === 'transfer') ? 'TRANSIT_TIPS' :
       (initialCategory ? 'RECOMMENDATIONS' : 'SELECTION');
@@ -1538,7 +1538,15 @@ export default function BusanItinerariesView({
       setActiveSection('SCHEDULE');
       navigateToSpa('/schedule', { tab: 'schedule', subPage: 'schedule' });
     } else if (page === 'community') {
-      setActiveSection('COMMUNITY');
+      setActiveSection('EXPLORATION');
+      setSelectedExplorationItem(null);
+      navigateToSpa('/tips/exploration', { tab: 'tips', subPage: 'exploration' });
+      setTimeout(() => {
+        const commEl = document.getElementById('community-section-container');
+        if (commEl) {
+          commEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
     } else if (page === 'exploration') {
       setActiveSection('EXPLORATION');
       setSelectedExplorationItem(null);
@@ -1582,7 +1590,14 @@ export default function BusanItinerariesView({
     } else if (tipsSubPage === 'schedule') {
       setActiveSection('SCHEDULE');
     } else if (tipsSubPage === 'community') {
-      setActiveSection('COMMUNITY');
+      setActiveSection('EXPLORATION');
+      setSelectedExplorationItem(null);
+      setTimeout(() => {
+        const commEl = document.getElementById('community-section-container');
+        if (commEl) {
+          commEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
     } else if (tipsSubPage === 'exploration') {
       setActiveSection('EXPLORATION');
     }
@@ -2228,7 +2243,7 @@ export default function BusanItinerariesView({
                 )}
                 {activeSection === 'SCHEDULE' && (language === 'KR' ? '부산 주요 일정표' : 'Busan Events & Schedule')}
                 {activeSection === 'COMMUNITY' && (language === 'KR' ? '실시간 부산 여행 팁 커뮤니티' : 'Live Busan Travel Tips')}
-                {activeSection === 'EXPLORATION' && (
+                {(activeSection === 'EXPLORATION' || activeSection === 'COMMUNITY') && (
                   selectedExplorationItem ? (
                     <>
                       <button
@@ -2896,8 +2911,6 @@ export default function BusanItinerariesView({
                   </div>
                 )}
               </div>
-
-
             </div>
           )}
 
@@ -7277,10 +7290,129 @@ case 'EXPERIENCE': {
       )}
 
       {/* ========================================================================= */}
-      {/* VIEW 5: LIVE BUSAN TRAVEL TIPS COMMUNITY                                 */}
+      {/* VIEW 6: BUSAN EXPLORATION (부산 탐구생활) - 핫이슈 & 실전 여행 꿀팁       */}
       {/* ========================================================================= */}
-      {activeSection === 'COMMUNITY' && (
-        <div className="space-y-6 animate-fade-in text-left font-sans" id="community-section-container">
+      {activeSection === 'EXPLORATION' && (
+        <div className="space-y-6 animate-fade-in text-left font-sans" id="exploration-section-container">
+          {/* Header Title Section (Unified with Stepless page style - clean line icon, no clunky boxes, no weird emojis) */}
+          <div className="space-y-1.5 text-left pt-1">
+            <div className="flex items-center gap-2.5">
+              <Compass className="w-6 h-6 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-heading">
+                {language === 'KR' ? '부산 탐구생활' : 'Busan Exploration'}
+              </h1>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium">
+              {language === 'KR' ? '로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지!' : 'Local hacks & trending Busan news'}
+            </p>
+          </div>
+
+          {/* OVERVIEW: 2 Large Side-by-Side Boxes (부산 핫이슈 | 실전 여행 꿀팁) */}
+          {!selectedExplorationItem && (
+            <div className="space-y-6 animate-fade-in">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-stretch">
+              {/* Box 1: 부산 핫이슈 */}
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-2xs space-y-4 flex flex-col justify-between">
+                <div>
+                  <div className="pb-3 border-b border-slate-100">
+                    <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+                      {language === 'KR' ? '부산 핫이슈' : 'Busan Hot Issues'}
+                    </h2>
+                  </div>
+
+                  <div className="space-y-3 mt-3.5">
+                    {/* Item 1: 부캉이 */}
+                    <div
+                      onClick={() => handleSelectExplorationItem('bootech')}
+                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
+                          {language === 'KR' ? "전국적인 핫이슈! 북항 상어 '부캉이' 관찰 가이드" : 'Viral Sensation: North Port Shark "Bukangi" Guide'}
+                        </h3>
+                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
+                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
+                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Notice at bottom of Box 1 */}
+                <div className="pt-3 border-t border-slate-100 text-xs text-slate-500 font-medium leading-relaxed">
+                  {language === 'KR'
+                    ? '부산 핫이슈는 계속 업데이트되니 자주 확인해 주세요!'
+                    : 'Busan hot issues are constantly updated. Check back often!'}
+                </div>
+              </div>
+
+              {/* Box 2: 실전 여행 꿀팁 */}
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-2xs space-y-4 flex flex-col justify-between">
+                <div>
+                  <div className="pb-3 border-b border-slate-100">
+                    <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+                      {language === 'KR' ? '실전 여행 꿀팁' : 'Practical Travel Tips'}
+                    </h2>
+                  </div>
+
+                  <div className="space-y-3 mt-3.5">
+                    {/* Item 1: 캐리어 보관 */}
+                    <div
+                      onClick={() => handleSelectExplorationItem('luggage')}
+                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
+                          {language === 'KR' ? '부산 무료 짐보관소' : 'Free Luggage Storage in Busan'}
+                        </h3>
+                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
+                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
+                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Item 2: 유모차 & 휠체어 */}
+                    <div
+                      onClick={() => handleSelectExplorationItem('rental')}
+                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
+                          {language === 'KR' ? '보행 약자 & 가족을 위한 유모차 / 휠체어 무료 대여소' : 'Free Stroller & Wheelchair Rental Locations'}
+                        </h3>
+                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
+                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
+                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Item 3: 5초 한국어 발음 치트키 */}
+                    <div
+                      onClick={() => handleSelectExplorationItem('korean-cheat-codes')}
+                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
+                          {language === 'KR'
+                            ? '5초 만에 끝내는 한국어 발음 치트키'
+                            : '5-Second Korean Pronunciation Cheat Codes'}
+                        </h3>
+                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
+                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
+                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+              {/* 실시간 부산 여행 팁 커뮤니티 (부산 탐구생활 핫이슈 & 실전 여행 꿀팁 바로 아래) */}
+              <div className="space-y-6 animate-fade-in text-left font-sans" id="community-section-container">
           {/* Main 2-Tab Switcher: [ 💬 기본 여행 팁 ] vs [ ✨ Stepless 여행안내 ] */}
           <div className="bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200/90 shadow-2xs">
             <div className="grid grid-cols-2 gap-2">
@@ -7414,127 +7546,6 @@ case 'EXPERIENCE': {
             </React.Suspense>
           )}
         </div>
-      )}
-
-      {/* ========================================================================= */}
-      {/* VIEW 6: BUSAN EXPLORATION (부산 탐구생활) - 핫이슈 & 실전 여행 꿀팁       */}
-      {/* ========================================================================= */}
-      {activeSection === 'EXPLORATION' && (
-        <div className="space-y-6 animate-fade-in text-left font-sans" id="exploration-section-container">
-          {/* Header Title Section (Unified with Stepless page style - clean line icon, no clunky boxes, no weird emojis) */}
-          <div className="space-y-1.5 text-left pt-1">
-            <div className="flex items-center gap-2.5">
-              <Compass className="w-6 h-6 text-[#8EA85E] shrink-0 stroke-[2.2]" />
-              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-heading">
-                {language === 'KR' ? '부산 탐구생활' : 'Busan Exploration'}
-              </h1>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-500 font-medium">
-              {language === 'KR' ? '로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지!' : 'Local hacks & trending Busan news'}
-            </p>
-          </div>
-
-          {/* OVERVIEW: 2 Large Side-by-Side Boxes (부산 핫이슈 | 실전 여행 꿀팁) */}
-          {!selectedExplorationItem && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-stretch animate-fade-in">
-              {/* Box 1: 부산 핫이슈 */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-2xs space-y-4 flex flex-col justify-between">
-                <div>
-                  <div className="pb-3 border-b border-slate-100">
-                    <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
-                      {language === 'KR' ? '부산 핫이슈' : 'Busan Hot Issues'}
-                    </h2>
-                  </div>
-
-                  <div className="space-y-3 mt-3.5">
-                    {/* Item 1: 부캉이 */}
-                    <div
-                      onClick={() => handleSelectExplorationItem('bootech')}
-                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
-                          {language === 'KR' ? "전국적인 핫이슈! 북항 상어 '부캉이' 관찰 가이드" : 'Viral Sensation: North Port Shark "Bukangi" Guide'}
-                        </h3>
-                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
-                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
-                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Notice at bottom of Box 1 */}
-                <div className="pt-3 border-t border-slate-100 text-xs text-slate-500 font-medium leading-relaxed">
-                  {language === 'KR'
-                    ? '부산 핫이슈는 계속 업데이트되니 자주 확인해 주세요!'
-                    : 'Busan hot issues are constantly updated. Check back often!'}
-                </div>
-              </div>
-
-              {/* Box 2: 실전 여행 꿀팁 */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-2xs space-y-4 flex flex-col justify-between">
-                <div>
-                  <div className="pb-3 border-b border-slate-100">
-                    <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
-                      {language === 'KR' ? '실전 여행 꿀팁' : 'Practical Travel Tips'}
-                    </h2>
-                  </div>
-
-                  <div className="space-y-3 mt-3.5">
-                    {/* Item 1: 캐리어 보관 */}
-                    <div
-                      onClick={() => handleSelectExplorationItem('luggage')}
-                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
-                          {language === 'KR' ? '부산 무료 짐보관소' : 'Free Luggage Storage in Busan'}
-                        </h3>
-                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
-                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
-                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Item 2: 유모차 & 휠체어 */}
-                    <div
-                      onClick={() => handleSelectExplorationItem('rental')}
-                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
-                          {language === 'KR' ? '보행 약자 & 가족을 위한 유모차 / 휠체어 무료 대여소' : 'Free Stroller & Wheelchair Rental Locations'}
-                        </h3>
-                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
-                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
-                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Item 3: 5초 한국어 발음 치트키 */}
-                    <div
-                      onClick={() => handleSelectExplorationItem('korean-cheat-codes')}
-                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
-                          {language === 'KR'
-                            ? '5초 만에 끝내는 한국어 발음 치트키'
-                            : '5-Second Korean Pronunciation Cheat Codes'}
-                        </h3>
-                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
-                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
-                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           )}
 

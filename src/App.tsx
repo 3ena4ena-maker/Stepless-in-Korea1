@@ -6,7 +6,8 @@
 
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { 
-  Train, 
+  Train,
+  Bus, 
   Search, 
   MapPin, 
   Compass, 
@@ -553,7 +554,7 @@ export default function App() {
           setBarrierFreePlaceId(null);
           setBarrierFreeCourseId(null);
         }
-      } else if (['home', 'search', 'schedule', 'tips', 'about', 'privacy', 'terms', 'contact', 'data-source'].includes(parts[1])) {
+      } else if (['home', 'search', 'schedule', 'tips', 'about', 'privacy', 'terms', 'contact', 'data-source', 'transit', 'courses', 'itineraries', 'exploration'].includes(parts[1])) {
         setBarrierFreePlaceId(null);
         setBarrierFreeCourseId(null);
         if (parts[1] === 'privacy') {
@@ -586,6 +587,23 @@ export default function App() {
             setSiteSubPage('data-source');
           } else {
             setSiteSubPage('about');
+          }
+        } else if (parts[1] === 'transit') {
+          setCurrentTab('transit');
+          setTipsSubPage('transit');
+          setIsHomeLanding(false);
+        } else if (parts[1] === 'courses' || parts[1] === 'itineraries') {
+          setCurrentTab('courses');
+          setTipsSubPage('courses');
+          setIsHomeLanding(false);
+        } else if (parts[1] === 'exploration') {
+          setCurrentTab('exploration');
+          setTipsSubPage('exploration');
+          setIsHomeLanding(false);
+          if (parts[2]) {
+            setExplorationItemId(parts[2].toLowerCase());
+          } else {
+            setExplorationItemId(null);
           }
         } else {
           setCurrentTab(parts[1]);
@@ -761,7 +779,33 @@ export default function App() {
           } else {
             expectedPath = '/search';
           }
-        } else if (currentTab === 'tips') {
+        } else if (currentTab === 'transit') {
+          if (tipsSubPage === 'child-free') expectedPath = '/tips/child-free';
+          else if (tipsSubPage === 'bus-qr') expectedPath = '/tips/bus-qr';
+          else if (tipsSubPage === 'taxi') expectedPath = '/tips/taxi';
+          else expectedPath = '/tips/transit';
+        } else if (currentTab === 'courses') {
+          if (selectedItineraryCategory) {
+            const catSlug = categoryToUrlSlug(selectedItineraryCategory);
+            if (selectedItineraryCategory === 'SUBWAY' && activeRegionPage) {
+              expectedPath = `/tips/courses/subway/${activeRegionPage.toLowerCase()}`;
+            } else {
+              expectedPath = `/tips/courses/${catSlug}`;
+            }
+          } else if (activeRegionPage) {
+            expectedPath = `/tips/courses/${activeRegionPage.toLowerCase()}`;
+          } else {
+            expectedPath = '/tips/courses';
+          }
+        } else if (currentTab === 'schedule') {
+          expectedPath = '/schedule';
+        } else if (currentTab === 'exploration') {
+          if (explorationItemId) {
+            expectedPath = `/tips/exploration/${explorationItemId}`;
+          } else {
+            expectedPath = '/tips/exploration';
+          }
+        } else if (currentTab === 'tips' || currentTab === 'transit' || currentTab === 'courses' || currentTab === 'schedule' || currentTab === 'exploration') {
           if (tipsSubPage === 'courses') {
             if (selectedItineraryCategory) {
               const catSlug = categoryToUrlSlug(selectedItineraryCategory);
@@ -1522,6 +1566,77 @@ export default function App() {
     searchQuery
   };
 
+  const handleMainTabSelect = (tab: string) => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    const validTabs = ['home', 'search', 'transit', 'courses', 'schedule', 'exploration', 'about', 'tourapi', 'tips'];
+    const targetTab = validTabs.includes(tab) ? tab : 'home';
+    setCurrentTab(targetTab);
+
+    if (targetTab === 'home') {
+      setIsHomeLanding(true);
+      setSelectedStationId('seomyeon');
+      setExpandedExitNum(null);
+    } else if (targetTab === 'search') {
+      setIsHomeLanding(false);
+      setSearchViewMode('INDEX');
+      setExpandedExitNum(null);
+      setSearchQuery('');
+    } else {
+      setIsHomeLanding(false);
+    }
+
+    if (targetTab === 'transit') {
+      setSelectedItineraryCategory(null);
+      setTipsSubPage('transit');
+      setActiveRegionPage(null);
+      setBarrierFreePlaceId(null);
+      setBarrierFreeCourseId(null);
+      navigateToSpa('/tips/transit', { tab: 'transit', subPage: 'transit' });
+    } else if (targetTab === 'courses') {
+      setSelectedItineraryCategory(null);
+      setTipsSubPage('courses');
+      setActiveRegionPage(null);
+      setBarrierFreePlaceId(null);
+      setBarrierFreeCourseId(null);
+      navigateToSpa('/tips/courses', { tab: 'courses', subPage: 'courses', category: null });
+    } else if (targetTab === 'schedule') {
+      setSelectedItineraryCategory(null);
+      setTipsSubPage('schedule');
+      setActiveRegionPage(null);
+      setBarrierFreePlaceId(null);
+      setBarrierFreeCourseId(null);
+      navigateToSpa('/schedule', { tab: 'schedule', subPage: 'schedule' });
+    } else if (targetTab === 'exploration') {
+      setSelectedItineraryCategory(null);
+      setTipsSubPage('exploration');
+      setExplorationItemId(null);
+      setActiveRegionPage(null);
+      setBarrierFreePlaceId(null);
+      setBarrierFreeCourseId(null);
+      navigateToSpa('/tips/exploration', { tab: 'exploration', subPage: 'exploration' });
+    } else if (targetTab === 'tips') {
+      setSelectedItineraryCategory(null);
+      setTipsSubPage('courses');
+      setActiveRegionPage(null);
+      setBarrierFreePlaceId(null);
+      setBarrierFreeCourseId(null);
+    } else if (targetTab === 'about') {
+      setSiteSubPage('about');
+      navigateToSpa('/about', { tab: 'about' });
+    } else if (targetTab === 'tourapi') {
+      setSelectedItineraryCategory('BARRIER_FREE');
+      setBarrierFreePlaceId(null);
+      setBarrierFreeCourseId(null);
+      navigateToSpa('/barrier-free');
+    } else {
+      setBarrierFreePlaceId(null);
+      setBarrierFreeCourseId(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FBFBF9] text-[#11161B] font-sans antialiased flex flex-col">
       <div>
@@ -1536,42 +1651,8 @@ export default function App() {
         {/* Navigation Header */}
         <Header 
           currentTab={currentTab} 
-          setCurrentTab={(tab) => {
-            window.scrollTo(0, 0);
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-
-            const validTabs = ['home', 'search', 'schedule', 'tourapi', 'tips', 'about'];
-            const targetTab = validTabs.includes(tab) ? tab : 'home';
-            setCurrentTab(targetTab);
-            if (targetTab === 'home') {
-              setIsHomeLanding(true);
-              setSelectedStationId('seomyeon');
-              setExpandedExitNum(null);
-            } else if (targetTab === 'search') {
-              setIsHomeLanding(false);
-              setSearchViewMode('INDEX');
-              setExpandedExitNum(null);
-              setSearchQuery('');
-            } else {
-              setIsHomeLanding(false);
-            }
-            if (targetTab === 'tips') {
-              setSelectedItineraryCategory(null);
-              setTipsSubPage('index');
-              setActiveRegionPage(null);
-              setBarrierFreePlaceId(null);
-              setBarrierFreeCourseId(null);
-            } else if (targetTab === 'tourapi') {
-              setSelectedItineraryCategory('BARRIER_FREE');
-              setBarrierFreePlaceId(null);
-              setBarrierFreeCourseId(null);
-              navigateToSpa('/barrier-free');
-            } else {
-              setBarrierFreePlaceId(null);
-              setBarrierFreeCourseId(null);
-            }
-          }} 
+          tipsSubPage={tipsSubPage}
+          setCurrentTab={(tab) => handleMainTabSelect(tab)} 
           language={language} 
           toggleLanguage={toggleLanguage} 
           onToggleAdminMode={toggleAdminMode}
@@ -1940,8 +2021,8 @@ export default function App() {
       )}
 
           {/* Tab 3 & 4: TRAVEL TIPS & BUSAN MAJOR SCHEDULE VIEW & BARRIER FREE */}
-          {(visitedTabs['tips'] || visitedTabs['schedule'] || visitedTabs['tourapi'] || currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') && (
-            <div className={(currentTab === 'tips' || currentTab === 'schedule' || currentTab === 'tourapi') ? ((currentTab === 'tips' && tipsSubPage === 'index') || currentTab === 'schedule' ? 'space-y-1 sm:space-y-2' : 'space-y-6') : 'hidden'}>
+          {(visitedTabs['tips'] || visitedTabs['schedule'] || visitedTabs['tourapi'] || visitedTabs['transit'] || visitedTabs['courses'] || visitedTabs['exploration'] || ['tips', 'schedule', 'tourapi', 'transit', 'courses', 'exploration'].includes(currentTab)) && (
+            <div className={['tips', 'schedule', 'tourapi', 'transit', 'courses', 'exploration'].includes(currentTab) ? ((currentTab === 'tips' && tipsSubPage === 'index') || currentTab === 'schedule' ? 'space-y-1 sm:space-y-2' : 'space-y-6') : 'hidden'}>
               <Suspense fallback={<TabLoadingFallback text={language === 'KR' ? "여행 루트 및 추천 코스를 불러오는 중..." : "Loading travel routes and courses..."} />}>
                 <BusanItinerariesView 
                   language={language}
@@ -1954,8 +2035,8 @@ export default function App() {
                     setBarrierFreePlaceId(null);
                     setExplorationItemId(null);
                     setTipsSubPage('index');
-                    if (currentTab === 'schedule' || currentTab === 'tourapi') {
-                      setCurrentTab('tips');
+                    if (currentTab === 'schedule' || currentTab === 'tourapi' || currentTab === 'transit' || currentTab === 'exploration') {
+                      setCurrentTab('courses');
                     }
                     navigateToSpa('/tips', { tab: 'tips', subPage: 'index', category: null });
                   }}
@@ -1992,7 +2073,13 @@ export default function App() {
                     setSelectedItineraryCategory('BARRIER_FREE');
                     navigateToSpa('/barrier-free', { tab: 'tourapi' });
                   }}
-                  tipsSubPage={currentTab === 'schedule' ? 'schedule' : tipsSubPage}
+                  tipsSubPage={
+                    currentTab === 'schedule' ? 'schedule' :
+                    currentTab === 'transit' ? (['transit', 'child-free', 'bus-qr', 'taxi', 'transfer'].includes(tipsSubPage) ? tipsSubPage : 'transit') :
+                    currentTab === 'courses' ? 'courses' :
+                    currentTab === 'exploration' ? 'exploration' :
+                    tipsSubPage
+                  }
                   initialExplorationItemId={explorationItemId}
                   onSelectExplorationItem={setExplorationItemId}
                   setTipsSubPage={(page) => {
@@ -2472,50 +2559,23 @@ export default function App() {
         {[
           { id: 'home', label: language === 'KR' ? '홈' : 'Home', icon: Compass },
           { id: 'search', label: language === 'KR' ? '역 검색' : 'Stations', icon: Train },
-          { id: 'tips', label: language === 'KR' ? '여행 팁' : 'Tips', icon: HelpCircle },
-          { id: 'about', label: language === 'KR' ? '소개' : 'About', icon: Info },
+          { id: 'transit', label: language === 'KR' ? '교통 팁' : 'Transit', icon: Bus },
+          { id: 'courses', label: language === 'KR' ? '추천 코스' : 'Courses', icon: Map },
+          { id: 'schedule', label: language === 'KR' ? '일정표' : 'Schedule', icon: Calendar },
+          { id: 'exploration', label: language === 'KR' ? '탐구생활' : 'Explore', icon: Sparkles },
         ].map(item => {
           const Icon = item.icon;
-          const isActive = currentTab === item.id || (item.id === 'tips' && currentTab.startsWith('itinerary-'));
+          const isActive = (item.id === currentTab) ||
+            (item.id === 'transit' && (currentTab === 'transit' || (currentTab === 'tips' && ['transit', 'child-free', 'bus-qr', 'transfer', 'taxi'].includes(tipsSubPage)))) ||
+            (item.id === 'courses' && (currentTab === 'courses' || currentTab === 'tourapi' || currentTab.startsWith('itinerary-') || (currentTab === 'tips' && ['courses', 'index'].includes(tipsSubPage)))) ||
+            (item.id === 'schedule' && (currentTab === 'schedule' || (currentTab === 'tips' && tipsSubPage === 'schedule'))) ||
+            (item.id === 'exploration' && (currentTab === 'exploration' || (currentTab === 'tips' && ['exploration', 'community'].includes(tipsSubPage))));
           return (
             <button
               key={item.id}
               id={`mobile-bottom-nav-${item.id}`}
               onClick={() => {
-                window.scrollTo(0, 0);
-                document.documentElement.scrollTop = 0;
-                document.body.scrollTop = 0;
-
-                const validTabs = ['home', 'search', 'schedule', 'tourapi', 'tips', 'about'];
-                const targetTab = validTabs.includes(item.id) ? item.id : 'home';
-                setCurrentTab(targetTab);
-                if (targetTab === 'home') {
-                  setIsHomeLanding(true);
-                  setSelectedStationId('seomyeon');
-                  setExpandedExitNum(null);
-                } else if (targetTab === 'search') {
-                  setIsHomeLanding(false);
-                  setSearchViewMode('INDEX');
-                  setExpandedExitNum(null);
-                  setSearchQuery('');
-                } else {
-                  setIsHomeLanding(false);
-                }
-                if (targetTab === 'tips') {
-                  setSelectedItineraryCategory(null);
-                  setTipsSubPage('index');
-                  setActiveRegionPage(null);
-                  setBarrierFreePlaceId(null);
-                  setBarrierFreeCourseId(null);
-                } else if (targetTab === 'tourapi') {
-                  setSelectedItineraryCategory('BARRIER_FREE');
-                  setBarrierFreePlaceId(null);
-                  setBarrierFreeCourseId(null);
-                  navigateToSpa('/barrier-free');
-                } else {
-                  setBarrierFreePlaceId(null);
-                  setBarrierFreeCourseId(null);
-                }
+                handleMainTabSelect(item.id);
               }}
               className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
                 isActive 

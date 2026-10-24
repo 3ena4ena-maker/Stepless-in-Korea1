@@ -4,11 +4,12 @@
  */
 
 import React from 'react';
-import { Menu, X, Compass, Train, HelpCircle, Info } from 'lucide-react';
+import { Menu, X, Compass, Train, Bus, Map, Calendar, Sparkles, Info } from 'lucide-react';
 import { DICTIONARY, Language } from '../i18n/dictionary';
 
 interface HeaderProps {
   currentTab: string;
+  tipsSubPage?: string;
   setCurrentTab: (tab: string) => void;
   language: Language;
   toggleLanguage: () => void;
@@ -16,7 +17,7 @@ interface HeaderProps {
   isAdminMode?: boolean;
 }
 
-export default function Header({ currentTab, setCurrentTab, language, toggleLanguage, onToggleAdminMode, isAdminMode }: HeaderProps) {
+export default function Header({ currentTab, tipsSubPage, setCurrentTab, language, toggleLanguage, onToggleAdminMode, isAdminMode }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const clickCountRef = React.useRef(0);
   const clickTimerRef = React.useRef<any>(null);
@@ -26,9 +27,21 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
   const menuItems = [
     { id: 'home', label: d.nav.home, icon: Compass },
     { id: 'search', label: d.nav.search, icon: Train },
-    { id: 'tips', label: d.nav.tips, icon: HelpCircle },
+    { id: 'transit', label: d.nav.transit, icon: Bus },
+    { id: 'courses', label: d.nav.courses, icon: Map },
+    { id: 'schedule', label: d.nav.schedule, icon: Calendar },
+    { id: 'exploration', label: d.nav.exploration, icon: Sparkles },
     { id: 'about', label: d.nav.about, icon: Info },
   ];
+
+  const isItemActive = (id: string) => {
+    if (currentTab === id) return true;
+    if (id === 'transit' && (currentTab === 'transit' || (currentTab === 'tips' && ['transit', 'child-free', 'bus-qr', 'transfer', 'taxi'].includes(tipsSubPage || '')))) return true;
+    if (id === 'courses' && (currentTab === 'courses' || currentTab === 'tourapi' || currentTab.startsWith('itinerary-') || (currentTab === 'tips' && ['courses', 'index'].includes(tipsSubPage || '')))) return true;
+    if (id === 'schedule' && (currentTab === 'schedule' || (currentTab === 'tips' && tipsSubPage === 'schedule'))) return true;
+    if (id === 'exploration' && (currentTab === 'exploration' || (currentTab === 'tips' && ['exploration', 'community'].includes(tipsSubPage || '')))) return true;
+    return false;
+  };
 
   const handleLogoClick = () => {
     window.scrollTo(0, 0);
@@ -77,10 +90,10 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1 lg:space-x-2" aria-label="Global Navigation">
+          <nav className="hidden md:flex items-center space-x-1 lg:space-x-1.5" aria-label="Global Navigation">
             {menuItems.map((item) => {
               const Icon = item.icon;
-              const isActive = currentTab === item.id || (item.id === 'tips' && currentTab.startsWith('itinerary-'));
+              const isActive = isItemActive(item.id);
               return (
                 <button
                   key={item.id}
@@ -91,13 +104,13 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
                     document.body.scrollTop = 0;
                     setCurrentTab(item.id);
                   }}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs lg:text-sm font-semibold transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-2.5 lg:px-3 py-2 rounded-md text-xs lg:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
                     isActive
                       ? 'text-[#8EA85E] bg-[#F1EFEC] font-bold'
                       : 'text-[#4A5568] hover:text-[#11161B] hover:bg-[#F1EFEC]/60'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#8EA85E]' : 'text-slate-400'}`} />
+                  <Icon className={`w-3.5 h-3.5 lg:w-4 lg:h-4 shrink-0 ${isActive ? 'text-[#8EA85E]' : 'text-slate-400'}`} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -158,7 +171,7 @@ export default function Header({ currentTab, setCurrentTab, language, toggleLang
           <div className="px-4 pt-3 pb-5 space-y-1">
             {menuItems.map((item) => {
               const Icon = item.icon;
-              const isActive = currentTab === item.id || (item.id === 'tips' && currentTab.startsWith('itinerary-'));
+              const isActive = isItemActive(item.id);
               return (
                 <button
                   key={item.id}
