@@ -517,16 +517,14 @@ export function prerenderStaticRoutesPlugin(): Plugin {
 
         html = html.replace('<main>', routeArticleHtml);
 
-        // Write to dist/<route.path>/index.html
-        const relativeRoute = route.path.replace(/^\/+/, '');
-        const outDir = path.join(distDir, relativeRoute);
-        fs.mkdirSync(outDir, { recursive: true });
-        fs.writeFileSync(path.join(outDir, 'index.html'), html, 'utf8');
+        // Write to dist/<route.path>.html so Cloudflare Pages serves /<route.path> with 200 OK (no trailing-slash 308 redirect)
+        const relativeRoute = route.path.replace(/^\/+/, '').replace(/\/+$/, '');
+        const htmlFilePath = path.join(distDir, `${relativeRoute}.html`);
+        fs.mkdirSync(path.dirname(htmlFilePath), { recursive: true });
+        fs.writeFileSync(htmlFilePath, html, 'utf8');
 
-        // Also sync legacy static HTML files in dist/ so Cloudflare Pages never serves stale static pages
-        if (route.path === '/about') {
-          fs.writeFileSync(path.join(distDir, 'about.html'), html, 'utf8');
-        } else if (route.path === '/about/privacy') {
+        // Also sync legacy root static HTML files in dist/
+        if (route.path === '/about/privacy') {
           fs.writeFileSync(path.join(distDir, 'privacy.html'), html, 'utf8');
         } else if (route.path === '/about/terms') {
           fs.writeFileSync(path.join(distDir, 'terms.html'), html, 'utf8');
