@@ -152,6 +152,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://stepless.kr/tips/exploration/bujeon-masan</loc>
+    <lastmod>2026-10-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://stepless.kr/tips/exploration/opera-house</loc>
+    <lastmod>2026-10-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://stepless.kr/tips/exploration/luggage</loc>
     <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>

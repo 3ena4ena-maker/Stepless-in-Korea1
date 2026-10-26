@@ -153,14 +153,15 @@ function buildRoutes(): RouteMeta[] {
     },
     {
       path: '/tips/courses/attraction',
-      title: '부산 핵심 명소 여행 코스 (해운대·광안리·흰여울·해동용궁사) | 스텝레스 Stepless',
-      description: '부산 여행에서 꼭 가봐야 할 해운대 해수욕장, 광안리 해변, 감천문화마을, 영도 흰여울문화마을, 기장 해동용궁사 핵심 명소 동선과 무장애 포인트를 안내합니다.',
+      title: '부산 핵심 명소 여행 코스 (해운대·광안리·흰여울·해동용궁사·해광사 용왕단) | 스텝레스 Stepless',
+      description: '부산 여행에서 꼭 가봐야 할 해운대 해수욕장, 광안리 해변, 감천문화마을, 영도 흰여울문화마을, 기장 해동용궁사와 해광사 용왕단 핵심 명소 동선과 무장애 포인트를 안내합니다.',
       heading: '부산 대표 핵심 명소 베스트 코스',
       bodyHtml: `
         <p>처음 부산을 방문하는 여행자부터 재방문객까지 가장 사랑받는 부산의 랜드마크 명소 코스입니다. 각 명소별 계단 유무와 엘리베이터·평지 전망대 우회 팁을 함께 제공합니다.</p>
         <ul>
           <li><strong>해운대 해수욕장 &amp; 블루라인파크 해변열차</strong>: 구남로 광장부터 백사장 우든 데크길, 미포~송정 해변열차까지 계단 없이 탁 트인 동해 바다 감상</li>
           <li><strong>광안리 해수욕장 &amp; 민락수변공원</strong>: 광안대교 야경과 해변 산책로가 전 구간 평지로 이어져 야간 산책에 최적</li>
+          <li><strong>기장 해동용궁사 &amp; 해광사 용왕단 (기장군 기장해안로 340)</strong>: 해동용궁사에서 해안도로를 따라 조금만 내려오면 만날 수 있는 바다 위 비경 사찰 해광사 용왕단 연계 코스</li>
           <li><strong>감천문화마을 &amp; 영도 흰여울문화마을</strong>: 골목 안쪽은 계단이 많으므로 유모차·휠체어 이용 시 상단 공영주차장 앞 메인 전망 데크 및 해안도로 상부 보행 데크 구간 중심으로 관람 권장</li>
         </ul>
       `
@@ -302,6 +303,8 @@ function buildRoutes(): RouteMeta[] {
           <li><a href="/tips/exploration/metro-reentry"><strong>부산 지하철 승강장 방향 실수 시 10분 내 무료 재진입 제도</strong></a>: 반대편 개찰구로 잘못 들어갔을 때 추가 요금 없이 건너가는 방법</li>
           <li><a href="/tips/exploration/korean-cheat-codes"><strong>5초 만에 배우는 실전 한국어 &amp; 부산 사투리 가이드</strong></a>: 식당·시장·택시에서 바로 쓰는 친근한 표현</li>
           <li><a href="/tips/exploration/bootech"><strong>부산 북항 친수공원 산책 &amp; 이색 명소 가이드</strong></a>: 부산역 인근 북항 수변 산책로 및 흑백 영수증 사진기 명소</li>
+          <li><a href="/tips/exploration/bujeon-masan"><strong>2027년 4월 1일 부전~마산 복선전철 부분 개통 예정 안내</strong></a>: 부산 부전~사상 및 강서금호~진례신호소 구간 우선 운영 소식</li>
+          <li><a href="/tips/exploration/opera-house"><strong>북항의 새로운 문화 랜드마크! 부산오페라하우스 2027년 시범공연 예정</strong></a>: 부산항 북항 친수공원 연계 해양 문화 랜드마크 소식</li>
         </ul>
       `
     },
@@ -312,6 +315,24 @@ function buildRoutes(): RouteMeta[] {
       heading: '부산 북항 친수공원 & 로컬 이색 스팟 가이드',
       bodyHtml: `
         <p>KTX 부산역 2층 맞이방에서 출구로 나와 공중 보행 데크와 엘리베이터를 이용하면 부산항 북항 친수공원까지 계단 없이 평지로 이동할 수 있습니다. 탁 트인 바다 전망과 야간 조명 산책로가 조성되어 있어 기차 탑승 전후 캐리어나 유모차를 끌고 가볍게 산책하기 가장 좋은 코스입니다.</p>
+      `
+    },
+    {
+      path: '/tips/exploration/bujeon-masan',
+      title: '2027년 4월 1일 부전~마산 복선전철 부분 개통 예정 안내 - 부산 탐구생활 | 스텝레스 Stepless',
+      description: '2027년 4월 1일 부분 개통 예정인 부전~마산 복선전철의 우선 운영 구간(부산 부전~사상, 강서금호~진례신호소) 및 부산 광역철도 무장애 환승 기대 효과를 안내합니다.',
+      heading: '2027년 4월 1일 부전~마산 복선전철 부분 개통 예정 안내',
+      bodyHtml: `
+        <p>부산 도심과 서부산·경남권을 잇는 핵심 광역철도인 부전~마산 복선전철이 2027년 4월 1일 부분 개통될 예정입니다. 부산 부전~사상 구간과 강서금호~진례신호소 구간이 먼저 운영되며, 동해선·중앙선 부전역과 도시철도 2호선·부산김해경전철 사상역 간 빠른 철도 환승 및 최신 무장애(배리어프리) 엘리베이터·승강장 편의시설을 이용할 수 있습니다.</p>
+      `
+    },
+    {
+      path: '/tips/exploration/opera-house',
+      title: '북항의 새로운 문화 랜드마크! 부산오페라하우스 2027년 시범공연 예정 - 부산 탐구생활 | 스텝레스 Stepless',
+      description: '부산항 북항 재개발지구 수변에 들어서는 새로운 해양 문화 랜드마크 부산오페라하우스의 2027년 시범공연 예정 소식과 북항 친수공원 무장애 연결 동선을 안내합니다.',
+      heading: '북항의 새로운 문화 랜드마크! 부산오페라하우스 2027년 시범공연 예정',
+      bodyHtml: `
+        <p>부산항 북항 재개발지구 해양문화지구에 조성 중인 부산오페라하우스가 2027년 시범공연을 앞두고 있습니다. 대극장 1,800석과 소극장 300석을 갖춘 동남권 최초 전문 오페라 공연장이자 새로운 북항 문화 랜드마크로, KTX 부산역 보행 데크와 북항 친수공원 평지 산책로를 통해 계단 없이 이어집니다.</p>
       `
     },
     {
@@ -421,8 +442,8 @@ function buildRoutes(): RouteMeta[] {
           : ex.hasEscalator
             ? '에스컬레이터 설치'
             : '계단 출구';
-        const landmarks = ex.landmarks && ex.landmarks.length > 0 ? ` — 주변 명소: ${ex.landmarks.join(', ')}` : '';
-        return `<li><strong>${escapeHtml(ex.number)}</strong> [${badge}]: ${escapeHtml(ex.facilityDetail || ex.description || '')}${escapeHtml(landmarks)}</li>`;
+        const landmarks = ex.directionDesc ? ` — 방면 안내: ${ex.directionDesc}` : '';
+        return `<li><strong>${escapeHtml(ex.number)}</strong> [${badge}]: ${escapeHtml(ex.tip || '')}${escapeHtml(landmarks)}</li>`;
       })
       .join('\n          ');
 

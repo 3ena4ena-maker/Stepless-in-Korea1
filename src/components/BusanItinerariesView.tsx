@@ -1446,7 +1446,7 @@ export default function BusanItinerariesView({
       if (parts[1] === 'tips' && parts[2] === 'exploration' && parts[3]) {
         return parts[3].toLowerCase();
       }
-      if (parts[1] === 'tips' && ['bootech', 'luggage', 'rental', 'korean-cheat-codes', 'metro-reentry'].includes(parts[2]?.toLowerCase())) {
+      if (parts[1] === 'tips' && ['bootech', 'bujeon-masan', 'opera-house', 'luggage', 'rental', 'korean-cheat-codes', 'metro-reentry'].includes(parts[2]?.toLowerCase())) {
         return parts[2].toLowerCase();
       }
     }
@@ -5339,8 +5339,8 @@ case 'EXPERIENCE': {
                       </h2>
                       <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
                         {language === 'KR'
-                          ? '해동 용궁사, 이기대 해안산책로, 태종대, 황령산전망대, 부산용두산공원, 영도대교, 보수동책방골목 등 부산을 대표하는 핵심 명소를 만나보세요.'
-                          : 'Explore iconic scenic landmarks including Haedong Yonggungsa, Igidae, Taejongdae, Hwangnyeongsan, Yongdusan, Yeongdodaegyo, and Bosudong Book Alley.'}
+                          ? '해동 용궁사, 해광사 용왕단, 이기대 해안산책로, 태종대, 황령산전망대, 부산용두산공원, 영도대교, 보수동책방골목 등 부산을 대표하는 핵심 명소를 만나보세요.'
+                          : 'Explore iconic scenic landmarks including Haedong Yonggungsa, Haegwangsa Yongwangdan, Igidae, Taejongdae, Hwangnyeongsan, Yongdusan, Yeongdodaegyo, and Bosudong Book Alley.'}
                       </p>
                     </div>
 
@@ -5353,7 +5353,7 @@ case 'EXPERIENCE': {
                           contentId: step.contentId,
                           titleKo: step.titleKo,
                           titleEn: step.titleEn,
-                        }) || matchedSpotId || 'spot-101';
+                        }) || matchedSpotId;
                         const ktoDetail = effectiveSpotId ? getKoreaTourApiPlaceDetail(effectiveSpotId) : null;
                         const isSaved = isBookmarked(step.id || step.titleKo);
 
@@ -7371,6 +7371,42 @@ case 'EXPERIENCE': {
                         </div>
                       </div>
                     </div>
+
+                    {/* Item 2: 부전~마산 복선전철 2027년 4월 1일 부분 개통 예정 */}
+                    <div
+                      onClick={() => handleSelectExplorationItem('bujeon-masan')}
+                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
+                          {language === 'KR'
+                            ? '2027년 4월 1일 부전~마산 복선전철 부분 개통 예정 (부전~사상 · 강서금호~진례신호소)'
+                            : 'Bujeon–Masan Double-Track Railway Partial Opening Set for April 1, 2027'}
+                        </h3>
+                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
+                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
+                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Item 3: 부산오페라하우스 2027년 시범공연 예정 */}
+                    <div
+                      onClick={() => handleSelectExplorationItem('opera-house')}
+                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
+                          {language === 'KR'
+                            ? '북항의 새로운 문화 랜드마크! 부산오페라하우스 2027년 시범공연 예정'
+                            : 'New North Port Cultural Landmark: Busan Opera House 2027 Trial Performances'}
+                        </h3>
+                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
+                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
+                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -7604,6 +7640,183 @@ case 'EXPERIENCE': {
                         {language === 'KR'
                           ? '부캉이는 소중한 야생 해양 생물이니 수로에 돌이나 먹이를 던지지 마시고, 난간 너머로 안전거리를 유지하며 따뜻한 시선으로 관찰해 주세요!'
                           : 'Bukangi is a wild marine animal. Please do not throw stones, food, or trash into the canal, and observe safely from the boardwalk railings!'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 1-2. 부전~마산 복선전철 부분 개통 DETAIL */}
+              {selectedExplorationItem === 'bujeon-masan' && (
+                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-8 space-y-6 shadow-2xs">
+                  {/* Header Title & Intro */}
+                  <div className="space-y-2.5">
+                    <div className="flex items-center gap-2">
+                      <Train className="w-5 h-5 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+                      <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
+                        {language === 'KR'
+                          ? '2027년 4월 1일 부전~마산 복선전철 부분 개통 예정 안내'
+                          : 'Bujeon–Masan Double-Track Railway Partial Opening Guide (April 1, 2027)'}
+                      </h3>
+                    </div>
+                    <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
+                      {language === 'KR'
+                        ? "부산 도심과 서부산·경남권을 하나로 잇는 핵심 광역철도인 '부전~마산 복선전철'이 2027년 4월 1일 부분 개통될 예정입니다. 이번 부분 개통을 통해 부산 '부전~사상' 구간과 '강서금호~진례신호소' 구간이 먼저 운영에 들어가며, 부산 도심과 서부산·김해·창원 방면 철도 이동이 한층 더 빨라질 전망입니다."
+                        : 'The Bujeon–Masan Double-Track Railway, a key metropolitan rail link connecting downtown Busan with West Busan and Gyeongnam, is scheduled for partial opening on April 1, 2027. The "Busan Bujeon–Sasang" and "Gangseo Geumho–Jillye Signal Station" sections will begin operating first.'}
+                    </p>
+                  </div>
+
+                  {/* 핵심 요약 배지 바 */}
+                  <div className="flex items-center gap-2 flex-wrap text-xs sm:text-sm py-2.5 px-3.5 bg-[#FAF9F6] rounded-xl border border-[#E5E2DC]">
+                    <div className="flex items-center gap-1.5 text-slate-700 min-w-0">
+                      <Calendar className="w-4 h-4 text-[#8EA85E] shrink-0" />
+                      <span className="font-bold text-[#0A2540]">{language === 'KR' ? '부분 개통 예정일' : 'Scheduled Date'}:</span>
+                      <span className="font-bold text-[#6B853E]">{language === 'KR' ? '2027년 4월 1일' : 'April 1, 2027'}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6 pt-1 text-xs sm:text-sm text-[#4A5568] leading-relaxed">
+                    {/* 1. 우선 운영 구간 */}
+                    <div className="space-y-2 border-b border-slate-100 pb-5">
+                      <h4 className="font-extrabold text-base sm:text-lg text-[#0A2540] flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '1단계 부분 개통 우선 운영 구간' : 'First Phase Operating Sections'}</span>
+                      </h4>
+                      <ul className="space-y-2 pl-3.5 border-l-2 border-slate-200">
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '부산 도심 구간' : 'Busan Urban Section'}:</strong>{' '}
+                          {language === 'KR'
+                            ? '부산 부전역 ~ 사상역 구간 우선 운영 (동해선·중앙선 부전역과 도시철도 2호선·경전철 사상역 직결)'
+                            : 'Busan Bujeon Station to Sasang Station (connecting Donghae Line Bujeon Stn with Line 2 & Light Rail Sasang Stn)'}
+                        </li>
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '서부산 · 경남 구간' : 'West Busan & Gyeongnam Section'}:</strong>{' '}
+                          {language === 'KR'
+                            ? '강서금호역 ~ 진례신호소 구간 우선 운영 (강서구 에코델타시티·김해 장유·창원 마산 방면 연계)'
+                            : 'Gangseo Geumho Station to Jillye Signal Station (linking Gangseo-gu, Gimhae Jangyu, and Masan)'}
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* 2. 부산 여행 & 교통약자 기대 효과 */}
+                    <div className="space-y-2 border-b border-slate-100 pb-5">
+                      <h4 className="font-extrabold text-base sm:text-lg text-[#0A2540] flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '부산 이동 & 무장애 환승 기대 효과' : 'Transit & Accessibility Highlights'}</span>
+                      </h4>
+                      <ul className="space-y-2 pl-3.5 border-l-2 border-slate-200">
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '부전역 ↔ 사상역 쾌속 이동' : 'Fast Bujeon–Sasang Link'}:</strong>{' '}
+                          {language === 'KR'
+                            ? '동해선·중앙선 열차가 모이는 부전역과 서부산 교통 허브인 사상역이 복선전철로 빠르게 연결되어 김해공항·서부버스터미널 및 동부산 간 이동 시간이 단축됩니다.'
+                            : 'Rapid rail connection between Bujeon Station (Donghae Line hub) and Sasang Station (West Busan & Gimhae Airport gateway).'}
+                        </li>
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '최신 무장애(배리어프리) 역사 설비' : 'Modern Step-Free Facilities'}:</strong>{' '}
+                          {language === 'KR'
+                            ? '신설·개량되는 복선전철 승강장에는 대형 엘리베이터, 에스컬레이터, 광폭 개찰구 등 무장애 편의시설이 확충되어 캐리어·유모차·휠체어 이용객도 편리하게 환승할 수 있습니다.'
+                            : 'Newly built platforms feature spacious elevators, escalators, and wide fare gates for smooth step-free transfers with luggage, strollers, or wheelchairs.'}
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* 3. 참고 안내 */}
+                    <div className="pt-1 text-slate-600 font-medium">
+                      <p>
+                        {language === 'KR'
+                          ? '2027년 4월 1일 부산 부전~사상 및 강서금호~진례신호소 구간 부분 개통을 시작으로, 향후 미개통 구간 복구 공사가 마무리되면 부전~마산 전 구간이 하나로 직결될 예정입니다.'
+                          : 'Following the partial opening of the Bujeon–Sasang and Gangseo Geumho–Jillye sections on April 1, 2027, full direct operation across the entire Bujeon–Masan line will follow upon completion of the remaining tunnel section.'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 1-3. 부산오페라하우스 2027년 시범공연 예정 DETAIL */}
+              {selectedExplorationItem === 'opera-house' && (
+                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-8 space-y-6 shadow-2xs">
+                  {/* Header Title & Intro */}
+                  <div className="space-y-2.5">
+                    <div className="flex items-center gap-2">
+                      <Theater className="w-5 h-5 text-[#8EA85E] shrink-0 stroke-[2.2]" />
+                      <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
+                        {language === 'KR'
+                          ? '북항의 새로운 문화 랜드마크! 부산오페라하우스 2027년 시범공연 예정'
+                          : 'Busan Opera House Scheduled for 2027 Trial Performances: New North Port Landmark'}
+                      </h3>
+                    </div>
+                    <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
+                      {language === 'KR'
+                        ? "부산항 북항 재개발지역 수변에 들어서는 해양 문화의 새 상징 '부산오페라하우스'가 2027년 시범공연을 앞두고 있습니다. 북항 바다와 어우러진 세계적 수준의 공연장이 탄생하면서, 부산역과 북항 친수공원 일대가 세계적인 해양 문화·관광 랜드마크로 거듭날 전망입니다."
+                        : 'Rising on the waterfront of the Busan North Port redevelopment district, the Busan Opera House is scheduled to host trial performances in 2027, transforming the North Port area into a premier marine cultural landmark.'}
+                    </p>
+                  </div>
+
+                  {/* 주소 & 시기 요약 바 */}
+                  <div className="flex items-center justify-between gap-2 flex-wrap text-xs sm:text-sm py-2.5 px-3.5 bg-[#FAF9F6] rounded-xl border border-[#E5E2DC]">
+                    <div className="flex items-center gap-1.5 text-slate-700 min-w-0 flex-wrap">
+                      <MapPin className="w-4 h-4 text-[#8EA85E] shrink-0" />
+                      <span className="font-bold text-[#0A2540]">{language === 'KR' ? '부산항 북항 재개발지구 해양문화지구' : 'Busan North Port Marine Culture District'}:</span>
+                      <span className="font-medium text-slate-600">{language === 'KR' ? '부산 중구 대교동1가 일원 (2027년 시범공연 예정)' : 'Daegyo-dong 1-ga, Jung-gu (Trial runs set for 2027)'}</span>
+                    </div>
+                    <MapAppIcons
+                      naverUrl="https://map.naver.com/v5/search/%EB%B6%80%EC%82%B0%EC%98%A4%ED%8E%98%EB%9D%BC%ED%95%98%EC%9A%B0%EC%8A%A4"
+                      googleUrl="https://www.google.com/maps/search/?api=1&query=Busan+Opera+House"
+                      title={language === 'KR' ? '부산오페라하우스' : 'Busan Opera House'}
+                    />
+                  </div>
+
+                  <div className="space-y-6 pt-1 text-xs sm:text-sm text-[#4A5568] leading-relaxed">
+                    {/* 1. 부산오페라하우스 핵심 포인트 */}
+                    <div className="space-y-2 border-b border-slate-100 pb-5">
+                      <h4 className="font-extrabold text-base sm:text-lg text-[#0A2540] flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '북항의 새로운 문화 랜드마크 핵심 포인트' : 'Key Highlights of Busan Opera House'}</span>
+                      </h4>
+                      <ul className="space-y-2 pl-3.5 border-l-2 border-slate-200">
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '2027년 시범공연 예정' : '2027 Trial Performances'}:</strong>{' '}
+                          {language === 'KR'
+                            ? '본격적인 정식 개관에 앞서 2027년 시범공연을 통해 최첨단 무대 기계·음향 설비와 관람객 동선을 점검하며 시민과 여행객에게 첫선을 보일 예정입니다.'
+                            : 'Ahead of its official grand opening, trial performances in 2027 will showcase its state-of-the-art acoustics and stage engineering.'}
+                        </li>
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '동남권 최초 전문 오페라 극장 & 해양 건축미' : 'Specialized Opera Theater & Marine Architecture'}:</strong>{' '}
+                          {language === 'KR'
+                            ? '대극장(1,800석)과 소극장(300석), 전시실, 바다를 조망하는 옥상 광장을 갖춘 대규모 복합문화공간으로, 진주조개와 파도를 형상화한 독창적인 곡선 외관이 북항 수변 경관의 핵심 축을 이룹니다.'
+                            : 'Featuring a 1,800-seat main auditorium, a 300-seat studio theater, and a rooftop plaza overlooking the sea with a pearl-inspired sculptural facade.'}
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* 2. 북항 친수공원 연계 & 무장애 동선 */}
+                    <div className="space-y-2 border-b border-slate-100 pb-5">
+                      <h4 className="font-extrabold text-base sm:text-lg text-[#0A2540] flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#8EA85E] shrink-0" />
+                        <span>{language === 'KR' ? '북항 친수공원 연계 & 무장애(배리어프리) 관람 환경' : 'North Port Waterfront Link & Step-Free Access'}</span>
+                      </h4>
+                      <ul className="space-y-2 pl-3.5 border-l-2 border-slate-200">
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? 'KTX 부산역 · 북항 친수공원 평지 연결' : 'Direct Step-Free Link from Busan Station'}:</strong>{' '}
+                          {language === 'KR'
+                            ? 'KTX 부산역 2층 보행 데크와 엘리베이터를 통해 북항 친수공원 수변 산책로에서 오페라하우스 광장까지 계단 없이 평지로 이어지는 원도심 해양 문화 산책 코스가 완성됩니다.'
+                            : 'Connected via KTX Busan Station pedestrian deck and elevators directly to the flat North Port waterfront promenade.'}
+                        </li>
+                        <li>
+                          <strong className="text-slate-800">{language === 'KR' ? '유니버설 디자인 적용' : 'Universal Design Accessibility'}:</strong>{' '}
+                          {language === 'KR'
+                            ? '휠체어 전용 관람석, 무장애 엘리베이터, 완만한 수변 경사로 등 최신 배리어프리 설계가 적용되어 보행 약자와 가족 단위 방문객 모두 편안하게 공연과 바다 전망을 즐길 수 있습니다.'
+                            : 'Designed with dedicated wheelchair seating, barrier-free elevators, and gentle waterfront ramps for all visitors.'}
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* 3. 마무리 안내 */}
+                    <div className="pt-1 text-slate-600 font-medium">
+                      <p>
+                        {language === 'KR'
+                          ? '북항 친수공원 산책로와 함께 부산의 새로운 얼굴이 될 부산오페라하우스의 2027년 시범공연 일정이 구체화되는 대로 상세 관람 팁을 계속 업데이트해 드리겠습니다!'
+                          : 'Stay tuned as we update detailed performance schedules and step-free visitor guides ahead of the 2027 Busan Opera House trial performances!'}
                       </p>
                     </div>
                   </div>

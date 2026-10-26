@@ -90,6 +90,9 @@ export function matchTourApiSpotId(titleOrText: string): string | null {
   if (clean.includes('해동용궁사') || clean.includes('용궁사')) {
     return 'spot-yonggungsa';
   }
+  if (clean.includes('해광사') || clean.includes('용왕단') || clean.includes('오랑대')) {
+    return 'spot-haegwangsa';
+  }
   if (clean.includes('용두산') || clean.includes('부산타워') || clean.includes('다이아몬드타워')) {
     return 'spot-105';
   }

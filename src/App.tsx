@@ -691,7 +691,7 @@ export default function App() {
                   } else {
                     setExplorationItemId(null);
                   }
-                } else if (['bootech', 'luggage', 'rental', 'korean-cheat-codes', 'metro-reentry'].includes(parts[2].toLowerCase())) {
+                } else if (['bootech', 'bujeon-masan', 'opera-house', 'luggage', 'rental', 'korean-cheat-codes', 'metro-reentry'].includes(parts[2].toLowerCase())) {
                   setSelectedItineraryCategory(null);
                   setTipsSubPage('exploration');
                   setActiveRegionPage(null);
@@ -1028,6 +1028,14 @@ export default function App() {
           pageTitle = "부산 북항 상어 '부캉이' 실전 관찰 가이드 - 부산 탐구생활 | 스텝레스 Stepless";
           pageDesc = "부산항 북항 친수공원 인공수로에 나타난 3m 암컷 흑상어 '부캉이' 관찰 요령, 명당 위치, 실시간 위치 확인 안내.";
           canonicalUrl = "https://stepless.kr/tips/exploration/bootech";
+        } else if (explorationItemId === 'bujeon-masan') {
+          pageTitle = "2027년 4월 1일 부전~마산 복선전철 부분 개통 예정 안내 - 부산 탐구생활 | 스텝레스 Stepless";
+          pageDesc = "2027년 4월 1일 부분 개통 예정인 부전~마산 복선전철의 우선 운영 구간(부산 부전~사상, 강서금호~진례신호소) 및 무장애 환승 기대 효과 안내.";
+          canonicalUrl = "https://stepless.kr/tips/exploration/bujeon-masan";
+        } else if (explorationItemId === 'opera-house') {
+          pageTitle = "북항의 새로운 문화 랜드마크! 부산오페라하우스 2027년 시범공연 예정 - 부산 탐구생활 | 스텝레스 Stepless";
+          pageDesc = "부산항 북항 재개발지구에 들어서는 해양 문화 랜드마크 부산오페라하우스 2027년 시범공연 예정 소식 및 북항 친수공원 무장애 연계 동선 안내.";
+          canonicalUrl = "https://stepless.kr/tips/exploration/opera-house";
         } else if (explorationItemId === 'luggage') {
           pageTitle = "부산 무료 짐 보관소 총정리 (부산역·서면·해운대·광안리) - 부산 탐구생활 | 스텝레스 Stepless";
           pageDesc = "부산에서 무료로 짐 보관할 수 있는 4곳(부산트레블라운지, 롯데백화점 부산본점, 해운대 플랫폼, 광안리 안내소) 운영시간, 주소, 지도 위치 총정리.";
