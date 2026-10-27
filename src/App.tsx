@@ -605,6 +605,11 @@ export default function App() {
           } else {
             setExplorationItemId(null);
           }
+        } else if (parts[1] === 'schedule') {
+          setCurrentTab('schedule');
+          setTipsSubPage('schedule');
+          setSelectedItineraryCategory(null);
+          setIsHomeLanding(false);
         } else {
           setCurrentTab(parts[1]);
           if (parts[1] === 'home') {
@@ -985,6 +990,14 @@ export default function App() {
             title: '부산 2박 3일 여행 추천 코스',
             desc: '해운대부터 원도심, 영도, 기장까지 여유롭게 즐기는 2박 3일 부산 완전정복 여행 코스를 안내합니다.'
           },
+          '3NIGHTS': {
+            title: '부산 3박 4일 여유로운 힐링 여행 추천 코스',
+            desc: '바쁜 일정 대신 해변 산책로, 미술관, 온천, 전통시장을 느긋하게 둘러보는 3박 4일 부산 슬로우 트래블 코스를 소개합니다.'
+          },
+          '4NIGHTS': {
+            title: '부산 4박 5일 전 지역 일주 여행 추천 코스',
+            desc: '원도심, 서부산 다대포·을숙도, 도심 서면·동래, 동부산 해운대·송정·기장까지 부산 전역을 완벽하게 여행하는 4박 5일 코스입니다.'
+          },
           'SUBWAY': {
             title: '부산도시철도 지하철 테마 여행 코스',
             desc: '부산 지하철 1·2호선 역세권 명소를 계단 없이 편리하게 이동하는 지하철 테마 코스를 안내합니다.'
@@ -1006,7 +1019,9 @@ export default function App() {
 
         pageTitle = `${currentMeta.title} | 스텝레스 Stepless`;
         pageDesc = currentMeta.desc;
-        canonicalUrl = `https://stepless.kr/tips/courses/${catSlug}`;
+        canonicalUrl = selectedItineraryCategory === 'MY_ROUTE'
+          ? 'https://stepless.kr/my-route'
+          : `https://stepless.kr/tips/courses/${catSlug}`;
       } else if (tipsSubPage === 'transit' || tipsSubPage === 'transfer') {
         pageTitle = "부산 대중교통 이용 팁 & 시내버스·지하철 환승 가이드 | 스텝레스 Stepless";
         pageDesc = "부산 시내버스 노선, 지하철 환승 팁, 캐리어 보관함 및 유모차·휠체어 배리어프리 대중교통 이용 가이드.";
@@ -1044,23 +1059,27 @@ export default function App() {
           pageTitle = "보행 약자 & 가족을 위한 유모차·휠체어 무료 대여소 안내 - 부산 탐구생활 | 스텝레스 Stepless";
           pageDesc = "광안리 관광안내소, 태종대유원지, 롯데백화점 등 부산 유모차 및 휠체어 무료 대여 장소, 이용시간, 위치 총정리.";
           canonicalUrl = "https://stepless.kr/tips/exploration/rental";
-        } else if (explorationItemId === 'korean-cheat-codes' || explorationItemId === 'metro-reentry') {
+        } else if (explorationItemId === 'korean-cheat-codes') {
           pageTitle = "5초 만에 배우는 초간단 실전 한국어 발음 꿀팁 - 부산 탐구생활 | 스텝레스 Stepless";
           pageDesc = "외국인 친구도 바로 써먹는 초간단 실전 한국어 스피드 학습 치트키 발음 가이드.";
           canonicalUrl = "https://stepless.kr/tips/exploration/korean-cheat-codes";
+        } else if (explorationItemId === 'metro-reentry') {
+          pageTitle = "부산 지하철 반대편 승강장 실수 시 10분 내 무료 재진입 팁 - 부산 탐구생활 | 스텝레스 Stepless";
+          pageDesc = "부산 도시철도 상대식 승강장에서 행선지 방향을 착각해 개찰구를 잘못 통과했을 때 추가 요금 없이 10분 이내 무료로 반대편 개찰구로 재진입하는 방법입니다.";
+          canonicalUrl = "https://stepless.kr/tips/exploration/metro-reentry";
         } else {
           pageTitle = "부산 탐구생활 - 핫이슈 & 실전 여행 꿀팁 | 스텝레스 Stepless";
           pageDesc = "로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지! 북항 상어 부캉이와 무료 짐 보관, 대여소 총정리.";
           canonicalUrl = "https://stepless.kr/tips/exploration";
         }
+      } else if (currentTab === 'schedule' || tipsSubPage === 'schedule') {
+        pageTitle = "부산 주요 축제·행사 월별 캘린더 & 무장애 관람 가이드 | 스텝레스 Stepless";
+        pageDesc = "광안리 M 드론라이트쇼, 부산국제록페스티벌, 부산바다축제, 부산불꽃축제 등 월별 부산 대표 축제 일정과 대중교통·무장애 이동 팁을 확인하세요.";
+        canonicalUrl = "https://stepless.kr/schedule";
       } else if (tipsSubPage === 'courses') {
         pageTitle = "부산 테마별 & 일정별 추천 여행 코스 | 스텝레스 Stepless";
         pageDesc = "식도락, 체험, 전통시장, 명소 및 당일치기부터 2박 3일까지 부산 추천 여행 코스 안내.";
         canonicalUrl = "https://stepless.kr/tips/courses";
-      } else if (tipsSubPage === 'schedule') {
-        pageTitle = "부산 일정별 여행 코스 추천 (당일치기·1박2일·2박3일) | 스텝레스 Stepless";
-        pageDesc = "부산 당일치기, 1박2일, 2박3일 알짜 일정별 추천 여행 코스 및 무단차 동선 안내.";
-        canonicalUrl = "https://stepless.kr/schedule";
       }
 
       document.title = pageTitle;
