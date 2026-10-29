@@ -95,6 +95,13 @@ const TRANSLATION_MAP: Record<string, string> = {
   '다대포해수욕장역': 'Dadaepo Beach Station',
   '다대포역': 'Dadaepo Station',
   '범어사역': 'Beomeosa Station',
+  '센텀시티역': 'Centum City Station',
+  '사상역': 'Sasang Station',
+  '토성역': 'Toseong Station',
+  '오시리아역': 'Osiria Station',
+  '송정역': 'Songjeong Station',
+  '남천역': 'Namcheon Station',
+  '온천장역': 'Oncheonjang Station',
 
   // Common landmarks
   '롯데백화점': 'Lotte Department Store',
@@ -294,6 +301,37 @@ export function translateExitNumber(exitNumber: string, language: 'KR' | 'EN'): 
   // 4. Double Exit linked to department store
   if (exitNumber.includes('8번 10번 출구')) {
     return `Exits 8 & 10 (Connected to Lotte Department Store Gwangbok)`;
+  }
+
+  // 4b. Gimhae LRT Exit
+  const lrtMatch = exitNumber.match(/경전철\s*(\d+)번\s*출구/);
+  if (lrtMatch) {
+    return `Gimhae LRT Exit ${lrtMatch[1]}`;
+  }
+
+  // 4c. Overpass Elevator
+  if (exitNumber.includes('보행육교 엘리베이터')) {
+    return 'Overpass Elevator';
+  }
+
+  // 4d. Paired Exits: "X번, Y번 출구" (with optional "(경사로)")
+  const pairRampMatch = exitNumber.match(/(\d+)번[,·\s]+(\d+)번\s*출구\s*\(경사로\)/);
+  if (pairRampMatch) {
+    return `Exits ${pairRampMatch[1]} & ${pairRampMatch[2]} (Ramp)`;
+  }
+  const pairMatch = exitNumber.match(/(\d+)번[,·\s]+(\d+)번\s*출구/);
+  if (pairMatch) {
+    return `Exits ${pairMatch[1]} & ${pairMatch[2]}`;
+  }
+
+  // 4e. Exit with "(엘리베이터)" or "(경사로)"
+  const elevSuffixMatch = exitNumber.match(/(\d+)번\s*출구\s*\(엘리베이터\)/);
+  if (elevSuffixMatch) {
+    return `Exit ${elevSuffixMatch[1]} (Elevator)`;
+  }
+  const rampSuffixMatch = exitNumber.match(/(\d+)번\s*출구\s*\(경사로\)/);
+  if (rampSuffixMatch) {
+    return `Exit ${rampSuffixMatch[1]} (Ramp)`;
   }
 
   // 5. Normal Exit: "X번 출구" or "X번 출입"

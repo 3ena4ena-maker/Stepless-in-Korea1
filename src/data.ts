@@ -1879,8 +1879,8 @@ const UNSORTED_STATIONS: Station[] = [
     avgMovementTimeEn: "Approx. 2 mins walk (3 mins via underground corridor to Donghae Line)",
     transferRouteDesc: "2호선 승강장 → 지하 환승 통로 엘리베이터 → 동해선 벡스코역 승강장 수평 이동",
     transferRouteDescEn: "Line 2 platform → Underground transfer elevator → Donghae Line BEXCO Station platform walkway",
-    precautions: "전시회나 행사 개최 일에는 7번 출구 승강기 이용객이 늘어날 수 있으니 참고하세요.",
-    precautionsEn: "Elevator waiting times may increase during major exhibition and convention event days.",
+    precautions: "전시회나 행사 개최 일에는 7번 출구 승강기 이용객이 늘어날 수 있습니다. 신세계·롯데백화점 센텀시티점, 스파랜드, 영화의전당, 뮤지엄원 방면은 바로 옆 센텀시티역(지하 직결 통로 및 1번 출구 엘리베이터)과도 평지로 연결됩니다.",
+    precautionsEn: "Elevator wait times may increase on major exhibition days. For Shinsegae/Lotte Dept. Store, Spa Land, Busan Cinema Center, and Museum 1, you can also use the adjacent Centum City Station (underground link & Exit 1 elevator).",
     investigator: '플로레르',
     officialSource: '네이버지도',
     name: '벡스코역',
@@ -2494,6 +2494,944 @@ const UNSORTED_STATIONS: Station[] = [
             desc: '4번 출구 수직 승강기',
             facilityType: 'ELEVATOR',
             tip: '4번 출구 엘리베이터를 탑승하여 지상 도로로 이동합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'centum-city',
+    name: '센텀시티역',
+    englishName: 'Centum City Station',
+    lines: ['2'],
+    elevatorCount: 5,
+    escalatorCount: 8,
+    toiletLocation: '지하 1층 대합실 개찰구 외 (4·6번 출구 및 9·11번 출구 방향)',
+    isTransferStation: false,
+    accentColor: 'from-[#00a862] to-[#128a51]',
+    recommendedExits: '1번, 3·5번, 6·8번, 7번, 10·12번 출구 (엘리베이터) / 신세계·롯데백화점 지하 직결',
+    recommendedExitsEn: 'Exits 1, 3·5, 6·8, 7, 10·12 (Elevators) / Underground Link to Shinsegae & Lotte Dept. Stores',
+    elevatorLocationDesc: '1번 출구, 3·5번 사이, 6·8번 사이, 7번 출구, 10·12번 사이 지상 엘리베이터 5곳 운영 및 신세계·롯데백화점 지하 직결',
+    elevatorLocationDescEn: '5 ground elevators at Exit 1, between Exits 3·5, 6·8, Exit 7, and between Exits 10·12 + direct underground link to Shinsegae & Lotte Dept. Stores.',
+    avgMovementTime: '약 2분 (대합실 ↔ 백화점 지하 직결 1분 / 지상 엘리베이터 출구 2분)',
+    avgMovementTimeEn: 'Approx. 2 mins (1 min to Dept. Store underground link / 2 mins to street elevators)',
+    transferRouteDesc: '2호선 승강장 엘리베이터 ↔ 지하 1층 대합실 ↔ 1번·3·5번·6·8번·7번·10·12번 지상 엘리베이터 (벡스코·시립미술관 방면은 인접한 벡스코역과 평지 연계)',
+    transferRouteDescEn: 'Line 2 Platform Elevator ↔ B1F Concourse ↔ Ground Elevators at Exits 1, 3·5, 6·8, 7, 10·12 (Flat walk to BEXCO Station & Museum of Art)',
+    precautions: '백화점 영업시간 내에는 지하 1층 대합실 연결통로로 신세계백화점·스파랜드·롯데백화점 내부 엘리베이터를 바로 이용할 수 있으며, 영업시간 외(조조/심야/휴점일)나 영화의전당·뮤지엄원·벡스코 제2전시장 방문 시에는 1번, 3·5번, 6·8번, 10·12번 지상 엘리베이터를 이용하세요.',
+    precautionsEn: 'During department store hours, use the B1F underground passage to access Shinsegae/Lotte elevators directly. Outside store hours or when visiting Busan Cinema Center, Museum 1, and BEXCO Hall 2, use the 24-hour street elevators at Exits 1, 3·5, 6·8, or 10·12.',
+    investigator: '플로레르',
+    officialSource: '부산교통공사(Humetro) 및 네이버지도',
+    exits: [
+      {
+        number: '1번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '센텀시티역 1번 출구 안쪽 코너에 위치한 24시간 지상 수직 엘리베이터입니다. 벡스코 제2전시장, 영화의전당, 뮤지엄원은 물론 우동천 보행교를 건너 부산시립미술관·벡스코역 방면까지 단차 없는 평지 보도로 연결됩니다.',
+        tipEn: '24-hour ground vertical elevator located at Exit 1. Connects via flat sidewalks to BEXCO Exhibition Center 2, Busan Cinema Center, Museum 1, and Busan Museum of Art.',
+        status: 'OPERATIONAL',
+        directionDesc: '벡스코(BEXCO) 제2전시장, 영화의전당, 뮤지엄원, 부산시립미술관 연계 방면',
+        directionDescEn: 'Toward BEXCO Exhibition Center 2, Busan Cinema Center, Museum 1 & Busan Museum of Art',
+        latitude: 35.169068,
+        longitude: 129.132780,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/센텀시티역 1번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/센텀시티역 1번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'cc1-step1',
+            name: '2호선 승강장 (B2F)',
+            desc: '승강장 전용 수직 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '승강장 엘리베이터를 타고 지하 1층 대합실로 올라갑니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'cc1-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '1번 출구 방향 와이드 게이트',
+            facilityType: 'GATE',
+            tip: '광폭 개찰구를 통과한 뒤 1번 출구 방향 지상 엘리베이터 안내 표지를 따라 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'cc1-step3',
+            name: '1번 출구 지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '1번 출구 지상 직결 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '지상 1층 인도로 진출한 뒤 평탄한 보도를 따라 벡스코 제2전시장·영화의전당·뮤지엄원 방면으로 이동합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '3번, 5번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '5번 출구 바로 뒤편(3·5번 출구 사이)에 설치된 지상 직결 엘리베이터입니다. 벡스코 제2전시장 앞 광장 및 해운대센텀호텔 방면으로 계단 없이 이동할 수 있습니다.',
+        tipEn: 'Ground elevator located right behind Exit 5 (between Exits 3 and 5). Provides step-free access toward BEXCO Plaza and Haeundae Centum Hotel.',
+        status: 'OPERATIONAL',
+        directionDesc: '벡스코(BEXCO), 해운대센텀호텔, 올림픽공원 방면',
+        directionDescEn: 'Toward BEXCO, Haeundae Centum Hotel & Olympic Park',
+        latitude: 35.168774,
+        longitude: 129.131970,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/센텀시티역 5번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/센텀시티역 5번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'cc35-step1',
+            name: '2호선 승강장 (B2F)',
+            desc: '승강장 엘리베이터 탑승',
+            facilityType: 'ELEVATOR',
+            tip: '승강장 중앙 엘리베이터를 이용해 지하 1층 대합실로 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'cc35-step2',
+            name: '3·5번 출구 지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '5번 출구 뒤편 지상 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '개찰구 통과 후 5번 출구 방향 엘리베이터를 타고 지상으로 올라옵니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '6번 출구',
+        isAccessible: false,
+        isStrollerFriendly: true,
+        hasElevator: false,
+        hasEscalator: true,
+        facilityDirection: 'BOTH',
+        tip: '6번 출구에 설치된 에스컬레이터로, 롯데백화점 센텀시티점 동측 광장 및 센텀중앙로 방면으로 빠르게 연결됩니다.',
+        tipEn: 'Escalator at Exit 6 connecting directly to the east plaza of Lotte Department Store Centum City.',
+        status: 'OPERATIONAL',
+        directionDesc: '롯데백화점 센텀시티점, 교보문고, 센텀중앙로 방면',
+        directionDescEn: 'Toward Lotte Dept. Store Centum City, Kyobo Book Centre & Centum jungang-ro',
+        latitude: 35.169502,
+        longitude: 129.131927,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/센텀시티역 6번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/센텀시티역 6번출구',
+        pathwayTimeline: [
+          {
+            id: 'cc6-step1',
+            name: '대합실 개찰구 (B1F)',
+            desc: '6번 출구 방향 개찰구',
+            facilityType: 'GATE',
+            tip: '개찰구를 나와 6번 출구 통로로 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'cc6-step2',
+            name: '6번 출구 에스컬레이터 (B1F ↔ 1F)',
+            desc: '지상 연결 에스컬레이터',
+            facilityType: 'ESCALATOR',
+            tip: '에스컬레이터를 이용해 지상 보도로 올라갑니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '6번, 8번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '6번과 8번 출구 사이(롯데백화점 센텀시티점 앞)에 설치된 지상 수직 엘리베이터입니다. 유모차·휠체어 이용객이 롯데백화점 야외 광장 및 센텀중앙로로 계단 없이 진출입할 수 있습니다.',
+        tipEn: 'Ground vertical elevator between Exits 6 and 8 in front of Lotte Department Store Centum City.',
+        status: 'OPERATIONAL',
+        directionDesc: '롯데백화점 센텀시티점, 롯데시네마, 교보문고 방면',
+        directionDescEn: 'Toward Lotte Dept. Store Centum City, Lotte Cinema & Kyobo Book Centre',
+        latitude: 35.169362,
+        longitude: 129.131906,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/센텀시티역 6번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/센텀시티역 6번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'cc68-step1',
+            name: '2호선 승강장 (B2F)',
+            desc: '승강장 전용 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '승강장 엘리베이터를 타고 지하 1층 대합실로 올라갑니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'cc68-step2',
+            name: '6·8번 사이 지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '롯데백화점 앞 지상 직결 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '6·8번 출구 사이 엘리베이터를 타고 지상 광장으로 단차 없이 이동합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '8번 출구',
+        isAccessible: false,
+        isStrollerFriendly: true,
+        hasElevator: false,
+        hasEscalator: true,
+        facilityDirection: 'BOTH',
+        tip: '8번 출구에 설치된 에스컬레이터로 롯데백화점 정문 광장 및 신세계백화점 사이 보행로와 가깝습니다.',
+        tipEn: 'Escalator at Exit 8 located right beside the main plaza of Lotte Department Store.',
+        status: 'OPERATIONAL',
+        directionDesc: '롯데백화점 정문, 신세계백화점 동측 방면',
+        directionDescEn: 'Toward Lotte Dept. Store Main Entrance & East Shinsegae Dept. Store',
+        latitude: 35.169180,
+        longitude: 129.131761,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/센텀시티역 8번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/센텀시티역 8번출구',
+        pathwayTimeline: [
+          {
+            id: 'cc8-step1',
+            name: '8번 출구 에스컬레이터 (B1F ↔ 1F)',
+            desc: '8번 출구 지상 연결 에스컬레이터',
+            facilityType: 'ESCALATOR',
+            tip: '대합실에서 8번 출구 에스컬레이터를 이용해 지상으로 이동합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '7번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '센텀시티역 중앙(7번 출구 인근)에 설치된 지상 수직 엘리베이터로 센텀남대로 및 센텀2로 방면 보도로 바로 연결됩니다.',
+        tipEn: 'Central ground vertical elevator near Exit 7 connecting to Centum nam-daero sidewalks.',
+        status: 'OPERATIONAL',
+        directionDesc: '센텀남대로, 센텀2로, 네이버스퀘어 부산 방면',
+        directionDescEn: 'Toward Centum nam-daero, Centum 2-ro & Naver Square Busan',
+        latitude: 35.168858,
+        longitude: 129.131667,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/센텀시티역 7번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/센텀시티역 7번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'cc7-step1',
+            name: '7번 출구 측 지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '7번 출구 인근 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '대합실에서 지상 엘리베이터를 타고 7번 출구 측 인도로 진출합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '10번, 12번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '10번과 12번 출구 사이(신세계백화점 센텀시티점 앞)에 위치한 지상 수직 엘리베이터입니다. 신세계백화점·스파랜드·영화의전당·APEC나루공원 방면 지상 이동 및 백화점 지하 직결 통로 이용이 모두 편리합니다.',
+        tipEn: 'Ground vertical elevator between Exits 10 and 12 in front of Shinsegae Centum City & Spa Land. Ideal for both street-level access to Busan Cinema Center/APEC Naru Park and direct underground mall entry.',
+        status: 'OPERATIONAL',
+        directionDesc: '신세계백화점 센텀시티점, 스파랜드, 영화의전당, 뮤지엄원, APEC나루공원 방면',
+        directionDescEn: 'Toward Shinsegae Centum City, Spa Land, Busan Cinema Center, Museum 1 & APEC Naru Park',
+        latitude: 35.168779,
+        longitude: 129.130895,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/센텀시티역 10번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/센텀시티역 10번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'cc1012-step1',
+            name: '2호선 승강장 (B2F)',
+            desc: '승강장 전용 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '승강장 엘리베이터를 타고 지하 1층 대합실로 올라갑니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'cc1012-step2',
+            name: '대합실 개찰구 & 백화점 지하 연결통로 (B1F)',
+            desc: '신세계백화점 지하 직결 또는 10·12번 지상 엘리베이터',
+            facilityType: 'GATE',
+            tip: '백화점 영업시간에는 지하 직결 통로로 바로 진입 가능하며, 야외 이동 시 10·12번 출구 사이 지상 엘리베이터로 향합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'cc1012-step3',
+            name: '10·12번 사이 지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '신세계백화점 앞 지상 직결 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '지상으로 올라온 뒤 평지 보도를 따라 영화의전당·뮤지엄원·APEC나루공원 방면으로 이동합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'sasang',
+    name: '사상역',
+    englishName: 'Sasang Station',
+    lines: ['2', '김해'],
+    elevatorCount: 6,
+    escalatorCount: 10,
+    toiletLocation: '2호선 지하 1층 대합실 개찰구 외 및 부산김해경전철 2층 대합실',
+    isTransferStation: true,
+    accentColor: 'from-[#00a862] to-[#804796]',
+    recommendedExits: '3번, 4번, 1·2번 출구 (2호선 엘리베이터) / 경전철 1번, 2번 출구 (김해공항 환승 엘리베이터)',
+    recommendedExitsEn: 'Exits 3, 4, 1·2 (Line 2 Elevators) / Gimhae LRT Exits 1 & 2 (Airport Transfer Elevators)',
+    elevatorLocationDesc: '2호선 3번, 4번, 1·2번 출구 지상 엘리베이터 및 부산김해경전철 1번, 2번 출구 대형 엘리베이터 완비',
+    elevatorLocationDescEn: 'Ground elevators at Line 2 Exits 3, 4, 1·2 and large luggage-friendly elevators at Busan-Gimhae LRT Exits 1 & 2.',
+    avgMovementTime: '약 3~4분 (2호선 ↔ 김해경전철 실내 환승통로 무빙워크·엘리베이터 경유)',
+    avgMovementTimeEn: 'Approx. 3–4 mins (Line 2 ↔ Gimhae Airport LRT via indoor transfer walkway & elevators)',
+    transferRouteDesc: '2호선 승강장 엘리베이터 ↔ 지하 1층 환승 연결통로(수평 무빙워크 + 엘리베이터) ↔ 부산김해경전철 사상역 대합실 ↔ 지상 승강장 엘리베이터',
+    transferRouteDescEn: 'Line 2 Platform Elevator ↔ B1F Transfer Passage (Moving walk + Elevator) ↔ Busan-Gimhae LRT Concourse ↔ Elevated Platform Elevator',
+    precautions: '김해국제공항 이용객과 서부버스터미널 방문객이 모이는 서부산 최대 광역 환승 거점(2027년 부전~마산 복선전철 개통 예정)입니다. 대형 캐리어·유모차 동반 시 3번·4번 출구 엘리베이터 또는 경전철 1·2번 출구 대형 엘리베이터를 이용하시면 계단 없이 이동할 수 있습니다.',
+    precautionsEn: 'Major West Busan transit hub for Gimhae International Airport and West Busan Intercity Bus Terminal. Travelers with strollers or large luggage can use the elevators at Line 2 Exits 3 & 4 or Gimhae LRT Exits 1 & 2.',
+    investigator: '플로레르',
+    officialSource: '부산교통공사(Humetro), 부산-김해경전철 및 네이버지도',
+    exits: [
+      {
+        number: '3번 출구 (엘리베이터)',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '사상역 3번 출구 동측(사상역 교차로 방향)에 설치된 지상 수직 엘리베이터입니다. 부산서부버스터미널 및 애플아울렛 방면으로 유모차·휠체어·캐리어를 끌고 계단 없이 올라갈 수 있습니다.',
+        tipEn: 'Ground vertical elevator at Exit 3 providing step-free access to West Busan Intercity Bus Terminal and Apple Outlet.',
+        status: 'OPERATIONAL',
+        directionDesc: '부산서부버스터미널, 애플아울렛, 사상역 광장서측 방면',
+        directionDescEn: 'Toward West Busan Bus Terminal, Apple Outlet & West Sasang Plaza',
+        latitude: 35.162530,
+        longitude: 128.984403,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/사상역 3번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/사상역 3번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'ss3e-step1',
+            name: '2호선 승강장 (B2F)',
+            desc: '승강장 중앙 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '승강장 엘리베이터를 타고 지하 1층 대합실로 올라갑니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'ss3e-step2',
+            name: '3번 출구 지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '3번 출구 측 수직 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '지상으로 올라온 뒤 횡단보도를 건너면 바로 부산서부버스터미널·애플아울렛으로 이어집니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '3번 출구',
+        isAccessible: false,
+        isStrollerFriendly: true,
+        hasElevator: false,
+        hasEscalator: true,
+        facilityDirection: 'BOTH',
+        tip: '3번 출구 바로 옆 교통약자 편의승강시설(에스컬레이터/리프트) 구간으로 서부버스터미널 건너편 보도와 인접해 있습니다.',
+        tipEn: 'Exit 3 escalator/lift access point right opposite the West Busan Bus Terminal crosswalk.',
+        status: 'OPERATIONAL',
+        directionDesc: '부산서부버스터미널, 애플아울렛 방면',
+        directionDescEn: 'Toward West Busan Bus Terminal & Apple Outlet',
+        latitude: 35.162479,
+        longitude: 128.984255,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/사상역 3번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/사상역 3번출구',
+        pathwayTimeline: [
+          {
+            id: 'ss3-step1',
+            name: '3번 출구 승강시설 (B1F ↔ 1F)',
+            desc: '3번 출구 지상 연결 통로',
+            facilityType: 'ESCALATOR',
+            tip: '대합실에서 3번 출구 방향 승강시설을 이용해 지상으로 이동합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '4번 출구 (엘리베이터)',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '사상역 4번 출구 통로 중간(생명선의원 앞)에 위치한 2호선 지상 직결 수직 엘리베이터입니다. 사상역 광장 및 경전철 환승 광장으로 단차 없이 진출입할 수 있습니다.',
+        tipEn: 'Line 2 ground vertical elevator on the Exit 4 corridor, offering level access to Sasang Station Plaza.',
+        status: 'OPERATIONAL',
+        directionDesc: '사상역 광장, 부산서부버스터미널(횡단보도 연계), 광장로 방면',
+        directionDescEn: 'Toward Sasang Station Plaza, West Busan Bus Terminal & Gwangjang-ro',
+        latitude: 35.162470,
+        longitude: 128.984790,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/사상역 4번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/사상역 4번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'ss4e-step1',
+            name: '2호선 승강장 (B2F)',
+            desc: '승강장 전용 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '승강장 엘리베이터를 타고 지하 1층 대합실로 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'ss4e-step2',
+            name: '4번 출구 지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '4번 출구 보도 직결 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '개찰구 통과 후 4번 출구 엘리베이터를 타고 지상 1층 광장 보도로 올라갑니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '4번 출구',
+        isAccessible: false,
+        isStrollerFriendly: true,
+        hasElevator: false,
+        hasEscalator: true,
+        facilityDirection: 'BOTH',
+        tip: '4번 출구 끝단(새봄산부인과의원 앞)에 위치한 교통약자 승강시설 구간으로 부산김해경전철 사상역 광장과 가깝습니다.',
+        tipEn: 'Exit 4 escalator/mobility access located right next to the Busan-Gimhae LRT plaza.',
+        status: 'OPERATIONAL',
+        directionDesc: '사상역 광장, 부산김해경전철 사상역 연계 방면',
+        directionDescEn: 'Toward Sasang Station Plaza & Busan-Gimhae LRT Sasang Station',
+        latitude: 35.162524,
+        longitude: 128.985088,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/사상역 4번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/사상역 4번출구',
+        pathwayTimeline: [
+          {
+            id: 'ss4-step1',
+            name: '4번 출구 승강시설 (B1F ↔ 1F)',
+            desc: '4번 출구 지상 연결 구간',
+            facilityType: 'ESCALATOR',
+            tip: '4번 출구 통로를 따라 지상 광장으로 진출합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '1번, 2번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '사상역 남측(1·2번 출구 아래 사상로 보도)에 설치된 지상 수직 엘리베이터입니다. 사상교차로 남측 병원가 및 사상로 방면 이동 시 편리합니다.',
+        tipEn: 'Southern ground vertical elevator near Exits 1 and 2 along Sasang-ro.',
+        status: 'OPERATIONAL',
+        directionDesc: '사상교차로 남측, 서부산센텀병원, 사상로 방면',
+        directionDescEn: 'Toward South Sasang Intersection, West Busan Centum Hospital & Sasang-ro',
+        latitude: 35.161573,
+        longitude: 128.985176,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/사상역 1번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/사상역 1번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'ss12-step1',
+            name: '1·2번 출구 남측 지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '사상역 남측 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '대합실 남측 게이트를 통과해 지상 엘리베이터로 이동합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '2번 출구',
+        isAccessible: false,
+        isStrollerFriendly: true,
+        hasElevator: false,
+        hasEscalator: true,
+        facilityDirection: 'BOTH',
+        tip: '2번 출구에 마련된 에스컬레이터/승강시설 구간으로 사상역 공영주차장 및 광장로 남동측과 바로 이어집니다.',
+        tipEn: 'Escalator/mobility facility at Exit 2 connecting to the southeast plaza and public parking.',
+        status: 'OPERATIONAL',
+        directionDesc: '사상역 공영주차장, 광장로 남동측 방면',
+        directionDescEn: 'Toward Sasang Public Parking & Southeast Gwangjang-ro',
+        latitude: 35.161751,
+        longitude: 128.985541,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/사상역 2번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/사상역 2번출구',
+        pathwayTimeline: [
+          {
+            id: 'ss2-step1',
+            name: '2번 출구 에스컬레이터 (B1F ↔ 1F)',
+            desc: '2번 출구 지상 연결 통로',
+            facilityType: 'ESCALATOR',
+            tip: '2번 출구 승강시설을 이용해 지상으로 올라갑니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '경전철 1번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: true,
+        facilityDirection: 'BOTH',
+        tip: '부산김해경전철 사상역 1번 출구 측 대형 엘리베이터 및 에스컬레이터입니다. 김해국제공항으로 가는 여행객이 대형 캐리어·유모차를 끌고 가장 쾌적하게 경전철 대합실·승강장으로 진입할 수 있습니다.',
+        tipEn: 'Busan-Gimhae Light Rail Exit 1 equipped with spacious elevators and escalators for travelers heading to Gimhae International Airport.',
+        status: 'OPERATIONAL',
+        directionDesc: '김해국제공항(경전철 환승), 사상그린광장, 부전~마산 복선전철(예정) 방면',
+        directionDescEn: 'Toward Gimhae International Airport (LRT Transfer) & Sasang Green Plaza',
+        latitude: 35.162128,
+        longitude: 128.985905,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/부산김해경전철 사상역 1번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/부산김해경전철 사상역 1번출구',
+        pathwayTimeline: [
+          {
+            id: 'sslrt1-step1',
+            name: '경전철 1번 출구 대형 엘리베이터 (1F ↔ 2F)',
+            desc: '지상 광장 ↔ 경전철 대합실 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '1번 출구 뒤편 대형 엘리베이터를 타고 2층 경전철 대합실로 올라갑니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'sslrt1-step2',
+            name: '경전철 승강장 엘리베이터 (2F ↔ 3F)',
+            desc: '김해공항 방면 승강장 직결 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '개찰구 통과 후 승강장 엘리베이터를 이용해 공항행 경전철에 탑승합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '경전철 2번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: true,
+        facilityDirection: 'BOTH',
+        tip: '부산김해경전철 사상역 2번 출구 측에 설치된 엘리베이터와 에스컬레이터입니다. 2호선 4번 출구에서 평지 광장을 가로질러 바로 도착할 수 있으며 삼락생태공원·김해공항 방면 이동에 편리합니다.',
+        tipEn: 'Busan-Gimhae Light Rail Exit 2 with both elevator and escalator, directly across the flat plaza from Line 2 Exit 4.',
+        status: 'OPERATIONAL',
+        directionDesc: '김해국제공항(경전철 환승), 삼락생태공원, 광장로 방면',
+        directionDescEn: 'Toward Gimhae Airport LRT, Samnak Ecological Park & Gwangjang-ro',
+        latitude: 35.162457,
+        longitude: 128.985645,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/부산김해경전철 사상역 2번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/부산김해경전철 사상역 2번출구',
+        pathwayTimeline: [
+          {
+            id: 'sslrt2-step1',
+            name: '경전철 2번 출구 엘리베이터·에스컬레이터 (1F ↔ 2F)',
+            desc: '경전철 2번 출구 승강시설',
+            facilityType: 'ELEVATOR',
+            tip: '경전철 2번 출구 측 엘리베이터 또는 에스컬레이터를 이용해 경전철 대합실로 진입합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'toseong',
+    name: '토성역',
+    englishName: 'Toseong Station',
+    lines: ['1'],
+    elevatorCount: 3,
+    escalatorCount: 2,
+    toiletLocation: '지하 1층 대합실 개찰구 외 (4·6번 출구 통로 인근)',
+    isTransferStation: false,
+    accentColor: 'from-orange-500 to-amber-600',
+    recommendedExits: '4번, 6번 출구 사이 엘리베이터 (감천문화마을 버스환승·부산대병원) / 5번 출구 엘리베이터',
+    recommendedExitsEn: 'Elevator between Exits 4 & 6 (Gamcheon Culture Village Bus Transfer & PNU Hospital) / Exit 5 Elevator',
+    elevatorLocationDesc: '4·6번 출구 사이(부산대학교병원 정문 앞) 및 5번 출구 측 지상 직결 수직 엘리베이터 2곳 운영',
+    elevatorLocationDescEn: '2 ground vertical elevators operating between Exits 4 & 6 (in front of PNU Hospital) and at Exit 5.',
+    avgMovementTime: '약 2분 30초 (승강장 ↔ 4·6번 엘리베이터 ↔ 6번 출구 앞 마을버스 정류장 도보 1분)',
+    avgMovementTimeEn: 'Approx. 2.5 mins (Platform ↔ Exit 4·6 Elevator ↔ 1-min flat walk to Exit 6 Bus Stop)',
+    transferRouteDesc: '1호선 승강장 엘리베이터 ↔ 지하 1층 대합실 ↔ 4·6번 출구 사이 지상 엘리베이터 → 평지 인도로 6번 출구 앞(부산대병원 정문) 이동 → 마을버스(서구2, 서구2-2, 사하구1-1) 환승하여 감천문화마을 입구 하차',
+    transferRouteDescEn: 'Line 1 Platform Elevator ↔ B1F Concourse ↔ Ground Elevator between Exits 4 & 6 → Flat 1-min walk to Exit 6 PNU Hospital Bus Stop → Take Bus Seo-gu 2, Seo-gu 2-2, or Saha-gu 1-1 to Gamcheon Culture Village',
+    precautions: '감천문화마을로 가는 마을버스 정류장은 6번 출구 앞(부산대학교병원 응급의료센터 앞)에 있습니다. 6번 출구 자체는 계단이므로, 반드시 4번과 6번 출구 사이에 있는 지상 엘리베이터를 타고 올라오신 뒤 평지 인도를 따라 남쪽으로 40m(도보 1분) 이동해 버스를 탑승하세요!',
+    precautionsEn: 'The village bus stop for Gamcheon Culture Village is right in front of Exit 6 (PNU Hospital). Because Exit 6 itself has stairs, take the ground elevator located right between Exits 4 and 6, then walk 40m south along the flat sidewalk to the bus stop.',
+    investigator: '플로레르',
+    officialSource: '부산교통공사(Humetro) 및 네이버지도',
+    exits: [
+      {
+        number: '4번, 6번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '4번 출구와 6번 출구 사이(부산대학교병원 피부과 앞)에 설치된 핵심 지상 수직 엘리베이터입니다. 지상으로 올라온 뒤 오른쪽(남쪽, 6번 출구 방향)으로 평지 인도를 따라 40m만 걸어가면 감천문화마을행 마을버스(서구2, 서구2-2, 사하구1-1) 정류장이 바로 나옵니다.',
+        tipEn: 'Ground vertical elevator located right between Exits 4 and 6 (in front of Pusan National University Hospital). Step out of the elevator and walk 40m south on the flat sidewalk to Exit 6 to board the village bus (Seo-gu 2, 2-2, Saha-gu 1-1) to Gamcheon Culture Village.',
+        status: 'OPERATIONAL',
+        directionDesc: '감천문화마을 마을버스 환승(6번 출구 앞), 부산대학교병원, 아미동 비석문화마을 방면',
+        directionDescEn: 'Toward Gamcheon Culture Village Bus Stop (Exit 6), Pusan National Univ. Hospital & Ami-dong',
+        latitude: 35.100277,
+        longitude: 129.019508,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/토성역 4번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/토성역 4번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'ts46-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '승강장 중앙 수직 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '열차 하차 후 승강장 엘리베이터를 타고 지하 1층 대합실로 올라갑니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'ts46-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '4·6번 출구 방향 와이드 게이트',
+            facilityType: 'GATE',
+            tip: '넓은 교통약자 개찰구를 통과한 뒤 4·6번 출구 사이 엘리베이터 안내 표지를 따라 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'ts46-step3',
+            name: '4·6번 사이 지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '부산대병원 앞 지상 직결 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '지상 인도로 올라온 후 6번 출구(부산대병원 정문 버스정류장)까지 평지로 약 1분 이동하여 감천문화마을행 버스에 탑승합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '5번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '5번 출구 북측에 설치된 동편 지상 수직 엘리베이터입니다. 동아대학교 부민캠퍼스, 임시수도기념관 및 부민동 평지 산책로 방면 이동 시 계단 없이 편리하게 진출입할 수 있습니다.',
+        tipEn: 'East-side ground vertical elevator near Exit 5, providing step-free access toward Dong-A University Bumin Campus and the Provisional Capital Memorial Hall.',
+        status: 'OPERATIONAL',
+        directionDesc: '동아대학교 부민캠퍼스, 임시수도기념관, 경남중학교 방면',
+        directionDescEn: 'Toward Dong-A Univ. Bumin Campus, Provisional Capital Memorial Hall & Gyeongnam Middle School',
+        latitude: 35.100231,
+        longitude: 129.019916,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/토성역 5번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/토성역 5번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'ts5-step1',
+            name: '1호선 승강장 (B2F)',
+            desc: '승강장 엘리베이터 탑승',
+            facilityType: 'ELEVATOR',
+            tip: '승강장 엘리베이터를 이용해 지하 1층 대합실로 올라갑니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'ts5-step2',
+            name: '5번 출구 지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '5번 출구 측 수직 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '개찰구 통과 후 5번 출구 측 엘리베이터를 타고 지상 보도로 올라갑니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'osiria',
+    name: '오시리아역',
+    englishName: 'Osiria Station',
+    lines: ['동해'],
+    elevatorCount: 4,
+    escalatorCount: 6,
+    toiletLocation: '1층 맞이방(대합실) 개찰구 내·외측 (장애인 화장실 및 수유실 완비)',
+    isTransferStation: false,
+    accentColor: 'from-[#005BAC] to-[#004960]',
+    recommendedExits: '전 출구(1·2·3번) 1층 평지 직결 — 출구 외부 승강기 없이 바로 진출 가능',
+    recommendedExitsEn: 'All Exits (1, 2, 3) Ground-Level Flat Access — No exterior lift needed at exits',
+    elevatorLocationDesc: '2층 승강장 ↔ 1층 대합실(개찰구) 역사 내부 엘리베이터·에스컬레이터 완비 / 1층 출구(1·2·3번)는 단차 없는 평지 출입문 (3번 출구 앞 롯데월드 보행육교 엘리베이터 별도 운영)',
+    elevatorLocationDescEn: 'Indoor elevators & escalators connect 2F platforms to 1F concourse. All 1F exits (1, 2, 3) open directly onto flat sidewalks without stairs (plus pedestrian bridge elevator in front of Exit 3 for Lotte World).',
+    avgMovementTime: '약 1~2분 (2층 승강장 ↔ 1층 평지 출구 / 3번 출구 보행육교 경유 롯데월드 도보 약 5~7분)',
+    avgMovementTimeEn: 'Approx. 1–2 mins (2F Platform ↔ 1F Flat Exit / 5–7 mins walk to Lotte World via Exit 3 pedestrian bridge)',
+    transferRouteDesc: '2층 동해선 승강장 내부 엘리베이터 ↔ 1층 대합실 개찰구 ↔ 1·2·3번 출구(계단·턱 없는 1층 평지 직결) → 3번 출구 앞 보행육교 엘리베이터(롯데월드·루지 직결) 또는 1번 출구 광장(국립부산과학관·해동용궁사·해광사 버스/택시 환승)',
+    transferRouteDescEn: '2F Platform Indoor Elevator ↔ 1F Concourse Gate ↔ Exits 1, 2, 3 (Step-free ground level) → Exit 3 Pedestrian Bridge Elevator (to Lotte World) or Exit 1 Bus/Taxi Plaza',
+    precautions: '오시리아역은 1층 대합실이 지상 인도와 같은 높이로 지어진 고가 역사입니다. 기차에서 내려 2층 승강장↔1층 개찰구 사이 내부 엘리베이터만 한 번 타면, 1·2·3번 모든 출구는 별도의 엘리베이터나 에스컬레이터를 탈 필요 없이 그대로 밀고 나가는 100% 평지 출구입니다. (롯데월드 방문 시에는 3번 출구로 나간 뒤 바로 앞 전용 보행육교 엘리베이터를 이용하세요.)',
+    precautionsEn: 'Osiria Station features a ground-level 1F concourse. Once you take the indoor elevator from the 2F platform down to the 1F ticket gate, all exits (1, 2, and 3) open directly onto flat street-level sidewalks with no stairs or exterior lifts needed. (For Lotte World, exit via Exit 3 and use the pedestrian overpass elevator right in front.)',
+    investigator: '플로레르',
+    officialSource: '한국철도공사(KORAIL) 및 네이버지도',
+    exits: []
+  },
+  {
+    id: 'songjeong',
+    name: '송정역',
+    englishName: 'Songjeong Station',
+    lines: ['동해'],
+    elevatorCount: 2,
+    escalatorCount: 4,
+    toiletLocation: '1층 맞이방(대합실) 개찰구 외측 (장애인 화장실 완비)',
+    isTransferStation: false,
+    accentColor: 'from-[#005BAC] to-[#004960]',
+    recommendedExits: '전 출구(1·2번) 1층 평지 직결 — 출구 외부 승강기 없이 바로 진출 가능',
+    recommendedExitsEn: 'All Exits (1 & 2) Ground-Level Flat Access — No exterior lift needed at exits',
+    elevatorLocationDesc: '2층 승강장 ↔ 1층 대합실(개찰구) 역사 내부 엘리베이터·에스컬레이터 완비 / 1층 출구(1·2번)는 계단·단차 없는 100% 평지 출입문',
+    elevatorLocationDescEn: 'Indoor elevators & escalators connect 2F platforms to 1F concourse. Both Exits 1 & 2 open directly onto flat ground-level sidewalks without stairs.',
+    avgMovementTime: '약 1~2분 (역사 내 이동) / 해운대 블루라인파크 송정정거장·송정해수욕장까지 평지 도보 약 8~10분',
+    avgMovementTimeEn: 'Approx. 1–2 mins inside station / 8–10 mins flat walk to Blueline Park Songjeong Station & Songjeong Beach',
+    transferRouteDesc: '2층 동해선 승강장 내부 엘리베이터 ↔ 1층 대합실 광폭 개찰구 ↔ 1·2번 출구(계단 없는 1층 평지 보도 직결) → 해운대 블루라인파크(해변열차) 송정정거장 및 송정해수욕장 평지 도보 이동',
+    transferRouteDescEn: '2F Platform Indoor Elevator ↔ 1F Concourse Wide Gate ↔ Exits 1 & 2 (Direct ground-level flat sidewalk) → Flat walk to Haeundae Blueline Park (Beach Train) Songjeong Station & Songjeong Beach',
+    precautions: '동해선 송정역은 1층 맞이방(대합실)이 바깥 인도와 완전히 같은 평지에 위치한 지상·고가 역사입니다. 열차 하차 후 2층 승강장에서 내부 엘리베이터로 1층 개찰구까지만 내려오시면, 1번·2번 출구 밖으로 나갈 때는 별도의 엘리베이터나 에스컬레이터 없이 유모차·휠체어·캐리어로 편안하게 바로 나가실 수 있습니다.',
+    precautionsEn: 'Songjeong Station has its 1F concourse flush with the street sidewalk. After taking the indoor elevator from the 2F platform to the 1F ticket gate, you can roll straight out of Exits 1 and 2 onto flat sidewalks with no stairs or exterior lifts needed.',
+    investigator: '플로레르',
+    officialSource: '한국철도공사(KORAIL) 및 네이버지도',
+    exits: []
+  },
+  {
+    id: 'namcheon',
+    name: '남천역',
+    englishName: 'Namcheon Station',
+    lines: ['2'],
+    elevatorCount: 4,
+    escalatorCount: 2,
+    toiletLocation: '지하 1층 대합실 개찰구 외 (중앙 만남의 장소 인근)',
+    isTransferStation: false,
+    accentColor: 'from-[#00a862] to-[#128a51]',
+    recommendedExits: '1번, 3번 출구 사이 엘리베이터 (빵천동·광안리 해변 남단) / 2번, 4번 출구 사이 엘리베이터',
+    recommendedExitsEn: 'Elevator between Exits 1 & 3 (Namcheon Bakery Street & South Gwangalli) / Elevator between Exits 2 & 4',
+    elevatorLocationDesc: '1·3번 출구 사이(푸드엔 남천점 앞) 및 2·4번 출구 사이(티스테이션 앞) 양방향 지상 수직 엘리베이터 2곳 완비',
+    elevatorLocationDescEn: 'Ground vertical elevators on both sides of the street: between Exits 1 & 3 (east side) and between Exits 2 & 4 (west side).',
+    avgMovementTime: '약 2분 (승강장 ↔ 지상 엘리베이터 출구)',
+    avgMovementTimeEn: 'Approx. 2 mins (Platform ↔ Ground Elevator)',
+    transferRouteDesc: '지하 2층 2호선 승강장 엘리베이터 ↔ 지하 1층 대합실 개찰구 ↔ 1·3번 출구 사이 지상 엘리베이터(빵천동·남천해변시장·삼익비치 평지 직결) 또는 2·4번 출구 사이 지상 엘리베이터',
+    transferRouteDescEn: 'Line 2 Platform (B2F) Elevator ↔ Concourse (B1F) Gate ↔ Ground Elevator between Exits 1 & 3 (direct flat walk to Bakery Street & South Gwangalli Beach) or between Exits 2 & 4',
+    precautions: '부산의 대표 베이커리 투어 성지인 남천동(빵천동)과 광안리 해수욕장 남단(삼익비치타운·남천해변시장)으로 가는 관문 역입니다. 1·3번 출구 사이 지상 엘리베이터로 올라오시면 길을 건너지 않고도 빵천동 메인 골목과 바닷가 산책로까지 전 구간 평지로 이동할 수 있습니다.',
+    precautionsEn: 'Gateway to Busan\'s famous "Ppangcheon-dong" (Namcheon Bakery Street) and South Gwangalli Beach. Take the ground elevator between Exits 1 and 3 for direct, crosswalk-free flat access to the bakery alleys and seaside promenade.',
+    investigator: '플로레르',
+    officialSource: '부산교통공사(Humetro) 및 네이버지도',
+    exits: [
+      {
+        number: '1번, 3번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '1번 출구와 3번 출구 사이(푸드엔 남천점 앞 인도)에 설치된 핵심 지상 수직 엘리베이터입니다. 지상으로 올라오면 도로를 건널 필요 없이 남천동 빵천동(유명 베이커리 거리), 남천해변시장, 삼익비치타운 광안리 해안 산책로까지 유모차·휠체어로 곧장 이어집니다.',
+        tipEn: 'East-side ground vertical elevator located right between Exits 1 and 3. Provides direct step-free access to Namcheon Bakery Street ("Ppangcheon-dong"), Namcheon Market, and South Gwangalli Beach without crossing the main road.',
+        status: 'OPERATIONAL',
+        directionDesc: '남천동 빵천동(베이커리 거리), 남천해변시장, 삼익비치타운, 광안리 해변 남단 방면',
+        directionDescEn: 'Toward Namcheon Bakery Street (Ppangcheon-dong), Namcheon Market & South Gwangalli Beach',
+        latitude: 35.142064,
+        longitude: 129.108067,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/남천역 1번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/남천역 1번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'nc13-step1',
+            name: '2호선 승강장 (B2F)',
+            desc: '승강장 전용 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '승강장 엘리베이터를 타고 지하 1층 대합실로 올라갑니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'nc13-step2',
+            name: '대합실 개찰구 (B1F)',
+            desc: '1·3번 출구 방향 와이드 게이트',
+            facilityType: 'GATE',
+            tip: '광폭 개찰구를 통과한 뒤 1·3번 출구 사이 지상 엘리베이터로 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'nc13-step3',
+            name: '1·3번 사이 지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '빵천동·해변시장 방면 직결 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '지상 1층 인도로 진출한 뒤 평지 보도를 따라 빵천동 골목 및 광안리 남단 해변으로 이동합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '2번, 4번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '2번 출구와 4번 출구 사이(티스테이션 남천점 앞 인도)에 위치한 서측 지상 수직 엘리베이터입니다. 수영구청, 남천서로 및 금련산 방면으로 계단 없이 진출입할 수 있습니다.',
+        tipEn: 'West-side ground vertical elevator located between Exits 2 and 4, offering step-free access toward Suyeong-gu Office and Namcheon-seoro.',
+        status: 'OPERATIONAL',
+        directionDesc: '수영구청, 남천서로, 남천성결교회 방면',
+        directionDescEn: 'Toward Suyeong-gu Office & Namcheon-seoro',
+        latitude: 35.141913,
+        longitude: 129.107530,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/남천역 2번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/남천역 2번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'nc24-step1',
+            name: '2호선 승강장 (B2F) ↔ 대합실 (B1F)',
+            desc: '승강장 엘리베이터 탑승',
+            facilityType: 'ELEVATOR',
+            tip: '승강장 엘리베이터로 지하 1층 대합실로 올라갑니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'nc24-step2',
+            name: '2·4번 사이 지상 엘리베이터 (B1F ↔ 1F)',
+            desc: '2·4번 출구 사이 서측 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '개찰구 통과 후 2·4번 출구 사이 엘리베이터를 타고 지상 보도로 올라갑니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'oncheonjang',
+    name: '온천장역',
+    englishName: 'Oncheonjang Station',
+    lines: ['1'],
+    elevatorCount: 4,
+    escalatorCount: 4,
+    toiletLocation: '2층 대합실 개찰구 외측 (장애인 화장실 완비)',
+    isTransferStation: false,
+    accentColor: 'from-orange-500 to-amber-600',
+    recommendedExits: '3번, 7번 출구·보행육교 (엘리베이터) / 2번, 4번 출구 (계단 옆 완만한 경사로·슬로프)',
+    recommendedExitsEn: 'Exits 3 & 7 / Overpass (Elevators) / Exits 2 & 4 (Gentle Wheelchair/Stroller Ramp beside stairs)',
+    elevatorLocationDesc: '3·7번 출구 지상 엘리베이터, 중앙대로 횡단 보행육교 서측 엘리베이터 2기 및 2·4번 출구 계단 옆 무장애 경사로(슬로프) 완비',
+    elevatorLocationDescEn: 'Ground elevator at Exits 3·7, two overpass elevators crossing Jungang-daero, and step-free gentle ramps (slopes) beside the stairs at Exits 2 & 4.',
+    avgMovementTime: '약 2~3분 (승강장 ↔ 대합실 ↔ 지상 엘리베이터 / 2·4번 경사로)',
+    avgMovementTimeEn: 'Approx. 2–3 mins (Platform ↔ Concourse ↔ Ground Elevators / Exits 2·4 Ramp)',
+    transferRouteDesc: '3층 승강장 엘리베이터 ↔ 2층 대합실 ↔ [동래온천·금강공원 방면] 3·7번 출구 및 보행육교 엘리베이터 / [온천천 방면] 2·4번 출구 계단 옆 완만한 경사로(슬로프)를 통해 계단 없이 이동',
+    transferRouteDescEn: '3F Platform Elevator ↔ 2F Concourse ↔ [Toward Hot Springs/Geumgang Park] Exit 3·7 & Overpass Elevators / [Toward Oncheoncheon Stream] Step-free gentle ramp beside stairs at Exits 2 & 4',
+    precautions: '동래온천·허심청·금강공원 방면은 3·7번 출구 엘리베이터 또는 중앙대로 건너편으로 이어지는 보행육교 엘리베이터를 이용하세요. 반대편 온천천 산책로 방면인 2·4번 출구에는 에스컬레이터 대신 계단 옆으로 유모차·휠체어가 그대로 밀고 내려갈 수 있는 완만한 경사로(슬로프)가 설치되어 있어 계단 없이 편리하게 이용할 수 있습니다.',
+    precautionsEn: 'For Dongnae Hot Springs, Hurshimchung Spa, and Geumgang Park, use the Exit 3·7 elevator or the pedestrian overpass elevator. On the opposite side toward Oncheoncheon Stream, Exits 2 and 4 feature a gentle step-free ramp (slope) right beside the stairs for easy stroller and wheelchair access.',
+    investigator: '플로레르',
+    officialSource: '부산교통공사(Humetro) 및 네이버지도',
+    exits: [
+      {
+        number: '3번, 7번 출구',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: true,
+        facilityDirection: 'BOTH',
+        tip: '온천장역 3번·7번 출구 옆에 설치된 지상 직결 수직 엘리베이터입니다. 2층 대합실에서 1층 인도로 바로 내려올 수 있으며, 동래온천 거리와 온천천 북측 산책로로 이동하기에 편리합니다.',
+        tipEn: 'Ground vertical elevator located right beside Exits 3 and 7, connecting the 2F concourse directly to the 1F sidewalk.',
+        status: 'OPERATIONAL',
+        directionDesc: '동래온천 거리, 허심청, 온천천 산책로 북측 방면',
+        directionDescEn: 'Toward Dongnae Hot Spring Street, Hurshimchung Spa & North Oncheoncheon Trail',
+        latitude: 35.221036,
+        longitude: 129.086612,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/온천장역 3번출구 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/온천장역 3번출구 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'oc37-step1',
+            name: '1호선 승강장 (3F) ↔ 대합실 (2F)',
+            desc: '승강장 수직 엘리베이터',
+            facilityType: 'ELEVATOR',
+            tip: '승강장 엘리베이터를 타고 2층 대합실로 내려갑니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'oc37-step2',
+            name: '3·7번 출구 지상 엘리베이터 (2F ↔ 1F)',
+            desc: '7번 출구 옆 지상 직결 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '개찰구를 통과한 뒤 3·7번 출구 측 엘리베이터를 타고 1층 보도로 내려갑니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '보행육교 엘리베이터',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: true,
+        hasEscalator: true,
+        facilityDirection: 'BOTH',
+        tip: '온천장역 2층 대합실에서 연결된 보행육교를 건너 중앙대로 서편(스타벅스·홈플러스·CGV 앞)으로 바로 내려가는 수직 엘리베이터 2기입니다. 왕복 8차선 중앙대로를 건너지 않고 동래온천 노천족욕탕, 허심청, 금강공원 방면 평지 보도로 가장 안전하게 진입할 수 있습니다.',
+        tipEn: 'Two vertical elevators at the west end of the station pedestrian overpass (in front of Starbucks, Homeplus & CGV). Crosses the 8-lane road safely without traffic lights toward Dongnae Hot Springs, Hurshimchung Spa, and Geumgang Park.',
+        status: 'OPERATIONAL',
+        directionDesc: '동래온천 노천족욕탕, 허심청, 금강공원(케이블카), 홈플러스·CGV 방면',
+        directionDescEn: 'Toward Dongnae Hot Spring Footbath, Hurshimchung Spa, Geumgang Park & Homeplus',
+        latitude: 35.221320,
+        longitude: 129.086255,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/온천장역 육교 엘리베이터',
+        naverMapUrl: 'https://map.naver.com/v5/search/온천장역 육교 엘리베이터',
+        pathwayTimeline: [
+          {
+            id: 'ocov-step1',
+            name: '2층 대합실 ↔ 보행육교 연결통로 (2F)',
+            desc: '온천장역 북측 보행육교 수평 이동',
+            facilityType: 'GATE',
+            tip: '2층 대합실 개찰구를 나와 보행육교 통로를 따라 중앙대로 건너편으로 이동합니다.',
+            status: 'OPERATIONAL'
+          },
+          {
+            id: 'ocov-step2',
+            name: '보행육교 서측 지상 엘리베이터 (2F ↔ 1F)',
+            desc: '홈플러스·온천장 중심가 측 수직 승강기',
+            facilityType: 'ELEVATOR',
+            tip: '육교 끝 엘리베이터를 타고 지상 1층 인도로 내려가 동래온천·허심청·금강공원 방면으로 평지 이동합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '2번 출구 (경사로)',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: false,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '온천장역 남동측 2번 출구에는 계단 바로 옆에 유모차·휠체어·캐리어가 그대로 밀고 오르내릴 수 있는 완만한 무장애 경사로(슬로프)가 설치되어 있습니다. 계단 없이 온천천 수변 산책로 및 남측 카페거리로 곧장 연결됩니다.',
+        tipEn: 'Exit 2 features a gentle, step-free wheelchair and stroller ramp (slope) right beside the stairs, connecting directly to the southern Oncheoncheon Stream trail.',
+        status: 'OPERATIONAL',
+        directionDesc: '온천천 산책로(남측), 온천천 카페거리 방면 (계단 옆 완만한 경사로 완비)',
+        directionDescEn: 'Toward South Oncheoncheon Stream Trail & Cafe Street (Step-free ramp beside stairs)',
+        latitude: 35.219607,
+        longitude: 129.086351,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/온천장역 2번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/온천장역 2번출구',
+        pathwayTimeline: [
+          {
+            id: 'oc2-step1',
+            name: '2번 출구 무장애 경사로 (슬로프)',
+            desc: '계단 옆 완만한 경사로를 통한 무단차 이동',
+            facilityType: 'GATE',
+            tip: '2번 출구 계단 옆에 마련된 완만한 경사로(슬로프)를 따라 계단 없이 온천천 산책로 및 보도로 이동합니다.',
+            status: 'OPERATIONAL'
+          }
+        ]
+      },
+      {
+        number: '4번 출구 (경사로)',
+        isAccessible: true,
+        isStrollerFriendly: true,
+        hasElevator: false,
+        hasEscalator: false,
+        facilityDirection: 'BOTH',
+        tip: '온천장역 북동측 4번 출구에도 계단 옆으로 유모차·휠체어가 안전하게 오르내릴 수 있는 완만한 무장애 경사로(슬로프)가 설치되어 있어, 온천천 북측 산책로 및 동래온천천교 방면으로 계단 없이 진출입할 수 있습니다.',
+        tipEn: 'Exit 4 also provides a gentle, step-free wheelchair and stroller ramp (slope) beside the stairs for easy access to the northern Oncheoncheon Stream trail.',
+        status: 'OPERATIONAL',
+        directionDesc: '온천천 산책로(북측), 온천시장 방면 (계단 옆 완만한 경사로 완비)',
+        directionDescEn: 'Toward North Oncheoncheon Stream Trail & Oncheon Market (Step-free ramp beside stairs)',
+        latitude: 35.220746,
+        longitude: 129.086992,
+        kakaoMapUrl: 'https://map.kakao.com/link/search/온천장역 4번출구',
+        naverMapUrl: 'https://map.naver.com/v5/search/온천장역 4번출구',
+        pathwayTimeline: [
+          {
+            id: 'oc4-step1',
+            name: '4번 출구 무장애 경사로 (슬로프)',
+            desc: '계단 옆 완만한 경사로를 통한 무단차 이동',
+            facilityType: 'GATE',
+            tip: '4번 출구 계단 옆에 마련된 완만한 경사로(슬로프)를 따라 계단 없이 온천천 산책로 및 보도로 이동합니다.',
             status: 'OPERATIONAL'
           }
         ]

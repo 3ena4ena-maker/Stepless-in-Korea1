@@ -153,8 +153,79 @@ export const STATION_PLACES_DATA: Record<string, Record<'KR' | 'EN', NearbyPlace
       { name: '⛩️ Beomeosa Temple', desc: 'Ancient Thousand-Year Temple nestled in Mt. Geumjeongsan (Bus 90 Transfer)', exits: [{ num: '5', type: 'elevator' }, { num: '7', type: 'elevator' }] },
       { name: '⛰️ Mt. Geumjeongsan Trails & Cheongryong Village', desc: 'Scenic mountain trails and traditional dining spots', exits: [{ num: '5', type: 'elevator' }] }
     ]
+  },
+  'centum-city': {
+    KR: [
+      { name: '🏬 신세계백화점 센텀시티점 & 스파랜드', desc: '지하 1층 대합실 연결통로 직결 및 10·12번 출구 지상 엘리베이터 완비', exits: [{ num: '10·12', type: 'elevator' }] },
+      { name: '🎬 영화의전당 & 🖼️ 뮤지엄원 / 부산시립미술관', desc: '부산국제영화제 야외극장과 미디어아트 전시관 (벡스코·시립미술관은 1번 출구 평지 연계)', exits: [{ num: '1', type: 'elevator' }, { num: '3·5', type: 'elevator' }] }
+    ],
+    EN: [
+      { name: '🏬 Shinsegae Centum City & Spa Land', desc: 'Connected directly underground + street elevator between Exits 10 & 12', exits: [{ num: '10·12', type: 'elevator' }] },
+      { name: '🎬 Busan Cinema Center & 🖼️ Museum 1 / Museum of Art', desc: 'BIFF landmark theater & media art museum (flat walk from Exit 1 to BEXCO & Museum of Art)', exits: [{ num: '1', type: 'elevator' }, { num: '3·5', type: 'elevator' }] }
+    ]
+  },
+  sasang: {
+    KR: [
+      { name: '✈️ 김해국제공항 환승 & 부산서부버스터미널', desc: '실내 환승통로로 공항경전철 연결 및 3·4번 출구 엘리베이터로 버스터미널 평지 이동', exits: [{ num: '경전철 1', type: 'both' }, { num: '3', type: 'elevator' }, { num: '4', type: 'elevator' }] },
+      { name: '🌸 삼락생태공원', desc: '낙동강변 광활한 평지 산책로와 계절 꽃단지 (경전철 2번 출구·르네시떼역 연계)', exits: [{ num: '경전철 2', type: 'both' }] }
+    ],
+    EN: [
+      { name: '✈️ Gimhae Airport LRT & West Busan Bus Terminal', desc: 'Step-free transfer to Gimhae Airport Light Rail & Exits 3/4 elevators to Bus Terminal', exits: [{ num: 'LRT 1', type: 'both' }, { num: '3', type: 'elevator' }, { num: '4', type: 'elevator' }] },
+      { name: '🌸 Samnak Ecological Park', desc: 'Expansive flat riverside park and seasonal flower trails along the Nakdong River', exits: [{ num: 'LRT 2', type: 'both' }] }
+    ]
+  },
+  toseong: {
+    KR: [
+      { name: '🎨 감천문화마을 (마을버스 환승)', desc: '4·6번 사이 엘리베이터 하차 후 평지 이동 → 부산대병원 앞(6번 출구) 서구2·서구2-2·사하구1-1 탑승', exits: [{ num: '4·6', type: 'elevator' }] },
+      { name: '🏛️ 임시수도기념거리 & 동아대 부민캠퍼스', desc: '한국전쟁 당시 대통령 관저(임시수도기념관)와 원도심 역사 문화거리', exits: [{ num: '5', type: 'elevator' }] }
+    ],
+    EN: [
+      { name: '🎨 Gamcheon Culture Village (Bus Transfer)', desc: 'Take Exit 4·6 elevator to street level → walk 1 min flat to Exit 6 Hospital bus stop for Bus Seo-gu 2 / 2-2', exits: [{ num: '4·6', type: 'elevator' }] },
+      { name: '🏛️ Provisional Capital Memorial Street', desc: 'Historic Korean War presidential residence and heritage neighborhood', exits: [{ num: '5', type: 'elevator' }] }
+    ]
+  },
+  osiria: {
+    KR: [
+      { name: '🎢 롯데월드 어드벤처 부산 & 스카이라인 루지', desc: '3번 출구 앞 전용 보행육교(엘리베이터 완비)로 도로 횡단 없이 안전하게 직결되는 테마파크', exits: [{ num: '3번 평지출구 + 육교EV', type: 'elevator' }] },
+      { name: '🔬 국립부산과학관 & ⛩️ 해동용궁사·해광사 용왕단', desc: '가족 체험 과학관 및 기장 해안 절경 사찰 (1번 출구 버스·택시 환승 광장 연계)', exits: [{ num: '1번 평지출구', type: 'both' }] }
+    ],
+    EN: [
+      { name: '🎢 Lotte World Adventure Busan & Skyline Luge', desc: 'Major theme park connected safely via Exit 3 pedestrian bridge with elevators', exits: [{ num: 'Exit 3 Flat + Overpass EV', type: 'elevator' }] },
+      { name: '🔬 National Science Museum & ⛩️ Haedong Yonggungsa', desc: 'Interactive family science museum and seaside temples (Exit 1 bus/taxi plaza)', exits: [{ num: 'Exit 1 (Flat)', type: 'both' }] }
+    ]
+  },
+  songjeong: {
+    KR: [
+      { name: '🚂 해운대 블루라인파크 송정정거장 (해변열차)', desc: '미포~청사포~송정을 잇는 무장애 해변열차 출발역 (2번 출구 평지 도보 약 8분)', exits: [{ num: '2', type: 'both' }] },
+      { name: '🏖️ 송정해수욕장 & 죽도공원', desc: '완만한 백사장 평지 산책로와 서핑 해변, 바다 전망 카페거리', exits: [{ num: '1', type: 'both' }, { num: '2', type: 'both' }] }
+    ],
+    EN: [
+      { name: '🚂 Haeundae Blueline Park Songjeong Stn (Beach Train)', desc: 'Terminal station of the coastal Beach Train (8-min flat walk from Exit 2)', exits: [{ num: '2', type: 'both' }] },
+      { name: '🏖️ Songjeong Beach & Jukdo Park', desc: 'Gentle sandy beachfront promenade, surfing bay & oceanfront cafes', exits: [{ num: '1', type: 'both' }, { num: '2', type: 'both' }] }
+    ]
+  },
+  namcheon: {
+    KR: [
+      { name: '🥐 남천동 빵천동 (베이커리 투어 거리)', desc: '부산 3대 빵집부터 개성 넘치는 로컬 베이커리·디저트 카페가 밀집한 평지 골목', exits: [{ num: '1·3', type: 'elevator' }] },
+      { name: '🌸 광안리 해변 남단 & 삼익비치 산책로', desc: '남천해변시장과 광안대교를 가장 가까이서 마주하는 여유로운 해안 평지 산책길', exits: [{ num: '1·3', type: 'elevator' }] }
+    ],
+    EN: [
+      { name: '🥐 Namcheon Bakery Street ("Ppangcheon-dong")', desc: "Flat neighborhood alleys famous for Busan's top artisan bakeries and dessert cafes", exits: [{ num: '1·3', type: 'elevator' }] },
+      { name: '🌸 South Gwangalli Beach & Samik Beach Walk', desc: 'Peaceful coastal promenade right beside Gwangandaegyo Bridge', exits: [{ num: '1·3', type: 'elevator' }] }
+    ]
+  },
+  oncheonjang: {
+    KR: [
+      { name: '♨️ 동래온천 노천족욕탕 & 허심청 / 금강공원', desc: '보행육교 엘리베이터로 큰 길을 안전하게 건너 만나는 천년 온천 스파와 케이블카 공원', exits: [{ num: '보행육교', type: 'both' }, { num: '3·7', type: 'both' }] },
+      { name: '🌸 온천천 수변 산책로 & 카페거리', desc: '사계절 평탄하게 걷기 좋은 온천천 산책길 (3·7번 엘리베이터 및 2·4번 출구 연계)', exits: [{ num: '3·7', type: 'both' }, { num: '2·4번 (경사로)', type: 'escalator' }] }
+    ],
+    EN: [
+      { name: '♨️ Dongnae Hot Spring Footbath & Hurshimchung / Geumgang Park', desc: 'Cross safely via the station overpass elevator to historic mineral hot springs and cable car park', exits: [{ num: 'Overpass', type: 'both' }, { num: '3·7', type: 'both' }] },
+      { name: '🌸 Oncheoncheon Stream Trail & Cafe Street', desc: 'Flat riverside walking trail right beside Exits 2, 3, 4 & 7', exits: [{ num: '3·7', type: 'both' }, { num: 'Exits 2·4 (Ramp)', type: 'escalator' }] }
+    ]
   }
 };
+
 
 export const getNearbyPlaces = (stationId: string, lang: 'KR' | 'EN'): NearbyPlace[] => {
   return STATION_PLACES_DATA[stationId]?.[lang] || [];
@@ -173,6 +244,9 @@ export const NearbyExitBadge = ({ num, type, line, language }: { num: string; ty
   } else if (line === '동해') {
     accentColor = '#004960';
     borderColorClass = 'border-[#004960]/70 text-[#004960]';
+  } else if (line === '김해' || num.includes('경전철') || num.includes('LRT')) {
+    accentColor = '#804796';
+    borderColorClass = 'border-[#804796]/70 text-[#804796]';
   }
 
   let iconSvg = null;
@@ -215,7 +289,7 @@ export const NearbyExitBadge = ({ num, type, line, language }: { num: string; ty
   return (
     <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10.5px] font-bold bg-white/90 shadow-2xs ${borderColorClass}`}>
       {iconSvg}
-      <span>{num}{language === 'KR' ? '번 출구' : ' Exit'}</span>
+      <span>{(/\d/.test(num) && !num.includes('출구') && !num.includes('Exit') && !num.includes('경사로')) ? `${num}${language === 'KR' ? '번 출구' : ' Exit'}` : num}</span>
     </span>
   );
 };

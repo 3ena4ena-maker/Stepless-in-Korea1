@@ -39,7 +39,8 @@ export function searchStations(query: string, stations: Station[]) {
       st.id.toLowerCase() === raw ||
       st.id.toLowerCase().includes(raw);
 
-    const isLineMatch = st.lines.some(l => l.toLowerCase().includes(raw) || `${l}호선`.includes(raw));
+    const isLineMatch = st.lines.some(l => l.toLowerCase().includes(raw) || `${l}호선`.includes(raw) || (l === '김해' && '김해경전철'.includes(raw)) || (l === '동해' && '동해선'.includes(raw)));
+    const isLandmarkMatch = raw.length >= 2 && st.exits.some(e => (e.directionDesc && e.directionDesc.toLowerCase().includes(raw)) || (e.tip && e.tip.toLowerCase().includes(raw)));
 
     // Check matching exit
     let matchedExit: string | undefined = undefined;
@@ -50,7 +51,7 @@ export function searchStations(query: string, stations: Station[]) {
       }
     }
 
-    if (isExactName || isPartialName || isLineMatch || matchedExit) {
+    if (isExactName || isPartialName || isLineMatch || isLandmarkMatch || matchedExit) {
       results.push({
         station: st,
         matchedExit
@@ -226,12 +227,13 @@ export default function StationSearchBar({
                         </span>
                         <div className="flex items-center gap-1">
                           {station.lines.map((part, idx) => {
-                            const lineText = part.endsWith('호선') || part === '동해' ? (part === '동해' ? '동해선' : part) : `${part}호선`;
+                            const lineText = part === '동해' ? '동해선' : part === '김해' ? '김해경전철' : part.endsWith('호선') ? part : `${part}호선`;
                             let badgeBg = 'bg-slate-100 text-slate-700';
                             if (part.includes('1')) badgeBg = 'bg-orange-100 text-orange-800 border-orange-200';
                             else if (part.includes('2')) badgeBg = 'bg-emerald-100 text-emerald-800 border-emerald-200';
                             else if (part.includes('3')) badgeBg = 'bg-amber-100 text-amber-800 border-amber-200';
                             else if (part.includes('동해')) badgeBg = 'bg-sky-100 text-sky-800 border-sky-200';
+                            else if (part.includes('김해')) badgeBg = 'bg-purple-100 text-purple-800 border-purple-200';
                             return (
                               <span key={idx} className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md border ${badgeBg}`}>
                                 {lineText}

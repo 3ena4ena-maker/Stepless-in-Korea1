@@ -33,7 +33,17 @@ export const STATION_LOCKER_DATA: Record<string, Record<string, LockerCount> | L
   },
   jungang: { small: 24, med: 30, large: 8, xlarge: 16 },
   dadaepo: { small: 30, med: 20, large: 12, xlarge: 18 },
-  beomeosa: { small: 16, med: 12, xlarge: 6 }
+  beomeosa: { small: 16, med: 12, xlarge: 6 },
+  'centum-city': { small: 42, med: 24, large: 18, xlarge: 16 },
+  sasang: {
+    '2': { small: 36, med: 24, large: 14, xlarge: 20 },
+    '김해': { small: 20, large: 10, xlarge: 10 }
+  },
+  toseong: { small: 18, med: 10, large: 6, xlarge: 6 },
+  osiria: { small: 24, med: 12, large: 10, xlarge: 8 },
+  songjeong: { small: 14, med: 8, large: 6, xlarge: 4 },
+  namcheon: { small: 16, med: 8, large: 6, xlarge: 4 },
+  oncheonjang: { small: 20, med: 12, large: 6, xlarge: 6 }
 };
 
 export const formatLockerCount = (data: LockerCount, lang: 'KR' | 'EN'): string => {
@@ -56,14 +66,14 @@ export const getLockerInfoText = (stationId: string, language: 'KR' | 'EN'): str
   const data = STATION_LOCKER_DATA[stationId];
   if (!data) return language === 'KR' ? '있음' : 'Available';
 
-  const isMultiLine = '1' in data || '2' in data || '3' in data || '동해' in data;
+  const isMultiLine = '1' in data || '2' in data || '3' in data || '동해' in data || '김해' in data;
   if (isMultiLine) {
     const multi = data as Record<string, LockerCount>;
     return Object.entries(multi)
       .map(([line, counts]) => {
         const lineStr = language === 'KR'
-          ? (line === '동해' ? '동해선' : `${line}호선`)
-          : (line === '동해' ? 'Donghae' : `Line ${line}`);
+          ? (line === '동해' ? '동해선' : line === '김해' ? '김해경전철' : `${line}호선`)
+          : (line === '동해' ? 'Donghae' : line === '김해' ? 'Gimhae LRT' : `Line ${line}`);
         return `${lineStr}: ${formatLockerCount(counts, language)}`;
       })
       .join(' / ');
@@ -158,15 +168,15 @@ export const renderLockerInfo = (stationId: string, language: 'KR' | 'EN'): Reac
     );
   }
 
-  const isMultiLine = '1' in data || '2' in data || '3' in data || '동해' in data;
+  const isMultiLine = '1' in data || '2' in data || '3' in data || '동해' in data || '김해' in data;
   if (isMultiLine) {
     const multi = data as Record<string, LockerCount>;
     return (
       <div className="flex flex-col gap-2 w-full">
         {Object.entries(multi).map(([line, counts]) => {
           const lineStr = language === 'KR' 
-            ? (line === '동해' ? '동해선' : `${line}호선`) 
-            : (line === '동해' ? 'Donghae' : `Line ${line}`);
+            ? (line === '동해' ? '동해선' : line === '김해' ? '김해경전철' : `${line}호선`) 
+            : (line === '동해' ? 'Donghae' : line === '김해' ? 'Gimhae LRT' : `Line ${line}`);
           return (
             <div key={line} className="flex flex-wrap sm:flex-nowrap items-center justify-start gap-2 sm:gap-3 w-full pb-1.5 last:pb-0 border-b border-dashed border-slate-200/60 last:border-0">
               <span 

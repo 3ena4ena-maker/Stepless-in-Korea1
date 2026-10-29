@@ -141,7 +141,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     try {
       const saved = localStorage.getItem(`admin_station_override_${station.id}`);
       if (saved) {
-        if (station.id === 'dadaepo' && (saved.includes('128.963') || saved.includes('128.964'))) {
+        if ((station.id === 'dadaepo' && (saved.includes('128.963') || saved.includes('128.964'))) || ['centum-city','sasang','toseong','osiria','songjeong','namcheon','oncheonjang'].includes(station.id)) {
           localStorage.removeItem(`admin_station_override_${station.id}`);
           return station.exits || [];
         }
@@ -155,7 +155,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     try {
       const saved = localStorage.getItem(`admin_station_override_${station.id}`);
       if (saved) {
-        if (station.id === 'dadaepo' && (saved.includes('128.963') || saved.includes('128.964'))) {
+        if ((station.id === 'dadaepo' && (saved.includes('128.963') || saved.includes('128.964'))) || ['centum-city','sasang','toseong','osiria','songjeong','namcheon','oncheonjang'].includes(station.id)) {
           localStorage.removeItem(`admin_station_override_${station.id}`);
           setStationExits(station.exits || []);
           return;
@@ -717,7 +717,11 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     destroyGoogleMap();
 
     const exits = stationExits;
-    if (exits.length === 0) return;
+    const defaultCenters: Record<string, { lat: number; lng: number }> = {
+      osiria: { lat: 35.196550, lng: 129.208700 },
+      songjeong: { lat: 35.187450, lng: 129.202350 }
+    };
+    if (exits.length === 0 && !defaultCenters[station.id]) return;
 
     // Calculate map focus center dynamically using mathematical average coordinate of all exits or focused override
     let centerLat = 0;
@@ -728,7 +732,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       centerLat = focusedExitCoords.latitude;
       centerLng = focusedExitCoords.longitude;
       currentZoom = 18;
-    } else {
+    } else if (exits.length > 0) {
       let totalLat = 0;
       let totalLng = 0;
       exits.forEach(exit => {
@@ -738,6 +742,10 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       centerLat = totalLat / exits.length;
       centerLng = totalLng / exits.length;
       currentZoom = 17; // 50m 기준 줌 레벨
+    } else {
+      centerLat = defaultCenters[station.id].lat;
+      centerLng = defaultCenters[station.id].lng;
+      currentZoom = 17;
     }
 
     const mapCenter = new window.naver.maps.LatLng(centerLat, centerLng);
@@ -787,7 +795,8 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     exits.forEach(exit => {
       const line = station.lines[0];
       let mapAccentColor = '#F06A00'; // default 주황
-      if (line === '2') mapAccentColor = '#1b6d24'; // 초록
+      if (exit.number.includes('경전철') || exit.number.includes('LRT')) mapAccentColor = '#804796'; // 김해경전철 보라
+      else if (line === '2') mapAccentColor = '#1b6d24'; // 초록
       else if (line === '3') mapAccentColor = '#906A3B'; // 브라운
       else if (line === '동해') mapAccentColor = '#004960'; // 동해 블루
 
@@ -829,6 +838,13 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
             <circle cx="10" cy="7.5" r="1.8" fill="${mapAccentColor}" stroke="none" />
             <path d="M 10 10.2 L 10 14" stroke="${mapAccentColor}" stroke-width="2.5" stroke-linecap="round" />
             <path d="M 3.5 19.5 L 7.5 19.5 C 9.5 19.5, 10.5 18, 12 15.5 L 15.5 10 C 17 8, 18 7, 20.5 7 L 22.5 7" />
+          </svg>
+        `;
+      } else if (exit.isAccessible) {
+        iconHtml = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="${mapAccentColor}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+            <path d="M 3 18.5 L 21 9.5 L 21 18.5 Z" fill="${mapAccentColor}" fill-opacity="0.18" />
+            <path d="M 3 18.5 L 21 9.5" />
           </svg>
         `;
       } else {
@@ -952,7 +968,11 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     destroyLeafletMap();
 
     const exits = stationExits;
-    if (exits.length === 0) return;
+    const defaultCenters: Record<string, { lat: number; lng: number }> = {
+      osiria: { lat: 35.196550, lng: 129.208700 },
+      songjeong: { lat: 35.187450, lng: 129.202350 }
+    };
+    if (exits.length === 0 && !defaultCenters[station.id]) return;
 
     let centerLat = 0;
     let centerLng = 0;
@@ -962,7 +982,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       centerLat = focusedExitCoords.latitude;
       centerLng = focusedExitCoords.longitude;
       currentZoom = 18;
-    } else {
+    } else if (exits.length > 0) {
       let totalLat = 0;
       let totalLng = 0;
       exits.forEach(exit => {
@@ -972,6 +992,10 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       centerLat = totalLat / exits.length;
       centerLng = totalLng / exits.length;
       currentZoom = 17; // 50m 기준 줌 레벨
+    } else {
+      centerLat = defaultCenters[station.id].lat;
+      centerLng = defaultCenters[station.id].lng;
+      currentZoom = 17;
     }
 
     const mapCenter = new window.google.maps.LatLng(centerLat, centerLng);
@@ -1223,6 +1247,13 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
             <circle cx="10" cy="7.5" r="1.8" fill="${mapAccentColor}" stroke="none" />
             <path d="M 10 10.2 L 10 14" stroke="${mapAccentColor}" stroke-width="2.5" stroke-linecap="round" />
             <path d="M 3.5 19.5 L 7.5 19.5 C 9.5 19.5, 10.5 18, 12 15.5 L 15.5 10 C 17 8, 18 7, 20.5 7 L 22.5 7" />
+          </svg>
+        `;
+      } else if (exit.isAccessible) {
+        iconHtml = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="${mapAccentColor}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; flex-shrink: 0; display: inline-block; vertical-align: middle;">
+            <path d="M 3 18.5 L 21 9.5 L 21 18.5 Z" fill="${mapAccentColor}" fill-opacity="0.18" />
+            <path d="M 3 18.5 L 21 9.5" />
           </svg>
         `;
       } else {

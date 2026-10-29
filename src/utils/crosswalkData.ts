@@ -88,6 +88,37 @@ export function getStationCrosswalkPoints(stationId: string): CrosswalkPoint[] {
       { lat: 35.168988, lng: 129.139266, nameKr: '벡스코역 2·4번 출구 삼거리 횡단보도', nameEn: 'Bexco Station Exit 2/4 Intersection Crosswalk' },
       { lat: 35.169338, lng: 129.138922, nameKr: '올림픽교차로 북측 횡단보도', nameEn: 'Olympic Intersection North Crosswalk' }
     ];
+  } else if (stationId === 'centum-city') {
+    return [
+      { lat: 35.169015, lng: 129.132496, nameKr: '센텀시티역 1·3번 출구 사이 횡단보도', nameEn: 'Centum City Stn Exit 1/3 Crosswalk' },
+      { lat: 35.169436, lng: 129.132115, nameKr: '센텀시티역 4·6번 출구 사이 횡단보도', nameEn: 'Centum City Stn Exit 4/6 Crosswalk' }
+    ];
+  } else if (stationId === 'sasang') {
+    return [
+      { lat: 35.162530, lng: 128.984320, nameKr: '사상역 3번 출구 서부버스터미널 방면 횡단보도', nameEn: 'Sasang Stn Exit 3 Bus Terminal Crosswalk' },
+      { lat: 35.162389, lng: 128.984916, nameKr: '사상역 4번 출구 방면 횡단보도', nameEn: 'Sasang Stn Exit 4 Crosswalk' },
+      { lat: 35.161850, lng: 128.985742, nameKr: '사상역 2번 출구 방면 횡단보도', nameEn: 'Sasang Stn Exit 2 Crosswalk' }
+    ];
+  } else if (stationId === 'toseong') {
+    return [
+      { lat: 35.099630, lng: 129.019768, nameKr: '토성역 앞 교차로 횡단보도', nameEn: 'Toseong Station Intersection Crosswalk' }
+    ];
+  } else if (stationId === 'osiria') {
+    return [
+      { lat: 35.197014, lng: 129.209476, nameKr: '오시리아역 동부산관광로 횡단보도', nameEn: 'Osiria Station Crosswalk' }
+    ];
+  } else if (stationId === 'songjeong') {
+    return [
+      { lat: 35.188878, lng: 129.203253, nameKr: '송정역 해운대로 횡단보도', nameEn: 'Songjeong Station Haeundaero Crosswalk' }
+    ];
+  } else if (stationId === 'namcheon') {
+    return [
+      { lat: 35.142683, lng: 129.108034, nameKr: '남천역 남천서로 횡단보도', nameEn: 'Namcheon Station Crosswalk' }
+    ];
+  } else if (stationId === 'oncheonjang') {
+    return [
+      { lat: 35.221318, lng: 129.085069, nameKr: '온천장역 서측 횡단보도', nameEn: 'Oncheonjang Station West Crosswalk' }
+    ];
   }
   return [];
 }

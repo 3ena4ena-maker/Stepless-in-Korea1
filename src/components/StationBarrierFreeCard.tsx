@@ -89,12 +89,23 @@ function renderDirectionArrows(dir?: 'UP' | 'DOWN' | 'BOTH') {
 
 export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarrierFreeCardProps) {
   const displayName = language === 'KR' ? station.name : (station.englishName || station.name);
-  const lineLabels = station.lines.map(l => language === 'KR' ? `${l}호선` : `Line ${l}`).join(' · ');
+  const lineLabels = station.lines.map(l => {
+    if (language === 'KR') {
+      if (l === '동해') return '동해선';
+      if (l === '김해') return '부산김해경전철';
+      return `${l}호선`;
+    } else {
+      if (l === '동해') return 'Donghae Line';
+      if (l === '김해') return 'Busan-Gimhae LRT';
+      return `Line ${l}`;
+    }
+  }).join(' · ');
   const nearbyPlaces = getNearbyPlaces(station.id, language);
 
   const bothExits = (station.exits || []).filter(e => e.hasElevator && e.hasEscalator);
   const elevatorOnlyExits = (station.exits || []).filter(e => e.hasElevator && !e.hasEscalator);
   const escalatorOnlyExits = (station.exits || []).filter(e => !e.hasElevator && e.hasEscalator);
+  const rampOnlyExits = (station.exits || []).filter(e => !e.hasElevator && !e.hasEscalator && e.isAccessible);
 
   const recommendedExitsText = language === 'KR'
     ? station.recommendedExits
@@ -170,7 +181,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                     </div>
                   )}
                   {/* Unified Exit Facilities Badges */}
-                  {(bothExits.length > 0 || elevatorOnlyExits.length > 0 || escalatorOnlyExits.length > 0) ? (
+                  {(bothExits.length > 0 || elevatorOnlyExits.length > 0 || escalatorOnlyExits.length > 0 || rampOnlyExits.length > 0) ? (
                     <div className="space-y-2 pt-1 border-t border-slate-100">
                       {/* 1. 둘 다 있는 출구 (Both EV + ES) */}
                       {bothExits.length > 0 && (
@@ -239,6 +250,30 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                           ))}
                         </div>
                       )}
+
+                      {/* 4. 무장애 경사로(슬로프)가 있는 출구 (Ramp Only) */}
+                      {rampOnlyExits.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                          {rampOnlyExits.map((exit, idx) => (
+                            <span
+                              key={idx}
+                              className="font-bold text-slate-800 bg-amber-50/70 hover:bg-amber-100/70 px-2.5 py-1.5 rounded-xl border border-amber-200 shadow-2xs inline-flex flex-wrap sm:flex-nowrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm max-w-full transition-colors"
+                            >
+                              <span className="text-slate-900 font-extrabold break-keep">{formatExitNumber(exit.number, language)}</span>
+                              <span className="w-px h-3.5 bg-amber-200/90 shrink-0 hidden sm:inline-block" />
+                              <span className="inline-flex items-center gap-1 text-amber-800 font-bold text-xs shrink-0">
+                                <span>📐 {language === 'KR' ? '계단 옆 완만한 경사로(슬로프)' : 'Step-Free Ramp (Slope)'}</span>
+                              </span>
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (station.id === 'osiria' || station.id === 'songjeong') ? (
+                    <div className="p-2.5 sm:p-3 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-emerald-900 text-xs sm:text-sm font-semibold leading-relaxed">
+                      {language === 'KR'
+                        ? '✨ 1층 대합실-지상 보도 평지 직결 역사입니다. 2층 승강장 ↔ 1층 개찰구 구간만 역사 내부 엘리베이터·에스컬레이터를 이용하시면, 바깥 출구로 나갈 때는 별도의 엘리베이터나 에스컬레이터 없이 모든 출구가 계단 없는 1층 평지로 바로 이어집니다.'
+                        : '✨ Ground-level flat concourse station. After taking the indoor elevator from the 2F platform to the 1F ticket gate, all exits open directly onto flat street-level sidewalks with no stairs or exterior lifts needed.'}
                     </div>
                   ) : (
                     <p className="text-2xs sm:text-xs text-slate-400 font-medium">

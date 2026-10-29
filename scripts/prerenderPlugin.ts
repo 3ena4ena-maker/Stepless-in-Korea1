@@ -24,13 +24,13 @@ function buildRoutes(): RouteMeta[] {
     {
       path: '/search',
       title: '부산 지하철역 출구 정보 둘러보기 & 엘리베이터 검색 | 스텝레스 Stepless',
-      description: '부산 도시철도 1~4호선 및 동해선 주요 15개 역의 엘리베이터, 에스컬레이터 위치와 유모차·휠체어·캐리어 무장애 이동 경로를 한눈에 비교하고 검색하세요.',
+      description: '부산 도시철도 1~4호선, 동해선, 부산김해경전철 주요 22개 역의 엘리베이터, 에스컬레이터 위치와 유모차·휠체어·캐리어 무장애 이동 경로를 한눈에 비교하고 검색하세요.',
       heading: '부산 지하철역 출구 정보 & 무장애 이동 경로 검색',
       bodyHtml: `
-        <p>스텝리스(Stepless) 지하철역 검색 페이지에서는 부산 도시철도 주요 15개 거점역의 출구별 엘리베이터 유무, 양방향 에스컬레이터, 계단 단차 정보 및 승강장-대합실-지상 보도 연결 동선을 상세히 제공합니다.</p>
+        <p>스텝리스(Stepless) 지하철역 검색 페이지에서는 부산 도시철도 주요 22개 거점역의 출구별 엘리베이터 유무, 양방향 에스컬레이터, 계단 단차 정보 및 승강장-대합실-지상 보도 연결 동선을 상세히 제공합니다.</p>
         <h3>주요 검색 가능 지하철역 목록</h3>
         <ul>
-          ${STATIONS.map(st => `<li><a href="/station/${st.id}"><strong>${escapeHtml(st.name)} (${escapeHtml(st.englishName)})</strong></a> - ${escapeHtml(st.lines.map(l => l.includes('선') ? l : l + '호선').join('·'))} | ${escapeHtml(st.exits.filter(e => e.hasElevator).map(e => e.number).join(', ') || '엘리베이터/에스컬레이터 상세 안내')}</li>`).join('\n          ')}
+          ${STATIONS.map(st => `<li><a href="/station/${st.id}"><strong>${escapeHtml(st.name)} (${escapeHtml(st.englishName)})</strong></a> - ${escapeHtml(st.lines.map(l => l === '동해' ? '동해선' : l === '김해' ? '부산김해경전철' : l.includes('선') ? l : l + '호선').join('·'))} | ${escapeHtml(st.exits.filter(e => e.hasElevator).map(e => e.number).join(', ') || '엘리베이터/에스컬레이터 상세 안내')}</li>`).join('\n          ')}
         </ul>
       `
     },
@@ -516,10 +516,10 @@ function buildRoutes(): RouteMeta[] {
     },
   ];
 
-  // Dynamically generate rich route metadata for all 15 stations from STATIONS
+  // Dynamically generate rich route metadata for all 22 stations from STATIONS
   for (const st of STATIONS) {
     const cleanEng = st.englishName.replace(/\s*Station$/i, '').trim();
-    const linesText = st.lines.map(l => (l.includes('선') ? l : `${l}호선`)).join('·');
+    const linesText = st.lines.map(l => (l === '동해' ? '동해선' : l === '김해' ? '부산김해경전철' : l.includes('선') ? l : `${l}호선`)).join('·');
     const elevatorExits = st.exits.filter(e => e.hasElevator).map(e => e.number).join(', ');
     const escalatorExits = st.exits.filter(e => e.hasEscalator).map(e => e.number).join(', ');
 

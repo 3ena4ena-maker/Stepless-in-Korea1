@@ -1898,7 +1898,7 @@ export default function App() {
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
                       {STATIONS.map((st) => {
-                        const lineStr = st.lines.map(l => l.includes('선') ? l : l + '호선').join('·');
+                        const lineStr = st.lines.map(l => l === '동해' ? '동해선' : l === '김해' ? '김해경전철' : l.includes('선') ? l : l + '호선').join('·');
                         return (
                           <a
                             key={st.id}
@@ -1926,6 +1926,8 @@ export default function App() {
                                   colorClass = 'text-amber-700 font-bold';
                                 } else if (part.includes('동해')) {
                                   colorClass = 'text-sky-600 font-bold';
+                                } else if (part.includes('김해')) {
+                                  colorClass = 'text-purple-600 font-bold';
                                 }
 
                                 return (
@@ -2023,7 +2025,7 @@ export default function App() {
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
                   {STATIONS.map((st) => {
-                    const lineStr = st.lines.map(l => l.includes('선') ? l : l + '호선').join('·');
+                    const lineStr = st.lines.map(l => l === '동해' ? '동해선' : l === '김해' ? '김해경전철' : l.includes('선') ? l : l + '호선').join('·');
                     const isSelected = selectedStationId === st.id;
                     return (
                       <a
@@ -2055,6 +2057,8 @@ export default function App() {
                               colorClass = isSelected ? 'text-amber-100 font-bold' : 'text-amber-700 font-bold';
                             } else if (part.includes('동해')) {
                               colorClass = isSelected ? 'text-sky-100 font-bold' : 'text-sky-600 font-bold';
+                            } else if (part.includes('김해')) {
+                              colorClass = isSelected ? 'text-purple-100 font-bold' : 'text-purple-600 font-bold';
                             }
 
                             return (
