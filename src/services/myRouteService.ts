@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -522,14 +523,14 @@ export function mergeImportedRouteIntoMyRoute(places: MyRoutePlace[]): number {
 /**
  * 내 여행 루트의 전체 텍스트 요약 (메신저/메모장 복사용)
  */
-export function formatRouteSummaryText(places: MyRoutePlace[], language: 'KR' | 'EN' = 'KR'): string {
+export function formatRouteSummaryText(places: MyRoutePlace[], language: Language = 'KR'): string {
   if (!places || places.length === 0) return '';
   const shareCode = exportRouteToShareData(places);
   const shareUrl = typeof window !== 'undefined'
     ? `${window.location.origin}${window.location.pathname}?route=${shareCode}#my-route`
     : '';
 
-  if (language === 'EN') {
+  if (language !== 'KR') {
     const lines = places.map((p, idx) => `${idx + 1}. ${p.titleEn || p.titleKo} (${p.categoryEn || p.categoryKo || 'Spot'}) - ${p.addressRoadEn || p.addressRoadKo || 'Busan'}`);
     return `[My Busan Travel Route (${places.length} Spots)]\n${lines.join('\n')}\n\n📍 Interactive Route Map:\n${shareUrl}`;
   }

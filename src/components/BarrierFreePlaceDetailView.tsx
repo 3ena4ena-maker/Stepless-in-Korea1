@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -41,7 +42,7 @@ import PlaceLocationMap from './PlaceLocationMap';
 interface BarrierFreePlaceDetailViewProps {
   placeId: string;
   selectedUserType?: UserType | null;
-  language: 'KR' | 'EN';
+  language: Language;
   onBack: () => void;
   onSelectStation?: (stationId: string, exitNum?: string) => void;
   onSelectUserType?: (userType: UserType) => void;

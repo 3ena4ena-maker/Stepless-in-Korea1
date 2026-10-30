@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -26,7 +27,7 @@ import ElegantIllustration from './ElegantIllustration';
 interface TourApiItineraryStepCardProps {
   stepNumber: number;
   step: ItineraryStep;
-  language: 'KR' | 'EN';
+  language: Language;
   onOpenDetail?: (placeId: string) => void;
   onSelectStation?: (stationName: string) => void;
 }

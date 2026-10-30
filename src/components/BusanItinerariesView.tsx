@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -149,7 +150,7 @@ export type TopCategoryType = 'GOURMET' | 'MARKET' | 'SCHEDULE' | 'EXPERIENCE' |
 export type ScheduleDurationType = 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS';
 
 interface BusanItinerariesViewProps {
-  language: 'KR' | 'EN';
+  language: Language;
   initialCategory?: CategoryType | null;
   onBack?: () => void;
   onSelectCategory?: (category: CategoryType | null) => void;

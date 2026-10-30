@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -56,7 +57,7 @@ import { BUSAN_TOUR_API_SPOTS } from '../data/tourApiSpots';
 import { KOREA_TOUR_API_PLACE_DETAILS } from '../data/koreaTourApiPlaceDetails';
 
 interface MyTravelRouteMapViewProps {
-  language: 'KR' | 'EN';
+  language: Language;
   onNavigateToCategory?: (category: string) => void;
   onSelectStation?: (stationName: string) => void;
   onOpenBarrierFreeDetail?: (placeId: string) => void;
@@ -261,7 +262,7 @@ export default function MyTravelRouteMapView({
   }, []);
 
   // 구글(EN) / 네이버(KR) 실시간 자동 완성 검색 상태
-  const isGoogleMode = language === 'EN' || provider === 'GOOGLE';
+  const isGoogleMode = language !== 'KR' || provider === 'GOOGLE';
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);

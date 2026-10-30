@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 import React, { useEffect, useRef, useState } from 'react';
 import { ExternalLink, Navigation } from 'lucide-react';
 
@@ -5,7 +6,7 @@ interface PlaceLocationMapProps {
   latitude: number;
   longitude: number;
   placeName: string;
-  language: 'KR' | 'EN';
+  language: Language;
 }
 
 declare global {
@@ -185,7 +186,7 @@ export default function PlaceLocationMap({
 
   // 2. 영어 모드: Google Maps 로드 및 초기화
   useEffect(() => {
-    if (language !== 'EN' || useLeaflet) return;
+    if (language === 'KR' || useLeaflet) return;
 
     let isMounted = true;
     const defaultKey = 'AIzaSyDEKgT4EZLHN5agdtkadl7q8NHaeO_g4DE';

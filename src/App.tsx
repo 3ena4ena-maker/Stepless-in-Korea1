@@ -45,6 +45,9 @@ import {
   Layers
 } from 'lucide-react';
 import Header from './components/Header';
+import { Language, pickLang, LANGUAGE_OPTIONS } from './i18n/dictionary';
+import { formatLineLabelI18n } from './i18n/stationTranslations';
+import { useDomLocalizer } from './i18n/domLocalizer';
 import TimelineVisualizer from './components/TimelineVisualizer';
 import { StationBarrierFreeCard } from './components/StationBarrierFreeCard';
 import { HomeOverviewSection } from './components/HomeOverviewSection';
@@ -242,7 +245,23 @@ export default function App() {
     import('./components/SiteIntroductionView');
     import('./components/SubwayStationMap');
   }, []);
-  const [language, setLanguage] = useState<'KR' | 'EN'>('KR');
+  const [language, setLanguage] = useState<Language>(() => {
+    try {
+      const saved = localStorage.getItem('stepless_language');
+      if (saved === 'KR' || saved === 'EN' || saved === 'JA' || saved === 'ZH_TW' || saved === 'ZH_CN' || saved === 'ES' || saved === 'FR') {
+        return saved;
+      }
+    } catch {}
+    return 'KR';
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('stepless_language', language);
+    } catch {}
+  }, [language]);
+
+  useDomLocalizer(language);
   const [selectedStationId, setSelectedStationId] = useState<string>('seomyeon');
   const [searchViewMode, setSearchViewMode] = useState<'INDEX' | 'DETAIL'>('INDEX');
   const [isHomeLanding, setIsHomeLanding] = useState<boolean>(true);
@@ -1418,7 +1437,11 @@ export default function App() {
   };
 
   const toggleLanguage = () => {
-    setLanguage(prev => prev === 'KR' ? 'EN' : 'KR');
+    setLanguage(prev => {
+      const idx = LANGUAGE_OPTIONS.findIndex(o => o.code === prev);
+      const nextIdx = (idx + 1) % LANGUAGE_OPTIONS.length;
+      return LANGUAGE_OPTIONS[nextIdx].code;
+    });
   };
 
   const findNearestStepFreeExit = (lat: number, lng: number) => {
@@ -1688,6 +1711,7 @@ export default function App() {
           setCurrentTab={(tab) => handleMainTabSelect(tab)} 
           language={language} 
           toggleLanguage={toggleLanguage} 
+          onSelectLanguage={(lang) => setLanguage(lang)} 
           onToggleAdminMode={toggleAdminMode}
           isAdminMode={isAdminMode}
         />
@@ -1837,12 +1861,22 @@ export default function App() {
                   {/* Search Header */}
                   <div>
                     <h2 className="text-2xl font-extrabold font-heading text-slate-800">
-                      {language === 'KR' ? '부산 지하철역 출구 정보 둘러보기' : 'Subway Exit Information Index'}
+                      {pickLang(language, {
+                        KR: '부산 지하철역 출구 정보 둘러보기',
+                        EN: 'Subway Exit Information Index',
+                        JA: '釜山地下鉄 駅・出口バリアフリー案内',
+                        ZH_TW: '釜山地鐵站出口無障礙資訊總覽',
+                        ZH_CN: '釜山地铁站出口无障碍信息总览'
+                      })}
                     </h2>
                     <p className="text-sm text-slate-500 mt-1">
-                      {language === 'KR' 
-                        ? '부산 핵심 주요역의 총 엘리베이터 수, 에스컬레이터 대수를 한눈에 비교하고 탐색해보세요.' 
-                        : 'Analyze general escalators, elevator configurations across major transit sectors.'}
+                      {pickLang(language, {
+                        KR: '부산 핵심 주요역의 총 엘리베이터 수, 에스컬레이터 대수를 한눈에 비교하고 탐색해보세요.',
+                        EN: 'Analyze general escalators, elevator configurations across major transit sectors.',
+                        JA: '釜山の主要22駅のエレベーター・エスカレーター・段差なし出口情報をひと目で比較・検索できます。',
+                        ZH_TW: '一目了然比較並搜尋釜山 22 個主要地鐵站的電梯、電扶梯與無階梯出口資訊。',
+                        ZH_CN: '一目了然比较并搜索釜山 22 个主要地铁站的直梯、扶梯与无台阶出口信息。'
+                      })}
                     </p>
 
                     {/* Search Bar Input */}
@@ -1892,13 +1926,19 @@ export default function App() {
                       <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block shrink-0"></span>
                       <span className="text-base leading-none">📍</span>
                       <h3 className="text-base sm:text-lg font-bold font-heading text-slate-800">
-                        {language === 'KR' ? '원하는 지하철역 선택' : 'Select Subway Station'}
+                        {pickLang(language, {
+                          KR: '원하는 지하철역 선택',
+                          EN: 'Select Subway Station',
+                          JA: '地下鉄駅を選択',
+                          ZH_TW: '選擇地鐵站',
+                          ZH_CN: '选择地铁站'
+                        })}
                       </h3>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
                       {STATIONS.map((st) => {
-                        const lineStr = st.lines.map(l => l === '동해' ? '동해선' : l === '김해' ? '김해경전철' : l.includes('선') ? l : l + '호선').join('·');
+                        const lineStr = st.lines.map(l => formatLineLabelI18n(l, language)).join('·');
                         return (
                           <a
                             key={st.id}
@@ -1963,7 +2003,7 @@ export default function App() {
                       className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:text-emerald-700 hover:border-emerald-300 font-bold text-sm shadow-2xs transition-all cursor-pointer group w-fit active:scale-95"
                     >
                       <ArrowLeft className="w-4 h-4 text-slate-500 group-hover:-translate-x-1 transition-transform" />
-                      <span>{language === 'KR' ? '다른 지하철역 검색하기 (목록)' : 'Back to Station Search'}</span>
+                      <span>{pickLang(language, { KR: '다른 지하철역 검색하기 (목록)', EN: 'Back to Station Search', JA: '他の地下鉄駅を検索（一覧へ）', ZH_TW: '搜尋其他地鐵站（返回列表）', ZH_CN: '搜索其他地铁站（返回列表）' })}</span>
                     </button>
 
                     <div className="w-full sm:w-72">
@@ -1971,7 +2011,7 @@ export default function App() {
                         language={language}
                         searchQuery={searchQuery}
                         setSearchQuery={setSearchQuery}
-                        placeholder={language === 'KR' ? '다른 역/출구 빠른 검색...' : 'Search station/exit...'}
+                        placeholder={pickLang(language, { KR: '다른 역/출구 빠른 검색...', EN: 'Search station/exit...', JA: '他の駅・出口を検索...', ZH_TW: '快速搜尋其他車站／出口...', ZH_CN: '快速搜索其他车站／出口...' })}
                         onSelectStation={(stId, matchedExit) => {
                           setSelectedStationId(stId);
                           if (matchedExit) {
@@ -2019,13 +2059,19 @@ export default function App() {
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block shrink-0"></span>
                   <span className="text-base leading-none">📍</span>
                   <h3 className="text-base sm:text-lg font-bold font-heading text-slate-800">
-                    {language === 'KR' ? '원하는 지하철역 선택' : 'Select Subway Station'}
+                    {pickLang(language, {
+                      KR: '원하는 지하철역 선택',
+                      EN: 'Select Subway Station',
+                      JA: '地下鉄駅を選択',
+                      ZH_TW: '選擇地鐵站',
+                      ZH_CN: '选择地铁站'
+                    })}
                   </h3>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
                   {STATIONS.map((st) => {
-                    const lineStr = st.lines.map(l => l === '동해' ? '동해선' : l === '김해' ? '김해경전철' : l.includes('선') ? l : l + '호선').join('·');
+                    const lineStr = st.lines.map(l => formatLineLabelI18n(l, language)).join('·');
                     const isSelected = selectedStationId === st.id;
                     return (
                       <a
@@ -2632,11 +2678,13 @@ export default function App() {
               }, 100);
             }}
             dropdownPosition="top"
-            placeholder={
-              language === 'KR'
-                ? '어디로 가시나요? 역 이름 검색 (예: 서면, 해운대)'
-                : 'Search any station... (e.g. Seomyeon, Haeundae)'
-            }
+            placeholder={pickLang(language, {
+              KR: '어디로 가시나요? 역 이름 검색 (예: 서면, 해운대)',
+              EN: 'Search any station... (e.g. Seomyeon, Haeundae)',
+              JA: 'どちらへ行かれますか？駅名を検索（例：西面、海雲台）',
+              ZH_TW: '請問您要去哪裡？搜尋站名（例：西面、海雲台）',
+              ZH_CN: '请问您要去哪里？搜索站名（例：西面、海云台）'
+            })}
           />
         </div>
       </div>
@@ -2647,12 +2695,12 @@ export default function App() {
         aria-label="Mobile Bottom Navigation"
       >
         {[
-          { id: 'home', label: language === 'KR' ? '홈' : 'Home', icon: Compass },
-          { id: 'search', label: language === 'KR' ? '역 검색' : 'Stations', icon: Train },
-          { id: 'transit', label: language === 'KR' ? '교통 팁' : 'Transit', icon: Bus },
-          { id: 'courses', label: language === 'KR' ? '추천 코스' : 'Courses', icon: Map },
-          { id: 'schedule', label: language === 'KR' ? '일정표' : 'Schedule', icon: Calendar },
-          { id: 'exploration', label: language === 'KR' ? '탐구생활' : 'Explore', icon: Sparkles },
+          { id: 'home', label: pickLang(language, { KR: '홈', EN: 'Home', JA: 'ホーム', ZH_TW: '首頁', ZH_CN: '首页' }), icon: Compass },
+          { id: 'search', label: pickLang(language, { KR: '역 검색', EN: 'Stations', JA: '駅検索', ZH_TW: '車站搜尋', ZH_CN: '车站搜索' }), icon: Train },
+          { id: 'transit', label: pickLang(language, { KR: '교통 팁', EN: 'Transit', JA: '交通ヒント', ZH_TW: '交通指南', ZH_CN: '交通指南' }), icon: Bus },
+          { id: 'courses', label: pickLang(language, { KR: '추천 코스', EN: 'Courses', JA: 'コース', ZH_TW: '推薦路線', ZH_CN: '推荐路线' }), icon: Map },
+          { id: 'schedule', label: pickLang(language, { KR: '일정표', EN: 'Schedule', JA: '日程表', ZH_TW: '行事曆', ZH_CN: '日程表' }), icon: Calendar },
+          { id: 'exploration', label: pickLang(language, { KR: '탐구생활', EN: 'Explore', JA: '探求生活', ZH_TW: '探索生活', ZH_CN: '探索生活' }), icon: Sparkles },
         ].map(item => {
           const Icon = item.icon;
           const isActive = (item.id === currentTab) ||

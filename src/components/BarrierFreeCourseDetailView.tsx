@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -66,7 +67,7 @@ function CourseStepThumbnail({ contentId, src, alt }: { contentId?: string; src?
 interface BarrierFreeCourseDetailViewProps {
   courseId: string;
   selectedUserType: UserType | null;
-  language: 'KR' | 'EN';
+  language: Language;
   onNavigateToPlace: (placeId: string) => void;
   onBackToCourseList: () => void;
 }

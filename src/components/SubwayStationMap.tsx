@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Station, ExitInfo, translateExitNumber } from '../types';
+import { Station, ExitInfo, translateExitNumber, getTranslatedStationName } from '../types';
+import { Language, pickLang } from '../i18n/dictionary';
 import { getStationCrosswalkPoints } from '../utils/crosswalkData';
-import { createGoogleMapExitMarker, createGoogleMapCrosswalkMarker } from '../utils/googleMapsHelper';
+import { createGoogleMapExitMarker, createGoogleMapCrosswalkMarker, getLocalizedCrosswalkTitle } from '../utils/googleMapsHelper';
 
 export function CrosswalkIcon({ size = 18, className = '' }: { size?: number; className?: string }) {
   return (
@@ -22,7 +23,7 @@ export function CrosswalkIcon({ size = 18, className = '' }: { size?: number; cl
 
 interface SubwayStationMapProps {
   station: Station;
-  language: 'KR' | 'EN';
+  language: Language;
   focusedExitCoords?: { latitude: number; longitude: number } | null;
   isAdminMode?: boolean;
 }
@@ -75,7 +76,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
   // Do NOT preemptively set useLeaflet to true in EN mode.
   // We allow the Google Maps loading effect to execute and attempt loading first.
   const [useLeaflet, setUseLeaflet] = useState<boolean>(() => {
-    if (language === 'EN') {
+    if (language !== 'KR') {
       if ((window as any).GOOGLE_MAPS_AUTH_FAILED) {
         return true;
       }
@@ -93,7 +94,11 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
   // When switching to EN, if auth previously failed or origin is unauthorized, switch to Leaflet.
   // Otherwise, keep useLeaflet false so Google Maps script loading can proceed.
   useEffect(() => {
-    if (language === 'EN') {
+    if (language === 'KR') {
+      if (!naverAuthFailed) {
+        setUseLeaflet(false);
+      }
+    } else {
       if ((window as any).GOOGLE_MAPS_AUTH_FAILED) {
         setUseLeaflet(true);
       } else if (!isOriginAuthorizedForGoogleMaps()) {
@@ -101,7 +106,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
         setUseLeaflet(true);
       }
     }
-  }, [language]);
+  }, [language, naverAuthFailed]);
 
   // Coordinate inspector & Admin mode detection (props, localStorage, sessionStorage, or window global)
   const [sessionAdmin, setSessionAdmin] = useState<boolean>(() => {
@@ -400,7 +405,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       alert(language === 'KR' ? '유효한 위도와 경도를 입력해 주세요.' : 'Please enter valid coordinates.');
       return;
     }
-    const currentEngine = language === 'EN' && !useLeaflet ? 'google' : useLeaflet ? 'leaflet' : 'naver';
+    const currentEngine = language !== 'KR' && !useLeaflet ? 'google' : useLeaflet ? 'leaflet' : 'naver';
     handleMapCoordinateClick(lat, lng, currentEngine);
     handleCenterOnCoord();
   };
@@ -575,9 +580,9 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     };
   }, [naverClientId]);
 
-  // 1-B. Asynchronously Load Google Maps API script when language === 'EN'
+  // 1-B. Asynchronously Load Google Maps API script when language !== 'KR'
   useEffect(() => {
-    if (language !== 'EN' || useLeaflet) {
+    if (language === 'KR' || useLeaflet) {
       return;
     }
 
@@ -911,7 +916,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       const crosswalkMarkerHeight = 32;
       
       crosswalkPoints.forEach(pt => {
-        const titleText = language === 'KR' ? pt.nameKr : pt.nameEn;
+        const titleText = getLocalizedCrosswalkTitle(pt, language);
         const crosswalkHtml = `
           <div style="width: ${crosswalkMarkerWidth}px; height: ${crosswalkMarkerHeight}px; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2.5px solid #2563eb; border-radius: 9999px; box-shadow: 0 3px 10px rgba(0,0,0,0.18); cursor: pointer;" title="${titleText}">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
@@ -956,9 +961,9 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
 
   }, [station, scriptLoaded, focusedExitCoords, language, useLeaflet, stationExits, effectiveAdmin]);
 
-  // 2-B. Initialize or Update Google Maps and Markers when language === 'EN'
+  // 2-B. Initialize or Update Google Maps and Markers when language !== 'KR'
   useEffect(() => {
-    if (language !== 'EN' || useLeaflet) {
+    if (language === 'KR' || useLeaflet) {
       destroyGoogleMap();
       return;
     }
@@ -1144,7 +1149,11 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     destroyGoogleMap();
 
     const exits = stationExits;
-    if (exits.length === 0) return;
+    const defaultCenters: Record<string, { lat: number; lng: number }> = {
+      osiria: { lat: 35.196550, lng: 129.208700 },
+      songjeong: { lat: 35.187450, lng: 129.202350 }
+    };
+    if (exits.length === 0 && !defaultCenters[station.id]) return;
 
     // Calculate map focus center dynamically using mathematical average coordinate of all exits or focused override
     let centerLat = 0;
@@ -1155,7 +1164,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       centerLat = focusedExitCoords.latitude;
       centerLng = focusedExitCoords.longitude;
       currentZoom = 18;
-    } else {
+    } else if (exits.length > 0) {
       let totalLat = 0;
       let totalLng = 0;
       exits.forEach(exit => {
@@ -1165,6 +1174,10 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       centerLat = totalLat / exits.length;
       centerLng = totalLng / exits.length;
       currentZoom = 17; // 50m 기준 줌 레벨
+    } else {
+      centerLat = defaultCenters[station.id].lat;
+      centerLng = defaultCenters[station.id].lng;
+      currentZoom = 17;
     }
 
     // Initialise Leaflet Map instantiation if not built already or DOM container was emptied
@@ -1205,7 +1218,8 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
     exits.forEach(exit => {
       const line = station.lines[0];
       let mapAccentColor = '#F06A00'; // default 주황
-      if (line === '2') mapAccentColor = '#1b6d24'; // 초록
+      if (exit.number.includes('경전철') || exit.number.includes('LRT')) mapAccentColor = '#804796';
+      else if (line === '2') mapAccentColor = '#1b6d24'; // 초록
       else if (line === '3') mapAccentColor = '#906A3B'; // 브라운
       else if (line === '동해') mapAccentColor = '#004960'; // 동해 블루
 
@@ -1316,7 +1330,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
       const crosswalkMarkerHeight = 32;
       
       crosswalkPoints.forEach(pt => {
-        const titleText = language === 'KR' ? pt.nameKr : pt.nameEn;
+        const titleText = getLocalizedCrosswalkTitle(pt, language);
         const crosswalkHtml = `
           <div style="width: ${crosswalkMarkerWidth}px; height: ${crosswalkMarkerHeight}px; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2.5px solid #2563eb; border-radius: 9999px; box-shadow: 0 3px 10px rgba(0,0,0,0.18); cursor: pointer;" title="${titleText}">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
@@ -1885,7 +1899,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
               실시간 지하철역 지도 데이터 로딩 중...
             </p>
           </div>
-        ) : !useLeaflet && language === 'EN' && !googleMapsLoaded ? (
+        ) : !useLeaflet && language !== 'KR' && !googleMapsLoaded ? (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-3 bg-slate-50">
             <div className="w-8 h-8 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin" />
             <p className="text-xs font-bold text-slate-400">
@@ -1906,6 +1920,26 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
           {language === 'KR' ? (
             <span>
               지도의 <CrosswalkIcon size={16} className="mx-0.5 -mt-0.5 inline-block" /> 아이콘은 해당 위치에 횡단보도가 설치되어 있음을 나타냅니다.
+            </span>
+          ) : language === 'JA' ? (
+            <span>
+              地図上の <CrosswalkIcon size={16} className="mx-0.5 -mt-0.5 inline-block" /> アイコンは、その場所に横断歩道が設置されていることを示します。
+            </span>
+          ) : language === 'ZH_TW' ? (
+            <span>
+              地圖上的 <CrosswalkIcon size={16} className="mx-0.5 -mt-0.5 inline-block" /> 圖示代表該位置設有行人穿越道（斑馬線）。
+            </span>
+          ) : language === 'ZH_CN' ? (
+            <span>
+              地图上的 <CrosswalkIcon size={16} className="mx-0.5 -mt-0.5 inline-block" /> 图标代表该位置设有人行横道（斑马线）。
+            </span>
+          ) : language === 'ES' ? (
+            <span>
+              El icono <CrosswalkIcon size={16} className="mx-0.5 -mt-0.5 inline-block" /> en el mapa indica que hay un paso de peatones en esa ubicación.
+            </span>
+          ) : language === 'FR' ? (
+            <span>
+              L’icône <CrosswalkIcon size={16} className="mx-0.5 -mt-0.5 inline-block" /> sur la carte indique la présence d’un passage piéton à cet emplacement.
             </span>
           ) : (
             <span>
@@ -1928,7 +1962,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
             <svg className="w-2.5 h-2.5 fill-white shrink-0" viewBox="0 0 24 24">
               <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" />
             </svg>
-            <span>{language === 'KR' ? '네이버지도' : 'Naver Map'}</span>
+            <span>{pickLang(language, { KR: '네이버지도', EN: 'Naver Map', JA: 'NAVERマップ', ZH_TW: 'NAVER地圖', ZH_CN: 'NAVER地图', ES: 'Naver Map', FR: 'Naver Map' })}</span>
           </a>
 
           {/* Google Maps Button */}
@@ -1949,7 +1983,7 @@ export default function SubwayStationMap({ station, language, focusedExitCoords,
               <path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/>
               <circle cx="46" cy="46" r="18" fill="#FFFFFF"/>
             </svg>
-            <span>{language === 'KR' ? '구글맵' : 'Google Maps'}</span>
+            <span>{pickLang(language, { KR: '구글맵', EN: 'Google Maps', JA: 'Googleマップ', ZH_TW: 'Google地圖', ZH_CN: 'Google地图', ES: 'Google Maps', FR: 'Google Maps' })}</span>
           </a>
         </div>
       </div>

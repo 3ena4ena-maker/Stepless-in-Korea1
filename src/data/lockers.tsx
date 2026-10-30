@@ -1,4 +1,6 @@
 import React from 'react';
+import { Language } from '../i18n/dictionary';
+import { formatLineLabelI18n } from '../i18n/stationTranslations';
 
 export interface LockerCount {
   small: number;
@@ -46,13 +48,33 @@ export const STATION_LOCKER_DATA: Record<string, Record<string, LockerCount> | L
   oncheonjang: { small: 20, med: 12, large: 6, xlarge: 6 }
 };
 
-export const formatLockerCount = (data: LockerCount, lang: 'KR' | 'EN'): string => {
+export const formatLockerCount = (data: LockerCount, lang: Language): string => {
   const parts: string[] = [];
   if (lang === 'KR') {
     if (data.small) parts.push(`소 ${data.small}`);
     if (data.med) parts.push(`중 ${data.med}`);
     if (data.large) parts.push(`대 ${data.large}`);
     if (data.xlarge) parts.push(`특대 ${data.xlarge}`);
+  } else if (lang === 'JA') {
+    if (data.small) parts.push(`小型 ${data.small}`);
+    if (data.med) parts.push(`中型 ${data.med}`);
+    if (data.large) parts.push(`大型 ${data.large}`);
+    if (data.xlarge) parts.push(`特大 ${data.xlarge}`);
+  } else if (lang === 'ZH_TW' || lang === 'ZH_CN') {
+    if (data.small) parts.push(`小 ${data.small}`);
+    if (data.med) parts.push(`中 ${data.med}`);
+    if (data.large) parts.push(`大 ${data.large}`);
+    if (data.xlarge) parts.push(`特大 ${data.xlarge}`);
+  } else if (lang === 'ES') {
+    if (data.small) parts.push(`Peq. ${data.small}`);
+    if (data.med) parts.push(`Med. ${data.med}`);
+    if (data.large) parts.push(`Gde. ${data.large}`);
+    if (data.xlarge) parts.push(`XL ${data.xlarge}`);
+  } else if (lang === 'FR') {
+    if (data.small) parts.push(`Petit ${data.small}`);
+    if (data.med) parts.push(`Moyen ${data.med}`);
+    if (data.large) parts.push(`Grand ${data.large}`);
+    if (data.xlarge) parts.push(`XL ${data.xlarge}`);
   } else {
     if (data.small) parts.push(`S ${data.small}`);
     if (data.med) parts.push(`M ${data.med}`);
@@ -62,18 +84,22 @@ export const formatLockerCount = (data: LockerCount, lang: 'KR' | 'EN'): string 
   return parts.join(' ');
 };
 
-export const getLockerInfoText = (stationId: string, language: 'KR' | 'EN'): string => {
+export const getLockerInfoText = (stationId: string, language: Language): string => {
   const data = STATION_LOCKER_DATA[stationId];
-  if (!data) return language === 'KR' ? '있음' : 'Available';
+  if (!data) {
+    if (language === 'KR') return '있음';
+    if (language === 'JA') return 'あり';
+    if (language === 'ZH_TW' || language === 'ZH_CN') return '有';
+    if (language === 'ES' || language === 'FR') return 'Disponible';
+    return 'Available';
+  }
 
   const isMultiLine = '1' in data || '2' in data || '3' in data || '동해' in data || '김해' in data;
   if (isMultiLine) {
     const multi = data as Record<string, LockerCount>;
     return Object.entries(multi)
       .map(([line, counts]) => {
-        const lineStr = language === 'KR'
-          ? (line === '동해' ? '동해선' : line === '김해' ? '김해경전철' : `${line}호선`)
-          : (line === '동해' ? 'Donghae' : line === '김해' ? 'Gimhae LRT' : `Line ${line}`);
+        const lineStr = formatLineLabelI18n(line, language);
         return `${lineStr}: ${formatLockerCount(counts, language)}`;
       })
       .join(' / ');
@@ -85,53 +111,49 @@ export const getLockerInfoText = (stationId: string, language: 'KR' | 'EN'): str
 export const getLineColor = (line: string): string => {
   switch (line) {
     case '1':
-      return '#F06A00'; // 부산 1호선 주황
+      return '#F06A00';
     case '2':
-      return '#2DA643'; // 부산 2호선 초록
+      return '#2DA643';
     case '3':
-      return '#BB8C00'; // 부산 3호선 황갈색
+      return '#BB8C00';
     case '4':
-      return '#005BAB'; // 부산 4호선 파랑
+      return '#005BAB';
     case '동해':
-      return '#004960'; // 동해선 짙은 파랑
+      return '#004960';
     case '김해':
     case '부산김해':
-      return '#6B4BA3'; // 부산김해경전철 보라
+      return '#6B4BA3';
     default:
       return '#004481';
   }
 };
 
-export const renderLockerBadges = (data: LockerCount, lang: 'KR' | 'EN'): React.ReactNode => {
+export const renderLockerBadges = (data: LockerCount, lang: Language): React.ReactNode => {
   const categories = [
     { 
       key: 'small', 
-      labelKR: '소형', 
-      labelEN: 'S', 
+      labels: { KR: '소형', EN: 'S', JA: '小型', ZH_TW: '小型', ZH_CN: '小型', ES: 'Peq.', FR: 'Petit' },
       badgeClass: 'bg-[#F2F8F4] border-[#D4EAD9]', 
       numClass: 'text-[#1B5E20]',
       labelClass: 'text-[#2D7344]'
     },
     { 
       key: 'med', 
-      labelKR: '중형', 
-      labelEN: 'M', 
+      labels: { KR: '중형', EN: 'M', JA: '中型', ZH_TW: '中型', ZH_CN: '中型', ES: 'Med.', FR: 'Moyen' },
       badgeClass: 'bg-[#F1F6FB] border-[#D3E3F2]', 
       numClass: 'text-[#1E4976]',
       labelClass: 'text-[#2B6094]'
     },
     { 
       key: 'large', 
-      labelKR: '대형', 
-      labelEN: 'L', 
+      labels: { KR: '대형', EN: 'L', JA: '大型', ZH_TW: '大型', ZH_CN: '大型', ES: 'Gde.', FR: 'Grand' },
       badgeClass: 'bg-[#FDF7EE] border-[#F5E5C9]', 
       numClass: 'text-[#7A450A]',
       labelClass: 'text-[#9A5B13]'
     },
     { 
       key: 'xlarge', 
-      labelKR: '특대', 
-      labelEN: 'XL', 
+      labels: { KR: '특대', EN: 'XL', JA: '特大', ZH_TW: '特大', ZH_CN: '特大', ES: 'XL', FR: 'XL' },
       badgeClass: 'bg-[#FDF2F4] border-[#F7D3D9]', 
       numClass: 'text-[#931D38]',
       labelClass: 'text-[#B8324F]'
@@ -140,10 +162,10 @@ export const renderLockerBadges = (data: LockerCount, lang: 'KR' | 'EN'): React.
 
   return (
     <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 justify-start">
-      {categories.map(({ key, labelKR, labelEN, badgeClass, numClass, labelClass }) => {
+      {categories.map(({ key, labels, badgeClass, numClass, labelClass }) => {
         const val = data[key];
         if (!val) return null;
-        const label = lang === 'KR' ? labelKR : labelEN;
+        const label = labels[lang] || labels.EN;
         return (
           <span 
             key={key} 
@@ -158,12 +180,20 @@ export const renderLockerBadges = (data: LockerCount, lang: 'KR' | 'EN'): React.
   );
 };
 
-export const renderLockerInfo = (stationId: string, language: 'KR' | 'EN'): React.ReactNode => {
+export const renderLockerInfo = (stationId: string, language: Language): React.ReactNode => {
   const data = STATION_LOCKER_DATA[stationId];
   if (!data) {
     return (
       <div className="flex items-center py-1 text-slate-400 font-medium text-xs">
-        {language === 'KR' ? '역내 보관함 정보 미비 / 현장 확인 필요' : 'No locker data available'}
+        {language === 'KR'
+          ? '역내 보관함 정보 미비 / 현장 확인 필요'
+          : language === 'JA'
+          ? '構内コインロッカー情報なし / 現地確認'
+          : language === 'ZH_TW'
+          ? '站內寄物櫃資訊準備中 / 請於現場確認'
+          : language === 'ZH_CN'
+          ? '站内寄存柜信息准备中 / 请于现场确认'
+          : 'No locker data available'}
       </div>
     );
   }
@@ -174,9 +204,7 @@ export const renderLockerInfo = (stationId: string, language: 'KR' | 'EN'): Reac
     return (
       <div className="flex flex-col gap-2 w-full">
         {Object.entries(multi).map(([line, counts]) => {
-          const lineStr = language === 'KR' 
-            ? (line === '동해' ? '동해선' : line === '김해' ? '김해경전철' : `${line}호선`) 
-            : (line === '동해' ? 'Donghae' : line === '김해' ? 'Gimhae LRT' : `Line ${line}`);
+          const lineStr = formatLineLabelI18n(line, language);
           return (
             <div key={line} className="flex flex-wrap sm:flex-nowrap items-center justify-start gap-2 sm:gap-3 w-full pb-1.5 last:pb-0 border-b border-dashed border-slate-200/60 last:border-0">
               <span 

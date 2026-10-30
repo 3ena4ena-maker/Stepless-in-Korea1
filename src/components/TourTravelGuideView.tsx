@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -37,7 +38,7 @@ import { resolvePlaceTargetId } from '../services/tourApiCommon';
 import { navigateToSpa } from '../utils';
 
 interface TourTravelGuideViewProps {
-  language: 'KR' | 'EN';
+  language: Language;
   selectedSpotId?: string | null;
   onSelectSpot?: (spotId: string) => void;
   onSelectStation?: (stationId: string, exitNum?: string) => void;

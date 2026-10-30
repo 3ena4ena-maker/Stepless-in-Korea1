@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -16,7 +17,7 @@ import BarrierFreePlaceDetailView from './BarrierFreePlaceDetailView';
 import { navigateToSpa } from '../utils';
 
 interface BarrierFreeTourApiViewProps {
-  language: 'KR' | 'EN';
+  language: Language;
   initialCourseId?: string | null;
   initialPlaceId?: string | null;
   onSelectStation?: (stationId: string, exitNum?: string) => void;

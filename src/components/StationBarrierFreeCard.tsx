@@ -1,14 +1,20 @@
 import React from 'react';
 import { Station } from '../types';
+import { Language, pickLang } from '../i18n/dictionary';
+import {
+  formatExitNumberI18n,
+  formatLineLabelI18n,
+  getLocalizedStationTitle,
+  getStationLocalized,
+} from '../i18n/stationTranslations';
 import { VerificationBadge } from './VerificationBadge';
-import { Train, Clock, MapPin, AlertTriangle, ArrowRightLeft, ShieldCheck, CheckCircle2, Box, Compass } from 'lucide-react';
+import { Train, Clock, MapPin, AlertTriangle, ArrowRightLeft, ShieldCheck, Box, Compass } from 'lucide-react';
 import { renderLockerInfo } from '../data/lockers';
 import { getNearbyPlaces, NearbyExitBadge } from '../data/nearbyPlaces';
-import { translateDirectionItem } from '../utils';
 
 interface StationBarrierFreeCardProps {
   station: Station;
-  language?: 'KR' | 'EN';
+  language?: Language;
 }
 
 function translateRecommendedExits(text?: string): string {
@@ -30,15 +36,10 @@ const ElevatorIcon = ({ className = "w-4 h-4 shrink-0" }: { className?: string }
     strokeLinejoin="round" 
     className={className}
   >
-    {/* Elevator Cabin Frame */}
     <rect x="3" y="3" width="18" height="18" rx="2.5" />
-    {/* Up Arrow Inside */}
     <path d="M 7.5 10 L 9.5 7 L 11.5 10 Z" fill="currentColor" stroke="none" />
-    {/* Down Arrow Inside */}
     <path d="M 7.5 14 L 9.5 17 L 11.5 14 Z" fill="currentColor" stroke="none" />
-    {/* Center door line */}
     <line x1="14.5" y1="3" x2="14.5" y2="21" strokeDasharray="2 2" strokeWidth="1.5" />
-    {/* Door indicator arrows */}
     <path d="M 14.5 12 L 17.5 12" />
     <path d="M 17.5 12 L 16 10.5" />
     <path d="M 17.5 12 L 16 13.5" />
@@ -55,21 +56,11 @@ const EscalatorIcon = ({ className = "w-4 h-4 shrink-0" }: { className?: string 
     strokeLinejoin="round" 
     className={className}
   >
-    {/* Passenger Circle Head */}
     <circle cx="10" cy="7.5" r="1.8" fill="currentColor" stroke="none" />
-    {/* Passenger Body */}
     <path d="M 10 10.2 L 10 14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-    {/* Escalator Track Slope */}
     <path d="M 3.5 19.5 L 7.5 19.5 C 9.5 19.5, 10.5 18, 12 15.5 L 15.5 10 C 17 8, 18 7, 20.5 7 L 22.5 7" />
   </svg>
 );
-
-function formatExitNumber(rawNumber: string, lang: 'KR' | 'EN'): string {
-  if (lang === 'KR') {
-    return rawNumber.includes('출구') ? rawNumber : `${rawNumber} 출구`;
-  }
-  return `Exit ${rawNumber.replace(/번\s*출구/g, '')}`;
-}
 
 function renderDirectionArrows(dir?: 'UP' | 'DOWN' | 'BOTH') {
   if (dir === 'UP') {
@@ -78,7 +69,6 @@ function renderDirectionArrows(dir?: 'UP' | 'DOWN' | 'BOTH') {
   if (dir === 'DOWN') {
     return <span className="text-blue-500 font-black text-sm leading-none">↓</span>;
   }
-  // BOTH or undefined
   return (
     <span className="inline-flex items-center gap-0.5 leading-none">
       <span className="text-rose-500 font-black text-sm leading-none">↑</span>
@@ -88,42 +78,38 @@ function renderDirectionArrows(dir?: 'UP' | 'DOWN' | 'BOTH') {
 }
 
 export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarrierFreeCardProps) {
-  const displayName = language === 'KR' ? station.name : (station.englishName || station.name);
-  const lineLabels = station.lines.map(l => {
-    if (language === 'KR') {
-      if (l === '동해') return '동해선';
-      if (l === '김해') return '부산김해경전철';
-      return `${l}호선`;
-    } else {
-      if (l === '동해') return 'Donghae Line';
-      if (l === '김해') return 'Busan-Gimhae LRT';
-      return `Line ${l}`;
-    }
-  }).join(' · ');
+  const displayName = getLocalizedStationTitle(station, language, false);
+  const shortDisplayName = getLocalizedStationTitle(station, language, true);
+  const lineLabels = station.lines.map(l => formatLineLabelI18n(l, language)).join(' · ');
   const nearbyPlaces = getNearbyPlaces(station.id, language);
+  const localized = getStationLocalized(station, language);
 
   const bothExits = (station.exits || []).filter(e => e.hasElevator && e.hasEscalator);
   const elevatorOnlyExits = (station.exits || []).filter(e => e.hasElevator && !e.hasEscalator);
   const escalatorOnlyExits = (station.exits || []).filter(e => !e.hasElevator && e.hasEscalator);
   const rampOnlyExits = (station.exits || []).filter(e => !e.hasElevator && !e.hasEscalator && e.isAccessible);
 
-  const recommendedExitsText = language === 'KR'
+  const recommendedExitsText = localized
+    ? localized.recommendedExits
+    : language === 'KR'
     ? station.recommendedExits
     : (station.recommendedExitsEn || translateRecommendedExits(station.recommendedExits));
 
-  const elevatorLocationText = language === 'KR'
-    ? station.elevatorLocationDesc
-    : (station.elevatorLocationDescEn || station.elevatorLocationDesc);
-
-  const avgMovementTimeText = language === 'KR'
+  const avgMovementTimeText = localized
+    ? localized.avgMovementTime
+    : language === 'KR'
     ? station.avgMovementTime
     : (station.avgMovementTimeEn || station.avgMovementTime);
 
-  const transferRouteText = language === 'KR'
+  const transferRouteText = localized
+    ? localized.transferRouteDesc
+    : language === 'KR'
     ? station.transferRouteDesc
     : (station.transferRouteDescEn || station.transferRouteDesc);
 
-  const precautionsText = language === 'KR'
+  const precautionsText = localized
+    ? localized.precautions
+    : language === 'KR'
     ? station.precautions
     : (station.precautionsEn || station.precautions);
 
@@ -137,7 +123,16 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
             <Train className="w-5 h-5" />
           </span>
           <h2 className="text-xl sm:text-2xl font-black text-slate-900 font-heading">
-            {displayName} {language === 'KR' ? '배리어프리 이동 정보' : 'Barrier-Free Route Guide'}
+            {displayName}{' '}
+            {pickLang(language, {
+              KR: '배리어프리 이동 정보',
+              EN: 'Barrier-Free Route Guide',
+              JA: 'バリアフリー移動案内',
+              ZH_TW: '無障礙移動指南',
+              ZH_CN: '无障碍出行指南',
+              ES: 'Guía de Ruta Accesible',
+              FR: 'Guide d’Itinéraire Accessible',
+            })}
           </h2>
         </div>
       </div>
@@ -146,7 +141,17 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
       <div className="space-y-4">
         <h3 className="text-xs sm:text-sm font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
           <ShieldCheck className="w-4 h-4 text-[#004481]" />
-          <span>{language === 'KR' ? `${station.name} 핵심 배리어프리 요약표` : `${displayName} Accessibility Summary`}</span>
+          <span>
+            {pickLang(language, {
+              KR: `${station.name} 핵심 배리어프리 요약표`,
+              EN: `${shortDisplayName} Accessibility Summary`,
+              JA: `${shortDisplayName} バリアフリー要点まとめ`,
+              ZH_TW: `${shortDisplayName} 無障礙核心總覽表`,
+              ZH_CN: `${shortDisplayName} 无障碍核心总览表`,
+              ES: `Resumen de Accesibilidad — ${shortDisplayName}`,
+              FR: `Résumé d’Accessibilité — ${shortDisplayName}`,
+            })}
+          </span>
         </h3>
 
         <div className="w-full overflow-x-auto rounded-2xl border border-slate-200 shadow-2xs">
@@ -157,20 +162,46 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                 <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/90 sm:bg-slate-100/70 border-b sm:border-b-0 sm:border-r border-slate-200/80 text-xs sm:text-sm">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <Train className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#004481] shrink-0" />
-                    <span>{language === 'KR' ? '역명' : 'Station'}</span>
+                    <span>
+                      {pickLang(language, {
+                        KR: '역명',
+                        EN: 'Station',
+                        JA: '駅名',
+                        ZH_TW: '站名',
+                        ZH_CN: '站名',
+                        ES: 'Estación',
+                        FR: 'Station',
+                      })}
+                    </span>
                   </div>
                 </th>
                 <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-800 font-extrabold text-xs sm:text-sm">
-                  <p>{displayName} ({lineLabels} {station.isTransferStation ? (language === 'KR' ? '환승역' : 'Transfer Station') : (language === 'KR' ? '단일노선' : 'Single Line')})</p>
+                  <p>
+                    {displayName} ({lineLabels}{' '}
+                    {station.isTransferStation
+                      ? pickLang(language, { KR: '환승역', EN: 'Transfer Station', JA: '乗換駅', ZH_TW: '轉乘站', ZH_CN: '换乘站', ES: 'Estación de transbordo', FR: 'Correspondance' })
+                      : pickLang(language, { KR: '단일노선', EN: 'Single Line', JA: '単一路線', ZH_TW: '單一路線', ZH_CN: '单一路线', ES: 'Línea única', FR: 'Ligne unique' })}
+                    )
+                  </p>
                 </td>
               </tr>
 
-              {/* 2. 출구 정보 (추천 출구 및 승강기 설비 통합 현황) */}
+              {/* 2. 출구 정보 */}
               <tr className="block sm:table-row border-b border-slate-150">
                 <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/90 sm:bg-slate-100/70 border-b sm:border-b-0 sm:border-r border-slate-200/80 text-xs sm:text-sm align-top">
                   <div className="flex items-center gap-1 sm:gap-1.5 mt-0.5 sm:mt-1.5">
                     <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#8EA85E] shrink-0" />
-                    <span>{language === 'KR' ? '출구 정보' : 'Exit Info'}</span>
+                    <span>
+                      {pickLang(language, {
+                        KR: '출구 정보',
+                        EN: 'Exit Info',
+                        JA: '出口・昇降設備',
+                        ZH_TW: '出口與電梯資訊',
+                        ZH_CN: '出口与电梯信息',
+                        ES: 'Salidas y Ascensores',
+                        FR: 'Sorties & Ascenseurs',
+                      })}
+                    </span>
                   </div>
                 </th>
                 <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-800 text-xs sm:text-sm space-y-3">
@@ -191,7 +222,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                               key={idx}
                               className="font-bold text-slate-800 bg-[#F2F7F2] hover:bg-[#EBF3EA] px-2.5 py-1.5 rounded-xl border border-[#D0E2CF] shadow-2xs inline-flex flex-wrap sm:flex-nowrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm max-w-full transition-colors"
                             >
-                              <span className="text-slate-900 font-extrabold break-keep">{formatExitNumber(exit.number, language)}</span>
+                              <span className="text-slate-900 font-extrabold break-keep">{formatExitNumberI18n(exit.number, language)}</span>
                               <span className="w-px h-3.5 bg-slate-200/90 shrink-0 hidden sm:inline-block" />
                               <span className="inline-flex items-center gap-1.5 text-xs shrink-0">
                                 <span className="inline-flex items-center gap-1 text-[#2E6B3E] font-bold">
@@ -218,7 +249,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                               key={idx}
                               className="font-bold text-slate-800 bg-[#F8FAF7] hover:bg-[#F0F5EE] px-2.5 py-1.5 rounded-xl border border-[#DEE7D7] shadow-2xs inline-flex flex-wrap sm:flex-nowrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm max-w-full transition-colors"
                             >
-                              <span className="text-slate-900 font-extrabold break-keep">{formatExitNumber(exit.number, language)}</span>
+                              <span className="text-slate-900 font-extrabold break-keep">{formatExitNumberI18n(exit.number, language)}</span>
                               <span className="w-px h-3.5 bg-slate-200/90 shrink-0 hidden sm:inline-block" />
                               <span className="inline-flex items-center gap-1 text-[#55702E] font-bold text-xs shrink-0">
                                 <ElevatorIcon className="w-3.5 h-3.5 text-[#55702E]" />
@@ -237,7 +268,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                               key={idx}
                               className="font-bold text-slate-800 bg-[#F9FBFC] hover:bg-[#F0F4F8] px-2.5 py-1.5 rounded-xl border border-[#DEE5ED] shadow-2xs inline-flex flex-wrap sm:flex-nowrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm max-w-full transition-colors"
                             >
-                              <span className="text-slate-900 font-extrabold break-keep">{formatExitNumber(exit.number, language)}</span>
+                              <span className="text-slate-900 font-extrabold break-keep">{formatExitNumberI18n(exit.number, language)}</span>
                               <span className="w-px h-3.5 bg-slate-200/90 shrink-0 hidden sm:inline-block" />
                               <span className="inline-flex items-center gap-1.5 text-xs shrink-0">
                                 <span className="inline-flex items-center gap-1 text-[#3B668F] font-bold">
@@ -259,10 +290,21 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                               key={idx}
                               className="font-bold text-slate-800 bg-amber-50/70 hover:bg-amber-100/70 px-2.5 py-1.5 rounded-xl border border-amber-200 shadow-2xs inline-flex flex-wrap sm:flex-nowrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm max-w-full transition-colors"
                             >
-                              <span className="text-slate-900 font-extrabold break-keep">{formatExitNumber(exit.number, language)}</span>
+                              <span className="text-slate-900 font-extrabold break-keep">{formatExitNumberI18n(exit.number, language)}</span>
                               <span className="w-px h-3.5 bg-amber-200/90 shrink-0 hidden sm:inline-block" />
                               <span className="inline-flex items-center gap-1 text-amber-800 font-bold text-xs shrink-0">
-                                <span>📐 {language === 'KR' ? '계단 옆 완만한 경사로(슬로프)' : 'Step-Free Ramp (Slope)'}</span>
+                                <span>
+                                  📐{' '}
+                                  {pickLang(language, {
+                                    KR: '계단 옆 완만한 경사로(슬로프)',
+                                    EN: 'Step-Free Ramp (Slope)',
+                                    JA: '階段横の緩やかなスロープ',
+                                    ZH_TW: '階梯旁無障礙緩坡道',
+                                    ZH_CN: '楼梯旁无障碍缓坡道',
+                                    ES: 'Rampa accesible junto a escaleras',
+                                    FR: 'Rampe d’accès douce sans marche',
+                                  })}
+                                </span>
                               </span>
                             </span>
                           ))}
@@ -271,13 +313,27 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                     </div>
                   ) : (station.id === 'osiria' || station.id === 'songjeong') ? (
                     <div className="p-2.5 sm:p-3 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-emerald-900 text-xs sm:text-sm font-semibold leading-relaxed">
-                      {language === 'KR'
-                        ? '✨ 1층 대합실-지상 보도 평지 직결 역사입니다. 2층 승강장 ↔ 1층 개찰구 구간만 역사 내부 엘리베이터·에스컬레이터를 이용하시면, 바깥 출구로 나갈 때는 별도의 엘리베이터나 에스컬레이터 없이 모든 출구가 계단 없는 1층 평지로 바로 이어집니다.'
-                        : '✨ Ground-level flat concourse station. After taking the indoor elevator from the 2F platform to the 1F ticket gate, all exits open directly onto flat street-level sidewalks with no stairs or exterior lifts needed.'}
+                      {pickLang(language, {
+                        KR: '✨ 1층 대합실-지상 보도 평지 직결 역사입니다. 2층 승강장 ↔ 1층 개찰구 구간만 역사 내부 엘리베이터·에스컬레이터를 이용하시면, 바깥 출구로 나갈 때는 별도의 엘리베이터나 에스컬레이터 없이 모든 출구가 계단 없는 1층 평지로 바로 이어집니다.',
+                        EN: '✨ Ground-level flat concourse station. After taking the indoor elevator from the 2F platform to the 1F ticket gate, all exits open directly onto flat street-level sidewalks with no stairs or exterior lifts needed.',
+                        JA: '✨ 1階改札階がそのまま地上歩道と平面直結している駅です。2階ホーム ↔ 1階改札のみ駅舎内のエレベーター・エスカレーターを利用すれば、外の出口へ出る際はすべての出口が段差ゼロの平地へそのままつながっています。',
+                        ZH_TW: '✨ 此站為 1樓穿堂層與地面人行道完全平齊的車站。只需在「2樓月台 ↔ 1樓驗票口」搭乘站內電梯或電扶梯，出閘門後所有出口皆為免爬樓梯的 1樓平地，無需室外電梯即可直接出站。',
+                        ZH_CN: '✨ 本站为 1层站厅与地面人行道完全平齐的车站。只需在“2层站台 ↔ 1层检票口”乘坐站内直梯或扶梯，出闸机后所有出口均为无台阶的 1层平地，无需室外电梯即可直接出站。',
+                        ES: '✨ Estación con vestíbulo en planta baja (1F) a nivel de calle. Tras bajar del andén (2F) a los tornos (1F) en el ascensor interior, todas las salidas conectan directamente con la acera llana sin ningún escalón.',
+                        FR: '✨ Station avec hall au rez-de-chaussée (1F) de plain-pied. Après avoir pris l’ascenseur intérieur du quai (2F) jusqu’aux portillons (1F), toutes les sorties donnent directement sur le trottoir plat sans aucune marche.',
+                      })}
                     </div>
                   ) : (
                     <p className="text-2xs sm:text-xs text-slate-400 font-medium">
-                      {language === 'KR' ? '지상 연결 승강 설비 없음' : 'No ground-level lifts or escalators'}
+                      {pickLang(language, {
+                        KR: '지상 연결 승강 설비 없음',
+                        EN: 'No ground-level lifts or escalators',
+                        JA: '地上連絡の昇降設備なし',
+                        ZH_TW: '無地面連通升降設備',
+                        ZH_CN: '无地面连通升降设备',
+                        ES: 'Sin ascensores ni escaleras mecánicas en superficie',
+                        FR: 'Aucun ascenseur ou escalator vers la surface',
+                      })}
                     </p>
                   )}
                 </td>
@@ -288,7 +344,17 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                 <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/90 sm:bg-slate-100/70 border-b sm:border-b-0 sm:border-r border-slate-200/80 text-xs sm:text-sm">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600 shrink-0" />
-                    <span>{language === 'KR' ? '이동 시간' : 'Walking Time'}</span>
+                    <span>
+                      {pickLang(language, {
+                        KR: '이동 시간',
+                        EN: 'Walking Time',
+                        JA: '移動所要時間',
+                        ZH_TW: '移動時間',
+                        ZH_CN: '移动时间',
+                        ES: 'Tiempo de recorrido',
+                        FR: 'Temps de parcours',
+                      })}
+                    </span>
                   </div>
                 </th>
                 <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium text-xs sm:text-sm">
@@ -301,7 +367,17 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                 <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/90 sm:bg-slate-100/70 border-b sm:border-b-0 sm:border-r border-slate-200/80 text-xs sm:text-sm">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <ArrowRightLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600 shrink-0" />
-                    <span>{language === 'KR' ? '환승 동선' : 'Transfer Route'}</span>
+                    <span>
+                      {pickLang(language, {
+                        KR: '환승 동선',
+                        EN: 'Transfer Route',
+                        JA: '移動・乗換ルート',
+                        ZH_TW: '無障礙轉乘動線',
+                        ZH_CN: '无障碍换乘路线',
+                        ES: 'Ruta de transbordo',
+                        FR: 'Correspondance',
+                      })}
+                    </span>
                   </div>
                 </th>
                 <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium text-xs sm:text-sm break-keep">
@@ -314,7 +390,17 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                 <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/90 sm:bg-slate-100/70 border-b sm:border-b-0 sm:border-r border-slate-200/80 text-xs sm:text-sm">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <Box className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600 shrink-0" />
-                    <span>{language === 'KR' ? '물품보관함' : 'Luggage Lockers'}</span>
+                    <span>
+                      {pickLang(language, {
+                        KR: '물품보관함',
+                        EN: 'Luggage Lockers',
+                        JA: 'コインロッカー',
+                        ZH_TW: '行李寄物櫃',
+                        ZH_CN: '行李寄存柜',
+                        ES: 'Consignas de equipaje',
+                        FR: 'Consignes à bagages',
+                      })}
+                    </span>
                   </div>
                 </th>
                 <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium text-xs sm:text-sm">
@@ -327,7 +413,17 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                 <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-slate-800 bg-slate-100/90 sm:bg-slate-100/70 border-b sm:border-b-0 sm:border-r border-slate-200/80 text-xs sm:text-sm">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#8EA85E] shrink-0" />
-                    <span>{language === 'KR' ? '주변 가볼 만한 곳' : 'Nearby Places'}</span>
+                    <span>
+                      {pickLang(language, {
+                        KR: '주변 가볼 만한 곳',
+                        EN: 'Nearby Places',
+                        JA: '周辺のおすすめスポット',
+                        ZH_TW: '周邊推薦景點',
+                        ZH_CN: '周边推荐景点',
+                        ES: 'Lugares de interés',
+                        FR: 'Lieux à proximité',
+                      })}
+                    </span>
                   </div>
                 </th>
                 <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-800 font-medium text-xs sm:text-sm">
@@ -364,7 +460,17 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                       ))}
                     </div>
                   ) : (
-                    <span className="text-slate-400 text-xs">{language === 'KR' ? '주변 주요 명소 정보 준비 중' : 'Nearby places info coming soon'}</span>
+                    <span className="text-slate-400 text-xs">
+                      {pickLang(language, {
+                        KR: '주변 주요 명소 정보 준비 중',
+                        EN: 'Nearby places info coming soon',
+                        JA: '周辺スポット情報を準備中です',
+                        ZH_TW: '周邊景點資訊準備中',
+                        ZH_CN: '周边景点信息准备中',
+                        ES: 'Información de lugares cercanos próximamente',
+                        FR: 'Informations sur les lieux à proximité bientôt disponibles',
+                      })}
+                    </span>
                   )}
                 </td>
               </tr>
@@ -374,7 +480,17 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                 <th className="block sm:table-cell py-2 px-3 sm:py-3 sm:px-4 font-bold text-amber-900 bg-amber-100/80 sm:bg-amber-100/60 border-b sm:border-b-0 sm:border-r border-amber-200/70 text-xs sm:text-sm">
                   <div className="flex items-center gap-1 sm:gap-1.5">
                     <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-                    <span>{language === 'KR' ? '주의사항' : 'Precautions'}</span>
+                    <span>
+                      {pickLang(language, {
+                        KR: '주의사항',
+                        EN: 'Precautions',
+                        JA: 'ご利用のポイント・注意事項',
+                        ZH_TW: '貼心提醒與注意事項',
+                        ZH_CN: '贴心提示与注意事项',
+                        ES: 'Precauciones y consejos',
+                        FR: 'Conseils & Précautions',
+                      })}
+                    </span>
                   </div>
                 </th>
                 <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-amber-900 font-medium text-xs sm:text-sm break-keep">
@@ -389,47 +505,105 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
         <VerificationBadge language={language} stationName={displayName} variant="compact" />
       </div>
 
-      {/* Step-by-Step Movement Guidelines (1 Paragraph per Step Requirement) */}
+      {/* Step-by-Step Movement Guidelines */}
       <div className="pt-2 space-y-3">
         <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
           <span>🚶‍♂️</span>
-          <span>{language === 'KR' ? `${station.name} 단계별 이동 가이드` : `${displayName} Step-by-Step Guide`}</span>
+          <span>
+            {pickLang(language, {
+              KR: `${station.name} 단계별 이동 가이드`,
+              EN: `${shortDisplayName} Step-by-Step Guide`,
+              JA: `${shortDisplayName} ステップ別・段差なし移動ガイド`,
+              ZH_TW: `${shortDisplayName} 分步無障礙乘車指南`,
+              ZH_CN: `${shortDisplayName} 分步无障碍乘车指南`,
+              ES: `Guía Paso a Paso — ${shortDisplayName}`,
+              FR: `Guide Étape par Étape — ${shortDisplayName}`,
+            })}
+          </span>
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1 text-xs">
             <div className="font-extrabold text-[#8EA85E] flex items-center gap-1">
               <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-2xs">1</span>
-              <span>{language === 'KR' ? '지상 출입구 접근' : 'Street Level Access'}</span>
+              <span>
+                {pickLang(language, {
+                  KR: '지상 출입구 접근',
+                  EN: 'Street Level Access',
+                  JA: '地上出口からのアプローチ',
+                  ZH_TW: '地面出口無障礙進入',
+                  ZH_CN: '地面出口无障碍进入',
+                  ES: 'Acceso desde la calle',
+                  FR: 'Accès depuis la rue',
+                })}
+              </span>
             </div>
             <p className="text-slate-600 leading-relaxed font-medium">
-              {language === 'KR'
-                ? `${station.recommendedExits} 지상 엘리베이터를 이용해 횡단보도 단차 없이 인도에서 바로 승강기에 탑승합니다.`
-                : `Take the ground-level elevator at Exit ${station.recommendedExits || '1'} directly from the sidewalk without steps or curbs.`}
+              {pickLang(language, {
+                KR: `${recommendedExitsText} 지상 엘리베이터를 이용해 횡단보도 단차 없이 인도에서 바로 승강기에 탑승합니다.`,
+                EN: `Use the recommended elevator exit (${recommendedExitsText || 'Exit 1'}) directly from the flat sidewalk without steps.`,
+                JA: `推奨ルート（${recommendedExitsText}）を利用して、歩道から段差なしでスムーズに駅構内へ入ります。`,
+                ZH_TW: `利用推薦無障礙出口（${recommendedExitsText}），從平坦人行道免爬階梯直接進入車站。`,
+                ZH_CN: `使用推荐无障碍出口（${recommendedExitsText}），从平坦人行道无台阶直接进入车站。`,
+                ES: `Utiliza la salida recomendada (${recommendedExitsText || 'Salida 1'}) para entrar directamente desde la acera llana sin escalones.`,
+                FR: `Empruntez la sortie recommandée (${recommendedExitsText || 'Sortie 1'}) pour entrer directement depuis le trottoir plat sans marche.`,
+              })}
             </p>
           </div>
 
           <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1 text-xs">
             <div className="font-extrabold text-[#8EA85E] flex items-center gap-1">
               <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-2xs">2</span>
-              <span>{language === 'KR' ? '대합실 및 게이트 이동' : 'Concourse & Gate'}</span>
+              <span>
+                {pickLang(language, {
+                  KR: '대합실 및 게이트 이동',
+                  EN: 'Concourse & Gate',
+                  JA: '改札階（コンコース）・ワイド改札',
+                  ZH_TW: '穿堂層與無障礙寬閘門',
+                  ZH_CN: '站厅层与无障碍宽闸机',
+                  ES: 'Vestíbulo y tornos anchos',
+                  FR: 'Hall & portillons larges',
+                })}
+              </span>
             </div>
             <p className="text-slate-600 leading-relaxed font-medium">
-              {language === 'KR'
-                ? '지하 1층 대합실 엘리베이터에서 내린 후 휠체어·유모차 전용 와이드 개찰구를 통과합니다.'
-                : 'Exit the elevator at the B1 concourse level and proceed through the wide accessible turnstile.'}
+              {pickLang(language, {
+                KR: '지하 1층 대합실 엘리베이터에서 내린 후 휠체어·유모차 전용 와이드 개찰구를 통과합니다.',
+                EN: 'Exit the elevator at the concourse level and proceed through the wide accessible turnstile.',
+                JA: '改札階（コンコース）でエレベーターを降りた後、ベビーカー・車椅子対応の幅広改札口（ワイドゲート）を通過します。',
+                ZH_TW: '抵達穿堂層後，請通過專為嬰兒車、輪椅與大型行李箱設計的加寬驗票閘門。',
+                ZH_CN: '抵达站厅层后，请通过专为婴儿车、轮椅与大件行李箱设计的加宽检票闸机。',
+                ES: 'Sal del ascensor en el nivel del vestíbulo y pasa por el torno ancho especial para cochecitos, sillas de ruedas y maletas.',
+                FR: 'Sortez de l’ascenseur au niveau de la mezzanine et franchissez le portillon large dédié aux poussettes, fauteuils roulants et valises.',
+              })}
             </p>
           </div>
 
           <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1 text-xs">
             <div className="font-extrabold text-[#8EA85E] flex items-center gap-1">
               <span className="w-5 h-5 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-2xs">3</span>
-              <span>{language === 'KR' ? '승강장 탑승' : 'Platform Boarding'}</span>
+              <span>
+                {pickLang(language, {
+                  KR: '승강장 탑승',
+                  EN: 'Platform Boarding',
+                  JA: 'ホーム移動・乗車',
+                  ZH_TW: '月台電梯與乘車',
+                  ZH_CN: '站台直梯与乘车',
+                  ES: 'Andén y embarque',
+                  FR: 'Quai & embarquement',
+                })}
+              </span>
             </div>
             <p className="text-slate-600 leading-relaxed font-medium">
-              {language === 'KR'
-                ? '플랫폼 연결 승강기를 타고 지하 승강장으로 내려가 탑승 위치(교통약자 우대 구역)에서 안전하게 열차에 탑승합니다.'
-                : 'Take the platform elevator down to train level and board safely at the designated priority boarding area.'}
+              {pickLang(language, {
+                KR: '플랫폼 연결 승강기를 타고 지하 승강장으로 내려가 탑승 위치(교통약자 우대 구역)에서 안전하게 열차에 탑승합니다.',
+                EN: 'Take the platform elevator to train level and board safely at the designated priority boarding area.',
+                JA: 'ホーム直結エレベーターで乗り場へ移動し、車椅子・ベビーカー優先乗車スペースから安全に電車へ乗車します。',
+                ZH_TW: '搭乘月台專用電梯前往乘車層，於輪椅與嬰兒車友善車廂位置安全上車。',
+                ZH_CN: '乘坐站台专用直梯前往乘车层，在轮椅与婴儿车友好车厢位置安全上车。',
+                ES: 'Toma el ascensor interno hasta el andén y sube al tren con seguridad en la zona prioritaria para sillas de ruedas y cochecitos.',
+                FR: 'Prenez l’ascenseur interne jusqu’au quai et montez à bord en toute sécurité au niveau de l’espace prioritaire pour fauteuils roulants et poussettes.',
+              })}
             </p>
           </div>
         </div>

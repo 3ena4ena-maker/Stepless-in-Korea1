@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 import React, { useState, useEffect } from 'react';
 import { 
   Compass, 
@@ -24,7 +25,7 @@ import {
 } from 'lucide-react';
 
 export interface CommunityTravelGuideSectionProps {
-  language: 'KR' | 'EN';
+  language: Language;
   onSelectStation?: (stationId: string) => void;
   onSwitchToStandard?: () => void;
 }

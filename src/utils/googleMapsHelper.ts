@@ -1,10 +1,21 @@
 import { Station, translateExitNumber } from '../types';
+import { Language } from '../i18n/dictionary';
 import { getStationCrosswalkPoints, CrosswalkPoint } from './crosswalkData';
+
+export function getLocalizedCrosswalkTitle(pt: CrosswalkPoint, language: Language): string {
+  if (language === 'KR') return pt.nameKr;
+  if (language === 'JA') return pt.nameEn.replace(/Crosswalk/gi, '横断歩道').replace(/Exit\s*(\d+)/gi, '$1番出口');
+  if (language === 'ZH_TW') return pt.nameEn.replace(/Crosswalk/gi, '行人穿越道(斑馬線)').replace(/Exit\s*(\d+)/gi, '$1號出口');
+  if (language === 'ZH_CN') return pt.nameEn.replace(/Crosswalk/gi, '人行横道(斑马线)').replace(/Exit\s*(\d+)/gi, '$1号出口');
+  if (language === 'ES') return pt.nameEn.replace(/Crosswalk/gi, 'Paso de peatones').replace(/Exit\s*(\d+)/gi, 'Salida $1');
+  if (language === 'FR') return pt.nameEn.replace(/Crosswalk/gi, 'Passage piéton').replace(/Exit\s*(\d+)/gi, 'Sortie $1');
+  return pt.nameEn;
+}
 
 export function createGoogleMapExitMarker(
   map: any,
   exit: any,
-  language: 'KR' | 'EN',
+  language: Language,
   lineColor: string
 ): any {
   let iconSvg = '';
@@ -106,7 +117,7 @@ export function createGoogleMapExitMarker(
 export function createGoogleMapCrosswalkMarker(
   map: any,
   pt: CrosswalkPoint,
-  language: 'KR' | 'EN'
+  language: Language
 ): any {
   const crosswalkWidth = 32;
   const crosswalkHeight = 32;
@@ -116,7 +127,7 @@ export function createGoogleMapCrosswalkMarker(
   overlayDiv.style.cursor = 'pointer';
   overlayDiv.style.userSelect = 'none';
   overlayDiv.style.zIndex = '40';
-  const titleText = language === 'KR' ? pt.nameKr : pt.nameEn;
+  const titleText = getLocalizedCrosswalkTitle(pt, language);
   overlayDiv.title = titleText;
   overlayDiv.innerHTML = `
     <div style="width: ${crosswalkWidth}px; height: ${crosswalkHeight}px; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2.5px solid #2563eb; border-radius: 9999px; box-shadow: 0 3px 10px rgba(0,0,0,0.18);">

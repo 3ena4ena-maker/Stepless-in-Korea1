@@ -1,3 +1,4 @@
+import { Language } from "./i18n/dictionary";
 import { romanizeWord } from "./types";
 
 const INITIALS = [
@@ -141,6 +142,60 @@ const TRAVEL_WORDS_MAP: Record<string, string> = {
 };
 
 // Fixed translation dictionary for the default recommendations to guarantee perfect output
+export const FALLBACK_RECS_JA: Record<string, { topic: string; content: string; stationOrExit: string }> = {
+  'rec-1': {
+    topic: 'イジェモピザ（西面店＆釜山駅本店）',
+    stationOrExit: '釜山駅5番出口／田浦駅7番出口付近',
+    content: '釜山の地元民も旅行者も熱狂するローカルチーズピザの名店！もちもちのチーズクラストは唯一無二です。待ち時間が長いため、Tablingアプリで順番待ち状況を確認するのがおすすめです。'
+  },
+  'rec-2': {
+    topic: '田浦サイトギル（路地裏）雑貨ショップ＆ヴィンテージカフェ通り',
+    stationOrExit: '田浦駅4番・8番出口',
+    content: '田浦カフェ通りのすぐ上にある「サイトギル」には、可愛い工房や独立系書店、個性豊かなセレクトショップが集まっています。平坦で歩きやすく、ベビーカーや車椅子での散策にもぴったりです。'
+  },
+  'rec-3': {
+    topic: 'お得な釜山地下鉄1日乗り放題パス',
+    stationOrExit: '釜山地下鉄全駅の券売機',
+    content: '1日に地下鉄を4回以上利用するなら、1日乗車券が断然お得です！大人6,000ウォン・青少年4,000ウォンで、釜山都市鉄道1〜4号線が当日限り乗り放題になります。'
+  }
+};
+
+export const FALLBACK_RECS_ZH_TW: Record<string, { topic: string; content: string; stationOrExit: string }> = {
+  'rec-1': {
+    topic: '李在模披薩（西面店＆釜山站總店）',
+    stationOrExit: '釜山站 5號出口／田浦站 7號出口附近',
+    content: '釜山在地人與旅客都瘋狂喜愛的起司披薩名店！Q彈濃郁的起司餅皮無可取代。現場候位時間較長，建議事先透過 Tabling App 確認候位狀況。'
+  },
+  'rec-2': {
+    topic: '田浦小巷（Sait-gil）選物店＆復古咖啡街',
+    stationOrExit: '田浦站 4號、8號出口',
+    content: '位於田浦咖啡街稍往上走的巷弄間，聚集了精緻手作工坊、獨立書店與復古選物店！路面相當平坦好走，非常適合無障礙散步。'
+  },
+  'rec-3': {
+    topic: '超值釜山地鐵一日無限搭乘券',
+    stationOrExit: '釜山地鐵各站售票機',
+    content: '若一天內預計搭乘地鐵 4 次以上，購買一日券最划算！成人 6,000 韓元、青少年 4,000 韓元，啟用當日可無限次搭乘釜山地鐵 1 至 4 號線。'
+  }
+};
+
+export const FALLBACK_RECS_ZH_CN: Record<string, { topic: string; content: string; stationOrExit: string }> = {
+  'rec-1': {
+    topic: '李在模披萨（西面店＆釜山站总店）',
+    stationOrExit: '釜山站 5号出口／田浦站 7号出口附近',
+    content: '釜山本地人与游客都为之狂热的芝士披萨名店！筋道浓郁的芝士饼边无可替代。现场排队时间较长，建议提前通过 Tabling App 查看排队进度。'
+  },
+  'rec-2': {
+    topic: '田浦小巷（Sait-gil）杂货店＆复古咖啡街',
+    stationOrExit: '田浦站 4号、8号出口',
+    content: '位于田浦咖啡街稍往上走的街巷里，汇集了精致手作工坊、独立书店与复古买手店！路面十分平坦舒适，非常适合无障碍漫步。'
+  },
+  'rec-3': {
+    topic: '超值釜山地铁一日无限次乘车券',
+    stationOrExit: '釜山地铁各站自动售票机',
+    content: '如果一天内计划乘坐地铁 4 次以上，购买一日票划算得多！成人 6,000 韩元、青少年 4,000 韩元，启用当日可无限次乘坐釜山地铁 1 至 4 号线。'
+  }
+};
+
 export const FALLBACK_RECS_EN: Record<string, { topic: string; content: string; stationOrExit: string }> = {
   'rec-1': {
     topic: 'Lee Jae Mo Pizza (Seomyeon & Busan Station Main Branches)',
@@ -233,7 +288,7 @@ export function translateTopicOrContentFallback(text: string): string {
   return translated;
 }
 
-export function getTodayDate(language: 'KR' | 'EN' = 'KR'): string {
+export function getTodayDate(language: Language = 'KR'): string {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
@@ -241,6 +296,12 @@ export function getTodayDate(language: 'KR' | 'EN' = 'KR'): string {
   if (language === 'EN') {
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return `${monthNames[month]} ${day}, ${year}`;
+  }
+  if (language === 'JA' || language === 'ZH_TW' || language === 'ZH_CN') {
+    return `${year}年${month + 1}月${day}日`;
+  }
+  if (language === 'ES' || language === 'FR') {
+    return `${String(day).padStart(2, '0')}/${String(month + 1).padStart(2, '0')}/${year}`;
   }
   return `${year}년 ${month + 1}월 ${day}일`;
 }
@@ -251,7 +312,7 @@ export function getTodayDateKR(): string {
 
 export function translateRecommendation(
   rec: { id: string; topic: string; content: string; stationOrExit: string },
-  language: 'KR' | 'EN',
+  language: Language,
   apiTranslated?: { topic: string; content: string; stationOrExit: string }
 ) {
   if (language === 'KR') {
@@ -267,7 +328,50 @@ export function translateRecommendation(
     return apiTranslated;
   }
 
-  // 2. If it is one of the built-in default items, return perfect English representation
+  // 2. If it is one of the built-in default items, return localized representation
+  if (language === 'JA' && FALLBACK_RECS_JA[rec.id]) return FALLBACK_RECS_JA[rec.id];
+  if (language === 'ZH_TW' && FALLBACK_RECS_ZH_TW[rec.id]) return FALLBACK_RECS_ZH_TW[rec.id];
+  if (language === 'ZH_CN' && FALLBACK_RECS_ZH_CN[rec.id]) return FALLBACK_RECS_ZH_CN[rec.id];
+  if (language === 'ES') {
+    const esMap: Record<string, { topic: string; content: string; stationOrExit: string }> = {
+      'rec-1': {
+        topic: 'Pizza Lee Jae Mo (Sucursales de Seomyeon y Estación de Busan)',
+        stationOrExit: 'Cerca de Estación de Busan Salida 5 / Estación de Jeonpo Salida 7',
+        content: '¡La legendaria pizzería local de queso que apasiona tanto a los habitantes de Busan como a los viajeros! Su borde relleno de queso es inigualable. Te recomendamos consultar la cola en la app Tabling.'
+      },
+      'rec-2': {
+        topic: 'Callejón Sait-gil de Jeonpo: Tiendas de Diseño y Cafeterías Vintage',
+        stationOrExit: 'Estación de Jeonpo Salidas 4 y 8',
+        content: 'Justo encima de la calle principal de cafeterías de Jeonpo, el callejón Sait-gil reúne talleres artesanales, librerías independientes y tiendas vintage en calles llanas y muy cómodas para pasear sin escalones.'
+      },
+      'rec-3': {
+        topic: 'Abono de 1 Día de Viajes Ilimitados en el Metro de Busan',
+        stationOrExit: 'Máquinas expendedoras de todas las estaciones del Metro de Busan',
+        content: 'Si planeas usar el metro 4 veces o más en un mismo día, ¡el pase de 1 día es mucho más económico! Cuesta 6.000 KRW para adultos y 4.000 KRW para jóvenes, con viajes ilimitados en las Líneas 1 a 4.'
+      }
+    };
+    if (esMap[rec.id]) return esMap[rec.id];
+  }
+  if (language === 'FR') {
+    const frMap: Record<string, { topic: string; content: string; stationOrExit: string }> = {
+      'rec-1': {
+        topic: 'Pizza Lee Jae Mo (Succursales de Seomyeon & Gare de Busan)',
+        stationOrExit: 'Près de la Station Busan Sortie 5 / Station Jeonpo Sortie 7',
+        content: 'La pizzeria au fromage légendaire de Busan adorée des habitants comme des voyageurs ! Sa pâte moelleuse garnie de fromage est unique. Pensez à vérifier la file d’attente sur l’application Tabling.'
+      },
+      'rec-2': {
+        topic: 'Ruelles Sait-gil de Jeonpo : Boutiques de Créateurs & Cafés Vintage',
+        stationOrExit: 'Station Jeonpo Sorties 4 et 8',
+        content: 'Situées juste au-dessus de la rue des cafés de Jeonpo, les ruelles Sait-gil regorgent d’ateliers, de librairies indépendantes et de boutiques vintage sur un terrain plat idéal pour se promener sans marche.'
+      },
+      'rec-3': {
+        topic: 'Forfait 1 Jour Illimité du Métro de Busan',
+        stationOrExit: 'Distributeurs automatiques dans toutes les stations du métro de Busan',
+        content: 'Si vous prenez le métro 4 fois ou plus dans la journée, le pass 1 jour est très avantageux ! Il coûte 6 000 KRW (adultes) et 4 000 KRW (jeunes) pour des trajets illimités sur les Lignes 1 à 4.'
+      }
+    };
+    if (frMap[rec.id]) return frMap[rec.id];
+  }
   if (FALLBACK_RECS_EN[rec.id]) {
     return FALLBACK_RECS_EN[rec.id];
   }
@@ -280,7 +384,7 @@ export function translateRecommendation(
   };
 }
 
-export function translateDirectionItem(text: string, language: 'KR' | 'EN' = 'KR'): string {
+export function translateDirectionItem(text: string, language: Language = 'KR'): string {
   if (!text || language === 'KR') return text || "";
 
   let res = text.trim();

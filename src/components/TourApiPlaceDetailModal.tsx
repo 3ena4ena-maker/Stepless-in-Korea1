@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -27,7 +28,7 @@ import { useTourApiSpot } from '../services/tourApiCommon';
 
 interface TourApiPlaceDetailModalProps {
   placeId: string | null;
-  language?: 'KR' | 'EN';
+  language?: Language;
   onClose: () => void;
   onSelectStation?: (stationName: string) => void;
 }

@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 import React from 'react';
 import { Station } from '../types';
 import { VerificationBadge } from './VerificationBadge';
@@ -25,7 +26,7 @@ import { STATION_CURATIONS, StationCurationData } from '../data/stationTravelCur
 
 interface StationTravelGuideViewProps {
   station: Station;
-  language?: 'KR' | 'EN';
+  language?: Language;
   onSwitchToStandard?: () => void;
 }
 

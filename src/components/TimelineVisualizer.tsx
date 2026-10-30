@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -16,7 +17,7 @@ interface TimelineVisualizerProps {
   stationName: string;
   googleMapUrl: string;
   naverMapUrl: string;
-  language: 'KR' | 'EN';
+  language: Language;
 }
 
 export default function TimelineVisualizer({

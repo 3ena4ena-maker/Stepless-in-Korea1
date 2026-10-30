@@ -98,6 +98,36 @@ function saveRecommendations(recs: TravelerRecommendation[]) {
   }
 }
 
+// 0. Batch translation proxy fallback for multi-language UI localization
+app.post("/api/translate-batch", async (req, res) => {
+  try {
+    const { texts, tl } = req.body as { texts?: string[]; tl?: string };
+    if (!Array.isArray(texts) || texts.length === 0 || !tl) {
+      return res.status(400).json({ error: "Invalid request" });
+    }
+    const params = new URLSearchParams();
+    for (const t of texts) {
+      params.append("q", t);
+    }
+    const upstream = await fetch(
+      `https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=auto&tl=${encodeURIComponent(tl)}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params.toString(),
+      }
+    );
+    if (!upstream.ok) {
+      return res.status(502).json({ error: "Upstream translation error" });
+    }
+    const data = await upstream.json();
+    return res.json(data);
+  } catch (err) {
+    console.error("Translate batch error:", err);
+    return res.status(500).json({ error: "Translation failed" });
+  }
+});
+
 // 1. Get all recommendations
 app.get("/api/recommendations", async (req, res) => {
   try {

@@ -90,18 +90,23 @@ export function getStationCrosswalkPoints(stationId: string): CrosswalkPoint[] {
     ];
   } else if (stationId === 'centum-city') {
     return [
-      { lat: 35.169015, lng: 129.132496, nameKr: '센텀시티역 1·3번 출구 사이 횡단보도', nameEn: 'Centum City Stn Exit 1/3 Crosswalk' },
-      { lat: 35.169436, lng: 129.132115, nameKr: '센텀시티역 4·6번 출구 사이 횡단보도', nameEn: 'Centum City Stn Exit 4/6 Crosswalk' }
+      { lat: 35.169412, lng: 129.132116, nameKr: '센텀시티역 4·6번 출구 사이 횡단보도', nameEn: 'Centum City Stn Exit 4/6 Crosswalk' },
+      { lat: 35.168858, lng: 129.132475, nameKr: '센텀시티역 1·3번 출구 사이 횡단보도', nameEn: 'Centum City Stn Exit 1/3 Crosswalk' },
+      { lat: 35.168517, lng: 129.131472, nameKr: '센텀시티역 7·9번 출구 사이 횡단보도', nameEn: 'Centum City Stn Exit 7/9 Crosswalk' }
     ];
   } else if (stationId === 'sasang') {
     return [
-      { lat: 35.162530, lng: 128.984320, nameKr: '사상역 3번 출구 서부버스터미널 방면 횡단보도', nameEn: 'Sasang Stn Exit 3 Bus Terminal Crosswalk' },
-      { lat: 35.162389, lng: 128.984916, nameKr: '사상역 4번 출구 방면 횡단보도', nameEn: 'Sasang Stn Exit 4 Crosswalk' },
-      { lat: 35.161850, lng: 128.985742, nameKr: '사상역 2번 출구 방면 횡단보도', nameEn: 'Sasang Stn Exit 2 Crosswalk' }
+      { lat: 35.162562, lng: 128.984492, nameKr: '사상역 3번 출구 북측 횡단보도', nameEn: 'Sasang Stn Exit 3 North Crosswalk' },
+      { lat: 35.162148, lng: 128.984149, nameKr: '사상역 3번 출구 서측 광장로 횡단보도', nameEn: 'Sasang Stn Exit 3 West Gwangjang-ro Crosswalk' },
+      { lat: 35.162152, lng: 128.985018, nameKr: '사상역 4번·2번 출구 연결 동측 횡단보도', nameEn: 'Sasang Stn Exit 4/2 East Crosswalk' },
+      { lat: 35.162591, lng: 128.985575, nameKr: '경전철 사상역 서측 광장로 횡단보도', nameEn: 'Gimhae LRT Sasang Stn West Crosswalk' },
+      { lat: 35.161565, lng: 128.985243, nameKr: '사상역 1·2번 출구 남측 사상로 횡단보도', nameEn: 'Sasang Stn South Sasang-ro Crosswalk' }
     ];
   } else if (stationId === 'toseong') {
     return [
-      { lat: 35.099630, lng: 129.019768, nameKr: '토성역 앞 교차로 횡단보도', nameEn: 'Toseong Station Intersection Crosswalk' }
+      { lat: 35.101180, lng: 129.019758, nameKr: '토성역 2·3번 출구 북측 횡단보도', nameEn: 'Toseong Stn Exit 2/3 North Crosswalk' },
+      { lat: 35.099964, lng: 129.019736, nameKr: '토성역 5·6번 출구 앞 횡단보도', nameEn: 'Toseong Stn Exit 5/6 Crosswalk' },
+      { lat: 35.099871, lng: 129.019476, nameKr: '토성역 6·8번 출구 서측 횡단보도', nameEn: 'Toseong Stn Exit 6/8 West Crosswalk' }
     ];
   } else if (stationId === 'osiria') {
     return [
@@ -113,7 +118,7 @@ export function getStationCrosswalkPoints(stationId: string): CrosswalkPoint[] {
     ];
   } else if (stationId === 'namcheon') {
     return [
-      { lat: 35.142683, lng: 129.108034, nameKr: '남천역 남천서로 횡단보도', nameEn: 'Namcheon Station Crosswalk' }
+      { lat: 35.141066, lng: 129.106672, nameKr: '남천역 3·4번 출구 남측 수영로 횡단보도', nameEn: 'Namcheon Stn Exit 3/4 South Crosswalk' }
     ];
   } else if (stationId === 'oncheonjang') {
     return [

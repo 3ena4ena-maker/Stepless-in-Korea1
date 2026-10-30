@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -49,7 +50,7 @@ import {
 interface BarrierFreeMainViewProps {
   selectedUserType: UserType;
   onSelectUserType: (type: UserType) => void;
-  language: 'KR' | 'EN';
+  language: Language;
   onNavigateToCourse: (courseId: string) => void;
   onNavigateToPlace: (placeId: string) => void;
 }

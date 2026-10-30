@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -42,7 +43,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { STATIONS } from '../data';
 
 interface BusanEventsCalendarViewProps {
-  language: 'KR' | 'EN';
+  language: Language;
   onSelectStation?: (stationId: string, exitNum?: string) => void;
 }
 
@@ -1018,7 +1019,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
   }, [currentYear, currentMonth, language]);
 
   // Format popup date for display
-  const formatPopupDate = (dateStr: string, lang: 'KR' | 'EN') => {
+  const formatPopupDate = (dateStr: string, lang: Language) => {
     const parts = dateStr.split('-');
     const dateObj = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
     const dayOfWeek = lang === 'KR' 

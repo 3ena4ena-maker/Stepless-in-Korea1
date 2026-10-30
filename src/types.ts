@@ -3,6 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { Language } from './i18n/dictionary';
+import { formatExitNumberI18n, KO_NAME_TO_STATION_ID, STATION_TRANSLATIONS, STATION_TRANSLATIONS_ES_FR } from './i18n/stationTranslations';
+export type { Language };
+
 export type StatusType = 'OPERATIONAL' | 'MAINTENANCE' | 'BLOCKED';
 
 export interface PathStep {
@@ -236,7 +240,7 @@ export function romanizeWord(word: string): string {
   return latin;
 }
 
-export function translateDirectionItem(item: string, lang: 'KR' | 'EN'): string {
+export function translateDirectionItem(item: string, lang: Language): string {
   if (lang === 'KR') return item;
   
   const cleanItem = item.trim();
@@ -247,120 +251,56 @@ export function translateDirectionItem(item: string, lang: 'KR' | 'EN'): string 
   // Split into components and translate known terms
   const terms = cleanItem.split(/\s+/);
   const translatedTerms = terms.map(term => {
-    // Check if the term has a direct map
     if (TRANSLATION_MAP[term]) {
       return TRANSLATION_MAP[term];
     }
-    
-    // Check key endings first or partial phrases
     for (const [key, value] of Object.entries(TRANSLATION_MAP)) {
       if (term.endsWith(key) && key !== '동' && term !== key) {
         const prefix = term.slice(0, -key.length);
         return `${romanizeWord(prefix)}${value.startsWith('-') || value.startsWith(' ') ? '' : ' '}${value}`;
       }
     }
-
     return romanizeWord(term);
   });
 
   let joined = translatedTerms.join(' ');
-  // Clean up direction redundancy
   joined = joined.replace(/direction/gi, '').trim();
   return joined;
 }
 
-export function translateExitNumber(exitNumber: string, language: 'KR' | 'EN'): string {
-  if (language === 'KR') return exitNumber;
-
-  // 1. Elevator (between Exits X and Y)
-  const elevatorMatch = exitNumber.match(/엘리베이터\s*\((\d+)[·, ](\d+)번\s*출구\s*사이\)/);
-  if (elevatorMatch) {
-    return `Elevator (between Exits ${elevatorMatch[1]} and ${elevatorMatch[2]})`;
-  }
-
-  // 2. Underground Shopping Mall exits
-  if (exitNumber.includes('서면지하도상가 부전몰')) {
-    const num = exitNumber.match(/(\d+)번/);
-    return `Bujeon Mall Exit ${num ? num[1] : ''} (Seomyeon Underground)`;
-  }
-  if (exitNumber.includes('부산역지하쇼핑센터')) {
-    const num = exitNumber.match(/(\d+)번/);
-    return `Busan Station Underground Shopping Exit ${num ? num[1] : ''}`;
-  }
-  if (exitNumber.includes('남포지하쇼핑센터')) {
-    const num = exitNumber.match(/(\d+)번/);
-    return `Nampo Underground Shopping Exit ${num ? num[1] : ''}`;
-  }
-
-  // 3. Busan KTX Station Exit
-  if (exitNumber.includes('부산KTX역')) {
-    const num = exitNumber.match(/(\d+)번/);
-    return `Busan KTX Station Exit ${num ? num[1] : ''}`;
-  }
-
-  // 4. Double Exit linked to department store
-  if (exitNumber.includes('8번 10번 출구')) {
-    return `Exits 8 & 10 (Connected to Lotte Department Store Gwangbok)`;
-  }
-
-  // 4b. Gimhae LRT Exit
-  const lrtMatch = exitNumber.match(/경전철\s*(\d+)번\s*출구/);
-  if (lrtMatch) {
-    return `Gimhae LRT Exit ${lrtMatch[1]}`;
-  }
-
-  // 4c. Overpass Elevator
-  if (exitNumber.includes('보행육교 엘리베이터')) {
-    return 'Overpass Elevator';
-  }
-
-  // 4d. Paired Exits: "X번, Y번 출구" (with optional "(경사로)")
-  const pairRampMatch = exitNumber.match(/(\d+)번[,·\s]+(\d+)번\s*출구\s*\(경사로\)/);
-  if (pairRampMatch) {
-    return `Exits ${pairRampMatch[1]} & ${pairRampMatch[2]} (Ramp)`;
-  }
-  const pairMatch = exitNumber.match(/(\d+)번[,·\s]+(\d+)번\s*출구/);
-  if (pairMatch) {
-    return `Exits ${pairMatch[1]} & ${pairMatch[2]}`;
-  }
-
-  // 4e. Exit with "(엘리베이터)" or "(경사로)"
-  const elevSuffixMatch = exitNumber.match(/(\d+)번\s*출구\s*\(엘리베이터\)/);
-  if (elevSuffixMatch) {
-    return `Exit ${elevSuffixMatch[1]} (Elevator)`;
-  }
-  const rampSuffixMatch = exitNumber.match(/(\d+)번\s*출구\s*\(경사로\)/);
-  if (rampSuffixMatch) {
-    return `Exit ${rampSuffixMatch[1]} (Ramp)`;
-  }
-
-  // 5. Normal Exit: "X번 출구" or "X번 출입"
-  const normalMatch = exitNumber.match(/(\d+)번\s*출구/);
-  if (normalMatch) {
-    return `Exit ${normalMatch[1]}`;
-  }
-
-  // Fallback
-  return exitNumber;
+export function translateExitNumber(exitNumber: string, language: Language): string {
+  return formatExitNumberI18n(exitNumber, language);
 }
 
-export function getTranslatedStationName(stationName: string, lang: 'KR' | 'EN'): string {
+export function getTranslatedStationName(stationName: string, lang: Language): string {
   if (lang === 'KR') return stationName;
   const matchKey = stationName.includes('역') ? stationName : stationName + '역';
+  if (lang === 'JA' || lang === 'ZH_TW' || lang === 'ZH_CN') {
+    const stId = KO_NAME_TO_STATION_ID[matchKey] || KO_NAME_TO_STATION_ID[stationName];
+    if (stId && STATION_TRANSLATIONS[stId]?.[lang]) {
+      return STATION_TRANSLATIONS[stId][lang].shortName;
+    }
+  }
+  if (lang === 'ES' || lang === 'FR') {
+    const stId = KO_NAME_TO_STATION_ID[matchKey] || KO_NAME_TO_STATION_ID[stationName];
+    if (stId && STATION_TRANSLATIONS_ES_FR[stId]?.[lang]) {
+      return STATION_TRANSLATIONS_ES_FR[stId][lang].name;
+    }
+  }
   if (TRANSLATION_MAP[matchKey]) {
     return TRANSLATION_MAP[matchKey];
   }
   return stationName;
 }
 
-export const getExitDisplayName = (stationName: string, exitNumber: string, lang: 'KR' | 'EN' = 'KR'): string => {
-  const isEn = lang === 'EN';
+export const getExitDisplayName = (stationName: string, exitNumber: string, lang: Language = 'KR'): string => {
+  const isNotKr = lang !== 'KR';
   const translatedExit = translateExitNumber(exitNumber, lang);
   const finalStationName = getTranslatedStationName(stationName, lang);
   
-  if (exitNumber.includes(stationName) || exitNumber.startsWith('부산KTX역') || (isEn && translatedExit.includes('Busan KTX'))) {
+  if (exitNumber.includes(stationName) || exitNumber.startsWith('부산KTX역') || (isNotKr && (translatedExit.includes('Busan KTX') || translatedExit.includes('KTX釜山') || translatedExit.includes('KTX Busan') || translatedExit.includes('KTX de Busan')))) {
     return translatedExit;
   }
   
-  return isEn ? `${finalStationName} ${translatedExit}` : `${finalStationName} ${translatedExit}`;
+  return `${finalStationName} ${translatedExit}`;
 };

@@ -1,3 +1,4 @@
+import { Language } from '../i18n/dictionary';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -32,7 +33,7 @@ import { resolvePlaceTargetId } from '../services/tourApiCommon';
 import { navigateToSpa } from '../utils';
 
 interface ItineraryTravelGuideSectionProps {
-  language: 'KR' | 'EN';
+  language: Language;
   category: 'DAY' | '1NIGHT' | '2NIGHTS' | '3NIGHTS' | '4NIGHTS' | 'GOURMET' | 'MARKET' | 'SCHEDULE' | 'EXPERIENCE' | 'SUBWAY' | string;
   course?: ItineraryCourse;
   onSwitchToStandard?: () => void;
