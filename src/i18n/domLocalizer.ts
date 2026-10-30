@@ -543,7 +543,13 @@ export function useDomLocalizer(language: Language) {
           if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT' || tag === 'TEXTAREA' || tag === 'CODE') {
             return NodeFilter.FILTER_REJECT;
           }
-          if (parent.closest('[aria-label="Language switcher"]') || parent.closest('[aria-label="Select Language"]')) {
+          if (
+            parent.closest('#header-logo-container') ||
+            parent.closest('[translate="no"]') ||
+            parent.closest('[data-no-localize="true"]') ||
+            parent.closest('[aria-label="Language switcher"]') ||
+            parent.closest('[aria-label="Select Language"]')
+          ) {
             return NodeFilter.FILTER_REJECT;
           }
           return NodeFilter.FILTER_ACCEPT;
@@ -576,6 +582,16 @@ export function useDomLocalizer(language: Language) {
           const cache = loadCache(targetLang);
           const trimmed = baseText.trim();
           const normKey = trimmed.replace(/\s+/g, ' ');
+
+          // Never localize the brand logo text "STEPLESS" / "IN BUSAN"
+          if (/^(STEPLESS|IN\s+BUSAN|STEPLESS\s+IN\s+BUSAN)$/i.test(normKey)) {
+            if (textNode.nodeValue !== baseText) {
+              textNode.nodeValue = baseText;
+            }
+            domLocalizedTextMap.delete(textNode);
+            current = walker.nextNode();
+            continue;
+          }
 
           const exactMatch = EXACT_PHRASE_DICTIONARY[trimmed] || EXACT_PHRASE_DICTIONARY[normKey];
           const cachedMatch = cache[trimmed] || cache[normKey];

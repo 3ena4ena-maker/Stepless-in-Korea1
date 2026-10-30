@@ -119,6 +119,8 @@ export default function Header({
             className="flex items-center gap-2 cursor-pointer group select-none py-1 no-underline shrink-0"
             id="header-logo-container"
             title="STEPLESS IN BUSAN"
+            translate="no"
+            data-no-localize="true"
           >
             <div className="flex items-center gap-2">
               <div className="flex flex-col text-left leading-[0.92]">

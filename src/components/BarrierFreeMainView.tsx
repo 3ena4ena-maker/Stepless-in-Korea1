@@ -1,4 +1,5 @@
 import { Language } from '../i18n/dictionary';
+import { SpotTicketBookingRow } from './BusanAffiliateQuickBar';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -686,6 +687,8 @@ export default function BarrierFreeMainView({
                   <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
                   <span className="line-clamp-1">{language === 'KR' ? place.addressKo : place.addressEn}</span>
                 </p>
+
+                <SpotTicketBookingRow spotTitleKo={place.nameKo} language={language} />
               </div>
 
               {/* ‘상세 보기 →’ 버튼 */}

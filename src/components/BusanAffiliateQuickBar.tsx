@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalLink, Luggage, Ticket, Sparkles } from 'lucide-react';
+import { Luggage, Ticket, Compass } from 'lucide-react';
 import { Language, pickLang } from '../i18n/dictionary';
 
 export const KLOOK_AFFILIATE_LINKS = {
@@ -20,6 +20,335 @@ export const KKDAY_AFFILIATE_LINKS = {
   BUSAN_LUGGAGE_DELIVERY: 'https://kkday.tpo.lu/zKPZdnv5',
 } as const;
 
+function buildKlookProductAffiliateUrl(productUrl: string): string {
+  return `https://affiliate.klook.com/redirect?aid=api%7C13694%7C2cf368b8963a4303a1d379f54-797916%7Cpid%7C797916&k_site=${encodeURIComponent(productUrl)}`;
+}
+
+function buildKkdayProductAffiliateUrl(productUrl: string): string {
+  return `https://invl.me/clndj1c?aff_sub=0b33b1e179804a3c9b03f5144-797916&url=${encodeURIComponent(productUrl)}`;
+}
+
+export interface SpotTicketBookingInfo {
+  label: Record<Language, string>;
+  klookUrl?: string;
+  kkdayUrl?: string;
+}
+
+/**
+ * 클룩(Klook) 또는 케이케이데이(KKday)에 실제 단독 예매 상품 페이지가 존재하는 장소만 매핑합니다.
+ * (국립부산과학관, 부산과학체험관, 허심청, 태종대 등 단독 온라인 티켓 상품이 없는 곳은 제외)
+ */
+export function getSpotTicketBookingInfo(spotTitleKo: string): SpotTicketBookingInfo | null {
+  const title = spotTitleKo || '';
+
+  // 1. 부산 시티투어버스 (BUTI) - Klook & KKday 단독 상품 페이지 직결
+  if (title.includes('시티투어')) {
+    return {
+      label: {
+        KR: '부산 시티투어버스 티켓 바로 예매',
+        EN: 'Book Busan City Tour Bus Ticket',
+        JA: '釜山シティツアーバス乗車券を予約',
+        ZH_TW: '立即預訂釜山觀光巴士車票',
+        ZH_CN: '立即预订釜山观光巴士车票',
+        ES: 'Reservar billete de Bus Turístico de Busan',
+        FR: 'Réserver un billet Bus Touristique de Busan',
+      },
+      klookUrl: buildKlookProductAffiliateUrl(
+        'https://www.klook.com/ko/activity/4128-buti-busan-city-tour-bus-busan/'
+      ),
+      kkdayUrl: buildKkdayProductAffiliateUrl(
+        'https://www.kkday.com/ko/product/3021-busan-city-tour-pass-korea'
+      ),
+    };
+  }
+
+  // 2. 아르떼뮤지엄 부산 - Klook & KKday 단독 입장권 페이지 직결
+  if (title.includes('아르떼뮤지엄')) {
+    return {
+      label: {
+        KR: '아르떼뮤지엄 부산 입장권 바로 예매',
+        EN: 'Book Arte Museum Busan Ticket',
+        JA: 'アルテミュージアム釜山 入場券を予約',
+        ZH_TW: '立即預訂釜山 ARTE MUSEUM 門票',
+        ZH_CN: '立即预订釜山 ARTE MUSEUM 门票',
+        ES: 'Reservar entrada a Arte Museum Busan',
+        FR: 'Réserver un billet Arte Museum Busan',
+      },
+      klookUrl: buildKlookProductAffiliateUrl(
+        'https://www.klook.com/ko/activity/122464-busan-artemuseum/'
+      ),
+      kkdayUrl: buildKkdayProductAffiliateUrl(
+        'https://www.kkday.com/ko/product/184194'
+      ),
+    };
+  }
+
+  // 3. 뮤지엄원 (Museum 1) - Klook & KKday 단독 입장권 페이지 직결
+  if (title.includes('뮤지엄원') || title.includes('뮤지엄 원')) {
+    return {
+      label: {
+        KR: '뮤지엄원 입장권 바로 예매',
+        EN: 'Book Museum 1 Ticket',
+        JA: 'ミュージアムワン入場券を予約',
+        ZH_TW: '立即預訂 Museum 1 門票',
+        ZH_CN: '立即预订 Museum 1 门票',
+        ES: 'Reservar entrada a Museum 1',
+        FR: 'Réserver un billet Museum 1',
+      },
+      klookUrl: buildKlookProductAffiliateUrl(
+        'https://www.klook.com/ko/activity/35552-museum-one-ticket-busan/'
+      ),
+      kkdayUrl: buildKkdayProductAffiliateUrl(
+        'https://www.kkday.com/ko/product/35943'
+      ),
+    };
+  }
+
+  // 4. 부산영화체험박물관 - Klook 단독 입장권 페이지 직결
+  if (title.includes('영화체험박물관')) {
+    return {
+      label: {
+        KR: '부산영화체험박물관 입장권 바로 예매',
+        EN: 'Book Busan Museum of Movies Ticket',
+        JA: '釜山映画体験博物館 入場券を予約',
+        ZH_TW: '立即預訂釜山電影體驗博物館門票',
+        ZH_CN: '立即预订釜山电影体验博物馆门票',
+        ES: 'Reservar entrada al Museo del Cine de Busan',
+        FR: 'Réserver un billet Musée du Cinéma de Busan',
+      },
+      klookUrl: buildKlookProductAffiliateUrl(
+        'https://www.klook.com/ko/activity/36730-busan-movies-mideast-experience-museum/'
+      ),
+    };
+  }
+
+  // 5. 해운대 블루라인파크 (해변열차 · 스카이캡슐) - Klook & KKday 단독 탑승권 페이지 직결
+  if (title.includes('블루라인파크') || title.includes('해변열차') || title.includes('스카이캡슐')) {
+    return {
+      label: {
+        KR: '해변열차 · 스카이캡슐 탑승권 바로 예매',
+        EN: 'Book Beach Train & Sky Capsule Ticket',
+        JA: '海辺列車・スカイカプセル乗車券を予約',
+        ZH_TW: '立即預訂海岸列車・天空膠囊車票',
+        ZH_CN: '立即预订海岸列车・天空胶囊车票',
+        ES: 'Reservar Tren Costero y Sky Capsule',
+        FR: 'Réserver Train Côtier & Sky Capsule',
+      },
+      klookUrl: buildKlookProductAffiliateUrl(
+        'https://www.klook.com/ko/activity/133293-haeundae-blueline-park-ticket-in-busan/'
+      ),
+      kkdayUrl: buildKkdayProductAffiliateUrl(
+        'https://www.kkday.com/ko/product/123012-haeundae-blueline-park-sky-capsule-beach-train-ticket'
+      ),
+    };
+  }
+
+  // 6. 송도 해상케이블카 - Klook & KKday 단독 왕복 탑승권 페이지 직결
+  if (title.includes('케이블카')) {
+    return {
+      label: {
+        KR: '송도 해상케이블카 탑승권 바로 예매',
+        EN: 'Book Songdo Marine Cable Car Ticket',
+        JA: '松島海上ケーブルカー乗車券を予約',
+        ZH_TW: '立即預訂松島海上纜車門票',
+        ZH_CN: '立即预订松岛海上缆车门票',
+        ES: 'Reservar Teleférico Marino de Songdo',
+        FR: 'Réserver Téléphérique Marin de Songdo',
+      },
+      klookUrl: buildKlookProductAffiliateUrl(
+        'https://www.klook.com/ko/activity/17327-songdo-marine-cable-car-busan/'
+      ),
+      kkdayUrl: buildKkdayProductAffiliateUrl(
+        'https://www.kkday.com/ko/product/111594'
+      ),
+    };
+  }
+
+  // 7. 용두산공원 부산타워 - Klook & KKday 단독 전망대 입장권 페이지 직결
+  if (title.includes('용두산') || title.includes('부산타워') || title.includes('다이아몬드타워')) {
+    return {
+      label: {
+        KR: '부산타워 전망대 입장권 바로 예매',
+        EN: 'Book Busan Tower Observatory Ticket',
+        JA: '釜山タワー展望台 入場券を予約',
+        ZH_TW: '立即預訂釜山塔展望台門票',
+        ZH_CN: '立即预订釜山塔展望台门票',
+        ES: 'Reservar entrada a Busan Tower',
+        FR: 'Réserver un billet Busan Tower',
+      },
+      klookUrl: buildKlookProductAffiliateUrl(
+        'https://www.klook.com/ko/activity/106621-busan-tower/'
+      ),
+      kkdayUrl: buildKkdayProductAffiliateUrl(
+        'https://www.kkday.com/ko/product/126890'
+      ),
+    };
+  }
+
+  // 8. 신세계 센텀시티 스파랜드 - Klook & KKday 단독 입장권 페이지 직결
+  if (title.includes('센텀시티') || title.includes('스파랜드')) {
+    return {
+      label: {
+        KR: '센텀 스파랜드 입장권 바로 예매',
+        EN: 'Book Centum Spa Land Ticket',
+        JA: '新世界スパランド入場券を予約',
+        ZH_TW: '立即預訂新世界 Spa Land 門票',
+        ZH_CN: '立即预订新世界 Spa Land 门票',
+        ES: 'Reservar entrada a Centum Spa Land',
+        FR: 'Réserver un billet Centum Spa Land',
+      },
+      klookUrl: buildKlookProductAffiliateUrl(
+        'https://www.klook.com/ko/activity/37731-spaland-centum-city-busan/'
+      ),
+      kkdayUrl: buildKkdayProductAffiliateUrl(
+        'https://www.kkday.com/ko/product/105110'
+      ),
+    };
+  }
+
+  // 9. 삼정타워 런닝맨 체험관 - Klook 단독 입장권 페이지 직결
+  if (title.includes('삼정타워') || title.includes('런닝맨')) {
+    return {
+      label: {
+        KR: '런닝맨 부산 체험관 입장권 바로 예매',
+        EN: 'Book Running Man Busan Ticket',
+        JA: 'ランニングマン釜山 体験館チケットを予約',
+        ZH_TW: '立即預訂釜山 Running Man 體驗館門票',
+        ZH_CN: '立即预订釜山 Running Man 体验馆门票',
+        ES: 'Reservar entrada a Running Man Busan',
+        FR: 'Réserver un billet Running Man Busan',
+      },
+      klookUrl: buildKlookProductAffiliateUrl(
+        'https://www.klook.com/ko/activity/21862-running-man-experience-center-ticket-busan/'
+      ),
+    };
+  }
+
+  return null;
+}
+
+export function SpotTicketBookingRow({
+  spotTitleKo,
+  language,
+}: {
+  spotTitleKo: string;
+  language: Language;
+}) {
+  const info = getSpotTicketBookingInfo(spotTitleKo);
+  if (!info) return null;
+
+  const isKkdayPreferred = language === 'ZH_TW' || language === 'JA';
+
+  return (
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="pt-2.5 border-t border-[#E5E2DC]/80 space-y-1.5 text-left"
+    >
+      <div className="flex items-center gap-1.5 text-[11.5px] text-slate-700 font-semibold">
+        <Ticket className="w-3.5 h-3.5 text-[#5E7A31] shrink-0" strokeWidth={1.75} />
+        <span className="leading-snug">{pickLang(language, info.label)}</span>
+      </div>
+      <div className="pl-5">
+        <PartnerIconPair
+          klookHref={info.klookUrl}
+          kkdayHref={info.kkdayUrl}
+          isKkdayPreferred={isKkdayPreferred}
+        />
+      </div>
+    </div>
+  );
+}
+
+function KlookIconButton({ href, label }: { href: string; label: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer sponsored"
+      title={label}
+      aria-label={label}
+      translate="no"
+      data-no-localize="true"
+      className="h-8 w-[72px] rounded-lg bg-white hover:bg-[#FFF5EF] border border-[#E5E2DC] hover:border-[#FF5B00]/60 flex items-center justify-center gap-1 shadow-2xs hover:scale-[1.03] active:scale-95 transition-all shrink-0 no-underline"
+    >
+      <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" fill="none" aria-hidden="true">
+        <path
+          d="M12 2.5C13.1 2.5 14 3.4 14 4.5V8.2C14 9.3 13.1 10.2 12 10.2C10.9 10.2 10 9.3 10 8.2V4.5C10 3.4 10.9 2.5 12 2.5Z"
+          fill="#FF5B00"
+        />
+        <path
+          d="M20.2 7.2C20.8 8.1 20.5 9.4 19.5 10L16.3 11.8C15.3 12.4 14.1 12.1 13.5 11.1C12.9 10.1 13.3 8.9 14.3 8.3L17.5 6.5C18.4 5.9 19.7 6.2 20.2 7.2Z"
+          fill="#FFB800"
+        />
+        <path
+          d="M20.2 16.8C19.7 17.8 18.4 18.1 17.5 17.5L14.3 15.7C13.3 15.1 12.9 13.9 13.5 12.9C14.1 11.9 15.3 11.6 16.3 12.2L19.5 14C20.5 14.6 20.8 15.9 20.2 16.8Z"
+          fill="#00C6B8"
+        />
+        <path
+          d="M12 21.5C10.9 21.5 10 20.6 10 19.5V15.8C10 14.7 10.9 13.8 12 13.8C13.1 13.8 14 14.7 14 15.8V19.5C14 20.6 13.1 21.5 12 21.5Z"
+          fill="#3B7DDD"
+        />
+        <path
+          d="M3.8 16.8C3.2 15.9 3.5 14.6 4.5 14L7.7 12.2C8.7 11.6 9.9 11.9 10.5 12.9C11.1 13.9 10.7 15.1 9.7 15.7L6.5 17.5C5.6 18.1 4.3 17.8 3.8 16.8Z"
+          fill="#FF5B00"
+        />
+        <path
+          d="M3.8 7.2C4.3 6.2 5.6 5.9 6.5 6.5L9.7 8.3C10.7 8.9 11.1 10.1 10.5 11.1C9.9 12.1 8.7 12.4 7.7 11.8L4.5 10C3.5 9.4 3.2 8.1 3.8 7.2Z"
+          fill="#FF385C"
+        />
+      </svg>
+      <span className="text-[11px] font-extrabold tracking-tight text-[#FF5B00] leading-none">
+        klook
+      </span>
+    </a>
+  );
+}
+
+function KkdayIconButton({ href, label }: { href: string; label: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer sponsored"
+      title={label}
+      aria-label={label}
+      translate="no"
+      data-no-localize="true"
+      className="h-8 w-[72px] rounded-lg bg-[#26BEC9] hover:bg-[#1FA8B2] border border-[#1FA8B2]/40 flex items-center justify-center shadow-2xs hover:scale-[1.03] active:scale-95 transition-all shrink-0 no-underline"
+    >
+      <span className="text-[12px] font-black tracking-tight text-white leading-none">
+        kkday
+      </span>
+    </a>
+  );
+}
+
+function PartnerIconPair({
+  klookHref,
+  kkdayHref,
+  isKkdayPreferred,
+}: {
+  klookHref?: string;
+  kkdayHref?: string;
+  isKkdayPreferred: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-2 shrink-0">
+      {isKkdayPreferred ? (
+        <>
+          {kkdayHref && <KkdayIconButton href={kkdayHref} label="KKday" />}
+          {klookHref && <KlookIconButton href={klookHref} label="Klook" />}
+        </>
+      ) : (
+        <>
+          {klookHref && <KlookIconButton href={klookHref} label="Klook" />}
+          {kkdayHref && <KkdayIconButton href={kkdayHref} label="KKday" />}
+        </>
+      )}
+    </div>
+  );
+}
+
 interface BusanAffiliateQuickBarProps {
   language: Language;
   variant?: 'full' | 'locker-inline' | 'nearby-inline';
@@ -29,60 +358,31 @@ export default function BusanAffiliateQuickBar({
   language,
   variant = 'full',
 }: BusanAffiliateQuickBarProps) {
-  // 대만(ZH_TW) 및 일본(JA) 여행객은 KKday 선호도가 매우 높으므로 KKday를 우선 배치하고, 그 외 언어는 Klook을 우선 배치
   const isKkdayPreferred = language === 'ZH_TW' || language === 'JA';
-
-  const primaryLinks = isKkdayPreferred ? KKDAY_AFFILIATE_LINKS : KLOOK_AFFILIATE_LINKS;
-  const secondaryLinks = isKkdayPreferred ? KLOOK_AFFILIATE_LINKS : KKDAY_AFFILIATE_LINKS;
-  const primaryBrand = isKkdayPreferred ? 'KKday' : 'Klook';
-  const secondaryBrand = isKkdayPreferred ? 'Klook' : 'KKday';
 
   if (variant === 'locker-inline') {
     return (
-      <div className="mt-2.5 pt-2.5 border-t border-slate-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-indigo-50/50 px-3 py-2 rounded-xl border border-indigo-100">
-        <div className="flex items-center gap-1.5 text-xs text-slate-700 font-semibold">
-          <Luggage className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+      <div className="mt-2.5 pt-2.5 border-t border-slate-200/70 space-y-2">
+        <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
+          <Luggage className="w-3.5 h-3.5 text-[#6B853E] shrink-0" strokeWidth={1.75} />
           <span>
             {pickLang(language, {
-              KR: '대형 보관함이 꽉 찼거나 빈손으로 바로 여행하고 싶다면?',
-              EN: 'Large lockers full, or want to travel hands-free right away?',
-              JA: '大型ロッカーが満杯、または手ぶらでそのまま観光したいなら？',
-              ZH_TW: '大型置物櫃已滿，或想一下車就空手輕鬆觀光？',
-              ZH_CN: '大型寄存柜已满，或想一下车就空手轻松游览？',
-              ES: '¿Taquillas llenas o quieres viajar sin cargar maletas?',
-              FR: 'Consignes complètes ou envie de visiter les mains libres ?',
+              KR: '보관함 만석 시 부산역·공항 ↔ 숙소 캐리어 당일 배송 예약',
+              EN: 'Lockers full? Same-day luggage delivery (Station/Airport ↔ Hotel)',
+              JA: 'ロッカー満杯時は手ぶら配送（釜山駅・空港 ↔ ホテル当日荷物配送）',
+              ZH_TW: '置物櫃已滿？預約釜山站・機場 ↔ 飯店當日行李配送',
+              ZH_CN: '寄存柜已满？预约釜山站・机场 ↔ 酒店当日行李配送',
+              ES: '¿Taquillas llenas? Entrega de equipaje estación/aeropuerto ↔ hotel',
+              FR: 'Consignes pleines ? Livraison de bagages gare/aéroport ↔ hôtel',
             })}
           </span>
         </div>
-        <div className="flex flex-wrap items-center gap-1.5 shrink-0">
-          <a
-            href={primaryLinks.BUSAN_LUGGAGE_DELIVERY}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] sm:text-xs transition-all shadow-2xs no-underline"
-          >
-            <span>
-              {pickLang(language, {
-                KR: `캐리어 배송 예약 (${primaryBrand})`,
-                EN: `Luggage Delivery (${primaryBrand})`,
-                JA: `荷物配送を予約 (${primaryBrand})`,
-                ZH_TW: `預約行李配送 (${primaryBrand})`,
-                ZH_CN: `预约行李配送 (${primaryBrand})`,
-                ES: `Entrega de equipaje (${primaryBrand})`,
-                FR: `Livraison bagages (${primaryBrand})`,
-              })}
-            </span>
-            <ExternalLink className="w-3 h-3 shrink-0" />
-          </a>
-          <a
-            href={secondaryLinks.BUSAN_LUGGAGE_DELIVERY}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg bg-white hover:bg-indigo-50 text-indigo-700 border border-indigo-200 font-bold text-[11px] sm:text-xs transition-all shadow-2xs no-underline"
-          >
-            <span>{secondaryBrand}</span>
-            <ExternalLink className="w-3 h-3 shrink-0" />
-          </a>
+        <div className="pl-5">
+          <PartnerIconPair
+            klookHref={KLOOK_AFFILIATE_LINKS.BUSAN_LUGGAGE_DELIVERY}
+            kkdayHref={KKDAY_AFFILIATE_LINKS.BUSAN_LUGGAGE_DELIVERY}
+            isKkdayPreferred={isKkdayPreferred}
+          />
         </div>
       </div>
     );
@@ -90,294 +390,140 @@ export default function BusanAffiliateQuickBar({
 
   if (variant === 'nearby-inline') {
     return (
-      <div className="mt-2.5 pt-2.5 border-t border-slate-200/70 flex flex-wrap items-center justify-between gap-2 bg-[#F4F8EE] px-3 py-2 rounded-xl border border-[#DCE7CC]">
-        <div className="flex items-center gap-1.5 text-xs text-slate-800 font-semibold">
-          <Ticket className="w-3.5 h-3.5 text-[#5E7A31] shrink-0" />
+      <div className="mt-2.5 pt-2.5 border-t border-slate-200/70 space-y-2">
+        <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
+          <Ticket className="w-3.5 h-3.5 text-[#6B853E] shrink-0" strokeWidth={1.75} />
           <span>
             {pickLang(language, {
-              KR: '주변 유료 명소·투어를 현장 줄 서지 않고 할인받으려면?',
-              EN: 'Skip ticket lines and save on Busan attractions & tours:',
-              JA: '周辺の有料スポット・ツアーを並ばずお得に予約するなら：',
-              ZH_TW: '想免排隊優惠預訂周邊熱門景點與一日遊？',
-              ZH_CN: '想免排队优惠预订周边热门景点与一日游？',
-              ES: 'Ahorra y evita colas en las atracciones y tours de Busan:',
-              FR: 'Coupe-file et réductions sur les attractions de Busan :',
+              KR: '주변 유료 명소 모바일 프리패스(비짓부산패스) 및 할인 티켓 예매',
+              EN: 'Visit Busan Pass & discounted attraction mobile tickets',
+              JA: '周辺スポットのビジット釜山パス・割引チケット予約',
+              ZH_TW: '周邊景點釜山通行證 (Visit Busan Pass) 與優惠門票預訂',
+              ZH_CN: '周边景点釜山通行证 (Visit Busan Pass) 与优惠门票预订',
+              ES: 'Visit Busan Pass y entradas con descuento',
+              FR: 'Visit Busan Pass et billets à tarif réduit',
             })}
           </span>
         </div>
-        <div className="flex flex-wrap items-center gap-1.5">
-          <a
-            href={primaryLinks.VISIT_BUSAN_PASS}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#6B853E] hover:bg-[#586F31] text-white font-bold text-[11px] sm:text-xs transition-all shadow-2xs no-underline"
-          >
-            <span>
-              {pickLang(language, {
-                KR: `🎟️ 비짓부산패스 (${primaryBrand})`,
-                EN: `🎟️ Visit Busan Pass (${primaryBrand})`,
-                JA: `🎟️ ビジット釜山パス (${primaryBrand})`,
-                ZH_TW: `🎟️ 釜山通行證 (${primaryBrand})`,
-                ZH_CN: `🎟️ 釜山通行证 (${primaryBrand})`,
-                ES: `🎟️ Visit Busan Pass (${primaryBrand})`,
-                FR: `🎟️ Visit Busan Pass (${primaryBrand})`,
-              })}
-            </span>
-            <ExternalLink className="w-3 h-3 shrink-0" />
-          </a>
-          <a
-            href={primaryLinks.BUSAN_ALL_ACTIVITIES}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-[#4D6328] border border-[#C6D8AE] font-bold text-[11px] sm:text-xs transition-all shadow-2xs no-underline"
-          >
-            <span>
-              {pickLang(language, {
-                KR: `🎡 인기 입장권·투어 (${primaryBrand})`,
-                EN: `🎡 Busan Tickets (${primaryBrand})`,
-                JA: `🎡 人気チケット・ツアー (${primaryBrand})`,
-                ZH_TW: `🎡 熱門門票・一日遊 (${primaryBrand})`,
-                ZH_CN: `🎡 热门门票・一日游 (${primaryBrand})`,
-                ES: `🎡 Entradas y Tours (${primaryBrand})`,
-                FR: `🎡 Billets & Excursions (${primaryBrand})`,
-              })}
-            </span>
-            <ExternalLink className="w-3 h-3 shrink-0" />
-          </a>
-          <a
-            href={secondaryLinks.BUSAN_ALL_ACTIVITIES}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white hover:bg-teal-50 text-teal-700 border border-teal-200 font-bold text-[11px] sm:text-xs transition-all shadow-2xs no-underline"
-          >
-            <span>{secondaryBrand}</span>
-            <ExternalLink className="w-3 h-3 shrink-0" />
-          </a>
+        <div className="pl-5">
+          <PartnerIconPair
+            klookHref={KLOOK_AFFILIATE_LINKS.VISIT_BUSAN_PASS}
+            kkdayHref={KKDAY_AFFILIATE_LINKS.VISIT_BUSAN_PASS}
+            isKkdayPreferred={isKkdayPreferred}
+          />
         </div>
       </div>
     );
   }
 
+  const items = [
+    {
+      icon: Ticket,
+      title: pickLang(language, {
+        KR: '비짓부산패스 (Visit Busan Pass)',
+        EN: 'Visit Busan Pass',
+        JA: 'ビジット釜山パス (Visit Busan Pass)',
+        ZH_TW: '釜山通行證 (Visit Busan Pass)',
+        ZH_CN: '釜山通行证 (Visit Busan Pass)',
+        ES: 'Visit Busan Pass',
+        FR: 'Visit Busan Pass',
+      }),
+      desc: pickLang(language, {
+        KR: '해변열차·스파랜드·엑스더스카이·시티투어 등 40곳+ 무료 입장',
+        EN: 'Free entry to 40+ attractions including Beach Train & Spaland',
+        JA: '海辺列車・スパランド・X the SKYなど40ヶ所以上が無料',
+        ZH_TW: '免費暢遊海岸列車、Spa Land、X the SKY 等 40+ 景點',
+        ZH_CN: '免费畅游海岸列车、Spa Land、X the SKY 等 40+ 景点',
+        ES: 'Acceso gratuito a más de 40 atracciones en Busan',
+        FR: 'Accès gratuit à plus de 40 attractions à Busan',
+      }),
+      klookUrl: KLOOK_AFFILIATE_LINKS.VISIT_BUSAN_PASS,
+      kkdayUrl: KKDAY_AFFILIATE_LINKS.VISIT_BUSAN_PASS,
+    },
+    {
+      icon: Luggage,
+      title: pickLang(language, {
+        KR: '부산역·김해공항 ↔ 호텔 짐배송',
+        EN: 'Station / Airport ↔ Hotel Luggage Delivery',
+        JA: '釜山駅・金海空港 ↔ ホテル当日荷物配送',
+        ZH_TW: '釜山站・金海機場 ↔ 飯店當日行李配送',
+        ZH_CN: '釜山站・金海机场 ↔ 酒店当日行李配送',
+        ES: 'Entrega de equipaje: Estación/Aeropuerto ↔ Hotel',
+        FR: 'Livraison de bagages : Gare/Aéroport ↔ Hôtel',
+      }),
+      desc: pickLang(language, {
+        KR: '보관함 찾을 필요 없이 도착 즉시 숙소로 캐리어 당일 배송',
+        EN: 'Drop off your suitcase on arrival and travel hands-free',
+        JA: 'ロッカー不要、到着すぐ荷物を預けて手ぶらで釜山観光',
+        ZH_TW: '免找置物櫃，抵達即交寄行李輕鬆空手觀光',
+        ZH_CN: '免找寄存柜，抵達即交寄行李轻松空手游览',
+        ES: 'Deja tu maleta al llegar y viaja con las manos libres',
+        FR: 'Déposez vos valises à l’arrivée et visitez les mains libres',
+      }),
+      klookUrl: KLOOK_AFFILIATE_LINKS.BUSAN_LUGGAGE_DELIVERY,
+      kkdayUrl: KKDAY_AFFILIATE_LINKS.BUSAN_LUGGAGE_DELIVERY,
+    },
+    {
+      icon: Compass,
+      title: pickLang(language, {
+        KR: '부산 인기 티켓·요트·투어 예매',
+        EN: 'Busan Tickets, Yachts & Day Tours',
+        JA: '釜山の人気チケット・ヨット・日帰りツアー',
+        ZH_TW: '釜山熱門門票・遊艇・一日遊預訂',
+        ZH_CN: '釜山热门门票・游艇・一日游预订',
+        ES: 'Entradas, Yates y Excursiones en Busan',
+        FR: 'Billets, Yacht & Excursions à Busan',
+      }),
+      desc: pickLang(language, {
+        KR: '스카이캡슐·광안리 요트·송도 케이블카·아쿠아리움 모바일권',
+        EN: 'Sky Capsule, Gwangalli Yacht, Songdo Cable Car & Aquarium',
+        JA: 'スカイカプセル・広安里ヨット・松島ケーブルカー割引券',
+        ZH_TW: '天空膠囊列車、廣安里遊艇、松島纜車與水族館優惠券',
+        ZH_CN: '天空胶囊列车、广安里游艇、松岛缆车与水族馆优惠券',
+        ES: 'Sky Capsule, yate en Gwangalli, teleférico de Songdo y más',
+        FR: 'Sky Capsule, yacht à Gwangalli, téléphérique de Songdo',
+      }),
+      klookUrl: KLOOK_AFFILIATE_LINKS.BUSAN_ALL_ACTIVITIES,
+      kkdayUrl: KKDAY_AFFILIATE_LINKS.BUSAN_ALL_ACTIVITIES,
+    },
+  ];
+
   return (
-    <section
-      aria-label="Busan Travel Deals"
-      className="bg-gradient-to-br from-[#F7FAF2] via-white to-[#F3F7EC] rounded-3xl p-5 sm:p-6 border border-[#D8E5C5] shadow-xs text-left"
-    >
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-        <div className="flex items-center gap-2">
-          <span className="w-8 h-8 rounded-xl bg-[#8EA85E]/15 text-[#5E7A31] flex items-center justify-center shrink-0">
-            <Sparkles className="w-4 h-4" />
-          </span>
-          <div>
-            <h3 className="text-sm sm:text-base font-extrabold text-slate-900 leading-snug">
-              {pickLang(language, {
-                KR: '부산 여행 필수 패스 & 빈손 여행(짐배송) 할인 예약',
-                EN: 'Essential Busan Travel Pass & Hands-Free Luggage Delivery',
-                JA: '釜山旅行の必須パス＆手ぶら観光（荷物配送）お得予約',
-                ZH_TW: '釜山旅遊必備通行證 ＆ 空手觀光（行李配送）優惠預訂',
-                ZH_CN: '釜山旅游必备通行证 ＆ 空手观光（行李配送）优惠预订',
-                ES: 'Pase Esencial de Busan, Entradas y Entrega de Equipaje',
-                FR: 'Pass Essentiel de Busan, Billets & Livraison de Bagages',
-              })}
-            </h3>
-            <p className="text-[11px] sm:text-xs text-slate-500 font-medium">
-              {pickLang(language, {
-                KR: '현장 매표소 대기 없이 모바일 QR로 바로 입장하고 무거운 캐리어는 숙소로 먼저 보내세요.',
-                EN: 'Skip ticket lines with mobile QR entry and send heavy suitcases straight to your hotel.',
-                JA: 'チケット売り場に並ばずスマホQRでそのまま入場！重いスーツケースはホテルへ先に送れます。',
-                ZH_TW: '免排隊購票直接刷手機 QR 入場，並將沉重行李箱直接配送至下榻飯店。',
-                ZH_CN: '免排队购票直接刷手机 QR 入场，并将沉重行李箱直接配送至下榻酒店。',
-                ES: 'Entra directo con código QR móvil sin hacer cola y envía tus maletas pesadas al hotel.',
-                FR: 'Accédez sans file d’attente avec QR mobile et faites livrer vos valises directement à l’hôtel.',
-              })}
-            </p>
-          </div>
-        </div>
-      </div>
+    <section aria-label="Busan Travel Deals" className="py-2 text-left">
+      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#E5E2DC]">
+        {items.map((item, idx) => {
+          const Icon = item.icon;
+          return (
+            <div
+              key={idx}
+              className={`flex flex-col justify-between gap-2.5 ${
+                idx === 0 ? 'pb-3.5 md:pb-0 md:pr-5' : idx === 1 ? 'py-3.5 md:py-0 md:px-5' : 'pt-3.5 md:pt-0 md:pl-5'
+              }`}
+            >
+              <div className="flex items-start gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-xl bg-[#EDF4E3] border border-[#D5E3C3] flex items-center justify-center text-[#5E7A31] shrink-0 mt-0.5">
+                  <Icon className="w-4 h-4" strokeWidth={1.75} />
+                </div>
+                <div className="min-w-0">
+                  <h4 className="text-xs sm:text-[13px] font-bold text-[#11161B] leading-snug">
+                    {item.title}
+                  </h4>
+                  <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5 break-keep">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {/* Card 1: Visit Busan Pass */}
-        <div className="bg-white p-4 rounded-2xl border border-[#DCE7CC] hover:border-[#8EA85E] transition-all flex flex-col justify-between gap-3 shadow-2xs hover:shadow-sm">
-          <div className="space-y-1">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-extrabold text-[#5E7A31] bg-[#EDF4E3] px-2 py-0.5 rounded-md">
-                {pickLang(language, {
-                  KR: '인기 1위 필수템',
-                  EN: '#1 Best Seller',
-                  JA: '人気No.1 必須パス',
-                  ZH_TW: '人氣 No.1 必買',
-                  ZH_CN: '人气 No.1 必买',
-                  ES: 'N.º 1 Más vendido',
-                  FR: 'N°1 Indispensable',
-                })}
-              </span>
+              <div className="pl-10">
+                <PartnerIconPair
+                  klookHref={item.klookUrl}
+                  kkdayHref={item.kkdayUrl}
+                  isKkdayPreferred={isKkdayPreferred}
+                />
+              </div>
             </div>
-            <h4 className="text-sm font-extrabold text-slate-900 pt-1">
-              {pickLang(language, {
-                KR: '🎟️ 비짓부산패스 (Visit Busan Pass)',
-                EN: '🎟️ Visit Busan Pass (Official)',
-                JA: '🎟️ ビジット釜山パス (Visit Busan Pass)',
-                ZH_TW: '🎟️ 釜山通行證 (Visit Busan Pass)',
-                ZH_CN: '🎟️ 釜山通行证 (Visit Busan Pass)',
-                ES: '🎟️ Visit Busan Pass (Pase Oficial)',
-                FR: '🎟️ Visit Busan Pass (Pass Officiel)',
-              })}
-            </h4>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              {pickLang(language, {
-                KR: '해운대 해변열차·스파랜드·엑스더스카이·롯데월드·시티투어버스 등 40곳+ 무료 프리패스',
-                EN: 'Free access to 40+ top Busan attractions including Beach Train, Spaland, X the SKY & City Tour Bus',
-                JA: '海雲台海辺列車・スパランド・X the SKY・ロッテワールド・シティツアーバスなど40ヶ所以上が無料',
-                ZH_TW: '免費暢遊海雲台海岸列車、Spa Land、X the SKY、樂天世界與城市觀光巴士等 40+ 景點',
-                ZH_CN: '免费畅游海云台海岸列车、Spa Land、X the SKY、乐天世界与城市观光巴士等 40+ 景点',
-                ES: 'Acceso gratuito a más de 40 atracciones: Tren Costero de Haeundae, Spaland, X the SKY y Bus Turístico',
-                FR: 'Accès gratuit à plus de 40 sites : Train côtier de Haeundae, Spaland, X the SKY et Bus Touristique',
-              })}
-            </p>
-          </div>
-          <div className="flex items-center gap-2 pt-1">
-            <a
-              href={primaryLinks.VISIT_BUSAN_PASS}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-[#6B853E] hover:bg-[#586F31] text-white font-extrabold text-xs transition-all no-underline shadow-2xs"
-            >
-              <span>{primaryBrand}</span>
-              <ExternalLink className="w-3 h-3 shrink-0" />
-            </a>
-            <a
-              href={secondaryLinks.VISIT_BUSAN_PASS}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-[#F4F8EE] hover:bg-[#E7F0DA] text-[#4D6328] border border-[#C6D8AE] font-extrabold text-xs transition-all no-underline"
-            >
-              <span>{secondaryBrand}</span>
-              <ExternalLink className="w-3 h-3 shrink-0" />
-            </a>
-          </div>
-        </div>
-
-        {/* Card 2: Luggage Delivery */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 hover:border-indigo-400 transition-all flex flex-col justify-between gap-3 shadow-2xs hover:shadow-sm">
-          <div className="space-y-1">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md">
-                {pickLang(language, {
-                  KR: '무거운 캐리어 해방',
-                  EN: 'Hands-Free Travel',
-                  JA: 'スーツケース配送',
-                  ZH_TW: '空手輕鬆觀光',
-                  ZH_CN: '空手轻松游览',
-                  ES: 'Viaja sin maletas',
-                  FR: 'Voyagez mains libres',
-                })}
-              </span>
-            </div>
-            <h4 className="text-sm font-extrabold text-slate-900 pt-1">
-              {pickLang(language, {
-                KR: '🧳 부산역·김해공항 ↔ 호텔 짐배송',
-                EN: '🧳 Busan Station / Airport ↔ Hotel Luggage',
-                JA: '🧳 釜山駅・金海空港 ↔ ホテル当日荷物配送',
-                ZH_TW: '🧳 釜山站・金海機場 ↔ 飯店當日行李配送',
-                ZH_CN: '🧳 釜山站・金海机场 ↔ 酒店当日行李配送',
-                ES: '🧳 Entrega de Equipaje: Estación/Aeropuerto ↔ Hotel',
-                FR: '🧳 Livraison de Bagages : Gare/Aéroport ↔ Hôtel',
-              })}
-            </h4>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              {pickLang(language, {
-                KR: '지하철 보관함 빈자리 찾을 필요 없이 도착 즉시 짐을 맡기고 두 손 가볍게 부산 여행을 시작하세요',
-                EN: 'Drop off your bags upon arrival at Busan Station or Gimhae Airport and pick them up at your hotel',
-                JA: '駅のコインロッカーを探す手間なし！到着後すぐ荷物を預けて、手ぶらで釜山観光をスタート',
-                ZH_TW: '不必在車站找空置物櫃！抵達釜山站或機場即可交寄行李，直接空手展開旅程',
-                ZH_CN: '不必在车站找空寄存柜！抵达釜山站或机场即可交寄行李，直接空手开启旅程',
-                ES: 'Olvídate de buscar taquillas vacías: deja tu maleta al llegar y recógela directamente en tu hotel',
-                FR: 'Plus besoin de chercher une consigne libre : déposez vos valises à l’arrivée et récupérez-les à l’hôtel',
-              })}
-            </p>
-          </div>
-          <div className="flex items-center gap-2 pt-1">
-            <a
-              href={primaryLinks.BUSAN_LUGGAGE_DELIVERY}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs transition-all no-underline shadow-2xs"
-            >
-              <span>{primaryBrand}</span>
-              <ExternalLink className="w-3 h-3 shrink-0" />
-            </a>
-            <a
-              href={secondaryLinks.BUSAN_LUGGAGE_DELIVERY}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-indigo-50/70 hover:bg-indigo-100/80 text-indigo-700 border border-indigo-200 font-extrabold text-xs transition-all no-underline"
-            >
-              <span>{secondaryBrand}</span>
-              <ExternalLink className="w-3 h-3 shrink-0" />
-            </a>
-          </div>
-        </div>
-
-        {/* Card 3: All Busan Tickets & Tours */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 hover:border-amber-400 transition-all flex flex-col justify-between gap-3 shadow-2xs hover:shadow-sm">
-          <div className="space-y-1">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-extrabold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-md">
-                {pickLang(language, {
-                  KR: '모바일 즉시 입장',
-                  EN: 'Instant QR Tickets',
-                  JA: 'スマホ即時入場',
-                  ZH_TW: '手機即時憑證',
-                  ZH_CN: '手机即时凭证',
-                  ES: 'Entrada QR inmediata',
-                  FR: 'Billet QR immédiat',
-                })}
-              </span>
-            </div>
-            <h4 className="text-sm font-extrabold text-slate-900 pt-1">
-              {pickLang(language, {
-                KR: '🎡 부산 인기 티켓·요트·일일투어 특가',
-                EN: '🎡 Top Busan Tickets, Yachts & Day Tours',
-                JA: '🎡 釜山の人気チケット・ヨット・日帰りツアー',
-                ZH_TW: '🎡 釜山熱門門票・遊艇・一日遊特價',
-                ZH_CN: '🎡 釜山热门门票・游艇・一日游特价',
-                ES: '🎡 Entradas, Yates y Excursiones en Busan',
-                FR: '🎡 Billets, Croisières en Yacht & Excursions',
-              })}
-            </h4>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              {pickLang(language, {
-                KR: '해운대 스카이캡슐·광안리 요트투어·송도 해상케이블카·아쿠아리움 모바일 할인 티켓 총정리',
-                EN: 'Discounted tickets for Sky Capsule, Gwangalli Yacht Tour, Songdo Marine Cable Car & SEA LIFE Aquarium',
-                JA: '海雲台スカイカプセル・広安里ヨットツアー・松島海上ケーブルカー・アクアリウムの割引チケット',
-                ZH_TW: '海雲台天空膠囊列車、廣安里遊艇、松島海上纜車、SEA LIFE 水族館優惠門票總整理',
-                ZH_CN: '海云台天空胶囊列车、广安里游艇、松岛海上缆车、SEA LIFE 水族馆优惠门票全整理',
-                ES: 'Entradas con descuento para Sky Capsule, paseo en yate por Gwangalli, teleférico de Songdo y Acuario',
-                FR: 'Billets à prix réduit : Sky Capsule, yacht à Gwangalli, téléphérique de Songdo et Aquarium SEA LIFE',
-              })}
-            </p>
-          </div>
-          <div className="flex items-center gap-2 pt-1">
-            <a
-              href={primaryLinks.BUSAN_ALL_ACTIVITIES}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs transition-all no-underline shadow-2xs"
-            >
-              <span>{primaryBrand}</span>
-              <ExternalLink className="w-3 h-3 shrink-0" />
-            </a>
-            <a
-              href={secondaryLinks.BUSAN_ALL_ACTIVITIES}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100/80 text-amber-800 border border-amber-200 font-extrabold text-xs transition-all no-underline"
-            >
-              <span>{secondaryBrand}</span>
-              <ExternalLink className="w-3 h-3 shrink-0" />
-            </a>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </section>
   );

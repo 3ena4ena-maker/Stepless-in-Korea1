@@ -1,4 +1,5 @@
 import { Language } from '../i18n/dictionary';
+import { SpotTicketBookingRow } from './BusanAffiliateQuickBar';
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -508,6 +509,9 @@ export default function BarrierFreePlaceDetailView({
           )}
         </section>
       ) : null}
+
+      {/* 5.5 유료 명소 · 비짓부산패스 할인 티켓 예매 */}
+      <SpotTicketBookingRow spotTitleKo={currentPlace.nameKo} language={language} />
 
       {/* 6. 무장애 정보 */}
       {/* 한국관광공사 무장애 관광 API (KorWithService2) 실제 데이터 */}

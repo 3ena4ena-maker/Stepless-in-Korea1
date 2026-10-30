@@ -56,6 +56,7 @@ import { BUSAN_ITINERARIES, ItineraryCourse, ItineraryStep, getStepFoodCategorie
 import { CHILD_TRANSPORT_INFOGRAPHIC_BASE64 } from '../childtransport_base64';
 import { getTodayDate, navigateToSpa } from '../utils';
 import { TourApiItineraryStepCard } from './TourApiItineraryStepCard';
+import { SpotTicketBookingRow } from './BusanAffiliateQuickBar';
 import { matchTourApiSpotId, resolvePlaceTargetId } from '../services/tourApiCommon';
 import { getKoreaTourApiPlaceDetail } from '../data/koreaTourApiPlaceDetails';
 import { useMyRoute } from '../services/myRouteService';
@@ -4514,6 +4515,8 @@ case 'EXPERIENCE': {
                                 )}
                               </div>
 
+                              <SpotTicketBookingRow spotTitleKo={step.titleKo} language={language} />
+
                               {/* Bottom Transit & Station Info (Clean Address & Square Map Buttons) */}
                               <div className="pt-3 border-t border-[#E5E2DC] space-y-2 text-left">
                                 {step.rentalStations && step.rentalStations.length > 0 ? (
@@ -5295,6 +5298,8 @@ case 'EXPERIENCE': {
                                           </p>
                                         </div>
 
+                                        <SpotTicketBookingRow spotTitleKo={item.nameKo} language={language} />
+
                                         {/* Bottom Address + MapAppIcons */}
                                         <div className="pt-3 border-t border-[#E5E2DC] text-left">
                                           <div className="flex items-center justify-between gap-2">
@@ -5446,6 +5451,8 @@ case 'EXPERIENCE': {
                                 </div>
                               )}
                             </div>
+
+                            <SpotTicketBookingRow spotTitleKo={step.titleKo} language={language} />
 
                             {/* Bottom: Address + Naver & Google Maps square icon buttons (Clean & consistent) */}
                             {cleanAddrKo && (

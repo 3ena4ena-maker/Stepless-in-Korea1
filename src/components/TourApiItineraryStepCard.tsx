@@ -23,6 +23,7 @@ import { ItineraryStep } from '../data/itineraries';
 import { useTourApiSpot, resolvePlaceTargetId } from '../services/tourApiCommon';
 import { useMyRoute } from '../services/myRouteService';
 import ElegantIllustration from './ElegantIllustration';
+import { SpotTicketBookingRow } from './BusanAffiliateQuickBar';
 
 interface TourApiItineraryStepCardProps {
   stepNumber: number;
@@ -194,6 +195,9 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
             )}
           </div>
         </div>
+
+        {/* 유료 명소 · 비짓부산패스 할인 티켓 바로 예매 (Klook / KKday) */}
+        <SpotTicketBookingRow spotTitleKo={step.titleKo} language={language} />
 
         {/* 하단 주소 & 지도 연결 (공백 최소화) */}
         {effectiveAddress && (
