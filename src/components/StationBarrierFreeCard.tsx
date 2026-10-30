@@ -11,6 +11,7 @@ import { VerificationBadge } from './VerificationBadge';
 import { Train, Clock, MapPin, AlertTriangle, ArrowRightLeft, ShieldCheck, Box, Compass } from 'lucide-react';
 import { renderLockerInfo } from '../data/lockers';
 import { getNearbyPlaces, NearbyExitBadge } from '../data/nearbyPlaces';
+import BusanAffiliateQuickBar from './BusanAffiliateQuickBar';
 
 interface StationBarrierFreeCardProps {
   station: Station;
@@ -405,6 +406,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                 </th>
                 <td className="block sm:table-cell py-2.5 px-3 sm:py-3 sm:px-4 text-slate-700 font-medium text-xs sm:text-sm">
                   {renderLockerInfo(station.id, language)}
+                  <BusanAffiliateQuickBar language={language} variant="locker-inline" />
                 </td>
               </tr>
 
@@ -472,6 +474,7 @@ export function StationBarrierFreeCard({ station, language = 'KR' }: StationBarr
                       })}
                     </span>
                   )}
+                  <BusanAffiliateQuickBar language={language} variant="nearby-inline" />
                 </td>
               </tr>
 

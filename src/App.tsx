@@ -50,6 +50,7 @@ import { formatLineLabelI18n } from './i18n/stationTranslations';
 import { useDomLocalizer } from './i18n/domLocalizer';
 import TimelineVisualizer from './components/TimelineVisualizer';
 import { StationBarrierFreeCard } from './components/StationBarrierFreeCard';
+import BusanAffiliateQuickBar from './components/BusanAffiliateQuickBar';
 import { HomeOverviewSection } from './components/HomeOverviewSection';
 import { getLockerInfoText, renderLockerInfo } from './data/lockers';
 import { getNearbyPlaces, NearbyExitBadge, NearbyPlace } from './data/nearbyPlaces';
@@ -2051,6 +2052,9 @@ export default function App() {
                   {/* 📋 Station Barrier-Free Movement Summary Table & Step-by-Step Info */}
                   <StationBarrierFreeCard station={activeStation} language={language} />
 
+                  {/* 🎟️ Busan Travel Pass & Hands-Free Luggage Delivery Quick Booking */}
+                  <BusanAffiliateQuickBar language={language} variant="full" />
+
 
 
               {/* Station Selection Banner (페이지 가장 아랫쪽으로 배치) */}
@@ -2246,6 +2250,8 @@ export default function App() {
                     }, 100);
                   }}
                 />
+                {/* 🎟️ Busan Travel Pass & Hands-Free Luggage Delivery Quick Booking */}
+                <BusanAffiliateQuickBar language={language} variant="full" />
                 {/* Google AdSense Unit rendered strictly INSIDE Suspense so it never fires on loading screens */}
                 {(currentTab !== 'tips' || tipsSubPage !== 'index') && currentTab !== 'schedule' && (
                   <AdSenseUnit currentParams={adParams} />
