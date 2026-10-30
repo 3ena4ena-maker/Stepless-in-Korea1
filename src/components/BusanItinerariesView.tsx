@@ -7504,7 +7504,7 @@ case 'EXPERIENCE': {
                     href="https://www.reddit.com/r/BusanTravelTips/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#11161B] hover:bg-[#8EA85E] text-white font-bold text-xs sm:text-sm transition-colors whitespace-nowrap cursor-pointer shrink-0 shadow-2xs"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#FF4500] hover:bg-[#E03D00] text-white font-bold text-xs sm:text-sm transition-colors whitespace-nowrap cursor-pointer shrink-0 shadow-2xs"
                   >
                     <span>{language === 'KR' ? 'r/BusanTravelTips 레딧 커뮤니티 바로가기' : 'Visit r/BusanTravelTips Reddit'}</span>
                     <ExternalLink className="w-3.5 h-3.5" />

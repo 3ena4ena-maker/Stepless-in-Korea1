@@ -32,8 +32,18 @@ export interface MyRoutePlace {
   addedAt: number;
 }
 
+export interface SavedRouteItem {
+  id: string;
+  name: string;
+  places: MyRoutePlace[];
+  createdAt: number;
+  updatedAt: number;
+}
+
 const STORAGE_KEY = 'stepless_my_travel_route_v1';
 const EVENT_NAME = 'stepless_my_route_changed';
+const VAULT_STORAGE_KEY = 'stepless_saved_routes_vault_v1';
+const VAULT_EVENT_NAME = 'stepless_saved_routes_vault_changed';
 
 // 부산 주요 권역별 대표 기준 정밀 좌표 사전 (검색어 부분 일치 매칭용)
 const BUSAN_AREA_FALLBACKS: Record<string, { lat: number; lng: number; addressKo: string }> = {
@@ -212,6 +222,77 @@ export const KNOWN_COORDINATES: Record<string, { lat: number; lng: number; addre
   '온천장 허심청': { lat: 35.2210, lng: 129.0825, addressKo: '부산광역시 동래구 온천장로107번길 32', categoryKo: '온천/휴양' },
   '동래읍성': { lat: 35.2085, lng: 129.0885, addressKo: '부산광역시 동래구 명륜동', categoryKo: '역사/명소' },
   '화명수목원': { lat: 35.2425, lng: 129.0345, addressKo: '부산광역시 북구 산성로 299', categoryKo: '자연/생태' },
+  // --- 부산 식도락 / 카페 / 체험 / 박물관 / 시장 정밀 도로명 좌표 (NCP Geocoder 검증) ---
+  '까사부사노 테라스': { lat: 35.150600, lng: 129.115865, addressKo: '부산광역시 수영구 광안해변로 179', categoryKo: '식도락/카페' },
+  '까사부사노': { lat: 35.150600, lng: 129.115865, addressKo: '부산광역시 수영구 광안해변로 179', categoryKo: '식도락/카페' },
+  '고베규카츠': { lat: 35.154735, lng: 129.060684, addressKo: '부산광역시 부산진구 중앙대로680번가길 29', categoryKo: '식도락/맛집' },
+  '고베규카츠 서면점': { lat: 35.154735, lng: 129.060684, addressKo: '부산광역시 부산진구 중앙대로680번가길 29', categoryKo: '식도락/맛집' },
+  '카페인차저 광안리 본점': { lat: 35.154312, lng: 129.119982, addressKo: '부산광역시 수영구 광안해변로 237', categoryKo: '식도락/카페' },
+  '카페인차저': { lat: 35.154312, lng: 129.119982, addressKo: '부산광역시 수영구 광안해변로 237', categoryKo: '식도락/카페' },
+  '동방명주': { lat: 35.154312, lng: 129.119982, addressKo: '부산광역시 수영구 광안해변로 237', categoryKo: '식도락/맛집' },
+  '워킹홀리데이': { lat: 35.154185, lng: 129.119810, addressKo: '부산광역시 수영구 광안해변로 235', categoryKo: '식도락/브런치' },
+  '돌닭 광안점': { lat: 35.153620, lng: 129.119120, addressKo: '부산광역시 수영구 광안해변로 225', categoryKo: '식도락/맛집' },
+  '엘까르니따스 광안리점': { lat: 35.151390, lng: 129.116650, addressKo: '부산광역시 수영구 광안해변로 191', categoryKo: '식도락/맛집' },
+  '엘까르니따스': { lat: 35.151390, lng: 129.116650, addressKo: '부산광역시 수영구 광안해변로 191', categoryKo: '식도락/맛집' },
+  '알로이삥삥': { lat: 35.154820, lng: 129.132850, addressKo: '부산광역시 수영구 민락수변로 125', categoryKo: '식도락/맛집' },
+  '할매재첩국부산본점': { lat: 35.150850, lng: 129.112450, addressKo: '부산광역시 수영구 광남로120번길 8', categoryKo: '식도락/맛집' },
+  '할매재첩국집': { lat: 35.150850, lng: 129.112450, addressKo: '부산광역시 수영구 광남로120번길 8', categoryKo: '식도락/맛집' },
+  '커피프론트 센텀시티': { lat: 35.166950, lng: 129.132180, addressKo: '부산광역시 해운대구 센텀2로 25', categoryKo: '식도락/카페' },
+  '커피프론트': { lat: 35.166950, lng: 129.132180, addressKo: '부산광역시 해운대구 센텀2로 25', categoryKo: '식도락/카페' },
+  '양산도 본점': { lat: 35.141920, lng: 129.062340, addressKo: '부산광역시 부산진구 골드테마길 61', categoryKo: '식도락/맛집' },
+  '양산도': { lat: 35.141920, lng: 129.062340, addressKo: '부산광역시 부산진구 골드테마길 61', categoryKo: '식도락/맛집' },
+  '솔솥 서면점': { lat: 35.153980, lng: 129.062810, addressKo: '부산광역시 부산진구 동천로 58', categoryKo: '식도락/맛집' },
+  '솔솥': { lat: 35.156320, lng: 129.063150, addressKo: '부산광역시 부산진구 동천로95번길 15', categoryKo: '식도락/맛집' },
+  '기장손칼국수': { lat: 35.156480, lng: 129.058120, addressKo: '부산광역시 부산진구 서면로 56', categoryKo: '식도락/맛집' },
+  '서면종합시장': { lat: 35.156480, lng: 129.058120, addressKo: '부산광역시 부산진구 서면로 56', categoryKo: '전통시장' },
+  '춘하추동밀면 서면본점': { lat: 35.158890, lng: 129.056890, addressKo: '부산광역시 부산진구 서면문화로 48-1', categoryKo: '식도락/맛집' },
+  '춘하추동밀면': { lat: 35.158890, lng: 129.056890, addressKo: '부산광역시 부산진구 서면문화로 48-1', categoryKo: '식도락/맛집' },
+  '우정돌솥비빔밥 서면점': { lat: 35.154120, lng: 129.060950, addressKo: '부산광역시 부산진구 중앙대로692번길 45', categoryKo: '식도락/맛집' },
+  '종로복떡집': { lat: 35.155240, lng: 129.056720, addressKo: '부산광역시 부산진구 신천대로62번길 42', categoryKo: '식도락/디저트' },
+  '롱드라이버스': { lat: 35.157850, lng: 129.065920, addressKo: '부산광역시 부산진구 서전로58번길 40', categoryKo: '식도락/브런치' },
+  '히떼 로스터리': { lat: 35.156120, lng: 129.065180, addressKo: '부산광역시 부산진구 전포대로 223', categoryKo: '식도락/카페' },
+  '먼스커피바': { lat: 35.153820, lng: 129.064210, addressKo: '부산광역시 부산진구 전포대로176번길 12.5', categoryKo: '식도락/카페' },
+  '나이브브류어스': { lat: 35.158140, lng: 129.066350, addressKo: '부산광역시 부산진구 전포대로246번길 15', categoryKo: '식도락/카페' },
+  '소문난주문진막국수': { lat: 35.197250, lng: 129.063120, addressKo: '부산광역시 동래구 사직로58번길 8', categoryKo: '식도락/맛집' },
+  '최뼈다귀해장국 사상본점': { lat: 35.162840, lng: 128.983920, addressKo: '부산광역시 사상구 광장로 93', categoryKo: '식도락/맛집' },
+  '국보미역본점': { lat: 35.192410, lng: 129.218540, addressKo: '부산광역시 기장군 기장읍 공수해안길 57', categoryKo: '식도락/맛집' },
+  '스카이99 그릴앤파스타': { lat: 35.159820, lng: 129.169520, addressKo: '부산광역시 해운대구 달맞이길62번길 137', categoryKo: '식도락/맛집' },
+  '옵스 (OPS)': { lat: 35.161250, lng: 129.162180, addressKo: '부산광역시 해운대구 중동1로 31 (해운대점)', categoryKo: '식도락/베이커리' },
+  '옵스': { lat: 35.161250, lng: 129.162180, addressKo: '부산광역시 해운대구 중동1로 31 (해운대점)', categoryKo: '식도락/베이커리' },
+  '카페공지': { lat: 35.236850, lng: 129.214520, addressKo: '부산광역시 기장군 기장읍 기장대로 382-17', categoryKo: '식도락/카페' },
+  '비엔씨 (B&C) 광복본점': { lat: 35.098920, lng: 129.031250, addressKo: '부산광역시 중구 구덕로 34-1', categoryKo: '식도락/베이커리' },
+  '비엔씨': { lat: 35.098920, lng: 129.031250, addressKo: '부산광역시 중구 구덕로 34-1', categoryKo: '식도락/베이커리' },
+  '홍소족발': { lat: 35.099840, lng: 129.026850, addressKo: '부산광역시 중구 구덕로 79 (부평본점)', categoryKo: '식도락/맛집' },
+  '자갈마당': { lat: 35.060850, lng: 129.076420, addressKo: '부산광역시 영도구 감지해변길 81', categoryKo: '식도락/맛집' },
+  '영도해녀촌': { lat: 35.068420, lng: 129.058120, addressKo: '부산광역시 영도구 중리남로 2-35', categoryKo: '식도락/맛집' },
+  '몽벨쉘터 영도점': { lat: 35.086520, lng: 129.071240, addressKo: '부산광역시 영도구 해양로 247', categoryKo: '식도락/카페' },
+  '아르떼뮤지엄 부산': { lat: 35.086520, lng: 129.071240, addressKo: '부산광역시 영도구 해양로 247', categoryKo: '체험/박물관' },
+  '레귤러하우스': { lat: 35.101420, lng: 129.029540, addressKo: '부산광역시 중구 중구로44번길 22', categoryKo: '식도락/카페' },
+  '광복동12시': { lat: 35.099450, lng: 129.030820, addressKo: '부산광역시 중구 광복로 49-1', categoryKo: '식도락/카페' },
+  '미피카페 부산': { lat: 35.076850, lng: 129.044250, addressKo: '부산광역시 영도구 절영로 202', categoryKo: '식도락/카페' },
+  '이가네떡볶이': { lat: 35.101820, lng: 129.026410, addressKo: '부산광역시 중구 부평1길 48', categoryKo: '전통시장/맛집' },
+  '이가네떡볶이 (부평깡통시장)': { lat: 35.101820, lng: 129.026410, addressKo: '부산광역시 중구 부평1길 48', categoryKo: '전통시장/맛집' },
+  'BIFF광장 씨앗호떡': { lat: 35.099100, lng: 129.028900, addressKo: '부산광역시 중구 구덕로 58-1', categoryKo: '전통시장/간식' },
+  '이원화구포국시': { lat: 35.209850, lng: 129.005240, addressKo: '부산광역시 북구 구포만세길 100', categoryKo: '식도락/맛집' },
+  '동래할매파전': { lat: 35.204650, lng: 129.083850, addressKo: '부산광역시 동래구 명륜로94번길 43-10', categoryKo: '식도락/맛집' },
+  '국제밀면 본점': { lat: 35.192840, lng: 129.078920, addressKo: '부산광역시 연제구 중앙대로1235번길 23', categoryKo: '식도락/맛집' },
+  '다대포버들집바지락해물칼국수': { lat: 35.048920, lng: 128.967540, addressKo: '부산광역시 사하구 다대동 1552-20', categoryKo: '식도락/맛집' },
+  '냉수탕가든': { lat: 35.147850, lng: 129.028540, addressKo: '부산광역시 부산진구 가야공원로 107', categoryKo: '식도락/맛집' },
+  '제일떡방앗간': { lat: 35.210420, lng: 129.004910, addressKo: '부산광역시 북구 구포시장길 42', categoryKo: '전통시장/디저트' },
+  '뮤지엄원 (Museum 1)': { lat: 35.171520, lng: 129.126850, addressKo: '부산광역시 해운대구 센텀서로 20', categoryKo: '체험/미술관' },
+  '뮤지엄원': { lat: 35.171520, lng: 129.126850, addressKo: '부산광역시 해운대구 센텀서로 20', categoryKo: '체험/미술관' },
+  '뮤지엄 원': { lat: 35.171520, lng: 129.126850, addressKo: '부산광역시 해운대구 센텀서로 20', categoryKo: '체험/미술관' },
+  '영화의전당 라이브러리': { lat: 35.171100, lng: 129.127800, addressKo: '부산광역시 해운대구 수영강변대로 120', categoryKo: '체험/문화' },
+  '증권박물관 부산관': { lat: 35.148250, lng: 129.065420, addressKo: '부산광역시 남구 문현금융로 40 BIFC 2층', categoryKo: '체험/박물관' },
+  '부산광역시교육청 어린이창의교육관': { lat: 35.175820, lng: 129.048520, addressKo: '부산광역시 부산진구 새싹로 295', categoryKo: '체험/과학' },
+  '삼정타워': { lat: 35.153120, lng: 129.059650, addressKo: '부산광역시 부산진구 중앙대로 672', categoryKo: '체험/복합문화' },
+  '삼정타워 (Samjung Tower)': { lat: 35.153120, lng: 129.059650, addressKo: '부산광역시 부산진구 중앙대로 672', categoryKo: '체험/복합문화' },
+  '삼정타워 런닝맨 체험관': { lat: 35.153120, lng: 129.059650, addressKo: '부산광역시 부산진구 중앙대로 672 10층', categoryKo: '체험/액티비티' },
+  '부산과학체험관': { lat: 35.119420, lng: 129.039850, addressKo: '부산광역시 동구 중앙대로 260번길 11', categoryKo: '체험/과학' },
+  '금정문화회관': { lat: 35.252850, lng: 129.091240, addressKo: '부산광역시 금정구 체육공원로 7', categoryKo: '체험/문화' },
+  '범어사 성보박물관': { lat: 35.283800, lng: 129.068200, addressKo: '부산광역시 금정구 범어사로 250', categoryKo: '체험/박물관' },
+  '해광사': { lat: 35.209850, lng: 129.226850, addressKo: '부산광역시 기장군 기장읍 기장해안로 390', categoryKo: '사찰/명소' },
+  '해광사 용왕단': { lat: 35.209850, lng: 129.226850, addressKo: '부산광역시 기장군 기장읍 기장해안로 390', categoryKo: '사찰/명소' },
 };
 
 /**
@@ -345,24 +426,33 @@ export function getMyRoutePlaces(): MyRoutePlace[] {
 
     let hasHealed = false;
     const healedPlaces: MyRoutePlace[] = parsed.map(place => {
-      // 기존 저장된 좌표가 비정상(0 또는 예전 기본 시청좌표)일 경우 정밀 좌표로 재보정
-      const isSuspectCoord = 
-        !place.latitude || 
-        !place.longitude || 
+      const correctInfo = resolvePlaceLocationInfo(place.titleKo, place.addressRoadKo);
+      const isSuspectCoord =
+        !place.latitude ||
+        !place.longitude ||
         (Math.abs(place.latitude - 35.1796) < 0.001 && Math.abs(place.longitude - 129.0756) < 0.001);
 
-      if (isSuspectCoord) {
-        const correctInfo = resolvePlaceLocationInfo(place.titleKo, place.addressRoadKo);
-        if (correctInfo.latitude && correctInfo.longitude) {
-          hasHealed = true;
-          return {
-            ...place,
-            latitude: correctInfo.latitude,
-            longitude: correctInfo.longitude,
-            addressRoadKo: place.addressRoadKo || correctInfo.addressRoadKo,
-            firstImage: place.firstImage || correctInfo.firstImage,
-          };
-        }
+      const cleanTitle = (place.titleKo || '').replace(/\(.*?\)/g, '').trim();
+      const hasExactKnownMatch = Boolean(
+        KNOWN_COORDINATES[place.titleKo] || (cleanTitle && KNOWN_COORDINATES[cleanTitle])
+      );
+      const coordDiffersFromKnown =
+        hasExactKnownMatch &&
+        (Math.abs((place.latitude || 0) - correctInfo.latitude) > 0.0001 ||
+          Math.abs((place.longitude || 0) - correctInfo.longitude) > 0.0001);
+
+      if ((isSuspectCoord || coordDiffersFromKnown) && correctInfo.latitude && correctInfo.longitude) {
+        hasHealed = true;
+        return {
+          ...place,
+          latitude: correctInfo.latitude,
+          longitude: correctInfo.longitude,
+          addressRoadKo:
+            place.addressRoadKo && place.addressRoadKo !== '부산광역시' && !place.addressRoadKo.includes('일대')
+              ? place.addressRoadKo
+              : correctInfo.addressRoadKo,
+          firstImage: place.firstImage || correctInfo.firstImage,
+        };
       }
       return place;
     });
@@ -375,6 +465,37 @@ export function getMyRoutePlaces(): MyRoutePlace[] {
   } catch (err) {
     console.warn('Failed to load my route places from localStorage:', err);
     return [];
+  }
+}
+
+/**
+ * 실시간 지오코더(Naver/Google)로 확인된 정밀 좌표를 루트 내 장소에 즉시 반영
+ */
+export function updatePlaceCoordinatesInMyRoute(
+  idOrTitle: string,
+  latitude: number,
+  longitude: number,
+  roadAddressKo?: string
+): void {
+  if (!idOrTitle || !latitude || !longitude) return;
+  const current = getMyRoutePlaces();
+  let changed = false;
+  const updated = current.map(p => {
+    if (p.id === idOrTitle || p.titleKo === idOrTitle) {
+      if (Math.abs(p.latitude - latitude) > 0.00005 || Math.abs(p.longitude - longitude) > 0.00005) {
+        changed = true;
+        return {
+          ...p,
+          latitude,
+          longitude,
+          addressRoadKo: roadAddressKo || p.addressRoadKo,
+        };
+      }
+    }
+    return p;
+  });
+  if (changed) {
+    saveAndNotify(updated);
   }
 }
 
@@ -395,23 +516,19 @@ function saveAndNotify(places: MyRoutePlace[]) {
 export function exportRouteToShareData(places: MyRoutePlace[]): string {
   try {
     if (!places || places.length === 0) return '';
-    const compact = places.map(p => ({
-      id: p.id,
-      t: p.titleKo,
-      te: p.titleEn,
-      c: p.categoryKo,
-      ce: p.categoryEn,
-      lat: Math.round(p.latitude * 1000000) / 1000000,
-      lng: Math.round(p.longitude * 1000000) / 1000000,
-      a: p.addressRoadKo,
-      ae: p.addressRoadEn,
-      img: p.firstImage,
-      st: p.stationInfoKo,
-      ste: p.stationInfoEn,
-      d: p.descKo,
-      de: p.descEn,
-      tm: p.time,
-    }));
+    const compact = places.map(p => {
+      const entry: Record<string, any> = {
+        t: p.titleKo,
+        lat: Math.round(p.latitude * 100000) / 100000,
+        lng: Math.round(p.longitude * 100000) / 100000,
+      };
+      if (p.titleEn && p.titleEn !== p.titleKo) entry.te = p.titleEn;
+      if (p.categoryKo && p.categoryKo !== '추천명소') entry.c = p.categoryKo;
+      if (p.addressRoadKo && p.addressRoadKo !== '부산광역시') entry.a = p.addressRoadKo;
+      if (p.stationInfoKo) entry.st = p.stationInfoKo;
+      if (p.time) entry.tm = p.time;
+      return entry;
+    });
     const rawB64 = btoa(encodeURIComponent(JSON.stringify(compact)));
     // URL-safe Base64 변환
     return rawB64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -442,25 +559,22 @@ export function importRouteFromShareData(encodedStr: string): MyRoutePlace[] | n
       const title = item.t || '추천 여행지';
       const rawLat = Number(item.lat);
       const rawLng = Number(item.lng);
-      
+      const resolved = resolvePlaceLocationInfo(title, item.a);
+
       let lat = rawLat;
       let lng = rawLng;
-      let addr = item.a || '부산광역시';
-      let img = item.img;
-      let catKo = item.c || '추천명소';
+      let addr = item.a || resolved.addressRoadKo || '부산광역시';
+      let img = item.img || resolved.firstImage;
+      let catKo = item.c || resolved.categoryKo || '추천명소';
 
       // 좌표가 비어있거나 부산 권역을 벗어난 경우 정밀 좌표로 자동 보정
       if (!lat || !lng || isNaN(lat) || isNaN(lng) || lat < 34.5 || lat > 35.6 || lng < 128.5 || lng > 129.5) {
-        const resolved = resolvePlaceLocationInfo(title, addr);
         lat = resolved.latitude;
         lng = resolved.longitude;
-        addr = resolved.addressRoadKo || addr;
-        img = resolved.firstImage || img;
-        catKo = resolved.categoryKo || catKo;
       }
 
       return {
-        id: item.id || `shared-${idx}-${Date.now()}`,
+        id: item.id || title || `shared-${idx}-${Date.now()}`,
         titleKo: title,
         titleEn: item.te || title || 'Busan Spot',
         categoryKo: catKo,
@@ -521,22 +635,124 @@ export function mergeImportedRouteIntoMyRoute(places: MyRoutePlace[]): number {
 }
 
 /**
- * 내 여행 루트의 전체 텍스트 요약 (메신저/메모장 복사용)
+ * 특정 루트 장소 배열의 전용 재방문/공유 URL 생성
  */
-export function formatRouteSummaryText(places: MyRoutePlace[], language: Language = 'KR'): string {
-  if (!places || places.length === 0) return '';
+export function buildRouteShareUrl(places: MyRoutePlace[]): string {
+  if (!places || places.length === 0 || typeof window === 'undefined') return '';
   const shareCode = exportRouteToShareData(places);
-  const shareUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}${window.location.pathname}?route=${shareCode}#my-route`
-    : '';
+  if (!shareCode) return '';
+  return `${window.location.origin}${window.location.pathname}?route=${shareCode}#my-route`;
+}
+
+/**
+ * 내 여행 루트의 전체 텍스트 요약 (나에게 보내기 / 메신저·메모장 복사용)
+ * 사용자가 링크를 눌러 다시 Stepless in Busan 사이트로 돌아와 지도와 티켓 예매를 이용할 수 있도록 구성
+ */
+export function formatRouteSummaryText(places: MyRoutePlace[], language: Language = 'KR', routeTitle?: string): string {
+  if (!places || places.length === 0) return '';
+  const shareUrl = buildRouteShareUrl(places);
 
   if (language !== 'KR') {
+    const headerTitle = routeTitle ? `[Stepless in Busan] ${routeTitle} (${places.length} Spots)` : `[Stepless in Busan] My Busan Travel Route (${places.length} Spots)`;
     const lines = places.map((p, idx) => `${idx + 1}. ${p.titleEn || p.titleKo} (${p.categoryEn || p.categoryKo || 'Spot'}) - ${p.addressRoadEn || p.addressRoadKo || 'Busan'}`);
-    return `[My Busan Travel Route (${places.length} Spots)]\n${lines.join('\n')}\n\n📍 Interactive Route Map:\n${shareUrl}`;
+    return `${headerTitle}\n\n🔗 Open Interactive Route Map & Ticket Booking:\n${shareUrl}\n\n📍 Route Sequence:\n${lines.join('\n')}`;
   }
 
+  const headerTitle = routeTitle ? `[Stepless in Busan] ${routeTitle} (총 ${places.length}곳)` : `[Stepless in Busan] 내 부산 여행 루트 (총 ${places.length}곳)`;
   const lines = places.map((p, idx) => `${idx + 1}. ${p.titleKo} (${p.categoryKo || '명소'}) - ${p.addressRoadKo || '부산'}`);
-  return `[내 부산 여행 루트 (총 ${places.length}곳)]\n${lines.join('\n')}\n\n📍 맞춤 여행 루트 지도 확인하기:\n${shareUrl}`;
+  return `${headerTitle}\n\n🔗 아래 링크를 누르면 언제든 내 맞춤 지도와 티켓 예매 페이지로 바로 돌아옵니다:\n${shareUrl}\n\n📍 여행 동선 순서:\n${lines.join('\n')}`;
+}
+
+/**
+ * ============================================================================
+ * 🗂️ 내 루트 보관함 (Saved Routes Vault) - 비로그인 다중 코스 영구 보관 (localStorage)
+ * ============================================================================
+ */
+export function getSavedRoutesVault(): SavedRouteItem[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(VAULT_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(item => item && item.id && Array.isArray(item.places));
+  } catch (err) {
+    console.warn('Failed to load saved routes vault:', err);
+    return [];
+  }
+}
+
+function saveVaultAndNotify(vault: SavedRouteItem[]): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(VAULT_STORAGE_KEY, JSON.stringify(vault));
+    window.dispatchEvent(new CustomEvent(VAULT_EVENT_NAME, { detail: vault }));
+  } catch (err) {
+    console.error('Failed to save route vault:', err);
+  }
+}
+
+/**
+ * 현재 루트를 이름을 붙여 루트 보관함에 저장 (동일 이름 또는 overwriteId 지정 시 업데이트)
+ */
+export function saveRouteToVault(name: string, places: MyRoutePlace[], overwriteId?: string): SavedRouteItem | null {
+  if (!places || places.length === 0) return null;
+  const trimmedName = (name || '').trim() || `부산 여행 루트 (${places.length}곳)`;
+  const currentVault = getSavedRoutesVault();
+  const now = Date.now();
+
+  const existingIndex = overwriteId
+    ? currentVault.findIndex(r => r.id === overwriteId)
+    : currentVault.findIndex(r => r.name.trim().toLowerCase() === trimmedName.toLowerCase());
+
+  let savedItem: SavedRouteItem;
+  let nextVault: SavedRouteItem[];
+
+  if (existingIndex !== -1) {
+    savedItem = {
+      ...currentVault[existingIndex],
+      name: trimmedName,
+      places: [...places],
+      updatedAt: now,
+    };
+    nextVault = [...currentVault];
+    nextVault.splice(existingIndex, 1);
+    nextVault.unshift(savedItem);
+  } else {
+    savedItem = {
+      id: `route-${now}-${Math.random().toString(36).slice(2, 7)}`,
+      name: trimmedName,
+      places: [...places],
+      createdAt: now,
+      updatedAt: now,
+    };
+    nextVault = [savedItem, ...currentVault].slice(0, 20); // 최대 20개 코스 보관
+  }
+
+  saveVaultAndNotify(nextVault);
+  return savedItem;
+}
+
+/**
+ * 루트 보관함에서 특정 저장 루트 삭제
+ */
+export function deleteRouteFromVault(id: string): void {
+  if (!id) return;
+  const currentVault = getSavedRoutesVault();
+  const nextVault = currentVault.filter(r => r.id !== id);
+  saveVaultAndNotify(nextVault);
+}
+
+/**
+ * 루트 보관함의 특정 루트를 현재 활성 루트(지도)로 불러오기
+ */
+export function loadRouteFromVault(id: string): MyRoutePlace[] | null {
+  if (!id) return null;
+  const currentVault = getSavedRoutesVault();
+  const found = currentVault.find(r => r.id === id);
+  if (!found || !Array.isArray(found.places)) return null;
+  saveAndNotify(found.places);
+  return found.places;
 }
 
 /**
@@ -580,9 +796,24 @@ export function addPlaceToMyRoute(
     return false; // Already present
   }
 
-  const locInfo = (place.latitude && place.longitude)
-    ? { latitude: place.latitude, longitude: place.longitude, addressRoadKo: place.addressRoadKo || '부산광역시', firstImage: place.firstImage }
-    : resolvePlaceLocationInfo(place.titleKo, place.addressRoadKo);
+  const resolvedLoc = resolvePlaceLocationInfo(place.titleKo, place.addressRoadKo);
+  const cleanTitle = (place.titleKo || '').replace(/\(.*?\)/g, '').trim();
+  const isKnownExact = Boolean(KNOWN_COORDINATES[place.titleKo] || (cleanTitle && KNOWN_COORDINATES[cleanTitle]));
+  const isValidInputCoord =
+    Boolean(place.latitude && place.longitude) &&
+    !(Math.abs((place.latitude || 0) - 35.1796) < 0.001 && Math.abs((place.longitude || 0) - 129.0756) < 0.001);
+
+  const locInfo = isKnownExact
+    ? resolvedLoc
+    : isValidInputCoord
+    ? {
+        latitude: place.latitude!,
+        longitude: place.longitude!,
+        addressRoadKo: place.addressRoadKo || resolvedLoc.addressRoadKo || '부산광역시',
+        categoryKo: resolvedLoc.categoryKo,
+        firstImage: place.firstImage || resolvedLoc.firstImage,
+      }
+    : resolvedLoc;
 
   const newPlace: MyRoutePlace = {
     id: normalizedId,
@@ -694,17 +925,21 @@ export function clearMyRoute(): void {
  */
 export function useMyRoute() {
   const [places, setPlaces] = useState<MyRoutePlace[]>(() => getMyRoutePlaces());
+  const [savedRoutes, setSavedRoutes] = useState<SavedRouteItem[]>(() => getSavedRoutesVault());
 
   useEffect(() => {
     const handleUpdate = () => {
       setPlaces(getMyRoutePlaces());
+      setSavedRoutes(getSavedRoutesVault());
     };
 
     window.addEventListener(EVENT_NAME, handleUpdate);
+    window.addEventListener(VAULT_EVENT_NAME, handleUpdate);
     window.addEventListener('storage', handleUpdate);
 
     return () => {
       window.removeEventListener(EVENT_NAME, handleUpdate);
+      window.removeEventListener(VAULT_EVENT_NAME, handleUpdate);
       window.removeEventListener('storage', handleUpdate);
     };
   }, []);
@@ -712,11 +947,17 @@ export function useMyRoute() {
   return {
     places,
     count: places.length,
+    savedRoutes,
+    savedRoutesCount: savedRoutes.length,
     isBookmarked: (idOrTitle: string) => isPlaceInMyRoute(idOrTitle),
     toggle: (place: any) => togglePlaceInMyRoute(place),
     remove: (idOrTitle: string) => removePlaceFromMyRoute(idOrTitle),
     add: (place: any) => addPlaceToMyRoute(place),
     move: (index: number, dir: 'up' | 'down') => movePlaceOrder(index, dir),
     clear: () => clearMyRoute(),
+    saveToVault: (name: string, targetPlaces?: MyRoutePlace[], overwriteId?: string) =>
+      saveRouteToVault(name, targetPlaces || places, overwriteId),
+    deleteFromVault: (id: string) => deleteRouteFromVault(id),
+    loadFromVault: (id: string) => loadRouteFromVault(id),
   };
 }

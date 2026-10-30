@@ -40,10 +40,14 @@ import {
   Maximize2,
   Bookmark,
   CheckCircle2,
+  FolderOpen,
+  Save,
+  QrCode,
 } from 'lucide-react';
 import {
   useMyRoute,
   MyRoutePlace,
+  SavedRouteItem,
   addPlaceToMyRoute,
   KNOWN_COORDINATES,
   isPlaceInMyRoute,
@@ -52,7 +56,10 @@ import {
   saveImportedRouteAsMyRoute,
   mergeImportedRouteIntoMyRoute,
   formatRouteSummaryText,
+  buildRouteShareUrl,
+  updatePlaceCoordinatesInMyRoute,
 } from '../services/myRouteService';
+import { SpotTicketBookingRow } from './BusanAffiliateQuickBar';
 import { BUSAN_TOUR_API_SPOTS } from '../data/tourApiSpots';
 import { KOREA_TOUR_API_PLACE_DETAILS } from '../data/koreaTourApiPlaceDetails';
 
@@ -183,7 +190,13 @@ export default function MyTravelRouteMapView({
   onSelectStation,
   onOpenBarrierFreeDetail,
 }: MyTravelRouteMapViewProps) {
-  const { places, count, move, remove, clear } = useMyRoute();
+  const { places, count, savedRoutes, savedRoutesCount, move, remove, clear, saveToVault, deleteFromVault, loadFromVault } = useMyRoute();
+  const vaultNameInputRef = useRef<HTMLInputElement>(null);
+  const [isVaultOpen, setIsVaultOpen] = useState<boolean>(() => places.length === 0 && savedRoutes.length > 0);
+  const [routeVaultName, setRouteVaultName] = useState<string>('');
+  const [activeLoadedVaultName, setActiveLoadedVaultName] = useState<string | null>(null);
+  const [sendModalTarget, setSendModalTarget] = useState<{ title?: string; places: MyRoutePlace[] } | null>(null);
+  const [showQrCode, setShowQrCode] = useState<boolean>(false);
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
   // Client ID from LocalStorage or Env
@@ -506,8 +519,66 @@ export default function MyTravelRouteMapView({
     }
   };
 
+  // 나에게 보내기 모달의 대상 장소 및 제목 (보관함 특정 루트 or 현재 루트)
+  const activeSharePlaces = sendModalTarget?.places && sendModalTarget.places.length > 0 ? sendModalTarget.places : displayPlaces;
+  const activeShareTitle = sendModalTarget?.title || activeLoadedVaultName || undefined;
+
+  const handleOpenSendToMeModal = (customTarget?: { title?: string; places: MyRoutePlace[] }) => {
+    setSendModalTarget(customTarget || null);
+    setShowQrCode(false);
+    setShowShareModal(true);
+  };
+
+  // 현재 루트를 루트 보관함에 이름 붙여 저장
+  const handleSaveCurrentToVault = (customName?: string) => {
+    if (displayPlaces.length === 0) return;
+    const defaultTitle =
+      language === 'KR'
+        ? `${displayPlaces[0]?.titleKo || '부산'} 외 ${Math.max(0, displayPlaces.length - 1)}곳 코스`
+        : `${displayPlaces[0]?.titleEn || displayPlaces[0]?.titleKo || 'Busan'} Route (${displayPlaces.length} spots)`;
+    const finalName = (customName ?? routeVaultName).trim() || defaultTitle;
+    const saved = saveToVault(finalName, displayPlaces);
+    if (saved) {
+      setActiveLoadedVaultName(saved.name);
+      setRouteVaultName('');
+      setIsVaultOpen(true);
+      setToastMessage(
+        language === 'KR'
+          ? `🗂️ '${saved.name}' 루트가 내 루트 보관함에 저장되었습니다!`
+          : `🗂️ Saved '${saved.name}' to your Route Vault!`
+      );
+      setTimeout(() => setToastMessage(null), 3500);
+    }
+  };
+
+  // 루트 보관함에서 선택한 코스를 지도에 불러오기
+  const handleLoadVaultRoute = (item: SavedRouteItem) => {
+    const loaded = loadFromVault(item.id);
+    if (loaded) {
+      setIsViewingSharedRoute(false);
+      setActiveLoadedVaultName(item.name);
+      if (typeof window !== 'undefined' && window.history) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('route');
+        url.searchParams.delete('shared_route');
+        url.searchParams.delete('route_data');
+        window.history.replaceState({}, '', url.pathname + (url.search ? url.search : ''));
+      }
+      setToastMessage(
+        language === 'KR'
+          ? `🗺️ '${item.name}' 루트(${loaded.length}곳)를 지도에 불러왔습니다!`
+          : `🗺️ Loaded '${item.name}' (${loaded.length} spots) onto the map!`
+      );
+      setTimeout(() => setToastMessage(null), 3000);
+    }
+  };
+
   // 현재 루트 공유 링크 생성 (URL-safe base64)
-  const getCurrentShareUrl = () => {
+  const getCurrentShareUrl = (targetPlaces: MyRoutePlace[] = activeSharePlaces) => {
+    return buildRouteShareUrl(targetPlaces);
+  };
+  // (getCurrentShareUrl defined above)
+  const _unusedGetShareUrl = () => {
     if (typeof window === 'undefined') return '';
     const code = exportRouteToShareData(displayPlaces);
     return `${window.location.origin}${window.location.pathname}?route=${code}#my-route`;
@@ -552,7 +623,7 @@ export default function MyTravelRouteMapView({
 
   // 일정 텍스트 복사
   const handleCopySummaryText = () => {
-    const text = formatRouteSummaryText(displayPlaces, language);
+    const text = formatRouteSummaryText(activeSharePlaces, language, activeShareTitle);
     if (!text) return;
     navigator.clipboard.writeText(text).then(() => {
       setSummaryTextCopied(true);
@@ -861,7 +932,7 @@ export default function MyTravelRouteMapView({
             <div style="font-size:13px; font-weight:bold; color:#0A2540; margin-bottom:4px;">${place.titleKo}</div>
             <div style="font-size:11px; color:#64748B; margin-bottom:8px; line-height:1.3;">${place.addressRoadKo || '부산광역시'}</div>
             <div style="display:flex; flex-wrap:wrap; gap:5px;">
-              <a href="https://map.naver.com/v5/search/${encodeURIComponent(place.titleKo)}" target="_blank" rel="noopener noreferrer" style="display:inline-block; font-size:10px; font-weight:bold; background:#03C75A; color:#ffffff; padding:4px 8px; border-radius:4px; text-decoration:none;">네이버지도 길찾기</a>
+              <a href="https://map.naver.com/v5/search/${encodeURIComponent(place.addressRoadKo && place.addressRoadKo !== '부산광역시' ? `${place.titleKo} ${place.addressRoadKo.replace(/\s*\([^)]*\)/g, '').trim()}` : place.titleKo)}" target="_blank" rel="noopener noreferrer" style="display:inline-block; font-size:10px; font-weight:bold; background:#03C75A; color:#ffffff; padding:4px 8px; border-radius:4px; text-decoration:none;">네이버지도 길찾기</a>
               <a href="https://map.kakao.com/link/search/${encodeURIComponent(place.titleKo)}" target="_blank" rel="noopener noreferrer" style="display:inline-block; font-size:10px; font-weight:bold; background:#FEE500; color:#191919; padding:4px 8px; border-radius:4px; text-decoration:none;">카카오맵</a>
             </div>
           </div>
@@ -990,7 +1061,7 @@ export default function MyTravelRouteMapView({
             <div style="font-size:10px; font-weight:bold; color:#F59E0B; margin-bottom:2px;">Stop #${stepNum} in Route</div>
             <div style="font-size:13px; font-weight:bold; color:#0A2540; margin-bottom:3px;">${place.titleEn || place.titleKo}</div>
             <div style="font-size:11px; color:#64748B; margin-bottom:6px;">${place.addressRoadKo || 'Busan, South Korea'}</div>
-            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((place.titleEn || place.titleKo) + ' Busan')}" target="_blank" rel="noopener noreferrer" style="display:inline-block; font-size:10px; font-weight:bold; background:#1A73E8; color:#ffffff; padding:4px 8px; border-radius:4px; text-decoration:none;">View in Google Maps</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.addressRoadKo && place.addressRoadKo !== '부산광역시' ? `${place.titleEn || place.titleKo} ${place.addressRoadKo.replace(/\s*\([^)]*\)/g, '').trim()}` : `${place.titleEn || place.titleKo} Busan`)}" target="_blank" rel="noopener noreferrer" style="display:inline-block; font-size:10px; font-weight:bold; background:#1A73E8; color:#ffffff; padding:4px 8px; border-radius:4px; text-decoration:none;">View in Google Maps</a>
           </div>
         `;
 
@@ -1341,6 +1412,28 @@ export default function MyTravelRouteMapView({
     };
   }, [provider, displayPlaces, customClientId]);
 
+  // 도로명주소가 있는 장소의 실시간 네이버 지오코더 정밀 좌표 자동 보정
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.naver?.maps?.Service?.geocode) return;
+    displayPlaces.forEach((p) => {
+      const cleanTitle = (p.titleKo || '').replace(/\(.*?\)/g, '').trim();
+      if (KNOWN_COORDINATES[p.titleKo] || (cleanTitle && KNOWN_COORDINATES[cleanTitle])) return;
+      const addr = (p.addressRoadKo || '').replace(/\s*\([^)]*\)/g, '').replace(/\s+\d+층.*$/, '').trim();
+      if (!addr || addr === '부산광역시' || (!addr.includes('로') && !addr.includes('길') && !addr.includes('동'))) return;
+
+      window.naver.maps.Service.geocode({ query: addr }, (status: any, response: any) => {
+        if (status === window.naver.maps.Service.Status.OK && response?.v2?.addresses?.[0]) {
+          const item = response.v2.addresses[0];
+          const lat = parseFloat(item.y);
+          const lng = parseFloat(item.x);
+          if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
+            updatePlaceCoordinatesInMyRoute(p.id, lat, lng, item.roadAddress || p.addressRoadKo);
+          }
+        }
+      });
+    });
+  }, [displayPlaces, provider]);
+
   // 컨테이너 크기 변화 시 모바일 맵 리사이즈 옵저버
   useEffect(() => {
     if (!mapContainerRef.current) return;
@@ -1406,7 +1499,68 @@ export default function MyTravelRouteMapView({
             </div>
           </div>
 
-          {displayPlaces.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            {/* 🗂️ 내 루트 보관함 열기/닫기 버튼 (항상 노출되어 재방문 시 바로 불러오기 가능) */}
+            <button
+              type="button"
+              onClick={() => setIsVaultOpen(prev => !prev)}
+              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs border ${
+                isVaultOpen
+                  ? 'bg-[#0A2540] text-white border-[#0A2540]'
+                  : 'bg-white hover:bg-slate-50 text-[#0A2540] border-slate-300'
+              }`}
+              title={language === 'KR' ? '저장해 둔 내 여행 루트 보관함 열기' : 'Open Saved Routes Vault'}
+            >
+              <FolderOpen className="w-3.5 h-3.5 text-amber-500" />
+              <span>{language === 'KR' ? '루트 보관함' : 'Route Vault'}</span>
+              <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono font-black ${
+                isVaultOpen ? 'bg-amber-400 text-[#0A2540]' : 'bg-amber-100 text-amber-900'
+              }`}>
+                {savedRoutesCount}
+              </span>
+            </button>
+
+            {displayPlaces.length > 0 && (
+              <>
+                {/* 💾 현재 루트 보관함에 저장 버튼 */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsVaultOpen(true);
+                    setTimeout(() => vaultNameInputRef.current?.focus(), 100);
+                  }}
+                  className="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white text-xs font-extrabold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  title={language === 'KR' ? '현재 루트를 이름을 붙여 루트 보관함에 저장' : 'Save current route to Route Vault'}
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  <span>{language === 'KR' ? '보관함에 저장' : 'Save Route'}</span>
+                </button>
+
+                {/* 📲 나에게 보내기 (재방문 전용 링크 & QR) 버튼 */}
+                <button
+                  type="button"
+                  onClick={() => handleOpenSendToMeModal()}
+                  className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-xs font-extrabold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  title={language === 'KR' ? '카카오톡 나에게 보내기 / 내 폰으로 루트 링크 보내기' : 'Send Route Link to Myself / Share'}
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>{language === 'KR' ? '나에게 보내기' : 'Send to Myself'}</span>
+                </button>
+
+                {!isViewingSharedRoute && (
+                  <button
+                    type="button"
+                    onClick={clear}
+                    className="px-3 py-2 rounded-xl border border-slate-200 text-slate-500 hover:text-red-600 hover:border-red-200 hover:bg-red-50 text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>{language === 'KR' ? '비우기' : 'Clear'}</span>
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+          {false && displayPlaces.length > 0 && (
             <div className="flex flex-wrap items-center gap-2">
               {/* 공유하기 버튼 (방안 A: URL 공유 링크 & 내 루트 복사) */}
               <button
@@ -1460,7 +1614,7 @@ export default function MyTravelRouteMapView({
                 </span>
                 <div>
                   <h3 className="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2 flex-wrap">
-                    <span>{language === 'KR' ? '🔗 친구가 공유한 여행 루트를 보고 계십니다' : '🔗 Viewing a Shared Travel Route'}</span>
+                    <span>{language === 'KR' ? '🔗 저장한 링크(나에게 보내기/공유)로 불러온 여행 루트입니다' : '🔗 Loaded Travel Route from Link'}</span>
                     <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500 text-white font-mono font-bold">
                       {sharedRoutePlaces.length}{language === 'KR' ? '곳 연결' : ' stops'}
                     </span>
@@ -1507,6 +1661,215 @@ export default function MyTravelRouteMapView({
           </div>
         )}
       </div>
+
+      {/* 1.5 🗂️ 내 루트 보관함 (Saved Routes Vault) - 비로그인 다중 코스 보관 & 원클릭 재방문 */}
+      {(isVaultOpen || (displayPlaces.length === 0 && savedRoutes.length > 0)) && (
+        <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-2xl p-4 sm:p-5 shadow-2xs space-y-4 animate-fade-in">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/80 pb-3">
+            <div className="flex items-center gap-2">
+              <span className="w-7 h-7 rounded-lg bg-[#0A2540] text-amber-400 flex items-center justify-center shrink-0">
+                <FolderOpen className="w-4 h-4" />
+              </span>
+              <div>
+                <h3 className="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
+                  <span>{language === 'KR' ? '내 루트 보관함' : 'My Route Vault'}</span>
+                  <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
+                    {savedRoutesCount}{language === 'KR' ? '개 코스 보관 중' : ' saved'}
+                  </span>
+                </h3>
+                <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-0.5">
+                  {language === 'KR'
+                    ? '로그인 없이도 코스에 이름을 붙여 여러 개 저장해 두고, 언제든 지도에 다시 불러오거나 카카오톡 나에게 보내기로 보관할 수 있어요.'
+                    : 'Save multiple routes by name without logging in, reload them anytime, or send the direct link to yourself.'}
+                </p>
+              </div>
+            </div>
+
+            {displayPlaces.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setIsVaultOpen(false)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition cursor-pointer"
+                title={language === 'KR' ? '보관함 접기' : 'Close Vault'}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+
+          {/* 현재 루트 이름 붙여 저장하기 입력 폼 */}
+          {displayPlaces.length > 0 && (
+            <div className="bg-white border border-slate-200/90 rounded-xl p-3.5 space-y-2.5 shadow-2xs">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <label className="text-xs font-extrabold text-slate-800 flex items-center gap-1.5">
+                  <Save className="w-3.5 h-3.5 text-amber-500" />
+                  <span>
+                    {language === 'KR'
+                      ? `현재 지도 위 루트(${displayPlaces.length}곳)를 보관함에 저장하기`
+                      : `Save current route (${displayPlaces.length} spots) to Vault`}
+                  </span>
+                </label>
+                {/* 빠른 이름 추천 칩 */}
+                <div className="flex items-center gap-1 flex-wrap">
+                  {(language === 'KR'
+                    ? ['1일차 해운대·광안리', '2일차 남포동·영도', '부모님·가족 동행 코스', '비 올 때 실내 코스']
+                    : ['Day 1 Haeundae & Gwangalli', 'Day 2 Nampo & Yeongdo', 'Family Accessible Course', 'Rainy Day Indoor']
+                  ).map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => setRouteVaultName(preset)}
+                      className="text-[10.5px] font-bold px-2 py-0.5 rounded-md bg-slate-100 hover:bg-amber-100 text-slate-600 hover:text-amber-900 border border-slate-200/80 transition cursor-pointer"
+                    >
+                      + {preset}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <input
+                  ref={vaultNameInputRef}
+                  type="text"
+                  value={routeVaultName}
+                  onChange={(e) => setRouteVaultName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleSaveCurrentToVault();
+                    }
+                  }}
+                  placeholder={
+                    language === 'KR'
+                      ? '루트 이름 입력 (예: 1일차 해운대 코스, 비워두면 자동 생성)'
+                      : 'Enter route name (e.g. Day 1 Haeundae Course)'
+                  }
+                  className="flex-1 px-3 py-2 text-xs sm:text-sm bg-[#FAF9F6] border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:border-amber-500"
+                />
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => handleSaveCurrentToVault()}
+                    className="flex-1 sm:flex-initial px-4 py-2 bg-[#0A2540] hover:bg-slate-800 text-white rounded-lg text-xs font-extrabold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs"
+                  >
+                    <Bookmark className="w-3.5 h-3.5 text-amber-400" />
+                    <span>{language === 'KR' ? '보관함에 저장' : 'Save to Vault'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleOpenSendToMeModal({
+                        title: routeVaultName.trim() || activeLoadedVaultName || undefined,
+                        places: displayPlaces,
+                      })
+                    }
+                    className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-extrabold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs"
+                  >
+                    <Send className="w-3.5 h-3.5" />
+                    <span>{language === 'KR' ? '나에게 보내기' : 'Send to Myself'}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 보관된 루트 목록 */}
+          {savedRoutes.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {savedRoutes.map((item) => {
+                const isCurrentlyLoaded = activeLoadedVaultName === item.name;
+                const dateStr = new Date(item.updatedAt).toLocaleDateString(language === 'KR' ? 'ko-KR' : 'en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                });
+                return (
+                  <div
+                    key={item.id}
+                    className={`bg-white rounded-xl border p-3.5 flex flex-col justify-between gap-3 transition-all ${
+                      isCurrentlyLoaded
+                        ? 'border-amber-500 ring-2 ring-amber-400/20 shadow-xs'
+                        : 'border-slate-200/90 hover:border-slate-300'
+                    }`}
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <h4 className="font-extrabold text-sm text-slate-900 truncate">{item.name}</h4>
+                            <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-900">
+                              {item.places.length}{language === 'KR' ? '곳' : ' spots'}
+                            </span>
+                            {isCurrentlyLoaded && (
+                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                                {language === 'KR' ? '현재 적용 중' : 'Active'}
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-[10.5px] text-slate-400 font-medium">{dateStr}</span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => deleteFromVault(item.id)}
+                          className="p-1 rounded-md text-slate-400 hover:text-red-600 hover:bg-red-50 transition cursor-pointer shrink-0"
+                          title={language === 'KR' ? '보관함에서 삭제' : 'Delete saved route'}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+
+                      {/* 경유지 순서 미니 프리뷰 */}
+                      <div className="flex items-center gap-1 flex-wrap text-[11px] text-slate-600 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-100">
+                        {item.places.slice(0, 4).map((p, idx) => (
+                          <React.Fragment key={`${item.id}-${idx}`}>
+                            <span className="font-semibold text-slate-700 truncate max-w-[110px]">
+                              <strong className="text-amber-600 font-mono mr-0.5">{idx + 1}.</strong>
+                              {language === 'KR' ? p.titleKo : (p.titleEn || p.titleKo)}
+                            </span>
+                            {idx < Math.min(item.places.length, 4) - 1 && (
+                              <span className="text-slate-300 font-bold">→</span>
+                            )}
+                          </React.Fragment>
+                        ))}
+                        {item.places.length > 4 && (
+                          <span className="text-[10px] font-bold text-slate-400 ml-0.5">
+                            +{item.places.length - 4}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 pt-1 border-t border-slate-100">
+                      <button
+                        type="button"
+                        onClick={() => handleLoadVaultRoute(item)}
+                        className="flex-1 py-1.5 px-2.5 rounded-lg bg-[#0A2540] hover:bg-slate-800 text-white text-[11px] font-extrabold flex items-center justify-center gap-1 transition cursor-pointer"
+                      >
+                        <Compass className="w-3 h-3 text-amber-400" />
+                        <span>{language === 'KR' ? '지도에 불러오기' : 'Load on Map'}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenSendToMeModal({ title: item.name, places: item.places })}
+                        className="py-1.5 px-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-extrabold flex items-center justify-center gap-1 transition cursor-pointer"
+                      >
+                        <Send className="w-3 h-3" />
+                        <span>{language === 'KR' ? '나에게 보내기' : 'Send Link'}</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-4 px-3 bg-white rounded-xl border border-dashed border-slate-300 text-xs text-slate-500">
+              {language === 'KR'
+                ? '아직 보관함에 저장된 여행 루트가 없습니다. 장소를 추가한 뒤 [보관함에 저장]을 눌러 코스를 보관해 보세요!'
+                : 'No routes saved in your vault yet. Add places to your route and click [Save to Vault]!'}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* 2. 대화형 지도 영역 (Numbered Markers & Polyline Route) */}
       <div className="bg-white rounded-xl border border-[#E5E2DC] overflow-hidden shadow-xs relative">
@@ -2051,7 +2414,7 @@ export default function MyTravelRouteMapView({
           </div>
 
           <div className="space-y-3">
-            {places.map((place, index) => {
+            {displayPlaces.map((place, index) => {
               const stepNumber = index + 1;
               const isSelected = selectedPlaceId === place.id;
 
@@ -2059,7 +2422,7 @@ export default function MyTravelRouteMapView({
                 <React.Fragment key={place.id}>
                   {/* 경유지 간 이동 연결선 & 실시간 대중교통 길찾기 */}
                   {index > 0 && (() => {
-                    const prevPlace = places[index - 1];
+                    const prevPlace = displayPlaces[index - 1];
                     let distanceKm: number | null = null;
                     if (prevPlace?.latitude && prevPlace?.longitude && place?.latitude && place?.longitude) {
                       const dLat = ((place.latitude - prevPlace.latitude) * Math.PI) / 180;
@@ -2206,6 +2569,11 @@ export default function MyTravelRouteMapView({
                       </div>
                     </div>
 
+                    {/* 티켓 예매 가능 명소 바로가기 (클룩 / KKday) */}
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <SpotTicketBookingRow spotTitleKo={place.titleKo} language={language} />
+                    </div>
+
                     {/* Bottom Action Links */}
                     <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs">
                       <div className="flex items-center gap-2">
@@ -2241,7 +2609,7 @@ export default function MyTravelRouteMapView({
                         {language === 'KR' ? (
                           <>
                             <a
-                              href={`https://map.naver.com/v5/search/${encodeURIComponent(place.titleKo)}`}
+                              href={`https://map.naver.com/v5/search/${encodeURIComponent(place.addressRoadKo && place.addressRoadKo !== '부산광역시' ? `${place.titleKo} ${place.addressRoadKo.replace(/\s*\([^)]*\)/g, '').trim()}` : place.titleKo)}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="px-2 py-1 rounded bg-[#03C75A] hover:bg-[#02B350] text-white text-[11px] font-bold flex items-center gap-1"
@@ -2263,7 +2631,7 @@ export default function MyTravelRouteMapView({
                         ) : (
                           <>
                             <a
-                              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((place.titleEn || place.titleKo) + ' Busan')}`}
+                              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.addressRoadKo && place.addressRoadKo !== '부산광역시' ? `${place.titleEn || place.titleKo} ${place.addressRoadKo.replace(/\s*\([^)]*\)/g, '').trim()}` : `${place.titleEn || place.titleKo} Busan`)}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="px-2 py-1 rounded bg-[#1A73E8] hover:bg-[#1557B0] text-white text-[11px] font-bold flex items-center gap-1"
@@ -2273,7 +2641,7 @@ export default function MyTravelRouteMapView({
                             </a>
 
                             <a
-                              href={`https://map.naver.com/v5/search/${encodeURIComponent(place.titleKo)}`}
+                              href={`https://map.naver.com/v5/search/${encodeURIComponent(place.addressRoadKo && place.addressRoadKo !== '부산광역시' ? `${place.titleKo} ${place.addressRoadKo.replace(/\s*\([^)]*\)/g, '').trim()}` : place.titleKo)}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="px-2 py-1 rounded bg-[#03C75A] hover:bg-[#02B350] text-white text-[11px] font-bold flex items-center gap-1"
@@ -2305,10 +2673,18 @@ export default function MyTravelRouteMapView({
                 </span>
                 <div>
                   <h3 className="font-black text-base sm:text-lg text-slate-900 leading-snug">
-                    {language === 'KR' ? '내 여행 루트 공유하기' : 'Share My Travel Route'}
+                    {language === 'KR'
+                      ? activeShareTitle
+                        ? `나에게 보내기 · ${activeShareTitle}`
+                        : '나에게 루트 보내기 (내 사이트 바로가기)'
+                      : activeShareTitle
+                        ? `Send to Myself · ${activeShareTitle}`
+                        : 'Send Route to Myself (Direct Site Link)'}
                   </h3>
                   <span className="text-[11px] text-slate-500 font-medium">
-                    {language === 'KR' ? `총 ${displayPlaces.length}개 장소가 연결된 여행 루트` : `${displayPlaces.length} stops connected in route`}
+                    {language === 'KR'
+                      ? `총 ${activeSharePlaces.length}곳 연결 · 링크를 누르면 이 지도와 티켓 예매 페이지로 바로 돌아옵니다`
+                      : `${activeSharePlaces.length} stops · Click link anytime to reopen this map & ticket booking`}
                   </span>
                 </div>
               </div>
@@ -2328,7 +2704,7 @@ export default function MyTravelRouteMapView({
                 <div className="flex items-center justify-between">
                   <span className="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
                     <span>🔗</span>
-                    <span>{language === 'KR' ? '방안 A: URL 공유 링크' : 'Route Sharing URL'}</span>
+                    <span>{language === 'KR' ? '내 사이트 루트 바로가기 링크' : 'Direct Route Re-entry URL'}</span>
                   </span>
                   <span className="text-[10px] text-slate-500 font-medium">
                     {language === 'KR' ? '모바일·PC 어디서든 열람 가능' : 'Accessible on Mobile & PC'}
@@ -2356,7 +2732,7 @@ export default function MyTravelRouteMapView({
                   className="p-3 bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white rounded-xl font-extrabold text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-xs"
                 >
                   <Send className="w-4 h-4" />
-                  <span>{language === 'KR' ? '카카오톡 / 메시지로 보내기' : 'Send via Mobile Messenger'}</span>
+                  <span>{language === 'KR' ? '카카오톡 나에게 보내기 / 메신저 전송' : 'Send to Myself / Messenger'}</span>
                 </button>
 
                 <button
@@ -2365,8 +2741,51 @@ export default function MyTravelRouteMapView({
                   className="p-3 bg-white hover:bg-slate-50 active:bg-slate-100 border border-slate-300 text-slate-800 rounded-xl font-bold text-xs transition cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
                 >
                   {summaryTextCopied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-500" />}
-                  <span>{summaryTextCopied ? (language === 'KR' ? '일정표 복사완료!' : 'Text Copied!') : (language === 'KR' ? '일정표 텍스트 복사' : 'Copy Itinerary Text')}</span>
+                  <span>{summaryTextCopied ? (language === 'KR' ? '일정+링크 복사완료!' : 'Text+Link Copied!') : (language === 'KR' ? '일정 요약 + 바로가기 링크 복사' : 'Copy Summary + Site Link')}</span>
                 </button>
+              </div>
+
+              {/* Option 3: PC → 스마트폰 카메라 스캔용 QR코드 토글 */}
+              <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2.5">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 text-xs font-extrabold text-slate-800">
+                    <QrCode className="w-4 h-4 text-[#0A2540]" />
+                    <span>
+                      {language === 'KR'
+                        ? 'PC에서 짠 루트 → 내 스마트폰으로 1초 전송'
+                        : 'PC to Smartphone Instant QR Transfer'}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowQrCode((prev) => !prev)}
+                    className="px-2.5 py-1 rounded-lg bg-[#0A2540] hover:bg-slate-800 text-white text-[11px] font-bold transition cursor-pointer shrink-0"
+                  >
+                    {showQrCode
+                      ? language === 'KR'
+                        ? 'QR 닫기'
+                        : 'Hide QR'
+                      : language === 'KR'
+                        ? 'QR코드 보기'
+                        : 'Show QR Code'}
+                  </button>
+                </div>
+
+                {showQrCode && (
+                  <div className="flex flex-col items-center justify-center bg-white p-3.5 rounded-xl border border-slate-200 space-y-2 animate-fade-in">
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&ecc=L&data=${encodeURIComponent(getCurrentShareUrl())}`}
+                      alt="Route QR Code"
+                      className="w-36 h-36 rounded-lg border border-slate-100 p-1 bg-white"
+                      loading="lazy"
+                    />
+                    <p className="text-[11px] text-slate-600 font-semibold text-center leading-snug">
+                      {language === 'KR'
+                        ? '📱 스마트폰 기본 카메라로 스캔하면 내 폰에서 이 루트와 티켓 예매 페이지가 바로 열립니다!'
+                        : '📱 Scan with your phone camera to open this exact route and ticket booking page on your phone!'}
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Route Summary Preview */}
@@ -2375,7 +2794,7 @@ export default function MyTravelRouteMapView({
                   {language === 'KR' ? '공유되는 장소 목록:' : 'Stops Included in Link:'}
                 </span>
                 <div className="flex flex-wrap gap-1.5">
-                  {displayPlaces.map((p, idx) => (
+                  {activeSharePlaces.map((p, idx) => (
                     <span key={idx} className="bg-white px-2 py-0.5 rounded-md border border-slate-200 text-[11px] font-semibold text-slate-800 flex items-center gap-1">
                       <span className="text-amber-600 font-bold font-mono text-[9.5px]">#{idx + 1}</span>
                       <span>{language === 'KR' ? p.titleKo : (p.titleEn || p.titleKo)}</span>
@@ -2386,8 +2805,8 @@ export default function MyTravelRouteMapView({
 
               <p className="text-[11px] text-slate-500 leading-relaxed break-keep">
                 💡 {language === 'KR'
-                  ? '링크를 받은 친구는 이 루트를 그대로 보거나, [내 루트로 저장] 버튼을 눌러 자신의 루트로 복사하여 수정할 수 있습니다.'
-                  : 'Friends opening this link can view your itinerary and click "Save as My Route" to customize it.'}
+                  ? '카카오톡 [나와의 채팅]이나 메모장에 링크를 보내두시면, 여행 중 언제든 클릭 한 번으로 이 맞춤 루트 지도와 티켓 할인 예매 페이지로 바로 돌아올 수 있습니다!'
+                  : 'Save this link in your messenger or notes to reopen this custom route map and ticket booking page anytime with one tap!'}
               </p>
             </div>
 
