@@ -3,12 +3,21 @@ import { ExternalLink, Luggage, Ticket, Sparkles } from 'lucide-react';
 import { Language, pickLang } from '../i18n/dictionary';
 
 export const KLOOK_AFFILIATE_LINKS = {
-  /** 부산 전체 티켓·투어·액티비티 모아보기 */
+  /** 클룩 부산 전체 티켓·투어·액티비티 모아보기 */
   BUSAN_ALL_ACTIVITIES: 'https://klook.tpo.lu/ubk63ni8',
-  /** 비짓부산패스 (Visit Busan Pass) */
+  /** 클룩 비짓부산패스 (Visit Busan Pass) */
   VISIT_BUSAN_PASS: 'https://klook.tpo.lu/SiJULDdz',
-  /** 부산역·김해공항 ↔ 호텔 캐리어 당일 짐배송/보관 */
+  /** 클룩 부산역·김해공항 ↔ 호텔 캐리어 당일 짐배송/보관 */
   BUSAN_LUGGAGE_DELIVERY: 'https://klook.tpo.lu/uAtQqn4w',
+} as const;
+
+export const KKDAY_AFFILIATE_LINKS = {
+  /** KKday 부산 전체 티켓·투어·액티비티 모아보기 */
+  BUSAN_ALL_ACTIVITIES: 'https://kkday.tpo.lu/uDIr24Q9',
+  /** KKday 비짓부산패스 (Visit Busan Pass) */
+  VISIT_BUSAN_PASS: 'https://kkday.tpo.lu/C2tJkhog',
+  /** KKday 부산역·김해공항 ↔ 호텔 캐리어 당일 짐배송/보관 */
+  BUSAN_LUGGAGE_DELIVERY: 'https://kkday.tpo.lu/zKPZdnv5',
 } as const;
 
 interface BusanAffiliateQuickBarProps {
@@ -20,6 +29,14 @@ export default function BusanAffiliateQuickBar({
   language,
   variant = 'full',
 }: BusanAffiliateQuickBarProps) {
+  // 대만(ZH_TW) 및 일본(JA) 여행객은 KKday 선호도가 매우 높으므로 KKday를 우선 배치하고, 그 외 언어는 Klook을 우선 배치
+  const isKkdayPreferred = language === 'ZH_TW' || language === 'JA';
+
+  const primaryLinks = isKkdayPreferred ? KKDAY_AFFILIATE_LINKS : KLOOK_AFFILIATE_LINKS;
+  const secondaryLinks = isKkdayPreferred ? KLOOK_AFFILIATE_LINKS : KKDAY_AFFILIATE_LINKS;
+  const primaryBrand = isKkdayPreferred ? 'KKday' : 'Klook';
+  const secondaryBrand = isKkdayPreferred ? 'Klook' : 'KKday';
+
   if (variant === 'locker-inline') {
     return (
       <div className="mt-2.5 pt-2.5 border-t border-slate-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-indigo-50/50 px-3 py-2 rounded-xl border border-indigo-100">
@@ -37,25 +54,36 @@ export default function BusanAffiliateQuickBar({
             })}
           </span>
         </div>
-        <a
-          href={KLOOK_AFFILIATE_LINKS.BUSAN_LUGGAGE_DELIVERY}
-          target="_blank"
-          rel="noopener noreferrer sponsored"
-          className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] sm:text-xs transition-all shadow-2xs shrink-0 no-underline"
-        >
-          <span>
-            {pickLang(language, {
-              KR: '부산역·공항 ↔ 숙소 캐리어 배송 예약',
-              EN: 'Book Same-Day Luggage Delivery',
-              JA: '釜山駅・空港 ↔ ホテル荷物配送を予約',
-              ZH_TW: '預約釜山站・機場 ↔ 飯店行李配送',
-              ZH_CN: '预约釜山站・机场 ↔ 酒店行李配送',
-              ES: 'Reservar entrega de equipaje',
-              FR: 'Réserver livraison de bagages',
-            })}
-          </span>
-          <ExternalLink className="w-3 h-3 shrink-0" />
-        </a>
+        <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+          <a
+            href={primaryLinks.BUSAN_LUGGAGE_DELIVERY}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] sm:text-xs transition-all shadow-2xs no-underline"
+          >
+            <span>
+              {pickLang(language, {
+                KR: `캐리어 배송 예약 (${primaryBrand})`,
+                EN: `Luggage Delivery (${primaryBrand})`,
+                JA: `荷物配送を予約 (${primaryBrand})`,
+                ZH_TW: `預約行李配送 (${primaryBrand})`,
+                ZH_CN: `预约行李配送 (${primaryBrand})`,
+                ES: `Entrega de equipaje (${primaryBrand})`,
+                FR: `Livraison bagages (${primaryBrand})`,
+              })}
+            </span>
+            <ExternalLink className="w-3 h-3 shrink-0" />
+          </a>
+          <a
+            href={secondaryLinks.BUSAN_LUGGAGE_DELIVERY}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg bg-white hover:bg-indigo-50 text-indigo-700 border border-indigo-200 font-bold text-[11px] sm:text-xs transition-all shadow-2xs no-underline"
+          >
+            <span>{secondaryBrand}</span>
+            <ExternalLink className="w-3 h-3 shrink-0" />
+          </a>
+        </div>
       </div>
     );
   }
@@ -79,41 +107,50 @@ export default function BusanAffiliateQuickBar({
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
           <a
-            href={KLOOK_AFFILIATE_LINKS.VISIT_BUSAN_PASS}
+            href={primaryLinks.VISIT_BUSAN_PASS}
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#6B853E] hover:bg-[#586F31] text-white font-bold text-[11px] sm:text-xs transition-all shadow-2xs no-underline"
           >
             <span>
               {pickLang(language, {
-                KR: '🎟️ 비짓부산패스 할인',
-                EN: '🎟️ Visit Busan Pass',
-                JA: '🎟️ ビジット釜山パス割引',
-                ZH_TW: '🎟️ 釜山通行證 Visit Busan Pass',
-                ZH_CN: '🎟️ 釜山通行证 Visit Busan Pass',
-                ES: '🎟️ Visit Busan Pass',
-                FR: '🎟️ Visit Busan Pass',
+                KR: `🎟️ 비짓부산패스 (${primaryBrand})`,
+                EN: `🎟️ Visit Busan Pass (${primaryBrand})`,
+                JA: `🎟️ ビジット釜山パス (${primaryBrand})`,
+                ZH_TW: `🎟️ 釜山通行證 (${primaryBrand})`,
+                ZH_CN: `🎟️ 釜山通行证 (${primaryBrand})`,
+                ES: `🎟️ Visit Busan Pass (${primaryBrand})`,
+                FR: `🎟️ Visit Busan Pass (${primaryBrand})`,
               })}
             </span>
             <ExternalLink className="w-3 h-3 shrink-0" />
           </a>
           <a
-            href={KLOOK_AFFILIATE_LINKS.BUSAN_ALL_ACTIVITIES}
+            href={primaryLinks.BUSAN_ALL_ACTIVITIES}
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-[#4D6328] border border-[#C6D8AE] font-bold text-[11px] sm:text-xs transition-all shadow-2xs no-underline"
           >
             <span>
               {pickLang(language, {
-                KR: '🎡 부산 인기 입장권·투어 모아보기',
-                EN: '🎡 All Busan Tickets & Tours',
-                JA: '🎡 釜山の人気チケット・ツアー一覧',
-                ZH_TW: '🎡 釜山熱門門票・一日遊總覽',
-                ZH_CN: '🎡 釜山热门门票・一日游总览',
-                ES: '🎡 Entradas y Tours en Busan',
-                FR: '🎡 Billets & Excursions à Busan',
+                KR: `🎡 인기 입장권·투어 (${primaryBrand})`,
+                EN: `🎡 Busan Tickets (${primaryBrand})`,
+                JA: `🎡 人気チケット・ツアー (${primaryBrand})`,
+                ZH_TW: `🎡 熱門門票・一日遊 (${primaryBrand})`,
+                ZH_CN: `🎡 热门门票・一日游 (${primaryBrand})`,
+                ES: `🎡 Entradas y Tours (${primaryBrand})`,
+                FR: `🎡 Billets & Excursions (${primaryBrand})`,
               })}
             </span>
+            <ExternalLink className="w-3 h-3 shrink-0" />
+          </a>
+          <a
+            href={secondaryLinks.BUSAN_ALL_ACTIVITIES}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white hover:bg-teal-50 text-teal-700 border border-teal-200 font-bold text-[11px] sm:text-xs transition-all shadow-2xs no-underline"
+          >
+            <span>{secondaryBrand}</span>
             <ExternalLink className="w-3 h-3 shrink-0" />
           </a>
         </div>
@@ -160,12 +197,7 @@ export default function BusanAffiliateQuickBar({
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {/* Card 1: Visit Busan Pass */}
-        <a
-          href={KLOOK_AFFILIATE_LINKS.VISIT_BUSAN_PASS}
-          target="_blank"
-          rel="noopener noreferrer sponsored"
-          className="group bg-white hover:bg-[#F9FBF6] p-4 rounded-2xl border border-[#DCE7CC] hover:border-[#8EA85E] transition-all flex flex-col justify-between gap-3 shadow-2xs hover:shadow-sm no-underline"
-        >
+        <div className="bg-white p-4 rounded-2xl border border-[#DCE7CC] hover:border-[#8EA85E] transition-all flex flex-col justify-between gap-3 shadow-2xs hover:shadow-sm">
           <div className="space-y-1">
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-extrabold text-[#5E7A31] bg-[#EDF4E3] px-2 py-0.5 rounded-md">
@@ -179,9 +211,8 @@ export default function BusanAffiliateQuickBar({
                   FR: 'N°1 Indispensable',
                 })}
               </span>
-              <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#6B853E] transition-colors shrink-0" />
             </div>
-            <h4 className="text-sm font-extrabold text-slate-900 group-hover:text-[#4D6328] transition-colors pt-1">
+            <h4 className="text-sm font-extrabold text-slate-900 pt-1">
               {pickLang(language, {
                 KR: '🎟️ 비짓부산패스 (Visit Busan Pass)',
                 EN: '🎟️ Visit Busan Pass (Official)',
@@ -204,28 +235,30 @@ export default function BusanAffiliateQuickBar({
               })}
             </p>
           </div>
-          <div className="text-xs font-extrabold text-[#5E7A31] flex items-center gap-1 pt-1">
-            <span>
-              {pickLang(language, {
-                KR: '할인가 확인 및 예약하기 →',
-                EN: 'Check Discount & Book →',
-                JA: '割引価格を確認・予約する →',
-                ZH_TW: '查看優惠價並立即預訂 →',
-                ZH_CN: '查看优惠价并立即预订 →',
-                ES: 'Ver descuento y reservar →',
-                FR: 'Voir le tarif réduit & réserver →',
-              })}
-            </span>
+          <div className="flex items-center gap-2 pt-1">
+            <a
+              href={primaryLinks.VISIT_BUSAN_PASS}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-[#6B853E] hover:bg-[#586F31] text-white font-extrabold text-xs transition-all no-underline shadow-2xs"
+            >
+              <span>{primaryBrand}</span>
+              <ExternalLink className="w-3 h-3 shrink-0" />
+            </a>
+            <a
+              href={secondaryLinks.VISIT_BUSAN_PASS}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-[#F4F8EE] hover:bg-[#E7F0DA] text-[#4D6328] border border-[#C6D8AE] font-extrabold text-xs transition-all no-underline"
+            >
+              <span>{secondaryBrand}</span>
+              <ExternalLink className="w-3 h-3 shrink-0" />
+            </a>
           </div>
-        </a>
+        </div>
 
         {/* Card 2: Luggage Delivery */}
-        <a
-          href={KLOOK_AFFILIATE_LINKS.BUSAN_LUGGAGE_DELIVERY}
-          target="_blank"
-          rel="noopener noreferrer sponsored"
-          className="group bg-white hover:bg-indigo-50/40 p-4 rounded-2xl border border-slate-200/90 hover:border-indigo-400 transition-all flex flex-col justify-between gap-3 shadow-2xs hover:shadow-sm no-underline"
-        >
+        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 hover:border-indigo-400 transition-all flex flex-col justify-between gap-3 shadow-2xs hover:shadow-sm">
           <div className="space-y-1">
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md">
@@ -239,9 +272,8 @@ export default function BusanAffiliateQuickBar({
                   FR: 'Voyagez mains libres',
                 })}
               </span>
-              <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-600 transition-colors shrink-0" />
             </div>
-            <h4 className="text-sm font-extrabold text-slate-900 group-hover:text-indigo-700 transition-colors pt-1">
+            <h4 className="text-sm font-extrabold text-slate-900 pt-1">
               {pickLang(language, {
                 KR: '🧳 부산역·김해공항 ↔ 호텔 짐배송',
                 EN: '🧳 Busan Station / Airport ↔ Hotel Luggage',
@@ -264,28 +296,30 @@ export default function BusanAffiliateQuickBar({
               })}
             </p>
           </div>
-          <div className="text-xs font-extrabold text-indigo-600 flex items-center gap-1 pt-1">
-            <span>
-              {pickLang(language, {
-                KR: '짐배송·보관 예약하기 →',
-                EN: 'Book Luggage Delivery →',
-                JA: '荷物配送・預かりを予約する →',
-                ZH_TW: '預訂行李配送・寄存服務 →',
-                ZH_CN: '预订行李配送・寄存服务 →',
-                ES: 'Reservar entrega de equipaje →',
-                FR: 'Réserver la livraison →',
-              })}
-            </span>
+          <div className="flex items-center gap-2 pt-1">
+            <a
+              href={primaryLinks.BUSAN_LUGGAGE_DELIVERY}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs transition-all no-underline shadow-2xs"
+            >
+              <span>{primaryBrand}</span>
+              <ExternalLink className="w-3 h-3 shrink-0" />
+            </a>
+            <a
+              href={secondaryLinks.BUSAN_LUGGAGE_DELIVERY}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-indigo-50/70 hover:bg-indigo-100/80 text-indigo-700 border border-indigo-200 font-extrabold text-xs transition-all no-underline"
+            >
+              <span>{secondaryBrand}</span>
+              <ExternalLink className="w-3 h-3 shrink-0" />
+            </a>
           </div>
-        </a>
+        </div>
 
         {/* Card 3: All Busan Tickets & Tours */}
-        <a
-          href={KLOOK_AFFILIATE_LINKS.BUSAN_ALL_ACTIVITIES}
-          target="_blank"
-          rel="noopener noreferrer sponsored"
-          className="group bg-white hover:bg-amber-50/40 p-4 rounded-2xl border border-slate-200/90 hover:border-amber-400 transition-all flex flex-col justify-between gap-3 shadow-2xs hover:shadow-sm no-underline"
-        >
+        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 hover:border-amber-400 transition-all flex flex-col justify-between gap-3 shadow-2xs hover:shadow-sm">
           <div className="space-y-1">
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-extrabold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-md">
@@ -299,9 +333,8 @@ export default function BusanAffiliateQuickBar({
                   FR: 'Billet QR immédiat',
                 })}
               </span>
-              <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transition-colors shrink-0" />
             </div>
-            <h4 className="text-sm font-extrabold text-slate-900 group-hover:text-amber-800 transition-colors pt-1">
+            <h4 className="text-sm font-extrabold text-slate-900 pt-1">
               {pickLang(language, {
                 KR: '🎡 부산 인기 티켓·요트·일일투어 특가',
                 EN: '🎡 Top Busan Tickets, Yachts & Day Tours',
@@ -324,20 +357,27 @@ export default function BusanAffiliateQuickBar({
               })}
             </p>
           </div>
-          <div className="text-xs font-extrabold text-amber-700 flex items-center gap-1 pt-1">
-            <span>
-              {pickLang(language, {
-                KR: '부산 전체 액티비티 보기 →',
-                EN: 'Explore All Busan Deals →',
-                JA: '釜山の全アクティビティを見る →',
-                ZH_TW: '查看釜山所有熱門活動 →',
-                ZH_CN: '查看釜山所有热门活动 →',
-                ES: 'Ver todas las ofertas en Busan →',
-                FR: 'Voir toutes les activités à Busan →',
-              })}
-            </span>
+          <div className="flex items-center gap-2 pt-1">
+            <a
+              href={primaryLinks.BUSAN_ALL_ACTIVITIES}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs transition-all no-underline shadow-2xs"
+            >
+              <span>{primaryBrand}</span>
+              <ExternalLink className="w-3 h-3 shrink-0" />
+            </a>
+            <a
+              href={secondaryLinks.BUSAN_ALL_ACTIVITIES}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100/80 text-amber-800 border border-amber-200 font-extrabold text-xs transition-all no-underline"
+            >
+              <span>{secondaryBrand}</span>
+              <ExternalLink className="w-3 h-3 shrink-0" />
+            </a>
           </div>
-        </a>
+        </div>
       </div>
     </section>
   );
