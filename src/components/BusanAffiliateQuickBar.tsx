@@ -38,8 +38,12 @@ export interface SpotTicketBookingInfo {
  * 클룩(Klook) 또는 케이케이데이(KKday)에 실제 단독 예매 상품 페이지가 존재하는 장소만 매핑합니다.
  * (국립부산과학관, 부산과학체험관, 허심청, 태종대 등 단독 온라인 티켓 상품이 없는 곳은 제외)
  */
-export function getSpotTicketBookingInfo(spotTitleKo: string): SpotTicketBookingInfo | null {
+export function getSpotTicketBookingInfo(
+  spotTitleKo: string,
+  language: Language = 'KR'
+): SpotTicketBookingInfo | null {
   const title = spotTitleKo || '';
+  const isKr = language === 'KR';
 
   // 1. 부산 시티투어버스 (BUTI) - Klook & KKday 단독 상품 페이지 직결
   if (title.includes('시티투어')) {
@@ -54,7 +58,9 @@ export function getSpotTicketBookingInfo(spotTitleKo: string): SpotTicketBooking
         FR: 'Réserver un billet Bus Touristique de Busan',
       },
       klookUrl: buildKlookProductAffiliateUrl(
-        'https://www.klook.com/ko/activity/4128-buti-busan-city-tour-bus-busan/'
+        isKr
+          ? 'https://www.klook.com/ko/activity/144435-busan-city-tour-bus/'
+          : 'https://www.klook.com/activity/4128-buti-busan-city-tour-bus-busan/'
       ),
       kkdayUrl: buildKkdayProductAffiliateUrl(
         'https://www.kkday.com/ko/product/3021-busan-city-tour-pass-korea'
@@ -96,7 +102,7 @@ export function getSpotTicketBookingInfo(spotTitleKo: string): SpotTicketBooking
         FR: 'Réserver un billet Museum 1',
       },
       klookUrl: buildKlookProductAffiliateUrl(
-        'https://www.klook.com/ko/activity/35552-museum-one-ticket-busan/'
+        'https://www.klook.com/ko/activity/72587-museum-one-busan-ticket/'
       ),
       kkdayUrl: buildKkdayProductAffiliateUrl(
         'https://www.kkday.com/ko/product/35943'
@@ -117,7 +123,9 @@ export function getSpotTicketBookingInfo(spotTitleKo: string): SpotTicketBooking
         FR: 'Réserver un billet Musée du Cinéma de Busan',
       },
       klookUrl: buildKlookProductAffiliateUrl(
-        'https://www.klook.com/ko/activity/36730-busan-movies-mideast-experience-museum/'
+        isKr
+          ? 'https://www.klook.com/ko/destination/p60018950-busan-museum-of-movies/'
+          : 'https://www.klook.com/activity/21770-museum-movies-trick-eye-ticket-busan/'
       ),
     };
   }
@@ -135,7 +143,9 @@ export function getSpotTicketBookingInfo(spotTitleKo: string): SpotTicketBooking
         FR: 'Réserver Train Côtier & Sky Capsule',
       },
       klookUrl: buildKlookProductAffiliateUrl(
-        'https://www.klook.com/ko/activity/133293-haeundae-blueline-park-ticket-in-busan/'
+        isKr
+          ? 'https://www.klook.com/ko/activity/74132-busan-oneday-tour-busan/'
+          : 'https://www.klook.com/activity/133293-haeundae-blueline-park-ticket-in-busan/'
       ),
       kkdayUrl: buildKkdayProductAffiliateUrl(
         'https://www.kkday.com/ko/product/123012-haeundae-blueline-park-sky-capsule-beach-train-ticket'
@@ -156,7 +166,9 @@ export function getSpotTicketBookingInfo(spotTitleKo: string): SpotTicketBooking
         FR: 'Réserver Téléphérique Marin de Songdo',
       },
       klookUrl: buildKlookProductAffiliateUrl(
-        'https://www.klook.com/ko/activity/17327-songdo-marine-cable-car-busan/'
+        isKr
+          ? 'https://www.klook.com/ko/activity/80742-busan-songdo-air-cruise-pass/'
+          : 'https://www.klook.com/activity/17327-songdo-marine-cable-car-busan/'
       ),
       kkdayUrl: buildKkdayProductAffiliateUrl(
         'https://www.kkday.com/ko/product/111594'
@@ -198,7 +210,9 @@ export function getSpotTicketBookingInfo(spotTitleKo: string): SpotTicketBooking
         FR: 'Réserver un billet Centum Spa Land',
       },
       klookUrl: buildKlookProductAffiliateUrl(
-        'https://www.klook.com/ko/activity/37731-spaland-centum-city-busan/'
+        isKr
+          ? 'https://www.klook.com/ko/activity/68360-spa-land-ticket-busan/'
+          : 'https://www.klook.com/activity/33180-spa-land-centum-city-ticket-busan/'
       ),
       kkdayUrl: buildKkdayProductAffiliateUrl(
         'https://www.kkday.com/ko/product/105110'
@@ -234,7 +248,7 @@ export function SpotTicketBookingRow({
   spotTitleKo: string;
   language: Language;
 }) {
-  const info = getSpotTicketBookingInfo(spotTitleKo);
+  const info = getSpotTicketBookingInfo(spotTitleKo, language);
   if (!info) return null;
 
   const isKkdayPreferred = language === 'ZH_TW' || language === 'JA';
@@ -351,7 +365,7 @@ function PartnerIconPair({
 
 interface BusanAffiliateQuickBarProps {
   language: Language;
-  variant?: 'full' | 'locker-inline' | 'nearby-inline';
+  variant?: 'full' | 'luggage-only' | 'locker-inline' | 'nearby-inline';
 }
 
 export default function BusanAffiliateQuickBar({
@@ -487,6 +501,38 @@ export default function BusanAffiliateQuickBar({
       kkdayUrl: KKDAY_AFFILIATE_LINKS.BUSAN_ALL_ACTIVITIES,
     },
   ];
+
+  if (variant === 'luggage-only') {
+    const luggageItem = items[1];
+    const Icon = luggageItem.icon;
+    return (
+      <section aria-label="Busan Luggage Delivery" className="py-2 text-left">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4">
+          <div className="flex items-start gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-[#EDF4E3] border border-[#D5E3C3] flex items-center justify-center text-[#5E7A31] shrink-0 mt-0.5">
+              <Icon className="w-4 h-4" strokeWidth={1.75} />
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-xs sm:text-[13px] font-bold text-[#11161B] leading-snug">
+                {luggageItem.title}
+              </h4>
+              <p className="text-[11px] text-slate-500 leading-relaxed mt-0.5 break-keep">
+                {luggageItem.desc}
+              </p>
+            </div>
+          </div>
+
+          <div className="sm:pl-1 shrink-0">
+            <PartnerIconPair
+              klookHref={luggageItem.klookUrl}
+              kkdayHref={luggageItem.kkdayUrl}
+              isKkdayPreferred={isKkdayPreferred}
+            />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section aria-label="Busan Travel Deals" className="py-2 text-left">

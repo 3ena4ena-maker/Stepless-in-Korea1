@@ -2052,11 +2052,6 @@ export default function App() {
                   {/* 📋 Station Barrier-Free Movement Summary Table & Step-by-Step Info */}
                   <StationBarrierFreeCard station={activeStation} language={language} />
 
-                  {/* 🎟️ Busan Travel Pass & Hands-Free Luggage Delivery Quick Booking */}
-                  <BusanAffiliateQuickBar language={language} variant="full" />
-
-
-
               {/* Station Selection Banner (페이지 가장 아랫쪽으로 배치) */}
               <div id="search-selected-station-details" className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-xs">
                 <div className="flex items-center gap-2 mb-4">
@@ -2251,7 +2246,20 @@ export default function App() {
                   }}
                 />
                 {/* 🎟️ Busan Travel Pass & Hands-Free Luggage Delivery Quick Booking */}
-                <BusanAffiliateQuickBar language={language} variant="full" />
+                {currentTab !== 'schedule' &&
+                  currentTab !== 'exploration' &&
+                  tipsSubPage !== 'schedule' &&
+                  tipsSubPage !== 'exploration' && (
+                    <BusanAffiliateQuickBar
+                      language={language}
+                      variant={
+                        currentTab === 'transit' ||
+                        (currentTab === 'tips' && ['transit', 'child-free', 'bus-qr', 'taxi', 'transfer'].includes(tipsSubPage))
+                          ? 'luggage-only'
+                          : 'full'
+                      }
+                    />
+                  )}
                 {/* Google AdSense Unit rendered strictly INSIDE Suspense so it never fires on loading screens */}
                 {(currentTab !== 'tips' || tipsSubPage !== 'index') && currentTab !== 'schedule' && (
                   <AdSenseUnit currentParams={adParams} />
