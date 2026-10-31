@@ -4,6 +4,7 @@ import { createServer as createViteServer } from "vite";
 import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
 import fs from "fs";
+import { exec } from "child_process";
 
 import { BUSAN_TOUR_API_SPOTS, TourApiSpot } from "./src/data/tourApiSpots";
 import { getKoreaTourApiPlaceDetail, KOREA_TOUR_API_PLACE_DETAILS } from "./src/data/koreaTourApiPlaceDetails";
@@ -1906,7 +1907,17 @@ async function startServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    const url = `http://localhost:${PORT}`;
+    console.log(`Server running on ${url}`);
+    if (process.env.NODE_ENV !== "production" && !process.env.CI && !process.env.VERCEL) {
+      const openCmd =
+        process.platform === "win32"
+          ? `start "" "${url}"`
+          : process.platform === "darwin"
+          ? `open "${url}"`
+          : `xdg-open "${url}"`;
+      exec(openCmd, () => {});
+    }
     // Initialize background automated sync for Busan official events
     startAutomatedEventSync(12);
   });
