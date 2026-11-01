@@ -901,13 +901,14 @@ export default function App() {
     }
 
     // 2. Change metadata (Dynamic Title, Description, and OpenGraph tags)
+    const isKR = language === 'KR';
     if (currentTab === 'search' && searchViewMode === 'INDEX') {
-      const searchTitle = language === 'KR' 
-        ? "부산 지하철역 출구 정보 둘러보기 & 역 검색 | 스텝레스 Stepless" 
-        : "Busan Subway Station & Exit Directory | Stepless";
-      const searchDesc = language === 'KR'
-        ? "부산 지하철 1~4호선 주요 역의 엘리베이터, 에스컬레이터 대수 및 출구별 무단차 이동 정보를 한눈에 비교하고 검색해 보세요."
-        : "Explore elevator and escalator availability across major Busan transit hubs.";
+      const searchTitle = isKR
+        ? "부산 지하철역 출구 정보 둘러보기 & 역 검색 | Busan Subway Elevator Guide | 스텝리스 Stepless"
+        : "Busan Subway Station Elevator & Step-Free Exit Directory (22 Stations) | Stepless";
+      const searchDesc = isKR
+        ? "부산 지하철 1~4호선·동해선 주요 22개 역의 엘리베이터, 에스컬레이터 대수 및 출구별 무단차 이동 정보를 한눈에 비교하고 검색해 보세요."
+        : "Explore exact elevator exit numbers, escalator availability, and stroller/wheelchair step-free paths across 22 major Busan subway stations.";
       document.title = searchTitle;
       
       const metaDesc = document.querySelector('meta[name="description"]');
@@ -924,11 +925,15 @@ export default function App() {
     } else if (((currentTab === 'home' && !isHomeLanding) || (currentTab === 'search' && searchViewMode === 'DETAIL')) && selectedStationId) {
       const activeST = STATIONS.find(s => s.id === selectedStationId);
       if (activeST) {
-        const titleText = `${activeST.name} 엘리베이터 위치 & 유모차 동선 안내 | 스텝레스 Stepless`;
+        const cleanEngName = activeST.englishName.replace(/\s*Station$/i, '').trim();
+        const titleText = isKR
+          ? `${activeST.name} (${cleanEngName}) 엘리베이터 위치 & 유모차 무장애 동선 | 스텝리스 Stepless`
+          : `${cleanEngName} Station Elevator Exits & Step-Free Busan Subway Guide | Stepless`;
         document.title = titleText;
 
-        const cleanEngName = activeST.englishName.replace(/\s*Station$/i, '').trim();
-        const descText = `${activeST.name} (${cleanEngName}) 지하철역의 엘리베이터 최단 위치와 유모차, 캐리어 소지자를 위한 계단 회피 추천 동선 정보를 정밀히 안내해 드립니다.`;
+        const descText = isKR
+          ? `${activeST.name} (${cleanEngName} Station) 지하철역의 엘리베이터 최단 위치와 유모차, 캐리어, 휠체어 이용자를 위한 계단 회피 추천 동선 정보를 안내합니다.`
+          : `Find exact elevator exit numbers, escalator access, and step-free stroller & luggage routes at ${cleanEngName} Station (${activeST.name}) on the Busan Subway.`;
         
         const metaDesc = document.querySelector('meta[name="description"]');
         if (metaDesc) metaDesc.setAttribute('content', descText);
@@ -943,20 +948,20 @@ export default function App() {
         if (canonical) canonical.setAttribute('href', `https://stepless.kr/station/${selectedStationId}`);
       }
     } else if (currentTab === 'about') {
-      let pageTitle = "운영자 소개 | 스텝레스 Stepless";
-      let pageDesc = "부산 지하철 배리어프리 플랫폼 운영자 플로레르 소개";
+      let pageTitle = isKR ? "운영자 소개 | 스텝리스 Stepless" : "About Stepless in Busan | Step-Free Busan Trip Guide";
+      let pageDesc = isKR ? "부산 지하철 배리어프리 플랫폼 운영자 플로레르 소개" : "About Stepless in Busan — field-verified barrier-free Busan subway and travel itinerary platform.";
       if (siteSubPage === 'privacy') {
-        pageTitle = "개인정보처리방침 | 스텝레스 Stepless";
-        pageDesc = "Stepless 개인정보처리방침 및 구글 맞춤형 광고 쿠키 정책";
+        pageTitle = isKR ? "개인정보처리방침 | 스텝리스 Stepless" : "Privacy Policy | Stepless in Busan";
+        pageDesc = isKR ? "Stepless 개인정보처리방침 및 구글 맞춤형 광고 쿠키 정책" : "Stepless in Busan Privacy Policy and cookie usage disclosure.";
       } else if (siteSubPage === 'terms') {
-        pageTitle = "서비스 이용약관 | 스텝레스 Stepless";
-        pageDesc = "Stepless 서비스 이용약관 및 면책사항";
+        pageTitle = isKR ? "서비스 이용약관 | 스텝리스 Stepless" : "Terms of Service | Stepless in Busan";
+        pageDesc = isKR ? "Stepless 서비스 이용약관 및 면책사항" : "Terms of Service and disclaimers for Stepless in Busan.";
       } else if (siteSubPage === 'contact') {
-        pageTitle = "문의 및 제휴 안내 | 스텝레스 Stepless";
-        pageDesc = "Stepless 제휴 문의, 개선 의견 및 대표 이메일 안내";
+        pageTitle = isKR ? "문의 및 제휴 안내 | 스텝리스 Stepless" : "Contact & Partnership | Stepless in Busan";
+        pageDesc = isKR ? "Stepless 제휴 문의, 개선 의견 및 대표 이메일 안내" : "Contact Stepless in Busan for station data corrections, partnerships, and inquiries.";
       } else if (siteSubPage === 'data-source') {
-        pageTitle = "데이터 출처와 정정 요청 | 스텝레스 Stepless";
-        pageDesc = "공식 데이터 출처 명시 및 역별 정보 오류 정정 제보 양식";
+        pageTitle = isKR ? "데이터 출처와 정정 요청 | 스텝리스 Stepless" : "Data Sources & Verification | Stepless in Busan";
+        pageDesc = isKR ? "공식 데이터 출처 명시 및 역별 정보 오류 정정 제보 양식" : "Official public data sources and field verification standards for Stepless in Busan.";
       }
       document.title = pageTitle;
 
@@ -975,130 +980,216 @@ export default function App() {
         : 'https://stepless.kr/about';
       if (canonical) canonical.setAttribute('href', aboutCanonical);
     } else if (['tips', 'transit', 'courses', 'schedule', 'exploration'].includes(currentTab)) {
-      let pageTitle = "부산 여행 코스 추천 & 실시간 여행 팁 | 스텝레스 Stepless";
-      let pageDesc = "부산 식도락, 명소, 전통시장, 무장애 여행 코스 추천 및 나만의 맞춤 루트 만들기, 실시간 대중교통 길찾기 가이드.";
+      let pageTitle = isKR
+        ? "부산 여행 코스 추천 & 실시간 여행 팁 | Busan Trip Plan & Itinerary | 스텝리스 Stepless"
+        : "Busan Trip Plan, Curated Itineraries & Local Travel Tips | Stepless";
+      let pageDesc = isKR
+        ? "부산 식도락, 명소, 전통시장, 무장애 여행 코스 추천 및 나만의 맞춤 루트 만들기, 실시간 대중교통 길찾기 가이드."
+        : "Plan your Busan trip with curated 1 to 5-day itineraries, food & market tours, custom route planner, and step-free public transit tips.";
       let canonicalUrl = "https://stepless.kr/tips";
 
       if (selectedItineraryCategory) {
         const catSlug = categoryToUrlSlug(selectedItineraryCategory);
-        const categoryLabels: Record<string, { title: string; desc: string }> = {
+        const categoryLabels: Record<string, { title: string; desc: string; enTitle: string; enDesc: string }> = {
           'GOURMET': {
-            title: '부산 식도락 맛집 여행 코스 추천',
-            desc: '부산 대표 돼지국밥, 밀면, 씨앗호떡, 자갈치 해산물 맛집 및 전포 카페거리 식도락 추천 여행 코스를 안내합니다.'
+            title: '부산 식도락 맛집 여행 코스 추천 | Busan Food & Gourmet Itinerary',
+            desc: '부산 대표 돼지국밥, 밀면, 씨앗호떡, 자갈치 해산물 맛집 및 전포 카페거리 식도락 추천 여행 코스를 안내합니다.',
+            enTitle: 'Busan Food Tour & Best Local Restaurants Itinerary | Stepless',
+            enDesc: 'Discover must-eat Busan local food courses including Dwaeji-gukbap, Milmyeon, Jagalchi seafood, and Jeonpo Cafe Street.'
           },
           'EXPERIENCE': {
-            title: '부산 체험 & 박물관 여행 코스 추천',
-            desc: '국립해양박물관, 국립부산과학관, 뮤지엄원, 아르떼뮤지엄 부산, 증권박물관, F1963 등 부산 대표 체험·박물관 코스 안내.'
+            title: '부산 체험 & 박물관 여행 코스 추천 | Busan Museums & Activities',
+            desc: '국립해양박물관, 국립부산과학관, 뮤지엄원, 아르떼뮤지엄 부산, 증권박물관, F1963 등 부산 대표 체험·박물관 코스 안내.',
+            enTitle: 'Busan Museums, Art & Cultural Experience Itinerary | Stepless',
+            enDesc: 'Explore top Busan museums and indoor cultural spots including Arte Museum Busan, Museum 1, National Maritime Museum, and F1963.'
           },
           'MARKET': {
-            title: '부산 전통시장 투어 추천 코스',
-            desc: '부평깡통시장 야시장, 국제시장, 자갈치시장, 부전시장 등 활기 넘치는 부산 대표 전통시장 추천 코스 안내.'
+            title: '부산 전통시장 투어 추천 코스 | Busan Traditional Market Tour',
+            desc: '부평깡통시장 야시장, 국제시장, 자갈치시장, 부전시장 등 활기 넘치는 부산 대표 전통시장 추천 코스 안내.',
+            enTitle: 'Busan Traditional Markets & Night Market Tour Itinerary | Stepless',
+            enDesc: 'Step-free tour route through Jagalchi Fish Market, Gukje Market, Bupyeong Kkangtong Night Market, and Bujeon Market.'
           },
           'ATTRACTION': {
-            title: '부산 대표 핵심 명소 여행 코스',
-            desc: '해운대 해수욕장, 광안리 해변 드론쇼, 영도 흰여울문화마을, 기장 해동용궁사 등 부산 필수 명소 코스 안내.'
+            title: '부산 대표 핵심 명소 여행 코스 | Top Things to Do in Busan',
+            desc: '해운대 해수욕장, 광안리 해변 드론쇼, 영도 흰여울문화마을, 기장 해동용궁사 등 부산 필수 명소 코스 안내.',
+            enTitle: 'Top Busan Attractions & Must-Visit Landmarks Itinerary | Stepless',
+            enDesc: 'Visit the best attractions in Busan: Haeundae Beach, Gwangalli Drone Show, Gamcheon & Huinnyeoul Culture Villages, and Haedong Yonggungsa.'
           },
           'DAY': {
-            title: '부산 당일치기 여행 추천 코스',
-            desc: '하루 만에 부산의 핵심 바다와 명소, 미식을 알차게 둘러보는 당일치기 추천 여행 코스를 안내합니다.'
+            title: '부산 당일치기 여행 추천 코스 | 1-Day Busan Trip Itinerary',
+            desc: '하루 만에 부산의 핵심 바다와 명소, 미식을 알차게 둘러보는 당일치기 추천 여행 코스를 안내합니다.',
+            enTitle: '1-Day Busan Itinerary & Day Trip Plan | Stepless',
+            enDesc: 'Make the most of one day in Busan with a step-by-step day trip plan covering KTX Busan Station, Nampo, Gamcheon, Gwangan, and Haeundae.'
           },
           '1NIGHT': {
-            title: '부산 1박 2일 여행 추천 코스',
-            desc: '부산의 낮과 밤, 야경과 바다 감성을 모두 만끽하는 1박 2일 추천 여행 코스를 안내합니다.'
+            title: '부산 1박 2일 여행 추천 코스 | 2-Day Busan Trip Plan',
+            desc: '부산의 낮과 밤, 야경과 바다 감성을 모두 만끽하는 1박 2일 추천 여행 코스를 안내합니다.',
+            enTitle: '2-Day 1-Night Busan Trip Itinerary & Weekend Plan | Stepless',
+            enDesc: 'The ultimate 2-day Busan itinerary covering ocean views, night markets, Gwangalli nightscape, and step-free subway transit.'
           },
           '2NIGHTS': {
-            title: '부산 2박 3일 여행 추천 코스',
-            desc: '해운대부터 원도심, 영도, 기장까지 여유롭게 즐기는 2박 3일 부산 완전정복 여행 코스를 안내합니다.'
+            title: '부산 2박 3일 여행 추천 코스 | 3-Day Busan Itinerary',
+            desc: '해운대부터 원도심, 영도, 기장까지 여유롭게 즐기는 2박 3일 부산 완전정복 여행 코스를 안내합니다.',
+            enTitle: '3-Day 2-Night Busan Trip Plan & Complete Itinerary | Stepless',
+            enDesc: 'Complete 3-day Busan trip plan covering East Busan (Haeundae & Gijang), Old Downtown (Nampo & Jagalchi), Yeongdo, and Seomyeon.'
           },
           '3NIGHTS': {
-            title: '부산 3박 4일 여유로운 힐링 여행 추천 코스',
-            desc: '바쁜 일정 대신 해변 산책로, 미술관, 온천, 전통시장을 느긋하게 둘러보는 3박 4일 부산 슬로우 트래블 코스를 소개합니다.'
+            title: '부산 3박 4일 여유로운 힐링 여행 추천 코스 | 4-Day Busan Itinerary',
+            desc: '바쁜 일정 대신 해변 산책로, 미술관, 온천, 전통시장을 느긋하게 둘러보는 3박 4일 부산 슬로우 트래블 코스를 소개합니다.',
+            enTitle: '4-Day 3-Night Relaxed Busan Trip Plan & Slow Travel Itinerary | Stepless',
+            enDesc: 'Enjoy a relaxed 4-day Busan trip itinerary featuring coastal boardwalks, hot springs, art museums, and local markets.'
           },
           '4NIGHTS': {
-            title: '부산 4박 5일 전 지역 일주 여행 추천 코스',
-            desc: '원도심, 서부산 다대포·을숙도, 도심 서면·동래, 동부산 해운대·송정·기장까지 부산 전역을 완벽하게 여행하는 4박 5일 코스입니다.'
+            title: '부산 4박 5일 전 지역 일주 여행 추천 코스 | 5-Day Busan Trip Plan',
+            desc: '원도심, 서부산 다대포·을숙도, 도심 서면·동래, 동부산 해운대·송정·기장까지 부산 전역을 완벽하게 여행하는 4박 5일 코스입니다.',
+            enTitle: '5-Day 4-Night Grand Busan Trip Itinerary (All Regions) | Stepless',
+            enDesc: 'Explore every corner of Busan with our 5-day itinerary covering Dadaepo Sunset Fountain, Seomyeon, Dongnae, Haeundae, Songjeong, and Osiria.'
           },
           'SUBWAY': {
-            title: '부산도시철도 지하철 테마 여행 코스',
-            desc: '부산 지하철 1·2호선 역세권 명소를 계단 없이 편리하게 이동하는 지하철 테마 코스를 안내합니다.'
+            title: '부산도시철도 지하철 테마 여행 코스 | Busan Subway Tour Route',
+            desc: '부산 지하철 1·2호선 역세권 명소를 계단 없이 편리하게 이동하는 지하철 테마 코스를 안내합니다.',
+            enTitle: 'Busan Subway Line 1 & 2 Step-Free Travel Itinerary | Stepless',
+            enDesc: 'Travel across Busan using only subway elevator exits on Line 1 and Line 2—ideal for strollers, wheelchairs, and families.'
           },
           'BARRIER_FREE': {
-            title: '부산 무장애(배리어프리) 열린관광지 코스',
-            desc: '계단과 보도 턱이 없어 휠체어와 유모차로 편리하게 이동할 수 있는 부산 배리어프리 추천 코스를 안내합니다.'
+            title: '부산 무장애(배리어프리) 열린관광지 코스 | Accessible Busan Tour',
+            desc: '계단과 보도 턱이 없어 휠체어와 유모차로 편리하게 이동할 수 있는 부산 배리어프리 추천 코스를 안내합니다.',
+            enTitle: 'Wheelchair & Stroller Accessible Busan Trip Itinerary | Stepless',
+            enDesc: 'Step-free, barrier-free Busan travel courses verified for wheelchair users, strollers, and seniors.'
           },
           'MY_ROUTE': {
-            title: '나만의 맞춤 부산 여행 코스 만들기',
-            desc: '원하는 장소를 담아 순서대로 나열하고, 실시간 네이버 지도·구글맵 대중교통 길찾기를 연결하는 맞춤 루트 플래너.'
+            title: '나만의 맞춤 부산 여행 코스 만들기 | Custom Busan Trip Route Planner',
+            desc: '원하는 장소를 담아 순서대로 나열하고, 실시간 네이버 지도·구글맵 대중교통 길찾기를 연결하는 맞춤 루트 플래너.',
+            enTitle: 'Custom Busan Trip Route Planner & Itinerary Builder | Stepless',
+            enDesc: 'Build your own custom Busan trip plan, calculate distances between stops, and open instant Google Maps & Naver Map transit directions.'
           }
         };
 
         const currentMeta = categoryLabels[selectedItineraryCategory] || {
-          title: `부산 ${selectedItineraryCategory} 여행 코스 추천`,
-          desc: '부산 추천 여행 코스, 대표 명소와 맛집, 무장애 관광지 및 나만의 맞춤 여행 코스 지도 만들기.'
+          title: `부산 ${selectedItineraryCategory} 여행 코스 추천 | Busan Trip Plan`,
+          desc: '부산 추천 여행 코스, 대표 명소와 맛집, 무장애 관광지 및 나만의 맞춤 여행 코스 지도 만들기.',
+          enTitle: `Busan ${selectedItineraryCategory} Trip Plan & Travel Itinerary | Stepless`,
+          enDesc: 'Curated Busan travel itinerary with step-free transit tips and custom route planner.'
         };
 
-        pageTitle = `${currentMeta.title} | 스텝레스 Stepless`;
-        pageDesc = currentMeta.desc;
+        pageTitle = isKR ? `${currentMeta.title} | 스텝리스 Stepless` : currentMeta.enTitle;
+        pageDesc = isKR ? currentMeta.desc : currentMeta.enDesc;
         canonicalUrl = selectedItineraryCategory === 'MY_ROUTE'
           ? 'https://stepless.kr/my-route'
           : `https://stepless.kr/tips/courses/${catSlug}`;
       } else if (tipsSubPage === 'transit' || tipsSubPage === 'transfer') {
-        pageTitle = "부산 대중교통 이용 팁 & 시내버스·지하철 환승 가이드 | 스텝레스 Stepless";
-        pageDesc = "부산 시내버스 노선, 지하철 환승 팁, 캐리어 보관함 및 유모차·휠체어 배리어프리 대중교통 이용 가이드.";
+        pageTitle = isKR
+          ? "부산 대중교통 이용 팁 & 시내버스·지하철 환승 가이드 | 스텝리스 Stepless"
+          : "Busan Public Transit Guide: Subway-Bus Transfers & Luggage Rules | Stepless";
+        pageDesc = isKR
+          ? "부산 시내버스 노선, 지하철 환승 팁, 캐리어 보관함 및 유모차·휠체어 배리어프리 대중교통 이용 가이드."
+          : "Essential Busan public transportation guide: free subway-bus transfers, large suitcase bus rules, and step-free metro travel tips.";
         canonicalUrl = "https://stepless.kr/tips/transit";
       } else if (tipsSubPage === 'child-free') {
-        pageTitle = "부산 영유아·어린이 대중교통 이용 팁 & 무료 요금 가이드 | 스텝레스 Stepless";
-        pageDesc = "부산 어린이 대중교통 요금 전면 무료화 혜택 및 유모차 동반 지하철·버스 이용 팁 안내.";
+        pageTitle = isKR
+          ? "부산 영유아·어린이 대중교통 이용 팁 & 무료 요금 가이드 | 스텝리스 Stepless"
+          : "Traveling Busan with Kids: Free Child Transit Fare & Stroller Tips | Stepless";
+        pageDesc = isKR
+          ? "부산 어린이 대중교통 요금 전면 무료화 혜택 및 유모차 동반 지하철·버스 이용 팁 안내."
+          : "Guide to Busan free public transit fares for children and stroller-friendly subway & low-floor bus tips.";
         canonicalUrl = "https://stepless.kr/tips/child-free";
       } else if (tipsSubPage === 'bus-qr') {
-        pageTitle = "부산 시내버스 모바일 QR 결제 가이드 | 스텝레스 Stepless";
-        pageDesc = "교통카드 없이 스마트폰 QR코드로 간편하게 탑승하는 부산 시내버스 모바일 결제 가이드.";
+        pageTitle = isKR
+          ? "부산 시내버스 모바일 QR 결제 가이드 | 스텝리스 Stepless"
+          : "How to Pay Busan City Bus Fare with Mobile QR Code | Stepless";
+        pageDesc = isKR
+          ? "교통카드 없이 스마트폰 QR코드로 간편하게 탑승하는 부산 시내버스 모바일 결제 가이드."
+          : "How to ride Busan city buses without a T-money card using mobile QR code payment.";
         canonicalUrl = "https://stepless.kr/tips/bus-qr";
       } else if (tipsSubPage === 'taxi') {
-        pageTitle = "부산 콜택시 & 교통약자 바우처 택시 이용 안내 | 스텝레스 Stepless";
-        pageDesc = "부산 주요 콜택시 전화번호 및 임산부·교통약자를 위한 바우처 택시, 안심 귀가 서비스 안내.";
+        pageTitle = isKR
+          ? "부산 콜택시 & 교통약자 바우처 택시 이용 안내 | 스텝리스 Stepless"
+          : "Busan Taxi Guide & Wheelchair Accessible Call Taxis | Stepless";
+        pageDesc = isKR
+          ? "부산 주요 콜택시 전화번호 및 임산부·교통약자를 위한 바우처 택시, 안심 귀가 서비스 안내."
+          : "Complete guide to calling taxis in Busan, including Dongbaek Taxi and accessible transport for wheelchair users.";
         canonicalUrl = "https://stepless.kr/tips/taxi";
       } else if (tipsSubPage === 'exploration') {
         if (explorationItemId === 'bootech') {
-          pageTitle = "부산 북항 상어 '부캉이' 실전 관찰 가이드 - 부산 탐구생활 | 스텝레스 Stepless";
-          pageDesc = "부산항 북항 친수공원 인공수로에 나타난 3m 암컷 흑상어 '부캉이' 관찰 요령, 명당 위치, 실시간 위치 확인 안내.";
+          pageTitle = isKR
+            ? "부산 북항 상어 '부캉이' 실전 관찰 가이드 - 부산 탐구생활 | 스텝리스 Stepless"
+            : "Busan North Port Waterfront Park Guide - Local Busan Magazine | Stepless";
+          pageDesc = isKR
+            ? "부산항 북항 친수공원 인공수로에 나타난 3m 암컷 흑상어 '부캉이' 관찰 요령, 명당 위치, 실시간 위치 확인 안내."
+            : "Explore Busan North Port Waterfront Park step-free walking trails and local highlights.";
           canonicalUrl = "https://stepless.kr/tips/exploration/bootech";
         } else if (explorationItemId === 'bujeon-masan') {
-          pageTitle = "2027년 4월 1일 부전~마산 복선전철 부분 개통 예정 안내 - 부산 탐구생활 | 스텝레스 Stepless";
-          pageDesc = "2027년 4월 1일 부분 개통 예정인 부전~마산 복선전철의 우선 운영 구간(부산 부전~사상, 강서금호~진례신호소) 및 무장애 환승 기대 효과 안내.";
+          pageTitle = isKR
+            ? "2027년 4월 1일 부전~마산 복선전철 부분 개통 예정 안내 - 부산 탐구생활 | 스텝리스 Stepless"
+            : "Bujeon-Masan Double-Track Railway 2027 Opening Guide | Stepless";
+          pageDesc = isKR
+            ? "2027년 4월 1일 부분 개통 예정인 부전~마산 복선전철의 우선 운영 구간(부산 부전~사상, 강서금호~진례신호소) 및 무장애 환승 기대 효과 안내."
+            : "Upcoming Bujeon-Masan railway line connecting Bujeon, Sasang (Gimhae Airport transfer), and West Busan.";
           canonicalUrl = "https://stepless.kr/tips/exploration/bujeon-masan";
         } else if (explorationItemId === 'opera-house') {
-          pageTitle = "북항의 새로운 문화 랜드마크! 부산오페라하우스 2027년 시범공연 예정 - 부산 탐구생활 | 스텝레스 Stepless";
-          pageDesc = "부산항 북항 재개발지구에 들어서는 해양 문화 랜드마크 부산오페라하우스 2027년 시범공연 예정 소식 및 북항 친수공원 무장애 연계 동선 안내.";
+          pageTitle = isKR
+            ? "북항의 새로운 문화 랜드마크! 부산오페라하우스 2027년 시범공연 예정 - 부산 탐구생활 | 스텝리스 Stepless"
+            : "Busan Opera House & North Port Cultural Landmark Guide | Stepless";
+          pageDesc = isKR
+            ? "부산항 북항 재개발지구에 들어서는 해양 문화 랜드마크 부산오페라하우스 2027년 시범공연 예정 소식 및 북항 친수공원 무장애 연계 동선 안내."
+            : "Preview the upcoming Busan Opera House and step-free walking routes around Busan North Port.";
           canonicalUrl = "https://stepless.kr/tips/exploration/opera-house";
         } else if (explorationItemId === 'luggage') {
-          pageTitle = "부산 무료 짐 보관소 총정리 (부산역·서면·해운대·광안리) - 부산 탐구생활 | 스텝레스 Stepless";
-          pageDesc = "부산에서 무료로 짐 보관할 수 있는 4곳(부산트레블라운지, 롯데백화점 부산본점, 해운대 플랫폼, 광안리 안내소) 운영시간, 주소, 지도 위치 총정리.";
+          pageTitle = isKR
+            ? "부산 무료 짐 보관소 총정리 (부산역·서면·해운대·광안리) - 부산 탐구생활 | 스텝리스 Stepless"
+            : "Free Luggage Storage in Busan (Busan Station, Seomyeon, Haeundae, Gwangalli) | Stepless";
+          pageDesc = isKR
+            ? "부산에서 무료로 짐 보관할 수 있는 4곳(부산트레블라운지, 롯데백화점 부산본점, 해운대 플랫폼, 광안리 안내소) 운영시간, 주소, 지도 위치 총정리."
+            : "Where to store luggage for free in Busan: operating hours, exact map locations, and tips for Busan Station, Seomyeon, Haeundae, and Gwangalli.";
           canonicalUrl = "https://stepless.kr/tips/exploration/luggage";
         } else if (explorationItemId === 'rental') {
-          pageTitle = "보행 약자 & 가족을 위한 유모차·휠체어 무료 대여소 안내 - 부산 탐구생활 | 스텝레스 Stepless";
-          pageDesc = "광안리 관광안내소, 태종대유원지, 롯데백화점 등 부산 유모차 및 휠체어 무료 대여 장소, 이용시간, 위치 총정리.";
+          pageTitle = isKR
+            ? "보행 약자 & 가족을 위한 유모차·휠체어 무료 대여소 안내 - 부산 탐구생활 | 스텝리스 Stepless"
+            : "Free Stroller & Wheelchair Rental Locations in Busan | Stepless";
+          pageDesc = isKR
+            ? "광안리 관광안내소, 태종대유원지, 롯데백화점 등 부산 유모차 및 휠체어 무료 대여 장소, 이용시간, 위치 총정리."
+            : "Complete directory of free baby stroller and wheelchair rental spots across major Busan tourist attractions.";
           canonicalUrl = "https://stepless.kr/tips/exploration/rental";
         } else if (explorationItemId === 'korean-cheat-codes') {
-          pageTitle = "5초 만에 배우는 초간단 실전 한국어 발음 꿀팁 - 부산 탐구생활 | 스텝레스 Stepless";
-          pageDesc = "외국인 친구도 바로 써먹는 초간단 실전 한국어 스피드 학습 치트키 발음 가이드.";
+          pageTitle = isKR
+            ? "5초 만에 배우는 초간단 실전 한국어 발음 꿀팁 - 부산 탐구생활 | 스텝리스 Stepless"
+            : "Essential Korean Phrases & Pronunciation Cheat Sheet for Busan Travelers | Stepless";
+          pageDesc = isKR
+            ? "외국인 친구도 바로 써먹는 초간단 실전 한국어 스피드 학습 치트키 발음 가이드."
+            : "Learn essential survival Korean phrases in 5 seconds for ordering food, shopping, and taking transit in Busan.";
           canonicalUrl = "https://stepless.kr/tips/exploration/korean-cheat-codes";
         } else if (explorationItemId === 'metro-reentry') {
-          pageTitle = "부산 지하철 반대편 승강장 실수 시 10분 내 무료 재진입 팁 - 부산 탐구생활 | 스텝레스 Stepless";
-          pageDesc = "부산 도시철도 상대식 승강장에서 행선지 방향을 착각해 개찰구를 잘못 통과했을 때 추가 요금 없이 10분 이내 무료로 반대편 개찰구로 재진입하는 방법입니다.";
+          pageTitle = isKR
+            ? "부산 지하철 반대편 승강장 실수 시 10분 내 무료 재진입 팁 - 부산 탐구생활 | 스텝리스 Stepless"
+            : "Busan Subway Free 10-Minute Gate Re-Entry Tip (Wrong Platform Fix) | Stepless";
+          pageDesc = isKR
+            ? "부산 도시철도 상대식 승강장에서 행선지 방향을 착각해 개찰구를 잘못 통과했을 때 추가 요금 없이 10분 이내 무료로 반대편 개찰구로 재진입하는 방법입니다."
+            : "Entered the wrong platform direction on the Busan Subway? Here is how to tap out and re-enter the opposite gate for free within 10 minutes.";
           canonicalUrl = "https://stepless.kr/tips/exploration/metro-reentry";
         } else {
-          pageTitle = "부산 탐구생활 - 핫이슈 & 실전 여행 꿀팁 | 스텝레스 Stepless";
-          pageDesc = "로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지! 북항 상어 부캉이와 무료 짐 보관, 대여소 총정리.";
+          pageTitle = isKR
+            ? "부산 탐구생활 - 핫이슈 & 실전 여행 꿀팁 | 스텝리스 Stepless"
+            : "Local Busan Hacks: Free Luggage Storage, Stroller Rental & Subway Tips | Stepless";
+          pageDesc = isKR
+            ? "로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지! 북항 상어 부캉이와 무료 짐 보관, 대여소 총정리."
+            : "Insider Busan travel hacks: free luggage storage spots, stroller/wheelchair rentals, survival Korean phrases, and subway transfer tips.";
           canonicalUrl = "https://stepless.kr/tips/exploration";
         }
       } else if (currentTab === 'schedule' || tipsSubPage === 'schedule') {
-        pageTitle = "부산 주요 축제·행사 월별 캘린더 & 무장애 관람 가이드 | 스텝레스 Stepless";
-        pageDesc = "광안리 M 드론라이트쇼, 부산국제록페스티벌, 부산바다축제, 부산불꽃축제 등 월별 부산 대표 축제 일정과 대중교통·무장애 이동 팁을 확인하세요.";
+        pageTitle = isKR
+          ? "부산 주요 축제·행사 월별 캘린더 & 무장애 관람 가이드 | 스텝리스 Stepless"
+          : "Busan Festivals & Events Calendar (Gwangalli Drone Show, Fireworks) | Stepless";
+        pageDesc = isKR
+          ? "광안리 M 드론라이트쇼, 부산국제록페스티벌, 부산바다축제, 부산불꽃축제 등 월별 부산 대표 축제 일정과 대중교통·무장애 이동 팁을 확인하세요."
+          : "Monthly schedule of major Busan festivals and events including the Gwangalli M Drone Light Show, Busan Fireworks Festival, and BIFF.";
         canonicalUrl = "https://stepless.kr/schedule";
       } else if (tipsSubPage === 'courses') {
-        pageTitle = "부산 테마별 & 일정별 추천 여행 코스 | 스텝레스 Stepless";
-        pageDesc = "식도락, 체험, 전통시장, 명소 및 당일치기부터 2박 3일까지 부산 추천 여행 코스 안내.";
+        pageTitle = isKR
+          ? "부산 테마별 & 일정별 추천 여행 코스 | Busan Trip Plan & Itineraries | 스텝리스 Stepless"
+          : "Busan Trip Plan: 1 to 5-Day Itineraries & Theme Courses | Stepless";
+        pageDesc = isKR
+          ? "식도락, 체험, 전통시장, 명소 및 당일치기부터 4박 5일까지 부산 추천 여행 코스와 맞춤 루트 플래너 안내."
+          : "Browse curated 1-day, 2-day, 3-day, 4-day, and 5-day Busan trip plans, food & market courses, or build your own custom Busan route.";
         canonicalUrl = "https://stepless.kr/tips/courses";
       }
 
@@ -1112,8 +1203,12 @@ export default function App() {
       const canonical = document.querySelector('link[rel="canonical"]');
       if (canonical) canonical.setAttribute('href', canonicalUrl);
     } else if (currentTab === 'tourapi') {
-      const pageTitle = "부산 무장애 관광지 & 배리어프리 열린관광지 | 스텝레스 Stepless";
-      const pageDesc = "한국관광공사 열린관광지 데이터 기반 부산 전역 무장애 여행 스팟, 단차 없는 평탄 보도 및 편의시설 가이드.";
+      const pageTitle = isKR
+        ? "부산 무장애 관광지 & 배리어프리 열린관광지 | Accessible Busan Guide | 스텝리스 Stepless"
+        : "Wheelchair & Stroller Accessible Attractions in Busan | Stepless";
+      const pageDesc = isKR
+        ? "한국관광공사 열린관광지 데이터 기반 부산 전역 무장애 여행 스팟, 단차 없는 평탄 보도 및 편의시설 가이드."
+        : "Verified barrier-free and step-free tourist attractions in Busan with wheelchair ramps, accessible restrooms, and smooth boardwalks.";
       document.title = pageTitle;
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) metaDesc.setAttribute('content', pageDesc);
@@ -1124,8 +1219,12 @@ export default function App() {
       const canonical = document.querySelector('link[rel="canonical"]');
       if (canonical) canonical.setAttribute('href', "https://stepless.kr/barrier-free");
     } else {
-      const defaultTitle = "부산 여행 코스 추천 & 지하철 배리어프리 무장애 가이드 | 스탭리스 Stepless";
-      const defaultDesc = "부산 명소·맛집·전통시장 추천 여행 코스부터 주요 지하철역 엘리베이터 위치, 유모차·휠체어 배리어프리 무단차 동선, 맞춤 내 여행 루트 및 실시간 대중교통 길찾기까지 한 번에 안내합니다.";
+      const defaultTitle = isKR
+        ? "부산 여행 코스 추천 & 지하철 무장애 가이드 | Busan Trip Plan & Step-Free Itinerary | 스텝리스 Stepless"
+        : "Busan Trip Plan, 1-5 Day Itineraries & Step-Free Subway Guide | Stepless in Busan";
+      const defaultDesc = isKR
+        ? "부산 명소·맛집·전통시장 추천 여행 코스(당일치기~4박5일), 나만의 맞춤 여행 루트 플래너, 주요 22개 지하철역 엘리베이터 위치 및 유모차·휠체어 배리어프리 동선 가이드."
+        : "Plan your Busan trip with curated 1 to 5-day Busan itineraries, interactive custom travel route planner, and step-free elevator exits for 22 major Busan subway stations.";
       
       document.title = defaultTitle;
       const metaDesc = document.querySelector('meta[name="description"]');

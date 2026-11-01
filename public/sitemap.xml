@@ -188,7 +188,7 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- All 15 Major Subway Stations (Elevator & Barrier-Free Information) -->
+  <!-- All 22 Major Subway Stations (Elevator & Barrier-Free Information) -->
   <url>
     <loc>https://stepless.kr/station/seomyeon</loc>
     <lastmod>2026-10-26</lastmod>

@@ -4,7 +4,6 @@ import { createServer as createViteServer } from "vite";
 import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
 import fs from "fs";
-import { exec } from "child_process";
 
 import { BUSAN_TOUR_API_SPOTS, TourApiSpot } from "./src/data/tourApiSpots";
 import { getKoreaTourApiPlaceDetail, KOREA_TOUR_API_PLACE_DETAILS } from "./src/data/koreaTourApiPlaceDetails";
@@ -1874,20 +1873,29 @@ app.get("/ads.txt", (req, res) => {
 // Serve Naver & Google crawls search engine rules (robots.txt & sitemap.xml)
 app.get("/robots.txt", (req, res) => {
   res.type("text/plain");
-  res.send("User-agent: *\nAllow: /\n\nUser-agent: Yeti\nAllow: /\n\nSitemap: https://stepless.kr/sitemap.xml\n");
+  const robotsPath = path.join(process.cwd(), "public", "robots.txt");
+  if (fs.existsSync(robotsPath)) {
+    res.send(fs.readFileSync(robotsPath, "utf8"));
+  } else {
+    res.send("User-agent: *\nAllow: /\n\nUser-agent: Yeti\nAllow: /\n\nSitemap: https://stepless.kr/sitemap.xml\n");
+  }
 });
 
 app.get("/sitemap.xml", (req, res) => {
   res.type("application/xml");
-  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+  const sitemapPath = path.join(process.cwd(), "public", "sitemap.xml");
+  if (fs.existsSync(sitemapPath)) {
+    res.send(fs.readFileSync(sitemapPath, "utf8"));
+  } else {
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://stepless.kr/</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 </urlset>`);
+  }
 });
 
 // Vite middleware setup
@@ -1907,17 +1915,7 @@ async function startServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    const url = `http://localhost:${PORT}`;
-    console.log(`Server running on ${url}`);
-    if (process.env.NODE_ENV !== "production" && !process.env.CI && !process.env.VERCEL) {
-      const openCmd =
-        process.platform === "win32"
-          ? `start "" "${url}"`
-          : process.platform === "darwin"
-          ? `open "${url}"`
-          : `xdg-open "${url}"`;
-      exec(openCmd, () => {});
-    }
+    console.log(`Server running on http://localhost:${PORT}`);
     // Initialize background automated sync for Busan official events
     startAutomatedEventSync(12);
   });
