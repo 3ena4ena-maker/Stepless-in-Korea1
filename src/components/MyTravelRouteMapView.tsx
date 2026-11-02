@@ -253,7 +253,7 @@ export default function MyTravelRouteMapView({
     try {
       const params = new URLSearchParams(window.location.search);
       const hash = window.location.hash;
-      const rawRoute = params.get('route') || params.get('shared_route') || params.get('route_data');
+      const rawRoute = params.get('r') || params.get('route') || params.get('shared_route') || params.get('route_data');
       
       let hashRoute = '';
       if (hash && hash.includes('route=')) {
@@ -265,8 +265,9 @@ export default function MyTravelRouteMapView({
       if (routeStr) {
         const imported = importRouteFromShareData(routeStr);
         if (imported && imported.length > 0) {
+          saveImportedRouteAsMyRoute(imported);
           setSharedRoutePlaces(imported);
-          setIsViewingSharedRoute(true);
+          setIsViewingSharedRoute(false);
         }
       }
     } catch (e) {
@@ -906,7 +907,7 @@ export default function MyTravelRouteMapView({
         const markerBorderColor = isSelected ? '#FBBF24' : '#FFFFFF';
 
         // 정밀 좌표 핀포인트 닷(Pinpoint Dot) 포함 마커 HTML
-        const markerContent = `
+        const markerContent = `<div title="${place.titleKo}" style="display:flex; align-items:center; justify-content:center; width:${isSelected ? 28 : 24}px; height:${isSelected ? 28 : 24}px; border-radius:50%; background:${isSelected ? 'rgba(24, 24, 27, 0.88)' : 'rgba(142, 168, 94, 0.86)'}; backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); color:#ffffff; font-size:11px; font-weight:800; box-shadow:0 2px 6px rgba(0,0,0,0.18); border:2px solid rgba(255,255,255,0.92); transform:translate(-50%, -50%); cursor:pointer; transition:all 0.15s ease;">${stepNum}</div>`; const _unusedNaverMarkerHtml = `
           <div style="display:flex; flex-direction:column; align-items:center; transform:translate(-50%, -100%); cursor:pointer;">
             <div style="background:${markerBgColor}; color:#ffffff; font-size:11px; font-weight:800; padding:4px 9px; border-radius:12px; white-space:nowrap; box-shadow:0 3px 10px rgba(0,0,0,0.3); border:2px solid ${markerBorderColor}; display:flex; align-items:center; gap:5px;">
               <span style="background:#F59E0B; color:#0A2540; font-size:10px; font-weight:900; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${stepNum}</span>
@@ -963,10 +964,10 @@ export default function MyTravelRouteMapView({
         naverPolylineRef.current = new window.naver.maps.Polyline({
           map,
           path: naverLatLngs,
-          strokeColor: '#0A2540',
-          strokeWeight: 4,
-          strokeOpacity: 0.85,
-          strokeStyle: 'shortdash',
+          strokeColor: '#8EA85E', strokeStyle: 'solid',
+          strokeWeight: 2,
+          strokeOpacity: 0.78,
+          // (replaced above)
         });
       }
 
@@ -1086,9 +1087,9 @@ export default function MyTravelRouteMapView({
         googlePolylineRef.current = new window.google.maps.Polyline({
           map,
           path: googleCoords,
-          strokeColor: '#0A2540',
-          strokeOpacity: 0.85,
-          strokeWeight: 4,
+          strokeColor: '#8EA85E', strokeStyle: 'solid',
+          strokeOpacity: 0.78,
+          strokeWeight: 2,
         });
       }
 
@@ -1156,7 +1157,7 @@ export default function MyTravelRouteMapView({
         const markerBorderColor = isSelected ? '#FBBF24' : '#FFFFFF';
 
         // 정밀 좌표 핀포인트 닷(Pinpoint Dot) 포함
-        const markerHtml = `
+        const markerHtml = `<div title="${language === 'KR' ? place.titleKo : (place.titleEn || place.titleKo)}" style="display:flex; align-items:center; justify-content:center; width:${isSelected ? 28 : 24}px; height:${isSelected ? 28 : 24}px; border-radius:50%; background:${isSelected ? 'rgba(24, 24, 27, 0.88)' : 'rgba(142, 168, 94, 0.86)'}; backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); color:#ffffff; font-size:11px; font-weight:800; box-shadow:0 2px 6px rgba(0,0,0,0.18); border:2px solid rgba(255,255,255,0.92); transform:translate(-50%, -50%); cursor:pointer; pointer-events:auto; transition:all 0.15s ease;">${stepNum}</div>`; const _unusedLeafletMarkerHtml = `
           <div style="display:flex; flex-direction:column; align-items:center; transform:translate(-50%, -100%); cursor:pointer; pointer-events:auto;">
             <div style="background:${markerBgColor}; color:#ffffff; font-size:11px; font-weight:800; padding:4px 9px; border-radius:12px; white-space:nowrap; box-shadow:0 3px 10px rgba(0,0,0,0.3); border:2px solid ${markerBorderColor}; display:flex; align-items:center; gap:5px;">
               <span style="background:#F59E0B; color:#0A2540; font-size:10px; font-weight:900; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center;">${stepNum}</span>
@@ -1206,10 +1207,10 @@ export default function MyTravelRouteMapView({
 
       if (latLngs.length > 1) {
         leafletPolylineRef.current = L.polyline(latLngs, {
-          color: '#0A2540',
-          weight: 4,
-          opacity: 0.85,
-          dashArray: '8, 8',
+          color: '#8EA85E',
+          weight: 2,
+          opacity: 0.78,
+          // (solid line)
           lineCap: 'round',
           lineJoin: 'round',
         }).addTo(map);
@@ -1544,7 +1545,7 @@ export default function MyTravelRouteMapView({
                   title={language === 'KR' ? '카카오톡 나에게 보내기 / 내 폰으로 루트 링크 보내기' : 'Send Route Link to Myself / Share'}
                 >
                   <Send className="w-3.5 h-3.5" />
-                  <span>{language === 'KR' ? '나에게 보내기' : 'Send to Myself'}</span>
+                  <span>{language === 'KR' ? '루트 공유하기' : 'Share Route'}</span>
                 </button>
 
                 {!isViewingSharedRoute && (
@@ -1637,7 +1638,7 @@ export default function MyTravelRouteMapView({
                   <span>{language === 'KR' ? '내 루트로 저장 (복사하기)' : 'Save as My Route'}</span>
                 </button>
 
-                {places.length > 0 && (
+                {displayPlaces.length > 0 && (
                   <button
                     type="button"
                     onClick={handleMergeSharedRouteWithMine}
@@ -1766,7 +1767,7 @@ export default function MyTravelRouteMapView({
                     className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-extrabold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs"
                   >
                     <Send className="w-3.5 h-3.5" />
-                    <span>{language === 'KR' ? '나에게 보내기' : 'Send to Myself'}</span>
+                    <span>{language === 'KR' ? '루트 공유하기' : 'Share Route'}</span>
                   </button>
                 </div>
               </div>
@@ -1854,7 +1855,7 @@ export default function MyTravelRouteMapView({
                         className="py-1.5 px-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-extrabold flex items-center justify-center gap-1 transition cursor-pointer"
                       >
                         <Send className="w-3 h-3" />
-                        <span>{language === 'KR' ? '나에게 보내기' : 'Send Link'}</span>
+                        <span>{language === 'KR' ? '루트 공유하기' : 'Share Route'}</span>
                       </button>
                     </div>
                   </div>
@@ -1871,7 +1872,9 @@ export default function MyTravelRouteMapView({
         </div>
       )}
 
-      {/* 2. 대화형 지도 영역 (Numbered Markers & Polyline Route) */}
+      {/* 2. 대화형 지도 영역 (우측 고정) & 좌측 코스 목록 2단 분할 */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div className="lg:col-span-6 lg:sticky lg:top-24 lg:order-2">
       <div className="bg-white rounded-xl border border-[#E5E2DC] overflow-hidden shadow-xs relative">
         
         {/* Naver Cloud Domain Notice Banner (shown if Naver Maps API has not whitelisted this domain) */}
@@ -1919,7 +1922,7 @@ export default function MyTravelRouteMapView({
             <span>{language === 'KR' ? '전체 루트 동선 지도' : 'Full Route Map'}</span>
             
             {/* Map Engine Indicator Badge */}
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-mono px-2 py-0.5 rounded-md font-bold bg-white border border-[#E5E2DC] text-[#0A2540]">
+            <span className="hidden">
               <span className={`w-2 h-2 rounded-full ${provider === 'NAVER' ? 'bg-[#03C75A]' : provider === 'GOOGLE' ? 'bg-[#1A73E8]' : 'bg-[#F59E0B]'}`} />
               <span>
                 {provider === 'NAVER'
@@ -1933,7 +1936,7 @@ export default function MyTravelRouteMapView({
 
           <div className="flex items-center gap-2">
             {displayPlaces.length > 1 && (
-              <span className="text-[11px] font-mono text-amber-900 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 font-bold">
+              <span className="hidden">
                 {language === 'KR' ? `총 ${displayPlaces.length}개 지점 연결됨` : `${displayPlaces.length} connected`}
               </span>
             )}
@@ -1964,7 +1967,7 @@ export default function MyTravelRouteMapView({
             </button>
 
             {/* Optional Map Switcher Toggle */}
-            <div className="flex items-center bg-[#F1EFEC] p-0.5 rounded-md border border-[#E5E2DC] text-[10px] font-bold">
+            <div className="hidden">
               <button
                 type="button"
                 onClick={() => {
@@ -2008,12 +2011,12 @@ export default function MyTravelRouteMapView({
         {/* Map Canvas Container */}
         <div
           ref={mapContainerRef}
-          className="w-full h-[340px] sm:h-[420px] lg:h-[460px] bg-slate-100 relative z-0 route-map-canvas"
+          className="w-full h-[340px] sm:h-[400px] lg:h-[440px] bg-slate-100 relative z-0 route-map-canvas"
         />
 
         {/* 모바일 최적화: 가로 스크롤 경유지 퀵 네비게이션 스트립 */}
         {displayPlaces.length > 0 && (
-          <div className="bg-[#FBFBF9] border-t border-[#E5E2DC] p-2 overflow-x-auto no-scrollbar flex items-center gap-1.5">
+          <div className="bg-[#FBFBF9] border-t border-[#E5E2DC] p-2.5 flex flex-wrap items-center gap-1.5">
             <span className="text-[10px] font-extrabold text-slate-400 shrink-0 uppercase tracking-wider pl-1">
               {language === 'KR' ? '동선 순서:' : 'Route:'}
             </span>
@@ -2170,6 +2173,8 @@ export default function MyTravelRouteMapView({
         </div>
       )}
 
+      </div>
+      <div className="lg:col-span-6 min-w-0 space-y-5 lg:order-1">
       {/* 2.5 최소한의 크기로 배치된 장소 검색 및 루트 추가 바 (Minimal Place Search Bar) */}
       <div ref={searchContainerRef} className="relative z-30 pt-1">
         <div className="flex items-center justify-between pb-1.5 px-0.5">
@@ -2400,7 +2405,7 @@ export default function MyTravelRouteMapView({
       </div>
 
       {/* 3. 루트 상세 목록 및 동선 관리 (Step List & Reordering) */}
-      {places.length > 0 && (
+      {displayPlaces.length > 0 && (
         <div className="space-y-4 pt-2">
           <div className="flex items-center justify-between border-b border-slate-200 pb-3">
             <div className="flex items-center gap-2">
@@ -2529,7 +2534,19 @@ export default function MyTravelRouteMapView({
                             {language === 'KR' ? place.titleKo : (place.titleEn || place.titleKo)}
                           </h4>
 
-                          {place.addressRoadKo && (
+                          {false && place.addressRoadKo && (
+                          <span className="text-[11px] text-slate-600 font-medium flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-[#8EA85E] shrink-0" />
+                            <span>{language === 'KR' ? place.addressRoadKo : (place.addressRoadEn || place.addressRoadKo)}</span>
+                          </span>
+                        )}
+                        {place.stationInfoKo && (
+                            <p className="text-[11px] text-slate-500 flex items-center gap-1 truncate">
+                              <Train className="w-3 h-3 text-[#8EA85E] shrink-0" />
+                              <span>{language === 'KR' ? place.stationInfoKo : (place.stationInfoEn || place.stationInfoKo)}</span>
+                            </p>
+                          )}
+                          {false && place.addressRoadKo && (
                             <p className="text-xs text-slate-500 flex items-center gap-1 truncate">
                               <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
                               <span>{language === 'KR' ? place.addressRoadKo : (place.addressRoadEn || place.addressRoadKo)}</span>
@@ -2577,8 +2594,14 @@ export default function MyTravelRouteMapView({
                     {/* Bottom Action Links */}
                     <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs">
                       <div className="flex items-center gap-2">
+                        {place.addressRoadKo && (
+                          <span className="text-[11px] text-slate-600 font-medium flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-[#8EA85E] shrink-0" />
+                            <span>{language === 'KR' ? place.addressRoadKo : (place.addressRoadEn || place.addressRoadKo)}</span>
+                          </span>
+                        )}
                         {place.stationInfoKo && (
-                          <span className="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                          <span className="hidden">
                             <Train className="w-3 h-3 text-[#0A2540]" />
                             <span>{language === 'KR' ? place.stationInfoKo : (place.stationInfoEn || place.stationInfoKo)}</span>
                           </span>
@@ -2590,7 +2613,7 @@ export default function MyTravelRouteMapView({
                           <button
                             type="button"
                             onClick={(e) => handleCopy(e, place.id, place.addressRoadKo!)}
-                            className="px-2 py-1 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200 text-[11px] font-semibold text-slate-700 flex items-center gap-1 cursor-pointer"
+                            className="text-[10px] px-1.5 py-0.5 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200 font-semibold text-slate-600 flex items-center gap-0.5 cursor-pointer"
                           >
                             {copiedId === place.id ? (
                               <>
@@ -2600,7 +2623,7 @@ export default function MyTravelRouteMapView({
                             ) : (
                               <>
                                 <Copy className="w-3 h-3" />
-                                <span>{language === 'KR' ? '주소 복사' : 'Copy'}</span>
+                                <span>{language === 'KR' ? '복사' : 'Copy'}</span>
                               </>
                             )}
                           </button>
@@ -2612,20 +2635,20 @@ export default function MyTravelRouteMapView({
                               href={`https://map.naver.com/v5/search/${encodeURIComponent(place.addressRoadKo && place.addressRoadKo !== '부산광역시' ? `${place.titleKo} ${place.addressRoadKo.replace(/\s*\([^)]*\)/g, '').trim()}` : place.titleKo)}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-2 py-1 rounded bg-[#03C75A] hover:bg-[#02B350] text-white text-[11px] font-bold flex items-center gap-1"
+                              className="w-5.5 h-5.5 rounded-md bg-[#03C75A] hover:bg-[#02B350] text-white flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer" title="네이버 지도" aria-label="Naver Map"
                             >
-                              <span>네이버 지도</span>
-                              <ExternalLink className="w-3 h-3" />
+                              <svg className="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24"><path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" /></svg>
+                              <ExternalLink className="hidden" />
                             </a>
 
                             <a
                               href={`https://map.kakao.com/link/search/${encodeURIComponent(place.titleKo)}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-2 py-1 rounded bg-[#FEE500] hover:bg-[#FDD835] text-[#191919] text-[11px] font-bold flex items-center gap-1"
+                              className="w-5.5 h-5.5 rounded-md bg-[#FEE500] hover:bg-[#FDD835] text-[#191919] flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer" title="카카오맵" aria-label="Kakao Map"
                             >
-                              <span>카카오 길찾기</span>
-                              <ExternalLink className="w-3 h-3" />
+                              <svg className="w-3 h-3 fill-[#181600]" viewBox="0 0 24 24"><path d="M12 3c-5.52 0-10 3.58-10 8 0 2.86 1.89 5.37 4.73 6.77-.21.77-.76 2.8-.87 3.24-.14.55.2.54.42.39.17-.11 2.75-1.87 3.85-2.62.61.14 1.23.22 1.87.22 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>
+                              <ExternalLink className="hidden" />
                             </a>
                           </>
                         ) : (
@@ -2634,20 +2657,20 @@ export default function MyTravelRouteMapView({
                               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.addressRoadKo && place.addressRoadKo !== '부산광역시' ? `${place.titleEn || place.titleKo} ${place.addressRoadKo.replace(/\s*\([^)]*\)/g, '').trim()}` : `${place.titleEn || place.titleKo} Busan`)}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-2 py-1 rounded bg-[#1A73E8] hover:bg-[#1557B0] text-white text-[11px] font-bold flex items-center gap-1"
+                              className="w-5.5 h-5.5 rounded-md bg-white border border-slate-200 hover:border-[#4285F4]/40 flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer" title="Google Maps" aria-label="Google Maps"
                             >
-                              <span>Google Maps</span>
-                              <ExternalLink className="w-3 h-3" />
+                              <svg viewBox="0 0 92 135" className="w-2.5 h-2.5" fill="none"><path d="M46 0C20.596 0 0 20.596 0 46c0 34.5 46 89 46 89s46-54.5 46-89C92 20.596 71.404 0 46 0z" fill="#4285F4"/><path d="M46 0c-25.404 0-46 20.596-46 46 0 11.233 4.025 21.528 10.72 29.5L46 46V0z" fill="#EA4335"/><path d="M46 46l35.28 29.5C87.975 67.528 92 57.233 92 46c0-25.404-20.596-46-46-46v46z" fill="#FBBC04"/><path d="M46 46v89s24.62-29.215 37.8-57.5L46 46z" fill="#34A853"/><circle cx="46" cy="46" r="18" fill="#FFFFFF"/></svg>
+                              <ExternalLink className="hidden" />
                             </a>
 
                             <a
                               href={`https://map.naver.com/v5/search/${encodeURIComponent(place.addressRoadKo && place.addressRoadKo !== '부산광역시' ? `${place.titleKo} ${place.addressRoadKo.replace(/\s*\([^)]*\)/g, '').trim()}` : place.titleKo)}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-2 py-1 rounded bg-[#03C75A] hover:bg-[#02B350] text-white text-[11px] font-bold flex items-center gap-1"
+                              className="w-5.5 h-5.5 rounded-md bg-[#03C75A] hover:bg-[#02B350] text-white flex items-center justify-center transition-all shadow-2xs hover:scale-105 shrink-0 cursor-pointer" title="네이버 지도" aria-label="Naver Map"
                             >
-                              <span>Naver Map</span>
-                              <ExternalLink className="w-3 h-3" />
+                              <svg className="w-2.5 h-2.5 fill-white" viewBox="0 0 24 24"><path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z" /></svg>
+                              <ExternalLink className="hidden" />
                             </a>
                           </>
                         )}
@@ -2661,6 +2684,23 @@ export default function MyTravelRouteMapView({
         </div>
       )}
 
+      {displayPlaces.length === 0 && (
+        <div className="bg-white rounded-2xl border border-[#E5E2DC] p-6 sm:p-8 text-center space-y-3 shadow-2xs">
+          <div className="w-11 h-11 rounded-full bg-[#8EA85E]/15 text-[#6F8843] flex items-center justify-center mx-auto">
+            <Compass className="w-5 h-5" />
+          </div>
+          <h4 className="text-sm sm:text-base font-bold text-slate-900">
+            {language === 'KR' ? '위 검색창에서 여행지를 검색하거나 추천 코스에서 [⭐ 루트 추가]를 눌러보세요' : 'Search places above or click [⭐ Add Route] on any course card'}
+          </h4>
+          <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
+            {language === 'KR'
+              ? '추가된 장소들이 이곳 왼쪽 목록에 순서대로 정리되고, 오른쪽 지도에 번호와 실시간 이동 동선으로 연결됩니다.'
+              : 'Added stops will appear here in sequence on the left while connecting on the interactive map on the right.'}
+          </p>
+        </div>
+      )}
+      </div>
+      </div>
       {/* 방안 A: 내 여행 루트 공유 및 복사 모달 (Share Route Modal) */}
       {showShareModal && (
         <div className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in text-left font-sans">
@@ -2675,11 +2715,11 @@ export default function MyTravelRouteMapView({
                   <h3 className="font-black text-base sm:text-lg text-slate-900 leading-snug">
                     {language === 'KR'
                       ? activeShareTitle
-                        ? `나에게 보내기 · ${activeShareTitle}`
-                        : '나에게 루트 보내기 (내 사이트 바로가기)'
+                        ? `루트 공유하기 · ${activeShareTitle}`
+                        : '루트 공유하기'
                       : activeShareTitle
-                        ? `Send to Myself · ${activeShareTitle}`
-                        : 'Send Route to Myself (Direct Site Link)'}
+                        ? `Share Route · ${activeShareTitle}`
+                        : 'Share Route'}
                   </h3>
                   <span className="text-[11px] text-slate-500 font-medium">
                     {language === 'KR'
@@ -2704,7 +2744,7 @@ export default function MyTravelRouteMapView({
                 <div className="flex items-center justify-between">
                   <span className="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
                     <span>🔗</span>
-                    <span>{language === 'KR' ? '내 사이트 루트 바로가기 링크' : 'Direct Route Re-entry URL'}</span>
+                    <span>{language === 'KR' ? '내 루트 바로가기 링크' : 'My Route Direct Link'}</span>
                   </span>
                   <span className="text-[10px] text-slate-500 font-medium">
                     {language === 'KR' ? '모바일·PC 어디서든 열람 가능' : 'Accessible on Mobile & PC'}
@@ -2725,7 +2765,7 @@ export default function MyTravelRouteMapView({
               </div>
 
               {/* Option 2: 모바일 메신저 전송 & 텍스트 일정표 복사 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div className="hidden">
                 <button
                   type="button"
                   onClick={handleNativeShare}
@@ -2746,7 +2786,7 @@ export default function MyTravelRouteMapView({
               </div>
 
               {/* Option 3: PC → 스마트폰 카메라 스캔용 QR코드 토글 */}
-              <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2.5">
+              <div className="hidden">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 text-xs font-extrabold text-slate-800">
                     <QrCode className="w-4 h-4 text-[#0A2540]" />
@@ -2789,7 +2829,7 @@ export default function MyTravelRouteMapView({
               </div>
 
               {/* Route Summary Preview */}
-              <div className="bg-[#FBFBF9] p-3 rounded-xl border border-slate-200 space-y-1.5 max-h-36 overflow-y-auto">
+              <div className="hidden">
                 <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider block">
                   {language === 'KR' ? '공유되는 장소 목록:' : 'Stops Included in Link:'}
                 </span>

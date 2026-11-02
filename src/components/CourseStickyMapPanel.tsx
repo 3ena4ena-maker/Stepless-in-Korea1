@@ -596,11 +596,6 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
             <h4 className="text-xs sm:text-sm font-bold text-[#18181B] truncate">
               {language === 'KR' ? '코스 전체 동선 지도' : 'Course Route Map'}
             </h4>
-            <p className="text-[11px] text-slate-500 truncate">
-              {language === 'KR'
-                ? `총 ${resolvedStops.length}개 스팟 · 번호를 누르면 위치로 이동합니다`
-                : `${resolvedStops.length} stops · Tap a stop to focus on map`}
-            </p>
           </div>
         </div>
 

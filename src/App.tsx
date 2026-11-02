@@ -471,7 +471,7 @@ export default function App() {
       const parts = pathname.split('/');
       
       // Look for shared route data or /my-route
-      if (searchParams.has('route') || searchParams.has('route_data') || searchParams.has('shared_route') || parts[1] === 'my-route') {
+      if (searchParams.has('r') || searchParams.has('route') || searchParams.has('route_data') || searchParams.has('shared_route') || parts[1] === 'my-route') {
         setSelectedItineraryCategory('MY_ROUTE');
         setCurrentTab('tips');
         setTipsSubPage('courses');
@@ -892,6 +892,7 @@ export default function App() {
             expectedPath = '/about/operator';
           }
         }
+        if (selectedItineraryCategory === 'MY_ROUTE' && (window.location.search.includes('r=') || window.location.search.includes('route='))) { expectedPath += window.location.search; }
         const currentUrlPath = window.location.pathname + window.location.search;
         if (currentUrlPath !== expectedPath && window.location.pathname !== expectedPath) {
           window.history.pushState({ tab: currentTab, category: selectedItineraryCategory, subPage: tipsSubPage, regionPage: activeRegionPage, siteSubPage, searchViewMode, stationId: selectedStationId, explorationItemId }, '', expectedPath);
