@@ -5269,7 +5269,66 @@ case 'EXPERIENCE': {
                                   {language === 'KR' ? step.descKo : step.descEn}
                                 </p>
 
-                                {step.cityTourInfo && (
+                                {step.cityTourInfo && (() => {
+                                  const isCityTourOpen = !!expandedBranches[step.titleKo];
+                                  return (
+                                    <div className="bg-[#F8FAFC] rounded-lg border border-slate-200/80 text-left mt-2 overflow-hidden">
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setExpandedBranches(prev => ({ ...prev, [step.titleKo]: !isCityTourOpen }));
+                                        }}
+                                        className="w-full px-3 py-2 flex items-center justify-between gap-2 hover:bg-slate-100/70 transition-colors cursor-pointer"
+                                        aria-expanded={isCityTourOpen}
+                                      >
+                                        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+                                          <Bus className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
+                                          <span>{language === 'KR' ? '순환형 3개 노선 안내' : '3 Loop Lines Guide'}</span>
+                                        </div>
+                                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#6A833E]">
+                                          <span>
+                                            {isCityTourOpen
+                                              ? (language === 'KR' ? '접기' : 'Hide')
+                                              : (language === 'KR' ? '펼치기' : 'Show')}
+                                          </span>
+                                          <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isCityTourOpen ? 'rotate-180' : ''}`} />
+                                        </span>
+                                      </button>
+                                      {isCityTourOpen && (
+                                        <div className="px-3 pb-3 pt-2 border-t border-slate-200/60 space-y-2 animate-fade-in">
+                                          <div className="space-y-1.5 text-xs">
+                                            {step.cityTourInfo.routes?.map((rt, rIdx) => (
+                                              <div key={rIdx} className="flex items-start gap-1.5 text-[11px] leading-tight">
+                                                <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0 border ${rt.badgeColor || 'bg-slate-100 text-slate-700'}`}>
+                                                  {language === 'KR' ? rt.nameKo : rt.nameEn}
+                                                </span>
+                                                <span className="text-slate-700 font-medium pt-0.5">
+                                                  {language === 'KR' ? rt.routeKo : rt.routeEn}
+                                                </span>
+                                              </div>
+                                            ))}
+                                          </div>
+                                          {step.cityTourInfo.websiteUrl && (
+                                            <div className="pt-1.5 border-t border-slate-200/60 flex justify-end">
+                                              <a
+                                                href={step.cityTourInfo.websiteUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                onClick={(e) => e.stopPropagation()}
+                                                className="inline-flex items-center gap-1 text-[11px] font-bold text-[#8EA85E] hover:text-[#748c48] underline underline-offset-2 cursor-pointer"
+                                              >
+                                                <span>{language === 'KR' ? '공식 예매 및 노선안내' : 'Official Booking & Info'}</span>
+                                                <ExternalLink className="w-3 h-3" />
+                                              </a>
+                                            </div>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })()}
+                                {false && step.cityTourInfo && (
                                   <div className="bg-[#F8FAFC] p-3 rounded-lg border border-slate-200/80 space-y-2 text-left mt-2">
                                     <div className="flex items-center justify-between gap-1 border-b border-slate-200/60 pb-1.5">
                                       <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
