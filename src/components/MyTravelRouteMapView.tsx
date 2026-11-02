@@ -12,6 +12,7 @@ import { Language } from '../i18n/dictionary';
  */
 
 import React, { useEffect, useRef, useState, useMemo } from 'react';
+
 import {
   MapPin,
   Train,
@@ -2703,7 +2704,7 @@ export default function MyTravelRouteMapView({
       </div>
       {/* 방안 A: 내 여행 루트 공유 및 복사 모달 (Share Route Modal) */}
       {showShareModal && (
-        <div className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in text-left font-sans">
+        <div className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-xs flex items-start justify-center pt-20 sm:pt-28 p-4 animate-fade-in text-left font-sans">
           <div className="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 space-y-4 shadow-2xl border border-slate-200">
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-slate-200 pb-3">
