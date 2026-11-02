@@ -4308,6 +4308,70 @@ export default function BusanItinerariesView({
                         <circle cx="12" cy="5" r="1.5" />
                       </svg>
                     );
+                  case 'MUSEUM':
+                  case 'ATTRACTION_HERITAGE':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="12,3 3,9 21,9" />
+                        <line x1="6" y1="9" x2="6" y2="19" />
+                        <line x1="10" y1="9" x2="10" y2="19" />
+                        <line x1="14" y1="9" x2="14" y2="19" />
+                        <line x1="18" y1="9" x2="18" y2="19" />
+                        <line x1="3" y1="19" x2="21" y2="19" />
+                      </svg>
+                    );
+                  case 'ART':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="4" width="18" height="16" rx="2" />
+                        <circle cx="8.5" cy="9.5" r="1.5" />
+                        <path d="M21 15l-5-5L5 20" />
+                      </svg>
+                    );
+                  case 'SCIENCE_ECO':
+                  case 'ATTRACTION_PARK':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 3L4 15h16L12 3z" />
+                        <path d="M12 15v6" />
+                        <line x1="8" y1="21" x2="16" y2="21" />
+                      </svg>
+                    );
+                  case 'CULTURE':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z" />
+                        <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z" />
+                      </svg>
+                    );
+                  case 'WORKSHOP':
+                  case 'ATTRACTION_TEMPLE':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M4 10c4-2 12-2 16 0" />
+                        <path d="M6 6c3-1.5 9-1.5 12 0" />
+                        <line x1="7" y1="10" x2="7" y2="19" />
+                        <line x1="17" y1="10" x2="17" y2="19" />
+                        <line x1="4" y1="19" x2="20" y2="19" />
+                      </svg>
+                    );
+                  case 'FIVE_DAY_MARKET':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 9l2-5h14l2 5" />
+                        <path d="M3 9c1.5 2 3.5 2 5 0 1.5 2 3.5 2 5 0 1.5 2 3.5 2 5 0 1 1.5 2.5 1.5 3 0" />
+                        <path d="M5 10v9h14v-9" />
+                      </svg>
+                    );
+                  case 'ATTRACTION_COAST':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="17" cy="6" r="2.5" />
+                        <path d="M4 13q5-7 10 0Z" />
+                        <line x1="9" y1="13" x2="8" y2="18" />
+                        <path d="M3 18q3-2 6 0t6 0 6 0" />
+                      </svg>
+                    );
                   default:
                     return (
                       <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -4329,9 +4393,36 @@ export default function BusanItinerariesView({
                 market: '#2E6F95',
                 dessert: '#C25975',
                 other: '#6366F1',
+                MUSEUM: '#3B6E8C',
+                ART: '#9B5180',
+                SCIENCE_ECO: '#3D8B6E',
+                CULTURE: '#C86D44',
+                WORKSHOP: '#D49B35',
+                FIVE_DAY_MARKET: '#2D6A4F',
+                ATTRACTION_TEMPLE: '#C84B31',
+                ATTRACTION_COAST: '#2E6F95',
+                ATTRACTION_PARK: '#4E8752',
+                ATTRACTION_HERITAGE: '#C86D44',
               };
 
               const resolveStepVisualCat = (s: ItineraryStep): string => {
+                if (effectiveCategory === 'EXPERIENCE') {
+                  return s.categoryType || 'MUSEUM';
+                }
+                if (effectiveCategory === 'MARKET') {
+                  const is5Day =
+                    s.marketCategory === 'FIVE_DAY' ||
+                    (s.titleKo || '').includes('구포시장') ||
+                    Boolean(s.marketDayKo && s.marketDayKo !== '상설 (매일)' && !s.marketDayKo.includes('상설'));
+                  return is5Day ? 'FIVE_DAY_MARKET' : 'market';
+                }
+                if (effectiveCategory === 'ATTRACTION') {
+                  const tk = s.titleKo || '';
+                  if (tk.includes('용궁사') || tk.includes('해광사')) return 'ATTRACTION_TEMPLE';
+                  if (tk.includes('이기대') || tk.includes('태종대')) return 'ATTRACTION_COAST';
+                  if (tk.includes('황령산') || tk.includes('용두산')) return 'ATTRACTION_PARK';
+                  return 'ATTRACTION_HERITAGE';
+                }
                 const cats = getStepFoodCategories(s);
                 if (selectedGourmetCat !== 'ALL' && selectedGourmetCat !== 'famous' && cats.includes(selectedGourmetCat)) {
                   return selectedGourmetCat;
@@ -4607,7 +4698,7 @@ export default function BusanItinerariesView({
 
                     {/* Gourmet Catalog Cards */}
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                      <div className="lg:col-span-7 min-w-0">
+                      <div className="lg:col-span-6 min-w-0">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" id="gourmet-catalog">
                       {filteredGourmetSteps.map((step, idx) => {
                         const matchedSpotId = matchTourApiSpotId(step.titleKo);
@@ -4889,7 +4980,7 @@ export default function BusanItinerariesView({
                     </div>
 
                       </div>
-                      <div className="lg:col-span-5 lg:sticky lg:top-24">
+                      <div className="lg:col-span-6 lg:sticky lg:top-24">
                         <CourseStickyMapPanel
                           course={{
                             ...course,
@@ -4963,6 +5054,33 @@ case 'EXPERIENCE': {
                       {EXPERIENCE_THEME_TABS.map((tab) => {
                         const count = getThemeStepCount(tab.id);
                         const isSelected = selectedExperienceTheme === tab.id;
+                        const dotColor = GOURMET_CAT_COLORS[tab.id] || '#3B6E8C';
+                        return (
+                          <button
+                            key={tab.id}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedExperienceTheme(tab.id);
+                            }}
+                            className={`flex items-center gap-1.5 py-1.5 text-xs font-bold transition-all cursor-pointer shrink-0 border-b-2 -mb-[9px] ${
+                              isSelected
+                                ? 'border-[#18181B] text-[#18181B]'
+                                : 'border-transparent text-slate-500 hover:text-[#18181B]'
+                            }`}
+                          >
+                            <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: dotColor }} />
+                            {renderGourmetMiniLineIcon(tab.id === 'ALL' ? 'MUSEUM' : tab.id, "w-3.5 h-3.5 shrink-0")}
+                            <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
+                            <span className="text-[10.5px] font-mono text-slate-400">
+                              {count}
+                            </span>
+                          </button>
+                        );
+                      })}
+                      {false && EXPERIENCE_THEME_TABS.map((tab) => {
+                        const count = getThemeStepCount(tab.id);
+                        const isSelected = selectedExperienceTheme === tab.id;
                         return (
                           <button
                             key={tab.id}
@@ -4989,6 +5107,22 @@ case 'EXPERIENCE': {
                     </div>
 
                     {/* Spots Catalog Grid */}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                      <div className="lg:col-span-6 lg:sticky lg:top-24 lg:order-2">
+                        <CourseStickyMapPanel
+                          course={{
+                            ...course,
+                            id: `experience-${selectedExperienceTheme}`,
+                            steps: filteredExperienceSteps,
+                          }}
+                          language={language}
+                          hidePolyline={true}
+                          customHeaderTitleKo="체험 & 박물관 위치 지도"
+                          customHeaderTitleEn="Museums & Experiences Map"
+                          stepColors={filteredExperienceSteps.map(s => GOURMET_CAT_COLORS[resolveStepVisualCat(s)] || '#3B6E8C')}
+                        />
+                      </div>
+                      <div className="lg:col-span-6 min-w-0 lg:order-1">
                     {filteredExperienceSteps.length === 0 ? (
                       <div className="bg-white p-12 rounded-lg border border-[#E5E2DC] text-center space-y-2">
                         <p className="text-[#4A5568] font-bold text-xs">
@@ -5004,7 +5138,7 @@ case 'EXPERIENCE': {
                         </button>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         {filteredExperienceSteps.map((step, idx) => {
                           const matchedSpotId = matchTourApiSpotId(step.titleKo);
                           const effectiveSpotId = resolvePlaceTargetId({
@@ -5017,8 +5151,25 @@ case 'EXPERIENCE': {
                           const imageUrl = ktoDetail?.firstImage || step.firstImage;
                           const isSaved = isBookmarked(step.id || step.titleKo);
 
-                          const displayTitle = language === 'KR' ? step.titleKo : step.titleEn;
-                          const isLongTitle = displayTitle.length > 11;
+                          const rawDisplayTitle = language === 'KR' ? step.titleKo : step.titleEn;
+                          const isLongTitle = rawDisplayTitle.length > 11;
+                          const expCat = resolveStepVisualCat(step);
+                          const expColor = GOURMET_CAT_COLORS[expCat] || '#3B6E8C';
+                          const displayTitle = (
+                            <span className="inline-flex items-center gap-1.5 min-w-0">
+                              <span
+                                style={{ backgroundColor: expColor }}
+                                className="w-5 h-5 rounded-full text-white text-[10.5px] font-black font-mono flex items-center justify-center shrink-0 shadow-2xs"
+                              >
+                                {idx + 1}
+                              </span>
+                              <span style={{ color: expColor }} className="shrink-0">
+                                {renderGourmetMiniLineIcon(expCat, "w-4 h-4")}
+                              </span>
+                              <span>{rawDisplayTitle}</span>
+                            </span>
+                          );
+
 
                           const renderRouteButton = () => (
                             <button
@@ -5288,6 +5439,8 @@ case 'EXPERIENCE': {
                       </div>
                     )}
 
+                      </div>
+                    </div>
                     {/* Overall tip block */}
                     <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
                       <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
@@ -5361,6 +5514,34 @@ case 'EXPERIENCE': {
                       {MARKET_CATEGORY_TABS.map((tab) => {
                         const isSelected = selectedMarketCat === tab.id;
                         const count = getMarketCategoryCount(tab.id);
+                        const dotColor = tab.id === 'FIVE_DAY' ? '#2D6A4F' : '#2E6F95';
+
+                        return (
+                          <button
+                            key={tab.id}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedMarketCat(tab.id);
+                            }}
+                            className={`flex items-center gap-1.5 py-1.5 text-xs font-bold transition-all cursor-pointer shrink-0 border-b-2 -mb-[9px] ${
+                              isSelected
+                                ? 'border-[#18181B] text-[#18181B]'
+                                : 'border-transparent text-slate-500 hover:text-[#18181B]'
+                            }`}
+                          >
+                            <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: dotColor }} />
+                            {renderGourmetMiniLineIcon('market', "w-3.5 h-3.5 shrink-0")}
+                            <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
+                            <span className="text-[10.5px] font-mono text-slate-400">
+                              {count}
+                            </span>
+                          </button>
+                        );
+                      })}
+                      {false && MARKET_CATEGORY_TABS.map((tab) => {
+                        const isSelected = selectedMarketCat === tab.id;
+                        const count = getMarketCategoryCount(tab.id);
 
                         return (
                           <button
@@ -5388,7 +5569,23 @@ case 'EXPERIENCE': {
                     </div>
 
                     {/* Market Cards Grid - Matching Gourmet 3-column Catalog */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                      <div className="lg:col-span-6 lg:sticky lg:top-24 lg:order-2">
+                        <CourseStickyMapPanel
+                          course={{
+                            ...course,
+                            id: `market-${selectedMarketCat}`,
+                            steps: filteredMarketSteps,
+                          }}
+                          language={language}
+                          hidePolyline={true}
+                          customHeaderTitleKo="부산 전통시장 위치 지도"
+                          customHeaderTitleEn="Traditional Markets Map"
+                          stepColors={filteredMarketSteps.map(s => GOURMET_CAT_COLORS[resolveStepVisualCat(s)] || '#2E6F95')}
+                        />
+                      </div>
+                      <div className="lg:col-span-6 min-w-0 lg:order-1">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {filteredMarketSteps.map((step, idx) => {
                         const matchedSpotId = matchTourApiSpotId(step.titleKo);
                         const effectiveSpotId = resolvePlaceTargetId({
@@ -5561,6 +5758,8 @@ case 'EXPERIENCE': {
                       })}
                     </div>
 
+                      </div>
+                    </div>
                     {/* Overall tip block */}
                     <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
                       <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
@@ -5866,7 +6065,7 @@ case 'EXPERIENCE': {
                                   {language === 'KR' ? '추천 장소 정보가 준비 중입니다.' : 'Places coming soon.'}
                                 </div>
                               ) : (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                                   {placesInGroup.map((item, idx) => {
                                     const isSaved = isBookmarked(item.nameKo);
                                     const cleanAddress = (language === 'KR' ? item.addressKo : (item.addressEn || item.addressKo || '')).replace(/\s*\([^)]*\)/g, '').trim();
@@ -6019,7 +6218,23 @@ case 'EXPERIENCE': {
                     </div>
 
                     {/* Attraction Cards Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4.5">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                      <div className="lg:col-span-6 lg:sticky lg:top-24 lg:order-2">
+                        <CourseStickyMapPanel
+                          course={{
+                            ...course,
+                            id: 'attraction-all',
+                            steps: attractionSteps,
+                          }}
+                          language={language}
+                          hidePolyline={true}
+                          customHeaderTitleKo="부산 명소 위치 지도"
+                          customHeaderTitleEn="Busan Attractions Map"
+                          stepColors={attractionSteps.map(s => GOURMET_CAT_COLORS[resolveStepVisualCat(s)] || '#2E6F95')}
+                        />
+                      </div>
+                      <div className="lg:col-span-6 min-w-0 lg:order-1">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                       {attractionSteps.map((step, idx) => {
                         const matchedSpotId = matchTourApiSpotId(step.titleKo);
                         const effectiveSpotId = resolvePlaceTargetId({
@@ -6191,6 +6406,8 @@ case 'EXPERIENCE': {
                       })}
                     </div>
 
+                      </div>
+                    </div>
                     {/* Overall tip block */}
                     <div className="bg-[#FBFBF9] p-5 sm:p-6 text-left flex items-start gap-3.5 rounded-lg border border-[#E5E2DC]">
                       <div className="p-2 rounded-md bg-[#8EA85E] text-white shrink-0 mt-0.5">
