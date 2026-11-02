@@ -53,9 +53,10 @@ import {
 } from 'lucide-react';
 import ElegantIllustration from './ElegantIllustration';
 import { BUSAN_ITINERARIES, ItineraryCourse, ItineraryStep, getStepFoodCategories } from '../data/itineraries';
-import { CHILD_TRANSPORT_INFOGRAPHIC_BASE64 } from '../childtransport_base64';
+
 import { getTodayDate, navigateToSpa } from '../utils';
 import { TourApiItineraryStepCard } from './TourApiItineraryStepCard';
+import { CourseStickyMapPanel } from './CourseStickyMapPanel';
 import { SpotTicketBookingRow } from './BusanAffiliateQuickBar';
 import { matchTourApiSpotId, resolvePlaceTargetId } from '../services/tourApiCommon';
 import { getKoreaTourApiPlaceDetail } from '../data/koreaTourApiPlaceDetails';
@@ -1448,7 +1449,7 @@ export default function BusanItinerariesView({
       if (parts[1] === 'tips' && parts[2] === 'exploration' && parts[3]) {
         return parts[3].toLowerCase();
       }
-      if (parts[1] === 'tips' && ['bootech', 'bujeon-masan', 'opera-house', 'luggage', 'rental', 'korean-cheat-codes', 'metro-reentry'].includes(parts[2]?.toLowerCase())) {
+      if (parts[1] === 'tips' && ['bujeon-masan', 'opera-house', 'luggage', 'rental', 'korean-cheat-codes', 'metro-reentry'].includes(parts[2]?.toLowerCase())) {
         return parts[2].toLowerCase();
       }
     }
@@ -1631,6 +1632,12 @@ export default function BusanItinerariesView({
   const [activeTransitCategory, setActiveTransitCategory] = useState<'LINES' | 'BOARDING' | 'EMERGENCY' | 'TRANSITS'>('LINES');
   const [checkedRules, setCheckedRules] = useState<Record<number, boolean>>({});
   const [transitSection, setTransitSection] = useState<'SUBMENU' | 'CHILD_FREE' | 'BUS_QR' | 'TRANSFERS' | 'TAXI'>('SUBMENU');
+  const [childTransportInfographic, setChildTransportInfographic] = useState<string>('');
+  React.useEffect(() => {
+    if ((tipsSubPage === 'child-free' || transitSection === 'CHILD_FREE') && !childTransportInfographic) {
+      import('../childtransport_base64').then(m => setChildTransportInfographic(m.CHILD_TRANSPORT_INFOGRAPHIC_BASE64)).catch(() => {});
+    }
+  }, [tipsSubPage, transitSection, childTransportInfographic]);
 
   // Quiz States
   const [quizActive, setQuizActive] = useState(false);
@@ -3334,10 +3341,10 @@ export default function BusanItinerariesView({
                           <Calendar className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0" />
                           <span>{language === 'KR' ? '일정별 여행' : 'Itinerary Travel'}</span>
                         </h2>
-                        <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                        <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl empty:hidden">
                           {language === 'KR'
-                            ? '여행 일정과 스타일에 맞춰 부산의 핵심 명소와 미식을 알차게 즐기는 맞춤 추천 코스를 만나보세요.'
-                            : 'Explore curated Busan travel itineraries tailored to your schedule and travel pace.'}
+                            ? ''
+                            : ''}
                         </p>
                       </div>
 
@@ -3422,7 +3429,7 @@ export default function BusanItinerariesView({
                       ? (selectedScheduleDuration || 'DAY') 
                       : activeCategory;
 
-                    switch (effectiveCategory) {
+                    const renderScheduleContent = () => { switch (effectiveCategory) {
                 case 'DAY': {
                   const dayCourses = filteredCourses.filter(c => c.category === 'DAY');
                   const currentCourse = dayCourses.find(c => c.id === selectedDayCourseId) || dayCourses[0] || course;
@@ -3434,12 +3441,12 @@ export default function BusanItinerariesView({
                         <div className="space-y-1 text-left">
                           <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
                             <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
-                            <span>{language === 'KR' ? '당일치기 코스 (부산 처음 방문)' : '1-Day Course (First Time in Busan)'}</span>
+                            <span>{language === 'KR' ? (currentCourse.id === 'itinerary-day-coffee-tour' ? '당일치기 코스 (부산 스페셜티 커피투어)' : '당일치기 코스 (부산 처음 방문)') : (currentCourse.id === 'itinerary-day-coffee-tour' ? '1-Day Course (Busan Specialty Coffee Tour)' : '1-Day Course (First Time in Busan)')}</span>
                           </h3>
-                          <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                          <p className="hidden">
                             {language === 'KR'
-                              ? '부산을 처음 방문하는 여행자를 위해 꼭 둘러봐야 할 핵심 명소만 엄선한 2가지 당일치기 추천 코스입니다.'
-                              : 'Curated 1-day itineraries featuring essential highlights for first-time visitors.'}
+                              ? ''
+                              : ''}
                           </p>
                         </div>
 
@@ -3452,16 +3459,16 @@ export default function BusanItinerariesView({
                                 key={c.id}
                                 type="button"
                                 onClick={() => setSelectedDayCourseId(c.id)}
-                                className={`w-full sm:w-auto flex-1 min-w-[200px] justify-center px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs text-center ${
+                                className={`flex-1 min-w-0 pb-3 px-1.5 sm:px-2 border-b-2 text-left transition-all cursor-pointer ${
                                   isSelected
-                                    ? 'bg-[#8EA85E] text-white shadow-sm ring-2 ring-[#8EA85E]/20'
-                                    : 'bg-white hover:bg-slate-50 text-slate-700'
+                                    ? 'border-[#8EA85E]'
+                                    : 'border-slate-200 hover:border-slate-300'
                                 }`}
                               >
                                 <span>
                                   {idx === 0
-                                    ? (language === 'KR' ? '코스 1: 해운대 · 광안리 (동부산)' : 'Course 1: Haeundae & Gwangalli')
-                                    : (language === 'KR' ? '코스 2: 감천 · 원도심 · 태종대' : 'Course 2: Gamcheon & Yeongdo')}
+                                    ? (<span className="block"><span className={`block text-[10px] sm:text-[11px] font-heading font-bold tracking-tight ${isSelected ? 'text-[#8EA85E]' : 'text-slate-400'}`}>01 · EAST BUSAN</span><span className={`block text-xs sm:text-sm mt-0.5 truncate ${isSelected ? 'font-extrabold text-slate-900' : 'font-bold text-slate-500'}`}>{language === 'KR' ? '해운대 · 광안리' : 'Haeundae & Gwangalli'}</span></span>)
+                                    : idx === 1 ? (<span className="block"><span className={`block text-[10px] sm:text-[11px] font-heading font-bold tracking-tight ${isSelected ? 'text-[#8EA85E]' : 'text-slate-400'}`}>02 · OLD TOWN</span><span className={`block text-xs sm:text-sm mt-0.5 truncate ${isSelected ? 'font-extrabold text-slate-900' : 'font-bold text-slate-500'}`}>{language === 'KR' ? '감천 · 원도심 · 태종대' : 'Gamcheon & Yeongdo'}</span></span>) : (<span className="block"><span className={`block text-[10px] sm:text-[11px] font-heading font-bold tracking-tight ${isSelected ? 'text-[#8EA85E]' : 'text-slate-400'}`}>03 · COFFEE TOUR</span><span className={`block text-xs sm:text-sm mt-0.5 truncate ${isSelected ? 'font-extrabold text-slate-900' : 'font-bold text-slate-500'}`}>{language === 'KR' ? '스페셜티 커피투어' : 'Specialty Coffee Tour'}</span></span>)}
                                 </span>
                               </button>
                             );
@@ -3533,15 +3540,15 @@ export default function BusanItinerariesView({
                         <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
                         <span>{language === 'KR' ? '1박 2일 코스' : '1 Night 2 Days Course'}</span>
                       </h3>
-                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl empty:hidden">
                         {language === 'KR'
-                          ? '광안리 밤바다와 도심 속 힐링을 여유롭게 만끽하는 1박 2일 일정입니다.'
-                          : 'A relaxing 2-day journey enjoying Gwangalli ocean waves and city culture.'}
+                          ? ''
+                          : ''}
                       </p>
                     </div>
 
                     {/* Timeline Container */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 gap-6">
                       {/* Day 1 Section */}
                       <div className="bg-white p-6 sm:p-8 rounded-lg border border-[#E5E2DC] space-y-5 text-left">
                         <div className="border-b border-[#E5E2DC] pb-3.5 space-y-3">
@@ -3666,10 +3673,10 @@ export default function BusanItinerariesView({
                         <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
                         <span>{language === 'KR' ? '2박 3일 코스' : '2 Nights 3 Days Course'}</span>
                       </h3>
-                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl empty:hidden">
                         {language === 'KR'
-                          ? '감성 카페거리부터 푸른 바다 비경까지 부산 전역을 일주하는 2박 3일 일정입니다.'
-                          : 'A 3-day route from trendy cafe alleys to breathtaking coastal scenery.'}
+                          ? ''
+                          : ''}
                       </p>
                     </div>
 
@@ -3765,10 +3772,10 @@ export default function BusanItinerariesView({
                         <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
                         <span>{language === 'KR' ? '3박 4일 코스' : '3 Nights 4 Days Course'}</span>
                       </h3>
-                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl empty:hidden">
                         {language === 'KR'
-                          ? '자연 힐링과 강변 수변 공원을 벗하며 사색과 여유를 즐기는 3박 4일 일정입니다.'
-                          : 'A 4-day peaceful journey along scenic waterways and nature parks.'}
+                          ? ''
+                          : ''}
                       </p>
                     </div>
 
@@ -3852,10 +3859,10 @@ export default function BusanItinerariesView({
                       <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                         {language === 'KR' ? '4박 5일 코스' : '4 Nights 5 Days Course'}
                       </h2>
-                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl empty:hidden">
                         {language === 'KR'
-                          ? '부산의 바다, 역사, 미식, 쇼핑을 모두 아우르는 완전 정복 4박 5일 마스터 일정입니다.'
-                          : 'A comprehensive 5-day master course covering ocean views, history, and dining.'}
+                          ? ''
+                          : ''}
                       </p>
                     </div>
 
@@ -3931,7 +3938,7 @@ export default function BusanItinerariesView({
               // -------------------------------------------------------------
               // PAGE 6: GOURMET (식도락) - Editorial Travel Magazine Layout
               // -------------------------------------------------------------
-              case 'GOURMET': {
+              default: return null; } }; const scheduleNode = renderScheduleContent(); if (scheduleNode) { const dayCourses = filteredCourses.filter(c => c.category === 'DAY'); const activeMapCourse = effectiveCategory === 'DAY' ? (dayCourses.find(c => c.id === selectedDayCourseId) || dayCourses[0] || course) : course; return (<div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start"><div className="lg:col-span-7 min-w-0">{scheduleNode}</div><div className="lg:col-span-5 lg:sticky lg:top-24"><CourseStickyMapPanel course={activeMapCourse} language={language} /></div></div>); } switch (effectiveCategory) { case 'GOURMET': {
                 const getStepCats = (s: ItineraryStep): string[] => {
                   return getStepFoodCategories(s);
                 };
@@ -3961,7 +3968,7 @@ export default function BusanItinerariesView({
                         <Utensils className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0" />
                         <span>{language === 'KR' ? '식도락 여행' : 'Gourmet Tour'}</span>
                       </h2>
-                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl empty:hidden">
                         {language === 'KR'
                           ? '현지인이 검증한 대표 맛집부터 감성 카페, 전통시장 및 명물 디저트까지 만나보세요.'
                           : 'Explore authentic local restaurants, cafes, traditional markets, and iconic desserts across Busan.'}
@@ -4300,7 +4307,7 @@ case 'EXPERIENCE': {
                         <Compass className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0" />
                         <span>{language === 'KR' ? '체험 & 박물관' : 'Museums & Experiences'}</span>
                       </h2>
-                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl empty:hidden">
                         {language === 'KR'
                           ? '날씨에 구애받지 않고 편안하게 즐기는 다채로운 전시와 문화공간을 만나보세요.'
                           : 'Explore museums, art galleries, and cultural spaces with accessible routes.'}
@@ -4698,7 +4705,7 @@ case 'EXPERIENCE': {
                         <Store className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0" />
                         <span>{language === 'KR' ? '부산 전통시장' : 'Busan Traditional Markets'}</span>
                       </h2>
-                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl empty:hidden">
                         {language === 'KR'
                           ? '전통시장에는 정해진 날짜에 열리는 ‘장날’이 있으며, 5일장은 5일에 한 번(특정 날짜 끝자리) 더 큰 장터가 열립니다. 시장마다 열리는 장날이 다르니 미리 확인하고 방문하시면 더욱 활기차고 재미있게 즐기실 수 있습니다.'
                           : 'Traditional markets feature special market days (\'Jangnal\'), such as 5-day periodic markets opening every 5 days on specific ending calendar dates. Schedules vary by market, so check the dates in advance for the liveliest experience!'}
@@ -5020,7 +5027,7 @@ case 'EXPERIENCE': {
                         <Train className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0 stroke-[2.2]" />
                         <span>{language === 'KR' ? '부산 도시철도 코스' : 'Busan Metro Course'}</span>
                       </h2>
-                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl empty:hidden">
                         {language === 'KR'
                           ? '지하철 1·2호선 노선축을 따라 역세권 명소와 맛집을 한눈에 둘러보는 코스입니다.'
                           : 'Explore top attractions and local food conveniently connected along Metro Lines 1 & 2.'}
@@ -5343,7 +5350,7 @@ case 'EXPERIENCE': {
                         <Landmark className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0" />
                         <span>{language === 'KR' ? '부산 명소' : 'Busan Attractions'}</span>
                       </h2>
-                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl">
+                      <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed max-w-2xl empty:hidden">
                         {language === 'KR'
                           ? '해동 용궁사, 해광사 용왕단, 이기대 해안산책로, 태종대, 황령산전망대, 부산용두산공원, 영도대교, 보수동책방골목 등 부산을 대표하는 핵심 명소를 만나보세요.'
                           : 'Explore iconic scenic landmarks including Haedong Yonggungsa, Haegwangsa Yongwangdan, Igidae, Taejongdae, Hwangnyeongsan, Yongdusan, Yeongdodaegyo, and Bosudong Book Alley.'}
@@ -6605,7 +6612,7 @@ case 'EXPERIENCE': {
                   
                   <div className="relative w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 flex flex-col items-center p-3 shadow-3xs">
                     <img 
-                      src={CHILD_TRANSPORT_INFOGRAPHIC_BASE64} 
+                      src={childTransportInfographic || undefined} 
                       alt={language === 'KR' ? '부산 대중교통 어린이 무료 정책 안내문 (How to Enroll)' : 'How to Enroll in the Free Fare Program Infographic'} 
                       className="w-full h-auto object-contain rounded-xl max-h-[800px]"
                       referrerPolicy="no-referrer"
@@ -7364,23 +7371,7 @@ case 'EXPERIENCE': {
                   </div>
 
                   <div className="space-y-3 mt-3.5">
-                    {/* Item 1: 부캉이 */}
-                    <div
-                      onClick={() => handleSelectExplorationItem('bootech')}
-                      className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-[#0A2540] transition-colors leading-snug">
-                          {language === 'KR' ? "전국적인 핫이슈! 북항 상어 '부캉이' 관찰 가이드" : 'Viral Sensation: North Port Shark "Bukangi" Guide'}
-                        </h3>
-                        <div className="flex items-center text-xs font-bold text-slate-400 group-hover:text-[#8EA85E] transition-colors shrink-0">
-                          <span>{language === 'KR' ? '자세히 보기' : 'Details'}</span>
-                          <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Item 2: 부전~마산 복선전철 2027년 4월 1일 부분 개통 예정 */}
+                    {/* Item 1: 부전~마산 복선전철 2027년 4월 1일 부분 개통 예정 */}
                     <div
                       onClick={() => handleSelectExplorationItem('bujeon-masan')}
                       className="group p-4 rounded-xl border border-slate-100 hover:border-[#8EA85E] bg-[#FAF9F6] hover:bg-white hover:shadow-md transition-all duration-200 cursor-pointer"
@@ -7528,133 +7519,7 @@ case 'EXPERIENCE': {
                   <span>{language === 'KR' ? '탐구생활 목록으로 돌아가기' : 'Back to Exploration List'}</span>
                 </button>
               </div>
-
-              {/* 1. 부캉이 DETAIL */}
-              {selectedExplorationItem === 'bootech' && (
-                <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-8 space-y-6 shadow-2xs">
-                  {/* Header Title & Intro */}
-                  <div className="space-y-2.5">
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="w-5 h-5 text-[#8EA85E] shrink-0 stroke-[2.2]" />
-                      <h3 className="text-xl sm:text-2xl font-black text-[#11161B] tracking-tight">
-                        {language === 'KR'
-                          ? "부산 북항 상어 '부캉이' 실전 관찰 가이드"
-                          : 'Busan North Port Shark "Bukangi" Spotting Guide'}
-                      </h3>
-                    </div>
-                    <p className="text-xs sm:text-sm text-[#4A5568] leading-relaxed">
-                      {language === 'KR'
-                        ? "부캉이는 지난 9월 18일 부산 북항 친수공원 인공수로에서 처음 발견된 암컷 상어예요. 한 달째 수로에 머무는 동안 전국적인 관심을 끌며 현재 한국에서 가장 핫한 화제의 주인공이랍니다. 부캉이를 만나러 가실 분들을 위해 보러 가는 방법과 명당 위치, 관찰 요령을 친근하게 정리해 드려요."
-                        : 'First spotted on September 18 in the canal at Busan North Port Waterfront Park, this female shark dubbed "Bukangi" has stayed over a month, drawing nationwide attention as one of the hottest topics. Here is a friendly guide on how to get there, the best viewing spots, and tips for watching her.'}
-                    </p>
-                  </div>
-
-                  {/* 수로 주소 + 네이버지도 / 구글맵 아이콘 */}
-                  <div className="flex items-center gap-2 flex-wrap text-xs sm:text-sm py-2.5 px-3.5 bg-[#FAF9F6] rounded-xl border border-[#E5E2DC]">
-                    <div className="flex items-center gap-1.5 text-slate-700 min-w-0">
-                      <MapPin className="w-4 h-4 text-[#8EA85E] shrink-0" />
-                      <span className="font-bold text-[#0A2540]">{language === 'KR' ? '부산항 북항 친수공원 인공수로' : 'Busan North Port Waterfront Park Canal'}:</span>
-                      <span className="font-medium text-slate-600">{language === 'KR' ? '부산 동구 초량동 1185-1' : '1185-1, Choryang-dong, Dong-gu'}</span>
-                    </div>
-                    <MapAppIcons
-                      naverUrl="https://map.naver.com/v5/search/%EB%B6%81%ED%95%AD%EC%B9%9C%EC%88%98%EA%B3%B5%EC%9B%90"
-                      googleUrl="https://www.google.com/maps/search/?api=1&query=Busan+North+Port+Waterfront+Park"
-                      title={language === 'KR' ? '부산항 북항 친수공원' : 'Busan North Port Waterfront Park'}
-                    />
-                  </div>
-
-                  {/* Natural Flowing Content (No separate boxes, continuous reading down) */}
-                  <div className="space-y-6 pt-1 text-xs sm:text-sm text-[#4A5568] leading-relaxed">
-                    {/* 1. 부캉이 정보 */}
-                    <div className="space-y-2 border-b border-slate-100 pb-5">
-                      <h4 className="font-extrabold text-base sm:text-lg text-[#0A2540] flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-[#8EA85E] shrink-0" />
-                        <span>{language === 'KR' ? '부캉이 정보' : 'About Bukangi'}</span>
-                      </h4>
-                      <ul className="space-y-2 pl-3.5 border-l-2 border-slate-200">
-                        <li>
-                          <strong className="text-slate-800">{language === 'KR' ? '종류' : 'Species'}:</strong>{' '}
-                          {language === 'KR'
-                            ? '3m 길이의 온순한 암컷 흑상어로 확인'
-                            : 'Confirmed as a 3-meter female dusky shark'}
-                        </li>
-                        <li>
-                          <strong className="text-slate-800">{language === 'KR' ? '위치 확인' : 'Live Status'}:</strong>{' '}
-                          {language === 'KR'
-                            ? "시민 제보 기반의 '부캉이 지금 있나' 웹사이트를 통해 실시간 위치 정보를 참고하실 수 있습니다."
-                            : 'Check the citizen-powered "Is Bukangi there now?" website for real-time location updates.'}
-                        </li>
-                        <li className="pt-0.5">
-                          <a
-                            href="https://bukangi.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#8EA85E] hover:bg-[#7D9650] text-white font-bold text-xs transition-colors shadow-2xs cursor-pointer"
-                          >
-                            <span>{language === 'KR' ? "'부캉이 지금 있나' 실시간 위치 확인" : 'Check "bukangi.com" Live Tracker'}</span>
-                            <ExternalLink className="w-3.5 h-3.5" />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-
-                    {/* 2. 부캉이 보러 가는 방법 */}
-                    <div className="space-y-2 border-b border-slate-100 pb-5">
-                      <h4 className="font-extrabold text-base sm:text-lg text-[#0A2540] flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-[#8EA85E] shrink-0" />
-                        <span>{language === 'KR' ? '부캉이 보러 가는 방법' : 'How to Get There'}</span>
-                      </h4>
-                      <ul className="space-y-2 pl-3.5 border-l-2 border-slate-200">
-                        <li>
-                          <strong className="text-slate-800">{language === 'KR' ? '대중교통' : 'Public Transit'}:</strong>{' '}
-                          {language === 'KR'
-                            ? 'KTX 부산역 하차 후 9번 또는 10번 출구로 나와서 북항 친수공원 방향 안내를 따라 도보로 약 10분 정도 이동'
-                            : 'Exit 9 or 10 at KTX Busan Station, then follow pedestrian bridge signs toward North Port Waterfront Park for about a 10-minute walk.'}
-                        </li>
-                        <li>
-                          <strong className="text-slate-800">{language === 'KR' ? '자가용' : 'By Car'}:</strong>{' '}
-                            {language === 'KR'
-                              ? '부산항 북항 친수공원으로 바로 이동, 인근 부산항 국제여객터미널 주차장이나 주변 유료주차장을 이용'
-                              : 'Drive to Busan North Port Waterfront Park and use the nearby Busan Port International Passenger Terminal parking lot or neighboring paid lots.'}
-                        </li>
-                      </ul>
-                    </div>
-
-                    {/* 3. 명당 위치 & 관찰 요령 */}
-                    <div className="space-y-2 border-b border-slate-100 pb-5">
-                      <h4 className="font-extrabold text-base sm:text-lg text-[#0A2540] flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-[#8EA85E] shrink-0" />
-                        <span>{language === 'KR' ? '명당 위치 & 관찰 요령' : 'Best Viewing Spots & Tips'}</span>
-                      </h4>
-                      <ul className="space-y-2 pl-3.5 border-l-2 border-slate-200">
-                        <li>
-                          <strong className="text-slate-800">{language === 'KR' ? '명당 위치' : 'Best Spot'}:</strong>{' '}
-                          {language === 'KR'
-                            ? '제4보도교와 제5보도교 사이 수로 근처에서 기다리는 것이 관찰에 유리하다는 후기'
-                            : 'Waiting near the canal between Footbridge 4 and Footbridge 5 offers the best chance of spotting her.'}
-                        </li>
-                        <li>
-                          <strong className="text-slate-800">{language === 'KR' ? '관찰 요령' : 'Viewing Tips'}:</strong>{' '}
-                          {language === 'KR'
-                            ? '상어가 수로 벽 쪽을 따라 움직이는 경향이 있으므로, 수면 위 지느러미뿐 아니라 물속도 자세히 살피는 것이 좋음'
-                            : 'The shark tends to move along the canal walls, so be sure to look into the water as well as keeping an eye out for dorsal fins on the surface.'}
-                        </li>
-                      </ul>
-                    </div>
-
-                    {/* 4. 주의사항 & 마무리 */}
-                    <div className="pt-1 text-slate-600 font-medium">
-                      <p>
-                        {language === 'KR'
-                          ? '부캉이는 소중한 야생 해양 생물이니 수로에 돌이나 먹이를 던지지 마시고, 난간 너머로 안전거리를 유지하며 따뜻한 시선으로 관찰해 주세요!'
-                          : 'Bukangi is a wild marine animal. Please do not throw stones, food, or trash into the canal, and observe safely from the boardwalk railings!'}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* 1-2. 부전~마산 복선전철 부분 개통 DETAIL */}
+              {/* 1. 부전~마산 복선전철 부분 개통 DETAIL */}
               {selectedExplorationItem === 'bujeon-masan' && (
                 <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 sm:p-8 space-y-6 shadow-2xs">
                   {/* Header Title & Intro */}

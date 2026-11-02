@@ -48,16 +48,11 @@ import Header from './components/Header';
 import { Language, pickLang, LANGUAGE_OPTIONS } from './i18n/dictionary';
 import { formatLineLabelI18n } from './i18n/stationTranslations';
 import { useDomLocalizer } from './i18n/domLocalizer';
-import TimelineVisualizer from './components/TimelineVisualizer';
-import { StationBarrierFreeCard } from './components/StationBarrierFreeCard';
 import BusanAffiliateQuickBar from './components/BusanAffiliateQuickBar';
 import { HomeOverviewSection } from './components/HomeOverviewSection';
-import { getLockerInfoText, renderLockerInfo } from './data/lockers';
-import { getNearbyPlaces, NearbyExitBadge, NearbyPlace } from './data/nearbyPlaces';
 import { STATIONS, INITIAL_REPORTS } from './data';
 import { Station, ExitInfo, FacilityReport, StatusType, getExitDisplayName, translateExitNumber, getTranslatedStationName } from './types';
 import { translateRecommendation, navigateToSpa } from './utils';
-import { BUSAN_ITINERARIES } from './data/itineraries';
 
 // Robust normalization between URL slugs (e.g. 'gourmet', 'barrier-free') and CategoryType ('GOURMET', 'BARRIER_FREE')
 export function normalizeCategorySlug(raw: string | undefined | null): string | null {
@@ -118,6 +113,7 @@ import { lazyWithRetry } from './utils/lazyWithRetry';
 const BusanItinerariesView = lazyWithRetry(() => import('./components/BusanItinerariesView'));
 const SiteIntroductionView = lazyWithRetry(() => import('./components/SiteIntroductionView'));
 const SubwayStationMap = lazyWithRetry(() => import('./components/SubwayStationMap'));
+const StationBarrierFreeCard = lazyWithRetry(() => import('./components/StationBarrierFreeCard').then(m => ({ default: m.StationBarrierFreeCard })));
 
 // Dynamic tab loading fallback component for code-split views
 const TabLoadingFallback = ({ text = "정보를 신속하게 불러오는 중..." }: { text?: string }) => (
@@ -240,11 +236,16 @@ export default function App() {
     setVisitedTabs(prev => ({ ...prev, [currentTab]: true }));
   }, [currentTab]);
 
-  // Immediately preload all code-split views in background for instant transitions
+  // Defer background preloading of secondary tabs until after initial page load & idle
   useEffect(() => {
-    import('./components/BusanItinerariesView');
-    import('./components/SiteIntroductionView');
-    import('./components/SubwayStationMap');
+    const timer = setTimeout(() => {
+      const idle = (window as any).requestIdleCallback || ((cb: () => void) => setTimeout(cb, 500));
+      idle(() => {
+        import('./components/SubwayStationMap');
+        import('./components/StationBarrierFreeCard');
+      });
+    }, 3000);
+    return () => clearTimeout(timer);
   }, []);
   const [language, setLanguage] = useState<Language>(() => {
     try {
@@ -716,7 +717,7 @@ export default function App() {
                   } else {
                     setExplorationItemId(null);
                   }
-                } else if (['bootech', 'bujeon-masan', 'opera-house', 'luggage', 'rental', 'korean-cheat-codes', 'metro-reentry'].includes(parts[2].toLowerCase())) {
+                } else if (['bujeon-masan', 'opera-house', 'luggage', 'rental', 'korean-cheat-codes', 'metro-reentry'].includes(parts[2].toLowerCase())) {
                   setSelectedItineraryCategory(null);
                   setTipsSubPage('exploration');
                   setActiveRegionPage(null);
@@ -1110,15 +1111,7 @@ export default function App() {
           : "Complete guide to calling taxis in Busan, including Dongbaek Taxi and accessible transport for wheelchair users.";
         canonicalUrl = "https://stepless.kr/tips/taxi";
       } else if (tipsSubPage === 'exploration') {
-        if (explorationItemId === 'bootech') {
-          pageTitle = isKR
-            ? "부산 북항 상어 '부캉이' 실전 관찰 가이드 - 부산 탐구생활 | 스텝리스 Stepless"
-            : "Busan North Port Waterfront Park Guide - Local Busan Magazine | Stepless";
-          pageDesc = isKR
-            ? "부산항 북항 친수공원 인공수로에 나타난 3m 암컷 흑상어 '부캉이' 관찰 요령, 명당 위치, 실시간 위치 확인 안내."
-            : "Explore Busan North Port Waterfront Park step-free walking trails and local highlights.";
-          canonicalUrl = "https://stepless.kr/tips/exploration/bootech";
-        } else if (explorationItemId === 'bujeon-masan') {
+        if (explorationItemId === 'bujeon-masan') {
           pageTitle = isKR
             ? "2027년 4월 1일 부전~마산 복선전철 부분 개통 예정 안내 - 부산 탐구생활 | 스텝리스 Stepless"
             : "Bujeon-Masan Double-Track Railway 2027 Opening Guide | Stepless";
@@ -1171,7 +1164,7 @@ export default function App() {
             ? "부산 탐구생활 - 핫이슈 & 실전 여행 꿀팁 | 스텝리스 Stepless"
             : "Local Busan Hacks: Free Luggage Storage, Stroller Rental & Subway Tips | Stepless";
           pageDesc = isKR
-            ? "로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지! 북항 상어 부캉이와 무료 짐 보관, 대여소 총정리."
+            ? "로컬만이 아는 꿀팁부터 요즘 핫한 부산 소식까지! 무료 짐 보관소와 유모차·휠체어 대여소 총정리."
             : "Insider Busan travel hacks: free luggage storage spots, stroller/wheelchair rentals, survival Korean phrases, and subway transfer tips.";
           canonicalUrl = "https://stepless.kr/tips/exploration";
         }
@@ -2149,7 +2142,9 @@ export default function App() {
                   </div>
 
                   {/* 📋 Station Barrier-Free Movement Summary Table & Step-by-Step Info */}
-                  <StationBarrierFreeCard station={activeStation} language={language} />
+                  <Suspense fallback={<div className="h-40 flex items-center justify-center bg-slate-50 rounded-3xl text-slate-400 font-bold text-sm">출구 및 편의시설 정보를 불러오는 중...</div>}>
+                    <StationBarrierFreeCard station={activeStation} language={language} />
+                  </Suspense>
 
               {/* Station Selection Banner (페이지 가장 아랫쪽으로 배치) */}
               <div id="search-selected-station-details" className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-xs">

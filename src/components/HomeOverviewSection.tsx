@@ -6,6 +6,7 @@ import {
   ShieldCheck, 
   Train, 
   ChevronRight,
+  ChevronDown,
   UtensilsCrossed,
   Building2,
   ArrowUpRight
@@ -48,65 +49,72 @@ export function HomeOverviewSection({
       case '1':
         return {
           bg: 'bg-[#F06A00]',
-          bgLight: 'bg-[#FFF4EC]',
-          border: 'border-[#F06A00]/30',
-          text: 'text-[#F06A00]',
-          badgeBg: 'bg-[#F06A00]',
-          badgeText: 'text-white',
+          bgLight: 'bg-[#FFF5EE]',
+          border: 'border-[#F06A00]/20',
+          text: 'text-[#C85400]',
+          badgeBg: 'bg-[#FFF5EE]',
+          badgeText: 'text-[#C85400]',
+          dot: 'bg-[#F06A00]',
         };
       case '2':
         return {
           bg: 'bg-[#1b6d24]',
-          bgLight: 'bg-[#EDF7EE]',
-          border: 'border-[#1b6d24]/30',
-          text: 'text-[#1b6d24]',
-          badgeBg: 'bg-[#1b6d24]',
-          badgeText: 'text-white',
+          bgLight: 'bg-[#EFF8F0]',
+          border: 'border-[#1b6d24]/20',
+          text: 'text-[#186320]',
+          badgeBg: 'bg-[#EFF8F0]',
+          badgeText: 'text-[#186320]',
+          dot: 'bg-[#1b6d24]',
         };
       case '3':
         return {
           bg: 'bg-[#906A3B]',
-          bgLight: 'bg-[#F8F3EC]',
-          border: 'border-[#906A3B]/30',
-          text: 'text-[#906A3B]',
-          badgeBg: 'bg-[#906A3B]',
-          badgeText: 'text-white',
+          bgLight: 'bg-[#F8F4EE]',
+          border: 'border-[#906A3B]/20',
+          text: 'text-[#7A572D]',
+          badgeBg: 'bg-[#F8F4EE]',
+          badgeText: 'text-[#7A572D]',
+          dot: 'bg-[#906A3B]',
         };
       case '4':
         return {
           bg: 'bg-[#2B60BA]',
-          bgLight: 'bg-[#EEF4FD]',
-          border: 'border-[#2B60BA]/30',
-          text: 'text-[#2B60BA]',
-          badgeBg: 'bg-[#2B60BA]',
-          badgeText: 'text-white',
+          bgLight: 'bg-[#EFF5FD]',
+          border: 'border-[#2B60BA]/20',
+          text: 'text-[#22509E]',
+          badgeBg: 'bg-[#EFF5FD]',
+          badgeText: 'text-[#22509E]',
+          dot: 'bg-[#2B60BA]',
         };
       case '동해':
         return {
           bg: 'bg-[#003DA5]',
-          bgLight: 'bg-[#EBF1FA]',
-          border: 'border-[#003DA5]/30',
-          text: 'text-[#003DA5]',
-          badgeBg: 'bg-[#003DA5]',
-          badgeText: 'text-white',
+          bgLight: 'bg-[#EEF3FA]',
+          border: 'border-[#003DA5]/20',
+          text: 'text-[#00358E]',
+          badgeBg: 'bg-[#EEF3FA]',
+          badgeText: 'text-[#00358E]',
+          dot: 'bg-[#003DA5]',
         };
       case '김해':
         return {
           bg: 'bg-[#804796]',
-          bgLight: 'bg-[#F5EEF8]',
-          border: 'border-[#804796]/30',
-          text: 'text-[#804796]',
-          badgeBg: 'bg-[#804796]',
-          badgeText: 'text-white',
+          bgLight: 'bg-[#F6F0F9]',
+          border: 'border-[#804796]/20',
+          text: 'text-[#6D3982]',
+          badgeBg: 'bg-[#F6F0F9]',
+          badgeText: 'text-[#6D3982]',
+          dot: 'bg-[#804796]',
         };
       default:
         return {
           bg: 'bg-[#8EA85E]',
-          bgLight: 'bg-[#F1EFEC]',
-          border: 'border-[#E5E2DC]',
-          text: 'text-[#8EA85E]',
-          badgeBg: 'bg-[#8EA85E]',
-          badgeText: 'text-white',
+          bgLight: 'bg-[#F3F7EC]',
+          border: 'border-[#8EA85E]/20',
+          text: 'text-[#5B7332]',
+          badgeBg: 'bg-[#F3F7EC]',
+          badgeText: 'text-[#5B7332]',
+          dot: 'bg-[#8EA85E]',
         };
     }
   };
@@ -150,12 +158,12 @@ export function HomeOverviewSection({
         ES: 'Rutas seleccionadas por Nampo-dong, Haeundae y Gijang.',
         FR: 'Parcours incontournables à Nampo-dong, Haeundae et Gijang.',
       }),
-      bg: 'bg-[#F3F8FB]',
-      border: 'border-[#E1EDF5] hover:border-[#BED6E6]',
-      iconBg: 'bg-[#E3EFF7]',
-      iconColor: 'text-[#3B7291]',
-      tagBg: 'bg-[#E3EFF7] text-[#3B7291]',
-      btnBg: 'bg-white hover:bg-[#EAF3F8] border border-[#D5E5F0] text-[#2F5E78]',
+      bg: 'bg-white',
+      border: 'border-black/[0.06] hover:border-[#8EA85E]/60',
+      iconBg: 'bg-[#F3F7EC]',
+      iconColor: 'text-[#5B7332]',
+      tagBg: 'bg-[#F3F7EC] text-[#5B7332]',
+      btnBg: 'bg-white hover:bg-[#F3F7EC] border border-black/[0.06] text-[#18181B]',
       btnText: pickLang(language, { KR: '코스 보기', EN: 'Explore', JA: 'コースを見る', ZH_TW: '查看行程', ZH_CN: '查看行程', ES: 'Ver rutas', FR: 'Voir les parcours' }),
     },
     {
@@ -189,12 +197,12 @@ export function HomeOverviewSection({
         ES: 'Salidas con ascensor y paseos llanos sin barreras.',
         FR: 'Sorties avec ascenseur et promenades plates sans obstacle.',
       }),
-      bg: 'bg-[#F4F8F3]',
-      border: 'border-[#E1EEDF] hover:border-[#BFDBBB]',
-      iconBg: 'bg-[#E5F1E2]',
-      iconColor: 'text-[#4D7744]',
-      tagBg: 'bg-[#E5F1E2] text-[#4D7744]',
-      btnBg: 'bg-white hover:bg-[#ECF5E9] border border-[#D5E6CF] text-[#3C6134]',
+      bg: 'bg-white',
+      border: 'border-black/[0.06] hover:border-[#8EA85E]/60',
+      iconBg: 'bg-[#F3F7EC]',
+      iconColor: 'text-[#5B7332]',
+      tagBg: 'bg-[#F3F7EC] text-[#5B7332]',
+      btnBg: 'bg-white hover:bg-[#F3F7EC] border border-black/[0.06] text-[#18181B]',
       btnText: pickLang(language, { KR: '동선 확인', EN: 'Check Route', JA: 'ルート確認', ZH_TW: '查看動線', ZH_CN: '查看路线', ES: 'Ver ruta', FR: 'Voir l’itinéraire' }),
     },
     {
@@ -228,12 +236,12 @@ export function HomeOverviewSection({
         ES: 'Desde el auténtico Dwaeji-gukbap hasta cafeterías frente al mar.',
         FR: 'Du traditionnel Dwaeji-gukbap aux cafés avec vue sur l’océan.',
       }),
-      bg: 'bg-[#FAF6F3]',
-      border: 'border-[#F1E8DF] hover:border-[#E0D0BF]',
-      iconBg: 'bg-[#F5ECE2]',
-      iconColor: 'text-[#885A3B]',
-      tagBg: 'bg-[#F5ECE2] text-[#885A3B]',
-      btnBg: 'bg-white hover:bg-[#F8F1EB] border border-[#E9DDD0] text-[#6E462A]',
+      bg: 'bg-white',
+      border: 'border-black/[0.06] hover:border-[#8EA85E]/60',
+      iconBg: 'bg-[#F3F7EC]',
+      iconColor: 'text-[#5B7332]',
+      tagBg: 'bg-[#F3F7EC] text-[#5B7332]',
+      btnBg: 'bg-white hover:bg-[#F3F7EC] border border-black/[0.06] text-[#18181B]',
       btnText: pickLang(language, { KR: '맛집 보기', EN: 'View Eats', JA: 'グルメを見る', ZH_TW: '查看美食', ZH_CN: '查看美食', ES: 'Ver restaurantes', FR: 'Voir les adresses' }),
     },
     {
@@ -267,12 +275,12 @@ export function HomeOverviewSection({
         ES: 'Museo Marítimo Nacional, galerías de arte y espacios culturales.',
         FR: 'Musée Maritime National, galeries d’art et espaces culturels.',
       }),
-      bg: 'bg-[#F8F6FA]',
-      border: 'border-[#ECE4F0] hover:border-[#D6C7DE]',
-      iconBg: 'bg-[#F1E8F5]',
-      iconColor: 'text-[#745084]',
-      tagBg: 'bg-[#F1E8F5] text-[#745084]',
-      btnBg: 'bg-white hover:bg-[#F5EDF8] border border-[#E3D4E8] text-[#5C3B6C]',
+      bg: 'bg-white',
+      border: 'border-black/[0.06] hover:border-[#8EA85E]/60',
+      iconBg: 'bg-[#F3F7EC]',
+      iconColor: 'text-[#5B7332]',
+      tagBg: 'bg-[#F3F7EC] text-[#5B7332]',
+      btnBg: 'bg-white hover:bg-[#F3F7EC] border border-black/[0.06] text-[#18181B]',
       btnText: pickLang(language, { KR: '공간 둘러보기', EN: 'Discover', JA: 'スポットを見る', ZH_TW: '探索空間', ZH_CN: '探索空间', ES: 'Explorar', FR: 'Découvrir' }),
     },
   ];
@@ -336,7 +344,7 @@ export function HomeOverviewSection({
         </p>
 
         {/* The Centerpiece Search Bar */}
-        <div className="w-full shadow-lg shadow-slate-200/60 rounded-2xl">
+        <div className="w-full rounded-2xl">
           <StationSearchBar
             language={language}
             searchQuery={searchQuery || ''}
@@ -347,8 +355,10 @@ export function HomeOverviewSection({
           />
         </div>
 
-        <div className="mt-4 sm:mt-5 flex items-center justify-center gap-1.5 text-xs font-bold text-[#6B853E] animate-bounce">
-          <span>👇</span>
+        <div className="mt-5 sm:mt-6 inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 border border-black/[0.05] shadow-[0_2px_8px_rgba(0,0,0,0.03)] text-xs font-bold text-[#5B7332] animate-bounce">
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#8EA85E]/15 text-[#5B7332]">
+            <ChevronDown className="w-3.5 h-3.5 stroke-[2.5]" />
+          </span>
           <span>
             {pickLang(language, {
               KR: '또는 아래 지하철역을 바로 눌러보세요',
@@ -366,10 +376,10 @@ export function HomeOverviewSection({
       {/* ==========================================
           2. ALL STATIONS (COMPACT & CUTE SUBWAY TRAIN BUTTONS)
          ========================================== */}
-      <section className="space-y-4 pt-4 border-t border-[#E5E2DC]" id="all-stations-section" aria-label="지하철역 바로가기">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-[#E5E2DC] pb-3">
+      <section className="space-y-4 pt-2" id="all-stations-section" aria-label="지하철역 바로가기">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-1">
           <div>
-            <div className="text-xs font-mono font-bold tracking-widest text-[#0A2540] uppercase">
+            <div className="text-[11px] font-mono font-bold tracking-widest text-[#6B853E] uppercase">
               {pickLang(language, {
                 KR: '지하철역 바로가기',
                 EN: 'METRO STATIONS',
@@ -380,7 +390,7 @@ export function HomeOverviewSection({
                 FR: 'STATIONS DE MÉTRO',
               })}
             </div>
-            <h2 className="text-lg sm:text-2xl font-black text-[#11161B] tracking-tight mt-0.5">
+            <h2 className="text-lg sm:text-2xl font-black text-[#18181B] tracking-tight mt-0.5">
               {pickLang(language, {
                 KR: '부산 지하철역 출구 & 이동 경로',
                 EN: 'Accessible Busan Metro Stations',
@@ -433,10 +443,10 @@ export function HomeOverviewSection({
                   onClick={() => setLineFilter(tab.id)}
                   role="tab"
                   aria-selected={isActive}
-                  className={`px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1 sm:gap-1.5 shadow-2xs ${
+                  className={`px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                     isActive
-                      ? 'bg-[#11161B] text-white shadow-xs'
-                      : 'bg-white hover:bg-slate-100 text-slate-600 border border-slate-200'
+                      ? 'bg-[#18181B] text-white shadow-xs'
+                      : 'bg-white hover:bg-slate-50 text-slate-600 border border-black/[0.06]'
                   }`}
                 >
                   {tab.color && (
@@ -450,7 +460,7 @@ export function HomeOverviewSection({
         </div>
 
         {/* Subway Station Links Grid */}
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5 sm:gap-2.5 pt-1">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 sm:gap-2.5 pt-1">
           {filteredStations.map((st) => {
             const stationDisplayName = getLocalizedStationTitle(st, language, true);
             return (
@@ -462,23 +472,24 @@ export function HomeOverviewSection({
                   onSelectStation(st.id);
                 }}
                 aria-label={`${stationDisplayName} 출구 안내`}
-                className="group flex flex-col items-center justify-center bg-white hover:bg-[#F9F9F7] border border-slate-200/90 hover:border-[#8EA85E] rounded-xl py-2 px-1 sm:py-2.5 sm:px-2 transition-all duration-150 hover:-translate-y-0.5 hover:shadow-xs cursor-pointer text-center active:scale-95 min-h-[60px] sm:min-h-[68px] no-underline"
+                className="group flex flex-col items-center justify-center bg-white border border-black/[0.05] hover:border-[#8EA85E]/60 rounded-2xl py-2.5 px-1.5 sm:py-3 sm:px-2.5 transition-all duration-200 hover:-translate-y-0.5 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_20px_-6px_rgba(142,168,94,0.18)] cursor-pointer text-center active:scale-95 min-h-[64px] sm:min-h-[72px] no-underline"
               >
                 {/* Station Name */}
-                <div className="font-extrabold text-[#11161B] text-xs sm:text-sm tracking-tight group-hover:text-[#8EA85E] transition-colors leading-tight truncate max-w-full">
+                <div className="font-bold text-[#18181B] text-xs sm:text-[14px] tracking-tight group-hover:text-[#6B853E] transition-colors leading-tight truncate max-w-full">
                   {stationDisplayName}
                 </div>
 
-                {/* Line Badges */}
-                <div className="flex items-center justify-center gap-1 mt-1 flex-wrap">
+                {/* Line Badges (Refined Dot + Soft Pill) */}
+                <div className="flex items-center justify-center gap-1 mt-1.5 flex-wrap">
                   {st.lines.map((l) => {
                     const lineInfo = getLineTheme(l);
                     return (
                       <span 
                         key={l}
-                        className={`text-[8px] sm:text-[9px] font-bold px-1.5 py-0.5 rounded text-white shadow-2xs ${lineInfo.bg}`}
+                        className={`inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${lineInfo.badgeBg} ${lineInfo.badgeText}`}
                       >
-                        {formatLineLabelI18n(l, language)}
+                        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${lineInfo.dot}`} />
+                        <span>{formatLineLabelI18n(l, language)}</span>
                       </span>
                     );
                   })}
@@ -492,9 +503,9 @@ export function HomeOverviewSection({
       {/* ==========================================
           3. ACTIVITY CATEGORY CARDS
          ========================================== */}
-      <section className="space-y-4 pt-6 sm:pt-8 border-t border-[#E5E2DC]" id="activity-explore-section">
+      <section className="space-y-4 pt-6 sm:pt-8" id="activity-explore-section">
         <div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#11161B] tracking-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#18181B] tracking-tight">
             {pickLang(language, {
               KR: '부산에서 어디로 떠나볼까?',
               EN: 'Where Shall We Go in Busan?',
@@ -507,7 +518,7 @@ export function HomeOverviewSection({
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3.5 pt-1">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3.5 pt-1">
           {recommendedCourses.map((course) => {
             const IconComponent = course.icon;
             return (
@@ -520,23 +531,23 @@ export function HomeOverviewSection({
                     onNavigateToItinerary(course.id);
                   }
                 }}
-                className={`${course.bg} border ${course.border} rounded-2xl p-2.5 sm:p-3.5 flex items-center gap-2 sm:gap-2.5 cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 group shadow-2xs select-none active:scale-95 min-h-[58px] sm:min-h-[68px] no-underline`}
+                className={`${course.bg} border ${course.border} rounded-2xl p-3 sm:p-4 flex items-center gap-2.5 sm:gap-3 cursor-pointer hover:-translate-y-0.5 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.04)] hover:shadow-[0_10px_24px_-6px_rgba(142,168,94,0.18)] transition-all duration-200 group select-none active:scale-95 min-h-[62px] sm:min-h-[76px] no-underline`}
               >
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl ${course.iconBg} ${course.iconColor} flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 shadow-2xs`}>
+                <div className={`w-9 h-9 sm:w-11 sm:h-11 rounded-xl ${course.iconBg} ${course.iconColor} flex items-center justify-center shrink-0 transition-transform group-hover:scale-105`}>
                   <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-black text-[#11161B] text-xs sm:text-sm md:text-[15px] group-hover:text-[#0A2540] transition-colors leading-tight break-keep">
+                  <h3 className="font-bold text-[#18181B] text-xs sm:text-sm md:text-[15px] group-hover:text-[#5B7332] transition-colors leading-tight break-keep">
                     {course.title}
                   </h3>
-                  <p className="hidden sm:block text-[11px] text-slate-500 mt-0.5 line-clamp-1 break-keep">
+                  <p className="hidden sm:block text-[11.5px] text-slate-500 mt-0.5 line-clamp-1 break-keep">
                     {course.desc}
                   </p>
                 </div>
 
-                <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/70 flex items-center justify-center text-slate-400 group-hover:text-[#11161B] group-hover:bg-white shadow-2xs transition-all shrink-0">
-                  <ArrowUpRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <div className="w-6 h-6 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-white group-hover:bg-[#8EA85E] transition-all shrink-0">
+                  <ArrowUpRight className="w-3.5 h-3.5" />
                 </div>
               </a>
             );
@@ -548,12 +559,12 @@ export function HomeOverviewSection({
           4. COMPACT 3-PILLAR GUIDE
          ========================================== */}
       <section 
-        className="space-y-3 pt-6 sm:pt-8 border-t border-[#E5E2DC]" 
+        className="space-y-3.5 pt-6 sm:pt-8" 
         id="editorial-guide-section"
         aria-label="Busan Step-Free Travel Core Guide"
       >
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-          <h2 className="text-base sm:text-lg font-black text-[#11161B] tracking-tight">
+          <h2 className="text-base sm:text-lg font-black text-[#18181B] tracking-tight">
             {pickLang(language, {
               KR: '계단 없는 부산여행 핵심 포인트',
               EN: 'Key Points for Step-Free Busan Travel',
@@ -577,7 +588,7 @@ export function HomeOverviewSection({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-3.5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
           {/* Card 1 */}
           <a
             href="/tips/courses/subway"
@@ -585,13 +596,13 @@ export function HomeOverviewSection({
               e.preventDefault();
               onNavigateToItinerary?.('SUBWAY');
             }}
-            className="bg-white hover:bg-[#FAF9F6] border border-[#E5E2DC] hover:border-[#8EA85E] rounded-2xl p-3.5 sm:p-4 transition-all space-y-1.5 shadow-2xs no-underline group"
+            className="bg-white border border-black/[0.05] hover:border-[#8EA85E]/60 rounded-2xl p-4 sm:p-5 transition-all space-y-2 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_20px_-6px_rgba(142,168,94,0.16)] no-underline group"
           >
             <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-[#EDF4E3] text-[#5B7332] shrink-0">
-                <Train className="w-3.5 h-3.5" />
+              <span className="p-2 rounded-xl bg-[#F3F7EC] text-[#5B7332] shrink-0">
+                <Train className="w-4 h-4" />
               </span>
-              <h3 className="font-bold text-xs sm:text-sm text-[#11161B] group-hover:text-[#6B853E] transition-colors">
+              <h3 className="font-bold text-xs sm:text-sm text-[#18181B] group-hover:text-[#5B7332] transition-colors">
                 {pickLang(language, {
                   KR: '주요 환승역 1동선 엘리베이터',
                   EN: 'Direct Station Elevators',
@@ -603,7 +614,7 @@ export function HomeOverviewSection({
                 })}
               </h3>
             </div>
-            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed break-keep">
+            <p className="text-[11.5px] sm:text-xs text-slate-600 leading-relaxed break-keep">
               {pickLang(language, {
                 KR: '서면역(7·11·12·13번), 부산역(4·6번), 해운대역(1·3번), 광안역(3·5번) 등 22개 주요 역사의 승강장부터 지상 보도까지 계단 없이 직결되는 엘리베이터 출구 번호를 안내합니다.',
                 EN: 'Find direct platform-to-street elevator exits across 22 major stations including Seomyeon, Busan Station, Haeundae, Gwangan, and Centum City.',
@@ -623,13 +634,13 @@ export function HomeOverviewSection({
               e.preventDefault();
               onNavigateToGuide?.('barrier-free');
             }}
-            className="bg-white hover:bg-[#FAF9F6] border border-[#E5E2DC] hover:border-[#8EA85E] rounded-2xl p-3.5 sm:p-4 transition-all space-y-1.5 shadow-2xs no-underline group"
+            className="bg-white border border-black/[0.05] hover:border-[#8EA85E]/60 rounded-2xl p-4 sm:p-5 transition-all space-y-2 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_20px_-6px_rgba(142,168,94,0.16)] no-underline group"
           >
             <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-[#E8F2F8] text-[#2F668A] shrink-0">
-                <Accessibility className="w-3.5 h-3.5" />
+              <span className="p-2 rounded-xl bg-[#F3F7EC] text-[#5B7332] shrink-0">
+                <Accessibility className="w-4 h-4" />
               </span>
-              <h3 className="font-bold text-xs sm:text-sm text-[#11161B] group-hover:text-[#2F668A] transition-colors">
+              <h3 className="font-bold text-xs sm:text-sm text-[#18181B] group-hover:text-[#5B7332] transition-colors">
                 {pickLang(language, {
                   KR: '유모차·휠체어 권역별 평지 동선',
                   EN: 'Flat Regional Boardwalks',
@@ -641,7 +652,7 @@ export function HomeOverviewSection({
                 })}
               </h3>
             </div>
-            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed break-keep">
+            <p className="text-[11.5px] sm:text-xs text-slate-600 leading-relaxed break-keep">
               {pickLang(language, {
                 KR: '해운대·동백섬 우든 데크길과 다대포 생태탐방로, 자갈치·국제시장 평지 아케이드 및 국립해양박물관 등 단차 없이 쾌적하게 둘러볼 수 있는 열린관광지 코스를 선별했습니다.',
                 EN: 'Explore step-free coastal boardwalks at Haeundae & Dadaepo, flat market arcades in Nampo, and barrier-free museums.',
@@ -661,13 +672,13 @@ export function HomeOverviewSection({
               e.preventDefault();
               onNavigateToGuide?.('transit');
             }}
-            className="bg-white hover:bg-[#FAF9F6] border border-[#E5E2DC] hover:border-[#8EA85E] rounded-2xl p-3.5 sm:p-4 transition-all space-y-1.5 shadow-2xs no-underline group"
+            className="bg-white border border-black/[0.05] hover:border-[#8EA85E]/60 rounded-2xl p-4 sm:p-5 transition-all space-y-2 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_20px_-6px_rgba(142,168,94,0.16)] no-underline group"
           >
             <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-[#F7EFE6] text-[#855834] shrink-0">
-                <Luggage className="w-3.5 h-3.5" />
+              <span className="p-2 rounded-xl bg-[#F3F7EC] text-[#5B7332] shrink-0">
+                <Luggage className="w-4 h-4" />
               </span>
-              <h3 className="font-bold text-xs sm:text-sm text-[#11161B] group-hover:text-[#855834] transition-colors">
+              <h3 className="font-bold text-xs sm:text-sm text-[#18181B] group-hover:text-[#5B7332] transition-colors">
                 {pickLang(language, {
                   KR: '무료 환승·어린이 혜택 & 캐리어 팁',
                   EN: 'Free Transfers & Luggage Tips',
@@ -679,7 +690,7 @@ export function HomeOverviewSection({
                 })}
               </h3>
             </div>
-            <p className="text-[11px] sm:text-xs text-slate-600 leading-relaxed break-keep">
+            <p className="text-[11.5px] sm:text-xs text-slate-600 leading-relaxed break-keep">
               {pickLang(language, {
                 KR: '하차 후 30분 이내 도시철도·버스 무료 환승(최대 2회), 만 6~12세 어린이 요금 무료 혜택, 시내버스 QR 결제 및 28인치 이상 대형 캐리어 물품보관함(T-Luggage) 정보를 제공합니다.',
                 EN: 'Learn about 30-minute free transit transfers, free fares for children aged 6–12, bus QR payment, and metro luggage lockers.',
@@ -697,14 +708,14 @@ export function HomeOverviewSection({
       {/* ==========================================
           5. COMPACT ABOUT & VERIFICATION BANNER
          ========================================== */}
-      <section className="pt-4 border-t border-[#E5E2DC]" id="about-verification-banner">
-        <div className="bg-[#FAF8F5] border border-[#EBE8E2] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
+      <section className="pt-4" id="about-verification-banner">
+        <div className="bg-white border border-black/[0.05] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.04)]">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-white border border-[#E5E2DC] text-[#6B853E] shadow-2xs shrink-0">
+            <div className="p-2.5 rounded-xl bg-[#F3F7EC] text-[#5B7332] shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-sm sm:text-base text-[#11161B]">
+              <h3 className="font-bold text-sm sm:text-base text-[#18181B]">
                 {pickLang(language, {
                   KR: '스텝리스 서비스 소개 및 공공데이터 검증',
                   EN: 'About Stepless & Data Verification',
@@ -737,7 +748,7 @@ export function HomeOverviewSection({
                 onNavigateToAbout();
               }
             }}
-            className="self-end sm:self-center shrink-0 px-4 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 hover:text-[#8EA85E] font-bold text-xs transition-colors shadow-2xs flex items-center gap-1 cursor-pointer no-underline"
+            className="self-end sm:self-center shrink-0 px-4 py-2 rounded-xl bg-[#FAF9F6] hover:bg-[#F3F7EC] border border-black/[0.06] text-[#18181B] hover:text-[#5B7332] font-bold text-xs transition-colors flex items-center gap-1 cursor-pointer no-underline"
           >
             <span>
               {pickLang(language, {

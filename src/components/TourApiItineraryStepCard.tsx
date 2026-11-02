@@ -272,7 +272,7 @@ export const TourApiItineraryStepCard: React.FC<TourApiItineraryStepCardProps> =
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold text-[#11161B] flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-[#0A2540]" />
-                <span>{language === 'KR' ? '지점별 매장 안내 & 지도' : 'Branch Locations & Maps'}</span>
+                <span>{language === 'KR' ? '매장별 위치 안내 & 지도' : 'Locations & Maps'}</span>
               </span>
               <span className="text-[10px] font-mono text-[#0A2540] bg-[#FBFBF9] px-2 py-0.5 rounded border border-[#E5E2DC]">
                 {step.branches.length} {language === 'KR' ? '개 매장' : 'branches'}

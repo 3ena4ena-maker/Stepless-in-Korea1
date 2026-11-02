@@ -148,8 +148,8 @@ export default function StationSearchBar({
   return (
     <div ref={containerRef} className={`relative w-full ${className}`}>
       <div className="relative flex items-center">
-        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-          <Search className="w-5 h-5 text-blue-800" />
+        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <Search className="w-5 h-5 text-[#8EA85E]" />
         </div>
         <input
           type="text"
@@ -183,9 +183,9 @@ export default function StationSearchBar({
               FR: 'Rechercher une station ou sortie... (ex. : Seomyeon, Haeundae, Sortie 7)',
             })
           }
-          className="w-full pl-11 pr-24 py-3 sm:py-3.5 border border-slate-300 rounded-2xl bg-white text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#003466] focus:border-[#003466] text-sm font-medium transition-all"
+          className="w-full pl-11 pr-24 py-3.5 sm:py-4 border border-slate-200/80 rounded-2xl bg-white text-[#18181B] placeholder:text-slate-400 shadow-[0_8px_30px_rgb(0,0,0,0.04)] focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/25 focus:border-[#8EA85E] text-sm sm:text-[15px] font-medium transition-all"
         />
-        <div className="absolute inset-y-0 right-1.5 flex items-center gap-1.5">
+        <div className="absolute inset-y-0 right-2 flex items-center gap-1.5">
           {searchQuery && (
             <button
               type="button"
@@ -202,7 +202,7 @@ export default function StationSearchBar({
           <button
             type="button"
             onClick={() => handleExecuteSearch()}
-            className="px-4 py-2 bg-[#8EA85E] hover:bg-[#7b944f] text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all cursor-pointer shadow-xs active:scale-95 flex items-center gap-1"
+            className="px-4 py-2 sm:py-2.5 bg-[#18181B] hover:bg-[#8EA85E] text-white font-bold text-xs sm:text-sm rounded-xl transition-all cursor-pointer shadow-xs active:scale-95 flex items-center gap-1"
           >
             <span>{pickLang(language, { KR: '검색', EN: 'Search', JA: '検索', ZH_TW: '搜尋', ZH_CN: '搜索', ES: 'Buscar', FR: 'Rechercher' })}</span>
           </button>

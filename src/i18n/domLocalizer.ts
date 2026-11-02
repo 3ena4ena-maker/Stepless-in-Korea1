@@ -1,6 +1,5 @@
 import { useLayoutEffect } from 'react';
 import { Language } from './dictionary';
-import staticPhraseCache from './staticPhraseCache.json';
 
 type TargetLang = 'JA' | 'ZH_TW' | 'ZH_CN' | 'ES' | 'FR';
 const ALL_TARGET_LANGS: TargetLang[] = ['JA', 'ZH_TW', 'ZH_CN', 'ES', 'FR'];
@@ -367,14 +366,37 @@ function polishNativeTerminology(joined: string, targetLang: TargetLang): string
   return joined;
 }
 
-// Pre-populated in-memory cache with 1,050+ static UI phrases for 0ms instantaneous switching
+// In-memory cache populated lazily from staticPhraseCache.json only when JA/ZH/ES/FR is used
 const memCache: Record<TargetLang, Record<string, string>> = {
-  JA: { ...(staticPhraseCache.JA as Record<string, string>) },
-  ZH_TW: { ...(staticPhraseCache.ZH_TW as Record<string, string>) },
-  ZH_CN: { ...(staticPhraseCache.ZH_CN as Record<string, string>) },
-  ES: { ...(staticPhraseCache.ES as Record<string, string>) },
-  FR: { ...(staticPhraseCache.FR as Record<string, string>) },
+  JA: {},
+  ZH_TW: {},
+  ZH_CN: {},
+  ES: {},
+  FR: {},
 };
+
+let staticCacheLoaded = false;
+let staticCachePromise: Promise<void> | null = null;
+
+function ensureStaticPhraseCacheLoaded(): Promise<void> {
+  if (staticCacheLoaded) return Promise.resolve();
+  if (!staticCachePromise) {
+    staticCachePromise = import('./staticPhraseCache.json')
+      .then((mod) => {
+        const data = mod.default || mod;
+        for (const lang of ALL_TARGET_LANGS) {
+          if (data[lang]) {
+            memCache[lang] = { ...(data[lang] as Record<string, string>), ...memCache[lang] };
+          }
+        }
+        staticCacheLoaded = true;
+      })
+      .catch(() => {
+        staticCacheLoaded = true;
+      });
+  }
+  return staticCachePromise;
+}
 
 const cacheLoadedFlags: Record<TargetLang, boolean> = {
   JA: false,
@@ -383,6 +405,8 @@ const cacheLoadedFlags: Record<TargetLang, boolean> = {
   ES: false,
   FR: false,
 };
+
+let hasAppliedDomLocalization = false;
 
 function loadCache(lang: TargetLang): Record<string, string> {
   if (!cacheLoadedFlags[lang]) {
@@ -520,8 +544,6 @@ export function useDomLocalizer(language: Language) {
   useLayoutEffect(() => {
     if (typeof document === 'undefined') return;
 
-    let isCancelled = false;
-
     document.documentElement.lang =
       language === 'KR' ? 'ko' :
       language === 'JA' ? 'ja' :
@@ -529,6 +551,16 @@ export function useDomLocalizer(language: Language) {
       language === 'ZH_CN' ? 'zh-Hans' :
       language === 'ES' ? 'es' :
       language === 'FR' ? 'fr' : 'en';
+
+    // Fast path: if user is in KR or EN and never switched to JA/ZH/ES/FR, skip DOM walking & MutationObserver completely
+    if ((language === 'KR' || language === 'EN') && !hasAppliedDomLocalization) {
+      return;
+    }
+
+    let isCancelled = false;
+    if (language !== 'KR' && language !== 'EN') {
+      hasAppliedDomLocalization = true;
+    }
 
     const processDomTree = () => {
       if (isCancelled) return;
@@ -710,6 +742,19 @@ export function useDomLocalizer(language: Language) {
     };
 
     processDomTree();
+
+    if (language === 'KR' || language === 'EN') {
+      hasAppliedDomLocalization = false;
+      return () => {
+        isCancelled = true;
+      };
+    }
+
+    if (!staticCacheLoaded) {
+      ensureStaticPhraseCacheLoaded().then(() => {
+        if (!isCancelled) processDomTree();
+      });
+    }
 
     let debounceTimer: ReturnType<typeof setTimeout> | null = null;
     const observer = new MutationObserver(() => {

@@ -1,10 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --font-sans: 'Work Sans', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Hanken Grotesk', system-ui, monospace;
+  --font-sans: 'SUIT Variable', 'Plus Jakarta Sans', 'Work Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'GmarketSans', 'SUIT Variable', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Hanken Grotesk', 'SUIT Variable', system-ui, monospace;
   
   --color-primary-navy: #8EA85E;
   --color-primary-light: #e8eedd;
@@ -20,15 +35,25 @@ html {
   -webkit-tap-highlight-color: transparent;
   width: 100%;
   overflow-x: clip;
+  font-feature-settings: "ss01", "ss02", "cv01";
 }
 
 body {
   width: 100%;
   overflow-x: clip;
   touch-action: manipulation;
-  background-color: #f8fafc;
-  color: #1e293b;
+  background-color: #FAF9F6;
+  color: #18181B;
+  font-family: var(--font-sans);
+  letter-spacing: -0.015em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   word-break: keep-all;
+}
+
+h1, h2, .font-heading {
+  font-family: var(--font-heading);
+  letter-spacing: -0.03em;
 }
 
 #root {

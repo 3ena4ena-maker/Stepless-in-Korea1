@@ -341,6 +341,140 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
     ]
   },
   {
+    id: 'itinerary-day-coffee-tour',
+    titleKo: '커피의 도시 부산! 남포 · 영도 · 전포 · 광안 당일치기 커피투어',
+    titleEn: 'Coffee City Busan! Nampo, Yeongdo, Jeonpo & Gwangalli 1-Day Coffee Tour',
+    subtitleKo: 'KTX 부산역에서 가까운 남포동 감성 카페 그리다부부부터 영도 모모스 로스터리&바다, 전포·서면 스페셜티 성지, 광안리 오션뷰 까사부사노까지 이어지는 당일치기 커피 로드',
+    subtitleEn: 'From Nampo-dong Geurida Bubu and Yeongdo Momos Roastery by the harbor to Jeonpo & Seomyeon specialty coffee icons and Gwangalli ocean-view Casa Busano.',
+    category: 'DAY',
+    durationKo: '당일치기',
+    durationEn: '1 Day',
+    tagKo: '부산 커피투어',
+    tagEn: 'Busan Coffee Tour',
+    difficultyKo: '쉬움',
+    difficultyEn: 'Easy',
+    overallTipKo: 'KTX 부산역 도착 후 지하철 1호선으로 남포동에 들러 구경하며 첫 커피를 마시고, 영도대교를 건너 모모스 영도점과 부두 바다를 산책한 뒤 1·2호선으로 전포·서면 커피 골목과 광안리 해변까지 막힘없이 이동하는 알짜배기 당일치기 코스입니다. 하루에 여러 곳을 방문하므로 디카페인 원두나 시그니처 베리에이션 음료, 드립백 원두 쇼핑을 곁들이면 더욱 여유롭게 즐길 수 있습니다.',
+    overallTipEn: 'Start near Busan Station at Nampo-dong, cross Yeongdo Bridge for Momos Coffee & harbor views, then take the subway to Jeonpo & Seomyeon specialty coffee alleys before finishing at Gwangalli Beach.',
+    steps: [
+      {
+        shortTitleKo: '남포동 그리다부부',
+        shortTitleEn: 'Nampo Geurida Bubu',
+        titleKo: '남포동 그리다부부 & 남포동 거리 산책',
+        titleEn: 'Geurida Bubu Cafe & Nampo-dong Street Walk',
+        descKo: 'KTX 부산역에서 내려 남포동 광복로·근현대역사관 거리를 구경하며 들르기 좋은 따뜻한 감성의 디저트·커피 카페입니다. 정성 가득한 수제 케이크·타르트와 향긋한 커피로 부산 여행의 기분 좋은 첫 시간을 시작해 보세요.',
+        descEn: 'A warm, charming dessert & coffee cafe tucked in Nampo-dong, just a short ride from KTX Busan Station—perfect for starting your trip with handmade desserts and a stroll around Nampo-dong.',
+        icon: 'Coffee',
+        addressRoadKo: '부산광역시 중구 광복중앙로 35-1 1층',
+        addressRoadEn: '1F, 35-1 Gwangbokjungang-ro, Jung-gu, Busan',
+        stationInfoKo: '지하철 1호선 남포역 1번 출구 · 중앙역 5번 출구 도보 7분 (남포동 광복로 평지 연결)',
+        stationInfoEn: 'Subway Line 1 Nampo Station Exit 1 or Jungang Station Exit 5, 7 mins flat walk.',
+        firstImage: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80',
+        naverMapUrl: 'https://map.naver.com/p/search/%EB%82%A8%ED%8F%AC%EB%8F%99%20%EA%B7%B8%EB%A6%AC%EB%8B%A4%EB%B6%80%EB%B6%80',
+        googleMapUrl: 'https://maps.google.com/?q=%EB%B6%80%EC%82%B0%20%EB%82%A8%ED%8F%AC%EB%8F%99%20%EA%B7%B8%EB%A6%AC%EB%8B%A4%EB%B6%80%EB%B6%80'
+      },
+      {
+        shortTitleKo: '모모스 영도 & 바다',
+        shortTitleEn: 'Momos Yeongdo & Sea',
+        titleKo: '모모스 로스터리&커피바 영도점 & 영도 부두 바다 구경',
+        titleEn: 'Momos Coffee Roastery & Coffee Bar Yeongdo & Harbor Walk',
+        descKo: '남포동에서 영도대교를 건너면 바로 만나는 월드 바리스타 챔피언 배출 스페셜티 로스터리입니다. 옛 항구 창고를 개조한 웅장한 공간에서 커피를 음미하고, 바로 앞 영도 봉래동 물양장 부두 바다 풍경을 따라 여유롭게 산책해 보세요.',
+        descEn: 'World Barista Champion specialty roastery housed in a renovated harbor warehouse right across Yeongdo Bridge, steps away from scenic port-side ocean views.',
+        icon: 'Coffee',
+        addressRoadKo: '부산광역시 영도구 봉래나루로 160',
+        addressRoadEn: '160 Bongraenaru-ro, Yeongdo-gu, Busan',
+        stationInfoKo: '지하철 1호선 남포역 6번 출구에서 영도대교 도보 10분 또는 시내버스 1정거장 (무단차 평지 입구)',
+        stationInfoEn: 'Subway Line 1 Nampo Station Exit 6, 10 mins walk across Yeongdo Bridge or 1 bus stop.',
+        firstImage: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
+        naverMapUrl: 'https://map.naver.com/p/search/%EB%AA%A8%EB%AA%A8%EC%8A%A4%20%EB%A1%9C%EC%8A%A4%ED%84%B0%EB%A6%AC%EC%95%A4%EC%BB%A4%ED%94%BC%EB%B0%94%20%EC%98%81%EB%8F%84',
+        googleMapUrl: 'https://maps.google.com/?q=%EB%AA%A8%EB%AA%A8%EC%8A%A4%20%EB%A1%9C%EC%8A%A4%ED%84%B0%EB%A6%AC%EC%95%A4%EC%BB%A4%ED%94%BC%EB%B0%94%20%EC%98%81%EB%8F%84'
+      },
+      {
+        shortTitleKo: '전포 (스트럿·먼스)',
+        shortTitleEn: 'Jeonpo (Strut & Month)',
+        titleKo: '전포 카페거리 스페셜티 (스트럿커피 · 먼스커피바)',
+        titleEn: 'Jeonpo Cafe Street (Strut Coffee & Month Coffee Bar)',
+        descKo: '영도에서 전포 카페거리로 이동해 부산 스페셜티 커피 신을 이끄는 로스터리들을 만납니다. 플랫화이트와 싱글오리진 브루잉이 뛰어난 스트럿커피, 감각적인 공간에서 섬세한 필터커피를 선보이는 먼스커피바 중 취향에 맞춰 즐겨보세요.',
+        descEn: 'Head to Jeonpo Cafe Street to experience Busan’s specialty coffee leaders: Strut Coffee (famous for flat whites and filter brews) and Month Coffee Bar (intimate hand-drip specialty bar).',
+        icon: 'Coffee',
+        addressRoadKo: '부산광역시 부산진구 동성로39번길 28 (스트럿커피) / 전포대로176번길 12.5 (먼스커피바)',
+        addressRoadEn: '28 Dongseong-ro 39beon-gil (Strut Coffee) / 12.5 Jeonpo-daero 176beon-gil (Month Coffee Bar), Busanjin-gu',
+        stationInfoKo: '지하철 2호선 전포역 4·6·8번 출구 도보 3~5분 (전포 카페거리 골목 연결)',
+        stationInfoEn: 'Subway Line 2 Jeonpo Station Exit 4, 6, or 8, 3–5 mins walk.',
+        firstImage: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80',
+        naverMapUrl: 'https://map.naver.com/p/search/%EC%A0%84%ED%8F%AC%20%EC%8A%A4%ED%8A%B8%EB%9F%BF%EC%BB%A4%ED%94%BC',
+        googleMapUrl: 'https://maps.google.com/?q=%EC%A0%84%ED%8F%AC%20%EC%8A%A4%ED%8A%B8%EB%9F%BF%EC%BB%A4%ED%94%BC',
+        branches: [
+          {
+            nameKo: '스트럿커피 (STRUT COFFEE)',
+            nameEn: 'Strut Coffee',
+            addressKo: '부산 부산진구 동성로39번길 28 1층',
+            addressEn: '1F, 28 Dongseong-ro 39beon-gil, Busanjin-gu, Busan',
+            naverMapUrl: 'https://map.naver.com/p/search/%EC%A0%84%ED%8F%AC%20%EC%8A%A4%ED%8A%B8%EB%9F%BF%EC%BB%A4%ED%94%BC',
+            googleMapUrl: 'https://maps.google.com/?q=%EC%A0%84%ED%8F%AC%20%EC%8A%A4%ED%8A%B8%EB%9F%BF%EC%BB%A4%ED%94%BC'
+          },
+          {
+            nameKo: '먼스커피바 (MONTH COFFEE BAR)',
+            nameEn: 'Month Coffee Bar',
+            addressKo: '부산 부산진구 전포대로176번길 12.5 1층',
+            addressEn: '1F, 12.5 Jeonpo-daero 176beon-gil, Busanjin-gu, Busan',
+            naverMapUrl: 'https://map.naver.com/p/search/%EC%A0%84%ED%8F%AC%20%EB%A8%BC%EC%8A%A4%EC%BB%A4%ED%94%BC%EB%B0%94',
+            googleMapUrl: 'https://maps.google.com/?q=%EC%A0%84%ED%8F%AC%20%EB%A8%BC%EC%8A%A4%EC%BB%A4%ED%94%BC%EB%B0%94'
+          }
+        ]
+      },
+      {
+        shortTitleKo: '서면 (에프엠·블랙업)',
+        shortTitleEn: 'Seomyeon (FM & Blackup)',
+        titleKo: '서면 대표 커피 본점 (에프엠커피 · 블랙업커피 서면본점)',
+        titleEn: 'Seomyeon Coffee Icons (FM Coffee & Blackup Coffee Main)',
+        descKo: '전포에서 서면 방면으로 산책하며 만나는 부산 로컬 커피의 자존심입니다. 진한 크림과 더치커피가 어우러진 시그니처 \'오늘의 커피\'로 유명한 에프엠커피, 짭조름하고 부드러운 \'해, 수염(해수염) 커피\' 원조인 블랙업커피 서면본점을 경험해 보세요.',
+        descEn: 'Stroll from Jeonpo into central Seomyeon for two iconic local signatures: FM Coffee (famous for its rich "Today’s Coffee" cream cold brew) and Blackup Coffee Main Branch (creator of the legendary Sea Salt Coffee).',
+        icon: 'Coffee',
+        addressRoadKo: '부산광역시 부산진구 전포대로199번길 26 (에프엠커피) / 서전로10번길 41 (블랙업커피 서면본점)',
+        addressRoadEn: '26 Jeonpo-daero 199beon-gil (FM Coffee) / 41 Seojeon-ro 10beon-gil (Blackup Coffee Main), Busanjin-gu',
+        stationInfoKo: '지하철 2호선 전포역 7번 출구 · 1·2호선 서면역 2·6번 출구 도보 5분 (평지 도보 이동)',
+        stationInfoEn: 'Subway Line 2 Jeonpo Station Exit 7 or Seomyeon Station Exit 2/6, 5 mins flat walk.',
+        firstImage: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
+        naverMapUrl: 'https://map.naver.com/p/search/%EC%84%9C%EB%A9%B4%20%EB%B8%94%EB%9E%99%EC%97%85%EC%BB%A4%ED%94%BC%20%EB%B3%B8%EC%A0%90',
+        googleMapUrl: 'https://maps.google.com/?q=%EC%84%9C%EB%A9%B4%20%EB%B8%94%EB%9E%99%EC%97%85%EC%BB%A4%ED%94%BC%20%EB%B3%B8%EC%A0%90',
+        branches: [
+          {
+            nameKo: '에프엠커피 (FM COFFEE 본점)',
+            nameEn: 'FM Coffee Main',
+            addressKo: '부산 부산진구 전포대로199번길 26 1층',
+            addressEn: '1F, 26 Jeonpo-daero 199beon-gil, Busanjin-gu, Busan',
+            naverMapUrl: 'https://map.naver.com/p/search/%EC%A0%84%ED%8F%AC%20%EC%97%90%ED%94%84%EC%97%A0%EC%BB%A4%ED%94%BC',
+            googleMapUrl: 'https://maps.google.com/?q=%EC%A0%84%ED%8F%AC%20%EC%97%90%ED%94%84%EC%97%A0%EC%BB%A4%ED%94%BC'
+          },
+          {
+            nameKo: '블랙업커피 서면본점',
+            nameEn: 'Blackup Coffee Seomyeon Main',
+            addressKo: '부산 부산진구 서전로10번길 41',
+            addressEn: '41 Seojeon-ro 10beon-gil, Busanjin-gu, Busan',
+            naverMapUrl: 'https://map.naver.com/p/search/%EB%B8%94%EB%9E%99%EC%97%85%EC%BB%A4%ED%94%BC%20%EC%84%9C%EB%A9%B4%EB%B3%B8%EC%A0%90',
+            googleMapUrl: 'https://maps.google.com/?q=%EB%B8%94%EB%9E%99%EC%97%85%EC%BB%A4%ED%94%BC%20%EC%84%9C%EB%A9%B4%EB%B3%B8%EC%A0%90'
+          }
+        ]
+      },
+      {
+        shortTitleKo: '광안리 까사부사노',
+        shortTitleEn: 'Gwangalli Casa Busano',
+        titleKo: '광안리 해변 & 까사부사노 광안',
+        titleEn: 'Gwangalli Beach & Casa Busano Terrace',
+        descKo: '지하철 2호선을 타고 광안리로 이동해, 광안대교가 정면으로 펼쳐지는 오션뷰 에스프레소 바 까사부사노에서 당일치기 커피투어의 피날레를 장식합니다. 클래식한 에스프레소와 시그니처 음료를 즐기며 광안리 밤바다를 산책해 보세요.',
+        descEn: 'Take Subway Line 2 to Gwangalli Beach for the grand finale at Casa Busano, an oceanfront espresso bar overlooking Gwangan Bridge.',
+        icon: 'Coffee',
+        addressRoadKo: '부산광역시 수영구 광안해변로 179 1층',
+        addressRoadEn: '1F, 179 Gwanganhaebyeon-ro, Suyeong-gu, Busan',
+        stationInfoKo: '지하철 2호선 금련산역 1·3번 출구 · 광안역 3·5번 출구 도보 7분 (광안리 해변 평지 산책로)',
+        stationInfoEn: 'Subway Line 2 Geumnyeonsan Station Exit 1/3 or Gwangan Station Exit 3/5, 7 mins flat walk.',
+        firstImage: 'https://tong.visitkorea.or.kr/cms/resource/45/3311245_image2_1.jpg',
+        naverMapUrl: 'https://map.naver.com/p/search/%EA%B9%8C%EC%82%AC%EB%B6%80%EC%82%AC%EB%85%B8%20%EA%B4%91%EC%95%88',
+        googleMapUrl: 'https://maps.google.com/?q=%EA%B9%8C%EC%82%AC%EB%B6%80%EC%82%AC%EB%85%B8%20%EA%B4%91%EC%95%88'
+      }
+    ]
+  },
+  {
     id: 'itinerary-1night',
     titleKo: '이동 최소화! 동선 최적화 부산 1박 2일 정복 코스',
     titleEn: 'Minimal Transit! Geographically Optimized 1N2D Busan Route',
@@ -1908,12 +2042,27 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         foodCategories: ["cafe","bakery","dessert"],
         titleKo: '스트럿커피',
         titleEn: 'Strut Coffee',
-        descKo: '바리스타의 정성이 담긴 플랫화이트와 필터커피가 유명한 전포 스페셜티 카페입니다.\n⚠️ 입구 턱이 있으므로 방문 전 확인 권장',
-        descEn: '1F, 186 Jeonpo-daero, Busanjin-gu, Busan\n⚠️ Has a step at entrance; contacting in advance is recommended.',
+        descKo: '바리스타의 정성이 담긴 플랫화이트와 필터커피가 유명한 전포 스페셜티 로스터리 카페입니다.\n⚠️ 입구 턱이 있으므로 방문 전 확인 권장',
+        descEn: '1F, 28 Dongseong-ro 39beon-gil, Busanjin-gu, Busan\n⚠️ Has a step at entrance; contacting in advance is recommended.',
         icon: 'Coffee',
         hasStep: true,
-        stationInfoKo: '부산 부산진구 전포대로 186 1층 (전포역 4번 출구)',
-        stationInfoEn: '1F, 186 Jeonpo-daero, Busanjin-gu, Busan'
+        stationInfoKo: '부산 부산진구 동성로39번길 28 1층 (전포역 8번 출구)',
+        stationInfoEn: '1F, 28 Dongseong-ro 39beon-gil, Busanjin-gu, Busan'
+      },
+      {
+        regionId: 'seomyeon_jeonpo',
+        regionNameKo: '서면 · 전포',
+        regionNameEn: 'Seomyeon & Jeonpo',
+        foodCategory: 'cafe',
+        time: '카페',
+        foodCategories: ["cafe","dessert"],
+        titleKo: '에프엠커피 (FM COFFEE 본점)',
+        titleEn: 'FM Coffee Main',
+        descKo: '진한 수제 크림과 더치커피가 조화를 이루는 시그니처 \'오늘의 커피\'로 유명한 전포·서면 대표 스페셜티 카페입니다.',
+        descEn: '1F, 26 Jeonpo-daero 199beon-gil, Busanjin-gu, Busan',
+        icon: 'Coffee',
+        stationInfoKo: '부산 부산진구 전포대로199번길 26 1층 (전포역 7번 출구 도보 2분)',
+        stationInfoEn: '1F, 26 Jeonpo-daero 199beon-gil, Busanjin-gu, Busan'
       },
       // [베이커리]
       {
@@ -2054,6 +2203,21 @@ export const BUSAN_ITINERARIES: ItineraryCourse[] = [
         stationInfoEn: '1F, 247 Haeyang-ro, Yeongdo-gu, Busan'
       },
       // [카페]
+      {
+        regionId: 'nampo_yeongdo',
+        regionNameKo: '남포동 · 영도',
+        regionNameEn: 'Nampo & Yeongdo',
+        foodCategory: 'cafe',
+        time: '카페',
+        foodCategories: ["cafe","dessert","bakery"],
+        titleKo: '그리다부부',
+        titleEn: 'Geurida Bubu Cafe',
+        descKo: '남포동 광복로 인근 골목에서 정성 가득한 수제 케이크·타르트와 향긋한 커피를 선보이는 따스한 감성의 디저트 카페입니다.',
+        descEn: '1F, 35-1 Gwangbokjungang-ro, Jung-gu, Busan',
+        icon: 'Coffee',
+        stationInfoKo: '부산 중구 광복중앙로 35-1 1층 (남포역 1번 · 중앙역 5번 출구 도보 7분)',
+        stationInfoEn: '1F, 35-1 Gwangbokjungang-ro, Jung-gu, Busan'
+      },
       {
         regionId: 'nampo_yeongdo',
         regionNameKo: '남포동 · 영도',

@@ -109,7 +109,7 @@ export default function Header({
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-[#FBFBF9]/95 backdrop-blur-md border-b border-[#E5E2DC] transition-all">
+    <header className="sticky top-0 z-50 bg-[#FAF9F6]/90 backdrop-blur-md border-b border-black/[0.05] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 sm:h-20 gap-2">
           {/* Logo */}
@@ -156,10 +156,10 @@ export default function Header({
                     document.body.scrollTop = 0;
                     setCurrentTab(item.id);
                   }}
-                  className={`flex items-center gap-1.5 px-2.5 lg:px-3 py-2 rounded-md text-xs lg:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap no-underline ${
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs lg:text-[13.5px] font-semibold transition-all cursor-pointer whitespace-nowrap no-underline ${
                     isActive
-                      ? 'text-[#8EA85E] bg-[#F1EFEC] font-bold'
-                      : 'text-[#4A5568] hover:text-[#11161B] hover:bg-[#F1EFEC]/60'
+                      ? 'text-[#5B7332] bg-[#8EA85E]/12 font-bold'
+                      : 'text-slate-600 hover:text-[#18181B] hover:bg-black/[0.03]'
                   }`}
                 >
                   <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#8EA85E]' : 'text-slate-400'}`} />
