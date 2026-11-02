@@ -7,6 +7,10 @@ import { resolvePlaceLocationInfo } from '../services/myRouteService';
 interface CourseStickyMapPanelProps {
   course: ItineraryCourse;
   language: Language;
+  hidePolyline?: boolean;
+  customHeaderTitleKo?: string;
+  customHeaderTitleEn?: string;
+  stepColors?: string[];
 }
 
 type MapProvider = 'NAVER' | 'GOOGLE' | 'LEAFLET';
@@ -25,11 +29,16 @@ interface ResolvedStepStop {
   longitude: number;
   naverMapUrl: string;
   googleMapUrl: string;
+  markerColor?: string;
 }
 
 export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
   course,
   language,
+  hidePolyline = false,
+  customHeaderTitleKo,
+  customHeaderTitleEn,
+  stepColors,
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [selectedDayFilter, setSelectedDayFilter] = useState<string>('ALL');
@@ -63,7 +72,7 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
     return filteredSteps.map((st, idx) => {
       const loc = resolvePlaceLocationInfo(
         st.shortTitleKo || st.titleKo,
-        st.addressRoadKo || st.stationInfoKo
+        st.addressRoadKo || st.stationInfoKo || st.branches?.[0]?.addressKo
       );
       const dayMatch = st.time?.match(/Day\s*(\d+)/i);
       const shortKo =
@@ -91,9 +100,10 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
         googleMapUrl:
           st.googleMapUrl ||
           `https://maps.google.com/?q=${encodeURIComponent(shortKo + ' 부산')}`,
+        markerColor: stepColors?.[idx],
       };
     });
-  }, [course, selectedDayFilter]);
+  }, [course, selectedDayFilter, stepColors]);
 
   const [naverAuthFailed, setNaverAuthFailed] = useState<boolean>(() =>
     typeof window !== 'undefined' ? Boolean(window.NAVER_MAPS_AUTH_FAILED) : false
@@ -273,7 +283,7 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
         bounds.extend(latLng);
 
         const isSelected = selectedStopIndex === idx;
-        const bgColor = isSelected ? 'rgba(24, 24, 27, 0.88)' : 'rgba(142, 168, 94, 0.86)';
+        const bgColor = isSelected ? 'rgba(24, 24, 27, 0.92)' : (stop.markerColor || 'rgba(142, 168, 94, 0.86)');
         const sizePx = isSelected ? 28 : 24;
         const labelText = language === 'KR' ? stop.shortTitleKo : stop.shortTitleEn;
 
@@ -301,7 +311,7 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
         naverMarkersRef.current.push(marker);
       });
 
-      if (naverLatLngs.length > 1) {
+      if (!hidePolyline && naverLatLngs.length > 1) {
         naverPolylineRef.current = new window.naver.maps.Polyline({
           map,
           path: naverLatLngs,
@@ -367,7 +377,7 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
           icon: {
             path: window.google.maps.SymbolPath.CIRCLE,
             scale: 12,
-            fillColor: isSelected ? '#8EA85E' : '#3F4E26',
+            fillColor: isSelected ? '#18181B' : (stop.markerColor || '#3F4E26'),
             fillOpacity: 0.78,
             strokeColor: '#FFFFFF',
             strokeWeight: 1.5,
@@ -382,7 +392,7 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
         googleMarkersRef.current.push(marker);
       });
 
-      if (googleCoords.length > 1) {
+      if (!hidePolyline && googleCoords.length > 1) {
         googlePolylineRef.current = new window.google.maps.Polyline({
           map,
           path: googleCoords,
@@ -432,7 +442,7 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
         latLngs.push(latLng);
 
         const isSelected = selectedStopIndex === idx;
-        const bgColor = isSelected ? 'rgba(24, 24, 27, 0.88)' : 'rgba(142, 168, 94, 0.86)';
+        const bgColor = isSelected ? 'rgba(24, 24, 27, 0.92)' : (stop.markerColor || 'rgba(142, 168, 94, 0.86)');
         const sizePx = isSelected ? 28 : 24;
         const labelText = language === 'KR' ? stop.shortTitleKo : stop.shortTitleEn;
 
@@ -456,7 +466,7 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
         leafletMarkersRef.current.push(marker);
       });
 
-      if (latLngs.length > 1) {
+      if (!hidePolyline && latLngs.length > 1) {
         leafletPolylineRef.current = L.polyline(latLngs, {
           color: '#8EA85E',
           weight: 2,
@@ -577,7 +587,7 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
     return () => {
       isMounted = false;
     };
-  }, [provider, resolvedStops, language]);
+  }, [provider, resolvedStops, language, hidePolyline]);
 
   const activeStop =
     selectedStopIndex !== null && resolvedStops[selectedStopIndex]
@@ -594,7 +604,7 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
           </span>
           <div className="min-w-0">
             <h4 className="text-xs sm:text-sm font-bold text-[#18181B] truncate">
-              {language === 'KR' ? '코스 전체 동선 지도' : 'Course Route Map'}
+              {language === 'KR' ? (customHeaderTitleKo || '코스 전체 동선 지도') : (customHeaderTitleEn || 'Course Route Map')}
             </h4>
           </div>
         </div>
@@ -716,6 +726,7 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
               }`}
             >
               <span
+                style={!isSelected && stop.markerColor ? { backgroundColor: stop.markerColor } : undefined}
                 className={`w-4 h-4 rounded-full text-[10px] font-black flex items-center justify-center shrink-0 ${
                   isSelected ? 'bg-white text-[#5B7332]' : 'bg-[#18181B] text-white'
                 }`}

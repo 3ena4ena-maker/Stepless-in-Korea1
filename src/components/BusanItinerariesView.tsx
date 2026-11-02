@@ -2891,7 +2891,317 @@ export default function BusanItinerariesView({
           {activeCategory === null && (
             <div className="animate-fade-in py-1">
               {/* [모바일 전용] 4열 2행 (ㅁㅁㅁㅁ / ㅁㅁㅁㅁ) 컴팩트 그리드: 부가설명 없이 한 화면에 전체 표시 */}
-              <div className="md:hidden space-y-3 py-1">
+              <div className="space-y-2 py-1">
+                {/* 시안 A: 에디토리얼 오픈 그리드 (상단 세이지 그린 #8EA85E 바 + 4열×2행 미니멀 라인 드로잉 + 상하 가로선) */}
+                <div className="bg-[#8EA85E] text-white px-5 py-2.5 rounded-lg flex items-center justify-between shadow-2xs">
+                  <span className="text-xs font-extrabold tracking-[0.14em] uppercase">CATEGORIES · 08</span>
+                  <span className="text-xs font-medium text-white/95">
+                    {language === 'KR' ? '원하는 여행 테마를 선택하세요' : 'Select your travel theme'}
+                  </span>
+                </div>
+
+                <div className="py-6 sm:py-10 px-2 sm:px-6 max-w-5xl mx-auto">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-5 sm:gap-x-8 lg:gap-x-11 gap-y-8 sm:gap-y-12">
+                    {/* 1. 식도락 */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectCategory('GOURMET');
+                      }}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Steaming Noodle Bowl & Side Dish on Tray */}
+                          <path d="M10 34 C10 47, 44 47, 44 34 Z" />
+                          <line x1="8" y1="34" x2="46" y2="34" />
+                          <line x1="12" y1="37.5" x2="42" y2="37.5" />
+                          <path d="M20 45 L21.5 50 L32.5 50 L34 45" />
+                          {/* Noodles & Steam */}
+                          <path d="M16 34 C18 30, 22 30, 24 34" />
+                          <path d="M24 34 C26 29, 30 29, 32 34" />
+                          <path d="M32 34 C34 30, 38 30, 40 34" />
+                          <path d="M19 25 Q21 20 19 15" />
+                          <path d="M27 23 Q29 18 27 13" />
+                          <path d="M35 25 Q37 20 35 15" />
+                          {/* Chopsticks */}
+                          <line x1="14" y1="10" x2="52" y2="20" />
+                          <line x1="14" y1="14" x2="52" y2="23" />
+                          {/* Small Cup / Side */}
+                          <path d="M46 40 L47 50 L54 50 L55 40 Z" />
+                          <line x1="45" y1="40" x2="56" y2="40" />
+                          <line x1="6" y1="52" x2="58" y2="52" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between transition-colors">
+                        <span className="text-xs sm:text-[13px] font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332]">
+                          {language === 'KR' ? '식도락' : 'Gourmet'}
+                        </span>
+                        <span className="text-[10.5px] sm:text-[11px] font-mono text-[#6E6C64] group-hover:text-[#5B7332]">GOURMET</span>
+                      </div>
+                    </button>
+
+                    {/* 2. 체험 & 박물관 */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectCategory('EXPERIENCE');
+                      }}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Architectural Museum Facade */}
+                          <polygon points="32,9 8,22 56,22" />
+                          <polygon points="32,12.5 14,22 50,22" />
+                          <circle cx="32" cy="17.5" r="2" />
+                          <rect x="10" y="22" width="44" height="3.5" />
+                          <line x1="15" y1="25.5" x2="15" y2="47" />
+                          <line x1="18.5" y1="25.5" x2="18.5" y2="47" />
+                          <line x1="25" y1="25.5" x2="25" y2="47" />
+                          <line x1="39" y1="25.5" x2="39" y2="47" />
+                          <line x1="45.5" y1="25.5" x2="45.5" y2="47" />
+                          <line x1="49" y1="25.5" x2="49" y2="47" />
+                          {/* Center Arch Door */}
+                          <path d="M28.5 47 L28.5 34 A3.5 3.5 0 0 1 35.5 34 L35.5 47" />
+                          <line x1="32" y1="30.5" x2="32" y2="47" />
+                          <rect x="9" y="47" width="46" height="3" />
+                          <rect x="7" y="50" width="50" height="3" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between transition-colors">
+                        <span className="text-xs sm:text-[13px] font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332]">
+                          {language === 'KR' ? '체험 & 박물관' : 'Experience'}
+                        </span>
+                        <span className="text-[10.5px] sm:text-[11px] font-mono text-[#6E6C64] group-hover:text-[#5B7332]">MUSEUM</span>
+                      </div>
+                    </button>
+
+                    {/* 3. 전통시장 */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectCategory('MARKET');
+                      }}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Market Stall with Striped Awning & Goods */}
+                          <path d="M9 22 L14 11 L50 11 L55 22" />
+                          <line x1="23" y1="11" x2="20" y2="22" />
+                          <line x1="32" y1="11" x2="32" y2="22" />
+                          <line x1="41" y1="11" x2="44" y2="22" />
+                          <path d="M9 22 Q14.5 27 20 22 Q26 27 32 22 Q38 27 44 22 Q49.5 27 55 22" />
+                          <line x1="13" y1="24.5" x2="13" y2="52" />
+                          <line x1="51" y1="24.5" x2="51" y2="52" />
+                          {/* Hanging Lanterns & Display */}
+                          <circle cx="22" cy="30" r="2.8" />
+                          <line x1="22" y1="24.5" x2="22" y2="27.2" />
+                          <circle cx="42" cy="30" r="2.8" />
+                          <line x1="42" y1="24.5" x2="42" y2="27.2" />
+                          <path d="M27 39 A5 5 0 0 1 37 39" />
+                          <rect x="11" y="39" width="42" height="13" />
+                          <line x1="11" y1="43" x2="53" y2="43" />
+                          <line x1="25" y1="43" x2="25" y2="52" />
+                          <line x1="39" y1="43" x2="39" y2="52" />
+                          <line x1="7" y1="52" x2="57" y2="52" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between transition-colors">
+                        <span className="text-xs sm:text-[13px] font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332]">
+                          {language === 'KR' ? '전통시장' : 'Markets'}
+                        </span>
+                        <span className="text-[10.5px] sm:text-[11px] font-mono text-[#6E6C64] group-hover:text-[#5B7332]">MARKET</span>
+                      </div>
+                    </button>
+
+                    {/* 4. 명소 */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectCategory('ATTRACTION');
+                      }}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Coastal Parasol, Palm/Sun & Waves (Boutique Homes By The Water style) */}
+                          <circle cx="46" cy="16" r="4.5" />
+                          <line x1="46" y1="8.5" x2="46" y2="9.5" />
+                          <line x1="46" y1="22.5" x2="46" y2="23.5" />
+                          <line x1="38.5" y1="16" x2="39.5" y2="16" />
+                          <line x1="52.5" y1="16" x2="53.5" y2="16" />
+                          {/* Parasol */}
+                          <path d="M10 29 Q24 13 38 29 Z" />
+                          <path d="M17 29 Q24 16 31 29" />
+                          <line x1="24" y1="19" x2="24" y2="21" />
+                          <line x1="24" y1="29" x2="21" y2="41" />
+                          {/* Horizon & Triple Waves */}
+                          <line x1="8" y1="41" x2="56" y2="41" />
+                          <path d="M8 45 Q12 42 16 45 T24 45 T32 45 T40 45 T48 45 T56 45" />
+                          <path d="M8 49.5 Q12 46.5 16 49.5 T24 49.5 T32 49.5 T40 49.5 T48 49.5 T56 49.5" />
+                          <path d="M8 54 Q12 51 16 54 T24 54 T32 54 T40 54 T48 54 T56 54" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between transition-colors">
+                        <span className="text-xs sm:text-[13px] font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332]">
+                          {language === 'KR' ? '명소' : 'Attractions'}
+                        </span>
+                        <span className="text-[10.5px] sm:text-[11px] font-mono text-[#6E6C64] group-hover:text-[#5B7332]">SIGHTS</span>
+                      </div>
+                    </button>
+
+                    {/* 5. 일정별 여행 */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const targetDuration = selectedScheduleDuration || 'DAY';
+                        handleSelectCategory(targetDuration);
+                      }}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Ribbed Suitcase & Travel Companion Bag (Boutique Homes Family Getaways style) */}
+                          <rect x="11" y="18" width="26" height="33" rx="3" />
+                          <path d="M19 18 L19 10 L29 10 L29 18" />
+                          <line x1="17" y1="10" x2="31" y2="10" />
+                          <line x1="16" y1="22" x2="16" y2="47" />
+                          <line x1="21" y1="22" x2="21" y2="47" />
+                          <line x1="27" y1="22" x2="27" y2="47" />
+                          <line x1="32" y1="22" x2="32" y2="47" />
+                          <circle cx="15" cy="53" r="1.5" />
+                          <circle cx="33" cy="53" r="1.5" />
+                          {/* Overlapping Weekender / Calendar Pass */}
+                          <rect x="33" y="29" width="20" height="22" rx="2.5" fill="#FAF9F6" />
+                          <path d="M39 29 L39 25 L47 25 L47 29" />
+                          <line x1="33" y1="35" x2="53" y2="35" />
+                          <circle cx="43" cy="43" r="3.5" />
+                          <polyline points="43,41 43,43 44.5,44" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between transition-colors">
+                        <span className="text-xs sm:text-[13px] font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332]">
+                          {language === 'KR' ? '일정별 여행' : 'By Duration'}
+                        </span>
+                        <span className="text-[10.5px] sm:text-[11px] font-mono text-[#6E6C64] group-hover:text-[#5B7332]">1D – 5D</span>
+                      </div>
+                    </button>
+
+                    {/* 6. 부산 도시철도 코스 */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectCategory('SUBWAY');
+                      }}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Detailed Metro Car & Railway Tracks */}
+                          <polygon points="27,10 32,7 37,10 32,13" />
+                          <rect x="15" y="13" width="34" height="33" rx="5" />
+                          <line x1="25" y1="16.5" x2="39" y2="16.5" />
+                          <rect x="19" y="20" width="26" height="12" rx="1.5" />
+                          <line x1="32" y1="20" x2="32" y2="32" />
+                          <circle cx="22" cy="39" r="2.2" />
+                          <circle cx="42" cy="39" r="2.2" />
+                          <line x1="28" y1="39" x2="36" y2="39" />
+                          {/* Railway Ties */}
+                          <line x1="20" y1="46" x2="12" y2="55" />
+                          <line x1="44" y1="46" x2="52" y2="55" />
+                          <line x1="16" y1="50" x2="48" y2="50" />
+                          <line x1="13" y1="53.5" x2="51" y2="53.5" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between transition-colors">
+                        <span className="text-xs sm:text-[13px] font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332]">
+                          {language === 'KR' ? '도시철도 코스' : 'Metro Course'}
+                        </span>
+                        <span className="text-[10.5px] sm:text-[11px] font-mono text-[#6E6C64] group-hover:text-[#5B7332]">METRO</span>
+                      </div>
+                    </button>
+
+                    {/* 7. 무장애 관광지 */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectCategory('BARRIER_FREE');
+                      }}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Open Casement Window with Scenic View (Boutique Homes With A View style) */}
+                          <rect x="17" y="11" width="30" height="38" />
+                          <polygon points="17,11 8,15 8,52 17,49" />
+                          <polygon points="47,11 56,15 56,52 47,49" />
+                          {/* Window Panes on Shutters */}
+                          <rect x="10" y="18" width="5" height="12" />
+                          <rect x="10" y="33" width="5" height="12" />
+                          <rect x="49" y="18" width="5" height="12" />
+                          <rect x="49" y="33" width="5" height="12" />
+                          {/* Sun & Mountains inside Frame */}
+                          <path d="M27 11 A5 5 0 0 0 37 11" />
+                          <line x1="32" y1="18" x2="32" y2="20" />
+                          <line x1="25" y1="16" x2="23.5" y2="17.5" />
+                          <line x1="39" y1="16" x2="40.5" y2="17.5" />
+                          <path d="M17 44 L26 28 L35 40 L40 32 L47 44" />
+                          <path d="M23 33 L26 35 L29 33" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between transition-colors">
+                        <span className="text-xs sm:text-[13px] font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332]">
+                          {language === 'KR' ? '무장애 관광지' : 'Barrier-Free'}
+                        </span>
+                        <span className="text-[10.5px] sm:text-[11px] font-mono text-[#6E6C64] group-hover:text-[#5B7332]">STEPLESS</span>
+                      </div>
+                    </button>
+
+                    {/* 8. 내 여행 루트 */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectCategory('MY_ROUTE');
+                      }}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Folded Route Map & Pins */}
+                          <polygon points="8,16 24,11 40,16 56,11 56,47 40,52 24,47 8,52" />
+                          <line x1="24" y1="11" x2="24" y2="47" strokeDasharray="2 2" />
+                          <line x1="40" y1="16" x2="40" y2="52" strokeDasharray="2 2" />
+                          <path d="M15 40 Q25 26 33 33 T49 22" strokeWidth="1.5" />
+                          <circle cx="15" cy="40" r="2.2" fill="#1E1E1C" />
+                          <circle cx="32" cy="32.5" r="1.8" fill="#FAF9F6" />
+                          <circle cx="49" cy="22" r="2.8" fill="#8EA85E" stroke="#8EA85E" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between transition-colors">
+                        <span className="text-xs sm:text-[13px] font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332] flex items-center gap-1">
+                          <span>{language === 'KR' ? '내 여행 루트' : 'My Route'}</span>
+                          {myRouteCount > 0 && (
+                            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[#8EA85E] text-white font-mono font-bold leading-none">
+                              {myRouteCount}
+                            </span>
+                          )}
+                        </span>
+                        <span className="text-[10.5px] sm:text-[11px] font-mono font-bold text-[#6A833E]">MY MAP</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+                <div className="hidden">
                 <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full mx-auto">
                   {/* 1. 식도락 */}
                   <button
@@ -3054,7 +3364,7 @@ export default function BusanItinerariesView({
               </div>
 
               {/* [웹/데스크톱 전용] Image 1 원본 화면 100% 동일 복구 (3열 그리드, 원본 텍스트 및 링크) */}
-              <div className="hidden md:block space-y-6 py-2">
+              </div><div className="hidden">
                 <div className="grid grid-cols-3 gap-6">
                   {/* Card 1: 식도락 */}
                   <div
@@ -3349,7 +3659,7 @@ export default function BusanItinerariesView({
                       </div>
 
                       {/* Category Filter Pills: 당일치기 | 1박 | 2박 | 3박 */}
-                      <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                      <div className="flex items-center gap-4 sm:gap-5 flex-wrap border-b border-[#E5E2DC] pb-2">
                         {/* 당일치기 */}
                         <button
                           type="button"
@@ -3938,7 +4248,204 @@ export default function BusanItinerariesView({
               // -------------------------------------------------------------
               // PAGE 6: GOURMET (식도락) - Editorial Travel Magazine Layout
               // -------------------------------------------------------------
-              default: return null; } }; const scheduleNode = renderScheduleContent(); if (scheduleNode) { const dayCourses = filteredCourses.filter(c => c.category === 'DAY'); const activeMapCourse = effectiveCategory === 'DAY' ? (dayCourses.find(c => c.id === selectedDayCourseId) || dayCourses[0] || course) : course; return (<div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start"><div className="lg:col-span-7 min-w-0">{scheduleNode}</div><div className="lg:col-span-5 lg:sticky lg:top-24"><CourseStickyMapPanel course={activeMapCourse} language={language} /></div></div>); } switch (effectiveCategory) { case 'GOURMET': {
+              default: return null; } }; const scheduleNode = renderScheduleContent(); if (scheduleNode) { const dayCourses = filteredCourses.filter(c => c.category === 'DAY'); const activeMapCourse = effectiveCategory === 'DAY' ? (dayCourses.find(c => c.id === selectedDayCourseId) || dayCourses[0] || course) : course; return (<div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start"><div className="lg:col-span-7 min-w-0">{scheduleNode}</div><div className="lg:col-span-5 lg:sticky lg:top-24"><CourseStickyMapPanel course={activeMapCourse} language={language} /></div></div>); }
+              const renderGourmetMiniLineIcon = (catId: string, cls: string = "w-4 h-4") => {
+                switch (catId) {
+                  case 'famous':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 3l2.6 5.3 5.9.8-4.3 4.1 1 5.8L12 16.2 6.8 19l1-5.8-4.3-4.1 5.9-.8L12 3z" />
+                      </svg>
+                    );
+                  case 'restaurant':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M4 13c0 4.4 3.6 8 8 8s8-3.6 8-8H4z" />
+                        <line x1="3" y1="13" x2="21" y2="13" />
+                        <path d="M9 9c0-1.5 1-2.5 1-4" />
+                        <path d="M15 9c0-1.5 1-2.5 1-4" />
+                        <line x1="7" y1="4" x2="19" y2="7" />
+                      </svg>
+                    );
+                  case 'cafe':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                        <path d="M3 8h14v7a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" />
+                        <line x1="6" y1="2" x2="6" y2="4" />
+                        <line x1="10" y1="2" x2="10" y2="4" />
+                        <line x1="14" y1="2" x2="14" y2="4" />
+                      </svg>
+                    );
+                  case 'bakery':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M4 15c0-4 3.5-7 8-7s8 3 8 7c0 2-1.5 3-3 3H7c-1.5 0-3-1-3-3z" />
+                        <path d="M9 8c.5 2.5 1 5 1 10" />
+                        <path d="M15 8c-.5 2.5-1 5-1 10" />
+                      </svg>
+                    );
+                  case 'brunch':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="8" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    );
+                  case 'market':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 9l2-5h14l2 5" />
+                        <path d="M3 9c1.5 2 3.5 2 5 0 1.5 2 3.5 2 5 0 1.5 2 3.5 2 5 0 1 1.5 2.5 1.5 3 0" />
+                        <path d="M5 10v9h14v-9" />
+                      </svg>
+                    );
+                  case 'dessert':
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M7 11h10l-2 9H9l-2-9z" />
+                        <path d="M8 11a4 4 0 0 1 8 0" />
+                        <circle cx="12" cy="5" r="1.5" />
+                      </svg>
+                    );
+                  default:
+                    return (
+                      <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M4 16a8 8 0 0 1 16 0" />
+                        <line x1="2" y1="16" x2="22" y2="16" />
+                        <circle cx="12" cy="6" r="1.5" />
+                      </svg>
+                    );
+                }
+              };
+
+              const GOURMET_CAT_COLORS: Record<string, string> = {
+                ALL: '#5B7332',
+                famous: '#C84B31',
+                restaurant: '#D96B43',
+                cafe: '#8B5E3C',
+                bakery: '#D49B35',
+                brunch: '#4E8752',
+                market: '#2E6F95',
+                dessert: '#C25975',
+                other: '#6366F1',
+              };
+
+              const resolveStepVisualCat = (s: ItineraryStep): string => {
+                const cats = getStepFoodCategories(s);
+                if (selectedGourmetCat !== 'ALL' && selectedGourmetCat !== 'famous' && cats.includes(selectedGourmetCat)) {
+                  return selectedGourmetCat;
+                }
+                const specific = cats.find(c => c !== 'famous' && c !== 'ALL');
+                if (specific) return specific;
+                const t = (s.titleKo + ' ' + (s.descKo || '')).toLowerCase();
+                if (t.includes('카페') || t.includes('커피') || t.includes('로스터')) return 'cafe';
+                if (t.includes('베이커리') || t.includes('빵') || t.includes('옵스') || t.includes('비엔씨')) return 'bakery';
+                if (t.includes('브런치') || t.includes('파스타')) return 'brunch';
+                if (t.includes('시장') || t.includes('호떡') || t.includes('떡볶이')) return 'market';
+                if (t.includes('디저트') || t.includes('떡') || t.includes('빙수')) return 'dessert';
+                return cats[0] || 'restaurant';
+              };
+
+              switch (effectiveCategory) { case 'GOURMET': {
+                const renderGourmetMiniLineIcon = (catId: string, cls: string = "w-4 h-4") => {
+                  switch (catId) {
+                    case 'famous':
+                      return (
+                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 3l2.6 5.3 5.9.8-4.3 4.1 1 5.8L12 16.2 6.8 19l1-5.8-4.3-4.1 5.9-.8L12 3z" />
+                        </svg>
+                      );
+                    case 'restaurant':
+                      return (
+                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M4 13c0 4.4 3.6 8 8 8s8-3.6 8-8H4z" />
+                          <line x1="3" y1="13" x2="21" y2="13" />
+                          <path d="M9 9c0-1.5 1-2.5 1-4" />
+                          <path d="M15 9c0-1.5 1-2.5 1-4" />
+                          <line x1="7" y1="4" x2="19" y2="7" />
+                        </svg>
+                      );
+                    case 'cafe':
+                      return (
+                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                          <path d="M3 8h14v7a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" />
+                          <line x1="6" y1="2" x2="6" y2="4" />
+                          <line x1="10" y1="2" x2="10" y2="4" />
+                          <line x1="14" y1="2" x2="14" y2="4" />
+                        </svg>
+                      );
+                    case 'bakery':
+                      return (
+                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M4 15c0-4 3.5-7 8-7s8 3 8 7c0 2-1.5 3-3 3H7c-1.5 0-3-1-3-3z" />
+                          <path d="M9 8c.5 2.5 1 5 1 10" />
+                          <path d="M15 8c-.5 2.5-1 5-1 10" />
+                        </svg>
+                      );
+                    case 'brunch':
+                      return (
+                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="8" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      );
+                    case 'market':
+                      return (
+                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M3 9l2-5h14l2 5" />
+                          <path d="M3 9c1.5 2 3.5 2 5 0 1.5 2 3.5 2 5 0 1.5 2 3.5 2 5 0 1 1.5 2.5 1.5 3 0" />
+                          <path d="M5 10v9h14v-9" />
+                        </svg>
+                      );
+                    case 'dessert':
+                      return (
+                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M7 11h10l-2 9H9l-2-9z" />
+                          <path d="M8 11a4 4 0 0 1 8 0" />
+                          <circle cx="12" cy="5" r="1.5" />
+                        </svg>
+                      );
+                    default:
+                      return (
+                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M4 16a8 8 0 0 1 16 0" />
+                          <line x1="2" y1="16" x2="22" y2="16" />
+                          <circle cx="12" cy="6" r="1.5" />
+                        </svg>
+                      );
+                  }
+                };
+
+                const GOURMET_CAT_COLORS: Record<string, string> = {
+                  ALL: '#5B7332',
+                  famous: '#C84B31',
+                  restaurant: '#D96B43',
+                  cafe: '#8B5E3C',
+                  bakery: '#D49B35',
+                  brunch: '#4E8752',
+                  market: '#2E6F95',
+                  dessert: '#C25975',
+                  other: '#6366F1',
+                };
+
+                const resolveStepVisualCat = (s: ItineraryStep): string => {
+                  const cats = getStepFoodCategories(s);
+                  if (selectedGourmetCat !== 'ALL' && selectedGourmetCat !== 'famous' && cats.includes(selectedGourmetCat)) {
+                    return selectedGourmetCat;
+                  }
+                  const specific = cats.find(c => c !== 'famous' && c !== 'ALL');
+                  if (specific) return specific;
+                  const t = (s.titleKo + ' ' + (s.descKo || '')).toLowerCase();
+                  if (t.includes('카페') || t.includes('커피') || t.includes('로스터')) return 'cafe';
+                  if (t.includes('베이커리') || t.includes('빵') || t.includes('옵스') || t.includes('비엔씨')) return 'bakery';
+                  if (t.includes('브런치') || t.includes('파스타')) return 'brunch';
+                  if (t.includes('시장') || t.includes('호떡') || t.includes('떡볶이')) return 'market';
+                  if (t.includes('디저트') || t.includes('떡') || t.includes('빙수')) return 'dessert';
+                  return cats[0] || 'restaurant';
+                };
+
                 const getStepCats = (s: ItineraryStep): string[] => {
                   return getStepFoodCategories(s);
                 };
@@ -3976,7 +4483,7 @@ export default function BusanItinerariesView({
                     </div>
 
                     {/* Category Pills directly without box wrapper */}
-                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                    <div className="flex items-center gap-4 sm:gap-5 flex-wrap border-b border-[#E5E2DC] pb-2">
                       {GOURMET_CATEGORY_TABS.map((tab, idx) => {
                         const isSelected = selectedGourmetCat === tab.id;
                         const count = getCategoryCount(tab.id);
@@ -3990,7 +4497,80 @@ export default function BusanItinerariesView({
                               e.stopPropagation();
                               setSelectedGourmetCat(tab.id);
                             }}
-                            className={`${isHiddenOnMobile ? 'hidden sm:flex' : 'flex'} items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shrink-0 border ${
+                            className={`${isHiddenOnMobile ? 'hidden sm:flex' : 'flex'} items-center gap-1.5 py-1.5 text-xs font-bold transition-all cursor-pointer shrink-0 border-b-2 -mb-[9px] ${
+                              isSelected
+                                ? 'border-[#18181B] text-[#18181B]'
+                                : 'border-transparent text-slate-500 hover:text-[#18181B]'
+                            }`}
+                          >
+                            <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: GOURMET_CAT_COLORS[tab.id] || '#8EA85E' }} />
+                            {renderGourmetMiniLineIcon(tab.id, "w-3.5 h-3.5 shrink-0")}
+                            <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
+                            <span className="text-[10.5px] font-mono text-slate-400">
+                              {count}
+                            </span>
+                          </button>
+                        );
+                      })}
+                      {false && GOURMET_CATEGORY_TABS.map((tab, idx) => {
+                        const isSelected = selectedGourmetCat === tab.id;
+                        const count = getCategoryCount(tab.id);
+                        const isHiddenOnMobile = !isGourmetSubcatMoreOpen && idx >= 4 && !isSelected;
+                        return (
+                          <button
+                            key={tab.id}
+                            className={`${isHiddenOnMobile ? 'hidden' : 'hidden'} ${
+                              isSelected
+                                ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
+                                : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
+                            }`}
+                          >
+                            {renderGourmetMiniLineIcon(tab.id, `w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-white' : 'text-[#6A833E]'}`)}
+                            <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
+                            <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                              isSelected ? 'bg-white/20 text-white' : 'bg-[#E5E2DC] text-[#4A5568]'
+                            }`}>
+                              {count}
+                            </span>
+                          </button>
+                        );
+                      })}
+                      {false && GOURMET_CATEGORY_TABS.map((tab, idx) => {
+                        const isSelected = selectedGourmetCat === tab.id;
+                        const count = getCategoryCount(tab.id);
+                        const isHiddenOnMobile = !isGourmetSubcatMoreOpen && idx >= 4 && !isSelected;
+
+                        return (
+                          <button
+                            key={tab.id}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedGourmetCat(tab.id);
+                            }}
+                            className={`${isHiddenOnMobile ? 'hidden sm:flex' : 'flex'} items-center gap-1.5 py-1.5 text-xs font-bold transition-all cursor-pointer shrink-0 border-b-2 -mb-[9px] ${
+                              isSelected
+                                ? 'border-[#18181B] text-[#18181B]'
+                                : 'border-transparent text-slate-500 hover:text-[#18181B]'
+                            }`}
+                          >
+                            <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: GOURMET_CAT_COLORS[tab.id] || '#8EA85E' }} />
+                            {renderGourmetMiniLineIcon(tab.id, "w-3.5 h-3.5 shrink-0")}
+                            <span>{language === 'KR' ? tab.nameKo : tab.nameEn}</span>
+                            <span className="text-[10.5px] font-mono text-slate-400">
+                              {count}
+                            </span>
+                          </button>
+                        );
+                      })}
+                      {false && GOURMET_CATEGORY_TABS.map((tab, idx) => {
+                        const isSelected = selectedGourmetCat === tab.id;
+                        const count = getCategoryCount(tab.id);
+                        const isHiddenOnMobile = !isGourmetSubcatMoreOpen && idx >= 4 && !isSelected;
+                        return (
+                          <button
+                            key={tab.id}
+                            className={`${isHiddenOnMobile ? 'hidden' : 'hidden'} ${
                               isSelected
                                 ? 'bg-[#8EA85E] text-white border-[#8EA85E] shadow-2xs'
                                 : 'bg-[#FBFBF9] hover:bg-[#F1EFEC] text-[#11161B] border-[#E5E2DC]'
@@ -4026,7 +4606,9 @@ export default function BusanItinerariesView({
                     </div>
 
                     {/* Gourmet Catalog Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3" id="gourmet-catalog">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                      <div className="lg:col-span-7 min-w-0">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" id="gourmet-catalog">
                       {filteredGourmetSteps.map((step, idx) => {
                         const matchedSpotId = matchTourApiSpotId(step.titleKo);
                         const effectiveSpotId = resolvePlaceTargetId({
@@ -4044,9 +4626,55 @@ export default function BusanItinerariesView({
                             className="bg-white rounded-lg border border-[#E5E2DC] hover:border-[#8EA85E] transition-colors p-3.5 sm:p-4 flex flex-col justify-between text-left space-y-2"
                           >
                             <div className="space-y-1.5 text-left">
-                              {/* Header: Title & Route Button on the SAME line (No star rating) */}
+                              {/* Header: Numbered Badge + Mini Line Illustration + Title & Route Button */}
+                              {(() => {
+                                const stepCats = getStepCats(step);
+                                const primaryCat = (selectedGourmetCat !== 'ALL' && stepCats.includes(selectedGourmetCat))
+                                  ? selectedGourmetCat
+                                  : (stepCats.find(c => c !== 'famous') || stepCats[0] || 'restaurant');
+                                const catLabelObj = GOURMET_CATEGORY_TABS.find(t => t.id === primaryCat);
+                                const catLabel = catLabelObj ? (language === 'KR' ? catLabelObj.nameKo : catLabelObj.nameEn) : (language === 'KR' ? '미식' : 'Gourmet');
+                                const rawLoc = step.branches?.[0]?.addressKo || step.stationInfoKo || '';
+                                const areaMatch = rawLoc.match(/(해운대|광안리|서면|전포|남포|영도|기장|센텀|동래|온천|수영|민락|초량|부산역|다대포|사상|연제|금정|부평|자갈치)/);
+                                const areaTag = areaMatch ? areaMatch[1] : '';
+                                return (
+                                  <div className="hidden">
+                                    <div className="flex items-center gap-1.5 flex-wrap">
+                                      <span className="w-5 h-5 rounded-full bg-[#8EA85E]/90 text-white text-[10.5px] font-black font-mono flex items-center justify-center shrink-0 shadow-2xs">
+                                        {idx + 1}
+                                      </span>
+                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#F6F5F0] border border-[#E5E2DC] text-[10.5px] font-bold text-[#4D6328]">
+                                        {renderGourmetMiniLineIcon(primaryCat, "w-3 h-3 text-[#6A833E] shrink-0")}
+                                        <span>{catLabel}</span>
+                                      </span>
+                                      {areaTag && language === 'KR' && (
+                                        <span className="px-1.5 py-0.5 rounded-md bg-stone-100 text-stone-600 text-[10px] font-bold">
+                                          {areaTag}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })()}
                               <div className="flex items-center justify-between gap-2">
-                                <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug">
+                                <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug flex items-center gap-1.5 min-w-0">
+                                  {(() => {
+                                    const vCat = resolveStepVisualCat(step);
+                                    const cColor = GOURMET_CAT_COLORS[vCat] || '#8EA85E';
+                                    return (
+                                      <>
+                                        <span
+                                          style={{ backgroundColor: cColor }}
+                                          className="w-5 h-5 rounded-full text-white text-[10.5px] font-black font-mono flex items-center justify-center shrink-0 shadow-2xs"
+                                        >
+                                          {idx + 1}
+                                        </span>
+                                        <span style={{ color: cColor }} className="shrink-0">
+                                          {renderGourmetMiniLineIcon(vCat, "w-4 h-4")}
+                                        </span>
+                                      </>
+                                    );
+                                  })()}
                                   {language === 'KR' ? step.titleKo : step.titleEn}
                                 </h4>
                                 <button
@@ -4260,6 +4888,22 @@ export default function BusanItinerariesView({
                       })}
                     </div>
 
+                      </div>
+                      <div className="lg:col-span-5 lg:sticky lg:top-24">
+                        <CourseStickyMapPanel
+                          course={{
+                            ...course,
+                            id: `gourmet-${selectedGourmetCat}`,
+                            steps: filteredGourmetSteps,
+                          }}
+                          language={language}
+                          hidePolyline={true}
+                          customHeaderTitleKo="식도락 매장 위치 지도"
+                          customHeaderTitleEn="Gourmet Spots Map"
+                          stepColors={filteredGourmetSteps.map(s => GOURMET_CAT_COLORS[resolveStepVisualCat(s)] || '#8EA85E')}
+                        />
+                      </div>
+                    </div>
                     {/* Overall tip banner - 부산 현지인 팁! */}
                     <div className="bg-[#FBFBF9] p-4 sm:p-5 text-left flex items-start gap-3 rounded-xl border border-[#E5E2DC] shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
                       <div className="p-2 rounded-lg bg-amber-500/10 text-amber-600 shrink-0 mt-0.5 border border-amber-200/60">
@@ -4315,7 +4959,7 @@ case 'EXPERIENCE': {
                     </div>
 
                     {/* Category Pills directly without box wrapper */}
-                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                    <div className="flex items-center gap-4 sm:gap-5 flex-wrap border-b border-[#E5E2DC] pb-2">
                       {EXPERIENCE_THEME_TABS.map((tab) => {
                         const count = getThemeStepCount(tab.id);
                         const isSelected = selectedExperienceTheme === tab.id;
@@ -4713,7 +5357,7 @@ case 'EXPERIENCE': {
                     </div>
 
                     {/* Category Filter Pills: 전체 / 오일장 */}
-                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                    <div className="flex items-center gap-4 sm:gap-5 flex-wrap border-b border-[#E5E2DC] pb-2">
                       {MARKET_CATEGORY_TABS.map((tab) => {
                         const isSelected = selectedMarketCat === tab.id;
                         const count = getMarketCategoryCount(tab.id);
@@ -4786,7 +5430,24 @@ case 'EXPERIENCE': {
                               {/* Header: Title & Route Button on the SAME line */}
                               <div className="flex items-center justify-between gap-2">
                                 <div className="flex items-center gap-1.5 flex-wrap min-w-0">
-                                  <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug">
+                                  <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug flex items-center gap-1.5 min-w-0">
+                                  {(() => {
+                                    const vCat = resolveStepVisualCat(step);
+                                    const cColor = GOURMET_CAT_COLORS[vCat] || '#8EA85E';
+                                    return (
+                                      <>
+                                        <span
+                                          style={{ backgroundColor: cColor }}
+                                          className="w-5 h-5 rounded-full text-white text-[10.5px] font-black font-mono flex items-center justify-center shrink-0 shadow-2xs"
+                                        >
+                                          {idx + 1}
+                                        </span>
+                                        <span style={{ color: cColor }} className="shrink-0">
+                                          {renderGourmetMiniLineIcon(vCat, "w-4 h-4")}
+                                        </span>
+                                      </>
+                                    );
+                                  })()}
                                     {language === 'KR' ? step.titleKo : step.titleEn}
                                   </h4>
                                   {isFiveDayMarket(step) && (
@@ -5403,7 +6064,24 @@ case 'EXPERIENCE': {
 
                               {/* Header: Title & Route bookmark Button on the same line */}
                               <div className="flex items-center justify-between gap-2">
-                                <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug">
+                                <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug flex items-center gap-1.5 min-w-0">
+                                  {(() => {
+                                    const vCat = resolveStepVisualCat(step);
+                                    const cColor = GOURMET_CAT_COLORS[vCat] || '#8EA85E';
+                                    return (
+                                      <>
+                                        <span
+                                          style={{ backgroundColor: cColor }}
+                                          className="w-5 h-5 rounded-full text-white text-[10.5px] font-black font-mono flex items-center justify-center shrink-0 shadow-2xs"
+                                        >
+                                          {idx + 1}
+                                        </span>
+                                        <span style={{ color: cColor }} className="shrink-0">
+                                          {renderGourmetMiniLineIcon(vCat, "w-4 h-4")}
+                                        </span>
+                                      </>
+                                    );
+                                  })()}
                                   {language === 'KR' ? cleanTitleKo : cleanTitleEn}
                                 </h4>
                                 <button
