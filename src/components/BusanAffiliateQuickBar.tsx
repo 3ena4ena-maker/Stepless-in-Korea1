@@ -2,7 +2,14 @@ import React from 'react';
 import { Luggage, Ticket, Compass } from 'lucide-react';
 import { Language, pickLang } from '../i18n/dictionary';
 
-export const KLOOK_AFFILIATE_LINKS = {
+/**
+ * 구글 애드센스 최종 승인 전까지 false로 유지하면 빌드 결과물(dist/)에서
+ * 모든 제휴 URL 및 버튼이 100% 트리쉐이킹(완전 제거)됩니다.
+ * 승인 완료 후 이 값을 true로만 바꾸면 모든 Klook / KKday 버튼이 즉시 복원됩니다.
+ */
+const ENABLE_AFFILIATE_BUTTONS = false;
+
+const KLOOK_AFFILIATE_LINKS = {
   /** 클룩 부산 전체 티켓·투어·액티비티 모아보기 */
   BUSAN_ALL_ACTIVITIES: 'https://klook.tpo.lu/ubk63ni8',
   /** 클룩 비짓부산패스 (Visit Busan Pass) */
@@ -11,7 +18,7 @@ export const KLOOK_AFFILIATE_LINKS = {
   BUSAN_LUGGAGE_DELIVERY: 'https://klook.tpo.lu/uAtQqn4w',
 } as const;
 
-export const KKDAY_AFFILIATE_LINKS = {
+const KKDAY_AFFILIATE_LINKS = {
   /** KKday 부산 전체 티켓·투어·액티비티 모아보기 */
   BUSAN_ALL_ACTIVITIES: 'https://kkday.tpo.lu/uDIr24Q9',
   /** KKday 비짓부산패스 (Visit Busan Pass) */
@@ -38,7 +45,7 @@ export interface SpotTicketBookingInfo {
  * 클룩(Klook) 또는 케이케이데이(KKday)에 실제 단독 예매 상품 페이지가 존재하는 장소만 매핑합니다.
  * (국립부산과학관, 부산과학체험관, 허심청, 태종대 등 단독 온라인 티켓 상품이 없는 곳은 제외)
  */
-export function getSpotTicketBookingInfo(
+function getSpotTicketBookingInfo(
   spotTitleKo: string,
   language: Language = 'KR'
 ): SpotTicketBookingInfo | null {
@@ -248,6 +255,7 @@ export function SpotTicketBookingRow({
   spotTitleKo: string;
   language: Language;
 }) {
+  if (!ENABLE_AFFILIATE_BUTTONS) return null;
   const info = getSpotTicketBookingInfo(spotTitleKo, language);
   if (!info) return null;
 
@@ -372,6 +380,7 @@ export default function BusanAffiliateQuickBar({
   language,
   variant = 'full',
 }: BusanAffiliateQuickBarProps) {
+  if (!ENABLE_AFFILIATE_BUTTONS) return null;
   const isKkdayPreferred = language === 'ZH_TW' || language === 'JA';
 
   if (variant === 'locker-inline') {
