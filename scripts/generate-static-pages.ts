@@ -3,6 +3,41 @@ import path from 'path';
 import { STATIONS } from '../src/data';
 import { BUSAN_ITINERARIES, ItineraryCourse } from '../src/data/itineraries';
 import { BUSAN_TOUR_API_SPOTS } from '../src/data/tourApiSpots';
+import { Language, LANGUAGE_OPTIONS, buildLocalizedPath, getHreflangEntries, DICTIONARY, pickLang } from '../src/i18n/dictionary';
+import {
+  getLocalizedStationTitle,
+  getStationLocalized,
+  formatLineLabelI18n,
+  formatExitNumberI18n,
+  translateExitDirectionI18n,
+  translateExitTipI18n,
+} from '../src/i18n/stationTranslations';
+
+const staticPhraseCachePath = path.join(process.cwd(), 'src', 'i18n', 'staticPhraseCache.json');
+const STATIC_PHRASE_CACHE: Record<string, Record<string, string>> = fs.existsSync(staticPhraseCachePath)
+  ? JSON.parse(fs.readFileSync(staticPhraseCachePath, 'utf-8'))
+  : {};
+
+function trEn(enText: string | undefined | null, lang: Language): string {
+  if (!enText) return '';
+  if (lang === 'EN' || lang === 'KR') return enText;
+  const trimmed = enText.trim();
+  const dict = STATIC_PHRASE_CACHE[lang];
+  if (dict && dict[trimmed]) {
+    return dict[trimmed];
+  }
+  return enText;
+}
+
+const LANGUAGE_SEO_KEYWORDS: Record<Language, string> = {
+  KR: '부산 여행, 부산 여행 코스, 부산 여행 계획, 부산 일정 추천, 부산 가볼만한곳, 부산 1박2일 코스, 부산 2박3일 코스, 부산 3박4일 코스, 부산 당일치기, 부산 지하철 엘리베이터, 서면역 엘리베이터, 부산역 엘리베이터, 해운대역 엘리베이터, 광안리, 자갈치시장, 감천문화마을, 흰여울문화마을, 해동용궁사, 부산 무장애 여행, 부산 배리어프리, 스탭리스, Stepless',
+  EN: 'Busan travel, Busan travel guide, Busan trip plan, Busan itinerary, things to do in Busan, 1 day in Busan, 2 days in Busan, 3 days in Busan, Busan food guide, Busan subway elevator map, step-free Busan, wheelchair accessible Busan, Busan with stroller, Stepless in Busan',
+  JA: '釜山旅行, 釜山 観光, 釜山 モデルコース, 釜山 おすすめスポット, 釜山 1泊2日, 釜山 2泊3日, 釜山 3泊4日, 釜山 日帰り, 釜山 グルメ, 釜山 市場, 釜山 地下鉄 エレベーター, 釜山 ベビーカー, 釜山 バリアフリー, 子連れ釜山, Stepless',
+  ZH_TW: '釜山旅遊, 釜山自由行, 釜山景點, 釜山行程推薦, 釜山一日遊, 釜山三天兩夜, 釜山四天三夜, 釜山五天四夜, 釜山美食, 釜山必去, 釜山地鐵電梯, 釜山無障礙旅遊, 釜山親子遊 嬰兒車, Stepless',
+  ZH_CN: '釜山旅游, 釜山自由行, 釜山旅游攻略, 釜山必去景点, 釜山一日游, 釜山两天一夜, 釜山三天两夜, 釜山四天三晚, 釜山五天四晚, 釜山美食, 釜山地铁电梯, 釜山无障碍旅游, 釜山亲子游 婴儿车, Stepless',
+  ES: 'Viajar a Busan, Qué ver en Busan, Itinerario Busan, Guía de viaje Busan, Busan en 1 día, Busan en 2 días, Busan en 3 días, Dónde comer en Busan, Metro de Busan ascensores, Busan sin escalones, Busan accesible, Stepless',
+  FR: 'Voyage à Busan, Visiter Busan, Que faire à Busan, Itinéraire Busan, Guide de voyage Busan, Busan en 1 jour, Busan en 2 jours, Busan en 3 jours, Gastronomie Busan, Métro de Busan ascenseurs, Busan sans marche, Busan accessible, Stepless',
+};
 
 interface StaticRoutePage {
   routePath: string; // e.g. '/tips/courses/gourmet' (no trailing slash except '/')
@@ -22,27 +57,39 @@ function escapeHtml(str: string | undefined | null): string {
     .replace(/"/g, '&quot;');
 }
 
-function buildCommonHeader(h1: string, lead: string, breadcrumbLabel?: string, routePath?: string): string {
+function buildLanguageSwitcherHtml(cleanRoutePath: string, activeLang: Language): string {
+  const links = LANGUAGE_OPTIONS.map(opt => {
+    const href = buildLocalizedPath(cleanRoutePath, opt.code);
+    const isCurrent = opt.code === activeLang;
+    return `<a href="${escapeHtml(href)}" hreflang="${escapeHtml(opt.htmlLang)}" style="display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 12px; font-weight: ${isCurrent ? '800' : '600'}; background: ${isCurrent ? '#EDF4E3' : '#FFFFFF'}; color: ${isCurrent ? '#4D6328' : '#475569'}; border: 1px solid #E5E2DC; text-decoration: none;">${escapeHtml(opt.flag)} ${escapeHtml(opt.label)}</a>`;
+  }).join(' ');
+  return `<nav aria-label="Language Selector" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;">${links}</nav>`;
+}
+
+function buildCommonHeader(h1: string, lead: string, breadcrumbLabel?: string, cleanRoutePath = '/', lang: Language = 'KR'): string {
+  const d = DICTIONARY[lang] || DICTIONARY.KR;
+  const loc = (p: string) => escapeHtml(buildLocalizedPath(p, lang));
   return `
         <header style="border-bottom: 1px solid #E5E2DC; padding-bottom: 16px; margin-bottom: 24px;">
+          ${buildLanguageSwitcherHtml(cleanRoutePath, lang)}
           <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;">
-            <a href="/" style="font-size: 20px; font-weight: 900; color: #11161B; text-decoration: none;">STEPLESS IN BUSAN · 계단 없는 부산여행 스텝리스</a>
-            <nav aria-label="주요 메뉴" style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 14px; font-weight: 700;">
-              <a href="/" style="color: #5B7332; text-decoration: none;">홈</a>
-              <a href="/search" style="color: #334155; text-decoration: none;">지하철역 검색</a>
-              <a href="/tips/transit" style="color: #334155; text-decoration: none;">대중교통 이용 팁</a>
-              <a href="/tips/courses" style="color: #334155; text-decoration: none;">여행코스 추천</a>
-              <a href="/my-route" style="color: #334155; text-decoration: none;">내 여행 루트</a>
-              <a href="/schedule" style="color: #334155; text-decoration: none;">축제·행사 일정</a>
-              <a href="/tips/exploration" style="color: #334155; text-decoration: none;">부산 탐구생활</a>
-              <a href="/barrier-free" style="color: #334155; text-decoration: none;">무장애 관광지</a>
-              <a href="/about" style="color: #334155; text-decoration: none;">서비스 소개</a>
+            <a href="${loc('/')}" style="font-size: 20px; font-weight: 900; color: #11161B; text-decoration: none;">STEPLESS IN BUSAN · ${escapeHtml(d.brand)}</a>
+            <nav aria-label="Main Navigation" style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 14px; font-weight: 700;">
+              <a href="${loc('/')}" style="color: #5B7332; text-decoration: none;">${escapeHtml(d.nav.home)}</a>
+              <a href="${loc('/search')}" style="color: #334155; text-decoration: none;">${escapeHtml(d.nav.search)}</a>
+              <a href="${loc('/tips/transit')}" style="color: #334155; text-decoration: none;">${escapeHtml(d.nav.transit)}</a>
+              <a href="${loc('/tips/courses')}" style="color: #334155; text-decoration: none;">${escapeHtml(d.nav.courses)}</a>
+              <a href="${loc('/my-route')}" style="color: #334155; text-decoration: none;">My Route</a>
+              <a href="${loc('/schedule')}" style="color: #334155; text-decoration: none;">${escapeHtml(d.nav.schedule)}</a>
+              <a href="${loc('/tips/exploration')}" style="color: #334155; text-decoration: none;">${escapeHtml(d.nav.exploration)}</a>
+              <a href="${loc('/barrier-free')}" style="color: #334155; text-decoration: none;">Barrier-Free</a>
+              <a href="${loc('/about')}" style="color: #334155; text-decoration: none;">${escapeHtml(d.nav.about)}</a>
             </nav>
           </div>
           ${
-            breadcrumbLabel && routePath && routePath !== '/'
+            breadcrumbLabel && cleanRoutePath && cleanRoutePath !== '/'
               ? `<nav aria-label="Breadcrumb" style="margin-top: 12px; font-size: 13px; color: #64748B;">
-                  <a href="/" style="color: #5B7332; text-decoration: none;">홈 (Home)</a> &rsaquo; <span>${escapeHtml(breadcrumbLabel)}</span>
+                  <a href="${loc('/')}" style="color: #5B7332; text-decoration: none;">${escapeHtml(d.nav.home)}</a> &rsaquo; <span>${escapeHtml(breadcrumbLabel)}</span>
                 </nav>`
               : ''
           }
@@ -51,18 +98,19 @@ function buildCommonHeader(h1: string, lead: string, breadcrumbLabel?: string, r
         </header>`;
 }
 
-function buildCommonFooter(): string {
+function buildCommonFooter(lang: Language = 'KR'): string {
+  const loc = (p: string) => escapeHtml(buildLocalizedPath(p, lang));
   return `
         <footer style="border-top: 1px solid #E5E2DC; padding-top: 16px; margin-top: 32px; font-size: 13px; color: #475569;">
-          <p style="margin: 0 0 8px 0;">운영: <strong>스텝레스 (Stepless)</strong> · 총괄 에디터: <strong>플로레르 (Floreur)</strong> · 문의: <a href="mailto:floreur88@gmail.com">floreur88@gmail.com</a></p>
-          <p style="margin: 0 0 8px 0;">데이터 검증 기준: 부산교통공사 도시철도 편의시설 공공데이터, 한국관광공사 무장애 열린관광지(TourAPI KorWithService2), 현장 실사 검증</p>
+          <p style="margin: 0 0 8px 0;">Published by <strong>Stepless in Busan (스탭리스)</strong> · Chief Editor: <strong>Floreur (플로레르)</strong> · Contact: <a href="mailto:floreur88@gmail.com">floreur88@gmail.com</a></p>
+          <p style="margin: 0 0 8px 0;">Data Sources: Busan Transportation Corporation, Korea Tourism Organization (TourAPI KorWithService2), Field Verification</p>
           <p style="margin: 0; display: flex; flex-wrap: wrap; gap: 12px;">
-            <a href="/about">서비스 및 운영자 소개</a>
-            <a href="/about/privacy">개인정보처리방침 (Privacy Policy)</a>
-            <a href="/about/terms">서비스 이용약관 (Terms of Service)</a>
-            <a href="/about/contact">정보 오류 제보 및 제휴 문의</a>
-            <a href="/about/data-source">공공데이터 출처 및 검증 안내</a>
-            <a href="/sitemap.xml">사이트맵(XML)</a>
+            <a href="${loc('/about')}">About</a>
+            <a href="${loc('/about/privacy')}">Privacy Policy</a>
+            <a href="${loc('/about/terms')}">Terms of Service</a>
+            <a href="${loc('/about/contact')}">Contact</a>
+            <a href="${loc('/about/data-source')}">Data Sources</a>
+            <a href="/sitemap.xml">Sitemap (XML)</a>
           </p>
         </footer>`;
 }
@@ -736,12 +784,306 @@ function buildAllStaticPages(): StaticRoutePage[] {
           </section>`
   });
 
+  // Root home page '/'
+  pages.unshift({
+    routePath: '/',
+    title: '부산 여행 코스 추천 & 지하철 무장애 가이드 | Busan Trip Plan & Step-Free Itinerary | 스탭리스 Stepless',
+    description: '부산 명소·맛집·전통시장 추천 여행 코스(당일치기~4박5일), 나만의 맞춤 여행 루트 플래너, 주요 22개 지하철역 엘리베이터 위치 및 유모차·휠체어 배리어프리 동선 가이드.',
+    h1: '계단 없는 부산여행, 로컬 가이드 스탭리스와 함께 (Stepless in Busan)',
+    lead: '부산 8대 테마·일정별 추천 여행 코스(당일치기~4박5일), 맞춤 여행 루트 플래너, 그리고 주요 22개 지하철역 엘리베이터·에스컬레이터 무장애 동선을 한눈에 확인하세요.',
+    bodyHtml: `
+          <section style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 800; margin-top: 0; color: #11161B;">부산 여행 코스 추천 &amp; 주요 22개 지하철역 무장애 출구 허브</h2>
+            <p style="font-size: 14px; color: #334155;">스탭리스(Stepless in Busan)는 유모차 동반 가족, 휠체어 이용자, 어르신 및 캐리어 여행객이 계단 걱정 없이 부산을 여행할 수 있도록 설계된 다국어 로컬 여행 가이드입니다.</p>
+            <ul style="font-size: 14px; color: #334155; padding-left: 20px;">
+              <li><a href="/tips/courses"><strong>부산 추천 여행 코스 (당일치기~4박5일 &amp; 테마별)</strong></a> — <a href="/tips/courses/gourmet">식도락 맛집</a> · <a href="/tips/courses/attraction">핵심 명소</a> · <a href="/tips/courses/market">전통시장</a> · <a href="/tips/courses/experience">체험·박물관</a></li>
+              <li><a href="/search"><strong>부산 주요 22개 지하철역 엘리베이터·에스컬레이터 출구 검색</strong></a> — 서면역, 부산역, 해운대역, 광안역, 남포역, 자갈치역, 센텀시티역 등</li>
+              <li><a href="/barrier-free"><strong>한국관광공사 검증 부산 무장애 열린관광지 (${BUSAN_TOUR_API_SPOTS.length}곳)</strong></a></li>
+              <li><a href="/my-route"><strong>내 여행 루트 만들기 (맞춤 일정 플래너 &amp; 대중교통 길찾기)</strong></a></li>
+              <li><a href="/schedule"><strong>부산 월별 축제·행사 캘린더 (광안리 드론쇼·부산불꽃축제)</strong></a></li>
+              <li><a href="/tips/exploration"><strong>부산 탐구생활 (무료 짐 보관소·유모차 대여소·지하철 꿀팁)</strong></a></li>
+            </ul>
+          </section>`
+  });
+
   return pages;
 }
 
-function generateRouteHtml(templateHtml: string, page: StaticRoutePage): string {
+function buildLocalizedStationPage(stationId: string, lang: Language): StaticRoutePage | null {
+  const st = STATIONS.find(s => s.id === stationId);
+  if (!st) return null;
+
+  const stTitle = getLocalizedStationTitle(st, lang);
+  const loc = getStationLocalized(st, lang);
+  const lineNames = st.lines.map(l => formatLineLabelI18n(l, lang)).join(' · ');
+  const recExits = loc ? loc.recommendedExits : (st.recommendedExitsEn || st.recommendedExits);
+  const elevDesc = loc ? loc.elevatorLocationDesc : (st.elevatorLocationDescEn || st.elevatorLocationDesc);
+  const moveTime = loc ? loc.avgMovementTime : (st.avgMovementTimeEn || st.avgMovementTime);
+  const transferDesc = loc ? loc.transferRouteDesc : (st.transferRouteDescEn || st.transferRouteDesc);
+  const precautions = loc ? loc.precautions : (st.precautionsEn || st.precautions);
+
+  const title = pickLang(lang, {
+    KR: `${st.name} 엘리베이터 위치·출구 안내 | 스탭리스 Stepless`,
+    EN: `${st.englishName} Elevator Exits & Step-Free Busan Subway Guide | Stepless`,
+    JA: `${stTitle} エレベーター出口・バリアフリー乗換案内（釜山地下鉄）| Stepless`,
+    ZH_TW: `${stTitle} 電梯出口位置＆無障礙轉乘指南（釜山地鐵）| Stepless`,
+    ZH_CN: `${stTitle} 无障碍直梯出口位置＆换乘指南（釜山地铁）| Stepless`,
+    ES: `${stTitle}: Salidas con Ascensor y Guía Sin Escalones (Metro de Busan) | Stepless`,
+    FR: `${stTitle} : Sorties avec Ascenseur et Guide Sans Marche (Métro de Busan) | Stepless`,
+  });
+
+  const description = pickLang(lang, {
+    KR: `${st.name} 엘리베이터 출구(${recExits}) 및 무장애 동선 안내.`,
+    EN: `Find exact elevator exit numbers (${recExits}), escalator locations, accessible restrooms, and step-free stroller & wheelchair routes at ${st.englishName} on the Busan Subway (${lineNames}).`,
+    JA: `釜山地下鉄${lineNames}「${stTitle}」の地上直結エレベーター出口（${recExits}）、エスカレーター、多目的トイレ、ベビーカー・車椅子・スーツケース向け段差なし移動ルート完全ガイド。`,
+    ZH_TW: `釜山地鐵${lineNames}「${stTitle}」地面直達電梯出口（${recExits}）、電扶梯、無障礙廁所，以及推嬰兒車、輪椅、大型行李箱免爬樓梯動線指南。`,
+    ZH_CN: `釜山地铁${lineNames}“${stTitle}”地面直达电梯出口（${recExits}）、自动扶梯、无障碍卫生间，以及推婴儿车、轮椅、大件行李箱无台阶出行指南。`,
+    ES: `Guía completa de salidas con ascensor (${recExits}), escaleras mecánicas y rutas sin escalones para cochecitos, sillas de ruedas y maletas en ${stTitle} (${lineNames}, Metro de Busan).`,
+    FR: `Guide complet des sorties avec ascenseur (${recExits}), escalators et itinéraires sans marche pour poussettes, fauteuils roulants et valises à ${stTitle} (${lineNames}, Métro de Busan).`,
+  });
+
+  const exitsHtml = st.exits.map(ex => {
+    const exNum = formatExitNumberI18n(ex.number, lang);
+    const dir = translateExitDirectionI18n(ex, lang);
+    const tip = translateExitTipI18n(ex, lang);
+    return `
+            <article style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 12px; padding: 16px; margin-bottom: 12px;">
+              <h3 style="font-size: 16px; font-weight: 800; color: #11161B; margin: 0 0 6px 0;">${escapeHtml(stTitle)} — ${escapeHtml(exNum)}</h3>
+              <p style="font-size: 14px; color: #334155; margin: 0 0 6px 0;"><strong>Direction / Landmarks:</strong> ${escapeHtml(dir)}</p>
+              <p style="font-size: 13.5px; color: #475569; margin: 0;"><strong>Step-Free Tip:</strong> ${escapeHtml(tip)}</p>
+            </article>`;
+  }).join('\n');
+
+  const otherStationsHtml = STATIONS.map(o => {
+    const oTitle = getLocalizedStationTitle(o, lang, true);
+    const href = buildLocalizedPath(`/station/${o.id}`, lang);
+    return `<a href="${escapeHtml(href)}" style="display: inline-block; margin: 4px 6px 4px 0; padding: 4px 10px; background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 999px; font-size: 13px; color: #334155; text-decoration: none;">${escapeHtml(oTitle)}</a>`;
+  }).join('\n');
+
+  const bodyHtml = `
+          <section style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 800; margin-top: 0; color: #11161B;">${escapeHtml(stTitle)} (${escapeHtml(lineNames)}) — Step-Free &amp; Elevator Summary</h2>
+            <ul style="font-size: 14px; color: #334155; padding-left: 20px; margin-bottom: 0;">
+              <li><strong>Subway Lines:</strong> ${escapeHtml(lineNames)}</li>
+              <li><strong>Recommended Elevator / Escalator Exits:</strong> ${escapeHtml(recExits)}</li>
+              <li><strong>Elevator Location:</strong> ${escapeHtml(elevDesc)}</li>
+              <li><strong>Average Transfer / Exit Time:</strong> ${escapeHtml(moveTime)}</li>
+              <li><strong>Step-Free Transfer Route:</strong> ${escapeHtml(transferDesc)}</li>
+              <li><strong>Facilities:</strong> ${st.elevatorCount} Elevators / ${st.escalatorCount} Escalators</li>
+              <li><strong>Traveler Note:</strong> ${escapeHtml(precautions)}</li>
+            </ul>
+          </section>
+          <section style="margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 800; color: #11161B; margin-bottom: 14px;">${escapeHtml(stTitle)} Exit-by-Exit Accessibility Guide</h2>
+            ${exitsHtml}
+          </section>
+          <section style="background: #F4F6F0; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+            <h2 style="font-size: 18px; font-weight: 800; margin-top: 0; color: #11161B;">All 22 Busan Subway Stations</h2>
+            <div>${otherStationsHtml}</div>
+          </section>`;
+
+  return {
+    routePath: buildLocalizedPath(`/station/${st.id}`, lang),
+    title,
+    description,
+    h1: title.replace(/\s*\|\s*Stepless.*$/i, ''),
+    lead: description,
+    bodyHtml,
+  };
+}
+
+function buildLocalizedCoursePage(course: ItineraryCourse, cleanRoutePath: string, lang: Language): StaticRoutePage {
+  const courseTitle = trEn(course.titleEn, lang);
+  const courseSub = trEn(course.subtitleEn, lang);
+  const courseTip = trEn(course.overallTipEn, lang);
+
+  const title = pickLang(lang, {
+    KR: `${course.titleKo} | 스탭리스 Stepless`,
+    EN: `${course.titleEn} — Busan Travel Itinerary & Step-Free Guide | Stepless`,
+    JA: `${courseTitle}｜釜山旅行おすすめモデルコース＆バリアフリー観光ガイド | Stepless`,
+    ZH_TW: `${courseTitle}｜釜山自由行推薦行程＆無障礙旅遊指南 | Stepless`,
+    ZH_CN: `${courseTitle}｜釜山自由行推荐路线＆无障碍旅游攻略 | Stepless`,
+    ES: `${courseTitle} — Itinerario de Viaje a Busan y Guía Sin Escalones | Stepless`,
+    FR: `${courseTitle} — Itinéraire de Voyage à Busan et Guide Sans Marche | Stepless`,
+  });
+
+  const description = `${courseSub} — ${courseTip}`;
+
+  const stepsHtml = course.steps.map((step, idx) => {
+    const sTitle = trEn(step.titleEn, lang);
+    const sDesc = trEn(step.descEn, lang);
+    const sTip = trEn(step.tipEn || step.accessibilityDescEn, lang);
+    const sAddr = step.addressRoadEn || step.addressEn || step.addressRoadKo || '';
+    const sStation = trEn(step.stationInfoEn, lang) || step.stationInfoKo || '';
+    return `
+            <article style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 14px; padding: 18px; margin-bottom: 16px;">
+              <h3 style="font-size: 18px; font-weight: 800; color: #11161B; margin: 0 0 6px 0;">${idx + 1}. ${escapeHtml(sTitle)} (${escapeHtml(step.titleKo)})</h3>
+              ${sStation || sAddr ? `<p style="font-size: 13px; color: #5B7332; font-weight: 700; margin: 0 0 8px 0;">${escapeHtml(sStation)} ${sAddr ? `· ${escapeHtml(sAddr)}` : ''}</p>` : ''}
+              <p style="font-size: 14px; color: #334155; margin: 0 0 8px 0;">${escapeHtml(sDesc)}</p>
+              ${sTip ? `<p style="font-size: 13px; color: #1E293B; background: #F4F6F0; padding: 10px 12px; border-radius: 8px; margin: 0;"><strong>Tip:</strong> ${escapeHtml(sTip)}</p>` : ''}
+            </article>`;
+  }).join('\n');
+
+  return {
+    routePath: buildLocalizedPath(cleanRoutePath, lang),
+    title,
+    description,
+    h1: `${courseTitle} (${course.titleKo})`,
+    lead: description,
+    bodyHtml: `
+          <section style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 800; margin-top: 0; color: #11161B;">${escapeHtml(courseTitle)}</h2>
+            <p style="font-size: 14px; color: #475569; margin-bottom: 0;">${escapeHtml(description)}</p>
+          </section>
+          <section style="margin-bottom: 24px;">
+            ${stepsHtml}
+          </section>`,
+  };
+}
+
+function localizeStaticPage(basePage: StaticRoutePage, lang: Language): StaticRoutePage {
+  if (lang === 'KR') return basePage;
+
+  const cleanPath = basePage.routePath;
+  const localizedRoutePath = buildLocalizedPath(cleanPath, lang);
+
+  // 1. Station pages (/station/:id or /search/:id)
+  const stMatch = cleanPath.match(/^\/(?:station|search)\/([^/]+)$/);
+  if (stMatch) {
+    const stPage = buildLocalizedStationPage(stMatch[1], lang);
+    if (stPage) {
+      return { ...stPage, routePath: localizedRoutePath };
+    }
+  }
+
+  // 2. Course pages (/tips/courses/:slug)
+  const courseSlugMap: Record<string, ItineraryCourse['category']> = {
+    '/tips/courses/gourmet': 'GOURMET',
+    '/tips/courses/experience': 'EXPERIENCE',
+    '/tips/courses/market': 'MARKET',
+    '/tips/courses/attraction': 'ATTRACTION',
+    '/tips/courses/day': 'DAY',
+    '/tips/courses/1night': '1NIGHT',
+    '/tips/courses/2nights': '2NIGHTS',
+    '/tips/courses/3nights': '3NIGHTS',
+    '/tips/courses/4nights': '4NIGHTS',
+    '/tips/courses/subway': 'SUBWAY',
+  };
+  if (courseSlugMap[cleanPath]) {
+    const course = BUSAN_ITINERARIES.find(c => c.category === courseSlugMap[cleanPath]);
+    if (course) {
+      return buildLocalizedCoursePage(course, cleanPath, lang);
+    }
+  }
+
+  // 3. Home page ('/')
+  if (cleanPath === '/') {
+    const d = DICTIONARY[lang] || DICTIONARY.EN;
+    const title = pickLang(lang, {
+      KR: basePage.title,
+      EN: 'Busan Travel Guide, 1–5 Day Itineraries & Step-Free Subway Map | Stepless in Busan',
+      JA: '釜山旅行おすすめモデルコース(日帰り〜4泊5日)＆地下鉄エレベーター完全ガイド | Stepless',
+      ZH_TW: '釜山自由行攻略・推薦行程(一日遊～五天四夜)＆地鐵電梯無障礙指南 | Stepless',
+      ZH_CN: '釜山旅游攻略・自由行路线推荐(一日游～五天四晚)＆地铁无障碍直梯指南 | Stepless',
+      ES: 'Guía de Viaje a Busan: Qué Ver, Itinerarios (1 a 5 Días) y Metro Sin Escalones | Stepless',
+      FR: 'Guide de Voyage à Busan : Que Voir, Itinéraires (1 à 5 Jours) et Métro Sans Marche | Stepless',
+    });
+    const description = pickLang(lang, {
+      KR: basePage.description,
+      EN: 'Plan your Busan trip with curated 1 to 5-day Busan itineraries, local food & market tours, custom travel route planner, and step-free elevator exits for 22 major Busan subway stations.',
+      JA: '釜山の人気観光スポット・絶品グルメ・伝統市場モデルコース(日帰り〜4泊5日)、カスタム旅程プランナー、主要22駅の地下鉄エレベーター出口＆ベビーカー・車椅子バリアフリー案内。',
+      ZH_TW: '釜山必訪景點、在地美食、傳統市場推薦行程(一日遊～五天四夜)、自訂旅遊路線規劃，以及 22 個主要地鐵站電梯出口與嬰兒車・輪椅無障礙動線指南。',
+      ZH_CN: '釜山必去景点、地道美食、传统市场推荐路线(一日游～五天四晚)、自定义旅游行程规划，以及 22 个主要地铁站无障碍直梯出口与婴儿车・轮椅出行指南。',
+      ES: 'Planifica tu viaje a Busan con itinerarios recomendados de 1 a 5 días, gastronomía, mercados tradicionales, planificador de rutas y salidas con ascensor en 22 estaciones de metro.',
+      FR: 'Préparez votre voyage à Busan avec des itinéraires de 1 à 5 jours, gastronomie, marchés traditionnels, planificateur d’itinéraire et sorties avec ascenseur dans 22 stations de métro.',
+    });
+    const coursesListHtml = BUSAN_ITINERARIES.map(c => {
+      const cTitle = trEn(c.titleEn, lang);
+      const cSub = trEn(c.subtitleEn, lang);
+      const href = buildLocalizedPath(`/tips/courses/${c.category.toLowerCase().replace('_', '-')}`, lang);
+      return `<li><a href="${escapeHtml(href)}"><strong>${escapeHtml(cTitle)}</strong></a> — ${escapeHtml(cSub)}</li>`;
+    }).join('\n');
+    const stationsListHtml = STATIONS.map(s => {
+      const sTitle = getLocalizedStationTitle(s, lang, true);
+      const href = buildLocalizedPath(`/station/${s.id}`, lang);
+      return `<a href="${escapeHtml(href)}" style="display: inline-block; margin: 4px 6px 4px 0; padding: 4px 10px; background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 999px; font-size: 13px; color: #334155; text-decoration: none;">${escapeHtml(sTitle)}</a>`;
+    }).join('\n');
+
+    return {
+      routePath: localizedRoutePath,
+      title,
+      description,
+      h1: d.hero.title.replace(/\n/g, ' '),
+      lead: description,
+      bodyHtml: `
+          <section style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 800; margin-top: 0; color: #11161B;">${escapeHtml(d.categories.sectionTitle)}</h2>
+            <p style="font-size: 14px; color: #334155;">${escapeHtml(description)}</p>
+            <ul style="font-size: 14px; color: #334155; padding-left: 20px;">
+              ${coursesListHtml}
+            </ul>
+          </section>
+          <section style="background: #F4F6F0; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+            <h2 style="font-size: 18px; font-weight: 800; margin-top: 0; color: #11161B;">${escapeHtml(d.utility.sectionTitle)} (22 Busan Subway Stations)</h2>
+            <div>${stationsListHtml}</div>
+          </section>`,
+    };
+  }
+
+  // 4. Other hub/content pages: localize links and provide localized title/description
+  const d = DICTIONARY[lang] || DICTIONARY.EN;
+  const localizedBody = basePage.bodyHtml.replace(
+    /href="\/(station|search|tips|barrier-free|my-route|schedule|about)([^"]*)"/g,
+    (_m, seg, rest) => `href="${buildLocalizedPath(`/${seg}${rest}`, lang)}"`
+  );
+
+  const genericTitle = pickLang(lang, {
+    KR: basePage.title,
+    EN: `${basePage.h1} | Busan Travel Guide & Step-Free Subway | Stepless`,
+    JA: `${basePage.h1}｜釜山旅行＆地下鉄バリアフリー案内 | Stepless`,
+    ZH_TW: `${basePage.h1}｜釜山自由行＆地鐵無障礙指南 | Stepless`,
+    ZH_CN: `${basePage.h1}｜釜山自由行＆地铁无障碍指南 | Stepless`,
+    ES: `${basePage.h1} | Guía de Viaje a Busan Sin Escalones | Stepless`,
+    FR: `${basePage.h1} | Guide de Voyage à Busan Sans Marche | Stepless`,
+  });
+
+  const genericDesc = pickLang(lang, {
+    KR: basePage.description,
+    EN: `${basePage.lead} — Verified Busan travel guide, curated itineraries, and step-free subway elevator exits by Stepless in Busan.`,
+    JA: `${d.hero.subtitle} — 釜山の観光コース・地下鉄エレベーター出口・バリアフリー移動ガイド（Stepless in Busan）。`,
+    ZH_TW: `${d.hero.subtitle} — 釜山推薦旅遊行程、地鐵電梯出口與無障礙移動指南（Stepless in Busan）。`,
+    ZH_CN: `${d.hero.subtitle} — 釜山推荐旅游路线、地铁无障碍直梯出口与出行指南（Stepless in Busan）。`,
+    ES: `${d.hero.subtitle} — Guía de viaje a Busan, itinerarios recomendados y salidas de metro con ascensor (Stepless in Busan).`,
+    FR: `${d.hero.subtitle} — Guide de voyage à Busan, itinéraires recommandés et sorties de métro avec ascenseur (Stepless in Busan).`,
+  });
+
+  return {
+    routePath: localizedRoutePath,
+    title: genericTitle,
+    description: genericDesc,
+    h1: basePage.h1,
+    lead: genericDesc,
+    bodyHtml: localizedBody,
+  };
+}
+
+function generateRouteHtml(
+  templateHtml: string,
+  page: StaticRoutePage,
+  lang: Language = 'KR',
+  cleanRoutePath = '/'
+): string {
+  const langOpt = LANGUAGE_OPTIONS.find(o => o.code === lang) || LANGUAGE_OPTIONS[0];
   const canonicalUrl = `https://stepless.kr${page.routePath === '/' ? '/' : page.routePath}`;
+  const hreflangLinksHtml = getHreflangEntries(cleanRoutePath)
+    .map(e => `<link rel="alternate" hreflang="${escapeHtml(e.hreflang)}" href="${escapeHtml(e.href)}" />`)
+    .join('\n    ');
+  const keywords = LANGUAGE_SEO_KEYWORDS[lang] || LANGUAGE_SEO_KEYWORDS.KR;
+
   let html = templateHtml;
+
+  // 0. Replace <html lang="...">
+  html = html.replace(/<html\s+lang="[^"]*"/i, `<html lang="${escapeHtml(langOpt.htmlLang)}"`);
 
   // 1. Replace <title>
   html = html.replace(
@@ -749,19 +1091,31 @@ function generateRouteHtml(templateHtml: string, page: StaticRoutePage): string 
     `<title>${escapeHtml(page.title)}</title>`
   );
 
-  // 2. Replace <meta name="description" ...>
+  // 2. Replace <meta name="description" ...> and <meta name="keywords" ...>
   html = html.replace(
     /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i,
     `<meta name="description" content="${escapeHtml(page.description)}" />`
   );
-
-  // 3. Replace <link rel="canonical" ...>
   html = html.replace(
-    /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i,
-    `<link rel="canonical" href="${escapeHtml(canonicalUrl)}" />`
+    /<meta\s+name="keywords"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="keywords" content="${escapeHtml(keywords)}" />`
   );
 
-  // 4. Replace OpenGraph & Twitter URL/Title/Description
+  // 3. Replace <link rel="canonical" ...> and all <link rel="alternate" hreflang ...>
+  html = html.replace(
+    /\s*<link\s+rel="alternate"\s+hreflang="[^"]*"\s+href="[^"]*"\s*\/?>/gi,
+    ''
+  );
+  html = html.replace(
+    /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i,
+    `<link rel="canonical" href="${escapeHtml(canonicalUrl)}" />\n    ${hreflangLinksHtml}`
+  );
+
+  // 4. Replace OpenGraph & Twitter URL/Title/Description/Locale
+  html = html.replace(
+    /<meta\s+property="og:locale"\s+content="[^"]*"\s*\/?>/i,
+    `<meta property="og:locale" content="${escapeHtml(langOpt.ogLocale)}" />`
+  );
   html = html.replace(
     /<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/i,
     `<meta property="og:url" content="${escapeHtml(canonicalUrl)}" />`
@@ -791,11 +1145,11 @@ function generateRouteHtml(templateHtml: string, page: StaticRoutePage): string 
         <p style="font-size: 14px; color: #64748B; margin: 0; max-width: 560px;">${escapeHtml(page.lead)}</p>
       </div>
       <div class="prerender-seo-shell" style="max-width: 1120px; margin: 0 auto; padding: 24px 16px; line-height: 1.65;">
-        ${buildCommonHeader(page.h1, page.lead, page.h1, page.routePath)}
+        ${buildCommonHeader(page.h1, page.lead, page.h1, cleanRoutePath, lang)}
         <main>
           ${page.bodyHtml}
         </main>
-        ${buildCommonFooter()}
+        ${buildCommonFooter(lang)}
       </div>
     </div>
 
@@ -814,6 +1168,45 @@ function generateRouteHtml(templateHtml: string, page: StaticRoutePage): string 
   return html;
 }
 
+function generateMultilingualSitemapXml(basePages: StaticRoutePage[]): string {
+  const today = '2026-11-03';
+  const allLangs: Language[] = ['KR', 'EN', 'JA', 'ZH_TW', 'ZH_CN', 'ES', 'FR'];
+  const urlBlocks: string[] = [];
+
+  // Deduplicate clean route paths (skip /search/:id aliases in sitemap so only canonical /station/:id is submitted)
+  const canonicalBasePages = basePages.filter(p => !p.routePath.startsWith('/search/'));
+
+  for (const basePage of canonicalBasePages) {
+    const cleanPath = basePage.routePath;
+    const xhtmlLinks = getHreflangEntries(cleanPath)
+      .map(
+        e =>
+          `    <xhtml:link rel="alternate" hreflang="${escapeHtml(e.hreflang)}" href="${escapeHtml(e.href)}" />`
+      )
+      .join('\n');
+
+    const priority = cleanPath === '/' ? '1.0' : cleanPath.startsWith('/tips/courses') || cleanPath.startsWith('/station/') ? '0.9' : '0.8';
+
+    for (const lang of allLangs) {
+      const locPath = buildLocalizedPath(cleanPath, lang);
+      const fullLoc = `https://stepless.kr${locPath === '/' ? '/' : locPath}`;
+      urlBlocks.push(`  <url>
+    <loc>${escapeHtml(fullLoc)}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>${priority}</priority>
+${xhtmlLinks}
+  </url>`);
+    }
+  }
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${urlBlocks.join('\n')}
+</urlset>
+`;
+}
+
 function main() {
   const distDir = path.join(process.cwd(), 'dist');
   const templatePath = path.join(distDir, 'index.html');
@@ -824,37 +1217,54 @@ function main() {
   }
 
   const templateHtml = fs.readFileSync(templatePath, 'utf-8');
-  const pages = buildAllStaticPages();
+  const basePages = buildAllStaticPages();
+  const allLangs: Language[] = ['KR', 'EN', 'JA', 'ZH_TW', 'ZH_CN', 'ES', 'FR'];
 
   let generatedCount = 0;
-  for (const page of pages) {
-    const relPath = page.routePath.replace(/^\/+/, '').replace(/\/+$/, '');
-    if (!relPath) continue;
+  for (const basePage of basePages) {
+    const cleanRoutePath = basePage.routePath;
+    for (const lang of allLangs) {
+      const localizedPage = localizeStaticPage(basePage, lang);
+      const outHtml = generateRouteHtml(templateHtml, localizedPage, lang, cleanRoutePath);
 
-    const outHtml = generateRouteHtml(templateHtml, page);
+      const relPath = localizedPage.routePath.replace(/^\/+/, '').replace(/\/+$/, '');
+      if (!relPath) {
+        // Root '/' (KR)
+        fs.writeFileSync(templatePath, outHtml, 'utf-8');
+        generatedCount++;
+        continue;
+      }
 
-    // 1. Write dist/<relPath>/index.html
-    const outDir = path.join(distDir, relPath);
-    fs.mkdirSync(outDir, { recursive: true });
-    fs.writeFileSync(path.join(outDir, 'index.html'), outHtml, 'utf-8');
+      // 1. Write dist/<relPath>/index.html
+      const outDir = path.join(distDir, relPath);
+      fs.mkdirSync(outDir, { recursive: true });
+      fs.writeFileSync(path.join(outDir, 'index.html'), outHtml, 'utf-8');
 
-    // 2. Also write dist/<relPath>.html (so Cloudflare Pages / GitHub Pages clean-URL resolution always gets the rich non-duplicated HTML)
-    const flatFilePath = path.join(distDir, `${relPath}.html`);
-    fs.mkdirSync(path.dirname(flatFilePath), { recursive: true });
-    fs.writeFileSync(flatFilePath, outHtml, 'utf-8');
+      // 2. Also write dist/<relPath>.html
+      const flatFilePath = path.join(distDir, `${relPath}.html`);
+      fs.mkdirSync(path.dirname(flatFilePath), { recursive: true });
+      fs.writeFileSync(flatFilePath, outHtml, 'utf-8');
 
-    if (page.routePath === '/about') {
-      fs.writeFileSync(path.join(distDir, 'about.html'), outHtml, 'utf-8');
-    } else if (page.routePath === '/about/privacy') {
-      fs.writeFileSync(path.join(distDir, 'privacy.html'), outHtml, 'utf-8');
-    } else if (page.routePath === '/about/terms') {
-      fs.writeFileSync(path.join(distDir, 'terms.html'), outHtml, 'utf-8');
+      if (lang === 'KR') {
+        if (cleanRoutePath === '/about') {
+          fs.writeFileSync(path.join(distDir, 'about.html'), outHtml, 'utf-8');
+        } else if (cleanRoutePath === '/about/privacy') {
+          fs.writeFileSync(path.join(distDir, 'privacy.html'), outHtml, 'utf-8');
+        } else if (cleanRoutePath === '/about/terms') {
+          fs.writeFileSync(path.join(distDir, 'terms.html'), outHtml, 'utf-8');
+        }
+      }
+
+      generatedCount++;
     }
-
-    generatedCount++;
   }
 
-  console.log(`[SSG] Successfully generated ${generatedCount} static route HTML files in dist/`);
+  // Generate multilingual sitemap.xml with xhtml:link hreflang annotations
+  const sitemapXml = generateMultilingualSitemapXml(basePages);
+  fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemapXml, 'utf-8');
+  fs.writeFileSync(path.join(process.cwd(), 'public', 'sitemap.xml'), sitemapXml, 'utf-8');
+
+  console.log(`[SSG] Successfully generated ${generatedCount} multilingual static HTML pages across 7 languages and updated sitemap.xml!`);
 }
 
 main();

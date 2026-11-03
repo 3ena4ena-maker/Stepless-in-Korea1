@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Menu, X, Compass, Train, Bus, Map, Calendar, Sparkles, Info, Globe, ChevronDown, Check } from 'lucide-react';
-import { DICTIONARY, Language, LANGUAGE_OPTIONS } from '../i18n/dictionary';
+import { DICTIONARY, Language, LANGUAGE_OPTIONS, buildLocalizedPath } from '../i18n/dictionary';
 
 interface HeaderProps {
   currentTab: string;
@@ -66,13 +66,13 @@ export default function Header({
   };
 
   const menuItems = [
-    { id: 'home', href: '/', label: d.nav.home, icon: Compass },
-    { id: 'search', href: '/search', label: d.nav.search, icon: Train },
-    { id: 'transit', href: '/tips/transit', label: d.nav.transit, icon: Bus },
-    { id: 'courses', href: '/tips/courses', label: d.nav.courses, icon: Map },
-    { id: 'schedule', href: '/schedule', label: d.nav.schedule, icon: Calendar },
-    { id: 'exploration', href: '/tips/exploration', label: d.nav.exploration, icon: Sparkles },
-    { id: 'about', href: '/about', label: d.nav.about, icon: Info },
+    { id: 'home', href: buildLocalizedPath('/', language), label: d.nav.home, icon: Compass },
+    { id: 'search', href: buildLocalizedPath('/search', language), label: d.nav.search, icon: Train },
+    { id: 'transit', href: buildLocalizedPath('/tips/transit', language), label: d.nav.transit, icon: Bus },
+    { id: 'courses', href: buildLocalizedPath('/tips/courses', language), label: d.nav.courses, icon: Map },
+    { id: 'schedule', href: buildLocalizedPath('/schedule', language), label: d.nav.schedule, icon: Calendar },
+    { id: 'exploration', href: buildLocalizedPath('/tips/exploration', language), label: d.nav.exploration, icon: Sparkles },
+    { id: 'about', href: buildLocalizedPath('/about', language), label: d.nav.about, icon: Info },
   ];
 
   const isItemActive = (id: string) => {
@@ -114,7 +114,7 @@ export default function Header({
         <div className="flex justify-between items-center h-16 sm:h-20 gap-2">
           {/* Logo */}
           <a 
-            href="/"
+            href={buildLocalizedPath('/', language)}
             onClick={handleLogoClick} 
             className="flex items-center gap-2 cursor-pointer group select-none py-1 no-underline shrink-0"
             id="header-logo-container"

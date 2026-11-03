@@ -1,4 +1,4 @@
-import { Language } from "./i18n/dictionary";
+import { Language, parseLanguageFromPathname, buildLocalizedPath } from "./i18n/dictionary";
 import { romanizeWord } from "./types";
 
 const INITIALS = [
@@ -443,9 +443,15 @@ export function translateDirectionItem(text: string, language: Language = 'KR'):
  */
 export function navigateToSpa(url: string, state: any = {}): void {
   if (typeof window === 'undefined') return;
+  const { langFromUrl: currentUrlLang } = parseLanguageFromPathname(window.location.pathname, window.location.search);
+  const { langFromUrl: targetUrlLang } = parseLanguageFromPathname(url);
+  const finalUrl = !targetUrlLang && currentUrlLang
+    ? buildLocalizedPath(url, currentUrlLang)
+    : url;
+
   const currentPath = window.location.pathname + window.location.search;
-  if (currentPath !== url) {
-    window.history.pushState(state, '', url);
+  if (currentPath !== finalUrl) {
+    window.history.pushState(state, '', finalUrl);
   }
   // Dispatch popstate event to notify SPA routing handlers
   window.dispatchEvent(new PopStateEvent('popstate', { state }));

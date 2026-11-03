@@ -45,8 +45,8 @@ import {
   Layers
 } from 'lucide-react';
 import Header from './components/Header';
-import { Language, pickLang, LANGUAGE_OPTIONS } from './i18n/dictionary';
-import { formatLineLabelI18n } from './i18n/stationTranslations';
+import { Language, pickLang, LANGUAGE_OPTIONS, parseLanguageFromPathname, buildLocalizedPath, getHreflangEntries } from './i18n/dictionary';
+import { formatLineLabelI18n, getLocalizedStationTitle } from './i18n/stationTranslations';
 import { useDomLocalizer } from './i18n/domLocalizer';
 import BusanAffiliateQuickBar from './components/BusanAffiliateQuickBar';
 import { HomeOverviewSection } from './components/HomeOverviewSection';
@@ -235,9 +235,11 @@ export default function App() {
 
   const [language, setLanguage] = useState<Language>(() => {
     try {
-      const saved = localStorage.getItem('stepless_language');
-      if (saved === 'KR' || saved === 'EN' || saved === 'JA' || saved === 'ZH_TW' || saved === 'ZH_CN' || saved === 'ES' || saved === 'FR') {
-        return saved;
+      if (typeof window !== 'undefined') {
+        const { langFromUrl } = parseLanguageFromPathname(window.location.pathname, window.location.search);
+        if (langFromUrl) {
+          return langFromUrl;
+        }
       }
     } catch {}
     return 'KR';
@@ -454,7 +456,14 @@ export default function App() {
         window.history.replaceState(null, '', newUrl);
       }
 
-      const parts = pathname.split('/');
+      const { langFromUrl, cleanPathname } = parseLanguageFromPathname(pathname, window.location.search);
+      if (langFromUrl) {
+        setLanguage(langFromUrl);
+      } else {
+        setLanguage('KR');
+      }
+
+      const parts = cleanPathname.split('/');
       
       // Look for shared route data or /my-route
       if (searchParams.has('r') || searchParams.has('route') || searchParams.has('route_data') || searchParams.has('shared_route') || parts[1] === 'my-route') {
@@ -767,23 +776,15 @@ export default function App() {
     }
 
     // 1. Change URL path safely
+    let cleanRoutePath = '/';
     try {
-      if (!isInitialRoutingCompleteRef.current) {
-        return;
-      }
       if (currentTab === 'home') {
         if (isHomeLanding) {
-          const expectedPath = '/';
-          if (window.location.pathname !== expectedPath && window.location.pathname !== '/home') {
-            window.history.pushState({ tab: 'home', isHomeLanding: true }, '', expectedPath);
-          }
+          cleanRoutePath = '/';
         } else if (selectedStationId) {
-          const expectedPath = `/station/${selectedStationId}`;
-          if (window.location.pathname !== expectedPath) {
-            window.history.pushState({ stationId: selectedStationId, tab: 'home', isHomeLanding: false }, '', expectedPath);
-          }
+          cleanRoutePath = `/station/${selectedStationId}`;
         }
-      } else if (currentTab !== 'home') {
+      } else {
         let expectedPath = `/${currentTab}`;
         if (currentTab === 'search') {
           if (searchViewMode === 'DETAIL' && selectedStationId) {
@@ -878,10 +879,21 @@ export default function App() {
             expectedPath = '/about';
           }
         }
-        if (selectedItineraryCategory === 'MY_ROUTE' && (window.location.search.includes('r=') || window.location.search.includes('route='))) { expectedPath += window.location.search; }
+        cleanRoutePath = expectedPath;
+      }
+
+      if (isInitialRoutingCompleteRef.current) {
+        let localizedExpectedPath = buildLocalizedPath(cleanRoutePath, language);
+        if (selectedItineraryCategory === 'MY_ROUTE' && (window.location.search.includes('r=') || window.location.search.includes('route='))) {
+          localizedExpectedPath += window.location.search;
+        }
         const currentUrlPath = window.location.pathname + window.location.search;
-        if (currentUrlPath !== expectedPath && window.location.pathname !== expectedPath) {
-          window.history.pushState({ tab: currentTab, category: selectedItineraryCategory, subPage: tipsSubPage, regionPage: activeRegionPage, siteSubPage, searchViewMode, stationId: selectedStationId, explorationItemId }, '', expectedPath);
+        if (currentUrlPath !== localizedExpectedPath && window.location.pathname !== localizedExpectedPath) {
+          window.history.pushState(
+            { tab: currentTab, category: selectedItineraryCategory, subPage: tipsSubPage, regionPage: activeRegionPage, siteSubPage, searchViewMode, stationId: selectedStationId, explorationItemId, language },
+            '',
+            localizedExpectedPath
+          );
         }
       }
     } catch (e) {
@@ -1199,12 +1211,24 @@ export default function App() {
       const canonical = document.querySelector('link[rel="canonical"]');
       if (canonical) canonical.setAttribute('href', "https://stepless.kr/barrier-free");
     } else {
-      const defaultTitle = isKR
-        ? "부산 여행 코스 추천 & 지하철 무장애 가이드 | Busan Trip Plan & Step-Free Itinerary | 스텝리스 Stepless"
-        : "Busan Trip Plan, 1-5 Day Itineraries & Step-Free Subway Guide | Stepless in Busan";
-      const defaultDesc = isKR
-        ? "부산 명소·맛집·전통시장 추천 여행 코스(당일치기~4박5일), 나만의 맞춤 여행 루트 플래너, 주요 22개 지하철역 엘리베이터 위치 및 유모차·휠체어 배리어프리 동선 가이드."
-        : "Plan your Busan trip with curated 1 to 5-day Busan itineraries, interactive custom travel route planner, and step-free elevator exits for 22 major Busan subway stations.";
+      const defaultTitle = pickLang(language, {
+        KR: "부산 여행 코스 추천 & 지하철 무장애 가이드 | Busan Trip Plan & Step-Free Itinerary | 스탭리스 Stepless",
+        EN: "Busan Trip Plan, 1-5 Day Itineraries & Step-Free Subway Guide | Stepless in Busan",
+        JA: "釜山旅行おすすめモデルコース(日帰り〜4泊5日)＆地下鉄エレベーター完全ガイド | Stepless",
+        ZH_TW: "釜山自由行攻略・推薦行程(一日遊～五天四夜)＆地鐵電梯無障礙指南 | Stepless",
+        ZH_CN: "釜山旅游攻略・自由行路线推荐(一日游～五天四晚)＆地铁无障碍直梯指南 | Stepless",
+        ES: "Guía de Viaje a Busan: Qué Ver, Itinerarios (1 a 5 Días) y Metro Sin Escalones | Stepless",
+        FR: "Guide de Voyage à Busan : Que Voir, Itinéraires (1 à 5 Jours) et Métro Sans Marche | Stepless",
+      });
+      const defaultDesc = pickLang(language, {
+        KR: "부산 명소·맛집·전통시장 추천 여행 코스(당일치기~4박5일), 나만의 맞춤 여행 루트 플래너, 주요 22개 지하철역 엘리베이터 위치 및 유모차·휠체어 배리어프리 동선 가이드.",
+        EN: "Plan your Busan trip with curated 1 to 5-day Busan itineraries, interactive custom travel route planner, and step-free elevator exits for 22 major Busan subway stations.",
+        JA: "釜山の人気観光スポット・絶品グルメ・伝統市場モデルコース(日帰り〜4泊5日)、カスタム旅程プランナー、主要22駅の地下鉄エレベーター出口＆ベビーカー・車椅子バリアフリー案内。",
+        ZH_TW: "釜山必訪景點、在地美食、傳統市場推薦行程(一日遊～五天四夜)、自訂旅遊路線規劃，以及 22 個主要地鐵站電梯出口與嬰兒車・輪椅無障礙動線指南。",
+        ZH_CN: "釜山必去景点、地道美食、传统市场推荐路线(一日游～五天四晚)、自定义旅游行程规划，以及 22 个主要地铁站无障碍直梯出口与婴儿车・轮椅出行指南。",
+        ES: "Planifica tu viaje a Busan con itinerarios recomendados de 1 a 5 días, gastronomía, mercados tradicionales, planificador de rutas y salidas con ascensor en 22 estaciones de metro.",
+        FR: "Préparez votre voyage à Busan avec des itinéraires de 1 à 5 jours, gastronomie, marchés traditionnels, planificateur d’itinéraire et sorties avec ascenseur dans 22 stations de métro.",
+      });
       
       document.title = defaultTitle;
       const metaDesc = document.querySelector('meta[name="description"]');
@@ -1218,6 +1242,37 @@ export default function App() {
 
       const canonical = document.querySelector('link[rel="canonical"]');
       if (canonical) canonical.setAttribute('href', "https://stepless.kr/");
+    }
+
+    // 3. Synchronize <html lang>, localized <link rel="canonical">, <meta property="og:url">, <meta property="og:locale">, and <link rel="alternate" hreflang="...">
+    try {
+      const langOpt = LANGUAGE_OPTIONS.find(o => o.code === language) || LANGUAGE_OPTIONS[0];
+      document.documentElement.lang = langOpt.htmlLang;
+
+      const localizedCanonicalPath = buildLocalizedPath(cleanRoutePath.split('?')[0], language);
+      const fullLocalizedUrl = `https://stepless.kr${localizedCanonicalPath}`;
+
+      const canonicalEl = document.querySelector('link[rel="canonical"]');
+      if (canonicalEl) canonicalEl.setAttribute('href', fullLocalizedUrl);
+
+      const ogUrlEl = document.querySelector('meta[property="og:url"]');
+      if (ogUrlEl) ogUrlEl.setAttribute('content', fullLocalizedUrl);
+
+      const ogLocaleEl = document.querySelector('meta[property="og:locale"]');
+      if (ogLocaleEl) ogLocaleEl.setAttribute('content', langOpt.ogLocale);
+
+      // Update or inject hreflang tags for all 7 languages
+      const hreflangEntries = getHreflangEntries(cleanRoutePath.split('?')[0]);
+      document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
+      for (const entry of hreflangEntries) {
+        const link = document.createElement('link');
+        link.setAttribute('rel', 'alternate');
+        link.setAttribute('hreflang', entry.hreflang);
+        link.setAttribute('href', entry.href);
+        document.head.appendChild(link);
+      }
+    } catch (e) {
+      // ignore head manipulation errors
     }
   }, [selectedStationId, currentTab, isHomeLanding, searchViewMode, selectedItineraryCategory, tipsSubPage, activeRegionPage, siteSubPage, language, explorationItemId]);
 

@@ -1,14 +1,98 @@
 export type Language = 'KR' | 'EN' | 'JA' | 'ZH_TW' | 'ZH_CN' | 'ES' | 'FR';
 
-export const LANGUAGE_OPTIONS: { code: Language; label: string; shortLabel: string; flag: string; htmlLang: string }[] = [
-  { code: 'KR', label: '한국어', shortLabel: '한국어', flag: '🇰🇷', htmlLang: 'ko' },
-  { code: 'EN', label: 'English', shortLabel: 'EN', flag: '🇺🇸', htmlLang: 'en' },
-  { code: 'JA', label: '日本語', shortLabel: '日本語', flag: '🇯🇵', htmlLang: 'ja' },
-  { code: 'ZH_TW', label: '繁體中文', shortLabel: '繁體', flag: '🇹🇼', htmlLang: 'zh-Hant' },
-  { code: 'ZH_CN', label: '简体中文', shortLabel: '简体', flag: '🇨🇳', htmlLang: 'zh-Hans' },
-  { code: 'ES', label: 'Español', shortLabel: 'ES', flag: '🇪🇸', htmlLang: 'es' },
-  { code: 'FR', label: 'Français', shortLabel: 'FR', flag: '🇫🇷', htmlLang: 'fr' },
+export const LANGUAGE_OPTIONS: { code: Language; label: string; shortLabel: string; flag: string; htmlLang: string; urlPrefix: string; ogLocale: string }[] = [
+  { code: 'KR', label: '한국어', shortLabel: '한국어', flag: '🇰🇷', htmlLang: 'ko', urlPrefix: '', ogLocale: 'ko_KR' },
+  { code: 'EN', label: 'English', shortLabel: 'EN', flag: '🇺🇸', htmlLang: 'en', urlPrefix: '/en', ogLocale: 'en_US' },
+  { code: 'JA', label: '日本語', shortLabel: '日本語', flag: '🇯🇵', htmlLang: 'ja', urlPrefix: '/ja', ogLocale: 'ja_JP' },
+  { code: 'ZH_TW', label: '繁體中文', shortLabel: '繁體', flag: '🇹🇼', htmlLang: 'zh-Hant', urlPrefix: '/zh-tw', ogLocale: 'zh_TW' },
+  { code: 'ZH_CN', label: '简体中文', shortLabel: '简体', flag: '🇨🇳', htmlLang: 'zh-Hans', urlPrefix: '/zh-cn', ogLocale: 'zh_CN' },
+  { code: 'ES', label: 'Español', shortLabel: 'ES', flag: '🇪🇸', htmlLang: 'es', urlPrefix: '/es', ogLocale: 'es_ES' },
+  { code: 'FR', label: 'Français', shortLabel: 'FR', flag: '🇫🇷', htmlLang: 'fr', urlPrefix: '/fr', ogLocale: 'fr_FR' },
 ];
+
+export const LANGUAGE_URL_PREFIX: Record<Language, string> = {
+  KR: '',
+  EN: '/en',
+  JA: '/ja',
+  ZH_TW: '/zh-tw',
+  ZH_CN: '/zh-cn',
+  ES: '/es',
+  FR: '/fr',
+};
+
+export function parseLanguageFromPathname(pathname: string, search = ''): {
+  langFromUrl: Language | null;
+  cleanPathname: string;
+} {
+  const clean = pathname || '/';
+  const match = clean.match(/^\/(en|ja|zh-tw|zh-hant|zh-hk|zh-cn|zh-hans|es|fr|ko|kr)(?:\/(.*))?$/i);
+  let langFromUrl: Language | null = null;
+  let stripped = clean;
+
+  if (match) {
+    const slug = match[1].toLowerCase();
+    const rest = match[2] ? `/${match[2]}` : '/';
+    stripped = rest;
+    if (slug === 'en') langFromUrl = 'EN';
+    else if (slug === 'ja') langFromUrl = 'JA';
+    else if (slug === 'zh-tw' || slug === 'zh-hant' || slug === 'zh-hk') langFromUrl = 'ZH_TW';
+    else if (slug === 'zh-cn' || slug === 'zh-hans') langFromUrl = 'ZH_CN';
+    else if (slug === 'es') langFromUrl = 'ES';
+    else if (slug === 'fr') langFromUrl = 'FR';
+    else if (slug === 'ko' || slug === 'kr') langFromUrl = 'KR';
+  }
+
+  if (!langFromUrl && search) {
+    try {
+      const params = new URLSearchParams(search);
+      const qLang = (params.get('lang') || params.get('hl') || '').toLowerCase();
+      if (qLang === 'en') langFromUrl = 'EN';
+      else if (qLang === 'ja' || qLang === 'jp') langFromUrl = 'JA';
+      else if (qLang === 'zh-tw' || qLang === 'zh_tw' || qLang === 'zh-hant' || qLang === 'tw') langFromUrl = 'ZH_TW';
+      else if (qLang === 'zh-cn' || qLang === 'zh_cn' || qLang === 'zh-hans' || qLang === 'cn' || qLang === 'zh') langFromUrl = 'ZH_CN';
+      else if (qLang === 'es') langFromUrl = 'ES';
+      else if (qLang === 'fr') langFromUrl = 'FR';
+      else if (qLang === 'ko' || qLang === 'kr') langFromUrl = 'KR';
+    } catch {}
+  }
+
+  return { langFromUrl, cleanPathname: stripped || '/' };
+}
+
+export function buildLocalizedPath(routePath: string, lang: Language): string {
+  const [pathOnly, queryPart] = (routePath || '/').split('?');
+  const { cleanPathname } = parseLanguageFromPathname(pathOnly);
+  const normalized = cleanPathname.startsWith('/') ? cleanPathname : `/${cleanPathname}`;
+  const prefix = LANGUAGE_URL_PREFIX[lang] || '';
+  const localizedPath = !prefix
+    ? normalized
+    : normalized === '/'
+      ? prefix
+      : `${prefix}${normalized}`;
+  return queryPart ? `${localizedPath}?${queryPart}` : localizedPath;
+}
+
+export function getHreflangEntries(cleanRoutePath: string): { hreflang: string; href: string; lang: Language }[] {
+  const { cleanPathname } = parseLanguageFromPathname(cleanRoutePath.split('?')[0]);
+  const norm = cleanPathname === '/' ? '/' : cleanPathname.replace(/\/+$/, '');
+  const makeUrl = (lang: Language) => {
+    const p = buildLocalizedPath(norm, lang);
+    return `https://stepless.kr${p}`;
+  };
+  return [
+    { hreflang: 'ko', href: makeUrl('KR'), lang: 'KR' },
+    { hreflang: 'en', href: makeUrl('EN'), lang: 'EN' },
+    { hreflang: 'ja', href: makeUrl('JA'), lang: 'JA' },
+    { hreflang: 'zh-Hant', href: makeUrl('ZH_TW'), lang: 'ZH_TW' },
+    { hreflang: 'zh-TW', href: makeUrl('ZH_TW'), lang: 'ZH_TW' },
+    { hreflang: 'zh-HK', href: makeUrl('ZH_TW'), lang: 'ZH_TW' },
+    { hreflang: 'zh-Hans', href: makeUrl('ZH_CN'), lang: 'ZH_CN' },
+    { hreflang: 'zh-CN', href: makeUrl('ZH_CN'), lang: 'ZH_CN' },
+    { hreflang: 'es', href: makeUrl('ES'), lang: 'ES' },
+    { hreflang: 'fr', href: makeUrl('FR'), lang: 'FR' },
+    { hreflang: 'x-default', href: makeUrl('EN'), lang: 'EN' },
+  ];
+}
 
 export function pickLang<T>(
   lang: Language | undefined,
