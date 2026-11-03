@@ -47,6 +47,8 @@ import {
   getRecommendedCourses,
   getRecommendedPlaces,
 } from '../utils/barrierFreeRecommendation';
+import { ItineraryCourse } from '../data/itineraries';
+import { CourseStickyMapPanel } from './CourseStickyMapPanel';
 
 interface BarrierFreeMainViewProps {
   selectedUserType: UserType;
@@ -178,6 +180,40 @@ export default function BarrierFreeMainView({
     );
   }, [selectedUserTypes, selectedExperiences, selectedCompanions, TARGET_PLACE_IDS]);
 
+  const mapCourseForSpots: ItineraryCourse = useMemo(() => {
+    return {
+      id: `barrier-free-spots-${recommendedPlaces.map((r) => r.place.id).join('-')}`,
+      category: 'ATTRACTION',
+      duration: 'DAY',
+      titleKo: '추천 무장애 관광지',
+      titleEn: 'Recommended Barrier-Free Spots',
+      subtitleKo: '계단 없는 이동과 엘리베이터가 검증된 부산 대표 무장애 명소',
+      subtitleEn: 'Verified step-free and elevator-accessible destinations in Busan',
+      badgeKo: '무장애 관광지',
+      badgeEn: 'Barrier-Free',
+      summaryKo: '',
+      summaryEn: '',
+      totalTimeKo: '',
+      totalTimeEn: '',
+      steps: recommendedPlaces.map(({ place }) => ({
+        id: place.id,
+        contentId: place.contentId,
+        titleKo: place.nameKo,
+        titleEn: place.nameEn,
+        shortTitleKo: place.nameKo,
+        shortTitleEn: place.nameEn,
+        descKo: place.summaryKo,
+        descEn: place.summaryEn,
+        addressRoadKo: place.addressKo,
+        addressRoadEn: place.addressEn,
+        latitude: place.latitude,
+        longitude: place.longitude,
+        stationInfoKo: place.transit?.subway?.stationNameKo,
+        stationInfoEn: place.transit?.subway?.stationNameEn,
+      })),
+    };
+  }, [recommendedPlaces]);
+
   const activeUserMeta = USER_TYPES.find((t) =>
     selectedUserTypes.length > 0 ? t.id === selectedUserTypes[selectedUserTypes.length - 1] : t.id === selectedUserType
   );
@@ -273,7 +309,7 @@ export default function BarrierFreeMainView({
             return (
               <div
                 key={course.id}
-                className="bg-white rounded-xl border border-slate-200 shadow-xs hover:border-slate-300 transition-all p-3.5 sm:p-4 flex flex-col justify-between gap-3"
+                className="bg-white rounded-xl border border-[#E5E2DC] shadow-2xs hover:border-[#8EA85E] transition-all p-3.5 sm:p-4 flex flex-col justify-between gap-3"
               >
                 <div className="space-y-2">
                   {/* 코스 타이틀 */}
@@ -297,7 +333,7 @@ export default function BarrierFreeMainView({
                   </div>
 
                   {/* 주요 코스 경로 */}
-                  <div className="p-2 rounded-lg bg-slate-50 border border-slate-100 text-xs">
+                  <div className="p-2.5 rounded-lg bg-[#FBFBF9] border border-[#E5E2DC] text-xs">
                     <span className="text-[10px] font-bold text-slate-400 block mb-0.5">
                       {language === 'KR' ? '주요 코스 경로' : 'Key Route Spots'}
                     </span>
@@ -335,7 +371,7 @@ export default function BarrierFreeMainView({
           </h2>
         </div>
 
-        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+        <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#E5E2DC] shadow-2xs space-y-4">
           {/* 기준 1: 여행자 유형 */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -645,7 +681,7 @@ export default function BarrierFreeMainView({
         </div>
       </section>
 
-      {/* 4. 추천 무장애 관광지 (깔끔한 2열 카드 그리드) */}
+      {/* 4. 추천 무장애 관광지 (좌측 2열 카드 그리드 + 우측 고정 지도 패널) */}
       <section className="space-y-4">
         <div>
           <h2 className="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
@@ -661,49 +697,64 @@ export default function BarrierFreeMainView({
           </p>
         </div>
 
-        {/* 2열 카드 그리드 (모바일 1열, 태블릿 이상 2열) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-          {recommendedPlaces.map(({ place }) => (
-            <div
-              key={place.id}
-              className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] p-4 flex flex-col justify-between transition-all shadow-xs"
-            >
-              <div className="space-y-2">
-                {/* 상단: 구/지역 배지 + 지하철 호선 */}
-                <div className="flex items-center justify-between gap-2">
-                  <span className="px-2.5 py-0.5 rounded-md bg-[#8EA85E] text-white text-[11px] font-bold shadow-xs">
-                    {language === 'KR' ? place.districtKo : place.districtEn}
-                  </span>
-                  {renderSubwayBadge(place.subwayLine)}
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* 우측 고정 지도 패널 (모바일 상단 또는 데스크톱 우측 6열) */}
+          <div className="lg:col-span-6 lg:sticky lg:top-24 lg:order-2">
+            <CourseStickyMapPanel
+              course={mapCourseForSpots}
+              language={language}
+              hidePolyline={true}
+              customHeaderTitleKo="무장애 관광지 위치 지도"
+              customHeaderTitleEn="Barrier-Free Spots Map"
+            />
+          </div>
 
-                {/* 관광지 타이틀 */}
-                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-snug">
-                  {language === 'KR' ? place.nameKo : place.nameEn}
-                </h3>
-
-                {/* 주소 정보 */}
-                <p className="text-xs text-slate-500 font-medium flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
-                  <span className="line-clamp-1">{language === 'KR' ? place.addressKo : place.addressEn}</span>
-                </p>
-
-                <SpotTicketBookingRow spotTitleKo={place.nameKo} language={language} />
-              </div>
-
-              {/* ‘상세 보기 →’ 버튼 */}
-              <div className="pt-3">
-                <button
-                  type="button"
-                  onClick={() => onNavigateToPlace(place.id)}
-                  className="w-full py-2.5 rounded-xl bg-[#8EA85E] hover:bg-[#7b944f] text-white text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer shadow-xs"
+          {/* 좌측 2열 카드 그리드 (데스크톱 좌측 6열) */}
+          <div className="lg:col-span-6 min-w-0 lg:order-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              {recommendedPlaces.map(({ place }) => (
+                <div
+                  key={place.id}
+                  className="bg-white rounded-xl border border-[#E5E2DC] hover:border-[#8EA85E] p-4 flex flex-col justify-between transition-all shadow-2xs"
                 >
-                  <span>{language === 'KR' ? '상세 보기' : 'View Details'}</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
+                  <div className="space-y-2">
+                    {/* 상단: 구/지역 배지 + 지하철 호선 */}
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="px-2.5 py-0.5 rounded-md bg-[#8EA85E] text-white text-[11px] font-bold shadow-xs">
+                        {language === 'KR' ? place.districtKo : place.districtEn}
+                      </span>
+                      {renderSubwayBadge(place.subwayLine)}
+                    </div>
+
+                    {/* 관광지 타이틀 */}
+                    <h3 className="text-base sm:text-lg font-black text-slate-900 leading-snug">
+                      {language === 'KR' ? place.nameKo : place.nameEn}
+                    </h3>
+
+                    {/* 주소 정보 */}
+                    <p className="text-xs text-slate-500 font-medium flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                      <span className="line-clamp-1">{language === 'KR' ? place.addressKo : place.addressEn}</span>
+                    </p>
+
+                    <SpotTicketBookingRow spotTitleKo={place.nameKo} language={language} />
+                  </div>
+
+                  {/* ‘상세 보기 →’ 버튼 */}
+                  <div className="pt-3">
+                    <button
+                      type="button"
+                      onClick={() => onNavigateToPlace(place.id)}
+                      className="w-full py-2.5 rounded-xl bg-[#8EA85E] hover:bg-[#7b944f] text-white text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer shadow-2xs"
+                    >
+                      <span>{language === 'KR' ? '상세 보기' : 'View Details'}</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </section>
     </div>

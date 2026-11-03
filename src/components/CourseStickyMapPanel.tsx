@@ -90,10 +90,10 @@ export const CourseStickyMapPanel: React.FC<CourseStickyMapPanelProps> = ({
         titleEn: st.titleEn || st.titleKo,
         shortTitleKo: shortKo,
         shortTitleEn: shortEn,
-        addressKo: st.addressRoadKo || loc.addressRoadKo || '부산광역시',
-        addressEn: st.addressRoadEn || st.stationInfoEn || loc.addressRoadKo || 'Busan',
-        latitude: loc.latitude,
-        longitude: loc.longitude,
+        addressKo: st.addressRoadKo || st.addressKo || loc.addressRoadKo || '부산광역시',
+        addressEn: st.addressRoadEn || st.addressEn || st.stationInfoEn || loc.addressRoadKo || 'Busan',
+        latitude: st.latitude ?? loc.latitude,
+        longitude: st.longitude ?? loc.longitude,
         naverMapUrl:
           st.naverMapUrl ||
           `https://map.naver.com/p/search/${encodeURIComponent(shortKo + ' 부산')}`,

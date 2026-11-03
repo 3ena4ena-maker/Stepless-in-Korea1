@@ -18,6 +18,8 @@ export interface ItineraryStep {
   addressRoadEn?: string;
   addressKo?: string;
   addressEn?: string;
+  latitude?: number;
+  longitude?: number;
   marketDayKo?: string;
   marketDayEn?: string;
   marketCategory?: 'FIVE_DAY' | 'DAILY';
