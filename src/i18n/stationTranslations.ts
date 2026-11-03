@@ -1437,16 +1437,70 @@ const LANDMARK_TERMS_I18N: Record<string, { JA: string; ZH_TW: string; ZH_CN: st
   '온천천 카페거리': { JA: '温泉川カフェ通り', ZH_TW: '溫泉川咖啡街', ZH_CN: '温泉川咖啡街' },
   '온천시장': { JA: '温泉市場', ZH_TW: '溫泉市場', ZH_CN: '温泉市场' },
   '차이나타운': { JA: 'チャイナタウン', ZH_TW: '中華街（唐人街）', ZH_CN: '中华街（唐人街）' },
-  '초량 이바구길': { JA: '草梁イバグ길', ZH_TW: '草梁故事路', ZH_CN: '草梁故事路' },
+  '초량 이바구길': { JA: '草梁イバグギル（物語の道）', ZH_TW: '草梁故事路', ZH_CN: '草梁故事路' },
   '방면': { JA: '方面', ZH_TW: '方向', ZH_CN: '方向' },
   '계단 옆 완만한 경사로 완비': { JA: '階段横に緩やかなスロープ完備', ZH_TW: '階梯旁設有平緩無障礙坡道', ZH_CN: '楼梯旁设有平缓无障碍坡道' },
 };
 
+const EXIT_DIRECTION_EN_MAP: Record<string, string> = {
+  '광안리 해수욕장, 민락수변공원, 광안2동 행정복지센터 방면': 'Toward Gwangalli Beach, Millak Waterside Park & Gwangan 2-dong Community Center',
+  '수영동 행정복지센터, 한바다중학교, 홈플러스익스프레스 광안점, 광안4동 방면': 'Toward Suyeong-dong Community Center, Hanbada Middle School & Gwangan 4-dong',
+  '광안리 해수욕장, 남천동, 수영구청, 금련산 방면': 'Toward Gwangalli Beach, Namcheon-dong, Suyeong-gu Office & Geumnyeonsan',
+  '롯데백화점 광복점 정문, 남포동 극장가 사거리 방면': 'Toward Lotte Department Store Gwangbok Main Gate & Nampo-dong Theater District',
+  '남포동 건어물시장, 영도대교 진입로, 자갈치 시장, 부산대교 방면': 'Toward Nampo Dried Fish Market, Yeongdo Bridge, Jagalchi Market & Busan Bridge',
+  '남포치안센터, 부산데파트, 영도대교, 남포 삼거리 방면': 'Toward Nampo Police Center, Busan Department Store & Yeongdo Bridge',
+  '비프거리(BIFF), 용두산공원, 원조족발골목 방면': 'Toward BIFF Square Street, Yongdusan Park & Bupyeong Jokbal Alley',
+  '롯데백화점 광복점(아쿠아몰 연결), 롯데마트 광복점 방면': 'Direct Underground Connection to Lotte Department Store Gwangbok (Aqua Mall) & Lotte Mart',
+  '다대도서관, 몰운대종합사회복지관, 중현초등학교, 아미산전망대 방면': 'Toward Dadae Library, Morundae Welfare Center & Amisan Observatory',
+  '고우니 생태길, 다대포 해변공원 생태탐방로, 몰운대 보행로': 'Toward Gouni Eco Trail, Dadaepo Beach Park Boardwalk & Morundae Walkway',
+  '다대동 주거 단지 및 상가 방면': 'Toward Dadae-dong Residential & Commercial District',
+  '다대포해수욕장, 꿈의 낙조분수, 몰운대, 다대포 해변공원 방면': 'Toward Dadaepo Beach, Sunset Fountain of Dreams, Morundae & Dadaepo Beach Park',
+  '수영 요트경기장, 마린시티, 동백섬, 더베이101': 'Toward Busan Yachting Center, Marine City, Dongbaekseom Island & The Bay 101',
+  '청룡동, 범어사 환승정류장 방면': 'Toward Cheongnyong-dong & Beomeosa Temple Bus Transfer Stop',
+  '청룡동, 남산동 방면': 'Toward Cheongnyong-dong & Namsan-dong',
+  '환승정류장, 부산시립미술관, 벡스코, 올림픽기념 국민생활관': 'Toward Bus Transfer Stop, Busan Museum of Art, BEXCO & Olympic Memorial Hall',
+  '벡스코, 부산시립미술관': 'Toward BEXCO Exhibition Center & Busan Museum of Art',
+  '우2동 종합시장': 'Toward U 2-dong Market',
+  '부산역 광장동편, 텍사스거리, KTX 부산역 광장 방면': 'Toward KTX Busan Station East Plaza & Texas Street',
+  '부산역 광장 전면, 무슬림거리, 초량동 방면': 'Toward Busan Station Front Plaza & Choryang-dong',
+  '부산역 광장서편, 초량초등학교, 초량시장 방면': 'Toward Busan Station West Plaza, Choryang Elementary School & Choryang Market',
+  '부산역 지하상가 남측 통로, 중앙동 방면 인도': 'Toward Busan Station Underground Shopping Center South Passage & Jungang-dong',
+  'KTX 부산역 대합실 정문 연계 광장, 광장 주차장 방면': 'Toward KTX Busan Station Main Concourse Plaza & Parking Lot',
+  '부전지구대, 부전시장 방면, 서면 부전몰 지하상가 방면': 'Toward Bujeon Traditional Market & Seomyeon Bujeon Mall Underground Arcade',
+  '부전전통시장, 부전약국, 서면 부전몰 지하상가 방면': 'Toward Bujeon Traditional Market, Bujeon Pharmacy & Bujeon Mall Arcade',
+  '부전지구대, 부전1동 주민센터 방면': 'Toward Bujeon Police Box & Bujeon 1-dong Community Center',
+  '부전 기차역(국철/ITX 환승), 부전인삼시장, 부전전통시장 방면': 'Toward Bujeon Train Station (Donghae Line / ITX Transfer), Bujeon Ginseng Market & Bujeon Market',
+  '서면로, 신한은행 서면점, 부전2동 행정복지센터 방면': 'Toward Seomyeon-ro, Shinhan Bank Seomyeon & Bujeon 2-dong Community Center',
+  '롯데백화점 부산본점, 서면시장, 가야 및 범천 방면': 'Toward Lotte Department Store Busan Main Branch & Seomyeon Market',
+  '영광도서, 서면문화로, 부산시민공원 방면': 'Toward Yeonggwang Bookstore, Seomyeon Culture Road & Busan Citizens Park',
+  '부산진소방서, 전포동 아파트 방면, 전포초등학교 방면': 'Toward Busanjin Fire Station & Jeonpo Elementary School',
+  '영광도서 서면본점, 부산진구청, 부암동 방면': 'Toward Yeonggwang Bookstore Main Branch, Busanjin-gu Office & Buam-dong',
+  '수영동 우체국, 광원아파트, 망미동 방향': 'Toward Suyeong-dong Post Office & Mangmi-dong',
+  '수영교차로 동북측, 광안3동 치안센터 방면': 'Toward Suyeong Intersection Northeast & Gwangan 3-dong',
+  '수영 종합동물병원, 팔도시장 입구 남측 방면': 'Toward Suyeong Paldo Traditional Market South Entrance',
+  '광안리 해수욕장 초입, 수영교차로 남편 방면': 'Toward Gwangalli Beach Entrance & Suyeong Intersection South',
+  '부평깡통시장, 충무동 사거리, 서구청 방면': 'Toward Bupyeong Kkangtong Market, Chungmu-dong Intersection & Seo-gu Office',
+  '남포 파출소, 신한은행 부평동지점, 비프광장로 방면': 'Toward Nampo Police Box & BIFF Square Road',
+  '남포동 극장가, 중구로, 창선동 방면': 'Toward Nampo-dong Theater Street, Junggu-ro & Changseon-dong',
+  '남포지하쇼핑가 동편 통로, 광복로 패션거리 인접 방면': 'Toward Nampo Underground Shopping Center East Passage & Gwangok-ro Fashion Street',
+  '영도대교 초입, 롯데백화점 광복점 방면, 남포동 가로 보도': 'Toward Yeongdo Bridge Entrance, Lotte Department Store Gwangbok & Nampo-dong Sidewalk',
+  '부산진소방서, 전포돌산공원, 전포1파출소, 도로교통공단 부산지부 방면': 'Toward Busanjin Fire Station & Jeonpo Dolsan Park',
+  '경남공업고등학교, 한강아파트, 전포1동 주민센터, 전포종합사회복지관 방면': 'Toward Gyeongnam Technical High School & Jeonpo 1-dong Community Center',
+  '전포사잇길, 놀이마루, 전포테마거리, 전포 카페거리 북측 방면': 'Toward Jeonpo Cafe Street North, Norimaru & Jeonpo Theme Street',
+  '서면 아이파크 아파트, 버거샵 전포점, 부산진여자중학교, 전포고개 방면': 'Toward Jeonpo Cafe Street East & Busanjin Girls’ Middle School',
+  '중앙동 주민센터, 중앙동 교차로, 부산 우체국': 'Toward Jungang-dong Community Center, Jungang-dong Intersection & Busan Post Office',
+  '40계단 문화관광테마거리, 부산무역회관, 중앙동 인쇄골목': 'Toward 40-Step Cultural Tourism Theme Street, Busan Trade Center & Printing Alley',
+  '중구청, 대청로 방면, 메리놀병원': 'Toward Jung-gu Office, Daecheong-ro & Maryknoll Hospital',
+  '해운대 우동, 기계공고, 서포1길 및 해운대 세무서 방면': 'Toward Haeundae U-dong & Haeundae Tax Office',
+  '해운대 구남로 광장, 해운대해수욕장 휠체어/유모차 전용 통로': 'Toward Haeundae Gunam-ro Square & Haeundae Beach Step-Free Wheelchair/Stroller Promenade',
+};
+
 export function translateExitDirectionI18n(exit: ExitInfo, lang: Language): string {
   if (lang === 'KR') return exit.directionDesc;
-  if (lang === 'EN') return exit.directionDescEn || exit.directionDesc;
+  const enFallback = exit.directionDescEn || EXIT_DIRECTION_EN_MAP[(exit.directionDesc || '').trim()] || 'Main Street & Bus Stop Connection';
+  if (lang === 'EN') return enFallback;
   if (lang === 'ES') {
-    const base = (exit.directionDescEn || exit.directionDesc)
+    const base = enFallback
       .replace(/^Toward\s+/i, 'Hacia ')
       .replace(/\bBeach\b/gi, 'Playa')
       .replace(/\bMarket\b/gi, 'Mercado')
@@ -1461,7 +1515,7 @@ export function translateExitDirectionI18n(exit: ExitInfo, lang: Language): stri
     return base.startsWith('Hacia ') ? base : `Hacia ${base}`;
   }
   if (lang === 'FR') {
-    const base = (exit.directionDescEn || exit.directionDesc)
+    const base = enFallback
       .replace(/^Toward\s+/i, 'Vers ')
       .replace(/\bBeach\b/gi, 'Plage')
       .replace(/\bMarket\b/gi, 'Marché')
@@ -1482,9 +1536,9 @@ export function translateExitDirectionI18n(exit: ExitInfo, lang: Language): stri
       text = text.split(kr).join(trans[lang]);
     }
   }
-  // If still mostly Korean and directionDescEn exists, provide clean hybrid or localized version
-  if (/[가-힣]{3,}/.test(text) && exit.directionDescEn) {
-    let enText = exit.directionDescEn;
+  // If still contains Korean characters, use localized enFallback
+  if (/[가-힣]/.test(text)) {
+    let enText = enFallback;
     if (lang === 'JA') {
       enText = enText.replace(/^Toward\s+/i, '').replace(/\s*&\s*/g, '・') + ' 方面';
     } else if (lang === 'ZH_TW') {
@@ -1494,15 +1548,31 @@ export function translateExitDirectionI18n(exit: ExitInfo, lang: Language): stri
     }
     return enText;
   }
-  return text;
+  return text || enFallback;
 }
 
 export function translateExitTipI18n(exit: ExitInfo, lang: Language): string {
   if (lang === 'KR') return exit.tip;
-  if (lang === 'EN') return exit.tipEn || exit.tip;
 
   const exitLabel = formatExitNumberI18n(exit.number, lang);
   const dirLabel = translateExitDirectionI18n(exit, lang);
+
+  if (lang === 'EN') {
+    if (exit.tipEn) return exit.tipEn;
+    if (exit.hasElevator && exit.hasEscalator) {
+      return `${exitLabel} is equipped with both a street-level elevator and escalator for smooth step-free access with strollers, wheelchairs, and large suitcases (${dirLabel}).`;
+    }
+    if (exit.hasElevator) {
+      return `Use the direct street-level elevator at ${exitLabel} to move between the underground concourse and sidewalk without stairs (${dirLabel}).`;
+    }
+    if (exit.hasEscalator) {
+      return `${exitLabel} is equipped with an escalator connecting the concourse and sidewalk (${dirLabel}).`;
+    }
+    if (exit.isAccessible) {
+      return `${exitLabel} features a gentle step-free ramp for strollers and wheelchairs (${dirLabel}).`;
+    }
+    return `${exitLabel} connects to ${dirLabel}. For step-free elevator access, please use the station’s primary elevator exits.`;
+  }
 
   if (lang === 'JA') {
     if (exit.hasElevator && exit.hasEscalator) {

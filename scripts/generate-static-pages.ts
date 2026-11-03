@@ -100,9 +100,11 @@ function buildCommonHeader(h1: string, lead: string, breadcrumbLabel?: string, c
 
 function buildCommonFooter(lang: Language = 'KR'): string {
   const loc = (p: string) => escapeHtml(buildLocalizedPath(p, lang));
+  const brandLabel = lang === 'KR' ? 'Stepless in Busan (스탭리스)' : 'Stepless in Busan';
+  const editorLabel = lang === 'KR' ? 'Floreur (플로레르)' : 'Floreur';
   return `
         <footer style="border-top: 1px solid #E5E2DC; padding-top: 16px; margin-top: 32px; font-size: 13px; color: #475569;">
-          <p style="margin: 0 0 8px 0;">Published by <strong>Stepless in Busan (스탭리스)</strong> · Chief Editor: <strong>Floreur (플로레르)</strong> · Contact: <a href="mailto:floreur88@gmail.com">floreur88@gmail.com</a></p>
+          <p style="margin: 0 0 8px 0;">Published by <strong>${brandLabel}</strong> · Chief Editor: <strong>${editorLabel}</strong> · Contact: <a href="mailto:floreur88@gmail.com">floreur88@gmail.com</a></p>
           <p style="margin: 0 0 8px 0;">Data Sources: Busan Transportation Corporation, Korea Tourism Organization (TourAPI KorWithService2), Field Verification</p>
           <p style="margin: 0; display: flex; flex-wrap: wrap; gap: 12px;">
             <a href="${loc('/about')}">About</a>
@@ -382,7 +384,9 @@ function buildAllStaticPages(): StaticRoutePage[] {
   pages.push({
     ...bfPage,
     routePath: '/tips/courses/barrier-free',
-    title: '부산 무장애(배리어프리) 추천 여행 코스 | Accessible Busan Tour Itinerary | 스텝리스 Stepless'
+    title: '부산 무장애(배리어프리) 추천 여행 코스 | Accessible Busan Tour Itinerary | 스텝리스 Stepless',
+    description: '휠체어, 유모차, 시니어 여행객을 위한 부산 무장애 추천 여행 코스와 한국관광공사 열린관광지 22곳의 평지 데크길·지하철 엘리베이터 연계 일정을 안내합니다.',
+    h1: '부산 무장애(배리어프리) 추천 여행 코스 & 열린관광지 일정 가이드',
   });
 
   // 4. Hub pages (/search, /tips, /tips/courses, /my-route, /schedule)
@@ -649,7 +653,8 @@ function buildAllStaticPages(): StaticRoutePage[] {
       bodyHtml: `
           <section style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
             <h2 style="font-size: 20px; font-weight: 800; margin-top: 0; color: #11161B;">10분 내 무료 재진입 적용 조건 및 주의사항</h2>
-            <p style="font-size: 14px; color: #334155;">부산 도시철도 1~4호선에서는 상대식 승강장(상행·하행 개찰구가 분리된 역사)에서 방향을 잘못 들어갔거나 화장실 이용 등을 위해 개찰구를 나갔다가 다시 들어올 때, <strong>최초 입장 태그 후 10분 이내에 동일 역에서 퇴장 태그 후 재입장 태그</strong>를 하면 추가 요금(기본운임)이 차감되지 않고 무료 환승(재진입)이1회 허용됩니다. 단, 선불·후불 교통카드 1매당 1인 탑승 시에만 적용되며, 10분이 초과되거나 다른 역으로 이동한 경우에는 일반 운임이 부과됩니다.</p>
+            <p style="font-size: 14px; color: #334155;">부산 도시철도 1~4호선에서는 상대식 승강장(상행·하행 개찰구가 분리된 역사)에서 방향을 잘못 들어갔거나 화장실 이용 등을 위해 개찰구를 나갔다가 다시 들어올 때, <strong>최초 입장 태그 후 10분 이내에 동일 역에서 퇴장 태그 후 재입장 태그</strong>를 하면 추가 요금(기본운임)이 차감되지 않고 무료 환승(재진입)이 1회 허용됩니다. 단, 선불·후불 교통카드 1매당 1인 탑승 시에만 적용되며, 10분이 초과되거나 다른 역으로 이동한 경우에는 일반 운임이 부과됩니다.</p>
+            <p style="font-size: 14px; color: #334155; margin-bottom: 0;">특히 <a href="/station/busan">부산역</a>, <a href="/station/jagalchi">자갈치역</a>, <a href="/station/nampo">남포역</a>, <a href="/station/haeundae">해운대역</a>, <a href="/station/gwangan">광안역</a> 등 상대식 승강장 구조를 가진 역사에서는 대합실 엘리베이터 탑승 전 행선지 표지판(노포 방면 vs 다대포해수욕장 방면, 장산 방면 vs 양산 방면)을 미리 확인하면 더욱 편리하게 이동할 수 있습니다.</p>
           </section>`
     },
     {
@@ -678,7 +683,8 @@ function buildAllStaticPages(): StaticRoutePage[] {
       bodyHtml: `
           <section style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
             <h2 style="font-size: 20px; font-weight: 800; margin-top: 0; color: #11161B;">부전역 ↔ 사상역 광역철도 연결과 배리어프리 여행 동선</h2>
-            <p style="font-size: 14px; color: #334155; margin-bottom: 0;">현재 <a href="/station/bujeon">부전역</a>(1호선·동해선)에서 <a href="/station/sasang">사상역</a>(2호선·부산김해경전철)으로 이동하려면 서면역을 거쳐 도시철도 2호선으로 환승해야 하지만, 부전~마산 복선전철이 개통되면 부전~사상 구간이 직결되어 김해국제공항에서 기장 오시리아·해운대 송정까지 이어지는 동서 횡단 무장애 철도 축이 완성됩니다. 전 역사에 스크린도어와 대형 엘리베이터, 휠체어 전용 탑승 구역이 최신 기준으로 도입됩니다.</p>
+            <p style="font-size: 14px; color: #334155;">현재 <a href="/station/bujeon">부전역</a>(1호선·동해선)에서 <a href="/station/sasang">사상역</a>(2호선·부산김해경전철)으로 이동하려면 서면역을 거쳐 도시철도 2호선으로 환승해야 하지만, 부전~마산 복선전철이 개통되면 부전~사상 구간이 직결되어 김해국제공항에서 기장 오시리아·해운대 송정까지 이어지는 동서 횡단 무장애 철도 축이 완성됩니다. 전 역사에 스크린도어와 대형 엘리베이터, 휠체어 전용 탑승 구역이 최신 기준으로 도입됩니다.</p>
+            <p style="font-size: 14px; color: #334155; margin-bottom: 0;">개통 전 현재 시점에서는 김해국제공항 입국 후 부산김해경전철 엘리베이터를 이용해 사상역으로 이동한 뒤, 사상역 무장애 환승 통로를 통해 도시철도 2호선(서면·광안리·해운대 방면)으로 갈아타는 경로가 가장 빠르고 단차 없는 정석 루트입니다.</p>
           </section>`
     },
     {
@@ -690,7 +696,8 @@ function buildAllStaticPages(): StaticRoutePage[] {
       bodyHtml: `
           <section style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
             <h2 style="font-size: 20px; font-weight: 800; margin-top: 0; color: #11161B;">KTX 부산역에서 계단 ZERO로 이어지는 북항 워터프론트</h2>
-            <p style="font-size: 14px; color: #334155; margin-bottom: 0;"><a href="/station/busan">부산역</a>(도시철도 1호선 4·6번 출구 엘리베이터)과 KTX 부산역 2층 대합실은 대형 승강기와 보행데크로 연결되어 있으며, 바다 방향으로 뻗은 북항 공중보행교를 따라 이동하면 횡단보도나 계단 하나 없이 북항 친수공원 해안 산책로로 진입할 수 있습니다. 넓은 수변 데크와 완만한 잔디 광장, 장애인 화장실이 잘 갖춰져 있어 기차 탑승 전후 유모차·휠체어 산책 코스로 강력히 추천합니다.</p>
+            <p style="font-size: 14px; color: #334155;"><a href="/station/busan">부산역</a>(도시철도 1호선 4·6번 출구 엘리베이터)과 KTX 부산역 2층 대합실은 대형 승강기와 보행데크로 연결되어 있으며, 바다 방향으로 뻗은 북항 공중보행교를 따라 이동하면 횡단보도나 계단 하나 없이 북항 친수공원 해안 산책로로 진입할 수 있습니다. 넓은 수변 데크와 완만한 잔디 광장, 장애인 화장실이 잘 갖춰져 있어 기차 탑승 전후 유모차·휠체어 산책 코스로 강력히 추천합니다.</p>
+            <p style="font-size: 14px; color: #334155; margin-bottom: 0;">공중보행교 내부에는 평지형 무빙워크와 전망 엘리베이터가 설치되어 있어 무거운 캐리어를 끌거나 유모차를 밀면서도 부산항대교의 파노라마 오션뷰와 야경을 안전하게 감상할 수 있습니다.</p>
           </section>`
     }
   ];
@@ -758,8 +765,9 @@ function buildAllStaticPages(): StaticRoutePage[] {
     bodyHtml: `
           <section style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
             <h2 style="font-size: 18px; font-weight: 800; margin-top: 0; color: #11161B;">공식 소통 채널 및 제보 처리 절차</h2>
+            <p style="font-size: 14px; color: #334155;">스텝리스(Stepless in Busan) 에디토리얼 팀은 부산을 여행하는 모든 분들의 생생한 현장 제보를 바탕으로 데이터를 수시 업데이트하고 있습니다. 엘리베이터 일시 보수 점검, 출구 공사 안내, 혹은 유모차·휠체어 이용객에게 널리 알리고 싶은 배리어프리 공간이 있다면 아래 채널로 연락해 주세요.</p>
             <ul style="font-size: 14px; color: #334155; padding-left: 20px; margin-bottom: 0;">
-              <li><strong>이메일 문의 및 제보:</strong> <a href="mailto:floreur88@gmail.com">floreur88@gmail.com</a></li>
+              <li><strong>이메일 문의 및 제보:</strong> <a href="mailto:floreur88@gmail.com">floreur88@gmail.com</a> (총괄 에디터: 플로레르 Floreur)</li>
               <li><strong>엘리베이터·출구 시설 제보:</strong> 역 이름, 출구 번호, 점검 현황 또는 사진과 함께 보내주시면 에디터 확인 후 24~48시간 이내에 역 상세 페이지에 반영됩니다.</li>
               <li><strong>무장애 관광지·식당·카페 추천:</strong> 유모차 및 휠체어 출입이 편리한 부산 로컬 공간을 알려주시면 현장 검증 후 테마 코스에 추가합니다.</li>
             </ul>
@@ -907,28 +915,50 @@ function buildLocalizedCoursePage(course: ItineraryCourse, cleanRoutePath: strin
     FR: `${courseTitle} — Itinéraire de Voyage à Busan et Guide Sans Marche | Stepless`,
   });
 
-  const description = `${courseSub} — ${courseTip}`;
+  const description = pickLang(lang, {
+    KR: `${course.subtitleKo} — ${course.overallTipKo}`,
+    EN: `${course.titleEn}: ${courseSub} — ${courseTip}`,
+    JA: `【釜山おすすめモデルコース】${courseTitle}：${courseSub} — ${courseTip}`,
+    ZH_TW: `【釜山自由行推薦行程】${courseTitle}：${courseSub} — ${courseTip}`,
+    ZH_CN: `【釜山自由行推荐路线】${courseTitle}：${courseSub} — ${courseTip}`,
+    ES: `[Itinerario Recomendado en Busan] ${courseTitle}: ${courseSub} — ${courseTip}`,
+    FR: `[Itinéraire Recommandé à Busan] ${courseTitle} : ${courseSub} — ${courseTip}`,
+  });
 
-  const stepsHtml = course.steps.map((step, idx) => {
-    const sTitle = trEn(step.titleEn, lang);
-    const sDesc = trEn(step.descEn, lang);
-    const sTip = trEn(step.tipEn || step.accessibilityDescEn, lang);
-    const sAddr = step.addressRoadEn || step.addressEn || step.addressRoadKo || '';
-    const sStation = trEn(step.stationInfoEn, lang) || step.stationInfoKo || '';
-    return `
+  const stepsHtml = course.steps.length > 0
+    ? course.steps.map((step, idx) => {
+        const sTitle = trEn(step.titleEn, lang);
+        const sDesc = trEn(step.descEn, lang);
+        const sTip = trEn(step.tipEn || step.accessibilityDescEn, lang);
+        const sAddr = trEn(step.addressRoadEn || step.addressEn, lang);
+        const sStation = trEn(step.stationInfoEn, lang);
+        return `
             <article style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 14px; padding: 18px; margin-bottom: 16px;">
-              <h3 style="font-size: 18px; font-weight: 800; color: #11161B; margin: 0 0 6px 0;">${idx + 1}. ${escapeHtml(sTitle)} (${escapeHtml(step.titleKo)})</h3>
+              <h3 style="font-size: 18px; font-weight: 800; color: #11161B; margin: 0 0 6px 0;">${idx + 1}. ${escapeHtml(sTitle)}</h3>
               ${sStation || sAddr ? `<p style="font-size: 13px; color: #5B7332; font-weight: 700; margin: 0 0 8px 0;">${escapeHtml(sStation)} ${sAddr ? `· ${escapeHtml(sAddr)}` : ''}</p>` : ''}
               <p style="font-size: 14px; color: #334155; margin: 0 0 8px 0;">${escapeHtml(sDesc)}</p>
               ${sTip ? `<p style="font-size: 13px; color: #1E293B; background: #F4F6F0; padding: 10px 12px; border-radius: 8px; margin: 0;"><strong>Tip:</strong> ${escapeHtml(sTip)}</p>` : ''}
             </article>`;
-  }).join('\n');
+      }).join('\n')
+    : STATIONS.map((st, idx) => {
+        const stTitle = getLocalizedStationTitle(st, lang);
+        const loc = getStationLocalized(st, lang);
+        const recExits = loc ? loc.recommendedExits : (st.recommendedExitsEn || '');
+        const elevDesc = loc ? loc.elevatorLocationDesc : (st.elevatorLocationDescEn || '');
+        const stHref = buildLocalizedPath(`/station/${st.id}`, lang);
+        return `
+            <article style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 14px; padding: 18px; margin-bottom: 16px;">
+              <h3 style="font-size: 18px; font-weight: 800; color: #11161B; margin: 0 0 6px 0;">${idx + 1}. <a href="${escapeHtml(stHref)}">${escapeHtml(stTitle)}</a></h3>
+              <p style="font-size: 13px; color: #5B7332; font-weight: 700; margin: 0 0 8px 0;">${escapeHtml(recExits)}</p>
+              <p style="font-size: 14px; color: #334155; margin: 0;">${escapeHtml(elevDesc)}</p>
+            </article>`;
+      }).join('\n');
 
   return {
     routePath: buildLocalizedPath(cleanRoutePath, lang),
     title,
     description,
-    h1: `${courseTitle} (${course.titleKo})`,
+    h1: courseTitle,
     lead: description,
     bodyHtml: `
           <section style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
@@ -940,6 +970,746 @@ function buildLocalizedCoursePage(course: ItineraryCourse, cleanRoutePath: strin
           </section>`,
   };
 }
+
+function buildLocalizedBarrierFreePage(cleanRoutePath: string, lang: Language): StaticRoutePage {
+  const isCourseAlias = cleanRoutePath === '/tips/courses/barrier-free';
+  const title = isCourseAlias
+    ? pickLang(lang, {
+        KR: '부산 무장애 추천 여행 코스 | 스탭리스 Stepless',
+        EN: 'Accessible Busan Travel Itinerary — Step-Free & Wheelchair Tour Course | Stepless',
+        JA: '釜山バリアフリーモデルコース｜車椅子・ベビーカー向け段差なし観光日程 | Stepless',
+        ZH_TW: '釜山無障礙推薦旅遊行程｜輪椅・嬰兒車免爬樓梯觀光路線 | Stepless',
+        ZH_CN: '釜山无障碍推荐旅游路线｜轮椅・婴儿车免爬楼梯观光行程 | Stepless',
+        ES: 'Itinerario Accesible por Busan — Ruta Turística en Silla de Ruedas y Cochecito | Stepless',
+        FR: 'Itinéraire Accessible à Busan — Circuit Touristique Fauteuil Roulant et Poussette | Stepless',
+      })
+    : pickLang(lang, {
+        KR: '부산 무장애 열린관광지 가이드 | 스탭리스 Stepless',
+        EN: 'Wheelchair & Stroller Accessible Busan — 22 Verified Barrier-Free Attractions | Stepless',
+        JA: '釜山バリアフリー観光スポット完全ガイド（全22ヶ所・韓国観光公社検証済）| Stepless',
+        ZH_TW: '釜山無障礙觀光景點完整指南（22處韓國觀光公社認證景點）| Stepless',
+        ZH_CN: '釜山无障碍旅游景点完整指南（22处韩国观光公社认证景点）| Stepless',
+        ES: 'Guía de Atracciones Accesibles en Busan Sin Escalones (22 Lugares Verificados) | Stepless',
+        FR: 'Guide des Attractions Accessibles Sans Marche à Busan (22 Sites Vérifiés) | Stepless',
+      });
+
+  const description = isCourseAlias
+    ? pickLang(lang, {
+        KR: '부산 무장애 추천 여행 코스 안내.',
+        EN: 'Step-by-step wheelchair and stroller-friendly Busan travel itinerary connecting flat coastal boardwalks, accessible museums, and subway elevator exits.',
+        JA: '車椅子利用者・ベビーカー同伴のご家族・シニア旅行者向けに、平坦な海辺ボードウォークや地下鉄エレベーター出口を結ぶ釜山バリアフリー旅行コースをご案内します。',
+        ZH_TW: '專為輪椅使用者、推嬰兒車家庭與長輩設計的釜山無障礙推薦行程，串聯平坦海濱木棧道、無障礙博物館與地鐵電梯出口。',
+        ZH_CN: '专为轮椅使用者、推婴儿车家庭与长辈设计的釜山无障碍推荐路线，串联平坦海滨木栈道、无障碍博物馆与地铁直梯出口。',
+        ES: 'Itinerario paso a paso por Busan para sillas de ruedas y cochecitos, conectando paseos marítimos planos, museos accesibles y salidas de metro con ascensor.',
+        FR: 'Itinéraire étape par étape à Busan pour fauteuils roulants et poussettes, reliant promenades côtières plates, musées accessibles et sorties de métro avec ascenseur.',
+      })
+    : pickLang(lang, {
+        KR: '부산 무장애 열린관광지 상세 가이드.',
+        EN: 'Official Korea Tourism Organization (TourAPI) verified guide to 22 barrier-free Busan attractions: step-free ramps, elevators, accessible restrooms, and wheelchair/stroller rentals.',
+        JA: '韓国観光公社(TourAPI)データと現地調査に基づく釜山バリアフリー観光名所22選。スロープ、エレベーター、多目的トイレ、車椅子・ベビーカー貸出情報を網羅。',
+        ZH_TW: '依據韓國觀光公社(TourAPI)與實地勘查整理的 22 處釜山無障礙景點指南：斜坡通道、電梯、無障礙廁所與輪椅・嬰兒車租借資訊。',
+        ZH_CN: '依据韩国观光公社(TourAPI)与实地勘查整理的 22 处釜山无障碍景点指南：坡道、电梯、无障碍卫生间与轮椅・婴儿车租借信息。',
+        ES: 'Guía verificada por la Organización de Turismo de Corea (TourAPI) de 22 atracciones sin barreras en Busan: rampas, ascensores, baños accesibles y alquiler de sillas de ruedas.',
+        FR: 'Guide vérifié par l’Organisation du Tourisme de Corée (TourAPI) de 22 sites sans barrières à Busan : rampes, ascenseurs, toilettes accessibles et location de fauteuils roulants.',
+      });
+
+  const spotsHtml = BUSAN_TOUR_API_SPOTS.map((spot, i) => {
+    const sTitle = trEn(spot.titleEn, lang);
+    const sDistrict = trEn(spot.districtEn, lang);
+    const sAddr = trEn(spot.addr1En, lang);
+    const sOverview = trEn(spot.overviewEn, lang);
+    const sStationHref = buildLocalizedPath(`/station/${spot.nearestStationId}`, lang);
+    const sStationName = trEn(spot.nearestStationNameEn, lang);
+    const sExit = trEn(spot.recommendedElevatorExitEn, lang);
+    const rDesc = trEn(spot.barrierFree.route.descEn, lang);
+    const eDesc = trEn(spot.barrierFree.elevator.descEn, lang);
+    const tDesc = trEn(spot.barrierFree.toilet.descEn, lang);
+    const wDesc = trEn(spot.barrierFree.wheelchair.descEn, lang);
+    const stDesc = trEn(spot.barrierFree.stroller.descEn, lang);
+    const pDesc = trEn(spot.barrierFree.parking.descEn, lang);
+    const tipDesc = trEn(spot.transitTipEn, lang);
+
+    return `
+            <article style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 14px; padding: 18px; margin-bottom: 16px;">
+              <h3 style="font-size: 18px; font-weight: 800; color: #11161B; margin: 0 0 6px 0;">
+                ${i + 1}. ${escapeHtml(sTitle)} — ${escapeHtml(sDistrict)}
+              </h3>
+              <p style="font-size: 13px; color: #5B7332; font-weight: 700; margin: 0 0 8px 0;">
+                ${escapeHtml(sAddr)} · Subway: <a href="${escapeHtml(sStationHref)}">${escapeHtml(sStationName)}</a> (${escapeHtml(sExit)})
+              </p>
+              <p style="font-size: 14px; color: #334155; margin: 0 0 10px 0;">${escapeHtml(sOverview)}</p>
+              <ul style="font-size: 13px; color: #1E293B; background: #F4F6F0; padding: 12px 16px 12px 32px; border-radius: 8px; margin: 0;">
+                <li><strong>Step-Free Route:</strong> ${escapeHtml(rDesc)}</li>
+                <li><strong>Elevator:</strong> ${escapeHtml(eDesc)}</li>
+                <li><strong>Accessible Restroom:</strong> ${escapeHtml(tDesc)}</li>
+                <li><strong>Wheelchair / Stroller:</strong> ${escapeHtml(wDesc)} / ${escapeHtml(stDesc)}</li>
+                <li><strong>Accessible Parking:</strong> ${escapeHtml(pDesc)}</li>
+                <li><strong>Transit Tip:</strong> ${escapeHtml(tipDesc)}</li>
+              </ul>
+            </article>`;
+  }).join('\n');
+
+  const h1 = title.replace(/\s*\|\s*Stepless.*$/i, '');
+  return {
+    routePath: buildLocalizedPath(cleanRoutePath, lang),
+    title,
+    description,
+    h1,
+    lead: description,
+    bodyHtml: `
+          <section style="margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 800; color: #11161B; margin-bottom: 14px;">${escapeHtml(h1)} (${BUSAN_TOUR_API_SPOTS.length} Verified Spots)</h2>
+            ${spotsHtml}
+          </section>`,
+  };
+}
+
+interface MultilingualRouteMeta {
+  title: Record<Exclude<Language, 'KR'>, string>;
+  description: Record<Exclude<Language, 'KR'>, string>;
+  sections: Array<{
+    headingEn: string;
+    paragraphsEn: string[];
+    bulletsEn?: string[];
+  }>;
+}
+
+const HUB_AND_ARTICLE_META: Record<string, MultilingualRouteMeta> = {
+  '/search': {
+    title: {
+      EN: 'Busan Subway Elevator Directory (22 Major Stations) & Step-Free Exit Map | Stepless',
+      JA: '釜山地下鉄 主要22駅エレベーター出口＆バリアフリー乗換ディレクトリ | Stepless',
+      ZH_TW: '釜山地鐵 22 個主要車站電梯出口＆無障礙轉乘總覽 | Stepless',
+      ZH_CN: '釜山地铁 22 个主要车站无障碍直梯出口＆换乘名录 | Stepless',
+      ES: 'Directorio de Ascensores del Metro de Busan (22 Estaciones Principales) | Stepless',
+      FR: 'Répertoire des Ascenseurs du Métro de Busan (22 Stations Principales) | Stepless',
+    },
+    description: {
+      EN: 'Compare elevator and escalator exit numbers, accessible restrooms, and step-free transfer pathways across all 22 major Busan subway stations including Seomyeon, Busan Station, Haeundae, Gwangan, and Nampo.',
+      JA: '西面駅・釜山駅・海雲台駅・広安駅・南浦駅・チャガルチ駅など釜山地下鉄主要22駅の地上直結エレベーター出口番号、エスカレーター、多目的トイレ、乗換ルートを一覧比較。',
+      ZH_TW: '一次比較西面站、釜山站、海雲台站、廣安站、南浦站、札嘎其站等釜山 22 個主要地鐵站的地面電梯出口編號、電扶梯、無障礙廁所與轉乘動線。',
+      ZH_CN: '一览比较西面站、釜山站、海云台站、广安站、南浦站、札嘎其站等釜山 22 个主要地铁站的地面直梯出口编号、扶梯、无障碍卫生间与换乘路线。',
+      ES: 'Compara los números de salida con ascensor, escaleras mecánicas, baños accesibles y rutas de transbordo sin escalones en las 22 principales estaciones del metro de Busan.',
+      FR: 'Comparez les numéros de sortie avec ascenseur, escalators, toilettes accessibles et correspondances sans marche dans les 22 principales stations du métro de Busan.',
+    },
+    sections: [],
+  },
+  '/tips/courses': {
+    title: {
+      EN: 'Busan Travel Itineraries Hub: 8 Themes & 1 to 5-Day Trip Plans | Stepless',
+      JA: '釜山おすすめモデルコース総まとめ（グルメ・観光・市場・日帰り〜4泊5日）| Stepless',
+      ZH_TW: '釜山自由行推薦行程總整理（美食・景點・傳統市場・一日遊至五天四夜）| Stepless',
+      ZH_CN: '釜山自由行推荐路线汇总（美食・景点・传统市场・一日游至五天四晚）| Stepless',
+      ES: 'Itinerarios Recomendados por Busan: Gastronomía, Atracciones y Planes de 1 a 5 Días | Stepless',
+      FR: 'Itinéraires Recommandés à Busan : Gastronomie, Sites et Circuits de 1 à 5 Jours | Stepless',
+    },
+    description: {
+      EN: 'Explore all curated Busan travel courses: local food & ocean-view cafes, museums & cultural spaces, traditional markets, top attractions, and 1-day to 5-day step-free Busan itineraries.',
+      JA: '現地エディターが検証した釜山グルメ、博物館・体験、伝統市場、定番観光スポット、日帰り・1泊2日・2泊3日・3泊4日・4泊5日の日程別モデルコース一覧。',
+      ZH_TW: '探索釜山在地編輯實地驗證的美食餐廳、博物館體驗、傳統市場、必去景點，以及一日遊、兩天一夜、三天兩夜、四天三夜、五天四夜完整推薦行程。',
+      ZH_CN: '探索釜山在地编辑实地验证的地道美食、博物馆体验、传统市场、必去景点，以及一日游、两天一夜、三天两夜、四天三晚、五天四晚完整推荐路线。',
+      ES: 'Explora todos los itinerarios verificados por Busan: gastronomía local, museos, mercados tradicionales, atracciones imprescindibles y rutas de 1 a 5 días sin escalones.',
+      FR: 'Découvrez tous nos itinéraires vérifiés à Busan : gastronomie locale, musées, marchés traditionnels, sites incontournables et circuits de 1 à 5 jours sans marche.',
+    },
+    sections: [],
+  },
+  '/tips': {
+    title: {
+      EN: 'Busan Travel Guide Hub: Subway Transfers, Child Fare Free & Local Tips | Stepless',
+      JA: '釜山旅行総合ガイド：地下鉄・バス乗換、子供料金無料、現地お役立ち情報 | Stepless',
+      ZH_TW: '釜山旅遊綜合指南：地鐵公車轉乘、兒童免費搭車與在地實用攻略 | Stepless',
+      ZH_CN: '釜山旅游综合指南：地铁公交换乘、儿童免费乘车与本地实用攻略 | Stepless',
+      ES: 'Guía General de Viaje a Busan: Transporte Público, Consejos Locales y Rutas | Stepless',
+      FR: 'Guide Général de Voyage à Busan : Transports Publics, Conseils Locaux et Itinéraires | Stepless',
+    },
+    description: {
+      EN: 'Essential Busan travel guide covering 30-minute free subway-bus transfers, oversized luggage bus rules, free transit fares for children, mobile QR bus payment, accessible taxis, and free luggage storage.',
+      JA: '初めての釜山旅行からベビーカー・車椅子・スーツケース同伴の家族旅行まで必見の釜山公共交通乗換ルール、子供運賃無料制度、無料荷物預かり所、おすすめコース総合ハブ。',
+      ZH_TW: '從首次造訪釜山的旅客到推嬰兒車、輪椅、攜帶大件行李的家庭必看：釜山大眾運輸免費轉乘規定、兒童免費搭車、免費寄放行李處與推薦行程總覽。',
+      ZH_CN: '从首次造访釜山的游客到推婴儿车、轮椅、携带大件行李的家庭必看：釜山公共交通免费换乘规定、儿童免费乘车、免费行李寄存处与推荐路线总览。',
+      ES: 'Guía esencial para viajar a Busan: transbordos gratuitos entre metro y autobús, normativa de maletas, transporte gratuito para niños, taxis accesibles y consignas gratuitas.',
+      FR: 'Guide essentiel pour voyager à Busan : correspondances gratuites métro-bus, règles pour les bagages, gratuité pour les enfants, taxis accessibles et consignes gratuites.',
+    },
+    sections: [
+      {
+        headingEn: 'Essential Busan Travel Guides & Local Tips',
+        paragraphsEn: [
+          'Welcome to the Stepless in Busan Travel Guide Hub. Whether you are visiting Busan for the first time or traveling with a stroller, wheelchair, senior family members, or heavy suitcases, our field-verified guides help you navigate Busan smoothly without stairs or transit surprises.',
+        ],
+        bulletsEn: [
+          'Busan Public Transit 5 Essential Rules: 30-minute free transfer between subway and buses, plus oversized suitcase restrictions on city buses.',
+          'Free Public Transit for Children (Ages 6–12): How to register a children’s transit card for 0 KRW subway and bus rides across Busan.',
+          'Busan City Bus Mobile QR Payment: How to pay bus fare without cash or a physical T-money card.',
+          'Busan Taxis & Wheelchair Accessible Duribal Van Guide: Call taxis, jumbo vans for luggage, and special wheelchair transport.',
+          'Busan Exploration Local Magazine: 4 free luggage storage lounges, free stroller & wheelchair rentals, and the 10-minute free subway platform re-entry rule.',
+        ],
+      },
+    ],
+  },
+  '/my-route': {
+    title: {
+      EN: 'Custom Busan Trip Route Planner & One-Click Transit Navigator | Stepless',
+      JA: 'マイルート作成（カスタム釜山旅行プランナー＆乗換ナビ連携）| Stepless',
+      ZH_TW: '我的旅遊路線規劃器（自訂釜山自由行行程＆一鍵大眾運輸導航）| Stepless',
+      ZH_CN: '我的旅游路线规划器（自定义釜山自由行行程＆一键公共交通导航）| Stepless',
+      ES: 'Planificador Personalizado de Rutas por Busan y Navegador de Transporte | Stepless',
+      FR: 'Planificateur d’Itinéraire Personnalisé à Busan et Navigateur de Transport | Stepless',
+    },
+    description: {
+      EN: 'Build your own custom Busan travel itinerary by adding restaurants, landmarks, and markets, calculate stop-by-stop distances, and launch Google Maps or Naver Map transit directions in one click.',
+      JA: '釜山の観光名所・グルメ・カフェ・伝統市場をマイルートに追加して順番を並び替え、スポット間の距離計算やGoogleマップ・NAVERマップのリアルタイム公共交通ルート検索をワンクリックで実行できます。',
+      ZH_TW: '將釜山景點、美食餐廳、咖啡廳與傳統市場加入專屬旅遊路線，自由調整順序、計算各站直線距離，並一鍵開啟 Google Maps 或 Naver Map 大眾運輸路線導航。',
+      ZH_CN: '将釜山景点、美食餐厅、咖啡厅与传统市场加入专属旅游路线，自由调整顺序、计算各站直线距离，并一键开启 Google Maps 或 Naver Map 公共交通路线导航。',
+      ES: 'Crea tu propio itinerario por Busan añadiendo restaurantes, mercados y atracciones, calcula distancias entre paradas y abre rutas de transporte público en Google Maps con un clic.',
+      FR: 'Créez votre propre itinéraire à Busan en ajoutant restaurants, marchés et sites touristiques, calculez les distances entre les étapes et lancez Google Maps en un clic.',
+    },
+    sections: [
+      {
+        headingEn: 'How to Use the Custom Busan Trip Route Planner',
+        paragraphsEn: [
+          'The Stepless Custom Route Planner lets you combine stops from any of our 8 curated Busan travel courses into a single personalized day-by-day route.',
+        ],
+        bulletsEn: [
+          'Add & Reorder Stops: Click Add to Route on any restaurant, museum, market, or coastal landmark card to save it to your interactive map.',
+          'Automatic Leg Distance Calculation: Instantly see the exact distance between consecutive stops based on verified GPS coordinates to avoid backtracking.',
+          'One-Click Transit Navigation: Launch real-time bus and subway directions between any two stops in Google Maps (for international travelers) or Naver Map (for Korean transit timetables).',
+          'Step-Free Subway Pairing: Check the nearest elevator exit number for every stop so stroller, wheelchair, and luggage travelers can move without stairs.',
+        ],
+      },
+    ],
+  },
+  '/schedule': {
+    title: {
+      EN: 'Busan Festivals & Monthly Events Calendar (Gwangalli Drone Show & Fireworks) | Stepless',
+      JA: '釜山イベント・祭り月別カレンダー（広安里Mドローンショー・花火大会・映画祭）| Stepless',
+      ZH_TW: '釜山節慶活動月曆（廣安里無人機秀・釜山煙火節・國際電影節）＆無障礙觀賞指南 | Stepless',
+      ZH_CN: '釜山节庆活动月历（广安里无人机秀・釜山烟花节・国际电影节）＆无障碍观赏指南 | Stepless',
+      ES: 'Calendario Mensual de Festivales y Eventos en Busan (Show de Drones en Gwangalli) | Stepless',
+      FR: 'Calendrier Mensuel des Festivals et Événements à Busan (Spectacle de Drones à Gwangalli) | Stepless',
+    },
+    description: {
+      EN: 'Monthly schedule and wheelchair/stroller viewing guide for top Busan events: Saturday Gwangalli M Drone Light Show, Haeundae Sand Festival, Busan Sea Festival, BIFF, and Busan Fireworks Festival.',
+      JA: '毎週土曜開催の広安里Mドローンライトショー公演時間から、海雲台砂祭り、釜山港祭り、釜山海祭り、釜山国際映画祭(BIFF)、釜山花火大会まで月別スケジュールと地下鉄エレベーター移動ルートを案内。',
+      ZH_TW: '整理每週六常設廣安里 M 無人機燈光秀演出時間、海雲台沙雕節、釜山港節、釜山海洋節、釜山國際電影節(BIFF)、釜山煙火節等月別活動日程與無障礙觀賞動線。',
+      ZH_CN: '整理每周六常设广安里 M 无人机灯光秀演出时间、海云台沙雕节、釜山港节、釜山海洋节、釜山国际电影节(BIFF)、釜山烟花节等月度活动日程与无障碍观赏路线。',
+      ES: 'Calendario mensual y guía de acceso sin escalones para los grandes eventos de Busan: espectáculo semanal de drones en Gwangalli, Festival de Arena de Haeundae, BIFF y Festival de Fuegos Artificiales.',
+      FR: 'Calendrier mensuel et accès sans marche aux grands événements de Busan : spectacle de drones du samedi à Gwangalli, Festival du Sable de Haeundae, BIFF et Festival Pyrotechnique.',
+    },
+    sections: [
+      {
+        headingEn: 'Year-Round & Seasonal Busan Festival Guide',
+        paragraphsEn: [
+          'Busan hosts iconic seaside festivals throughout the year. Use our step-free subway exit recommendations below to enjoy major events comfortably even during peak crowds.',
+        ],
+        bulletsEn: [
+          'Gwangalli M Drone Light Show (Every Saturday Year-Round): Held twice every Saturday evening over Gwangalli Beach (20:00 & 22:00 Apr–Sep; 19:00 & 21:00 Oct–Mar). Take Line 2 Gwangan Station Exit 3 or Exit 5 elevator for a flat walk to the beachfront promenade.',
+          'Spring & Summer Festivals (May–August): Haeundae Sand Festival (Haeundae Station Exit 1/3 elevator to Gunam-ro Plaza), Busan Port Festival, Busan Sea Festival, and Dadaepo Sunset Fountain of Dreams (Dadaepo Beach Station Exit 2/4 elevator).',
+          'Autumn & Winter Festivals (September–January): Busan International Film Festival (BIFF at Centum City Station & Jagalchi Station), Busan International Rock Festival (Sasang Station), Busan Fireworks Festival (November at Gwangalli Beach), and Haeundae Light Festival (December–January).',
+        ],
+      },
+    ],
+  },
+  '/tips/transit': {
+    title: {
+      EN: 'Busan Public Transit 5 Essential Rules: Free Transfers & Suitcase Policy | Stepless',
+      JA: '釜山公共交通の重要ルール5選：地下鉄・バス30分無料乗換＆大型スーツケース規定 | Stepless',
+      ZH_TW: '釜山大眾運輸 5 大必知規則：地鐵公車 30 分鐘免費轉乘＆大型行李箱上車規定 | Stepless',
+      ZH_CN: '釜山公共交通 5 大必知规则：地铁公交 30 分钟免费换乘＆大件行李箱乘车规定 | Stepless',
+      ES: '5 Reglas del Transporte Público en Busan: Transbordos Gratuitos y Normativa de Maletas | Stepless',
+      FR: '5 Règles des Transports Publics à Busan : Correspondances Gratuites et Bagages | Stepless',
+    },
+    description: {
+      EN: 'Everything you need to know about Busan public transit: 30-minute free transfers between subway and city buses, 24–28 inch suitcase restrictions on buses, low-floor buses, and subway luggage lockers.',
+      JA: '釜山地下鉄と市内バス・マウルバスの30分以内無料乗換システム、大型スーツケースの市内バス持ち込み制限、ノンステップバスの確認方法、主要駅コインロッカー(T-Luggage)活用法を詳しく解説。',
+      ZH_TW: '詳解釜山地鐵與市區公車・社區巴士 30 分鐘內免費轉乘規定、24～28 吋大型行李箱搭乘公車限制、低底盤公車查詢方式與地鐵站行李寄物櫃(T-Luggage)指南。',
+      ZH_CN: '详解釜山地铁与市区公交・社区巴士 30 分钟内免费换乘规定、24～28 寸大件行李箱乘坐公交限制、低地板公交查询方式与地铁站行李寄存柜(T-Luggage)指南。',
+      ES: 'Todo sobre el transporte público en Busan: transbordos gratuitos en 30 minutos entre metro y autobús, restricciones de maletas grandes en autobuses, autobuses de piso bajo y consignas.',
+      FR: 'Tout savoir sur les transports à Busan : correspondances gratuites en 30 minutes entre métro et bus, restrictions pour les grandes valises dans les bus, bus à plancher bas et consignes.',
+    },
+    sections: [
+      {
+        headingEn: 'Busan Subway & City Bus Transfer and Luggage Rules',
+        paragraphsEn: [
+          'Understanding Busan’s transit card transfer system and luggage regulations saves both money and stress when traveling across the city.',
+        ],
+        bulletsEn: [
+          'Up to 2 Free Transfers Within 30 Minutes: When using a T-money or EZL transit card, tap out when exiting the bus or subway gate. Transferring between Busan Subway (Lines 1–4, Donghae Line, Gimhae Light Rail) and city/village buses within 30 minutes grants up to 2 free transfers (3 rides total). Always tap off before alighting.',
+          'Oversized Suitcase Restrictions on City Buses: Under Busan city bus safety regulations, drivers may refuse boarding with large suitcases (typically 24 inches or larger) that block the aisle. When traveling with large luggage, use the Busan Subway elevator network or store your bags at a free luggage lounge.',
+          'Low-Floor Accessible Buses: Major Busan trunk bus routes operate step-free low-floor buses equipped with wheelchair ramps and stroller spaces. You can check real-time low-floor bus arrivals in Naver Map.',
+        ],
+      },
+    ],
+  },
+  '/tips/child-free': {
+    title: {
+      EN: 'Busan Free Public Transit for Children (Ages 6–12) & Stroller Gate Guide | Stepless',
+      JA: '釜山の子供（満6〜12歳）公共交通運賃無料ガイド＆ベビーカー改札通過のコツ | Stepless',
+      ZH_TW: '釜山兒童（6～12歲）大眾運輸免費搭車指南＆嬰兒車寬敞閘門通行攻略 | Stepless',
+      ZH_CN: '釜山儿童（6～12岁）公共交通免费乘车指南＆婴儿车宽敞闸机通行攻略 | Stepless',
+      ES: 'Transporte Público Gratuito para Niños en Busan (6 a 12 Años) y Acceso con Cochecito | Stepless',
+      FR: 'Transports Publics Gratuits pour les Enfants à Busan (6 à 12 Ans) et Accès Poussette | Stepless',
+    },
+    description: {
+      EN: 'How families can enjoy free Busan subway and bus fares for children under 6 and registered children ages 6–12, plus tips for using wide accessible stroller gates in every subway station.',
+      JA: '満6歳未満の乳幼児および子供用交通カード登録済みの満6〜12歳児童を対象とした釜山地下鉄・市内バス運賃無料特典の利用方法と、ベビーカーを畳まずに通れる幅広改札ゲート案内。',
+      ZH_TW: '介紹未滿 6 歲幼童與 6～12 歲兒童使用記名兒童交通卡免費搭乘釜山地鐵與公車的方法，以及推嬰兒車免收折直接通過地鐵站加寬無障礙閘門的實用技巧。',
+      ZH_CN: '介绍未满 6 岁幼童与 6～12 岁儿童使用实名儿童交通卡免费乘坐釜山地铁与公交的方法，以及推婴儿车免折叠直接通过地铁站加宽无障碍闸机的实用技巧。',
+      ES: 'Cómo disfrutar de transporte público gratuito en Busan para niños menores de 6 años y de 6 a 12 años con tarjeta infantil, además de consejos para cruzar los torniquetes anchos con cochecito.',
+      FR: 'Comment bénéficier des transports gratuits à Busan pour les enfants de moins de 6 ans et de 6 à 12 ans avec carte enfant, et utiliser les portillons larges pour poussettes.',
+    },
+    sections: [
+      {
+        headingEn: 'Child Fare Exemption & Family Stroller Tips in Busan',
+        paragraphsEn: [
+          'Busan Metropolitan City was the first city in Korea to introduce 0 KRW public transit fares for children to make family travel easier.',
+        ],
+        bulletsEn: [
+          'Infants & Toddlers Under Age 6: Up to 3 children under age 6 ride free without a card when accompanied by a fare-paying adult.',
+          'Children Ages 6–12 (Elementary School Age): Purchase a T-money or EZL card at any convenience store (CU, GS25, 7-Eleven, Emart24) and ask the staff to register the child’s date of birth. Tapping a registered child card charges 0 KRW on Busan city buses, village buses, and subway lines 1–4.',
+          'Wide Stroller & Wheelchair Flap Gates: Every Busan subway station concourse features a wide automatic barrier-free gate next to the standard turnstiles so you never have to fold your stroller.',
+        ],
+      },
+    ],
+  },
+  '/tips/bus-qr': {
+    title: {
+      EN: 'How to Ride Busan City Buses Without a Transit Card (Mobile QR & NFC Guide) | Stepless',
+      JA: '交通カードなしで釜山バスに乗る方法：モバイルQR決済＆スマホタッチ案内 | Stepless',
+      ZH_TW: '沒有交通卡也能搭釜山公車：手機行動交通卡＆車內 QR Code 付款指南 | Stepless',
+      ZH_CN: '没有交通卡也能坐釜山公交：手机移动交通卡＆车内 QR 二维码付款指南 | Stepless',
+      ES: 'Cómo Subir a los Autobuses de Busan Sin Tarjeta Física (Pago Móvil QR y NFC) | Stepless',
+      FR: 'Comment Prendre le Bus à Busan Sans Carte Physique (Paiement Mobile QR et NFC) | Stepless',
+    },
+    description: {
+      EN: 'Busan city buses are cashless. Learn how to board using mobile T-money/EZL NFC tap or the onboard QR code fare payment system when you do not have a physical transit card.',
+      JA: 'キャッシュレス運行の釜山バスで実物の交通カードや現金がない場合でも、モバイル交通カード(NFC)や車内QRコードスキャンで運賃を支払って乗車する手順を解説します。',
+      ZH_TW: '釜山市區公車全面實施無現金搭車。若忘記攜帶實體交通卡，可透過手機 NFC 行動交通卡或掃描車門旁 QR Code 支付車資，輕鬆搭乘公車。',
+      ZH_CN: '釜山市区公交全面实施无现金乘车。若忘记携带实体交通卡，可通过手机 NFC 移动交通卡或扫描车门旁 QR 二维码支付车费，轻松搭乘公交。',
+      ES: 'Los autobuses urbanos de Busan funcionan sin efectivo. Aprende a pagar con tarjeta móvil NFC o escaneando el código QR a bordo si no tienes tarjeta física T-money.',
+      FR: 'Les bus de Busan fonctionnent sans espèces. Découvrez comment payer par NFC mobile ou via le QR code à bord si vous n’avez pas de carte T-money physique.',
+    },
+    sections: [
+      {
+        headingEn: '2 Ways to Board Cashless Busan City Buses',
+        paragraphsEn: [
+          'All city buses in Busan operate on a cashless system without coin boxes. If you do not have a physical T-money card in hand, use one of these two methods:',
+        ],
+        bulletsEn: [
+          'Method 1 — Mobile Transit Card (NFC Tap): Activate Mobile T-money, EZL, Apple Pay T-money, or Samsung Pay transit card on your smartphone and tap the reader when boarding and alighting to enjoy full 30-minute free transfer discounts.',
+          'Method 2 — Onboard QR Code Fare Notice: If you have no transit card at all, scan the QR code posted near the driver’s booth to pay the single-ride fare digitally. Because QR transfers do not include free subway-bus transfer discounts, purchasing a prepaid transit card at any convenience store is recommended for multi-stop trips.',
+        ],
+      },
+    ],
+  },
+  '/tips/taxi': {
+    title: {
+      EN: 'Busan Accessible Taxis (Duribal Wheelchair Van, Dongbaek Call Taxi & Jumbo Vans) | Stepless',
+      JA: '釜山タクシー＆福祉車両ガイド（車椅子対応ドリバル・椿コールタクシー・大型バン）| Stepless',
+      ZH_TW: '釜山計程車＆無障礙福祉車指南（輪椅專用車 Duribal・冬柏叫車・大型休旅計程車）| Stepless',
+      ZH_CN: '釜山出租车＆无障碍福祉车指南（轮椅专用车 Duribal・冬柏叫车・大型商务出租车）| Stepless',
+      ES: 'Guía de Taxis Accesibles en Busan (Furgonetas con Rampa Duribal y Taxis Grandes) | Stepless',
+      FR: 'Guide des Taxis Accessibles à Busan (Vans avec Rampe Duribal et Grands Taxis) | Stepless',
+    },
+    description: {
+      EN: 'Complete directory of Busan call taxis, large jumbo vans for strollers and suitcases, and Duribal wheelchair-accessible lift vans operated by Busan Facilities Corporation.',
+      JA: '坂道の多い場所や雨天・深夜の移動に便利な釜山公式ブランドタクシー（椿タクシー・灯台コール）と、車椅子スロープ付きの特別交通手段「ドリバル(Duribal)」の予約・利用案内。',
+      ZH_TW: '整理釜山斜坡地形、雨天或深夜移動必備的官方計程車（冬柏計程車、燈塔叫車）、可放嬰兒車與多件行李的大型計程車，以及輪椅升降專用車「Duribal」預約電話與指南。',
+      ZH_CN: '整理釜山坡道地形、雨天或深夜出行必备的官方出租车（冬柏出租车、灯塔叫车）、可放婴儿车与多件行李的大型出租车，以及轮椅升降专用车“Duribal”预约电话与指南。',
+      ES: 'Directorio completo de taxis oficiales en Busan, taxis grandes (Jumbo/Venti) para cochecitos y maletas, y furgonetas adaptadas con rampa para sillas de ruedas (Duribal).',
+      FR: 'Répertoire complet des taxis officiels à Busan, grands taxis (Jumbo/Venti) pour poussettes et valises, et véhicules adaptés avec rampe pour fauteuils roulants (Duribal).',
+    },
+    sections: [
+      {
+        headingEn: 'Official Busan Call Taxis & Wheelchair Accessible Transport',
+        paragraphsEn: [
+          'For steep hillside neighborhoods or rainy days, combining Busan’s subway elevators with accessible taxis makes barrier-free travel effortless.',
+        ],
+        bulletsEn: [
+          'Duribal Wheelchair-Accessible Lift Vans (Busan Facilities Corporation, Tel: 1555-1114): Equipped with hydraulic wheelchair lifts/ramps and tie-down belts for travelers with severe mobility impairments.',
+          'Makamodi & Jabi Call Voucher Taxis (Tel: 051-500-8888): Dedicated barrier-free and maternity support taxi dispatch in Busan.',
+          'Official Brand Call Taxis & Jumbo Vans (Dongbaek Taxi / Deungdae Call 051-600-1000 / Busan Call 051-200-2000): Request a mid-size sedan or a large Jumbo/Venti van when traveling with foldable strollers or 3+ large suitcases.',
+        ],
+      },
+    ],
+  },
+  '/tips/exploration': {
+    title: {
+      EN: 'Busan Exploration Local Magazine: Free Luggage Lounges, Stroller Rentals & Subway Hacks | Stepless',
+      JA: '釜山探究生活ローカルマガジン：無料荷物預かり所・ベビーカー貸出・地下鉄裏ワザ | Stepless',
+      ZH_TW: '釜山探究生活在地誌：4大免費寄放行李處、免費租借嬰兒車輪椅＆地鐵隱藏秘訣 | Stepless',
+      ZH_CN: '釜山探究生活在地图志：4大免费行李寄存处、免费租借婴儿车轮椅＆地铁隐藏技巧 | Stepless',
+      ES: 'Revista Local de Busan: Consignas Gratuitas, Alquiler de Cochecitos y Trucos de Metro | Stepless',
+      FR: 'Magazine Local de Busan : Consignes Gratuites, Location de Poussettes et Astuces Métro | Stepless',
+    },
+    description: {
+      EN: 'In-depth local editor features on Busan: 4 free luggage storage locations, free stroller and wheelchair rental spots, the 10-minute free subway gate re-entry rule, survival Korean phrases, and North Port Opera House boardwalk.',
+      JA: '釜山の無料スーツケース預かり所4選、ベビーカー・車椅子の無料レンタル場所、地下鉄の反対ホーム誤入場10分以内無料再入場ルール、北港親水公園など深掘りコラム集。',
+      ZH_TW: '深入整理釜山 4 處免費行李寄放服務、主要景點免費嬰兒車與輪椅租借處、地鐵進錯月台 10 分鐘內免費重進閘門規定、實用韓語會話與北港親水公園無障礙步道專題。',
+      ZH_CN: '深入整理釜山 4 处免费行李寄存服务、主要景点免费婴儿车与轮椅租借处、地铁进错站台 10 分钟内免费重进闸机规定、实用韩语会话与北港亲水公园无障碍步道专题。',
+      ES: 'Artículos locales en profundidad sobre Busan: 4 consignas gratuitas de equipaje, préstamo gratuito de sillas de ruedas y cochecitos, reingreso gratuito al metro en 10 minutos y frases útiles en coreano.',
+      FR: 'Articles locaux approfondis sur Busan : 4 consignes à bagages gratuites, prêt gratuit de fauteuils roulants et poussettes, réentrée gratuite au métro en 10 minutes et phrases coréennes utiles.',
+    },
+    sections: [
+      {
+        headingEn: 'Featured Articles in Busan Exploration Magazine',
+        paragraphsEn: [
+          'Read our field-researched local articles designed to make your Busan trip lighter, smoother, and completely step-free:',
+        ],
+        bulletsEn: [
+          '4 Free Luggage Storage Spots in Busan (Busan Station, Seomyeon, Haeundae, Gwangalli): Operating hours, exact addresses, and step-free access.',
+          'Free Stroller & Wheelchair Rental Directory Across Busan: Tourist information centers, museums, and department stores offering free mobility rentals.',
+          'Busan Subway 10-Minute Free Re-Entry Rule: How to cross to the opposite platform without paying an extra fare when you enter the wrong turnstile.',
+          '5-Second Survival Korean & Busan Phrases for Travelers: Essential phrases for ordering food and asking for elevators or ramps.',
+          'Bujeon–Masan Express Rail Outlook & West Busan Step-Free Transfer Guide: Connecting Gimhae Airport (Sasang) and downtown Bujeon.',
+          'Busan North Port Waterfront Park & Busan Opera House Step-Free Pedestrian Deck: Walk directly from KTX Busan Station 2F to the harbor.',
+        ],
+      },
+    ],
+  },
+  '/tips/exploration/luggage': {
+    title: {
+      EN: '4 Free Luggage Storage Locations in Busan (Busan Station, Seomyeon, Haeundae, Gwangalli) | Stepless',
+      JA: '釜山の無料荷物・スーツケース預かり所4選（釜山駅・西面・海雲台・広安里）| Stepless',
+      ZH_TW: '釜山 4 大免費行李寄放處總整理（釜山站・西面・海雲台・廣安里）| Stepless',
+      ZH_CN: '釜山 4 大免费行李寄存处汇总（釜山站・西面・海云台・广安里）| Stepless',
+      ES: '4 Lugares de Consigna de Equipaje Gratuita en Busan (Estación de Busan, Seomyeon, Haeundae, Gwangalli) | Stepless',
+      FR: '4 Consignes à Bagages Gratuites à Busan (Gare de Busan, Seomyeon, Haeundae, Gwangalli) | Stepless',
+    },
+    description: {
+      EN: 'Where to store your suitcases for free in Busan before hotel check-in or after check-out: Busan Travel Lounge, Lotte Department Store Seomyeon, Haeundae Platform, and Gwangalli Tourist Information Center.',
+      JA: 'ホテルのチェックイン前やチェックアウト後に重いスーツケースを無料で預けられる釜山公式4スポット（釜山トラベルラウンジ、ロッテ百貨店西面本店の荷物預かり、海雲台プラットフォーム、広安里観光案内所）の営業時間とアクセス。',
+      ZH_TW: '飯店入住前或退房後不想拖著沉重行李箱？整理釜山 4 處免費行李寄放處（釜山旅遊休息室、樂天百貨西面本店、海雲台 Platform、廣安里觀光案內所）地址與無障礙路線。',
+      ZH_CN: '酒店入住前或退房后不想拖着沉重行李箱？整理釜山 4 处免费行李寄存处（釜山旅游休息室、乐天百货西面总店、海云台 Platform、广安里旅游咨询处）地址与无障碍路线。',
+      ES: 'Dónde guardar tus maletas gratis en Busan antes del check-in o después del check-out: Busan Travel Lounge, Lotte Department Store Seomyeon, Haeundae Platform y Oficina de Turismo de Gwangalli.',
+      FR: 'Où déposer gratuitement vos valises à Busan avant le check-in ou après le check-out : Busan Travel Lounge, Lotte Department Store Seomyeon, Haeundae Platform et Office de Tourisme de Gwangalli.',
+    },
+    sections: [
+      {
+        headingEn: '4 Verified Free Suitcase Storage Spots in Busan',
+        paragraphsEn: [
+          'Avoid carrying heavy suitcases on city buses or crowded streets by using these four free luggage storage services located right next to major Busan subway stations:',
+        ],
+        bulletsEn: [
+          '1. Busan Station Area — Busan Travel Lounge: 12-3 Jungang-daero 196beon-gil, Dong-gu (3-minute flat walk from Line 1 Busan Station Exit 2 or Exit 4 elevator). Free luggage keeping and traveler lounge.',
+          '2. Seomyeon Area — Lotte Department Store Busan Main Branch B1F Service Desk & Lockers: 772 Gaya-daero, Busanjin-gu (directly connected underground to Seomyeon Station concourse and elevators). Ideal while exploring Seomyeon and Jeonpo Cafe Street.',
+          '3. Haeundae Area — Haeundae Platform (Former Haeundae Station Atelier): 621 Haeundaehaebyeon-ro, Haeundae-gu (directly in front of Line 2 Haeundae Station Exit 4). Store your bags before walking down Gunam-ro to Haeundae Beach.',
+          '4. Gwangalli Area — Gwangalli Tourist Information Center: 219 Gwanganhaebyeon-ro, Suyeong-gu (straight down to the beach from Line 2 Gwangan Station Exit 3 or Exit 5 elevator). Free daytime luggage storage right on the flat beachfront promenade.',
+        ],
+      },
+    ],
+  },
+  '/tips/exploration/rental': {
+    title: {
+      EN: 'Free Stroller & Wheelchair Rental Locations in Busan (Attractions & Museums) | Stepless',
+      JA: '釜山のベビーカー・車椅子 無料レンタル場所一覧（観光案内所・博物館・百貨店）| Stepless',
+      ZH_TW: '釜山免費租借嬰兒車＆輪椅地點總整理（主要景點・博物館・百貨公司）| Stepless',
+      ZH_CN: '釜山免费租借婴儿车＆轮椅地点汇总（主要景点・博物馆・百货公司）| Stepless',
+      ES: 'Lugares de Alquiler Gratuito de Cochecitos y Sillas de Ruedas en Busan | Stepless',
+      FR: 'Lieux de Prêt Gratuit de Poussettes et Fauteuils Roulants à Busan | Stepless',
+    },
+    description: {
+      EN: 'Directory of free baby stroller and manual wheelchair rental desks across Busan: Gwangalli Tourist Info, National Maritime Museum, Busan National Science Museum, BEXCO, and major department stores.',
+      JA: '広安里観光案内所、国立海洋博物館、国立釜山科学館、BEXCO、釜山市立美術館、新世界・ロッテ百貨店など身分証提示でベビーカーや手動車椅子を無料レンタルできる施設ディレクトリ。',
+      ZH_TW: '整理憑護照或證件即可免費借用嬰兒車與手動輪椅的釜山景點與設施：廣安里觀光案內所、國立海洋博物館、國立釜山科學館、BEXCO、新世界與樂天百貨。',
+      ZH_CN: '整理凭护照或证件即可免费借用婴儿车与手动轮椅的釜山景点与设施：广安里旅游咨询处、国立海洋博物馆、国立釜山科学馆、BEXCO、新世界与乐天百货。',
+      ES: 'Directorio de préstamo gratuito de cochecitos de bebé y sillas de ruedas manuales en Busan presentando tu pasaporte: Gwangalli, Museo Marítimo Nacional, BEXCO y grandes almacenes.',
+      FR: 'Répertoire des prêts gratuits de poussettes et fauteuils roulants manuels à Busan sur présentation d’une pièce d’identité : Gwangalli, Musée Maritime National, BEXCO et grands magasins.',
+    },
+    sections: [
+      {
+        headingEn: 'Where to Borrow a Free Stroller or Wheelchair in Busan',
+        paragraphsEn: [
+          'If you did not bring a stroller on your flight or a family member needs a wheelchair at large venues, bring a valid ID or passport to borrow equipment free of charge at these locations:',
+        ],
+        bulletsEn: [
+          'Gwangalli Beach Tourist Information Center: Free baby strollers and manual wheelchairs for same-day beachfront walks (accessible via Gwangan Station Exit 3/5 elevator).',
+          'National Maritime Museum & Busan National Science Museum: 1F information desk provides complimentary strollers and manual wheelchairs; all exhibition halls have spacious elevators and ramps.',
+          'BEXCO & Busan Museum of Art: Complimentary wheelchair and stroller loans at the main lobby desk (Centum City Station & BEXCO Station elevators).',
+          'Shinsegae Centum City & Lotte Department Stores (Gwangbok & Seomyeon): Dedicated stroller/wheelchair rental lounges on 1F or B1F connected directly to subway concourses.',
+          'Dadaepo Beach Park & Taejongdae Recreation Area Information Desks: Manual wheelchair and stroller loans available at the visitor center.',
+        ],
+      },
+    ],
+  },
+  '/tips/exploration/metro-reentry': {
+    title: {
+      EN: 'Busan Subway 10-Minute Free Re-Entry Rule (Wrong Platform Direction Fix) | Stepless',
+      JA: '釜山地下鉄の反対ホーム誤入場「10分以内・無料再入場」制度ガイド | Stepless',
+      ZH_TW: '釜山地鐵進錯月台方向免驚！10 分鐘內免費重新進站轉乘規定 | Stepless',
+      ZH_CN: '釜山地铁进错站台方向别慌！10 分钟内免费重新进站换乘规定 | Stepless',
+      ES: 'Regla de Reingreso Gratuito en 10 Minutos del Metro de Busan (Cambio de Andén) | Stepless',
+      FR: 'Règle de Réentrée Gratuite en 10 Minutes dans le Métro de Busan (Changement de Quai) | Stepless',
+    },
+    description: {
+      EN: 'Entered the wrong side platform on the Busan Subway? Learn how to tap out and tap back into the opposite direction gate within 10 minutes at the same station for 0 KRW extra fare.',
+      JA: 'エレベーターで降りたら反対方向のホームだった時も安心！釜山地下鉄1〜4号線で同じ駅の改札を10分以内にタッチして出入りすれば追加運賃0円で反対側ホームへ入り直せる公式ルールを解説。',
+      ZH_TW: '搭電梯下樓才發現進錯方向月台？釜山地鐵 1～4 號線提供「同站 10 分鐘內感應出站再進站免扣基本車資」制度，推嬰兒車與輪椅也能安心換邊。',
+      ZH_CN: '乘电梯下楼才发现进错方向站台？釜山地铁 1～4 号线提供“同站 10 分钟内刷卡出站再进站免扣基本车费”制度，推婴儿车与轮椅也能安心换边。',
+      ES: '¿Entraste al andén equivocado en el metro de Busan? Aprende cómo salir y volver a entrar por el torniquete opuesto en menos de 10 minutos en la misma estación sin pagar tarifa adicional.',
+      FR: 'Vous êtes descendu sur le mauvais quai du métro de Busan ? Découvrez comment sortir et rentrer sur le quai opposé dans les 10 minutes à la même station sans payer de supplément.',
+    },
+    sections: [
+      {
+        headingEn: 'How the 10-Minute Free Same-Station Re-Entry Works',
+        paragraphsEn: [
+          'Many Busan Subway Line 1 and Line 2 stations have side platforms where northbound and southbound turnstiles are separated before you board the platform elevator.',
+        ],
+        bulletsEn: [
+          'Zero Extra Fare Within 10 Minutes: If you accidentally tap into the wrong direction gate or need to exit briefly to use the concourse accessible restroom, tap your transit card to exit and tap back into the correct gate at the SAME station within 10 minutes. The system recognizes it as a same-station transfer and charges 0 KRW.',
+          'Conditions to Remember: This applies to prepaid and postpaid transit cards (1 person per card) on Busan Subway Lines 1–4, once per entry. If more than 10 minutes pass, standard base fare applies.',
+        ],
+      },
+    ],
+  },
+  '/tips/exploration/korean-cheat-codes': {
+    title: {
+      EN: '5-Second Survival Korean & Busan Phrases for Accessible Travel | Stepless',
+      JA: '5秒で使える！釜山旅行＆バリアフリー移動の必須韓国語フレーズ集 | Stepless',
+      ZH_TW: '5 秒即學即用！釜山自由行點餐、問電梯與無障礙求助必備韓語會話卡 | Stepless',
+      ZH_CN: '5 秒即学即用！釜山自由行点餐、问电梯与无障碍求助必备韩语会话卡 | Stepless',
+      ES: 'Frases Esenciales en Coreano en 5 Segundos para Viajar por Busan Sin Barreras | Stepless',
+      FR: 'Phrases Coréennes Essentielles en 5 Secondes pour Voyager à Busan Sans Marche | Stepless',
+    },
+    description: {
+      EN: 'Practical romanized Korean phrases for international travelers in Busan: asking where the elevator is, checking stroller/wheelchair access at restaurants, ordering non-spicy food, and paying by card.',
+      JA: '釜山の食堂や市場、地下鉄駅でそのまま使える簡単韓国語フレーズ集。「エレベーターはどこですか？」「ベビーカー・車椅子で入れますか？」「辛くしないでください」など発音付きで紹介。',
+      ZH_TW: '專為外國旅客整理的釜山實戰韓語發音指南：「請問電梯在哪裡？」、「嬰兒車／輪椅可以進去嗎？」、「請做不辣的」、「可以用信用卡結帳嗎？」等必備表達。',
+      ZH_CN: '专为外国游客整理的釜山实战韩语发音指南：“请问电梯在哪里？”、“婴儿车／轮椅可以进去吗？”、“请做不辣的”、“可以用信用卡结账吗？”等必备表达。',
+      ES: 'Frases prácticas en coreano romanizado para viajeros en Busan: cómo preguntar dónde está el ascensor, si un restaurante es accesible con cochecito o silla de ruedas y cómo pedir comida sin picante.',
+      FR: 'Phrases pratiques en coréen romanisé pour voyager à Busan : demander où se trouve l’ascenseur, vérifier l’accès poussette/fauteuil roulant au restaurant et commander non épicé.',
+    },
+    sections: [
+      {
+        headingEn: 'Essential Romanized Korean Phrases for Busan Travelers',
+        paragraphsEn: [
+          'Use these quick phonetic Korean phrases at subway stations, traditional markets, and local restaurants across Busan:',
+        ],
+        bulletsEn: [
+          'Where is the elevator? — "El-li-be-i-teo-ga eo-di-e it-na-yo?" Use this at subway stations, department stores, and multi-story buildings to find step-free vertical access.',
+          'Can I bring a stroller / wheelchair inside? — "Yu-mo-cha / Hwil-che-eo deul-eo-gal su it-na-yo?" Helpful before entering local restaurants or cafes.',
+          'This one, please / Please make it not spicy — "I-geo ju-se-yo / An maep-ge hae-ju-se-yo." Great for ordering pork soup (Dwaeji-gukbap), noodles (Milmyeon), or seafood.',
+          'Check, please / Do you accept credit cards? — "Gye-san-hae ju-se-yo / Ka-deu doe-na-yo?"',
+        ],
+      },
+    ],
+  },
+  '/tips/exploration/bujeon-masan': {
+    title: {
+      EN: 'Bujeon–Masan Express Rail Outlook & West Busan Step-Free Transfer Guide | Stepless',
+      JA: '釜田〜馬山複線電鉄の開通展望＆西釜山（沙上駅・釜田駅）バリアフリー乗換ガイド | Stepless',
+      ZH_TW: '釜田～馬山複線電鐵開通展望＆西釜山（釜田站・沙上站）無障礙轉乘指南 | Stepless',
+      ZH_CN: '釜田～马山复线电铁开通展望＆西釜山（釜田站・沙上站）无障碍换乘指南 | Stepless',
+      ES: 'Perspectiva del Tren Bujeon–Masan y Guía de Transbordo Accesible en el Oeste de Busan | Stepless',
+      FR: 'Ligne Ferroviaire Bujeon–Masan et Guide de Correspondance Sans Marche à l’Ouest de Busan | Stepless',
+    },
+    description: {
+      EN: 'How the upcoming Bujeon–Masan double-track railway connects Gimhae Airport gateway Sasang Station with Bujeon Station and the Donghae Line for faster step-free travel across Busan.',
+      JA: '東海線の起点・釜田駅と金海国際空港の玄関口・沙上駅を直結する「釜田〜馬山複線電鉄」の整備状況と、大型エレベーター・ホームドア完備によるバリアフリー移動のメリットを解説。',
+      ZH_TW: '解析串聯東海線起點「釜田站」與金海國際機場門戶「沙上站」的釜田～馬山複線電鐵，以及全線大型電梯與無障礙月台對釜山東西向旅遊動線的提升。',
+      ZH_CN: '解析串联东海线起点“釜田站”与金海国际机场门户“沙上站”的釜田～马山复线电铁，以及全线大型电梯与无障碍站台对釜山东西向旅游动线的提升。',
+      ES: 'Cómo la línea ferroviaria Bujeon–Masan conectará la estación de Sasang (acceso al Aeropuerto de Gimhae) con la estación de Bujeon y la Línea Donghae mediante estaciones 100% accesibles.',
+      FR: 'Comment la ligne ferroviaire Bujeon–Masan reliera la station Sasang (porte d’entrée de l’aéroport de Gimhae) à la station Bujeon et à la ligne Donghae avec des ascenseurs modernes.',
+    },
+    sections: [
+      {
+        headingEn: 'Direct East–West Barrier-Free Rail Link: Sasang to Bujeon',
+        paragraphsEn: [
+          'Connecting West Busan (Gimhae International Airport & Sasang Station) directly to central Bujeon Station and the Donghae Line transforms step-free regional transit.',
+        ],
+        bulletsEn: [
+          'Faster Airport-to-East-Busan Access: Currently, traveling between Sasang Station (Line 2 & Gimhae Light Rail) and Bujeon Station (Line 1 & Donghae Line to Osiria/Gijang) requires transferring via Seomyeon. The Bujeon–Masan rail link connects Sasang and Bujeon directly.',
+          'Modern Step-Free Station Standards: All new commuter rail platforms feature level boarding, wide safety screen doors, high-capacity elevators for wheelchairs and strollers, and accessible restrooms.',
+        ],
+      },
+    ],
+  },
+  '/tips/exploration/opera-house': {
+    title: {
+      EN: 'Busan North Port Waterfront Park & Opera House Step-Free Pedestrian Deck Guide | Stepless',
+      JA: '釜山港北港親水公園＆釜山オペラハウス バリアフリー空中歩行デッキ散歩ガイド | Stepless',
+      ZH_TW: '釜山港北港親水公園＆釜山歌劇院：KTX 釜山站直結無障礙空中步道散步指南 | Stepless',
+      ZH_CN: '釜山港北港亲水公园＆釜山歌剧院：KTX 釜山站直连无障碍空中步道散步指南 | Stepless',
+      ES: 'Parque Costero del Puerto Norte de Busan y Ópera de Busan: Paseo Sin Escalones | Stepless',
+      FR: 'Parc Maritime du Port Nord de Busan et Opéra de Busan : Promenade Sans Marche | Stepless',
+    },
+    description: {
+      EN: 'Walk directly from KTX Busan Station 2F concourse to the North Port Waterfront Park and Busan Opera House site with zero stairs using the elevated pedestrian bridge, moving walkways, and elevators.',
+      JA: 'KTX釜山駅2階コンコースからエレベーター・動く歩道完備の空中歩行デッキを渡り、階段ゼロで海辺の北港親水公園や釜山オペラハウス建設エリアへアクセスするバリアフリー散策コース。',
+      ZH_TW: '從 KTX 釜山站 2 樓大廳透過設有大型電梯與電動步道的空中行人天橋，全程零階梯直達釜山港北港親水公園海濱木棧道與釜山歌劇院地標。',
+      ZH_CN: '从 KTX 釜山站 2 楼大厅通过设有大型电梯与自动人行道的空中步行廊桥，全程零台阶直达釜山港北港亲水公园海滨木栈道与釜山歌剧院地标。',
+      ES: 'Camina directamente desde el vestíbulo del 2.º piso de la estación KTX de Busan hasta el Parque Costero del Puerto Norte sin un solo escalón gracias a la pasarela peatonal elevada con ascensores.',
+      FR: 'Marchez directement depuis le hall du 2e étage de la gare KTX de Busan jusqu’au Parc Maritime du Port Nord sans aucune marche grâce à la passerelle piétonne équipée d’ascenseurs.',
+    },
+    sections: [
+      {
+        headingEn: 'Zero-Stair Harbor Walk from KTX Busan Station',
+        paragraphsEn: [
+          'The Busan North Port Redevelopment Waterfront Park offers one of the flattest, most scenic harbor promenades in Korea right outside Busan Station.',
+        ],
+        bulletsEn: [
+          'Direct Elevated Pedestrian Deck: Take the elevator from Subway Line 1 Busan Station (Exit 4 or Exit 6) up to KTX Busan Station 2F, then follow the harbourside skywalk equipped with moving walkways and large elevators down to the waterfront park.',
+          'Wheelchair & Stroller Friendly Waterfront: Wide level wooden decks, gentle lawn plazas, waterfront viewing zones, and clean accessible restrooms make it an ideal 1-hour stroll before or after your KTX train.',
+        ],
+      },
+    ],
+  },
+  '/about': {
+    title: {
+      EN: 'About Stepless in Busan — Editorial Mission & Step-Free Verification Standards | Stepless',
+      JA: 'Stepless in Busan（ステップレス）について｜運営理念とバリアフリー検証基準 | Stepless',
+      ZH_TW: '關於 Stepless in Busan（無階梯釜山）｜服務理念與無障礙實地驗證標準 | Stepless',
+      ZH_CN: '关于 Stepless in Busan（无台阶釜山）｜服务理念与无障碍实地验证标准 | Stepless',
+      ES: 'Sobre Stepless in Busan — Misión Editorial y Estándares de Verificación Accesible | Stepless',
+      FR: 'À Propos de Stepless in Busan — Mission Éditoriale et Normes de Vérification | Stepless',
+    },
+    description: {
+      EN: 'Learn about Stepless in Busan (Chief Editor: Floreur), our mission to empower wheelchair users, stroller families, seniors, and suitcase travelers with verified Busan subway elevator and itinerary guides.',
+      JA: '車椅子利用者、ベビーカー同伴の家族、シニア、スーツケース旅行者が階段の壁なく釜山を楽しめるよう創設されたローカルバリアフリー旅行ガイド「Stepless in Busan」の運営方針と編集体制。',
+      ZH_TW: '了解 Stepless in Busan（總編輯：Floreur）的創立初衷：為輪椅使用者、推嬰兒車家庭、長輩與行李箱旅客提供經過實地驗證的釜山地鐵電梯出口與無障礙旅遊行程。',
+      ZH_CN: '了解 Stepless in Busan（总编辑：Floreur）的创立初衷：为轮椅使用者、推婴儿车家庭、长辈与行李箱游客提供经过实地验证的釜山地铁直梯出口与无障碍旅游路线。',
+      ES: 'Conoce Stepless in Busan (Editora Jefe: Floreur), nuestra misión de ayudar a usuarios de sillas de ruedas, familias con cochecitos, mayores y viajeros con maletas a recorrer Busan sin escalones.',
+      FR: 'Découvrez Stepless in Busan (Rédactrice en chef : Floreur) et notre mission : permettre aux utilisateurs de fauteuils roulants, familles avec poussette, seniors et voyageurs avec valises de visiter Busan sans marche.',
+    },
+    sections: [
+      {
+        headingEn: 'Our 3 Core Editorial Values at Stepless in Busan',
+        paragraphsEn: [
+          'Busan is a breathtaking coastal city where mountains meet the sea, but its steep terrain and multi-level subway stations mean that choosing the wrong exit can leave stroller, wheelchair, and luggage travelers facing long flights of stairs. Stepless in Busan (Chief Editor: Floreur) provides actionable, field-verified step-free routing.',
+        ],
+        bulletsEn: [
+          '22 Major Subway Stations Verified Floor-by-Floor: We document continuous elevator pathways from underground platforms (B2–B4) to concourses and street-level sidewalks.',
+          '8 Curated Themes & 1 to 5-Day Step-Free Itineraries: Every restaurant, museum, market, and coastal boardwalk is checked for ramp access, elevator availability, and stroller/wheelchair comfort.',
+          '7-Language Global Accessibility: Available in Korean, English, Japanese, Traditional Chinese, Simplified Chinese, Spanish, and French with one-click Google Maps and Naver Map transit navigation.',
+        ],
+      },
+    ],
+  },
+  '/about/privacy': {
+    title: {
+      EN: 'Privacy Policy & Cookie / Google AdSense Disclosure | Stepless in Busan',
+      JA: 'プライバシーポリシー（個人情報保護方針・CookieおよびGoogle AdSense案内）| Stepless',
+      ZH_TW: '隱私權政策（Privacy Policy・Cookie 與 Google AdSense 廣告說明）| Stepless',
+      ZH_CN: '隐私政策（Privacy Policy・Cookie 与 Google AdSense 广告说明）| Stepless',
+      ES: 'Política de Privacidad y Uso de Cookies / Google AdSense | Stepless in Busan',
+      FR: 'Politique de Confidentialité et Utilisation des Cookies / Google AdSense | Stepless in Busan',
+    },
+    description: {
+      EN: 'Official Privacy Policy for Stepless in Busan (https://stepless.kr), detailing geolocation handling, cookies, Google Analytics, and Google AdSense advertising data policies.',
+      JA: 'Stepless in Busan (https://stepless.kr) のプライバシーポリシー。位置情報(Geolocation API)の端末内処理、Cookie、Google AnalyticsおよびGoogle AdSense広告配信に関する規定。',
+      ZH_TW: 'Stepless in Busan (https://stepless.kr) 官方隱私權政策，說明瀏覽器位置資訊處理原則、Cookie 使用、Google Analytics 統計與 Google AdSense 廣告政策。',
+      ZH_CN: 'Stepless in Busan (https://stepless.kr) 官方隐私政策，说明浏览器位置信息处理原则、Cookie 使用、Google Analytics 统计与 Google AdSense 广告政策。',
+      ES: 'Política de privacidad oficial de Stepless in Busan (https://stepless.kr), detallando el tratamiento de geolocalización, cookies, Google Analytics y anuncios de Google AdSense.',
+      FR: 'Politique de confidentialité officielle de Stepless in Busan (https://stepless.kr) détaillant la géolocalisation, les cookies, Google Analytics et la diffusion d’annonces Google AdSense.',
+    },
+    sections: [
+      {
+        headingEn: 'Privacy Policy & Cookie Disclosure',
+        paragraphsEn: [
+          'Stepless in Busan ("Service", https://stepless.kr) respects user privacy and complies with applicable data protection regulations and Google Publisher Policies.',
+        ],
+        bulletsEn: [
+          '1. Information Collection & Geolocation: All subway elevator guides and travel itineraries are available free without registration. When you use the Nearest Exit feature, browser geolocation is calculated locally on your device and is never stored on our servers. If you voluntarily submit a facility report or recommendation, only the nickname and report text you provide are stored to improve accuracy.',
+          '2. Cookies, Google Analytics & Google AdSense: This website uses Google Analytics for traffic analysis and Google AdSense to support free operations. Third-party vendors, including Google, use cookies to serve ads based on a user’s prior visits. Users may opt out of personalized advertising at any time by visiting Google Ads Settings (https://www.google.com/settings/ads) or disabling cookies in browser settings.',
+          '3. Privacy Contact: Stepless in Busan Editorial Team · Chief Privacy Officer: Floreur · Email: floreur88@gmail.com',
+        ],
+      },
+    ],
+  },
+  '/about/terms': {
+    title: {
+      EN: 'Terms of Service & Public Data Disclaimer | Stepless in Busan',
+      JA: '利用規約（Terms of Service・免責事項および著作権について）| Stepless',
+      ZH_TW: '服務條款（Terms of Service・設施營運變動免責聲明與著作權）| Stepless',
+      ZH_CN: '服务条款（Terms of Service・设施运营变动免责声明与著作权）| Stepless',
+      ES: 'Términos de Servicio y Aviso Legal sobre Datos Públicos | Stepless in Busan',
+      FR: 'Conditions d’Utilisation et Mentions Légales | Stepless in Busan',
+    },
+    description: {
+      EN: 'Terms of Service for Stepless in Busan (https://stepless.kr), including subway elevator maintenance disclaimers, restaurant operating hour notices, and intellectual property rights.',
+      JA: 'Stepless in Busan (https://stepless.kr) のサービス利用規約。地下鉄エレベーターの緊急点検・運休に関する免責事項、店舗営業時間の変動、およびコンテンツ著作権について。',
+      ZH_TW: 'Stepless in Busan (https://stepless.kr) 服務條款，包含地鐵電梯臨時維修免責聲明、景點餐廳營業時間變動提醒與原創內容著作權保護說明。',
+      ZH_CN: 'Stepless in Busan (https://stepless.kr) 服务条款，包含地铁电梯临时维修免责声明、景点餐厅营业时间变动提醒与原创内容著作权保护说明。',
+      ES: 'Términos de Servicio de Stepless in Busan (https://stepless.kr), incluyendo avisos sobre mantenimiento de ascensores, horarios comerciales y derechos de propiedad intelectual.',
+      FR: 'Conditions d’utilisation de Stepless in Busan (https://stepless.kr), incluant les avertissements sur la maintenance des ascenseurs, les horaires d’ouverture et la propriété intellectuelle.',
+    },
+    sections: [
+      {
+        headingEn: 'Terms of Service & Facility Operation Disclaimer',
+        paragraphsEn: [
+          'These Terms govern your use of the Stepless in Busan web platform and its barrier-free Busan travel guides.',
+        ],
+        bulletsEn: [
+          'Article 1 (Purpose of Service): Stepless in Busan is a public-interest local travel guide providing subway elevator/escalator locations and step-free travel itineraries across Busan Metropolitan City.',
+          'Article 2 (Facility Maintenance & Schedule Changes): Subway elevators and escalators may be temporarily suspended without prior notice due to urgent maintenance by Busan Transportation Corporation or severe weather. Restaurant and attraction hours may also change; please verify critical schedules before departure.',
+          'Article 3 (Intellectual Property): Original floor-by-floor pathway guides, curated itinerary descriptions, and custom design assets are the intellectual property of Stepless in Busan.',
+        ],
+      },
+    ],
+  },
+  '/about/contact': {
+    title: {
+      EN: 'Contact Us — Report Subway Elevator Status & Partnership Inquiries | Stepless',
+      JA: 'お問い合わせ・エレベーター点検情報提供・パートナーシップ窓口 | Stepless',
+      ZH_TW: '聯絡我們・回報地鐵電梯維修資訊＆無障礙景點合作提案 | Stepless',
+      ZH_CN: '联系我们・反馈地铁电梯维修信息＆无障碍景点合作提案 | Stepless',
+      ES: 'Contacto — Reportar Estado de Ascensores y Consultas de Colaboración | Stepless',
+      FR: 'Contactez-Nous — Signaler l’État d’un Ascenseur et Partenariats | Stepless',
+    },
+    description: {
+      EN: 'Contact the Stepless in Busan editorial team (floreur88@gmail.com) to report subway elevator maintenance, suggest wheelchair/stroller-friendly Busan spots, or inquire about partnerships.',
+      JA: '釜山地下鉄のエレベーター故障・点検情報の提供、車椅子・ベビーカーで入りやすいおすすめスポットの推薦、提携に関するお問い合わせ窓口（floreur88@gmail.com）。',
+      ZH_TW: '歡迎聯絡 Stepless in Busan 編輯團隊（floreur88@gmail.com），回報釜山地鐵電梯臨時維修狀況、推薦對嬰兒車與輪椅友善的釜山店家，或洽談合作事宜。',
+      ZH_CN: '欢迎联系 Stepless in Busan 编辑团队（floreur88@gmail.com），反馈釜山地铁电梯临时维修状况、推荐对婴儿车与轮椅友好的釜山店家，或洽谈合作事宜。',
+      ES: 'Contacta al equipo editorial de Stepless in Busan (floreur88@gmail.com) para informar sobre ascensores en mantenimiento, recomendar lugares accesibles o proponer colaboraciones.',
+      FR: 'Contactez l’équipe éditoriale de Stepless in Busan (floreur88@gmail.com) pour signaler un ascenseur en maintenance, suggérer un lieu accessible ou proposer un partenariat.',
+    },
+    sections: [
+      {
+        headingEn: 'Official Communication Channels & Feedback Process',
+        paragraphsEn: [
+          'We continuously update our Busan subway elevator directory and barrier-free courses with field reports from travelers and local residents.',
+        ],
+        bulletsEn: [
+          'Editorial Email: floreur88@gmail.com (Chief Editor: Floreur)',
+          'Subway Elevator & Exit Updates: Send us the station name, exit number, and current maintenance notice; verified updates are reflected within 24–48 hours.',
+          'Accessible Spot Recommendations: Let us know about stroller-friendly and wheelchair-accessible restaurants, cafes, or attractions in Busan for inclusion in our curated courses.',
+        ],
+      },
+    ],
+  },
+  '/about/data-source': {
+    title: {
+      EN: 'Public Data Sources & Barrier-Free Field Verification Methodology | Stepless',
+      JA: '公共データ出典およびバリアフリー現地検証プロセスについて | Stepless',
+      ZH_TW: '公共數據資料來源＆無障礙現場勘查驗證標準說明 | Stepless',
+      ZH_CN: '公共数据资料来源＆无障碍现场勘查验证标准说明 | Stepless',
+      ES: 'Fuentes de Datos Públicos y Metodología de Verificación Sin Barreras | Stepless',
+      FR: 'Sources de Données Publiques et Méthodologie de Vérification sur le Terrain | Stepless',
+    },
+    description: {
+      EN: 'How Stepless in Busan cross-verifies data from Busan Transportation Corporation, Korea Tourism Organization TourAPI 4.0 (KorWithService2), Visit Busan, and on-site pedestrian audits.',
+      JA: '釜山交通公社の都市鉄道昇降設備データ、韓国観光公社TourAPI 4.0（バリアフリー観光情報KorWithService2）、釜山広域市公共データ、および現地実査による交差検証基準を公開。',
+      ZH_TW: '公開 Stepless in Busan 所採用之釜山交通公社地鐵升降設施數據、韓國觀光公社 TourAPI 4.0（無障礙旅遊 KorWithService2）、釜山廣域市公開資料與編輯實地交叉驗證流程。',
+      ZH_CN: '公开 Stepless in Busan 所采用之釜山交通公社地铁升降设施数据、韩国观光公社 TourAPI 4.0（无障碍旅游 KorWithService2）、釜山广域市公开数据与编辑实地交叉验证流程。',
+      ES: 'Conoce cómo Stepless in Busan verifica los datos oficiales de la Corporación de Transporte de Busan, la API de Turismo Sin Barreras de Corea (TourAPI KorWithService2) y auditorías a pie.',
+      FR: 'Découvrez comment Stepless in Busan recoupe les données officielles de la Busan Transportation Corporation, de l’API TourAPI KorWithService2 de l’Office du Tourisme de Corée et des audits terrain.',
+    },
+    sections: [
+      {
+        headingEn: 'Official Public Data Sources & 4-Step Verification',
+        paragraphsEn: [
+          'Every subway exit recommendation and accessible tourist spot on Stepless in Busan is built on official national/municipal datasets and verified through physical inspection:',
+        ],
+        bulletsEn: [
+          '1. Busan Transportation Corporation: Official subway station elevator, escalator, wheelchair lift, and accessible restroom location datasets across Lines 1–4.',
+          '2. Korea Tourism Organization (TourAPI 4.0 & KorWithService2): Official national barrier-free tourism database covering step-free entrances, ramps, accessible parking, braille blocks, and wheelchair/stroller loans.',
+          '3. Busan Metropolitan City & Visit Busan: Monthly festival schedules, low-floor bus operations, and Duribal special transport guidelines.',
+          '4. On-Site Curb & Crosswalk Verification: Local editors verify street-level curb cuts, crosswalk connections, and department store underground passage hours.',
+        ],
+      },
+    ],
+  },
+};
 
 function localizeStaticPage(basePage: StaticRoutePage, lang: Language): StaticRoutePage {
   if (lang === 'KR') return basePage;
@@ -974,6 +1744,11 @@ function localizeStaticPage(basePage: StaticRoutePage, lang: Language): StaticRo
     if (course) {
       return buildLocalizedCoursePage(course, cleanPath, lang);
     }
+  }
+
+  // 2b. Barrier-Free pages (/barrier-free and /tips/courses/barrier-free)
+  if (cleanPath === '/barrier-free' || cleanPath === '/tips/courses/barrier-free') {
+    return buildLocalizedBarrierFreePage(cleanPath, lang);
   }
 
   // 3. Home page ('/')
@@ -1030,41 +1805,132 @@ function localizeStaticPage(basePage: StaticRoutePage, lang: Language): StaticRo
     };
   }
 
-  // 4. Other hub/content pages: localize links and provide localized title/description
-  const d = DICTIONARY[lang] || DICTIONARY.EN;
-  const localizedBody = basePage.bodyHtml.replace(
-    /href="\/(station|search|tips|barrier-free|my-route|schedule|about)([^"]*)"/g,
-    (_m, seg, rest) => `href="${buildLocalizedPath(`/${seg}${rest}`, lang)}"`
-  );
+  // 4. All other hub, transit, exploration & policy pages
+  const meta = HUB_AND_ARTICLE_META[cleanPath];
+  if (meta) {
+    const title = meta.title[lang];
+    const description = meta.description[lang];
+    const h1 = title.replace(/\s*\|\s*Stepless.*$/i, '');
 
-  const genericTitle = pickLang(lang, {
-    KR: basePage.title,
-    EN: `${basePage.h1} | Busan Travel Guide & Step-Free Subway | Stepless`,
-    JA: `${basePage.h1}｜釜山旅行＆地下鉄バリアフリー案内 | Stepless`,
-    ZH_TW: `${basePage.h1}｜釜山自由行＆地鐵無障礙指南 | Stepless`,
-    ZH_CN: `${basePage.h1}｜釜山自由行＆地铁无障碍指南 | Stepless`,
-    ES: `${basePage.h1} | Guía de Viaje a Busan Sin Escalones | Stepless`,
-    FR: `${basePage.h1} | Guide de Voyage à Busan Sans Marche | Stepless`,
-  });
+    if (cleanPath === '/search') {
+      const rowsHtml = STATIONS.map(s => {
+        const sTitle = getLocalizedStationTitle(s, lang);
+        const sHref = buildLocalizedPath(`/station/${s.id}`, lang);
+        const sLines = s.lines.map(l => formatLineLabelI18n(l, lang)).join(' · ');
+        const loc = getStationLocalized(s, lang);
+        const recExits = loc ? loc.recommendedExits : (s.recommendedExitsEn || '');
+        const elevDesc = loc ? loc.elevatorLocationDesc : (s.elevatorLocationDescEn || '');
+        return `<tr>
+                    <td><a href="${escapeHtml(sHref)}"><strong>${escapeHtml(sTitle)}</strong></a></td>
+                    <td>${escapeHtml(sLines)}</td>
+                    <td>${escapeHtml(recExits)}</td>
+                    <td>${escapeHtml(elevDesc)}</td>
+                  </tr>`;
+      }).join('\n');
 
-  const genericDesc = pickLang(lang, {
-    KR: basePage.description,
-    EN: `${basePage.lead} — Verified Busan travel guide, curated itineraries, and step-free subway elevator exits by Stepless in Busan.`,
-    JA: `${d.hero.subtitle} — 釜山の観光コース・地下鉄エレベーター出口・バリアフリー移動ガイド（Stepless in Busan）。`,
-    ZH_TW: `${d.hero.subtitle} — 釜山推薦旅遊行程、地鐵電梯出口與無障礙移動指南（Stepless in Busan）。`,
-    ZH_CN: `${d.hero.subtitle} — 釜山推荐旅游路线、地铁无障碍直梯出口与出行指南（Stepless in Busan）。`,
-    ES: `${d.hero.subtitle} — Guía de viaje a Busan, itinerarios recomendados y salidas de metro con ascensor (Stepless in Busan).`,
-    FR: `${d.hero.subtitle} — Guide de voyage à Busan, itinéraires recommandés et sorties de métro avec ascenseur (Stepless in Busan).`,
-  });
+      return {
+        routePath: localizedRoutePath,
+        title,
+        description,
+        h1,
+        lead: description,
+        bodyHtml: `
+          <section style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 800; margin-top: 0; color: #11161B;">${escapeHtml(h1)}</h2>
+            <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; border-color: #E5E2DC; font-size: 14px; background: #FFFFFF;">
+              <thead>
+                <tr style="background: #F4F6F0; text-align: left;">
+                  <th>Station</th>
+                  <th>Lines</th>
+                  <th>Elevator / Escalator Exits</th>
+                  <th>Elevator Location &amp; Step-Free Route</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </section>`,
+      };
+    }
 
-  return {
-    routePath: localizedRoutePath,
-    title: genericTitle,
-    description: genericDesc,
-    h1: basePage.h1,
-    lead: genericDesc,
-    bodyHtml: localizedBody,
-  };
+    if (cleanPath === '/tips/courses') {
+      const coursesHtml = BUSAN_ITINERARIES.map(c => {
+        const cTitle = trEn(c.titleEn, lang);
+        const cSub = trEn(c.subtitleEn, lang);
+        const cTip = trEn(c.overallTipEn, lang);
+        const cHref = buildLocalizedPath(`/tips/courses/${c.category.toLowerCase().replace('_', '-')}`, lang);
+        const stepNames = c.steps.slice(0, 8).map(s => trEn(s.titleEn, lang)).join(', ');
+        return `<article style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 14px; padding: 18px; margin-bottom: 14px;">
+                <h3 style="font-size: 18px; font-weight: 800; margin: 0 0 6px 0;"><a href="${escapeHtml(cHref)}">${escapeHtml(cTitle)}</a></h3>
+                <p style="font-size: 14px; color: #334155; margin: 0 0 8px 0;">${escapeHtml(cSub)} — ${escapeHtml(cTip)}</p>
+                <p style="font-size: 13px; color: #5B7332; margin: 0;">Stops (${c.steps.length}): ${escapeHtml(stepNames)}</p>
+              </article>`;
+      }).join('\n');
+
+      return {
+        routePath: localizedRoutePath,
+        title,
+        description,
+        h1,
+        lead: description,
+        bodyHtml: `
+          <section style="margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 800; color: #11161B;">${escapeHtml(h1)} (${BUSAN_ITINERARIES.length} Curated Itineraries)</h2>
+            ${coursesHtml}
+          </section>`,
+      };
+    }
+
+    const d = DICTIONARY[lang] || DICTIONARY.EN;
+    const coursesNavHtml = BUSAN_ITINERARIES.map(c => {
+      const cTitle = trEn(c.titleEn, lang);
+      const cSub = trEn(c.subtitleEn, lang);
+      const href = buildLocalizedPath(`/tips/courses/${c.category.toLowerCase().replace('_', '-')}`, lang);
+      return `<li><a href="${escapeHtml(href)}"><strong>${escapeHtml(cTitle)}</strong></a> — ${escapeHtml(cSub)}</li>`;
+    }).join('\n            ');
+
+    const stationsNavHtml = STATIONS.map(s => {
+      const sTitle = getLocalizedStationTitle(s, lang, true);
+      const href = buildLocalizedPath(`/station/${s.id}`, lang);
+      return `<a href="${escapeHtml(href)}" style="display: inline-block; margin: 4px 6px 4px 0; padding: 4px 10px; background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 999px; font-size: 13px; color: #334155; text-decoration: none;">${escapeHtml(sTitle)}</a>`;
+    }).join('\n            ');
+
+    const sectionsHtml = meta.sections.map(sec => {
+      const pHtml = sec.paragraphsEn.map(p => `<p style="font-size: 14px; color: #334155;">${escapeHtml(trEn(p, lang))}</p>`).join('\n');
+      const bHtml = sec.bulletsEn && sec.bulletsEn.length > 0
+        ? `<ul style="font-size: 14px; color: #334155; padding-left: 20px; margin-bottom: 0;">
+            ${sec.bulletsEn.map(b => `<li>${escapeHtml(trEn(b, lang))}</li>`).join('\n            ')}
+          </ul>`
+        : '';
+      return `
+          <section style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 800; margin-top: 0; color: #11161B;">${escapeHtml(h1)}</h2>
+            <p style="font-size: 14px; color: #1E293B; font-weight: 600;">${escapeHtml(description)}</p>
+            ${pHtml}
+            ${bHtml}
+          </section>
+          <section style="background: #F4F6F0; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+            <h2 style="font-size: 18px; font-weight: 800; margin-top: 0; color: #11161B;">${escapeHtml(d.categories.sectionTitle)}</h2>
+            <ul style="font-size: 14px; color: #334155; padding-left: 20px; margin-bottom: 16px;">
+              ${coursesNavHtml}
+            </ul>
+            <h3 style="font-size: 16px; font-weight: 800; color: #11161B; margin: 0 0 8px 0;">${escapeHtml(d.utility.sectionTitle)}</h3>
+            <div>${stationsNavHtml}</div>
+          </section>`;
+    }).join('\n');
+
+    return {
+      routePath: localizedRoutePath,
+      title,
+      description,
+      h1,
+      lead: description,
+      bodyHtml: sectionsHtml,
+    };
+  }
+
+  return basePage;
 }
 
 function generateRouteHtml(
@@ -1137,6 +2003,10 @@ function generateRouteHtml(
     `<meta name="twitter:description" content="${escapeHtml(page.description)}" />`
   );
 
+  const archiveSummaryLabel = lang === 'KR'
+    ? `${escapeHtml(page.h1)} — 텍스트 가이드 아카이브 (Text Reference Guide)`
+    : `${escapeHtml(page.h1)} — Text Reference Guide`;
+
   // 5. Replace <div id="root">...</div> inner content AND <details id="seo-prerender-archive"> with route-specific visible semantic HTML
   const rootReplacement = `<div id="root">
       <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px 16px; background-color: #FBFBF9; color: #11161B;">
@@ -1154,7 +2024,7 @@ function generateRouteHtml(
     </div>
 
     <details id="seo-prerender-archive" style="max-width: 1120px; margin: 0 auto; padding: 8px 16px 24px; font-size: 12px; color: #64748B; line-height: 1.65;">
-      <summary style="cursor: pointer; font-weight: 600; color: #94A3B8; list-style: none; text-align: center;">${escapeHtml(page.h1)} — 텍스트 가이드 아카이브 (Text Reference Guide)</summary>
+      <summary style="cursor: pointer; font-weight: 600; color: #94A3B8; list-style: none; text-align: center;">${archiveSummaryLabel}</summary>
       <div style="margin-top: 12px;">
         ${page.bodyHtml}
       </div>
