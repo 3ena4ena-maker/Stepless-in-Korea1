@@ -6501,7 +6501,29 @@ case 'EXPERIENCE': {
       {/* ========================================================================= */}
       {activeSection === 'TRANSIT_TIPS' && (
         <div className="space-y-6 sm:space-y-8 animate-fade-in text-left">
-          {/* Header Bar */}
+          {/* Header Bar (Borderless with clean line icon) */}
+          <div className="space-y-1.5 border-b border-slate-200 pb-4 text-left">
+            <div className="flex flex-col sm:flex-row sm:items-baseline gap-1.5 sm:gap-3">
+              <h2 className="text-xl sm:text-2xl font-heading font-black text-slate-900 flex items-center gap-2.5 shrink-0 tracking-tight">
+                <svg className="w-6 h-6 sm:w-7 sm:h-7 stroke-[#8EA85E] shrink-0" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="4" y="3" width="16" height="15" rx="3" />
+                  <path d="M4 11h16" />
+                  <path d="M12 3v8" />
+                  <circle cx="8.5" cy="14.5" r="1" />
+                  <circle cx="15.5" cy="14.5" r="1" />
+                  <path d="M7 18l-2 3" />
+                  <path d="M17 18l2 3" />
+                </svg>
+                <span>{language === 'KR' ? '부산 대중교통 이용 팁' : 'Busan Public Transit Guide'}</span>
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 font-medium">
+                {language === 'KR' 
+                  ? '현지인이 전수하는 최신 대중교통 할인 정책과 무료 환승 완전 정복 가이드입니다.' 
+                  : 'The latest public transit discount policies and free transfer guides, straight from Busan locals.'}
+              </p>
+            </div>
+          </div>
+          {false && (
           <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-[0_4px_15px_rgba(0,0,0,0.01)] space-y-2.5">
             <div className="flex flex-col sm:flex-row sm:items-baseline gap-1.5 sm:gap-3">
               <h2 className="text-lg sm:text-xl font-heading font-extrabold text-slate-800 flex items-center gap-2 shrink-0">
@@ -6547,9 +6569,184 @@ case 'EXPERIENCE': {
             </div>
           </div>
 
+          )}
           {transitSection === 'SUBMENU' && (
             <div className="space-y-8 max-w-6xl mx-auto">
               {/* SPECIAL BENEFITS / TRANSIT TIPS HEADER SECTION */}
+              <div className="space-y-2 py-1">
+                <div className="bg-[#8EA85E] text-white px-5 py-2.5 rounded-lg flex items-center justify-between shadow-2xs">
+                  <span className="text-xs font-extrabold tracking-[0.14em] uppercase">TRANSIT GUIDE · 05</span>
+                  <span className="text-xs font-medium text-white/95">
+                    {language === 'KR' ? '부산 대중교통 및 택시 이용 혜택과 주요 수칙' : 'Busan Public Transit & Taxi Guide'}
+                  </span>
+                </div>
+
+                <div className="py-6 sm:py-9 px-2 sm:px-4 max-w-5xl mx-auto">
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-x-5 sm:gap-x-7 lg:gap-x-9 gap-y-8 sm:gap-y-10">
+                    {/* 01. 모든 어린이 무료 혜택 */}
+                    <button
+                      type="button"
+                      onClick={() => navigateToSubPage('child-free')}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Child with Cap & Transit Pass */}
+                          <circle cx="28" cy="27" r="11" />
+                          <path d="M17 25 C17 17, 39 17, 39 25" />
+                          <line x1="15" y1="25" x2="42" y2="25" />
+                          <path d="M28 16 L28 13 M25 13 L31 13" />
+                          <circle cx="24" cy="28" r="1" fill="#1E1E1C" />
+                          <circle cx="32" cy="28" r="1" fill="#1E1E1C" />
+                          <path d="M25 32 Q28 35 31 32" />
+                          <path d="M14 50 C16 41, 21 39, 28 39 C35 39, 40 41, 42 50" />
+                          {/* Transit Pass Badge */}
+                          <rect x="37" y="34" width="16" height="11" rx="2" fill="#FAF9F6" />
+                          <line x1="37" y1="38" x2="53" y2="38" />
+                          <circle cx="45" cy="42" r="1.5" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between gap-1 transition-colors">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332] truncate">
+                          {language === 'KR' ? '모든 어린이 무료 혜택' : 'Children Free'}
+                        </span>
+                        <span className="text-[10px] font-mono text-[#6E6C64] group-hover:text-[#5B7332] shrink-0">01</span>
+                      </div>
+                    </button>
+
+                    {/* 02. 부산 버스 QR 간편결제 */}
+                    <button
+                      type="button"
+                      id="card-bus-qr"
+                      onClick={() => navigateToSubPage('bus-qr')}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Smartphone & QR Code Scan */}
+                          <rect x="18" y="10" width="26" height="44" rx="4" />
+                          <line x1="27" y1="14" x2="35" y2="14" />
+                          <circle cx="31" cy="50" r="1.3" />
+                          <rect x="21" y="17" width="20" height="29" rx="1.5" />
+                          {/* QR Squares */}
+                          <rect x="24" y="21" width="5.5" height="5.5" rx="0.8" />
+                          <rect x="32.5" y="21" width="5.5" height="5.5" rx="0.8" />
+                          <rect x="24" y="31.5" width="5.5" height="5.5" rx="0.8" />
+                          <rect x="33" y="32" width="2" height="2" />
+                          <rect x="36" y="35" width="2" height="2" />
+                          <line x1="19" y1="29" x2="43" y2="29" strokeDasharray="2 1.5" />
+                          {/* Wireless Waves */}
+                          <path d="M47 24 C49 26, 49 30, 47 32" />
+                          <path d="M50 21 C53 25, 53 31, 50 35" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between gap-1 transition-colors">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332] truncate">
+                          {language === 'KR' ? '부산 버스 QR 간편결제' : 'Bus QR Pay'}
+                        </span>
+                        <span className="text-[10px] font-mono text-[#6E6C64] group-hover:text-[#5B7332] shrink-0">02</span>
+                      </div>
+                    </button>
+
+                    {/* 03. 부산 대중교통 환승 혜택 */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        document.getElementById('transfer-rules-section')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Metro/Bus Transfer Arch & Tracks */}
+                          <path d="M12 46 V26 C12 15, 20 10, 32 10 C44 10, 52 15, 52 26 V46" strokeDasharray="2 2" />
+                          <rect x="18" y="18" width="28" height="24" rx="5" />
+                          <rect x="21" y="22" width="22" height="10" rx="2" />
+                          <line x1="32" y1="22" x2="32" y2="32" />
+                          <circle cx="24" cy="37" r="1.8" />
+                          <circle cx="40" cy="37" r="1.8" />
+                          <line x1="29" y1="37" x2="35" y2="37" />
+                          <line x1="9" y1="47" x2="55" y2="47" />
+                          <line x1="18" y1="47" x2="15" y2="52" />
+                          <line x1="46" y1="47" x2="49" y2="52" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between gap-1 transition-colors">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332] truncate">
+                          {language === 'KR' ? '부산 대중교통 환승 혜택' : 'Transfer Guide'}
+                        </span>
+                        <span className="text-[10px] font-mono text-[#6E6C64] group-hover:text-[#5B7332] shrink-0">03</span>
+                      </div>
+                    </button>
+
+                    {/* 04. 버스 휴대품 반입 기준 */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        document.getElementById('bus-luggage-rules-section')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Carry-on Suitcase with Dimension Guides */}
+                          <rect x="20" y="19" width="26" height="29" rx="3.5" />
+                          <path d="M28 19 V12 H38 V19" />
+                          <line x1="24" y1="26" x2="42" y2="26" strokeDasharray="1.5 1.5" />
+                          <line x1="24" y1="33" x2="42" y2="33" strokeDasharray="1.5 1.5" />
+                          <line x1="24" y1="40" x2="42" y2="40" strokeDasharray="1.5 1.5" />
+                          <circle cx="25" cy="50" r="1.8" />
+                          <circle cx="41" cy="50" r="1.8" />
+                          {/* Height & Width Rulers */}
+                          <line x1="13" y1="19" x2="13" y2="48" />
+                          <line x1="11" y1="19" x2="15" y2="19" />
+                          <line x1="11" y1="48" x2="15" y2="48" />
+                          <line x1="20" y1="54" x2="46" y2="54" />
+                          <line x1="20" y1="52" x2="20" y2="56" />
+                          <line x1="46" y1="52" x2="46" y2="56" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between gap-1 transition-colors">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332] truncate">
+                          {language === 'KR' ? '버스 휴대품 반입 기준' : 'Carry-on Rules'}
+                        </span>
+                        <span className="text-[10px] font-mono text-[#6E6C64] group-hover:text-[#5B7332] shrink-0">04</span>
+                      </div>
+                    </button>
+
+                    {/* 05. 부산 택시 이용 & 호출 팁 (모바일 2열에서 자연스럽게 왼쪽 열 배치) */}
+                    <button
+                      type="button"
+                      onClick={() => navigateToSubPage('taxi')}
+                      className="cursor-pointer flex flex-col items-center group text-left w-full focus:outline-none"
+                    >
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C] group-hover:stroke-[#6A833E] group-hover:-translate-y-1 transition-all duration-200" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          {/* Minimalist Line-Art Taxi Cab */}
+                          <rect x="26" y="14" width="12" height="4.5" rx="1" />
+                          <path d="M16 30 L21 18.5 H43 L48 30" />
+                          <rect x="11" y="30" width="42" height="16" rx="3.5" />
+                          <rect x="20" y="21" width="24" height="7" rx="1" />
+                          <line x1="32" y1="21" x2="32" y2="28" />
+                          <circle cx="17" cy="38" r="2.5" />
+                          <circle cx="47" cy="38" r="2.5" />
+                          <line x1="25" y1="37" x2="39" y2="37" />
+                          <line x1="25" y1="40" x2="39" y2="40" />
+                          <path d="M15 46 V50 H21 V46" />
+                          <path d="M43 46 V50 H49 V46" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between gap-1 transition-colors">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332] truncate">
+                          {language === 'KR' ? '부산 택시 이용 & 호출 팁' : 'Busan Taxi Tips'}
+                        </span>
+                        <span className="text-[10px] font-mono text-[#6E6C64] group-hover:text-[#5B7332] shrink-0">05</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              {false && (<>
               <div className="text-center py-4 sm:py-6 max-w-3xl mx-auto space-y-2 overflow-hidden">
                 <h1 className="text-base xs:text-lg min-[410px]:text-xl sm:text-3xl font-black text-slate-900 tracking-tight font-heading leading-tight whitespace-nowrap">
                   {language === 'KR' 
@@ -7041,6 +7238,7 @@ case 'EXPERIENCE': {
                 </div>
               </div>
 
+              </>)}
               {/* HIGH-VISIBILITY DETAIL PANELS (Style 2: Layout like the brochure flyers in image 2) */}
               <div className="space-y-8 pt-8 border-t border-slate-100">
                 {/* Sub-panel 1: High-contrast split scorecard for transfer guidelines */}
@@ -7389,6 +7587,39 @@ case 'EXPERIENCE': {
               </div>
             </div>
           )}
+
+          {/* Verification Info - Displayed at the very bottom of Public Transit Tips */}
+          <div className="pt-4 border-t border-slate-200/80 flex justify-start">
+            <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1.5 whitespace-nowrap overflow-x-auto max-w-full scrollbar-none">
+              <span className="font-bold text-[#8EA85E] flex items-center gap-1 shrink-0">
+                <span className="relative flex h-1.5 w-1.5 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8EA85E] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#8EA85E]"></span>
+                </span>
+                <span>{language === 'KR' ? '검증 정보' : 'Verified Info'}</span>
+              </span>
+              <span className="text-slate-300 shrink-0">|</span>
+              <span className="shrink-0">{language === 'KR' ? '조사자: 플로레르' : 'Inspector: Florair'}</span>
+              <span className="text-slate-300 shrink-0">|</span>
+              <span className="shrink-0">
+                {language === 'KR' ? '최근 조사일:' : 'Audited:'}{' '}
+                <strong className="text-slate-800 font-semibold">{getTodayDate(language)}</strong>{' '}
+                <span className="text-blue-600 font-normal">{language === 'KR' ? '기준 (매일 자동 업데이트)' : '(Updated Daily)'}</span>
+              </span>
+              <span className="text-slate-300 shrink-0">|</span>
+              <span className="shrink-0">
+                {language === 'KR' ? '공식 출처:' : 'Source:'}{' '}
+                <a 
+                  href="https://www.busan.go.kr" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-slate-700 hover:text-blue-600 underline font-semibold"
+                >
+                  {language === 'KR' ? '부산광역시청 홈페이지' : 'Busan City Portal'}
+                </a>
+              </span>
+            </div>
+          </div>
 
           {transitSection === 'CHILD_FREE' && (
             <div className="space-y-6 animate-fade-in text-left">

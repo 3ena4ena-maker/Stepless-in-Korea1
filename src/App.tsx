@@ -2030,9 +2030,16 @@ export default function App() {
                       </h3>
                     </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
+                    <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-1.5 sm:gap-3">
                       {STATIONS.map((st) => {
                         const lineStr = st.lines.map(l => formatLineLabelI18n(l, language)).join('·');
+                        const translatedName = getTranslatedStationName(st.name, language);
+                        const mobileTitleClass =
+                          translatedName.length > 13
+                            ? 'text-[10px] sm:text-base leading-tight'
+                            : translatedName.length > 8
+                            ? 'text-[11px] sm:text-base leading-tight'
+                            : 'text-xs sm:text-base leading-snug';
                         return (
                           <a
                             key={st.id}
@@ -2044,12 +2051,12 @@ export default function App() {
                               setSearchViewMode('DETAIL');
                               window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
-                            className="p-2.5 sm:p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-0.5 active:scale-95 bg-white border-slate-300 hover:border-[#8EA85E] hover:bg-slate-50 text-slate-800 shadow-2xs hover:shadow-xs group"
+                            className="px-1.5 py-2 sm:p-3 rounded-xl sm:rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-0.5 active:scale-95 bg-white border-slate-300 hover:border-[#8EA85E] hover:bg-slate-50 text-slate-800 shadow-2xs hover:shadow-xs group min-w-0"
                           >
-                            <span className="font-bold text-sm sm:text-base font-heading text-slate-800 group-hover:text-[#8EA85E] transition-colors">
-                              {getTranslatedStationName(st.name, language)}
+                            <span className={`font-bold ${mobileTitleClass} font-heading text-slate-800 group-hover:text-[#8EA85E] transition-colors break-keep w-full`}>
+                              {translatedName}
                             </span>
-                            <div className="text-[11px] sm:text-xs font-semibold inline-flex items-center gap-0.5">
+                            <div className="text-[10px] sm:text-xs font-semibold inline-flex items-center justify-center flex-wrap gap-0.5 leading-tight">
                               {lineStr.split('·').map((part, idx) => {
                                 let colorClass = 'text-blue-600 font-bold';
                                 if (part.includes('1')) {
@@ -2074,9 +2081,6 @@ export default function App() {
                                 );
                               })}
                             </div>
-                            <span className="text-[10px] sm:text-[11px] font-mono uppercase font-bold tracking-wider text-slate-400">
-                              {st.englishName}
-                            </span>
                           </a>
                         );
                       })}
@@ -2163,10 +2167,17 @@ export default function App() {
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
+                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-1.5 sm:gap-3">
                   {STATIONS.map((st) => {
                     const lineStr = st.lines.map(l => formatLineLabelI18n(l, language)).join('·');
                     const isSelected = selectedStationId === st.id;
+                    const translatedName = getTranslatedStationName(st.name, language);
+                    const mobileTitleClass =
+                      translatedName.length > 13
+                        ? 'text-[10px] sm:text-base leading-tight'
+                        : translatedName.length > 8
+                        ? 'text-[11px] sm:text-base leading-tight'
+                        : 'text-xs sm:text-base leading-snug';
                     return (
                       <a
                         key={st.id}
@@ -2177,16 +2188,16 @@ export default function App() {
                           setExpandedExitNum(null);
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className={`p-2.5 sm:p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-0.5 active:scale-95 ${
+                        className={`px-1.5 py-2 sm:p-3 rounded-xl sm:rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-0.5 active:scale-95 min-w-0 ${
                           isSelected
                             ? 'bg-[#8EA85E] border-[#8EA85E] text-white shadow-sm ring-2 ring-[#8EA85E]/20'
                             : 'bg-white border-slate-300 hover:border-[#8EA85E] hover:bg-slate-50 text-slate-800'
                         }`}
                       >
-                        <span className={`font-bold text-sm sm:text-base font-heading ${isSelected ? 'text-white' : 'text-slate-800'}`}>
-                          {getTranslatedStationName(st.name, language)}
+                        <span className={`font-bold ${mobileTitleClass} font-heading break-keep w-full ${isSelected ? 'text-white' : 'text-slate-800'}`}>
+                          {translatedName}
                         </span>
-                        <div className="text-[11px] sm:text-xs font-semibold inline-flex items-center gap-0.5">
+                        <div className="text-[10px] sm:text-xs font-semibold inline-flex items-center justify-center flex-wrap gap-0.5 leading-tight">
                           {lineStr.split('·').map((part, idx) => {
                             let colorClass = isSelected ? 'text-white/90 font-bold' : 'text-blue-600 font-bold';
                             if (part.includes('1')) {
@@ -2211,9 +2222,6 @@ export default function App() {
                             );
                           })}
                         </div>
-                        <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold tracking-wider ${isSelected ? 'text-emerald-100' : 'text-slate-400'}`}>
-                          {st.englishName}
-                        </span>
                       </a>
                     );
                   })}
