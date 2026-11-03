@@ -61,13 +61,10 @@ import { SpotTicketBookingRow } from './BusanAffiliateQuickBar';
 import { matchTourApiSpotId, resolvePlaceTargetId } from '../services/tourApiCommon';
 import { getKoreaTourApiPlaceDetail } from '../data/koreaTourApiPlaceDetails';
 import { useMyRoute } from '../services/myRouteService';
-import { lazyWithRetry } from '../utils/lazyWithRetry';
-
-// Code-split heavy sub-views with auto-retry to prevent dynamic import failures
-const BusanEventsCalendarView = lazyWithRetry(() => import('./BusanEventsCalendarView'));
-const BarrierFreeTourApiView = lazyWithRetry(() => import('./BarrierFreeTourApiView'));
-const CommunityTravelGuideSection = lazyWithRetry(() => import('./CommunityTravelGuideSection'));
-const MyTravelRouteMapView = lazyWithRetry(() => import('./MyTravelRouteMapView'));
+import BusanEventsCalendarView from './BusanEventsCalendarView';
+import BarrierFreeTourApiView from './BarrierFreeTourApiView';
+import CommunityTravelGuideSection from './CommunityTravelGuideSection';
+import MyTravelRouteMapView from './MyTravelRouteMapView';
 
 export const getStepIllustrationType = (titleKo: string, cat: string): 'temple' | 'park' | 'food' | 'cafe' | 'sea' | 'transit' | 'village' | 'history' | 'culture' | 'default' => {
   const normalized = titleKo.toLowerCase();

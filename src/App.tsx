@@ -107,13 +107,10 @@ export function categoryToUrlSlug(cat: string | null | undefined): string {
 
 import StationSearchBar, { searchStations } from './components/StationSearchBar';
 import { AdSenseUnit, AdEligibilityParams } from './components/AdSenseManager';
-import { lazyWithRetry } from './utils/lazyWithRetry';
-
-// Code-split heavy views with auto-retry to prevent "Failed to fetch dynamically imported module" errors
-const BusanItinerariesView = lazyWithRetry(() => import('./components/BusanItinerariesView'));
-const SiteIntroductionView = lazyWithRetry(() => import('./components/SiteIntroductionView'));
-const SubwayStationMap = lazyWithRetry(() => import('./components/SubwayStationMap'));
-const StationBarrierFreeCard = lazyWithRetry(() => import('./components/StationBarrierFreeCard').then(m => ({ default: m.StationBarrierFreeCard })));
+import BusanItinerariesView from './components/BusanItinerariesView';
+import SiteIntroductionView from './components/SiteIntroductionView';
+import SubwayStationMap from './components/SubwayStationMap';
+import { StationBarrierFreeCard } from './components/StationBarrierFreeCard';
 
 // Dynamic tab loading fallback component for code-split views
 const TabLoadingFallback = ({ text = "정보를 신속하게 불러오는 중..." }: { text?: string }) => (
@@ -236,17 +233,6 @@ export default function App() {
     setVisitedTabs(prev => ({ ...prev, [currentTab]: true }));
   }, [currentTab]);
 
-  // Defer background preloading of secondary tabs until after initial page load & idle
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const idle = (window as any).requestIdleCallback || ((cb: () => void) => setTimeout(cb, 500));
-      idle(() => {
-        import('./components/SubwayStationMap');
-        import('./components/StationBarrierFreeCard');
-      });
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
   const [language, setLanguage] = useState<Language>(() => {
     try {
       const saved = localStorage.getItem('stepless_language');
