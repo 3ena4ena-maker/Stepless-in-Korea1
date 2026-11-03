@@ -3751,7 +3751,7 @@ export default function BusanItinerariesView({
                         <div className="space-y-1 text-left">
                           <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
                             <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
-                            <span>{language === 'KR' ? (currentCourse.id === 'itinerary-day-coffee-tour' ? '당일치기 코스 (부산 스페셜티 커피투어)' : '당일치기 코스 (부산 처음 방문)') : (currentCourse.id === 'itinerary-day-coffee-tour' ? '1-Day Course (Busan Specialty Coffee Tour)' : '1-Day Course (First Time in Busan)')}</span>
+                            <span>{language === 'KR' ? (currentCourse.id === 'itinerary-day-coffee-tour' ? '당일치기 코스 (부산 스페셜티 커피투어)' : '당일치기 코스') : (currentCourse.id === 'itinerary-day-coffee-tour' ? '1-Day Course (Busan Specialty Coffee Tour)' : '1-Day Course')}</span>
                           </h3>
                           <p className="hidden">
                             {language === 'KR'
@@ -4439,104 +4439,6 @@ export default function BusanItinerariesView({
               };
 
               switch (effectiveCategory) { case 'GOURMET': {
-                const renderGourmetMiniLineIcon = (catId: string, cls: string = "w-4 h-4") => {
-                  switch (catId) {
-                    case 'famous':
-                      return (
-                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M12 3l2.6 5.3 5.9.8-4.3 4.1 1 5.8L12 16.2 6.8 19l1-5.8-4.3-4.1 5.9-.8L12 3z" />
-                        </svg>
-                      );
-                    case 'restaurant':
-                      return (
-                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M4 13c0 4.4 3.6 8 8 8s8-3.6 8-8H4z" />
-                          <line x1="3" y1="13" x2="21" y2="13" />
-                          <path d="M9 9c0-1.5 1-2.5 1-4" />
-                          <path d="M15 9c0-1.5 1-2.5 1-4" />
-                          <line x1="7" y1="4" x2="19" y2="7" />
-                        </svg>
-                      );
-                    case 'cafe':
-                      return (
-                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-                          <path d="M3 8h14v7a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" />
-                          <line x1="6" y1="2" x2="6" y2="4" />
-                          <line x1="10" y1="2" x2="10" y2="4" />
-                          <line x1="14" y1="2" x2="14" y2="4" />
-                        </svg>
-                      );
-                    case 'bakery':
-                      return (
-                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M4 15c0-4 3.5-7 8-7s8 3 8 7c0 2-1.5 3-3 3H7c-1.5 0-3-1-3-3z" />
-                          <path d="M9 8c.5 2.5 1 5 1 10" />
-                          <path d="M15 8c-.5 2.5-1 5-1 10" />
-                        </svg>
-                      );
-                    case 'brunch':
-                      return (
-                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="12" cy="12" r="8" />
-                          <circle cx="12" cy="12" r="3" />
-                        </svg>
-                      );
-                    case 'market':
-                      return (
-                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M3 9l2-5h14l2 5" />
-                          <path d="M3 9c1.5 2 3.5 2 5 0 1.5 2 3.5 2 5 0 1.5 2 3.5 2 5 0 1 1.5 2.5 1.5 3 0" />
-                          <path d="M5 10v9h14v-9" />
-                        </svg>
-                      );
-                    case 'dessert':
-                      return (
-                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M7 11h10l-2 9H9l-2-9z" />
-                          <path d="M8 11a4 4 0 0 1 8 0" />
-                          <circle cx="12" cy="5" r="1.5" />
-                        </svg>
-                      );
-                    default:
-                      return (
-                        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M4 16a8 8 0 0 1 16 0" />
-                          <line x1="2" y1="16" x2="22" y2="16" />
-                          <circle cx="12" cy="6" r="1.5" />
-                        </svg>
-                      );
-                  }
-                };
-
-                const GOURMET_CAT_COLORS: Record<string, string> = {
-                  ALL: '#5B7332',
-                  famous: '#C84B31',
-                  restaurant: '#D96B43',
-                  cafe: '#8B5E3C',
-                  bakery: '#D49B35',
-                  brunch: '#4E8752',
-                  market: '#2E6F95',
-                  dessert: '#C25975',
-                  other: '#6366F1',
-                };
-
-                const resolveStepVisualCat = (s: ItineraryStep): string => {
-                  const cats = getStepFoodCategories(s);
-                  if (selectedGourmetCat !== 'ALL' && selectedGourmetCat !== 'famous' && cats.includes(selectedGourmetCat)) {
-                    return selectedGourmetCat;
-                  }
-                  const specific = cats.find(c => c !== 'famous' && c !== 'ALL');
-                  if (specific) return specific;
-                  const t = (s.titleKo + ' ' + (s.descKo || '')).toLowerCase();
-                  if (t.includes('카페') || t.includes('커피') || t.includes('로스터')) return 'cafe';
-                  if (t.includes('베이커리') || t.includes('빵') || t.includes('옵스') || t.includes('비엔씨')) return 'bakery';
-                  if (t.includes('브런치') || t.includes('파스타')) return 'brunch';
-                  if (t.includes('시장') || t.includes('호떡') || t.includes('떡볶이')) return 'market';
-                  if (t.includes('디저트') || t.includes('떡') || t.includes('빙수')) return 'dessert';
-                  return cats[0] || 'restaurant';
-                };
-
                 const getStepCats = (s: ItineraryStep): string[] => {
                   return getStepFoodCategories(s);
                 };
@@ -4747,13 +4649,13 @@ export default function BusanItinerariesView({
                                   </div>
                                 );
                               })()}
-                              <div className="flex items-center justify-between gap-2">
-                                <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug flex items-center gap-1.5 min-w-0">
-                                  {(() => {
-                                    const vCat = resolveStepVisualCat(step);
-                                    const cColor = GOURMET_CAT_COLORS[vCat] || '#8EA85E';
-                                    return (
-                                      <>
+                              {(() => {
+                                const vCat = resolveStepVisualCat(step);
+                                const cColor = GOURMET_CAT_COLORS[vCat] || '#8EA85E';
+                                return (
+                                  <div className="space-y-1">
+                                    <div className="flex items-center justify-between gap-2">
+                                      <div className="flex items-center gap-1.5">
                                         <span
                                           style={{ backgroundColor: cColor }}
                                           className="w-5 h-5 rounded-full text-white text-[10.5px] font-black font-mono flex items-center justify-center shrink-0 shadow-2xs"
@@ -4763,42 +4665,44 @@ export default function BusanItinerariesView({
                                         <span style={{ color: cColor }} className="shrink-0">
                                           {renderGourmetMiniLineIcon(vCat, "w-4 h-4")}
                                         </span>
-                                      </>
-                                    );
-                                  })()}
-                                  {language === 'KR' ? step.titleKo : step.titleEn}
-                                </h4>
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    toggleMyRoute({
-                                      id: step.id || step.titleKo,
-                                      titleKo: step.titleKo,
-                                      titleEn: step.titleEn,
-                                      categoryKo: '부산 식도락',
-                                      categoryEn: 'Gourmet',
-                                      addressRoadKo: ktoDetail?.addressRoadKo || step.stationInfoKo,
-                                      stationInfoKo: step.stationInfoKo,
-                                      stationInfoEn: step.stationInfoEn,
-                                      descKo: step.descKo,
-                                      descEn: step.descEn,
-                                      firstImage: ktoDetail?.firstImage,
-                                      latitude: ktoDetail?.latitude,
-                                      longitude: ktoDetail?.longitude,
-                                    });
-                                  }}
-                                  className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
-                                    isSaved
-                                      ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
-                                      : 'bg-white text-slate-500 border-slate-200 hover:text-amber-600 hover:border-amber-300 hover:bg-amber-50/40'
-                                  }`}
-                                  title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
-                                >
-                                  <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
-                                  <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
-                                </button>
-                              </div>
+                                      </div>
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          toggleMyRoute({
+                                            id: step.id || step.titleKo,
+                                            titleKo: step.titleKo,
+                                            titleEn: step.titleEn,
+                                            categoryKo: '부산 식도락',
+                                            categoryEn: 'Gourmet',
+                                            addressRoadKo: ktoDetail?.addressRoadKo || step.stationInfoKo,
+                                            stationInfoKo: step.stationInfoKo,
+                                            stationInfoEn: step.stationInfoEn,
+                                            descKo: step.descKo,
+                                            descEn: step.descEn,
+                                            firstImage: ktoDetail?.firstImage,
+                                            latitude: ktoDetail?.latitude,
+                                            longitude: ktoDetail?.longitude,
+                                          });
+                                        }}
+                                        className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
+                                          isSaved
+                                            ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                            : 'bg-white text-slate-500 border-slate-200 hover:text-amber-600 hover:border-amber-300 hover:bg-amber-50/40'
+                                        }`}
+                                        title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                      >
+                                        <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                        <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                      </button>
+                                    </div>
+                                    <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug break-keep">
+                                      {language === 'KR' ? step.titleKo : step.titleEn}
+                                    </h4>
+                                  </div>
+                                );
+                              })()}
 
                               {/* 식당 설명문 (주소 중복 노출 방지: 설명이 주소인 경우 생략하여 하단에만 1회 표시) */}
                               {(() => {
@@ -5235,31 +5139,26 @@ case 'EXPERIENCE': {
                                     </span>
                                   );
 
-                                  if (isLongTitle) {
-                                    return (
-                                      <div className="space-y-1.5">
-                                        <div className="flex items-center gap-1.5 flex-wrap">
-                                          <h4 className="text-base font-bold text-[#11161B] leading-snug">
-                                            {displayTitle}
-                                          </h4>
+                                  return (
+                                    <div className="space-y-1">
+                                      <div className="flex items-center justify-between gap-2">
+                                        <div className="flex items-center gap-1.5">
+                                          <span
+                                            style={{ backgroundColor: expColor }}
+                                            className="w-5 h-5 rounded-full text-white text-[10.5px] font-black font-mono flex items-center justify-center shrink-0 shadow-2xs"
+                                          >
+                                            {idx + 1}
+                                          </span>
+                                          <span style={{ color: expColor }} className="shrink-0">
+                                            {renderGourmetMiniLineIcon(expCat, "w-4 h-4")}
+                                          </span>
                                           {feeText}
                                         </div>
-                                        <div className="flex justify-end pt-0.5">
-                                          {renderRouteButton()}
-                                        </div>
+                                        {renderRouteButton()}
                                       </div>
-                                    );
-                                  }
-
-                                  return (
-                                    <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
-                                      <div className="flex items-center gap-1.5 flex-wrap">
-                                        <h4 className="text-base font-bold text-[#11161B] leading-snug">
-                                          {displayTitle}
-                                        </h4>
-                                        {feeText}
-                                      </div>
-                                      {renderRouteButton()}
+                                      <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug break-keep">
+                                        {rawDisplayTitle}
+                                      </h4>
                                     </div>
                                   );
                                 })()}
@@ -5683,15 +5582,19 @@ case 'EXPERIENCE': {
                                   className="w-full h-32 sm:h-36 mb-2"
                                 />
                               )}
-                              {/* Header: Title & Route Button on the SAME line */}
-                              <div className="flex items-center justify-between gap-2">
-                                <div className="flex items-center gap-1.5 flex-wrap min-w-0">
-                                  <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug flex items-center gap-1.5 min-w-0">
-                                  {(() => {
-                                    const vCat = resolveStepVisualCat(step);
-                                    const cColor = GOURMET_CAT_COLORS[vCat] || '#8EA85E';
-                                    return (
-                                      <>
+                              {/* Header: Title & Route Button */}
+                              {(() => {
+                                const vCat = resolveStepVisualCat(step);
+                                const cColor = GOURMET_CAT_COLORS[vCat] || '#8EA85E';
+                                const fiveDayBadge = isFiveDayMarket(step) ? (
+                                  <span className="text-[10px] sm:text-[10.5px] font-bold text-[#2D6A4F] bg-[#E8F5E9] border border-[#2D6A4F]/25 px-1.5 py-0.2 rounded shrink-0">
+                                    {language === 'KR' ? '오일장' : '5-Day Market'}
+                                  </span>
+                                ) : null;
+                                return (
+                                  <div className="space-y-1">
+                                    <div className="flex items-center justify-between gap-2">
+                                      <div className="flex items-center gap-1.5">
                                         <span
                                           style={{ backgroundColor: cColor }}
                                           className="w-5 h-5 rounded-full text-white text-[10.5px] font-black font-mono flex items-center justify-center shrink-0 shadow-2xs"
@@ -5701,48 +5604,45 @@ case 'EXPERIENCE': {
                                         <span style={{ color: cColor }} className="shrink-0">
                                           {renderGourmetMiniLineIcon(vCat, "w-4 h-4")}
                                         </span>
-                                      </>
-                                    );
-                                  })()}
-                                    {language === 'KR' ? step.titleKo : step.titleEn}
-                                  </h4>
-                                  {isFiveDayMarket(step) && (
-                                    <span className="text-[10px] sm:text-[10.5px] font-bold text-[#2D6A4F] bg-[#E8F5E9] border border-[#2D6A4F]/25 px-1.5 py-0.2 rounded shrink-0">
-                                      {language === 'KR' ? '오일장' : '5-Day Market'}
-                                    </span>
-                                  )}
-                                </div>
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    toggleMyRoute({
-                                      id: step.id || step.titleKo,
-                                      titleKo: step.titleKo,
-                                      titleEn: step.titleEn,
-                                      categoryKo: '전통시장',
-                                      categoryEn: 'Market',
-                                      addressRoadKo: cleanAddressKo,
-                                      stationInfoKo: cleanAddressKo,
-                                      stationInfoEn: cleanAddressEn,
-                                      descKo: step.descKo,
-                                      descEn: step.descEn,
-                                      firstImage: ktoDetail?.firstImage,
-                                      latitude: ktoDetail?.latitude,
-                                      longitude: ktoDetail?.longitude,
-                                    });
-                                  }}
-                                  className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
-                                    isSaved
-                                      ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
-                                      : 'bg-white text-slate-500 border-slate-200 hover:text-amber-600 hover:border-amber-300 hover:bg-amber-50/40'
-                                  }`}
-                                  title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
-                                >
-                                  <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
-                                  <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
-                                </button>
-                              </div>
+                                        {fiveDayBadge}
+                                      </div>
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          toggleMyRoute({
+                                            id: step.id || step.titleKo,
+                                            titleKo: step.titleKo,
+                                            titleEn: step.titleEn,
+                                            categoryKo: '전통시장',
+                                            categoryEn: 'Market',
+                                            addressRoadKo: cleanAddressKo,
+                                            stationInfoKo: cleanAddressKo,
+                                            stationInfoEn: cleanAddressEn,
+                                            descKo: step.descKo,
+                                            descEn: step.descEn,
+                                            firstImage: ktoDetail?.firstImage,
+                                            latitude: ktoDetail?.latitude,
+                                            longitude: ktoDetail?.longitude,
+                                          });
+                                        }}
+                                        className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
+                                          isSaved
+                                            ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                            : 'bg-white text-slate-500 border-slate-200 hover:text-amber-600 hover:border-amber-300 hover:bg-amber-50/40'
+                                        }`}
+                                        title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                      >
+                                        <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                        <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                      </button>
+                                    </div>
+                                    <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug break-keep">
+                                      {language === 'KR' ? step.titleKo : step.titleEn}
+                                    </h4>
+                                  </div>
+                                );
+                              })()}
 
                               {/* Market Day (장날) - 5일장에만 표시, 상설시장은 표시 생략 */}
                               {isFiveDayMarket(step) && (step.marketDayKo || step.marketDayEn) && (
@@ -6145,7 +6045,6 @@ case 'EXPERIENCE': {
                                     );
 
                                     const displayTitle = language === 'KR' ? item.nameKo : item.nameEn;
-                                    const isLongTitle = displayTitle.length > 12;
 
                                     const renderRouteButton = () => (
                                       <button
@@ -6178,6 +6077,8 @@ case 'EXPERIENCE': {
                                       </button>
                                     );
 
+                                    const subwayBadgeColor = currentLine === 'LINE1' ? '#EA580C' : '#16A34A';
+
                                     return (
                                       <div
                                         key={idx}
@@ -6193,30 +6094,27 @@ case 'EXPERIENCE': {
                                             />
                                           )}
 
-                                          {/* Title & Route Button */}
-                                          {isLongTitle ? (
-                                            <div className="space-y-1.5">
-                                              <div className="flex items-center gap-1.5 flex-wrap">
-                                                <h4 className="text-base font-bold text-[#11161B] leading-snug">
-                                                  {displayTitle}
-                                                </h4>
-                                                {feeText}
-                                              </div>
-                                              <div className="flex justify-end pt-0.5">
-                                                {renderRouteButton()}
-                                              </div>
-                                            </div>
-                                          ) : (
-                                            <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
-                                              <div className="flex items-center gap-1.5 flex-wrap">
-                                                <h4 className="text-base font-bold text-[#11161B] leading-snug">
-                                                  {displayTitle}
-                                                </h4>
+                                          {/* Title & Route Button (방법 3: 1줄 번호·아이콘·유무료 + 루트추가 / 2줄 장소명 단독) */}
+                                          <div className="space-y-1.5">
+                                            <div className="flex items-center justify-between gap-2">
+                                              <div className="flex items-center gap-1.5 min-w-0">
+                                                <span
+                                                  style={{ backgroundColor: subwayBadgeColor }}
+                                                  className="w-5 h-5 rounded-full text-white text-[10.5px] font-black font-mono flex items-center justify-center shrink-0 shadow-2xs"
+                                                >
+                                                  {idx + 1}
+                                                </span>
+                                                <span style={{ color: subwayBadgeColor }} className="shrink-0">
+                                                  {renderGourmetMiniLineIcon('ATTRACTION_HERITAGE', 'w-4 h-4')}
+                                                </span>
                                                 {feeText}
                                               </div>
                                               {renderRouteButton()}
                                             </div>
-                                          )}
+                                            <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug break-keep">
+                                              {displayTitle}
+                                            </h4>
+                                          </div>
 
                                           {/* Description */}
                                           <p className="text-xs text-[#4A5568] font-normal leading-relaxed text-left">
@@ -6336,14 +6234,14 @@ case 'EXPERIENCE': {
                                 />
                               )}
 
-                              {/* Header: Title & Route bookmark Button on the same line */}
-                              <div className="flex items-center justify-between gap-2">
-                                <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug flex items-center gap-1.5 min-w-0">
-                                  {(() => {
-                                    const vCat = resolveStepVisualCat(step);
-                                    const cColor = GOURMET_CAT_COLORS[vCat] || '#8EA85E';
-                                    return (
-                                      <>
+                              {/* Header: Title & Route bookmark Button */}
+                              {(() => {
+                                const vCat = resolveStepVisualCat(step);
+                                const cColor = GOURMET_CAT_COLORS[vCat] || '#8EA85E';
+                                return (
+                                  <div className="space-y-1">
+                                    <div className="flex items-center justify-between gap-2">
+                                      <div className="flex items-center gap-1.5">
                                         <span
                                           style={{ backgroundColor: cColor }}
                                           className="w-5 h-5 rounded-full text-white text-[10.5px] font-black font-mono flex items-center justify-center shrink-0 shadow-2xs"
@@ -6353,42 +6251,44 @@ case 'EXPERIENCE': {
                                         <span style={{ color: cColor }} className="shrink-0">
                                           {renderGourmetMiniLineIcon(vCat, "w-4 h-4")}
                                         </span>
-                                      </>
-                                    );
-                                  })()}
-                                  {language === 'KR' ? cleanTitleKo : cleanTitleEn}
-                                </h4>
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    toggleMyRoute({
-                                      id: step.id || step.titleKo,
-                                      titleKo: cleanTitleKo,
-                                      titleEn: cleanTitleEn,
-                                      categoryKo: '부산 명소',
-                                      categoryEn: 'Attraction',
-                                      addressRoadKo: cleanAddrKo,
-                                      stationInfoKo: cleanAddrKo,
-                                      stationInfoEn: cleanAddrEn,
-                                      descKo: step.descKo,
-                                      descEn: step.descEn,
-                                      firstImage: ktoDetail?.firstImage || step.firstImage,
-                                      latitude: ktoDetail?.latitude,
-                                      longitude: ktoDetail?.longitude,
-                                    });
-                                  }}
-                                  className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
-                                    isSaved
-                                      ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
-                                      : 'bg-white text-slate-500 border-slate-200 hover:text-amber-600 hover:border-amber-300 hover:bg-amber-50/40'
-                                  }`}
-                                  title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
-                                >
-                                  <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
-                                  <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
-                                </button>
-                              </div>
+                                      </div>
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          toggleMyRoute({
+                                            id: step.id || step.titleKo,
+                                            titleKo: cleanTitleKo,
+                                            titleEn: cleanTitleEn,
+                                            categoryKo: '부산 명소',
+                                            categoryEn: 'Attraction',
+                                            addressRoadKo: cleanAddrKo,
+                                            stationInfoKo: cleanAddrKo,
+                                            stationInfoEn: cleanAddrEn,
+                                            descKo: step.descKo,
+                                            descEn: step.descEn,
+                                            firstImage: ktoDetail?.firstImage || step.firstImage,
+                                            latitude: ktoDetail?.latitude,
+                                            longitude: ktoDetail?.longitude,
+                                          });
+                                        }}
+                                        className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-bold shrink-0 ${
+                                          isSaved
+                                            ? 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100 shadow-2xs'
+                                            : 'bg-white text-slate-500 border-slate-200 hover:text-amber-600 hover:border-amber-300 hover:bg-amber-50/40'
+                                        }`}
+                                        title={isSaved ? (language === 'KR' ? '루트에서 제거' : 'Remove from My Route') : (language === 'KR' ? '루트(지도)에 담기' : 'Add to My Route')}
+                                      >
+                                        <Star className={`w-3.5 h-3.5 ${isSaved ? 'fill-amber-400 text-amber-500' : ''}`} />
+                                        <span>{isSaved ? (language === 'KR' ? '루트 담김' : 'In Route') : (language === 'KR' ? '루트 추가' : 'Add')}</span>
+                                      </button>
+                                    </div>
+                                    <h4 className="text-[15px] sm:text-base font-bold text-[#11161B] leading-snug break-keep">
+                                      {language === 'KR' ? cleanTitleKo : cleanTitleEn}
+                                    </h4>
+                                  </div>
+                                );
+                              })()}
 
                               {/* Description */}
                               {step.descKo && (
@@ -6503,7 +6403,7 @@ case 'EXPERIENCE': {
         <div className="space-y-6 sm:space-y-8 animate-fade-in text-left">
           {/* Header Bar (Borderless with clean line icon) */}
           <div className="space-y-1.5 border-b border-slate-200 pb-4 text-left">
-            <div className="flex flex-col sm:flex-row sm:items-baseline gap-1.5 sm:gap-3">
+            <div className="flex flex-col gap-1.5">
               <h2 className="text-xl sm:text-2xl font-heading font-black text-slate-900 flex items-center gap-2.5 shrink-0 tracking-tight">
                 <svg className="w-6 h-6 sm:w-7 sm:h-7 stroke-[#8EA85E] shrink-0" viewBox="0 0 24 24" fill="none" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="4" y="3" width="16" height="15" rx="3" />
@@ -6518,8 +6418,8 @@ case 'EXPERIENCE': {
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 font-medium">
                 {language === 'KR' 
-                  ? '현지인이 전수하는 최신 대중교통 할인 정책과 무료 환승 완전 정복 가이드입니다.' 
-                  : 'The latest public transit discount policies and free transfer guides, straight from Busan locals.'}
+                  ? '현지인이 전수하는 최신 대중교통 할인 정책과 무료 환승 완전 정복 가이드' 
+                  : 'The latest public transit discount policies and free transfer guides from Busan locals'}
               </p>
             </div>
           </div>
@@ -6574,11 +6474,8 @@ case 'EXPERIENCE': {
             <div className="space-y-8 max-w-6xl mx-auto">
               {/* SPECIAL BENEFITS / TRANSIT TIPS HEADER SECTION */}
               <div className="space-y-2 py-1">
-                <div className="bg-[#8EA85E] text-white px-5 py-2.5 rounded-lg flex items-center justify-between shadow-2xs">
-                  <span className="text-xs font-extrabold tracking-[0.14em] uppercase">TRANSIT GUIDE · 05</span>
-                  <span className="text-xs font-medium text-white/95">
-                    {language === 'KR' ? '부산 대중교통 및 택시 이용 혜택과 주요 수칙' : 'Busan Public Transit & Taxi Guide'}
-                  </span>
+                <div className="bg-[#8EA85E] text-white px-5 py-2.5 rounded-lg flex items-center shadow-2xs">
+                  <span className="text-xs font-extrabold tracking-[0.14em] uppercase">TRANSIT GUIDE</span>
                 </div>
 
                 <div className="py-6 sm:py-9 px-2 sm:px-4 max-w-5xl mx-auto">
@@ -6606,11 +6503,10 @@ case 'EXPERIENCE': {
                           <circle cx="45" cy="42" r="1.5" />
                         </svg>
                       </div>
-                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between gap-1 transition-colors">
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-center text-center transition-colors">
                         <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332] truncate">
                           {language === 'KR' ? '모든 어린이 무료 혜택' : 'Children Free'}
                         </span>
-                        <span className="text-[10px] font-mono text-[#6E6C64] group-hover:text-[#5B7332] shrink-0">01</span>
                       </div>
                     </button>
 
@@ -6640,11 +6536,10 @@ case 'EXPERIENCE': {
                           <path d="M50 21 C53 25, 53 31, 50 35" />
                         </svg>
                       </div>
-                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between gap-1 transition-colors">
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-center text-center transition-colors">
                         <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332] truncate">
                           {language === 'KR' ? '부산 버스 QR 간편결제' : 'Bus QR Pay'}
                         </span>
-                        <span className="text-[10px] font-mono text-[#6E6C64] group-hover:text-[#5B7332] shrink-0">02</span>
                       </div>
                     </button>
 
@@ -6671,11 +6566,10 @@ case 'EXPERIENCE': {
                           <line x1="46" y1="47" x2="49" y2="52" />
                         </svg>
                       </div>
-                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between gap-1 transition-colors">
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-center text-center transition-colors">
                         <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332] truncate">
                           {language === 'KR' ? '부산 대중교통 환승 혜택' : 'Transfer Guide'}
                         </span>
-                        <span className="text-[10px] font-mono text-[#6E6C64] group-hover:text-[#5B7332] shrink-0">03</span>
                       </div>
                     </button>
 
@@ -6706,11 +6600,10 @@ case 'EXPERIENCE': {
                           <line x1="46" y1="52" x2="46" y2="56" />
                         </svg>
                       </div>
-                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between gap-1 transition-colors">
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-center text-center transition-colors">
                         <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332] truncate">
                           {language === 'KR' ? '버스 휴대품 반입 기준' : 'Carry-on Rules'}
                         </span>
-                        <span className="text-[10px] font-mono text-[#6E6C64] group-hover:text-[#5B7332] shrink-0">04</span>
                       </div>
                     </button>
 
@@ -6736,11 +6629,10 @@ case 'EXPERIENCE': {
                           <path d="M43 46 V50 H49 V46" />
                         </svg>
                       </div>
-                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-between gap-1 transition-colors">
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 group-hover:border-[#8EA85E] group-hover:bg-[#8EA85E]/[0.08] flex items-center justify-center text-center transition-colors">
                         <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] group-hover:text-[#5B7332] truncate">
                           {language === 'KR' ? '부산 택시 이용 & 호출 팁' : 'Busan Taxi Tips'}
                         </span>
-                        <span className="text-[10px] font-mono text-[#6E6C64] group-hover:text-[#5B7332] shrink-0">05</span>
                       </div>
                     </button>
                   </div>
@@ -7239,7 +7131,427 @@ case 'EXPERIENCE': {
               </div>
 
               </>)}
-              {/* HIGH-VISIBILITY DETAIL PANELS (Style 2: Layout like the brochure flyers in image 2) */}
+              {/* HIGH-VISIBILITY DETAIL PANELS (Minimalist borderless editorial layout) */}
+              <div className="space-y-12 pt-6">
+                {/* Sub-panel 1: Clean borderless split layout for transfer guidelines */}
+                <div id="transfer-rules-section" className="space-y-6 scroll-mt-24">
+                  <div className="py-3.5 px-4 sm:px-5 bg-[#8EA85E]/15 rounded-xl flex items-start sm:items-center gap-3">
+                    <svg className="w-6 h-6 text-[#5B7332] shrink-0 mt-0.5 sm:mt-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M17 2l4 4-4 4" />
+                      <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+                      <path d="M7 22l-4-4 4-4" />
+                      <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+                    </svg>
+                    <div>
+                      <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                        {language === 'KR' ? '부산 대중교통 무료 환승 기준 안내' : 'Busan Public Transit Free Transfer Guide'}
+                      </h3>
+                      <p className="text-xs text-slate-600 font-medium mt-0.5">
+                        {language === 'KR' ? '버스, 지하철 간 무료 환승을 위해 탑승 전 반드시 숙지하세요.' : 'Important rules for hassle-free free transit connection.'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 md:divide-x md:divide-[#1E1E1C]/10">
+                    {/* Left: Allowed transfers */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 text-emerald-800 pb-2 border-b border-emerald-600/20">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <p className="text-xs sm:text-sm font-black uppercase tracking-wider">{language === 'KR' ? '무료 환승 적용 가능 수칙' : 'Allowed / Applies to'}</p>
+                      </div>
+
+                      <div className="divide-y divide-slate-200/60">
+                        <div className="flex items-start gap-3 py-3.5 first:pt-1">
+                          <span className="text-base font-bold text-emerald-600 shrink-0 mt-0.5">✓</span>
+                          <div className="space-y-1">
+                            <h4 className="text-xs sm:text-sm font-black text-slate-800">{language === 'KR' ? '하차 태그 후 30분 이내 승차' : 'Tap off within 30 Minutes'}</h4>
+                            <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                              {language === 'KR' 
+                                ? '교통카드 하차 접촉 후 30분 이내에 환승 수단에 승차해야 정상 적용됩니다.' 
+                                : 'You must tap card on departure and board next transit within 30 mins.'}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-start gap-3 py-3.5 last:pb-1">
+                          <span className="text-base font-bold text-emerald-600 shrink-0 mt-0.5">✓</span>
+                          <div className="space-y-1">
+                            <h4 className="text-xs sm:text-sm font-black text-slate-800">{language === 'KR' ? '최대 2회 (총 3대 수단) 지원' : 'Up to 2 consecutive transfers'}</h4>
+                            <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                              {language === 'KR' 
+                                ? '버스 ➔ 버스, 버스 ➔ 지하철 등 상이한 노선 및 교통수단 간 최대 2회 연계 혜택을 줍니다.' 
+                                : 'Supports up to 2 transfers across different routes/means (e.g. Bus ➔ Subway).'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right: Excluded transfers */}
+                    <div className="space-y-4 md:pl-10">
+                      <div className="flex items-center gap-2 text-rose-800 pb-2 border-b border-rose-600/20">
+                        <span className="w-2 h-2 rounded-full bg-rose-500"></span>
+                        <p className="text-xs sm:text-sm font-black uppercase tracking-wider">{language === 'KR' ? '환승 적용 예외 및 불가 기준' : 'Exclusions / Disallowed'}</p>
+                      </div>
+
+                      <div className="divide-y divide-slate-200/60">
+                        <div className="flex items-start gap-3 py-3.5 first:pt-1">
+                          <span className="text-base font-bold text-rose-600 shrink-0 mt-0.5">✗</span>
+                          <div className="space-y-1">
+                            <h4 className="text-xs sm:text-sm font-black text-slate-800">{language === 'KR' ? '동일 번호 버스 노선 간 환승 불가' : 'Same Bus Route Number'}</h4>
+                            <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                              {language === 'KR' 
+                                ? '동일 노선(예: 100번 버스에서 내린 뒤 같은 번호인 100번 승차)은 환승 할인이 적용되지 않습니다.' 
+                                : 'Transfer discount is bypassed if boarding the exact same bus route number.'}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-start gap-3 py-3.5 last:pb-1">
+                          <span className="text-base font-bold text-rose-600 shrink-0 mt-0.5">✗</span>
+                          <div className="space-y-1">
+                            <h4 className="text-xs sm:text-sm font-black text-slate-800">{language === 'KR' ? '지하철 개찰구 외부 이용 간 환승 불가' : 'Subway to Subway (Exit/Re-enter)'}</h4>
+                            <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                              {language === 'KR' 
+                                ? '개찰구 밖으로 나갔다가 지하철을 다시 탑승할 경우 환승으로 인정되지 않고 기본요금이 새로 청구됩니다.' 
+                                : 'Exiting a subway turnstile and re-entering does not count as a transfer.'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sub-panel 3: Illustrated luggage & food allowance comparison block (Box borders simplified, illustrations preserved) */}
+                <div id="bus-luggage-rules-section" className="pt-4 space-y-6 scroll-mt-24">
+                  <div className="py-3.5 px-4 sm:px-5 bg-[#8EA85E]/15 rounded-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div className="flex items-center gap-2.5">
+                      <svg className="w-6 h-6 text-[#5B7332] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <rect x="4" y="3" width="16" height="15" rx="2" />
+                        <path d="M4 11h16" />
+                        <path d="M8 15h.01" />
+                        <path d="M16 15h.01" />
+                        <path d="M6 18v3" />
+                        <path d="M18 18v3" />
+                      </svg>
+                      <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                        {language === 'KR' ? '부산 시내버스 휴대품 및 음식물 반입 기준' : 'Busan City Bus Luggage & Food Regulations'}
+                      </h3>
+                    </div>
+                    <span className="text-[11px] font-extrabold text-rose-600 uppercase self-start sm:self-auto">
+                      {language === 'KR' ? '· 탑승 전 확인 필수' : '· Check before boarding'}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 lg:divide-x lg:divide-[#1E1E1C]/10">
+                    {/* LEFT: Personal Belongings Regulations (휴대품 반입 규정) */}
+                    <div className="space-y-5">
+                      <div className="flex items-start gap-2.5">
+                        <svg className="w-5 h-5 text-[#1E1E1C] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <rect x="6" y="7" width="12" height="13" rx="2" />
+                          <path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" />
+                          <line x1="9" y1="20" x2="9" y2="22" />
+                          <line x1="15" y1="20" x2="15" y2="22" />
+                        </svg>
+                        <div>
+                          <h4 className="text-sm sm:text-base font-black text-slate-800">
+                            {language === 'KR' ? '휴대품 반입 규정' : 'Restrictions on Personal Belongings'}
+                          </h4>
+                          <p className="text-[11px] sm:text-xs text-rose-600 font-extrabold mt-0.5">
+                            {language === 'KR' ? '부피가 큰 거대물품 등을 들고 타지 맙시다.' : 'No Bulky Belongings Allowed.'}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Interactive Visual Illustration Board (Preserved illustrations, removed nested boxes) */}
+                      <div className="grid grid-cols-2 gap-4 py-3">
+                        {/* Allowed (Green) */}
+                        <div className="flex flex-col items-center justify-between py-2 text-center space-y-2.5">
+                          <span className="bg-emerald-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full">
+                            {language === 'KR' ? '반입 가능' : 'ALLOWED'}
+                          </span>
+                          <div className="relative w-24 h-24 flex items-center justify-center rounded-full border-4 border-emerald-500 bg-emerald-50/20 shadow-inner">
+                            <svg width="72" height="72" viewBox="0 0 100 100" className="w-18 h-18">
+                              <g transform="translate(10, 5)">
+                                {/* Dimensions indicator lines */}
+                                <line x1="8" y1="20" x2="8" y2="72" stroke="#10b981" strokeWidth="1.5" strokeDasharray="3 3" />
+                                <text x="1" y="48" fill="#047857" fontSize="8" fontWeight="black">50cm</text>
+                                
+                                <line x1="20" y1="78" x2="60" y2="78" stroke="#10b981" strokeWidth="1.5" strokeDasharray="3 3" />
+                                <text x="32" y="86" fill="#047857" fontSize="8" fontWeight="black">40cm</text>
+
+                                <line x1="64" y1="20" x2="74" y2="10" stroke="#10b981" strokeWidth="1.5" strokeDasharray="3 3" />
+                                <text x="70" y="22" fill="#047857" fontSize="8" fontWeight="black">20cm</text>
+
+                                {/* Handle */}
+                                <rect x="30" y="5" width="20" height="15" rx="2" fill="none" stroke="#1e293b" strokeWidth="3" />
+                                <line x1="30" y1="15" x2="30" y2="20" stroke="#1e293b" strokeWidth="3" />
+                                <line x1="50" y1="15" x2="50" y2="20" stroke="#1e293b" strokeWidth="3" />
+                                {/* Main body */}
+                                <rect x="20" y="20" width="40" height="52" rx="6" fill="#3b82f6" stroke="#1e293b" strokeWidth="3" />
+                                {/* Front design / pocket */}
+                                <rect x="26" y="28" width="28" height="36" rx="4" fill="#60a5fa" stroke="#1e293b" strokeWidth="2" />
+                                {/* Wheels */}
+                                <circle cx="28" cy="75" r="4" fill="#1e293b" />
+                                <circle cx="52" cy="75" r="4" fill="#1e293b" />
+                              </g>
+                            </svg>
+                          </div>
+                          <span className="text-[11px] font-black text-slate-700">
+                            {language === 'KR' ? '기내용 20인치 이하' : 'Under 20" Carry-on'}
+                          </span>
+                        </div>
+
+                        {/* Prohibited (Red) */}
+                        <div className="flex flex-col items-center justify-between py-2 text-center space-y-2.5">
+                          <span className="bg-rose-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full">
+                            {language === 'KR' ? '반입 불가' : 'PROHIBITED'}
+                          </span>
+                          <div className="relative w-24 h-24 flex items-center justify-center rounded-full border-4 border-rose-500 bg-rose-50/20 shadow-inner overflow-hidden">
+                            <svg width="72" height="72" viewBox="0 0 100 100" className="w-18 h-18 opacity-80">
+                              <g transform="translate(15, 10)">
+                                {/* Handle */}
+                                <rect x="25" y="2" width="20" height="12" rx="2" fill="none" stroke="#1e293b" strokeWidth="3" />
+                                {/* Main body */}
+                                <rect x="12" y="14" width="46" height="58" rx="6" fill="#f59e0b" stroke="#1e293b" strokeWidth="3" />
+                                {/* Front pocket */}
+                                <rect x="18" y="22" width="34" height="42" rx="4" fill="#fbbf24" stroke="#1e293b" strokeWidth="2" />
+                                {/* Wheels */}
+                                <circle cx="22" cy="75" r="4" fill="#1e293b" />
+                                <circle cx="48" cy="75" r="4" fill="#1e293b" />
+                              </g>
+                            </svg>
+                            {/* Prohibited diagonal cross-bar overlay */}
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                              <svg width="80" height="80" viewBox="0 0 100 100" className="w-full h-full text-rose-500 stroke-rose-500">
+                                <line x1="15" y1="15" x2="85" y2="85" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
+                              </svg>
+                            </div>
+                          </div>
+                          <span className="text-[11px] font-black text-rose-600">
+                            {language === 'KR' ? '20인치 초과 캐리어' : 'Over 20" Luggage'}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="divide-y divide-slate-200/70 border-t border-slate-200/70">
+                        {/* Not Allowed Section */}
+                        <div className="py-3.5 space-y-2">
+                          <div className="flex items-center gap-1.5 text-rose-700 text-xs font-black">
+                            <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
+                            <span>{language === 'KR' ? '반입 불가 (Prohibited)' : 'Prohibited Items'}</span>
+                          </div>
+                          <ul className="text-xs text-slate-600 font-bold space-y-1.5 list-disc pl-4 leading-relaxed">
+                            <li>
+                              {language === 'KR' 
+                                ? '1인당 2개 이상의 캐리어를 들고 탑승하려는 경우' 
+                                : 'Carrying 2 or more suitcases per person'}
+                            </li>
+                            <li>
+                              {language === 'KR' 
+                                ? '항공기내 반입용 20인치 여행가방 규격(50×40×20cm)을 초과하는 물품' 
+                                : 'Items exceeding the standard 20-inch flight carry-on suitcase size'}
+                            </li>
+                            <li>
+                              {language === 'KR' 
+                                ? '차량의 통로 및 승·하차문을 막을 염려가 있는 물품' 
+                                : 'Items likely to block aisles or entry/exit doors'}
+                            </li>
+                          </ul>
+                        </div>
+
+                        {/* Allowed Section */}
+                        <div className="py-3.5 space-y-2">
+                          <div className="flex items-center gap-1.5 text-emerald-700 text-xs font-black">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                            <span>{language === 'KR' ? '반입 가능 (Allowed)' : 'Allowed Items'}</span>
+                          </div>
+                          <ul className="text-xs text-slate-600 font-bold space-y-1.5 list-disc pl-4 leading-relaxed">
+                            <li>
+                              {language === 'KR' 
+                                ? '중량 20kg 미만, 부피 50 × 40 × 20cm 미만의 허용 규격 내 물품' 
+                                : 'Weight under 20kg, dimensions under 50 × 40 × 20cm'}
+                            </li>
+                            <li>
+                              {language === 'KR' 
+                                ? '항공기내 반입용 20인치 여행가방 규격 이내의 물품' 
+                                : 'Items within standard 20-inch flight carry-on suitcase specifications'}
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* RIGHT: Food & Drinks Regulations (음식물 반입 규정) */}
+                    <div className="space-y-5 lg:pl-10">
+                      <div className="flex items-start gap-2.5">
+                        <svg className="w-5 h-5 text-[#1E1E1C] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                          <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+                          <line x1="6" y1="2" x2="6" y2="4" />
+                          <line x1="10" y1="2" x2="10" y2="4" />
+                          <line x1="14" y1="2" x2="14" y2="4" />
+                        </svg>
+                        <div>
+                          <h4 className="text-sm sm:text-base font-black text-slate-800">
+                            {language === 'KR' ? '음식물 반입 규정' : 'Restrictions on Food and Drinks'}
+                          </h4>
+                          <p className="text-[11px] sm:text-xs text-rose-600 font-extrabold mt-0.5">
+                            {language === 'KR' ? '커피 등 음식물을 들고 타지 맙시다.' : 'No Food And Drinks Allowed.'}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Interactive Visual Illustration Board (Preserved illustrations, removed nested boxes) */}
+                      <div className="grid grid-cols-2 gap-4 py-3">
+                        {/* Allowed (Green) */}
+                        <div className="flex flex-col items-center justify-between py-2 text-center space-y-2.5">
+                          <span className="bg-emerald-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full">
+                            {language === 'KR' ? '반입 가능' : 'ALLOWED'}
+                          </span>
+                          <div className="relative w-24 h-24 flex items-center justify-center rounded-full border-4 border-emerald-500 bg-emerald-50/20 shadow-inner">
+                            <svg width="72" height="72" viewBox="0 0 100 100" className="w-18 h-18">
+                              <g transform="translate(25, 8)">
+                                {/* Cap */}
+                                <rect x="18" y="5" width="14" height="8" rx="1.5" fill="#3b82f6" stroke="#1e293b" strokeWidth="3" />
+                                {/* Neck */}
+                                <rect x="21" y="13" width="8" height="6" fill="#e2e8f0" stroke="#1e293b" strokeWidth="3" />
+                                {/* Main plastic bottle body with ridges */}
+                                <path d="M12 19 C12 19, 10 24, 10 28 L10 70 C10 73, 13 75, 16 75 L34 75 C37 75, 40 73, 40 70 L40 28 C40 24, 38 19, 38 19 Z" fill="#93c5fd" stroke="#1e293b" strokeWidth="3" />
+                                {/* Horizontal ridges */}
+                                <line x1="14" y1="32" x2="36" y2="32" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" />
+                                <line x1="14" y1="44" x2="36" y2="44" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" />
+                                <line x1="14" y1="56" x2="36" y2="56" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" />
+                              </g>
+                            </svg>
+                          </div>
+                          <span className="text-[11px] font-black text-slate-700">
+                            {language === 'KR' ? '뚜껑이 닫힌 생수/음료' : 'Sealed Water Bottles'}
+                          </span>
+                        </div>
+
+                        {/* Prohibited (Red) */}
+                        <div className="flex flex-col items-center justify-between py-2 text-center space-y-2.5">
+                          <span className="bg-rose-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full">
+                            {language === 'KR' ? '반입 불가' : 'PROHIBITED'}
+                          </span>
+                          <div className="relative w-24 h-24 flex items-center justify-center rounded-full border-4 border-rose-500 bg-rose-50/20 shadow-inner overflow-hidden">
+                            <svg width="72" height="72" viewBox="0 0 100 100" className="w-18 h-18 opacity-80">
+                              <g transform="translate(20, 8)">
+                                {/* Straw */}
+                                <path d="M42 5 L42 22 L32 22" fill="none" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                                {/* Lid */}
+                                <ellipse cx="30" cy="24" rx="20" ry="6" fill="#ffffff" stroke="#1e293b" strokeWidth="3" />
+                                <rect x="20" y="24" width="20" height="3" fill="#e2e8f0" stroke="#1e293b" strokeWidth="2" />
+                                {/* Cup body */}
+                                <path d="M13 28 L18 72 C18 74, 20 76, 22 76 L38 76 C40 76, 42 74, 43 72 L47 28 Z" fill="#fcd34d" stroke="#1e293b" strokeWidth="3" />
+                                {/* Coffee sleeve */}
+                                <path d="M15 40 L17 56 L43 56 L45 40 Z" fill="#b45309" stroke="#1e293b" strokeWidth="2" />
+                                {/* Coffee icon emblem on sleeve */}
+                                <circle cx="30" cy="48" r="4" fill="#78350f" />
+                              </g>
+                            </svg>
+                            {/* Prohibited diagonal cross-bar overlay */}
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                              <svg width="80" height="80" viewBox="0 0 100 100" className="w-full h-full text-rose-500 stroke-rose-500">
+                                <line x1="15" y1="15" x2="85" y2="85" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
+                              </svg>
+                            </div>
+                          </div>
+                          <span className="text-[11px] font-black text-rose-600">
+                            {language === 'KR' ? '일회용 테이크아웃 컵' : 'Disposable Cups & Drinks'}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="divide-y divide-slate-200/70 border-t border-slate-200/70">
+                        {/* Not Allowed Section */}
+                        <div className="py-3.5 space-y-2">
+                          <div className="flex items-center gap-1.5 text-rose-700 text-xs font-black">
+                            <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
+                            <span>{language === 'KR' ? '반입 불가 (Prohibited)' : 'Prohibited Food/Drinks'}</span>
+                          </div>
+                          <ul className="text-xs text-slate-600 font-bold space-y-1.5 list-disc pl-4 leading-relaxed">
+                            <li>
+                              {language === 'KR' 
+                                ? '가벼운 충격에도 쏟아질 우려가 있는 일회용 용기(일명 \'테이크아웃 컵\') 등에 담긴 음식물 및 음료' 
+                                : 'Food and drinks in disposable containers/cups (e.g., takeout cups) prone to spilling upon light impact'}
+                            </li>
+                          </ul>
+                        </div>
+
+                        {/* Allowed Section */}
+                        <div className="py-3.5 space-y-2">
+                          <div className="flex items-center gap-1.5 text-emerald-700 text-xs font-black">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                            <span>{language === 'KR' ? '반입 가능 (Allowed)' : 'Allowed Food/Drinks'}</span>
+                          </div>
+                          <ul className="text-xs text-slate-600 font-bold space-y-1.5 list-disc pl-4 leading-relaxed">
+                            <li>
+                              {language === 'KR' 
+                                ? '차내에서 취식할 목적이 아닌 단순히 운반하기 위해 소지하고 타는 완전히 포장된 음식물 또는 식재료 등' 
+                                : 'Fully packaged food or raw ingredients carried simply for transport purposes and not for in-transit consumption'}
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Minimalist Scroll-to-Top Button */}
+              <div className="pt-2 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#1E1E1C]/20 hover:border-[#8EA85E] bg-transparent hover:bg-[#8EA85E]/[0.08] text-[#1E1E1C] hover:text-[#5B7332] text-xs font-bold tracking-tight transition-colors cursor-pointer"
+                >
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M12 19V5" />
+                    <path d="m5 12 7-7 7 7" />
+                  </svg>
+                  <span>{language === 'KR' ? '맨 위로' : 'Back to Top'}</span>
+                </button>
+              </div>
+
+              {/* Verification Info - Displayed at the very bottom of Public Transit Tips */}
+              <div className="pt-4 border-t border-slate-200/80 flex justify-start">
+                <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1.5 whitespace-nowrap overflow-x-auto max-w-full scrollbar-none">
+                  <span className="font-bold text-[#8EA85E] flex items-center gap-1 shrink-0">
+                    <span className="relative flex h-1.5 w-1.5 shrink-0">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8EA85E] opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#8EA85E]"></span>
+                    </span>
+                    <span>{language === 'KR' ? '검증 정보' : 'Verified Info'}</span>
+                  </span>
+                  <span className="text-slate-300 shrink-0">|</span>
+                  <span className="shrink-0">{language === 'KR' ? '조사자: 플로레르' : 'Inspector: Florair'}</span>
+                  <span className="text-slate-300 shrink-0">|</span>
+                  <span className="shrink-0">
+                    {language === 'KR' ? '최근 조사일:' : 'Audited:'}{' '}
+                    <strong className="text-slate-800 font-semibold">{getTodayDate(language)}</strong>{' '}
+                    <span className="text-blue-600 font-normal">{language === 'KR' ? '기준 (매일 자동 업데이트)' : '(Updated Daily)'}</span>
+                  </span>
+                  <span className="text-slate-300 shrink-0">|</span>
+                  <span className="shrink-0">
+                    {language === 'KR' ? '공식 출처:' : 'Source:'}{' '}
+                    <a 
+                      href="https://www.busan.go.kr" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-slate-700 hover:text-blue-600 underline font-semibold"
+                    >
+                      {language === 'KR' ? '부산광역시청 홈페이지' : 'Busan City Portal'}
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+          {false && (
+            <div>
               <div className="space-y-8 pt-8 border-t border-slate-100">
                 {/* Sub-panel 1: High-contrast split scorecard for transfer guidelines */}
                 <div id="transfer-rules-section" className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-xs scroll-mt-24">
@@ -7588,40 +7900,234 @@ case 'EXPERIENCE': {
             </div>
           )}
 
-          {/* Verification Info - Displayed at the very bottom of Public Transit Tips */}
-          <div className="pt-4 border-t border-slate-200/80 flex justify-start">
-            <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1.5 whitespace-nowrap overflow-x-auto max-w-full scrollbar-none">
-              <span className="font-bold text-[#8EA85E] flex items-center gap-1 shrink-0">
-                <span className="relative flex h-1.5 w-1.5 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8EA85E] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#8EA85E]"></span>
-                </span>
-                <span>{language === 'KR' ? '검증 정보' : 'Verified Info'}</span>
-              </span>
-              <span className="text-slate-300 shrink-0">|</span>
-              <span className="shrink-0">{language === 'KR' ? '조사자: 플로레르' : 'Inspector: Florair'}</span>
-              <span className="text-slate-300 shrink-0">|</span>
-              <span className="shrink-0">
-                {language === 'KR' ? '최근 조사일:' : 'Audited:'}{' '}
-                <strong className="text-slate-800 font-semibold">{getTodayDate(language)}</strong>{' '}
-                <span className="text-blue-600 font-normal">{language === 'KR' ? '기준 (매일 자동 업데이트)' : '(Updated Daily)'}</span>
-              </span>
-              <span className="text-slate-300 shrink-0">|</span>
-              <span className="shrink-0">
-                {language === 'KR' ? '공식 출처:' : 'Source:'}{' '}
-                <a 
-                  href="https://www.busan.go.kr" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-slate-700 hover:text-blue-600 underline font-semibold"
-                >
-                  {language === 'KR' ? '부산광역시청 홈페이지' : 'Busan City Portal'}
-                </a>
-              </span>
-            </div>
-          </div>
-
           {transitSection === 'CHILD_FREE' && (
+            <div className="space-y-8 animate-fade-in text-left max-w-6xl mx-auto">
+              {/* BRAND HEADER TITLE */}
+              <div className="space-y-2 py-1">
+                <div className="mb-4">
+                  <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-heading">
+                    {language === 'KR' ? '어린이 대중교통 무료 요금 안내' : 'Children Public Transit Free Fare Guide'}
+                  </h1>
+                  <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                    {language === 'KR' 
+                      ? '부산 대중교통 어린이 무료 정책의 대상 설정과 올바른 충전카드 등록 요령' 
+                      : 'Target group definition and child transit card registration methods'}
+                  </p>
+                </div>
+
+                <div className="bg-[#8EA85E] text-white px-5 py-2.5 rounded-lg flex items-center shadow-2xs">
+                  <span className="text-xs font-extrabold tracking-[0.14em] uppercase">CHILD FREE FARE GUIDE</span>
+                </div>
+
+                {/* OPEN EDITORIAL LINE-ART GRID (4 ITEMS) */}
+                <div className="py-6 sm:py-9 px-2 sm:px-4 max-w-5xl mx-auto">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 sm:gap-x-8 lg:gap-x-10 gap-y-8 sm:gap-y-10">
+                    {/* ITEM 01: 지원 대상 연령 */}
+                    <div className="flex flex-col items-center text-center w-full">
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C]" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="32" cy="27" r="11" />
+                          <path d="M21 25 C21 17, 43 17, 43 25" />
+                          <line x1="19" y1="25" x2="46" y2="25" />
+                          <path d="M32 16 L32 13 M29 13 L35 13" />
+                          <circle cx="28" cy="28" r="1" fill="#1E1E1C" />
+                          <circle cx="36" cy="28" r="1" fill="#1E1E1C" />
+                          <path d="M29 32 Q32 35 35 32" />
+                          <path d="M18 50 C20 41, 25 39, 32 39 C39 39, 44 41, 46 50" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 flex items-center justify-center text-center">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] truncate">
+                          {language === 'KR' ? '지원 대상 연령' : 'Target Age Group'}
+                        </span>
+                      </div>
+                      <p className="mt-2.5 text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed px-1 break-keep">
+                        {language === 'KR' 
+                          ? '만 6세 ~ 12세 어린이 전원 대상 (타 지역 거주 어린이 및 해외 관광객 포함)' 
+                          : 'All kids aged 6 to 12 (includes foreign visitors and domestic travellers).'}
+                      </p>
+                    </div>
+
+                    {/* ITEM 02: 부과 요금 및 혜택 */}
+                    <div className="flex flex-col items-center text-center w-full">
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C]" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="32" cy="26" r="12" />
+                          <circle cx="32" cy="26" r="9.5" strokeDasharray="2 2" />
+                          <path d="M26 36.5 V49 L32 45 L38 49 V36.5" />
+                          <path d="M32 20 L33.8 23.8 H38 L34.6 26.2 L35.8 30.2 L32 27.6 L28.2 30.2 L29.4 26.2 L26 23.8 H30.2 Z" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 flex items-center justify-center text-center">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] truncate">
+                          {language === 'KR' ? '부과 요금 및 혜택' : 'Transit Fare / Benefit'}
+                        </span>
+                      </div>
+                      <div className="mt-2.5 space-y-1 px-1 break-keep">
+                        <span className="text-[#5B7332] font-extrabold text-[11px] sm:text-xs block">
+                          {language === 'KR' ? '교통카드 접촉 시 0원' : '₩0 with card tap'}
+                        </span>
+                        <p className="text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed">
+                          {language === 'KR' 
+                            ? '※ 단, 현금 탑승 시 일반 어린이 요금이 부과됩니다.' 
+                            : 'Regular cash fares apply if boarding without tapping a card.'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* ITEM 03: 교통카드 등록요령 */}
+                    <div className="flex flex-col items-center text-center w-full">
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C]" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="20" y="11" width="24" height="42" rx="3.5" />
+                          <rect x="23" y="16" width="18" height="29" rx="1.5" />
+                          <circle cx="32" cy="49" r="1.5" />
+                          <circle cx="32" cy="29.5" r="6.5" strokeDasharray="1.8 1.8" />
+                          <path d="M29 29.5 L31.2 31.8 L35.5 27.2" stroke="#8EA85E" strokeWidth="1.6" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 flex items-center justify-center text-center">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] truncate">
+                          {language === 'KR' ? '교통카드 등록요령' : 'How to Enroll'}
+                        </span>
+                      </div>
+                      <p className="mt-2.5 text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed px-1 break-keep">
+                        {language === 'KR' 
+                          ? '일반 교통카드 구매 후 편의점 계산대에서 생년월일을 등록하거나 앱을 통해 활성화' 
+                          : 'Purchase a card at convenience stores and request date-of-birth registration.'}
+                      </p>
+                    </div>
+
+                    {/* ITEM 04: 이용범위 및 예외 */}
+                    <div className="flex flex-col items-center text-center w-full">
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C]" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M32 13 L13 46 H51 L32 13 Z" />
+                          <line x1="32" y1="25" x2="32" y2="36" strokeWidth="1.5" />
+                          <circle cx="32" cy="41" r="1.3" fill="#1E1E1C" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 flex items-center justify-center text-center">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] truncate">
+                          {language === 'KR' ? '이용범위 및 예외' : 'Exclusions'}
+                        </span>
+                      </div>
+                      <p className="mt-2.5 text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed px-1 break-keep">
+                        {language === 'KR' 
+                          ? '시내버스, 마을버스, 지하철 1~4호선 해당 (광역급행 2000번 버스 및 코레일 동해선은 제외)' 
+                          : 'Applies to buses and subways. Excludes Express No. 2000 & Donghae Line.'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* DETAIL CALLOUTS (Minimalist borderless layout) */}
+              <div className="space-y-10 pt-4">
+                {/* Voice guide terminal notice (Soft sage green band, line-art speaker icon) */}
+                <div className="py-3.5 px-4 sm:px-5 bg-[#8EA85E]/15 rounded-xl flex items-start gap-3.5">
+                  <svg className="w-6 h-6 text-[#5B7332] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                  </svg>
+                  <div className="space-y-1 text-left">
+                    <h4 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                      {language === 'KR' ? '교통카드 접촉 단말기 안내 음성 주의' : 'Voice Announcement at Terminal Reader'}
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed break-keep">
+                      {language === 'KR' 
+                        ? '등록된 어린이 카드를 접촉하면 "어린이입니다"라는 음성 안내가 단말기에서 송출됩니다. 타인의 교통카드를 무단 사용할 경우 관련 규정에 따라 기본요금 30배 가량의 무거운 부가금(벌금)이 징수될 수 있으니 주의 바랍니다.' 
+                        : 'Tapping a child card triggers "어린이입니다" (It\'s a child). Severe fines apply to unauthorized users of child/youth transit cards.'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Official Enrollment Guide Infographic (Simplified, no outer nested boxes) */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
+                      <span className="w-2 h-2 bg-[#8EA85E] rounded-full inline-block"></span>
+                      <span>{language === 'KR' ? '어린이 대중교통 무료화 등록 방법 안내서' : 'Official Enrollment Guide Infographic'}</span>
+                    </p>
+                    <a 
+                      href="https://www.busan.go.kr/depart/childtransport" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#5B7332] font-bold transition-colors hover:underline shrink-0"
+                    >
+                      <span>{language === 'KR' ? '출처: 부산광역시 대표포털' : 'Source: Busan City Portal'}</span>
+                      <ExternalLink className="w-3.5 h-3.5 stroke-[2]" />
+                    </a>
+                  </div>
+                  
+                  <div className="w-full flex flex-col items-center">
+                    <img 
+                      src={childTransportInfographic || undefined} 
+                      alt={language === 'KR' ? '부산 대중교통 어린이 무료 정책 안내문 (How to Enroll)' : 'How to Enroll in the Free Fare Program Infographic'} 
+                      className="w-full h-auto object-contain rounded-xl max-h-[800px]"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                </div>
+
+                {/* Bottom Back Button */}
+                <div className="pt-2 pb-2 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigateToSubPage('transit');
+                      try {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                      } catch {
+                        window.scrollTo(0, 0);
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#8EA85E] hover:bg-[#7A944C] text-white font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>
+                      {language === 'KR' ? '대중교통 이용 팁으로 돌아가기' : 'Back to Public Transit Tips'}
+                    </span>
+                  </button>
+                </div>
+
+                {/* Verification Info - Displayed at the very bottom of Child Free Fare Guide */}
+                <div className="pt-4 border-t border-slate-200/80 flex justify-start">
+                  <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1.5 whitespace-nowrap overflow-x-auto max-w-full scrollbar-none">
+                    <span className="font-bold text-[#8EA85E] flex items-center gap-1 shrink-0">
+                      <span className="relative flex h-1.5 w-1.5 shrink-0">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8EA85E] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#8EA85E]"></span>
+                      </span>
+                      <span>{language === 'KR' ? '검증 정보' : 'Verified Info'}</span>
+                    </span>
+                    <span className="text-slate-300 shrink-0">|</span>
+                    <span className="shrink-0">{language === 'KR' ? '조사자: 플로레르' : 'Inspector: Florair'}</span>
+                    <span className="text-slate-300 shrink-0">|</span>
+                    <span className="shrink-0">
+                      {language === 'KR' ? '최근 조사일:' : 'Audited:'}{' '}
+                      <strong className="text-slate-800 font-semibold">{getTodayDate(language)}</strong>{' '}
+                      <span className="text-blue-600 font-normal">{language === 'KR' ? '기준 (매일 자동 업데이트)' : '(Updated Daily)'}</span>
+                    </span>
+                    <span className="text-slate-300 shrink-0">|</span>
+                    <span className="shrink-0">
+                      {language === 'KR' ? '공식 출처:' : 'Source:'}{' '}
+                      <a 
+                        href="https://www.busan.go.kr" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-slate-700 hover:text-blue-600 underline font-semibold"
+                      >
+                        {language === 'KR' ? '부산광역시청 홈페이지' : 'Busan City Portal'}
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {false && (
             <div className="space-y-6 animate-fade-in text-left">
               {/* BRAND HEADER TITLE */}
               <div className="text-center py-4 sm:py-6 max-w-2xl mx-auto space-y-2">
@@ -7842,6 +8348,236 @@ case 'EXPERIENCE': {
           )}
 
           {transitSection === 'BUS_QR' && (
+            <div className="space-y-8 animate-fade-in text-left max-w-6xl mx-auto">
+              {/* BRAND HEADER TITLE */}
+              <div className="space-y-2 py-1">
+                <div className="mb-4">
+                  <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-heading">
+                    {language === 'KR' ? '부산 시내버스 모바일 QR 간편결제 가이드' : 'Busan City Bus QR Payment Guide'}
+                  </h1>
+                  <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                    {language === 'KR' 
+                      ? '현금이나 실물 교통카드 없이 스마트폰 앱으로 차내 제로페이 QR을 스캔해 간편 탑승' 
+                      : 'Board any Busan city bus by scanning the in-bus Zero Pay QR code with your mobile payment app'}
+                  </p>
+                </div>
+
+                <div className="bg-[#8EA85E] text-white px-5 py-2.5 rounded-lg flex items-center shadow-2xs">
+                  <span className="text-xs font-extrabold tracking-[0.14em] uppercase">BUS QR PAYMENT · 3 STEPS</span>
+                </div>
+
+                {/* OPEN EDITORIAL LINE-ART GRID (3 STEPS) */}
+                <div className="py-6 sm:py-9 px-2 sm:px-4 max-w-4xl mx-auto">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 sm:gap-x-10 lg:gap-x-12 gap-y-8">
+                    {/* STEP 01: 탑승 후 차내 QR 스캔 */}
+                    <div className="flex flex-col items-center text-center w-full">
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[42%] sm:w-[52%] aspect-square h-auto stroke-[#1E1E1C]" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M14 21 V15 H20" />
+                          <path d="M44 15 H50 V21" />
+                          <path d="M50 43 V49 H44" />
+                          <path d="M20 49 H14 V43" />
+                          <rect x="21" y="21" width="9" height="9" rx="1" />
+                          <rect x="34" y="21" width="9" height="9" rx="1" />
+                          <rect x="21" y="34" width="9" height="9" rx="1" />
+                          <rect x="34" y="34" width="4" height="4" />
+                          <rect x="39" y="39" width="4" height="4" />
+                          <line x1="12" y1="32" x2="52" y2="32" stroke="#8EA85E" strokeWidth="1.5" strokeDasharray="2.5 2" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 flex items-center justify-center text-center">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] truncate">
+                          {language === 'KR' ? '1. 탑승 후 차내 QR 스캔' : '1. Scan In-Bus QR Code'}
+                        </span>
+                      </div>
+                      <p className="mt-2.5 text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed px-1 break-keep">
+                        {language === 'KR' 
+                          ? '결제 앱을 켜고 버스 내부에 부착된 제로페이 QR코드를 스캔합니다.' 
+                          : 'Open your payment app and scan the Zero Pay QR code inside the bus.'}
+                      </p>
+                    </div>
+
+                    {/* STEP 02: 결제 옵션 선택 & 자동 환전 */}
+                    <div className="flex flex-col items-center text-center w-full">
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[42%] sm:w-[52%] aspect-square h-auto stroke-[#1E1E1C]" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="32" cy="32" r="16" />
+                          <path d="M26 26 H38 M26 30 H38 M32 26 V40" />
+                          <path d="M27 22 L32 27 L37 22" />
+                          <path d="M18 22 A18 18 0 0 1 46 22" stroke="#8EA85E" strokeWidth="1.4" strokeDasharray="2 2" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 flex items-center justify-center text-center">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] truncate">
+                          {language === 'KR' ? '2. 결제 선택 & 자동 환전' : '2. Auto Currency Conversion'}
+                        </span>
+                      </div>
+                      <p className="mt-2.5 text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed px-1 break-keep">
+                        {language === 'KR' 
+                          ? '결제 옵션을 선택하면 탑승객의 현지 통화로 요금이 자동 환전 표시됩니다.' 
+                          : 'Select payment — the fare automatically converts to your home currency.'}
+                      </p>
+                    </div>
+
+                    {/* STEP 03: 기사님께 완료 화면 제시 */}
+                    <div className="flex flex-col items-center text-center w-full">
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[42%] sm:w-[52%] aspect-square h-auto stroke-[#1E1E1C]" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="20" y="11" width="24" height="42" rx="3.5" />
+                          <rect x="23" y="16" width="18" height="29" rx="1.5" />
+                          <circle cx="32" cy="49" r="1.5" />
+                          <circle cx="32" cy="30.5" r="7" />
+                          <path d="M28.8 30.5 L31.2 33 L35.8 28" stroke="#8EA85E" strokeWidth="1.7" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 flex items-center justify-center text-center">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] truncate">
+                          {language === 'KR' ? '3. 기사님께 완료 화면 제시' : '3. Show Screen to Driver'}
+                        </span>
+                      </div>
+                      <p className="mt-2.5 text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed px-1 break-keep">
+                        {language === 'KR' 
+                          ? '스마트폰의 결제 완료 화면을 기사님께 보여주고 탑승합니다.' 
+                          : 'Show the payment confirmation screen to the driver and take a seat.'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* CONCISE FARE RULES & SUPPORTED APPS (Borderless editorial style) */}
+              <div className="space-y-8 pt-2">
+                {/* Key Fare & Payment Policy */}
+                <div className="space-y-6">
+                  <div className="py-3.5 px-4 sm:px-5 bg-[#8EA85E]/15 rounded-xl flex items-center gap-3">
+                    <svg className="w-6 h-6 text-[#5B7332] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                      {language === 'KR' ? '요금 규정 및 필수 수칙' : 'Fare Policy & Key Rules'}
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:divide-x sm:divide-[#1E1E1C]/10">
+                    <div className="space-y-1">
+                      <div className="font-black text-slate-900 text-xs sm:text-sm">
+                        {language === 'KR' ? '1인당 균일 1,700원' : 'Flat ₩1,700 Per Person'}
+                      </div>
+                      <p className="text-xs text-slate-500 leading-relaxed font-medium break-keep">
+                        {language === 'KR' 
+                          ? '성인 현금 요금과 동일한 1,700원 균일 적용 (어린이·청소년 동일)' 
+                          : 'Flat ₩1,700 per person (same rate applies to children and teens).'}
+                      </p>
+                    </div>
+
+                    <div className="space-y-1 sm:pl-6">
+                      <div className="font-black text-slate-900 text-xs sm:text-sm">
+                        {language === 'KR' ? '1인 1결제 원칙' : 'Individual Payments'}
+                      </div>
+                      <p className="text-xs text-slate-500 leading-relaxed font-medium break-keep">
+                        {language === 'KR' 
+                          ? '다인 일괄 결제 불가, 각자 스마트폰 앱으로 1인씩 개별 결제' 
+                          : 'Each passenger must pay separately on their own mobile device.'}
+                      </p>
+                    </div>
+
+                    <div className="space-y-1 sm:pl-6">
+                      <div className="font-black text-slate-900 text-xs sm:text-sm">
+                        {language === 'KR' ? '환승 할인 미적용' : 'No Transfer Discounts'}
+                      </div>
+                      <p className="text-xs text-slate-500 leading-relaxed font-medium break-keep">
+                        {language === 'KR' 
+                          ? '현금 대체 간편결제 방식으로 버스·지하철 간 환승 할인 미적용' 
+                          : 'Replaces cash payment, so transit transfer discounts do not apply.'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Supported Global Apps */}
+                <div className="py-5 border-y border-[#1E1E1C]/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <svg className="w-5 h-5 text-[#8EA85E] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="2" y1="12" x2="22" y2="12" />
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                    <span className="font-black text-slate-900 text-xs sm:text-sm shrink-0">
+                      {language === 'KR' ? '지원 글로벌 결제 앱' : 'Supported Global Apps'}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-bold text-slate-700">
+                    <span>Alipay (알리페이)</span>
+                    <span className="text-slate-300">·</span>
+                    <span>WeChat Pay (위챗페이)</span>
+                    <span className="text-slate-300">·</span>
+                    <span>UnionPay (유니온페이)</span>
+                    <span className="text-slate-300">·</span>
+                    <span>PayPay (페이페이)</span>
+                    <span className="text-slate-300">·</span>
+                    <span>Zero Pay (제로페이)</span>
+                  </div>
+                </div>
+
+                {/* Bottom Back Button */}
+                <div className="pt-2 pb-2 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigateToSubPage('transit');
+                      try {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                      } catch {
+                        window.scrollTo(0, 0);
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#8EA85E] hover:bg-[#7A944C] text-white font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>
+                      {language === 'KR' ? '대중교통 이용 팁으로 돌아가기' : 'Back to Public Transit Tips'}
+                    </span>
+                  </button>
+                </div>
+
+                {/* Verification Info - Displayed at the very bottom of Bus QR Payment Guide */}
+                <div className="pt-4 border-t border-slate-200/80 flex justify-start">
+                  <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1.5 whitespace-nowrap overflow-x-auto max-w-full scrollbar-none">
+                    <span className="font-bold text-[#8EA85E] flex items-center gap-1 shrink-0">
+                      <span className="relative flex h-1.5 w-1.5 shrink-0">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8EA85E] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#8EA85E]"></span>
+                      </span>
+                      <span>{language === 'KR' ? '검증 정보' : 'Verified Info'}</span>
+                    </span>
+                    <span className="text-slate-300 shrink-0">|</span>
+                    <span className="shrink-0">{language === 'KR' ? '조사자: 플로레르' : 'Inspector: Florair'}</span>
+                    <span className="text-slate-300 shrink-0">|</span>
+                    <span className="shrink-0">
+                      {language === 'KR' ? '최근 조사일:' : 'Audited:'}{' '}
+                      <strong className="text-slate-800 font-semibold">{getTodayDate(language)}</strong>{' '}
+                      <span className="text-blue-600 font-normal">{language === 'KR' ? '기준 (매일 자동 업데이트)' : '(Updated Daily)'}</span>
+                    </span>
+                    <span className="text-slate-300 shrink-0">|</span>
+                    <span className="shrink-0">
+                      {language === 'KR' ? '공식 출처:' : 'Source:'}{' '}
+                      <a 
+                        href="https://www.busan.go.kr" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-slate-700 hover:text-blue-600 underline font-semibold"
+                      >
+                        {language === 'KR' ? '부산광역시청 홈페이지' : 'Busan City Portal'}
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {false && (
             <div className="space-y-6 animate-fade-in text-left">
               {/* BRAND HEADER TITLE */}
               <div className="text-center py-4 sm:py-6 max-w-2xl mx-auto space-y-2">
@@ -8101,6 +8837,346 @@ case 'EXPERIENCE': {
           )}
 
           {transitSection === 'TAXI' && (
+            <div className="space-y-8 animate-fade-in text-left max-w-6xl mx-auto">
+              {/* BRAND HEADER TITLE */}
+              <div className="space-y-2 py-1">
+                <div className="mb-4">
+                  <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-heading">
+                    {language === 'KR' ? '부산 택시 이용법 & 호출 앱 가이드' : 'Busan Taxi Usage & Calling App Guide'}
+                  </h1>
+                  <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                    {language === 'KR' 
+                      ? '기본 요금 체계부터 카카오T · k.ride · 우버 호출 앱, 수하물 적재 및 영수증 팁까지 한눈에 확인하세요' 
+                      : 'Essential guide covering base fares, Kakao T · k.ride · Uber apps, luggage loading, and receipt tips'}
+                  </p>
+                </div>
+
+                <div className="bg-[#8EA85E] text-white px-5 py-2.5 rounded-lg flex items-center shadow-2xs">
+                  <span className="text-xs font-extrabold tracking-[0.14em] uppercase">BUSAN TAXI GUIDE</span>
+                </div>
+
+                {/* OPEN EDITORIAL LINE-ART GRID (4 ITEMS) */}
+                <div className="py-6 sm:py-9 px-2 sm:px-4 max-w-5xl mx-auto">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-7 gap-x-4 sm:gap-y-10 sm:gap-x-6">
+                    {/* ITEM 01: 기본 요금 & 결제 수단 */}
+                    <div className="flex flex-col items-center text-center w-full">
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C]" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="26" y="13" width="12" height="5" rx="1.2" stroke="#8EA85E" strokeWidth="1.5" />
+                          <path d="M17 29 L22 18 H42 L47 29" />
+                          <rect x="13" y="29" width="38" height="15" rx="3" />
+                          <line x1="17" y1="29" x2="47" y2="29" />
+                          <circle cx="20" cy="36.5" r="2.2" stroke="#8EA85E" strokeWidth="1.5" />
+                          <circle cx="44" cy="36.5" r="2.2" stroke="#8EA85E" strokeWidth="1.5" />
+                          <line x1="27" y1="36.5" x2="37" y2="36.5" />
+                          <path d="M16 44 v4.5 a1.5 1.5 0 0 0 3 0 v-4.5" />
+                          <path d="M45 44 v4.5 a1.5 1.5 0 0 0 3 0 v-4.5" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 flex items-center justify-center text-center">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] truncate">
+                          {language === 'KR' ? '기본 요금 & 결제 수단' : 'Base Fare & Payments'}
+                        </span>
+                      </div>
+                      <p className="mt-2.5 text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed px-1 break-keep">
+                        {language === 'KR' 
+                          ? '기본요금 4,800원(2km). 신용/체크카드, 교통카드, 현금 결제 가능 (심야할증 23~04시)' 
+                          : 'Base fare ₩4,800 (2km). Credit cards, T-money & cash accepted.'}
+                      </p>
+                    </div>
+
+                    {/* ITEM 02: 택시 호출 스마트 앱 */}
+                    <div className="flex flex-col items-center text-center w-full">
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C]" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="20" y="10" width="24" height="44" rx="3.5" />
+                          <line x1="29" y1="14" x2="35" y2="14" />
+                          <circle cx="32" cy="49.5" r="1.3" />
+                          <path d="M32 21c-4 0-7 3-7 6.8 0 5.2 7 12.2 7 12.2s7-7 7-12.2c0-3.8-3-6.8-7-6.8z" stroke="#8EA85E" strokeWidth="1.5" />
+                          <circle cx="32" cy="27.5" r="2.2" stroke="#8EA85E" strokeWidth="1.4" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 flex items-center justify-center text-center">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] truncate">
+                          {language === 'KR' ? '택시 호출 스마트 앱' : 'Taxi Calling Apps'}
+                        </span>
+                      </div>
+                      <p className="mt-2.5 text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed px-1 break-keep">
+                        {language === 'KR' 
+                          ? '카카오T · k.ride · 우버 · 동백택시 앱으로 정확한 승하차 위치 지정 및 예상 요금 확인' 
+                          : 'Use Kakao T, k.ride, Uber, or Dongbaek for pickup pin & fare estimates.'}
+                      </p>
+                    </div>
+
+                    {/* ITEM 03: 수하물 적재 & 차종 */}
+                    <div className="flex flex-col items-center text-center w-full">
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C]" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="19" y="20" width="26" height="28" rx="3.5" />
+                          <path d="M27 20 V13.5 a2 2 0 0 1 2 -2 h6 a2 2 0 0 1 2 2 V20" />
+                          <line x1="25" y1="26" x2="25" y2="42" stroke="#8EA85E" strokeWidth="1.4" />
+                          <line x1="32" y1="26" x2="32" y2="42" stroke="#8EA85E" strokeWidth="1.4" />
+                          <line x1="39" y1="26" x2="39" y2="42" stroke="#8EA85E" strokeWidth="1.4" />
+                          <circle cx="24" cy="51" r="1.8" />
+                          <circle cx="40" cy="51" r="1.8" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 flex items-center justify-center text-center">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] truncate">
+                          {language === 'KR' ? '수하물 적재 & 차종' : 'Luggage & Vehicles'}
+                        </span>
+                      </div>
+                      <p className="mt-2.5 text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed px-1 break-keep">
+                        {language === 'KR' 
+                          ? '트렁크 무상 적재 가능. 대형 캐리어가 여러 개라면 호출 앱에서 대형 밴(벤티) 선택 추천' 
+                          : 'Free trunk space. Choose a large van (Venti) on the app for multiple large bags.'}
+                      </p>
+                    </div>
+
+                    {/* ITEM 04: 안전 이용 & 영수증 */}
+                    <div className="flex flex-col items-center text-center w-full">
+                      <div className="w-full flex items-center justify-center mb-3 sm:mb-5">
+                        <svg className="w-[52%] sm:w-[55%] aspect-square h-auto stroke-[#1E1E1C]" viewBox="6 6 52 52" fill="none" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M19 12 H45 V49 L40.5 46 L36 49 L32 46 L28 49 L23.5 46 L19 49 Z" />
+                          <line x1="25" y1="21" x2="39" y2="21" />
+                          <line x1="25" y1="27" x2="39" y2="27" />
+                          <line x1="25" y1="33" x2="33" y2="33" />
+                          <circle cx="36.5" cy="38.5" r="5.5" stroke="#8EA85E" strokeWidth="1.5" />
+                          <path d="M34.2 38.5 L35.8 40.2 L39.2 36.8" stroke="#8EA85E" strokeWidth="1.5" />
+                        </svg>
+                      </div>
+                      <div className="w-full py-2 sm:py-2.5 px-1 border-y border-[#3D3C38]/60 flex items-center justify-center text-center">
+                        <span className="text-[11.5px] sm:text-xs font-extrabold tracking-tight text-[#18181B] truncate">
+                          {language === 'KR' ? '안전 이용 & 영수증' : 'Safety & Receipt Tips'}
+                        </span>
+                      </div>
+                      <p className="mt-2.5 text-[11px] sm:text-xs text-slate-600 font-medium leading-relaxed px-1 break-keep">
+                        {language === 'KR' 
+                          ? '하차 시 영수증을 챙기면 분실물 발생 시 차량번호와 기사님 연락처를 즉시 확인할 수 있습니다' 
+                          : 'Keep your paper receipt to check the license plate & driver contact if items are lost.'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* DETAILED GUIDES (Minimalist borderless layout with soft sage headers) */}
+              <div className="space-y-10 pt-2">
+                {/* 1. Calling Apps Comparison Section */}
+                <div className="space-y-6">
+                  <div className="py-3.5 px-4 sm:px-5 bg-[#8EA85E]/15 rounded-xl flex items-start sm:items-center gap-3">
+                    <svg className="w-6 h-6 text-[#5B7332] shrink-0 mt-0.5 sm:mt-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                      <line x1="12" y1="18" x2="12.01" y2="18" />
+                    </svg>
+                    <div>
+                      <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                        {language === 'KR' ? '유형별 택시 호출 앱 핵심 가이드' : 'Taxi Calling Apps by Traveler Type'}
+                      </h3>
+                      <p className="text-xs text-slate-600 font-medium mt-0.5">
+                        {language === 'KR' ? '국내 여행객과 외국인 방문객에게 가장 편리한 호출 앱 비교' : 'Compare the best taxi calling apps for domestic & global visitors'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 md:divide-x md:divide-[#1E1E1C]/10">
+                    {/* Left Column: Kakao T & Dongbaek Taxi */}
+                    <div className="space-y-6 divide-y divide-slate-200/70">
+                      {/* Kakao T */}
+                      <div className="space-y-2.5 pb-6">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                            <h4 className="text-sm sm:text-base font-black text-slate-900">
+                              {language === 'KR' ? '카카오 T (Kakao T)' : 'Kakao T App'}
+                            </h4>
+                          </div>
+                          <span className="text-[11px] font-extrabold text-amber-700 uppercase">
+                            {language === 'KR' ? '국내 1위 플랫폼' : 'Korea No.1 App'}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                          {language === 'KR'
+                            ? '앱 실행 ➔ [택시] 선택 ➔ 출발지·목적지 입력 ➔ 일반·벤티(대형 밴) 차종 및 예상 요금 확인 후 호출. 배차 후 차량 번호와 실시간 이동 경로를 확인할 수 있습니다.'
+                            : 'Open app ➔ Select [Taxi] ➔ Enter route ➔ Check estimated fare & vehicle type (Regular or Venti van) and call.'}
+                        </p>
+                      </div>
+
+                      {/* Dongbaek Taxi */}
+                      <div className="space-y-2.5 pt-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
+                            <h4 className="text-sm sm:text-base font-black text-slate-900">
+                              {language === 'KR' ? '동백택시 (동백전 앱)' : 'Dongbaek Taxi'}
+                            </h4>
+                          </div>
+                          <span className="text-[11px] font-extrabold text-[#5B7332] uppercase">
+                            {language === 'KR' ? '부산 지역화폐 혜택' : 'Local Cashback'}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                          {language === 'KR'
+                            ? '부산 지역화폐 동백전 앱에서 호출 수수료 무료로 이용 가능하며, 동백전 카드로 자동 결제 시 캐시백 혜택을 받을 수 있습니다.'
+                            : 'Zero call dispatch fees via the Busan Dongbaekjeon app, with automatic local cashback rewards.'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Right Column: k.ride & Uber */}
+                    <div className="space-y-6 md:pl-10 divide-y divide-slate-200/70">
+                      {/* k.ride */}
+                      <div className="space-y-2.5 pb-6">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
+                            <h4 className="text-sm sm:text-base font-black text-slate-900">
+                              {language === 'KR' ? 'k.ride (외국인 전용 카카오T)' : 'k.ride (Global Kakao T)'}
+                            </h4>
+                          </div>
+                          <a
+                            href="https://www.kakaomobility.com/k-ride"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[11px] font-bold text-[#5B7332] hover:underline shrink-0"
+                          >
+                            <span>{language === 'KR' ? '공식 안내' : 'Official Site'}</span>
+                            <ExternalLink className="w-3 h-3 stroke-[2]" />
+                          </a>
+                        </div>
+                        <p className="text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                          {language === 'KR'
+                            ? '한국 본인인증 없이 해외 전화번호로 즉시 가입 가능. 해외 신용카드(Visa·Master·AMEX·JCB) 자동 결제 및 10개국 언어 실시간 번역 채팅을 지원합니다.'
+                            : 'Sign up with foreign phone numbers without Korean ID verification. Supports foreign cards and 10-language auto-translation.'}
+                        </p>
+                      </div>
+
+                      {/* Uber */}
+                      <div className="space-y-2.5 pt-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-slate-900"></span>
+                            <h4 className="text-sm sm:text-base font-black text-slate-900">
+                              {language === 'KR' ? '우버 (Uber)' : 'Uber'}
+                            </h4>
+                          </div>
+                          <span className="text-[11px] font-extrabold text-slate-600 uppercase">
+                            {language === 'KR' ? '글로벌 계정 연동' : 'Global Account'}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-600 font-medium leading-relaxed break-keep">
+                          {language === 'KR'
+                            ? '해외에서 사용하던 우버 앱과 등록된 해외 신용카드를 별도 설정 없이 부산에서도 그대로 호출·자동 정산할 수 있습니다.'
+                            : 'Use your existing global Uber app and registered foreign credit cards directly in Busan without extra setup.'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Key Taxi Stands & Emergency Contact Section */}
+                <div className="space-y-6">
+                  <div className="py-3.5 px-4 sm:px-5 bg-[#8EA85E]/15 rounded-xl flex items-start sm:items-center gap-3">
+                    <svg className="w-6 h-6 text-[#5B7332] shrink-0 mt-0.5 sm:mt-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    <div>
+                      <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                        {language === 'KR' ? '부산 주요 거점 택시 승강장 & 비상 연락처' : 'Major Taxi Stands & Emergency Contacts'}
+                      </h3>
+                      <p className="text-xs text-slate-600 font-medium mt-0.5">
+                        {language === 'KR' ? '주요 역·공항 전용 탑승 위치 및 분실물·통역 도움 전화번호' : 'Key taxi stand locations and lost & found / translation helplines'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 md:divide-x md:divide-[#1E1E1C]/10 text-xs">
+                    <div className="space-y-3">
+                      <h5 className="font-black text-slate-900 text-xs sm:text-sm flex items-center gap-2 pb-2 border-b border-slate-200/80">
+                        <span className="w-2 h-2 rounded-full bg-[#8EA85E]"></span>
+                        <span>{language === 'KR' ? '주요 지정 승강장 위치' : 'Key Taxi Stand Locations'}</span>
+                      </h5>
+                      <ul className="space-y-2 text-slate-600 font-medium leading-relaxed">
+                        <li>• <strong className="text-slate-800">부산역 (KTX):</strong> 1층 6번 출구 밖 택시 전용 승강장</li>
+                        <li>• <strong className="text-slate-800">김해공항:</strong> 국내선·국제선 1층 게이트 앞 전용 탑승장</li>
+                        <li>• <strong className="text-slate-800">해운대해수욕장:</strong> 이벤트 광장 및 조선호텔 입구 정류장</li>
+                        <li>• <strong className="text-slate-800">서면역:</strong> 7번 출구 / 15번 출구 앞 도로변 승강장</li>
+                      </ul>
+                    </div>
+
+                    <div className="space-y-3 md:pl-10">
+                      <h5 className="font-black text-slate-900 text-xs sm:text-sm flex items-center gap-2 pb-2 border-b border-slate-200/80">
+                        <span className="w-2 h-2 rounded-full bg-rose-500"></span>
+                        <span>{language === 'KR' ? '분실물 & 통역 긴급 연락처' : 'Lost & Found / Translation Helpline'}</span>
+                      </h5>
+                      <ul className="space-y-2 text-slate-600 font-medium leading-relaxed">
+                        <li>• <strong className="text-slate-800">부산시 120 콜센터:</strong> 051-120 (택시 분실물 및 불편 신고)</li>
+                        <li>• <strong className="text-slate-800">외국인 관광 통역 안내:</strong> 1330 (24시간 영·중·일 통역 지원)</li>
+                        <li>• <strong className="text-slate-800">개인택시 조합 분실물센터:</strong> 051-808-8181</li>
+                        <li>• <strong className="text-slate-800">법인택시 조합 분실물센터:</strong> 051-500-8500</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Back Button (Sage Green) */}
+                <div className="pt-2 pb-2 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigateToSubPage('transit');
+                      try {
+                        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                      } catch {
+                        window.scrollTo(0, 0);
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#8EA85E] hover:bg-[#7A944C] text-white font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>
+                      {language === 'KR' ? '대중교통 이용 팁으로 돌아가기' : 'Back to Public Transit Tips'}
+                    </span>
+                  </button>
+                </div>
+
+                {/* Verification Info - Displayed at the very bottom of Taxi Guide */}
+                <div className="pt-4 border-t border-slate-200/80 flex justify-start">
+                  <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1.5 whitespace-nowrap overflow-x-auto max-w-full scrollbar-none">
+                    <span className="font-bold text-[#8EA85E] flex items-center gap-1 shrink-0">
+                      <span className="relative flex h-1.5 w-1.5 shrink-0">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8EA85E] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#8EA85E]"></span>
+                      </span>
+                      <span>{language === 'KR' ? '검증 정보' : 'Verified Info'}</span>
+                    </span>
+                    <span className="text-slate-300 shrink-0">|</span>
+                    <span className="shrink-0">{language === 'KR' ? '조사자: 플로레르' : 'Inspector: Florair'}</span>
+                    <span className="text-slate-300 shrink-0">|</span>
+                    <span className="shrink-0">
+                      {language === 'KR' ? '최근 조사일:' : 'Audited:'}{' '}
+                      <strong className="text-slate-800 font-semibold">{getTodayDate(language)}</strong>{' '}
+                      <span className="text-blue-600 font-normal">{language === 'KR' ? '기준 (매일 자동 업데이트)' : '(Updated Daily)'}</span>
+                    </span>
+                    <span className="text-slate-300 shrink-0">|</span>
+                    <span className="shrink-0">
+                      {language === 'KR' ? '공식 출처:' : 'Source:'}{' '}
+                      <a 
+                        href="https://www.busan.go.kr" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-slate-700 hover:text-blue-600 underline font-semibold"
+                      >
+                        {language === 'KR' ? '부산광역시청 홈페이지' : 'Busan City Portal'}
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {false && (
             <div className="space-y-6 animate-fade-in text-left">
               {/* BRAND HEADER TITLE */}
               <div className="text-center py-4 sm:py-6 max-w-2xl mx-auto space-y-2">

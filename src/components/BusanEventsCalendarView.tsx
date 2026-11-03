@@ -1035,55 +1035,23 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
   };
 
   return (
-    <div className="space-y-3 sm:space-y-4 animate-fade-in text-left max-w-5xl mx-auto pb-0" id="busan-events-calendar-container">
+    <div className="space-y-5 sm:space-y-6 animate-fade-in text-left max-w-5xl mx-auto pb-0" id="busan-events-calendar-container">
       
-      {/* 1. Intro Header Section - Soft & Clean (Matches theme card aesthetic) */}
-      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-xs text-left">
-        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-          <CalendarIcon className="w-7 h-7 sm:w-8 sm:h-8 text-[#8EA85E] shrink-0" />
+      {/* 1. Intro Header Section - Borderless & Clean (Unified with Transit Tips & Exploration) */}
+      <div className="space-y-1.5 border-b border-slate-200 pb-4 text-left">
+        <h2 className="text-xl sm:text-2xl font-heading font-black text-slate-900 tracking-tight flex items-center gap-2.5">
+          <CalendarIcon className="w-6 h-6 sm:w-7 sm:h-7 text-[#8EA85E] shrink-0 stroke-[1.9]" />
           <span>{language === 'KR' ? '부산 주요일정표' : 'Busan Main Festival Calendar'}</span>
         </h2>
-        <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed font-normal">
+        <p className="text-xs sm:text-sm text-slate-500 font-medium">
           {language === 'KR' 
             ? '한 눈에 부산 대표 축제 보기' 
             : 'View Busan\'s Representative Festivals at a Glance'}
         </p>
-
-        {/* Verification Info Notice */}
-        <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] sm:text-xs text-slate-500">
-          <span className="font-bold text-slate-700 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
-            <span>{language === 'KR' ? '검증 정보' : 'Verified Data'}</span>
-          </span>
-          <span className="text-slate-300">|</span>
-          <span>{language === 'KR' ? '조사자: ' : 'Auditor: '}<strong className="text-slate-700 font-medium">{language === 'KR' ? '플로레르' : 'Florer'}</strong></span>
-          <span className="text-slate-300">|</span>
-          <span>
-            {language === 'KR' ? '최근 조사일: ' : 'Last Updated: '}
-            <strong className="text-slate-700 font-medium">
-              {language === 'KR' 
-                ? `${todayYear}년 ${todayMonth}월 ${todayDate}일 기준` 
-                : `As of ${todayYear}-${String(todayMonth).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`}
-            </strong>
-          </span>
-          <span className="text-slate-300">|</span>
-          <span>
-            {language === 'KR' ? '공식 출처: ' : 'Official Source: '}
-            <a 
-              href="https://www.busan.go.kr" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-[#8EA85E] hover:text-[#728943] font-medium underline inline-flex items-center gap-0.5"
-            >
-              <span>{language === 'KR' ? '부산광역시청' : 'Busan Metropolitan City'}</span>
-              <ExternalLink className="w-2.5 h-2.5 text-[#8EA85E]" />
-            </a>
-          </span>
-        </div>
       </div>
 
-      {/* 2. Top Interactive Filter & View Switcher Bar (All in Green Palette) */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3.5 bg-white p-3.5 sm:p-4 rounded-3xl border border-slate-200/80 shadow-xs">
+      {/* 2. Top Interactive Filter & View Switcher Bar (Borderless open layout) */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         {/* Category Pills (Unified in soft green tones) */}
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
           {[
@@ -1099,8 +1067,8 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 cursor-pointer ${
                   isActive
-                    ? 'bg-[#8EA85E] text-white shadow-xs'
-                    : 'bg-[#8EA85E]/10 text-[#526826] hover:bg-[#8EA85E]/20'
+                    ? 'bg-[#8EA85E] text-white shadow-2xs'
+                    : 'bg-[#8EA85E]/12 text-[#526826] hover:bg-[#8EA85E]/22'
                 }`}
               >
                 {language === 'KR' ? cat.labelKo : cat.labelEn}
@@ -1119,7 +1087,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={language === 'KR' ? '축제명, 장소 검색...' : 'Search festivals, venues...'}
-              className="w-full pl-8 pr-7 py-1.5 rounded-xl border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 focus:border-[#8EA85E] transition-all bg-[#F8F9FA]"
+              className="w-full pl-8 pr-7 py-1.5 rounded-xl border border-slate-200/90 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#8EA85E]/30 focus:border-[#8EA85E] transition-all bg-white"
             />
             {searchQuery && (
               <button
@@ -1131,11 +1099,11 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
             )}
           </div>
 
-          {/* View Mode Toggle: [ 캘린더 ] / [ 전체 목록 ] */}
-          <div className="inline-flex p-1 bg-slate-100/90 rounded-2xl shrink-0 border border-slate-200/60">
+          {/* View Mode Toggle: [ 캘린더 ] / [ 전체 일정 ] */}
+          <div className="inline-flex p-1 bg-slate-200/60 rounded-xl shrink-0">
             <button
               onClick={() => setViewMode('calendar')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 viewMode === 'calendar'
                   ? 'bg-white text-[#526826] shadow-2xs font-bold'
                   : 'text-slate-500 hover:text-slate-800'
@@ -1148,7 +1116,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
 
             <button
               onClick={() => setViewMode('list')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 viewMode === 'list'
                   ? 'bg-white text-[#526826] shadow-2xs font-bold'
                   : 'text-slate-500 hover:text-slate-800'
@@ -1162,60 +1130,60 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
         </div>
       </div>
 
-      {/* 3A. FULL-WIDTH CALENDAR VIEW (No 50/50 split! Spacious & Icon-Driven) */}
+      {/* 3A. FULL-WIDTH CALENDAR VIEW (Minimalist single-line grid without 42 nested boxes) */}
       {viewMode === 'calendar' && (
-        <div className="space-y-2">
-          <div className="w-full bg-white rounded-3xl border border-slate-200/80 p-4 sm:p-6 pb-2.5 sm:pb-3 shadow-xs text-left space-y-3 sm:space-y-4">
-            
-            {/* Calendar Month Control Bar */}
-            <div className="flex items-center justify-between gap-3 border-b border-slate-100 pb-4">
-              <h3 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
-                <CalendarIcon className="w-5 h-5 text-[#8EA85E] shrink-0" />
-                <span>{monthLabel}</span>
-              </h3>
+        <div className="space-y-3">
+          {/* Calendar Month Control Bar (Soft Sage Band) */}
+          <div className="flex items-center justify-between gap-3 py-3 px-4 sm:px-5 bg-[#8EA85E]/15 rounded-xl">
+            <h3 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2 tracking-tight">
+              <CalendarIcon className="w-5 h-5 text-[#5B7332] shrink-0 stroke-[1.9]" />
+              <span>{monthLabel}</span>
+            </h3>
 
-              {/* Navigation buttons */}
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                <button
-                  onClick={handlePrevMonth}
-                  className="p-2 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-xl cursor-pointer border border-slate-200 transition-all active:scale-95"
-                  title={language === 'KR' ? '이전 달' : 'Previous Month'}
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                
-                <button
-                  onClick={handleResetToday}
-                  className="px-3 py-1.5 text-xs font-bold hover:bg-[#8EA85E]/10 border border-slate-200 rounded-xl cursor-pointer text-slate-700 hover:text-[#526826] transition-colors"
-                >
-                  {language === 'KR' ? '오늘' : 'Today'}
-                </button>
+            {/* Navigation buttons */}
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={handlePrevMonth}
+                className="p-1.5 bg-white/80 hover:bg-white text-slate-700 rounded-lg cursor-pointer transition-all active:scale-95"
+                title={language === 'KR' ? '이전 달' : 'Previous Month'}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              
+              <button
+                onClick={handleResetToday}
+                className="px-3 py-1 text-xs font-bold bg-white/80 hover:bg-white rounded-lg cursor-pointer text-slate-800 hover:text-[#526826] transition-colors"
+              >
+                {language === 'KR' ? '오늘' : 'Today'}
+              </button>
 
-                <button
-                  onClick={handleNextMonth}
-                  className="p-2 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-xl cursor-pointer border border-slate-200 transition-all active:scale-95"
-                  title={language === 'KR' ? '다음 달' : 'Next Month'}
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
+              <button
+                onClick={handleNextMonth}
+                className="p-1.5 bg-white/80 hover:bg-white text-slate-700 rounded-lg cursor-pointer transition-all active:scale-95"
+                title={language === 'KR' ? '다음 달' : 'Next Month'}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
+          </div>
 
+          {/* Unified Hairline Calendar Table (No nested boxes per day) */}
+          <div className="rounded-2xl overflow-hidden border border-slate-200/80 bg-slate-200/70">
             {/* Days of week labels */}
-            <div className="grid grid-cols-7 gap-1 text-center py-1 border-b border-slate-100">
+            <div className="grid grid-cols-7 bg-[#FAF9F6] border-b border-slate-200/80 text-center py-2">
               {['일', '월', '화', '수', '목', '금', '토'].map((dowStr, dowIdx) => {
                 const dowLabelEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dowIdx];
-                const textCol = dowIdx === 0 ? 'text-rose-500 font-bold' : dowIdx === 6 ? 'text-blue-500 font-bold' : 'text-slate-500 font-semibold';
+                const textCol = dowIdx === 0 ? 'text-rose-500 font-bold' : dowIdx === 6 ? 'text-blue-500 font-bold' : 'text-slate-600 font-semibold';
                 return (
-                  <div key={dowIdx} className={`text-xs select-none py-1 ${textCol}`}>
+                  <div key={dowIdx} className={`text-xs select-none ${textCol}`}>
                     {language === 'KR' ? dowStr : dowLabelEn}
                   </div>
                 );
               })}
             </div>
 
-            {/* Calendar Day Grid: Full Width with Sleek Icons */}
-            <div className="grid grid-cols-7 gap-1 sm:gap-2 text-center">
+            {/* Calendar Day Grid: Clean 1px Hairline Dividers */}
+            <div className="grid grid-cols-7 gap-px bg-slate-200/70 text-center">
               {calendarDays.map((cell, idx) => {
                 const dayEvents = getEventsForDay(cell.dateString);
                 const isToday = cell.dateString === todayDateStr;
@@ -1230,14 +1198,12 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                         setDayEventsModal({ dateStr: cell.dateString, events: dayEvents });
                       }
                     }}
-                    className={`min-h-[70px] sm:min-h-[92px] p-2 rounded-2xl border transition-all text-left flex flex-col justify-between ${
+                    className={`min-h-[72px] sm:min-h-[94px] p-2 transition-colors text-left flex flex-col justify-between ${
                       cell.isPadding 
-                        ? 'bg-slate-50/40 border-slate-100/60 opacity-35' 
-                        : 'bg-white border-slate-200/80 hover:border-[#8EA85E]/50 hover:shadow-2xs'
-                    } ${
-                      isToday 
-                        ? 'border-[#8EA85E] ring-1.5 ring-[#8EA85E]/30 bg-[#8EA85E]/[0.02]' 
-                        : ''
+                        ? 'bg-[#FAF9F6] text-slate-300' 
+                        : isToday
+                        ? 'bg-[#8EA85E]/[0.08]'
+                        : 'bg-white hover:bg-[#FAF9F6]'
                     } ${dayEvents.length > 0 ? 'cursor-pointer' : 'cursor-default'}`}
                   >
                     {/* Day Number and Today Sign */}
@@ -1245,18 +1211,18 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                       <span className={`text-xs sm:text-sm font-bold ${
                         isToday 
                           ? 'w-6 h-6 rounded-full bg-[#8EA85E] text-white flex items-center justify-center text-xs' 
-                          : cell.isPadding ? 'text-slate-400' : 'text-slate-800'
+                          : cell.isPadding ? 'text-slate-300' : 'text-slate-800'
                       }`}>
                         {cell.dayNumber}
                       </span>
                       {isToday && (
-                        <span className="text-[9px] font-bold text-[#526826] bg-[#8EA85E]/15 px-1.5 py-0.5 rounded-md hidden sm:inline">
+                        <span className="text-[9px] font-bold text-[#526826] bg-[#8EA85E]/20 px-1.5 py-0.5 rounded hidden sm:inline">
                           {language === 'KR' ? '오늘' : 'Today'}
                         </span>
                       )}
                     </div>
 
-                    {/* Event Icons Area (Compact, No Bulky Box, 1/4 Size, All Events Visible) */}
+                    {/* Event Icons Area */}
                     <div className="flex items-center gap-0.5 sm:gap-1 flex-wrap mt-1">
                       {dayEvents.map(evt => {
                         const meta = getEventCategoryMeta(evt);
@@ -1269,7 +1235,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                               e.stopPropagation();
                               setSelectedEvent(evt);
                             }}
-                            className="flex flex-col items-center justify-center p-0.5 rounded transition-all hover:scale-115 active:scale-95 cursor-pointer group shrink-0 hover:bg-slate-100/90"
+                            className="flex flex-col items-center justify-center p-0.5 rounded transition-all hover:scale-110 active:scale-95 cursor-pointer group shrink-0 hover:bg-slate-100/90"
                             title={`${language === 'KR' ? evt.titleKo : evt.titleEn} (${catLabel})`}
                             aria-label={`${language === 'KR' ? evt.titleKo : evt.titleEn} (${catLabel})`}
                           >
@@ -1281,8 +1247,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                         );
                       })}
                     </div>
-
-                    </div>
+                  </div>
                 );
               })}
             </div>
@@ -1290,18 +1255,18 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
         </div>
       )}
 
-      {/* 3B. ALL EVENTS LIST VIEW (Styled exactly like the User's Screenshot Theme Cards) */}
+      {/* 3B. ALL EVENTS LIST VIEW (Minimalist divider list without heavy nested boxes) */}
       {viewMode === 'list' && (
-        <div className="space-y-4">
-          <div className="flex justify-between items-center px-1">
-            <span className="text-xs font-bold text-slate-500">
+        <div className="space-y-3">
+          <div className="flex justify-between items-center py-2.5 px-4 bg-[#8EA85E]/15 rounded-xl">
+            <span className="text-xs font-extrabold text-slate-800">
               {language === 'KR' 
                 ? `총 ${filteredEvents.length}개의 주요 축제 및 행사가 등록되어 있습니다.` 
                 : `Showing ${filteredEvents.length} major festivals in Busan.`}
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="divide-y divide-slate-200/80 border-y border-slate-200/80">
             {filteredEvents.map(evt => {
               const meta = getEventCategoryMeta(evt);
               const EventIcon = meta.icon;
@@ -1309,63 +1274,54 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                 <div
                   key={evt.id}
                   onClick={() => setSelectedEvent(evt)}
-                  className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-xs hover:shadow-md hover:border-[#8EA85E]/50 transition-all flex flex-col justify-between group text-left cursor-pointer"
+                  className="py-5 px-2 sm:px-3 hover:bg-white/70 transition-colors flex items-start sm:items-center justify-between gap-4 group text-left cursor-pointer"
                 >
-                  <div>
-                    {/* Top Illustration/Icon Container */}
-                    <div className="w-full h-36 bg-[#F8F9FA] rounded-2xl flex flex-col items-center justify-center p-4 relative mb-4 group-hover:bg-slate-50 transition-colors">
-                      <EventIcon className={`w-11 h-11 transition-transform group-hover:scale-110 ${meta.colorTheme.text}`} />
-                      <span className={`text-[11px] font-bold mt-2 ${meta.colorTheme.text}`}>
-                        {language === 'KR' ? meta.label : meta.labelEn}
-                      </span>
-                      <span className={`absolute top-3 left-3 px-2.5 py-0.5 rounded-lg text-[11px] font-bold border shadow-2xs ${meta.colorTheme.badgeBg} ${meta.colorTheme.text} ${meta.colorTheme.border}`}>
-                        {language === 'KR' ? evt.categoryKo : evt.categoryEn}
-                      </span>
+                  <div className="flex items-start gap-3.5 sm:gap-4 min-w-0">
+                    {/* Minimalist Line Icon */}
+                    <div className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center shrink-0 mt-0.5 ${meta.colorTheme.bg}`}>
+                      <EventIcon className={`w-5 h-5 ${meta.colorTheme.text}`} />
                     </div>
 
-                    {/* Title */}
-                    <h4 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#526826] transition-colors leading-snug">
-                      {language === 'KR' ? evt.titleKo : evt.titleEn}
-                    </h4>
+                    <div className="space-y-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className={`text-[11px] font-extrabold ${meta.colorTheme.text}`}>
+                          {language === 'KR' ? evt.categoryKo : evt.categoryEn}
+                        </span>
+                        <span className="text-slate-300">·</span>
+                        <span className="text-xs text-slate-500 font-medium">
+                          {evt.startDate} ~ {evt.endDate}
+                        </span>
+                        {registeredStationIds.has(evt.stationId) && (
+                          <>
+                            <span className="text-slate-300">·</span>
+                            <span className="text-[11px] font-bold text-[#526826] inline-flex items-center gap-1">
+                              <Train className="w-3 h-3 text-[#8EA85E]" />
+                              <span>{evt.stationKo.split(' ')[0]} {evt.exitNumber}</span>
+                            </span>
+                          </>
+                        )}
+                      </div>
 
-                    {/* Period & Venue */}
-                    <div className="space-y-1 text-xs text-slate-500 font-medium mt-1.5">
-                      <div className="flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span>{evt.startDate} ~ {evt.endDate}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span className="truncate">{language === 'KR' ? evt.locationKo : evt.locationEn}</span>
-                      </div>
+                      <h4 className="text-sm sm:text-base font-black text-slate-900 group-hover:text-[#526826] transition-colors leading-snug">
+                        {language === 'KR' ? evt.titleKo : evt.titleEn}
+                      </h4>
+
+                      <p className="text-xs text-slate-500 font-medium line-clamp-1">
+                        {language === 'KR' ? evt.locationKo : evt.locationEn} — {language === 'KR' ? evt.descriptionKo : evt.descriptionEn}
+                      </p>
                     </div>
-
-                    {/* Description preview */}
-                    <p className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed line-clamp-2 mt-2.5">
-                      {language === 'KR' ? evt.descriptionKo : evt.descriptionEn}
-                    </p>
                   </div>
 
-                  {/* Card Bottom: Station Info & "자세히 보기 >" text link (exactly like user's screenshot) */}
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                    {registeredStationIds.has(evt.stationId) ? (
-                      <span className="text-[11px] font-bold text-[#526826] bg-[#8EA85E]/10 px-2 py-0.5 rounded-lg flex items-center gap-1">
-                        <Train className="w-3 h-3 text-[#8EA85E]" />
-                        <span>{evt.stationKo.split(' ')[0]} {evt.exitNumber}</span>
-                      </span>
-                    ) : <span />}
-
-                    <span className="text-xs font-bold text-slate-800 group-hover:text-[#526826] transition-colors flex items-center gap-0.5">
-                      {language === 'KR' ? '자세히 보기' : 'View Details'} &gt;
-                    </span>
-                  </div>
+                  <span className="text-xs font-bold text-slate-400 group-hover:text-[#526826] transition-colors shrink-0 self-center">
+                    {language === 'KR' ? '상세' : 'Details'} &gt;
+                  </span>
                 </div>
               );
             })}
           </div>
 
           {filteredEvents.length === 0 && (
-            <div className="bg-white rounded-3xl border border-slate-200/80 p-12 text-center space-y-3">
+            <div className="py-12 text-center space-y-3">
               <Info className="w-8 h-8 text-slate-300 mx-auto" />
               <h5 className="text-sm font-bold text-slate-700">
                 {language === 'KR' ? '검색 조건에 맞는 축제가 없습니다.' : 'No festivals match your search criteria.'}
@@ -1384,7 +1340,44 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
         </div>
       )}
 
-      {/* 4. MODAL: FULL FESTIVAL DETAIL (Matches user's reference image style) */}
+      {/* Verification Info Notice - Placed at the very bottom of Busan Events Calendar */}
+      <div className="pt-4 border-t border-slate-200/80 flex justify-start">
+        <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-medium text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1.5 whitespace-nowrap overflow-x-auto max-w-full scrollbar-none">
+          <span className="font-bold text-[#8EA85E] flex items-center gap-1 shrink-0">
+            <span className="relative flex h-1.5 w-1.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8EA85E] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#8EA85E]"></span>
+            </span>
+            <span>{language === 'KR' ? '검증 정보' : 'Verified Data'}</span>
+          </span>
+          <span className="text-slate-300 shrink-0">|</span>
+          <span className="shrink-0">{language === 'KR' ? '조사자: 플로레르' : 'Auditor: Florer'}</span>
+          <span className="text-slate-300 shrink-0">|</span>
+          <span className="shrink-0">
+            {language === 'KR' ? '최근 조사일: ' : 'Last Updated: '}
+            <strong className="text-slate-800 font-semibold">
+              {language === 'KR' 
+                ? `${todayYear}년 ${todayMonth}월 ${todayDate}일` 
+                : `${todayYear}-${String(todayMonth).padStart(2, '0')}-${String(todayDate).padStart(2, '0')}`}
+            </strong>{' '}
+            <span className="text-blue-600 font-normal">{language === 'KR' ? '기준 (매일 자동 업데이트)' : '(Updated Daily)'}</span>
+          </span>
+          <span className="text-slate-300 shrink-0">|</span>
+          <span className="shrink-0">
+            {language === 'KR' ? '공식 출처: ' : 'Official Source: '}
+            <a 
+              href="https://www.busan.go.kr" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-slate-700 hover:text-blue-600 font-semibold underline"
+            >
+              {language === 'KR' ? '부산광역시청 홈페이지' : 'Busan Metropolitan City'}
+            </a>
+          </span>
+        </div>
+      </div>
+
+      {/* 4. MODAL: FULL FESTIVAL DETAIL (Minimalist layout without nested boxes) */}
       <AnimatePresence>
         {selectedEvent && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -1397,13 +1390,13 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
               className="absolute inset-0 bg-slate-900/50 backdrop-blur-xs"
             />
 
-            {/* Modal Dialog (Rounded-3xl, warm styling) */}
+            {/* Modal Dialog */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ type: 'spring', duration: 0.35 }}
-              className="relative w-full max-w-lg bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xl z-10 flex flex-col max-h-[90vh] text-left space-y-4"
+              className="relative w-full max-w-lg bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-2xl z-10 flex flex-col max-h-[90vh] text-left space-y-5"
             >
               {/* Close Button */}
               <button
@@ -1413,32 +1406,27 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                 <X className="w-5 h-5" />
               </button>
 
-              {/* Top Illustration Box (Matching Category Color Scheme) */}
-              {(() => {
-                const meta = getEventCategoryMeta(selectedEvent);
-                const ModalIcon = meta.icon;
-                return (
-                  <div className="w-full h-36 bg-[#F8F9FA] rounded-2xl flex flex-col items-center justify-center p-4 relative shrink-0">
-                    <ModalIcon className={`w-12 h-12 ${meta.colorTheme.text}`} />
-                    <span className={`text-xs font-bold mt-1.5 ${meta.colorTheme.text}`}>
-                      {language === 'KR' ? meta.label : meta.labelEn}
-                    </span>
-                    <span className={`mt-1 px-3 py-0.5 rounded-full text-xs font-bold border ${meta.colorTheme.badgeBg} ${meta.colorTheme.text} ${meta.colorTheme.border}`}>
-                      {language === 'KR' ? selectedEvent.categoryKo : selectedEvent.categoryEn}
-                    </span>
-                  </div>
-                );
-              })()}
-
               {/* Modal Content Scroll Area */}
-              <div className="overflow-y-auto space-y-4 pr-1 custom-scrollbar">
-                {/* Title */}
-                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
-                  {language === 'KR' ? selectedEvent.titleKo : selectedEvent.titleEn}
-                </h3>
+              <div className="overflow-y-auto space-y-5 pr-1 custom-scrollbar">
+                {/* Category & Title Header */}
+                {(() => {
+                  const meta = getEventCategoryMeta(selectedEvent);
+                  const ModalIcon = meta.icon;
+                  return (
+                    <div className="space-y-2 pr-8">
+                      <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-[#526826]">
+                        <ModalIcon className={`w-4 h-4 ${meta.colorTheme.text}`} />
+                        <span>{language === 'KR' ? selectedEvent.categoryKo : selectedEvent.categoryEn}</span>
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug tracking-tight">
+                        {language === 'KR' ? selectedEvent.titleKo : selectedEvent.titleEn}
+                      </h3>
+                    </div>
+                  );
+                })()}
 
                 {/* Period & Venue */}
-                <div className="space-y-2 text-xs sm:text-sm text-slate-700 font-medium">
+                <div className="space-y-2 py-3.5 border-y border-slate-200/80 text-xs sm:text-sm text-slate-700 font-medium">
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-[#8EA85E] shrink-0" />
                     <span className="font-semibold text-slate-500">{language === 'KR' ? '축제 기간:' : 'Period:'}</span>
@@ -1446,47 +1434,34 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-rose-500 shrink-0" />
+                    <MapPin className="w-4 h-4 text-[#8EA85E] shrink-0" />
                     <span className="font-semibold text-slate-500">{language === 'KR' ? '상세 장소:' : 'Venue:'}</span>
                     <span className="font-bold text-slate-800">{language === 'KR' ? selectedEvent.locationKo : selectedEvent.locationEn}</span>
                   </div>
                 </div>
 
-                {/* Accessible Subway Exit Guide Box */}
+                {/* Accessible Subway Exit Guide (Soft Sage Green Band, no nested white box) */}
                 {registeredStationIds.has(selectedEvent.stationId) && (
-                  <div className="bg-slate-50/80 p-4 rounded-2xl border border-slate-200/80 space-y-3">
-                    <div className="flex items-center justify-between">
+                  <div className="p-4 rounded-xl bg-[#8EA85E]/15 space-y-3">
+                    <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
-                        <span className="p-1.5 bg-[#8EA85E] text-white rounded-xl shadow-2xs shrink-0">
-                          <Train className="w-4 h-4" />
+                        <Train className="w-4 h-4 text-[#526826] shrink-0" />
+                        <span className="text-xs sm:text-sm font-black text-slate-900">
+                          {language === 'KR' ? selectedEvent.stationKo : selectedEvent.stationEn}
                         </span>
-                        <div>
-                          <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wide">
-                            {language === 'KR' ? '무단차 인접 지하철역' : 'Accessible Subway Connection'}
-                          </span>
-                          <span className="text-xs sm:text-sm font-bold text-slate-900">
-                            {language === 'KR' ? selectedEvent.stationKo : selectedEvent.stationEn}
-                          </span>
-                        </div>
                       </div>
-                      <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-[#8EA85E]/15 text-[#526826] border border-[#8EA85E]/30">
+                      <span className="text-xs font-extrabold text-[#526826]">
                         {selectedEvent.exitNumber}
                       </span>
                     </div>
 
                     {selectedEvent.exitTipKo && (
-                      <div className="bg-white p-3 rounded-xl border border-slate-200/80 text-xs text-slate-700 leading-relaxed space-y-1">
-                        <div className="flex items-center gap-1.5 font-bold text-[#526826]">
-                          <Sparkles className="w-3.5 h-3.5 text-[#8EA85E] shrink-0" />
-                          <span>{language === 'KR' ? '출구 무단차 동선 팁' : 'Barrier-Free Exit Tip'}</span>
-                        </div>
-                        <p className="text-[11.5px] text-slate-600 font-medium pl-5">
-                          {language === 'KR' ? selectedEvent.exitTipKo : selectedEvent.exitTipEn}
-                        </p>
-                      </div>
+                      <p className="text-xs text-slate-700 font-medium leading-relaxed break-keep">
+                        {language === 'KR' ? selectedEvent.exitTipKo : selectedEvent.exitTipEn}
+                      </p>
                     )}
 
-                    {/* Action buttons inside subway box */}
+                    {/* Action buttons */}
                     <div className="flex flex-col sm:flex-row gap-2 pt-1">
                       {onSelectStation && (
                         <button
@@ -1510,7 +1485,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
 
                       <button
                         onClick={() => window.open(`https://map.naver.com/v5/search/${encodeURIComponent(selectedEvent.stationKo.split(' ')[0] + ' ' + selectedEvent.exitNumber)}`, '_blank')}
-                        className="px-3.5 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-bold text-xs transition-colors flex items-center justify-center gap-1 shrink-0 cursor-pointer"
+                        className="px-3.5 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition-colors flex items-center justify-center gap-1 shrink-0 cursor-pointer"
                       >
                         <span>{language === 'KR' ? '네이버 지도' : 'Naver Map'}</span>
                         <ExternalLink className="w-3 h-3 text-slate-400" />
@@ -1520,11 +1495,11 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                 )}
 
                 {/* Event Description */}
-                <div className="space-y-1.5 pt-1">
+                <div className="space-y-1.5">
                   <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wide block">
                     {language === 'KR' ? '행사 소개' : 'Event Description'}
                   </span>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal break-keep">
                     {language === 'KR' ? selectedEvent.descriptionKo : selectedEvent.descriptionEn}
                   </p>
                 </div>
@@ -1534,7 +1509,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
               <div className="pt-3 border-t border-slate-100 flex items-center justify-end">
                 <button
                   onClick={() => setSelectedEvent(null)}
-                  className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-colors cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl bg-[#8EA85E] hover:bg-[#7A944C] text-white text-xs font-bold transition-colors cursor-pointer"
                 >
                   {language === 'KR' ? '닫기' : 'Close'}
                 </button>
@@ -1579,7 +1554,7 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                 </button>
               </div>
 
-              <div className="overflow-y-auto space-y-2.5 pr-1 custom-scrollbar">
+              <div className="overflow-y-auto divide-y divide-slate-100 pr-1 custom-scrollbar">
                 {dayEventsModal.events.map(evt => {
                   const meta = getEventCategoryMeta(evt);
                   const EventIcon = meta.icon;
@@ -1590,13 +1565,10 @@ export default function BusanEventsCalendarView({ language, onSelectStation }: B
                         setDayEventsModal(null);
                         setSelectedEvent(evt);
                       }}
-                      className="p-4 rounded-2xl border border-slate-200/80 hover:border-[#8EA85E]/60 hover:bg-[#8EA85E]/5 transition-all cursor-pointer flex items-center gap-3.5 group"
+                      className="py-3.5 px-2 hover:bg-[#8EA85E]/8 rounded-xl transition-all cursor-pointer flex items-center gap-3.5 group"
                     >
-                      <div className={`flex flex-col items-center justify-center p-2 rounded-xl shrink-0 min-w-[50px] border ${meta.colorTheme.bg} ${meta.colorTheme.border}`}>
+                      <div className={`flex flex-col items-center justify-center p-2 rounded-xl shrink-0 min-w-[46px] ${meta.colorTheme.bg}`}>
                         <EventIcon className={`w-5 h-5 ${meta.colorTheme.text}`} />
-                        <span className={`text-[8.5px] font-bold mt-0.5 text-center leading-none ${meta.colorTheme.text}`}>
-                          {language === 'KR' ? meta.label : meta.labelEn}
-                        </span>
                       </div>
                       <div className="flex-1 space-y-0.5">
                         <span className="text-[10px] font-bold text-[#526826]">

@@ -291,7 +291,67 @@ export function HomeOverviewSection({
       {/* ==========================================
           1. 3-SECOND TEST HERO SECTION (Impeccable & Focused)
          ========================================== */}
-      <section className="pt-8 pb-10 sm:pt-14 sm:pb-16 text-center max-w-2xl mx-auto px-4">
+      <section className="pt-6 pb-10 sm:pt-12 sm:pb-16 text-center max-w-2xl mx-auto px-4">
+        {/* 부산 상징 파노라마 라인 일러스트 (감천·흰여울 마을 + 등대 + 광안대교 + 해운대 스카이캡슐 + 바다 물결 & 갈매기) */}
+        <div className="w-full max-w-[340px] sm:max-w-[480px] mx-auto mb-3 sm:mb-5 select-none pointer-events-none">
+          <svg viewBox="0 0 480 125" fill="none" className="w-full h-auto overflow-visible" aria-hidden="true">
+            {/* 세이지 그린 태양 & 은은한 후광 */}
+            <circle cx="240" cy="46" r="24" fill="#8EA85E" fillOpacity="0.16" />
+            <circle cx="240" cy="46" r="17" stroke="#8EA85E" strokeWidth="1.4" strokeDasharray="2 2" />
+
+            {/* 갈매기 3마리 */}
+            <path d="M132 28C136 24 141 24 144 29C147 24 152 24 156 28" stroke="#1E1E1C" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M164 19C167 16 171 16 173 20C175 16 179 16 182 19" stroke="#1E1E1C" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M332 22C336 18 340 18 343 23C346 18 350 18 354 22" stroke="#1E1E1C" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+
+            {/* 좌측: 감천·흰여울 해안 마을 & 등대 */}
+            <path d="M18 92 C36 74, 68 72, 98 92" stroke="#1E1E1C" strokeWidth="1.3" fill="#FBFBF9" />
+            {/* 계단식 미니 하우스들 */}
+            <rect x="34" y="70" width="14" height="12" fill="#FBFBF9" stroke="#1E1E1C" strokeWidth="1.3" />
+            <path d="M32 70 L41 63 L50 70" stroke="#1E1E1C" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            <rect x="51" y="65" width="15" height="15" fill="#8EA85E" fillOpacity="0.22" stroke="#1E1E1C" strokeWidth="1.3" />
+            <path d="M49 65 L58.5 58 L68 65" stroke="#1E1E1C" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            <rect x="56" y="70" width="5" height="5" stroke="#1E1E1C" strokeWidth="1.1" />
+            <rect x="69" y="73" width="13" height="11" fill="#FBFBF9" stroke="#1E1E1C" strokeWidth="1.3" />
+            <path d="M67 73 L75.5 67 L84 73" stroke="#1E1E1C" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            {/* 해안 등대 */}
+            <path d="M90 88 L92 64 L97 64 L99 88" fill="#FBFBF9" stroke="#1E1E1C" strokeWidth="1.3" strokeLinejoin="round" />
+            <path d="M90 64 H99 M92 59 H97 V64 H92 Z" stroke="#1E1E1C" strokeWidth="1.3" strokeLinejoin="round" />
+            <path d="M91 59 L94.5 55 L98 59" fill="#8EA85E" stroke="#1E1E1C" strokeWidth="1.3" strokeLinejoin="round" />
+
+            {/* 중앙: 부산 광안대교 (Gwangan Diamond Bridge) */}
+            {/* 좌·우 주탑 */}
+            <path d="M168 94 V34 M175 94 V34 M165 34 H178 M168 48 H175 M168 64 H175 M168 78 H175" stroke="#1E1E1C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M305 94 V34 M312 94 V34 M302 34 H315 M305 48 H312 M305 64 H312 M305 78 H312" stroke="#1E1E1C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            {/* 현수교 메인 케이블 */}
+            <path d="M108 82 Q140 78 168 36" stroke="#1E1E1C" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M175 36 Q240 82 305 36" stroke="#1E1E1C" strokeWidth="1.6" strokeLinecap="round" />
+            <path d="M312 36 Q340 78 372 82" stroke="#1E1E1C" strokeWidth="1.5" strokeLinecap="round" />
+            {/* 수직 행어 로프 */}
+            <path d="M192 47 V82 M208 55 V82 M224 60 V82 M240 62 V82 M256 60 V82 M272 55 V82 M288 47 V82" stroke="#1E1E1C" strokeWidth="1.1" strokeOpacity="0.75" />
+            <path d="M148 64 V82 M132 74 V82 M332 64 V82 M348 74 V82" stroke="#1E1E1C" strokeWidth="1.1" strokeOpacity="0.75" />
+            {/* 복층 교량 상판 */}
+            <line x1="102" y1="82" x2="378" y2="82" stroke="#1E1E1C" strokeWidth="1.8" strokeLinecap="round" />
+            <line x1="112" y1="86" x2="368" y2="86" stroke="#8EA85E" strokeWidth="1.5" strokeLinecap="round" />
+
+            {/* 우측: 해운대 스카이캡슐 & 해변 레일 */}
+            <line x1="382" y1="78" x2="462" y2="78" stroke="#1E1E1C" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M396 78 V92 M424 78 V92 M450 78 V92" stroke="#1E1E1C" strokeWidth="1.3" strokeLinecap="round" />
+            {/* 스카이캡슐 열차 칸 */}
+            <rect x="404" y="54" width="38" height="21" rx="7" fill="#8EA85E" fillOpacity="0.22" stroke="#1E1E1C" strokeWidth="1.5" />
+            <rect x="409" y="59" width="8" height="8" rx="1.5" fill="#FBFBF9" stroke="#1E1E1C" strokeWidth="1.2" />
+            <rect x="419" y="59" width="8" height="8" rx="1.5" fill="#FBFBF9" stroke="#1E1E1C" strokeWidth="1.2" />
+            <rect x="429" y="59" width="8" height="8" rx="1.5" fill="#FBFBF9" stroke="#1E1E1C" strokeWidth="1.2" />
+            <circle cx="413" cy="76.5" r="2" fill="#1E1E1C" />
+            <circle cx="433" cy="76.5" r="2" fill="#1E1E1C" />
+
+            {/* 하단: 부산 바다의 유려한 물결 라인 */}
+            <path d="M12 95 Q45 89 78 95 T144 95 T210 95 T276 95 T342 95 T408 95 T468 95" stroke="#1E1E1C" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M48 104 Q82 99 116 104 T184 104 T252 104 T320 104 T388 104 T442 104" stroke="#8EA85E" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M140 112 Q190 108 240 112 T340 112" stroke="#1E1E1C" strokeWidth="1.2" strokeOpacity="0.5" strokeLinecap="round" />
+          </svg>
+        </div>
+
         <h1 className="text-2xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight text-[#11161B] leading-tight break-keep mb-3 sm:mb-4">
           {language === 'KR' ? (
             <>
@@ -331,7 +391,7 @@ export function HomeOverviewSection({
           )}
         </h1>
 
-        <p className="text-base sm:text-lg md:text-xl text-slate-600 font-medium max-w-xl mx-auto mb-6 sm:mb-8 break-keep">
+        <p className="relative z-10 text-base sm:text-lg md:text-xl text-slate-600 font-medium max-w-xl mx-auto mb-6 sm:mb-8 break-keep">
           {pickLang(language, {
             KR: '부산의 진짜 매력을 한눈에 느껴보세요!',
             EN: 'Experience the true charm of Busan at a glance!',
@@ -344,7 +404,7 @@ export function HomeOverviewSection({
         </p>
 
         {/* The Centerpiece Search Bar */}
-        <div className="w-full rounded-2xl">
+        <div className="relative z-10 w-full max-w-2xl mx-auto rounded-2xl">
           <StationSearchBar
             language={language}
             searchQuery={searchQuery || ''}
