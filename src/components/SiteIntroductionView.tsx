@@ -578,7 +578,7 @@ export function SiteIntroductionView({
 
       {/* PAGE 2: 정보 오류 요청 제보 및 문의 (Inquiry & Data Corrections) */}
       {activeSubTab === 'contact' && (
-        <div className="space-y-4 sm:space-y-5 animate-fade-in text-left pt-1 sm:pt-2 google-anno-skip" data-ad-exclude="true">
+        <div className="space-y-4 sm:space-y-5 animate-fade-in text-left pt-1 sm:pt-2">
           <div className="space-y-1">
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
               <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
@@ -655,7 +655,7 @@ export function SiteIntroductionView({
 
       {/* PAGE 3: 개인정보처리방침 (Privacy Policy) */}
       {activeSubTab === 'privacy' && (
-        <div className="space-y-6 animate-fade-in text-left pt-1 sm:pt-2 text-xs sm:text-sm text-slate-700 leading-relaxed google-anno-skip" data-ad-exclude="true">
+        <div className="space-y-6 animate-fade-in text-left pt-1 sm:pt-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
           <div className="space-y-1">
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
               <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
@@ -784,7 +784,7 @@ export function SiteIntroductionView({
 
       {/* PAGE 4: 이용약관 (Terms of Service) */}
       {activeSubTab === 'terms' && (
-        <div className="space-y-6 animate-fade-in text-left pt-1 sm:pt-2 text-xs sm:text-sm text-slate-700 leading-relaxed google-anno-skip" data-ad-exclude="true">
+        <div className="space-y-6 animate-fade-in text-left pt-1 sm:pt-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
           <div className="space-y-1">
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
               <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />
@@ -860,7 +860,7 @@ export function SiteIntroductionView({
 
       {/* PAGE 5: 데이터 출처 (Data Sources) */}
       {activeSubTab === 'data-source' && (
-        <div className="space-y-6 animate-fade-in text-left pt-1 sm:pt-2 google-anno-skip" data-ad-exclude="true">
+        <div className="space-y-6 animate-fade-in text-left pt-1 sm:pt-2">
           <div className="space-y-1">
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
               <Database className="w-5 h-5 sm:w-6 sm:h-6 text-[#8EA85E] shrink-0" />

@@ -787,7 +787,7 @@ export default function App() {
         let expectedPath = `/${currentTab}`;
         if (currentTab === 'search') {
           if (searchViewMode === 'DETAIL' && selectedStationId) {
-            expectedPath = `/search/${selectedStationId}`;
+            expectedPath = `/station/${selectedStationId}`;
           } else {
             expectedPath = '/search';
           }
@@ -875,7 +875,7 @@ export default function App() {
           } else if (siteSubPage === 'data-source') {
             expectedPath = '/about/data-source';
           } else {
-            expectedPath = '/about/operator';
+            expectedPath = '/about';
           }
         }
         if (selectedItineraryCategory === 'MY_ROUTE' && (window.location.search.includes('r=') || window.location.search.includes('route='))) { expectedPath += window.location.search; }
@@ -1934,7 +1934,7 @@ export default function App() {
 
           {/* Tab 2: SEARCH / BENTO GRID VIEW */}
           {(visitedTabs['search'] || currentTab === 'search') && (
-            <div className={currentTab === 'search' ? 'space-y-8 text-left google-anno-skip' : 'hidden'} data-ad-exclude="true">
+            <div className={currentTab === 'search' ? 'space-y-8 text-left' : 'hidden'}>
               {searchViewMode === 'INDEX' ? (
                 /* === 전용 서치 허브 페이지 (검색창 + 원하는 지하철역 선택 박스만 노출) === */
                 <div className="space-y-8 animate-fadeIn">
@@ -2029,7 +2029,7 @@ export default function App() {
                         return (
                           <a
                             key={st.id}
-                            href={`/search/${st.id}`}
+                            href={`/station/${st.id}`}
                             onClick={(e) => {
                               e.preventDefault();
                               setSelectedStationId(st.id);

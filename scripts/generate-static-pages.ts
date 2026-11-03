@@ -783,7 +783,7 @@ function generateRouteHtml(templateHtml: string, page: StaticRoutePage): string 
     `<meta name="twitter:description" content="${escapeHtml(page.description)}" />`
   );
 
-  // 5. Replace <div id="root">...</div> inner content with route-specific visible semantic HTML
+  // 5. Replace <div id="root">...</div> inner content AND <details id="seo-prerender-archive"> with route-specific visible semantic HTML
   const rootReplacement = `<div id="root">
       <div class="prerender-seo-shell" style="max-width: 1120px; margin: 0 auto; padding: 24px 16px; line-height: 1.65;">
         ${buildCommonHeader(page.h1, page.lead, page.h1, page.routePath)}
@@ -792,10 +792,17 @@ function generateRouteHtml(templateHtml: string, page: StaticRoutePage): string 
         </main>
         ${buildCommonFooter()}
       </div>
-    </div>`;
+    </div>
+
+    <details id="seo-prerender-archive" style="max-width: 1120px; margin: 0 auto; padding: 12px 16px 28px; font-size: 13px; color: #475569; line-height: 1.65;">
+      <summary style="cursor: pointer; font-weight: 700; color: #64748B; list-style: none;">${escapeHtml(page.h1)} — 텍스트 가이드 아카이브 (Text Reference Guide)</summary>
+      <div style="margin-top: 12px;">
+        ${page.bodyHtml}
+      </div>
+    </details>`;
 
   html = html.replace(
-    /<div id="root">[\s\S]*?<\/footer>\s*<\/div>\s*<\/div>/i,
+    /<div id="root">[\s\S]*?<\/details>/i,
     rootReplacement
   );
 
