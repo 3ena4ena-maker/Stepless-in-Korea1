@@ -785,6 +785,11 @@ function generateRouteHtml(templateHtml: string, page: StaticRoutePage): string 
 
   // 5. Replace <div id="root">...</div> inner content AND <details id="seo-prerender-archive"> with route-specific visible semantic HTML
   const rootReplacement = `<div id="root">
+      <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px 16px; background-color: #FBFBF9; color: #11161B;">
+        <div style="font-size: 12px; font-weight: 800; letter-spacing: 0.08em; color: #5B7332; background: #F3F7EC; padding: 6px 14px; border-radius: 999px; margin-bottom: 16px;">STEPLESS IN BUSAN</div>
+        <div style="font-size: 24px; font-weight: 900; line-height: 1.35; margin: 0 0 10px 0; color: #11161B; max-width: 680px;">${escapeHtml(page.h1)}</div>
+        <p style="font-size: 14px; color: #64748B; margin: 0; max-width: 560px;">${escapeHtml(page.lead)}</p>
+      </div>
       <div class="prerender-seo-shell" style="max-width: 1120px; margin: 0 auto; padding: 24px 16px; line-height: 1.65;">
         ${buildCommonHeader(page.h1, page.lead, page.h1, page.routePath)}
         <main>
@@ -794,8 +799,8 @@ function generateRouteHtml(templateHtml: string, page: StaticRoutePage): string 
       </div>
     </div>
 
-    <details id="seo-prerender-archive" style="max-width: 1120px; margin: 0 auto; padding: 12px 16px 28px; font-size: 13px; color: #475569; line-height: 1.65;">
-      <summary style="cursor: pointer; font-weight: 700; color: #64748B; list-style: none;">${escapeHtml(page.h1)} — 텍스트 가이드 아카이브 (Text Reference Guide)</summary>
+    <details id="seo-prerender-archive" style="max-width: 1120px; margin: 0 auto; padding: 8px 16px 24px; font-size: 12px; color: #64748B; line-height: 1.65;">
+      <summary style="cursor: pointer; font-weight: 600; color: #94A3B8; list-style: none; text-align: center;">${escapeHtml(page.h1)} — 텍스트 가이드 아카이브 (Text Reference Guide)</summary>
       <div style="margin-top: 12px;">
         ${page.bodyHtml}
       </div>
