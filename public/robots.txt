@@ -1,17 +1,67 @@
 User-agent: *
 Allow: /
 
-# Naver Search & Naver Clova / Cue: (네이버 서치어드바이저 및 AI 검색)
+# 1. Korea Search Engines: Naver (네이버), Daum/Kakao (다음·카카오), Zum (줌)
 User-agent: Yeti
 Allow: /
+User-agent: NaverBot
+Allow: /
+User-agent: Daumoa
+Allow: /
+User-agent: Daum
+Allow: /
+User-agent: ZumBot
+Allow: /
 
-# Google Search & Google AI Overviews / Gemini (구글 검색 및 AI 요약)
+# 2. Global & US/Europe Search Engines: Google, Bing, Yahoo, DuckDuckGo, Apple, Qwant (France), Yandex, Ecosia
 User-agent: Googlebot
 Allow: /
-User-agent: Google-Extended
+User-agent: Googlebot-Image
+Allow: /
+User-agent: Googlebot-Mobile
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: MSNBot
+Allow: /
+User-agent: Slurp
+Allow: /
+User-agent: DuckDuckBot
+Allow: /
+User-agent: Applebot
+Allow: /
+User-agent: Qwantify
+Allow: /
+User-agent: YandexBot
+Allow: /
+User-agent: SeznamBot
 Allow: /
 
-# Google AdSense Review & Ad Crawler (구글 애드센스 심사 및 광고 크롤러)
+# 3. Japan Search Engines: Yahoo! Japan (야후 재팬)
+User-agent: Y!J-BRW
+Allow: /
+User-agent: Y!J-BRO
+Allow: /
+User-agent: Y!J-BSC
+Allow: /
+User-agent: Y!J
+Allow: /
+
+# 4. Greater China Search Engines: Baidu (바이두), Sogou (소구), 360 Search, Shenma, ByteDance
+User-agent: Baiduspider
+Allow: /
+User-agent: Sogou web spider
+Allow: /
+User-agent: Sogou inst spider
+Allow: /
+User-agent: 360Spider
+Allow: /
+User-agent: YisouSpider
+Allow: /
+User-agent: Bytespider
+Allow: /
+
+# 5. Google AdSense Review & Ad Crawler (구글 애드센스 심사 및 광고 크롤러)
 User-agent: Mediapartners-Google
 Allow: /
 User-agent: Mediapartners-Google*
@@ -19,50 +69,38 @@ Allow: /
 User-agent: Google-Display-Ads-Bot
 Allow: /
 
-# OpenAI / ChatGPT / SearchGPT
+# 6. AI Search & Generative Engine Optimization (GEO): ChatGPT, Perplexity, Gemini, Claude, Copilot, Meta AI
+User-agent: Google-Extended
+Allow: /
 User-agent: GPTBot
 Allow: /
 User-agent: ChatGPT-User
 Allow: /
 User-agent: OAI-SearchBot
 Allow: /
-
-# Perplexity AI Search
 User-agent: PerplexityBot
 Allow: /
-
-# Anthropic / Claude
 User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
 Allow: /
 User-agent: anthropic-ai
 Allow: /
-
-# Daum & Kakao (다음·카카오 검색)
-User-agent: Daumoa
-Allow: /
-
-# Microsoft Bing & Copilot
-User-agent: Bingbot
-Allow: /
-
-# Apple Intelligence
-User-agent: Applebot
-Allow: /
 User-agent: Applebot-Extended
 Allow: /
-
-# Cohere & Meta AI
 User-agent: cohere-ai
 Allow: /
 User-agent: FacebookBot
 Allow: /
-
-# Common Crawl (AI Training & Indexing)
+User-agent: Meta-ExternalAgent
+Allow: /
+User-agent: YouBot
+Allow: /
 User-agent: CCBot
 Allow: /
 
-# Sitemap & LLMs Documentation
+# Sitemap & Multilingual AI / LLM Documentation
 Sitemap: https://stepless.kr/sitemap.xml
-# LLMs specification file for AI search engines:
+# LLMs specification files for AI search engines (7 languages supported: ko, en, ja, zh-TW, zh-CN, es, fr):
 # https://stepless.kr/llms.txt
 # https://stepless.kr/llms-full.txt

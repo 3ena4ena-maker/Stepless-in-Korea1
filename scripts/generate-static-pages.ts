@@ -30,14 +30,348 @@ function trEn(enText: string | undefined | null, lang: Language): string {
 }
 
 const LANGUAGE_SEO_KEYWORDS: Record<Language, string> = {
-  KR: '부산 여행, 부산 여행 코스, 부산 여행 계획, 부산 일정 추천, 부산 가볼만한곳, 부산 1박2일 코스, 부산 2박3일 코스, 부산 3박4일 코스, 부산 당일치기, 부산 지하철 엘리베이터, 서면역 엘리베이터, 부산역 엘리베이터, 해운대역 엘리베이터, 광안리, 자갈치시장, 감천문화마을, 흰여울문화마을, 해동용궁사, 부산 무장애 여행, 부산 배리어프리, 스탭리스, Stepless',
-  EN: 'Busan travel, Busan travel guide, Busan trip plan, Busan itinerary, things to do in Busan, 1 day in Busan, 2 days in Busan, 3 days in Busan, Busan food guide, Busan subway elevator map, step-free Busan, wheelchair accessible Busan, Busan with stroller, Stepless in Busan',
-  JA: '釜山旅行, 釜山 観光, 釜山 モデルコース, 釜山 おすすめスポット, 釜山 1泊2日, 釜山 2泊3日, 釜山 3泊4日, 釜山 日帰り, 釜山 グルメ, 釜山 市場, 釜山 地下鉄 エレベーター, 釜山 ベビーカー, 釜山 バリアフリー, 子連れ釜山, Stepless',
-  ZH_TW: '釜山旅遊, 釜山自由行, 釜山景點, 釜山行程推薦, 釜山一日遊, 釜山三天兩夜, 釜山四天三夜, 釜山五天四夜, 釜山美食, 釜山必去, 釜山地鐵電梯, 釜山無障礙旅遊, 釜山親子遊 嬰兒車, Stepless',
-  ZH_CN: '釜山旅游, 釜山自由行, 釜山旅游攻略, 釜山必去景点, 釜山一日游, 釜山两天一夜, 釜山三天两夜, 釜山四天三晚, 釜山五天四晚, 釜山美食, 釜山地铁电梯, 釜山无障碍旅游, 釜山亲子游 婴儿车, Stepless',
-  ES: 'Viajar a Busan, Qué ver en Busan, Itinerario Busan, Guía de viaje Busan, Busan en 1 día, Busan en 2 días, Busan en 3 días, Dónde comer en Busan, Metro de Busan ascensores, Busan sin escalones, Busan accesible, Stepless',
-  FR: 'Voyage à Busan, Visiter Busan, Que faire à Busan, Itinéraire Busan, Guide de voyage Busan, Busan en 1 jour, Busan en 2 jours, Busan en 3 jours, Gastronomie Busan, Métro de Busan ascenseurs, Busan sans marche, Busan accessible, Stepless',
+  KR: '부산 여행, 부산 여행 코스, 부산 자유여행, 부산 여행 계획, 부산 일정 추천, 부산 가볼만한곳, 부산 관광지, 부산 핫플, 부산 당일치기, 부산 1박2일 코스, 부산 2박3일 코스, 부산 3박4일 코스, 부산 4박5일 코스, 부산 맛집, 부산 카페, 돼지국밥, 밀면, 씨앗호떡, 기장 대게, 해운대 해수욕장, 해운대 블루라인파크 해변열차 스카이캡슐, 광안리 해수욕장, 광안리 드론쇼, 서면, 전포카페거리, 남포동, 자갈치시장, 국제시장, 부평깡통야시장, 감천문화마을, 영도 흰여울문화마을, 태종대, 해동용궁사, 송도해상케이블카, 다대포 해수욕장, 기장 오시리아, 롯데월드 부산, 스카이라인 루지, 엑스더스카이, 부산아쿠아리움, 비짓부산패스, 부산 시티투어버스, 김해공항 경전철, KTX 부산역, 부산 지하철 노선도, 부산 지하철 엘리베이터, 서면역 엘리베이터, 부산역 엘리베이터, 해운대역 엘리베이터, 부산 아기랑 갈만한곳, 부산 유모차 여행, 부산 부모님 효도여행, 부산 가족여행, 부산 휠체어 여행, 부산 캐리어 보관, 부산 무장애 여행, 부산 배리어프리, 스탭리스, Stepless',
+  EN: 'Busan travel, Busan travel guide, Busan trip plan, Busan itinerary, things to do in Busan, best places to visit in Busan, 1 day in Busan, 2 days in Busan, 3 days in Busan, 4 days in Busan, 5 days in Busan, where to eat in Busan, Busan food guide, Haeundae Beach, Haeundae Blueline Park Sky Capsule, Gwangalli Beach, Gwangalli Drone Show, Seomyeon, Jeonpo Cafe Street, Nampo-dong, Jagalchi Fish Market, Gukje Market, Bupyeong Kkangtong Night Market, Gamcheon Culture Village, Huinnyeoul Culture Village, Yeongdo, Taejongdae, Haedong Yonggungsa Temple, Songdo Cable Car, Dadaepo Beach, Gijang, Lotte World Busan, Skyline Luge Busan, BUSAN X the SKY, SEA LIFE Busan Aquarium, Visit Busan Pass, Busan City Tour Bus, Gimhae Airport to Busan, KTX Busan Station, Busan Metro map, Busan subway elevator map, step-free Busan, wheelchair accessible Busan, Busan with stroller, Busan with kids, Busan family trip, Busan luggage storage, Stepless in Busan',
+  JA: '釜山旅行, 釜山 観光, 釜山 おすすめスポット, 釜山 モデルコース, 釜山 自由旅行, 釜山 日帰り, 釜山 1泊2日, 釜山 2泊3日, 釜山 3泊4日, 釜山 4泊5日, 釜山 グルメ, 釜山 カフェ, デジクッパ, ミルミョン, シアホットク, 機張カニ, 海雲台, 海雲台ブルーラインパーク スカイカプセル 海辺列車, 広安里, 広安里ドローンショー, 西面, 田浦カフェ通り, 南浦洞, チャガルチ市場, 国際市場, 富平カントン夜市, 甘川文化村, ヒニョウル文化村, 影島, 太宗台, 海東龍宮寺, 松島海上ケーブルカー, 多大浦, ロッテワールド釜山, スカイラインリュージュ, 釜山エックスザスカイ, ビジット釜山パス Visit Busan Pass, 金海空港 アクセス, KTX 釜山駅, 釜山 地下鉄 路線図, 釜山 地下鉄 エレベーター, 西面駅 エレベーター, 釜山駅 エレベーター, 海雲台駅 エレベーター, 子連れ釜山, 釜山 ベビーカー, 釜山 車椅子 観光, 釜山 親孝行旅行, 釜山 スーツケース コインロッカー, 釜山 バリアフリー, Stepless',
+  ZH_TW: '釜山旅遊, 釜山自由行, 釜山景點, 釜山必去, 釜山行程推薦, 釜山攻略, 釜山一日遊, 釜山兩天一夜, 釜山三天兩夜, 釜山四天三夜, 釜山五天四夜, 釜山美食, 釜山咖啡廳, 豬肉湯飯, 小麥冷麵, 堅果糖餅, 機張長腳蟹, 海雲台, 海雲台藍線公園 膠囊列車 海岸列車, 廣安里, 廣安里無人機秀, 西面, 田浦咖啡街, 南浦洞, 札嘎其市場, 國際市場, 富平罐頭夜市, 甘川洞文化村, 白淺灘文化村, 影島, 太宗台, 海東龍宮寺, 松島海上纜車, 多大浦, 釜山樂天世界, 斜坡滑車, BUSAN X the SKY, 釜山水族館, Visit Busan Pass 釜山通行證, 金海機場交通, KTX 釜山站, 釜山地鐵圖, 釜山地鐵電梯, 西面站電梯, 釜山站電梯, 海雲台站電梯, 釜山親子遊, 釜山嬰兒車, 釜山孝親遊, 釜山帶長輩, 釜山輪椅無障礙旅遊, 釜山行李寄放, Stepless',
+  ZH_CN: '釜山旅游, 釜山自由行, 釜山旅游攻略, 釜山必去景点, 釜山行程推荐, 釜山一日游, 釜山两天一夜, 釜山三天两夜, 釜山四天三晚, 釜山五天四晚, 釜山美食, 釜山咖啡店, 猪肉汤饭, 小麦冷面, 坚果糖饼, 机张雪蟹, 海云台, 海云台蓝线公园 胶囊小火车 海岸列车, 广安里, 广安里无人机表演, 西面, 田浦咖啡街, 南浦洞, 札嘎其市场, 国际市场, 富平罐头夜市, 甘川文化村, 白浅滩文化村, 影岛, 太宗台, 海东龙宫寺, 松岛海上缆车, 多大浦, 釜山乐天世界, 斜坡滑车, 釜山X the SKY, 釜山水族馆, Visit Busan Pass 釜山通行证, 金海机场交通, KTX 釜山站, 釜山地铁线路图, 釜山地铁电梯, 西面站电梯, 釜山站电梯, 海云台站电梯, 釜山亲子游, 釜山婴儿车, 釜山带父母旅游, 釜山无障碍旅游, 釜山行李寄存, Stepless',
+  ES: 'Viajar a Busan, Qué ver en Busan, Qué hacer en Busan, Itinerario Busan, Guía de viaje Busan, Turismo en Busan Corea del Sur, Busan en 1 día, Busan en 2 días, Busan en 3 días, Busan en 4 días, Dónde comer en Busan, Gastronomía de Busan, Playa Haeundae, Tren costero Haeundae Blueline Park Sky Capsule, Playa Gwangalli, Show de drones Gwangalli, Seomyeon, Nampo-dong, Mercado de pescado Jagalchi, Mercado Gukje, Aldea Cultural de Gamcheon, Aldea Cultural Huinnyeoul, Yeongdo, Taejongdae, Templo Haedong Yonggungsa, Teleférico de Songdo, Visit Busan Pass, Aeropuerto de Gimhae a Busan, Estación KTX Busan, Mapa del metro de Busan, Metro de Busan ascensores, Busan sin escalones, Busan en silla de ruedas, Busan con niños y carrito de bebé, Turismo accesible en Busan, Stepless',
+  FR: 'Voyage à Busan, Visiter Busan, Que faire à Busan, Que voir à Busan, Itinéraire Busan, Guide de voyage Busan Corée du Sud, Busan en 1 jour, Busan en 2 jours, Busan en 3 jours, Busan en 4 jours, Où manger à Busan, Gastronomie Busan, Plage de Haeundae, Train côtier Haeundae Blueline Park Sky Capsule, Plage de Gwangalli, Spectacle de drones Gwangalli, Seomyeon, Nampo-dong, Marché aux poissons de Jagalchi, Marché Gukje, Village culturel de Gamcheon, Village culturel de Huinnyeoul, Yeongdo, Taejongdae, Temple Haedong Yonggungsa, Téléphérique de Songdo, Visit Busan Pass, Aéroport de Gimhae vers Busan, Gare KTX de Busan, Plan du métro de Busan, Métro de Busan ascenseurs, Busan sans marche, Busan en fauteuil roulant, Busan en famille avec poussette, Tourisme accessible à Busan, Stepless',
 };
+
+interface LanguageGeoConfig {
+  targetCountry: string;
+  contentLanguage: string;
+  geoPlacename: string;
+  authorName: string;
+  siteName: string;
+  ogImageAlt: string;
+  destName: string;
+  destDesc: string;
+  attractions: string[];
+  faqs: { q: string; a: string }[];
+}
+
+const LANGUAGE_GEO_CONFIG: Record<Language, LanguageGeoConfig> = {
+  KR: {
+    targetCountry: 'KR',
+    contentLanguage: 'ko-KR',
+    geoPlacename: '부산광역시, 대한민국 (Busan, South Korea)',
+    authorName: '스탭리스 (Stepless in Busan)',
+    siteName: '스탭리스 Stepless in Busan | 부산 여행 코스 & 무장애 지하철 가이드',
+    ogImageAlt: '계단 없는 부산여행, 로컬 가이드 스탭리스와 함께 (STEPLESS IN BUSAN)',
+    destName: '부산광역시 (Busan Metropolitan City)',
+    destDesc: '대한민국 대표 해양 관광 도시 부산 — 해운대, 광안리, 자갈치시장, 감천문화마을, 해동용궁사 등 핵심 명소와 일정별 여행 코스 및 무장애 지하철 엘리베이터 가이드',
+    attractions: [
+      '해운대 해수욕장 & 블루라인파크 (Haeundae Beach & Blueline Park)',
+      '광안리 해수욕장 & 광안대교 (Gwangalli Beach)',
+      '감천문화마을 (Gamcheon Culture Village)',
+      '자갈치시장 & 남포동 (Jagalchi Market & Nampo-dong)',
+      '영도 흰여울문화마을 & 태종대 (Huinnyeoul Culture Village & Taejongdae)',
+      '기장 해동용궁사 & 오시리아 (Haedong Yonggungsa Temple)',
+    ],
+    faqs: [
+      {
+        q: '부산 여행 코스는 일정별로 어떻게 짜는 것이 좋나요?',
+        a: '스탭리스에서는 당일치기, 1박 2일, 2박 3일, 3박 4일, 4박 5일 일정별 최적 코스와 식도락(맛집), 핵심 명소, 체험·박물관, 전통시장, 무장애 관광지 코스를 권역별 이동 동선과 함께 제공합니다.',
+      },
+      {
+        q: '부산 지하철역에서 유모차·휠체어·캐리어로 이동할 때 엘리베이터 출구는 어디서 확인하나요?',
+        a: '서면역, 부산역(KTX), 해운대역, 광안역, 남포역, 자갈치역, 센텀시티역 등 부산 주요 46개 지하철역의 지상 직결 엘리베이터 출구 번호와 환승 경로를 스탭리스 역 검색에서 바로 확인할 수 있습니다.',
+      },
+    ],
+  },
+  EN: {
+    targetCountry: 'US, GB, AU, CA, SG',
+    contentLanguage: 'en-US',
+    geoPlacename: 'Busan Metropolitan City, South Korea',
+    authorName: 'Stepless in Busan',
+    siteName: 'Stepless in Busan | Busan Travel Guide, Itinerary & Subway Elevator Map',
+    ogImageAlt: 'Stepless in Busan - Busan Travel Courses, Itineraries & Step-Free Subway Guide',
+    destName: 'Busan Metropolitan City, South Korea',
+    destDesc: 'South Korea premier coastal city — explore Haeundae Beach, Gwangalli, Gamcheon Culture Village, Jagalchi Market, Haedong Yonggungsa Temple, 1 to 5-day itineraries, and step-free subway elevator exits.',
+    attractions: [
+      'Haeundae Beach & Blueline Park Sky Capsule',
+      'Gwangalli Beach & Gwangandaegyo Bridge',
+      'Gamcheon Culture Village',
+      'Jagalchi Seafood Market & Gukje Market',
+      'Huinnyeoul Culture Village & Taejongdae',
+      'Haedong Yonggungsa Seaside Temple',
+    ],
+    faqs: [
+      {
+        q: 'How many days do I need for a Busan trip itinerary?',
+        a: 'Stepless in Busan provides curated 1-day, 2-day, 3-day, 4-day, and 5-day Busan itineraries covering East Busan (Haeundae, Gwangalli, Gijang) and Old Town (Gamcheon, Jagalchi, Yeongdo), plus food, market, and barrier-free courses.',
+      },
+      {
+        q: 'How can I find elevator exits in Busan subway stations with luggage, a stroller, or a wheelchair?',
+        a: 'Stepless in Busan maps exact street-level elevator exits, escalator locations, accessible restrooms, and step-free transfer paths across 46 major Busan Metro stations including Seomyeon, Busan Station (KTX), Haeundae, and Nampo.',
+      },
+    ],
+  },
+  JA: {
+    targetCountry: 'JP',
+    contentLanguage: 'ja-JP',
+    geoPlacename: '大韓民国 釜山広域市 (Busan, South Korea)',
+    authorName: 'Stepless in Busan (ステップレス釜山)',
+    siteName: 'Stepless in Busan | 釜山旅行おすすめモデルコース＆地下鉄エレベーター案内',
+    ogImageAlt: '階段のない釜山旅行、ローカルガイド Stepless と一緒に (釜山観光・モデルコース・地下鉄エレベーター)',
+    destName: '釜山広域市 (Busan, South Korea)',
+    destDesc: '韓国を代表する港町・釜山（プサン）の観光ガイド。海雲台、広安里、甘川文化村、チャガルチ市場、海東龍宮寺のおすすめモデルコース（日帰り〜4泊5日）、グルメ、地下鉄46駅のエレベーター出口・バリアフリー情報。',
+    attractions: [
+      '海雲台ビーチ＆ブルーラインパーク（スカイカプセル）',
+      '広安里ビーチ＆広安大橋ドローンショー',
+      '甘川文化村（カムチョンムナマウル）',
+      'チャガルチ市場・国際市場・富平カントン夜市',
+      '影島 ヒニョウル文化村＆太宗台',
+      '海東龍宮寺（ヘドンヨングンサ）',
+    ],
+    faqs: [
+      {
+        q: '釜山旅行のモデルコース（1泊2日・2泊3日・日帰り）のおすすめは？',
+        a: 'Steplessでは、日帰り・1泊2日・2泊3日・3泊4日・4泊5日の日程別モデルコースから、釜山グルメ（デジクッパ・ミルミョン・海鮮）、定番観光スポット、伝統市場、バリアフリー観光地まで最適なルートを日本語で案内しています。',
+      },
+      {
+        q: '釜山の地下鉄でスーツケースやベビーカー・車椅子で移動する際のエレベーター出口は？',
+        a: '西面駅、釜山駅（KTX）、海雲台駅、広安駅、南浦駅、チャガルチ駅など主要46駅の地上直結エレベーター出口番号と階段なしの乗換ルートを駅別に詳しく確認できます。',
+      },
+    ],
+  },
+  ZH_TW: {
+    targetCountry: 'TW, HK, MO',
+    contentLanguage: 'zh-TW, zh-HK, zh-Hant',
+    geoPlacename: '大韓民國 釜山廣域市 (Busan, South Korea)',
+    authorName: 'Stepless in Busan (釜山自由行無障礙指南)',
+    siteName: 'Stepless in Busan | 釜山自由行景點行程推薦＆地鐵電梯指南',
+    ogImageAlt: '無階梯釜山自由行，與在地指南 Stepless 同行 (釜山景點行程・地鐵電梯出口)',
+    destName: '釜山廣域市 (Busan, South Korea)',
+    destDesc: '韓國代表海港城市釜山自由行全攻略：海雲台、膠囊列車、廣安里、甘川洞文化村、白淺灘文化村、札嘎其市場、海東龍宮寺一日遊至五天四夜推薦行程，以及釜山地鐵46站電梯出口與親子嬰兒車、輪椅無障礙路線。',
+    attractions: [
+      '海雲台海水浴場＆藍線公園膠囊列車',
+      '廣安里海水浴場＆廣安大橋無人機秀',
+      '甘川洞文化村',
+      '札嘎其市場・國際市場・富平罐頭夜市',
+      '影島白淺灘文化村＆太宗台',
+      '機張海東龍宮寺＆樂天世界',
+    ],
+    faqs: [
+      {
+        q: '釜山自由行三天兩夜、四天三夜或五天四夜行程怎麼安排最順路？',
+        a: 'Stepless 提供釜山一日遊、兩天一夜、三天兩夜、四天三夜、五天四夜精選行程，以及釜山必吃美食（豬肉湯飯、小麥冷麵、堅果糖餅）、熱門景點、傳統市場與無障礙旅遊路線，並支援 Google 地圖即時大眾運輸導航。',
+      },
+      {
+        q: '帶嬰兒車、大件行李或長輩去釜山旅遊，哪裡可以查地鐵電梯出口？',
+        a: 'Stepless 完整整理西面站、釜山站（KTX）、海雲台站、廣安站、南浦站、札嘎其站等釜山地鐵 46 個主要車站的地面直達電梯出口編號與無階梯轉乘動線。',
+      },
+    ],
+  },
+  ZH_CN: {
+    targetCountry: 'CN, SG, MY',
+    contentLanguage: 'zh-CN, zh-Hans',
+    geoPlacename: '大韩民国 釜山广域市 (Busan, South Korea)',
+    authorName: 'Stepless in Busan (釜山自由行无障碍指南)',
+    siteName: 'Stepless in Busan | 釜山自由行旅游攻略、景点行程＆地铁电梯指南',
+    ogImageAlt: '无台阶釜山自由行，与本地指南 Stepless 同行 (釜山旅游攻略・地铁电梯出口)',
+    destName: '釜山广域市 (Busan, South Korea)',
+    destDesc: '韩国代表海滨旅游城市釜山自由行攻略：海云台、胶囊小火车、广安里、甘川文化村、白浅滩文化村、札嘎其市场、海东龙宫寺一日游至五天四晚推荐行程，以及釜山地铁46站电梯出口与婴儿车、轮椅无障碍路线。',
+    attractions: [
+      '海云台海水浴场＆蓝线公园胶囊小火车',
+      '广安里海水浴场＆广安大桥无人机表演',
+      '甘川文化村',
+      '札嘎其市场・国际市场・富平罐头夜市',
+      '影岛白浅滩文化村＆太宗台',
+      '机张海东龙宫寺＆釜山乐天世界',
+    ],
+    faqs: [
+      {
+        q: '釜山自由行三天两夜、四天三晚行程怎么安排最合理？',
+        a: 'Stepless 提供釜山一日游、两天一夜、三天两夜、四天三晚、五天四晚精选行程，涵盖釜山美食（猪肉汤饭、小麦冷面、坚果糖饼）、核心景点、传统市场与无障碍景点，并提供实时公交地铁导航。',
+      },
+      {
+        q: '带婴儿车、行李箱或父母去釜山旅游，如何查询釜山地铁电梯出口？',
+        a: 'Stepless 详细整理了西面站、釜山站（KTX）、海云台站、广安站、南浦站、札嘎其站等釜山地铁 46 个主要车站的地面直达电梯出口编号与无台阶换乘路线。',
+      },
+    ],
+  },
+  ES: {
+    targetCountry: 'ES, MX, AR, CO, CL, PE',
+    contentLanguage: 'es-ES, es-419',
+    geoPlacename: 'Busán, Corea del Sur (Busan, South Korea)',
+    authorName: 'Stepless in Busan (Guía de Viaje de Busán)',
+    siteName: 'Stepless in Busan | Guía de Viaje a Busán, Itinerarios y Ascensores del Metro',
+    ogImageAlt: 'Viaje a Busán sin escalones con la guía local Stepless (Qué ver en Busán y Metro accesible)',
+    destName: 'Busán, Corea del Sur (Busan Metropolitan City)',
+    destDesc: 'Guía completa para viajar a Busán, la capital marítima de Corea del Sur: Playa Haeundae, Gwangalli, Aldea Cultural de Gamcheon, Mercado Jagalchi, Templo Haedong Yonggungsa, itinerarios de 1 a 5 días y salidas con ascensor en 46 estaciones del metro de Busán.',
+    attractions: [
+      'Playa Haeundae y Tren Costero Blueline Park (Sky Capsule)',
+      'Playa Gwangalli y Puente Gwangandaegyo',
+      'Aldea Cultural de Gamcheon',
+      'Mercado de Pescado Jagalchi y Mercado Gukje',
+      'Aldea Cultural Huinnyeoul y Parque Taejongdae',
+      'Templo Costero Haedong Yonggungsa',
+    ],
+    faqs: [
+      {
+        q: '¿Qué ver en Busán en 1, 2, 3 o 4 días?',
+        a: 'Stepless in Busan ofrece itinerarios detallados de 1 a 5 días por Busán, rutas gastronómicas, mercados tradicionales, playas, templos y atracciones sin barreras con direcciones en Google Maps.',
+      },
+      {
+        q: '¿Dónde encontrar ascensores en el metro de Busán para viajar con maletas, carrito de bebé o silla de ruedas?',
+        a: 'Nuestra guía muestra los números exactos de salida con ascensor, escaleras mecánicas y rutas sin escalones en las 46 principales estaciones del metro de Busán, incluidas Seomyeon, Estación de Busán (KTX), Haeundae y Nampo.',
+      },
+    ],
+  },
+  FR: {
+    targetCountry: 'FR, BE, CH, CA',
+    contentLanguage: 'fr-FR, fr-CA',
+    geoPlacename: 'Busan, Corée du Sud (Busan, South Korea)',
+    authorName: 'Stepless in Busan (Guide de Voyage de Busan)',
+    siteName: 'Stepless in Busan | Guide de Voyage à Busan, Itinéraires et Ascenseurs du Métro',
+    ogImageAlt: 'Voyage à Busan sans marches avec le guide local Stepless (Que faire à Busan et Métro accessible)',
+    destName: 'Busan, Corée du Sud (Busan Metropolitan City)',
+    destDesc: 'Guide complet pour visiter Busan, la capitale maritime de la Corée du Sud : Plage de Haeundae, Gwangalli, Village culturel de Gamcheon, Marché de Jagalchi, Temple Haedong Yonggungsa, itinéraires de 1 à 5 jours et sorties avec ascenseur dans 46 stations du métro de Busan.',
+    attractions: [
+      'Plage de Haeundae et Train côtier Blueline Park (Sky Capsule)',
+      'Plage de Gwangalli et Pont Gwangandaegyo',
+      'Village culturel de Gamcheon',
+      'Marché aux poissons de Jagalchi et Marché Gukje',
+      'Village culturel de Huinnyeoul et Parc Taejongdae',
+      'Temple marin Haedong Yonggungsa',
+    ],
+    faqs: [
+      {
+        q: 'Que faire à Busan en 1, 2, 3 ou 4 jours ?',
+        a: 'Stepless in Busan propose des itinéraires complets de 1 à 5 jours à Busan, des parcours gastronomiques, marchés traditionnels, plages, temples et sites accessibles sans marches avec itinéraires Google Maps.',
+      },
+      {
+        q: 'Comment trouver les sorties avec ascenseur dans le métro de Busan avec une valise, une poussette ou un fauteuil roulant ?',
+        a: 'Notre guide indique les numéros exacts des sorties équipées d’ascenseurs, d’escaliers mécaniques et les correspondances sans marches dans les 46 principales stations du métro de Busan (Seomyeon, Gare KTX de Busan, Haeundae, Nampo).',
+      },
+    ],
+  },
+};
+
+function buildLocalizedJsonLd(
+  page: StaticRoutePage,
+  lang: Language,
+  cleanRoutePath: string,
+  canonicalUrl: string,
+  keywords: string
+): string {
+  const langOpt = LANGUAGE_OPTIONS.find(o => o.code === lang) || LANGUAGE_OPTIONS[0];
+  const geoCfg = LANGUAGE_GEO_CONFIG[lang] || LANGUAGE_GEO_CONFIG.KR;
+  const d = DICTIONARY[lang] || DICTIONARY.KR;
+  const homeUrl = `https://stepless.kr${buildLocalizedPath('/', lang)}`;
+  const searchUrl = `https://stepless.kr${buildLocalizedPath('/search', lang)}?q={search_term_string}`;
+
+  const breadcrumbItems: Record<string, unknown>[] = [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: d.nav.home,
+      item: homeUrl,
+    },
+  ];
+  if (cleanRoutePath !== '/') {
+    breadcrumbItems.push({
+      '@type': 'ListItem',
+      position: 2,
+      name: page.h1,
+      item: canonicalUrl,
+    });
+  }
+
+  const schemaObj = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${homeUrl}#website`,
+        url: homeUrl,
+        name: geoCfg.siteName,
+        alternateName: [
+          'Stepless in Busan',
+          'Stepless in Korea',
+          '스탭리스 부산',
+          'ステップレス釜山',
+          '釜山自由行無障礙指南',
+        ],
+        description: page.description,
+        inLanguage: langOpt.htmlLang,
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: searchUrl,
+          'query-input': 'required name=search_term_string',
+        },
+      },
+      {
+        '@type': 'WebPage',
+        '@id': `${canonicalUrl}#webpage`,
+        url: canonicalUrl,
+        name: page.title,
+        headline: page.h1,
+        description: page.description,
+        keywords,
+        inLanguage: langOpt.htmlLang,
+        isPartOf: { '@id': `${homeUrl}#website` },
+        about: { '@id': 'https://stepless.kr/#busan-destination' },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${canonicalUrl}#breadcrumb`,
+        itemListElement: breadcrumbItems,
+      },
+      {
+        '@type': 'TouristDestination',
+        '@id': 'https://stepless.kr/#busan-destination',
+        name: geoCfg.destName,
+        alternateName: ['Busan', '부산광역시', '釜山広域市', '釜山廣域市', '釜山广域市', 'Busán'],
+        description: geoCfg.destDesc,
+        inLanguage: langOpt.htmlLang,
+        sameAs: [
+          'https://ko.wikipedia.org/wiki/%EB%B6%80%EC%82%B0%EA%B4%91%EC%97%AD%EC%8B%9C',
+          'https://en.wikipedia.org/wiki/Busan',
+          'https://ja.wikipedia.org/wiki/%E9%87%9C%E5%B1%B1%E5%BA%83%E5%9F%9F%E5%B8%82',
+          'https://zh.wikipedia.org/wiki/%E9%87%9C%E5%B1%B1%E5%BB%A3%E5%9F%9F%E5%B8%82',
+          'https://es.wikipedia.org/wiki/Busan',
+          'https://fr.wikipedia.org/wiki/Busan',
+          'https://www.wikidata.org/wiki/Q16520',
+          'https://www.visitbusan.net/',
+        ],
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: 35.1796,
+          longitude: 129.0756,
+        },
+        touristType: [
+          'Sightseeing & Cultural Tourism',
+          'Food & Culinary Tourism',
+          'Family & Stroller Friendly Tourism',
+          'Accessible & Step-Free Tourism',
+        ],
+        includesAttraction: geoCfg.attractions.map(name => ({
+          '@type': 'TouristAttraction',
+          name,
+        })),
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${canonicalUrl}#faq`,
+        inLanguage: langOpt.htmlLang,
+        mainEntity: geoCfg.faqs.map(item => ({
+          '@type': 'Question',
+          name: item.q,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.a,
+          },
+        })),
+      },
+    ],
+  };
+
+  return `<script type="application/ld+json">\n${JSON.stringify(schemaObj, null, 2)}\n    </script>`;
+}
 
 interface StaticRoutePage {
   routePath: string; // e.g. '/tips/courses/gourmet' (no trailing slash except '/')
@@ -900,30 +1234,335 @@ function buildLocalizedStationPage(stationId: string, lang: Language): StaticRou
   };
 }
 
+const COURSE_CATEGORY_SEO_META: Record<
+  string,
+  {
+    title: Record<Language, string>;
+    description: Record<Language, string>;
+    h1: Record<Language, string>;
+  }
+> = {
+  GOURMET: {
+    title: {
+      KR: '부산 식도락 맛집 여행 코스 추천 (돼지국밥·밀면·자갈치·카페) | 스탭리스 Stepless',
+      EN: 'Busan Food Tour & Best Local Restaurants Guide (Pork Soup, Milmyeon, Seafood & Cafes) | Stepless',
+      JA: '釜山グルメ・食べ歩きおすすめモデルコース（デジクッパ・ミルミョン・海鮮・カフェ） | Stepless',
+      ZH_TW: '釜山美食必吃推薦行程（豬肉湯飯・小麥冷麵・札嘎其海鮮・田浦咖啡街） | Stepless',
+      ZH_CN: '釜山美食必吃推荐路线（猪肉汤饭・小麦冷面・札嘎其海鲜・田浦咖啡街） | Stepless',
+      ES: 'Ruta Gastronómica por Busán: Dónde Comer Platos Locales, Mariscos y Cafeterías | Stepless',
+      FR: 'Itinéraire Gastronomique à Busan : Spécialités Locales, Fruits de Mer et Cafés | Stepless',
+    },
+    description: {
+      KR: '부산 현지인이 검증한 식도락 맛집 코스: 서면·부산역 돼지국밥, 밀면, 남포동 씨앗호떡, 자갈치 활어회, 기장 대게, 전포카페거리 및 해운대·영도 오션뷰 카페 가이드.',
+      EN: 'Local-verified Busan food guide: Dwaeji-gukbap (pork rice soup), Milmyeon wheat noodles, BIFF seed hotteok, Jagalchi seafood, Gijang snow crab, Jeonpo Cafe Street, and ocean-view bakeries.',
+      JA: '釜山ローカル厳選の絶品グルメコース：西面・釜山駅のデジクッパ、ミルミョン、南浦洞シアホットク、チャガルチ市場の海鮮、機張カニ、田浦カフェ通り＆海雲台・影島オーシャンビューカフェ完全ガイド。',
+      ZH_TW: '釜山在地人認證必吃美食攻略：西面・釜山站豬肉湯飯、草梁小麥冷麵、南浦洞堅果糖餅、札嘎其市場活海鮮、機張長腳蟹，以及田浦咖啡街與海雲台・影島海景咖啡廳推薦。',
+      ZH_CN: '釜山本地人认证必吃美食攻略：西面・釜山站猪肉汤饭、草梁小麦冷面、南浦洞坚果糖饼、札嘎其市场活海鲜、机张雪蟹，以及田浦咖啡街与海云台・影岛海景咖啡店推荐。',
+      ES: 'Guía gastronómica local de Busán: sopa de cerdo Dwaeji-gukbap, fideos Milmyeon, panqueques dulces de BIFF, mariscos de Jagalchi, cangrejo de Gijang y cafeterías con vista al mar.',
+      FR: 'Guide gastronomique local de Busan : soupe de porc Dwaeji-gukbap, nouilles Milmyeon, crêpes sucrées BIFF, fruits de mer de Jagalchi, crabe de Gijang et cafés avec vue sur mer.',
+    },
+    h1: {
+      KR: '부산 식도락 맛집 & 카페 추천 여행 코스',
+      EN: 'Busan Local Food & Cafe Gourmet Guide',
+      JA: '釜山グルメ・名物料理＆カフェおすすめコース',
+      ZH_TW: '釜山必吃在地美食＆海景咖啡廳推薦行程',
+      ZH_CN: '釜山必吃地道美食＆海景咖啡店推荐路线',
+      ES: 'Guía Gastronómica de Busán: Restaurantes Locales y Cafeterías',
+      FR: 'Guide Gastronomique de Busan : Restaurants Locaux et Cafés',
+    },
+  },
+  EXPERIENCE: {
+    title: {
+      KR: '부산 체험 & 박물관 여행 코스 추천 (블루라인파크·루지·요트·아르떼뮤지엄) | 스탭리스 Stepless',
+      EN: 'Best Things to Do in Busan: Experiences, Museums, Sky Capsule & Yacht Tour | Stepless',
+      JA: '釜山体験・ミュージアムおすすめコース（スカイカプセル・リュージュ・ヨット・美術館） | Stepless',
+      ZH_TW: '釜山體驗・博物館推薦行程（膠囊列車・斜坡滑車・遊艇・Arte Museum・汗蒸幕） | Stepless',
+      ZH_CN: '釜山体验・博物馆推荐路线（胶囊小火车・斜坡滑车・游艇・Arte Museum・汗蒸幕） | Stepless',
+      ES: 'Mejores Experiencias y Museos en Busán (Sky Capsule, Luge, Yate y Arte Museum) | Stepless',
+      FR: 'Meilleures Expériences et Musées à Busan (Sky Capsule, Luge, Yacht et Arte Museum) | Stepless',
+    },
+    description: {
+      KR: '해운대 블루라인파크 스카이캡슐·해변열차, 스카이라인 루지, 롯데월드 부산, 수영만 요트투어, 아르떼뮤지엄 부산, 뮤지엄원, 국립해양박물관, 신세계 스파랜드·허심청 온천 등 부산 대표 체험·박물관 총정리.',
+      EN: 'Top Busan activities and indoor museums: Haeundae Blueline Park Sky Capsule, Skyline Luge, Lotte World Busan, Gwangalli Yacht Tour, Arte Museum, Museum 1, National Maritime Museum, and Spaland.',
+      JA: '海雲台ブルーラインパーク（スカイカプセル・海辺列車）、スカイラインリュージュ、ロッテワールド釜山、ヨットツアー、アルテミュージアム釜山、国立海洋博物館、新世界スパランド・虚心庁温泉など釜山の人気体験＆博物館ガイド。',
+      ZH_TW: '精選釜山必玩體驗與室內博物館：海雲台藍線公園膠囊列車、斜坡滑車 Luge、釜山樂天世界、廣安里遊艇夜間巡航、Arte Museum、國立海洋博物館、新世界 Spa Land 與虛心廳溫泉。',
+      ZH_CN: '精选釜山必玩体验与室内博物馆：海云台蓝线公园胶囊小火车、斜坡滑车 Luge、釜山乐天世界、广安里游艇夜航、Arte Museum、国立海洋博物馆、新世界 Spa Land 与虚心厅温泉。',
+      ES: 'Actividades imprescindibles y museos en Busán: cápsula costera Blueline Park, Skyline Luge, Lotte World Busán, paseo en yate, Arte Museum, Museo Marítimo Nacional y aguas termales.',
+      FR: 'Activités incontournables et musées à Busan : Sky Capsule Blueline Park, Skyline Luge, Lotte World Busan, croisière en yacht, Arte Museum, Musée Maritime National et sources chaudes.',
+    },
+    h1: {
+      KR: '부산 체험·액티비티 & 박물관 추천 코스',
+      EN: 'Busan Experiences, Activities & Museums Guide',
+      JA: '釜山アクティビティ体験＆ミュージアムおすすめコース',
+      ZH_TW: '釜山熱門體驗活動＆博物館推薦行程',
+      ZH_CN: '釜山热门体验活动＆博物馆推荐路线',
+      ES: 'Experiencias, Actividades y Museos en Busán',
+      FR: 'Expériences, Activités et Musées à Busan',
+    },
+  },
+  MARKET: {
+    title: {
+      KR: '부산 전통시장 & 쇼핑 투어 추천 코스 (자갈치·국제시장·깡통야시장·백화점) | 스탭리스 Stepless',
+      EN: 'Busan Traditional Markets, Night Markets & Shopping Guide (Jagalchi, Gukje, Centum) | Stepless',
+      JA: '釜山伝統市場・夜市＆ショッピングおすすめコース（チャガルチ・国際市場・富平カントン夜市） | Stepless',
+      ZH_TW: '釜山傳統市場・夜市＆購物推薦行程（札嘎其市場・國際市場・富平罐頭夜市・新世界百貨） | Stepless',
+      ZH_CN: '釜山传统市场・夜市＆购物推荐路线（札嘎其市场・国际市场・富平罐头夜市・新世界百货） | Stepless',
+      ES: 'Mercados Tradicionales, Mercados Nocturnos y Compras en Busán (Jagalchi, Gukje) | Stepless',
+      FR: 'Marchés Traditionnels, Marchés de Nuit et Shopping à Busan (Jagalchi, Gukje) | Stepless',
+    },
+    description: {
+      KR: '자갈치시장, 국제시장, 부평깡통야시장, 부전시장, 해운대시장 등 부산 대표 전통시장 먹거리와 신세계백화점 센텀시티점, 기장 프리미엄아울렛, 서면 지하상가 쇼핑 완벽 가이드.',
+      EN: 'Explore Busan vibrant traditional markets and shopping hubs: Jagalchi Fish Market, Gukje Market, Bupyeong Kkangtong Night Market, Bujeon Market, Shinsegae Centum City, and Seomyeon Underground Mall.',
+      JA: 'チャガルチ市場、国際市場、富平カントン夜市、釜田市場、海雲台市場の食べ歩きから、新世界百貨店センタムシティ店、西面地下街、機張プレミアムアウトレットまで釜山市場＆ショッピング完全ガイド。',
+      ZH_TW: '一次逛遍釜山代表傳統市場與購物熱點：札嘎其市場、國際市場、富平罐頭夜市、釜田市場、海雲台市場必吃街頭美食，以及新世界百貨 Centum City、西面地下街與機張 Outlet。',
+      ZH_CN: '一次逛遍釜山代表传统市场与购物热点：札嘎其市场、国际市场、富平罐头夜市、釜田市场、海云台市场必吃街头小吃，以及新世界百货 Centum City、西面地下街与机张奥特莱斯。',
+      ES: 'Recorre los mercados tradicionales y centros de compras de Busán: Mercado de Pescado Jagalchi, Mercado Gukje, Mercado Nocturno Bupyeong Kkangtong, Bujeon y Shinsegae Centum City.',
+      FR: 'Parcourez les marchés traditionnels et lieux de shopping de Busan : Marché aux poissons de Jagalchi, Marché Gukje, Marché de nuit Bupyeong Kkangtong, Bujeon et Shinsegae Centum City.',
+    },
+    h1: {
+      KR: '부산 전통시장·야시장 & 쇼핑 추천 코스',
+      EN: 'Busan Traditional Markets, Night Markets & Shopping Guide',
+      JA: '釜山伝統市場・夜市＆ショッピングコース',
+      ZH_TW: '釜山傳統市場・夜市＆購物推薦指南',
+      ZH_CN: '釜山传统市场・夜市＆购物推荐指南',
+      ES: 'Mercados Tradicionales, Nocturnos y Compras en Busán',
+      FR: 'Marchés Traditionnels, Marchés de Nuit et Shopping à Busan',
+    },
+  },
+  ATTRACTION: {
+    title: {
+      KR: '부산 대표 핵심 명소 & 관광지 추천 코스 (해운대·광안리·감천문화마을·해동용궁사) | 스탭리스 Stepless',
+      EN: 'Top Busan Attractions & Must-Visit Landmarks Guide (Haeundae, Gwangalli, Gamcheon) | Stepless',
+      JA: '釜山定番観光スポット・名所おすすめコース（海雲台・広安里・甘川文化村・海東龍宮寺） | Stepless',
+      ZH_TW: '釜山必去代表景點全攻略（海雲台・廣安里・甘川洞文化村・白淺灘・海東龍宮寺） | Stepless',
+      ZH_CN: '釜山必去代表景点全攻略（海云台・广安里・甘川文化村・白浅滩・海东龙宫寺） | Stepless',
+      ES: 'Principales Atracciones Qué Ver en Busán (Haeundae, Gwangalli, Gamcheon, Yonggungsa) | Stepless',
+      FR: 'Sites Incontournables à Visiter à Busan (Haeundae, Gwangalli, Gamcheon, Yonggungsa) | Stepless',
+    },
+    description: {
+      KR: '해운대 해수욕장, 광안리 해변, 감천문화마을, 영도 흰여울문화마을, 태종대, 기장 해동용궁사, 용두산공원 부산타워, 송도 해상케이블카, 황령산 전망대 등 부산 필수 명소 총정리.',
+      EN: 'Complete guide to must-visit Busan landmarks: Haeundae Beach, Gwangalli Beach, Gamcheon Culture Village, Huinnyeoul Culture Village, Taejongdae, Haedong Yonggungsa Temple, and Busan Tower.',
+      JA: '海雲台ビーチ、広安里ビーチ、甘川文化村、影島ヒニョウル文化村、太宗台、海東龍宮寺、龍頭山公園（釜山タワー）、松島海上ケーブルカー、荒嶺山展望台など釜山の必見観光スポット一覧。',
+      ZH_TW: '釜山自由行必去經典景點總整理：海雲台海水浴場、廣安里海灘、甘川洞文化村、影島白淺灘文化村、太宗台、海東龍宮寺、龍頭山公園釜山塔、松島海上纜車與荒嶺山夜景展望台。',
+      ZH_CN: '釜山自由行必去经典景点总整理：海云台海水浴场、广安里海滩、甘川文化村、影岛白浅滩文化村、太宗台、海东龙宫寺、龙头山公园釜山塔、松岛海上缆车与荒岭山夜景展望台。',
+      ES: 'Los lugares imprescindibles que ver en Busán: Playa Haeundae, Playa Gwangalli, Aldea Cultural de Gamcheon, Aldea Huinnyeoul, Taejongdae, Templo Haedong Yonggungsa y Torre de Busán.',
+      FR: 'Les lieux incontournables à voir à Busan : Plage de Haeundae, Plage de Gwangalli, Village culturel de Gamcheon, Village de Huinnyeoul, Taejongdae, Temple Haedong Yonggungsa et Tour de Busan.',
+    },
+    h1: {
+      KR: '부산 대표 명소 & 핵심 랜드마크 코스',
+      EN: 'Top Busan Attractions & Landmarks Guide',
+      JA: '釜山定番観光スポット・名所ガイド',
+      ZH_TW: '釜山必去代表景點＆地標指南',
+      ZH_CN: '釜山必去代表景点＆地标指南',
+      ES: 'Principales Atracciones y Monumentos de Busán',
+      FR: 'Principales Attractions et Sites de Busan',
+    },
+  },
+  DAY: {
+    title: {
+      KR: '부산 당일치기 여행 추천 코스 (동부산·원도심·카페투어) | 스탭리스 Stepless',
+      EN: '1-Day Busan Itinerary & Day Trip Course (East Busan, Old Town & Cafe Tour) | Stepless',
+      JA: '釜山日帰りおすすめモデルコース（海雲台・広安里・甘川文化村・カフェツアー） | Stepless',
+      ZH_TW: '釜山一日遊精華推薦行程（海雲台廣安里・甘川洞舊城區・特色咖啡巡禮） | Stepless',
+      ZH_CN: '釜山一日游精华推荐路线（海云台广安里・甘川洞老城区・特色咖啡巡礼） | Stepless',
+      ES: 'Itinerario de 1 Día en Busán: Qué Ver en una Excursión de un Día | Stepless',
+      FR: 'Itinéraire d’1 Jour à Busan : Que Voir en une Journée | Stepless',
+    },
+    description: {
+      KR: '하루 만에 부산의 핵심 바다와 명소, 미식을 알차게 둘러보는 당일치기 3대 테마 코스(동부산 해운대·광안리, 원도심 감천·영도·자갈치, 스페셜티 커피투어) 동선 가이드.',
+      EN: 'Make the most of one day in Busan with 3 curated step-by-step day trip routes: East Busan Ocean Highlights, Old Town & Yeongdo Heritage, and Busan Specialty Coffee Tour.',
+      JA: '1日で釜山の海・絶景・グルメを満喫する日帰りモデルコース3選：東釜山（海雲台・広安里）、旧都心（甘川文化村・影島・チャガルチ）、スペシャリティカフェツアー。',
+      ZH_TW: '一天玩遍釜山精華的 3 條一日遊推薦路線：東釜山海景線（海雲台・廣安里）、舊城區歷史海港線（甘川洞・影島・札嘎其）與釜山精品咖啡巡禮。',
+      ZH_CN: '一天玩遍釜山精华的 3 条一日游推荐路线：东釜山海景线（海云台・广安里）、老城区历史海港线（甘川洞・影岛・札嘎其）与釜山精品咖啡巡礼。',
+      ES: 'Aprovecha al máximo 1 día en Busán con 3 rutas paso a paso: Costa Este (Haeundae y Gwangalli), Casco Antiguo (Gamcheon y Jagalchi) y Ruta de Cafés de Especialidad.',
+      FR: 'Profitez au maximum d’une journée à Busan avec 3 circuits clés en main : Côte Est (Haeundae et Gwangalli), Vieille Ville (Gamcheon et Jagalchi) et Tour des Cafés de Spécialité.',
+    },
+    h1: {
+      KR: '부산 당일치기 추천 여행 코스',
+      EN: '1-Day Busan Day Trip Itinerary',
+      JA: '釜山日帰りおすすめモデルコース',
+      ZH_TW: '釜山一日遊推薦行程路線',
+      ZH_CN: '釜山一日游推荐行程路线',
+      ES: 'Itinerario de 1 Día en Busán',
+      FR: 'Itinéraire d’1 Jour à Busan',
+    },
+  },
+  '1NIGHT': {
+    title: {
+      KR: '부산 1박 2일 여행 추천 코스 (해운대·광안리 야경·남포동·영도) | 스탭리스 Stepless',
+      EN: '2-Day 1-Night Busan Itinerary & Weekend Trip Plan | Stepless',
+      JA: '釜山1泊2日おすすめモデルコース（海雲台・広安里夜景・南浦洞・影島） | Stepless',
+      ZH_TW: '釜山兩天一夜自由行推薦行程（海雲台・廣安里夜景・南浦洞・影島精華路線） | Stepless',
+      ZH_CN: '釜山两天一夜自由行推荐路线（海云台・广安里夜景・南浦洞・影岛精华攻略） | Stepless',
+      ES: 'Itinerario de 2 Días y 1 Noche en Busán: Playas, Mercados y Vistas Nocturnas | Stepless',
+      FR: 'Itinéraire de 2 Jours et 1 Nuit à Busan : Plages, Marchés et Vues de Nuit | Stepless',
+    },
+    description: {
+      KR: '주말 1박 2일 동안 동부산(해운대·블루라인파크·광안리 야경)과 원도심(자갈치·국제시장·감천문화마을·영도 흰여울문화마을)을 가장 효율적으로 여행하는 추천 코스.',
+      EN: 'The ultimate 2-day 1-night Busan weekend itinerary: Day 1 East Busan beaches, Sky Capsule & Gwangalli night view; Day 2 Gamcheon Culture Village, Jagalchi Market & Yeongdo.',
+      JA: '週末で行ける釜山1泊2日の王道モデルコース：1日目は海雲台・スカイカプセル・広安里の夜景、2日目は甘川文化村・チャガルチ市場・国際市場・影島ヒニョウル文化村を効率よく巡ります。',
+      ZH_TW: '最適合週末出發的釜山兩天一夜自由行路線：Day 1 海雲台藍線公園膠囊列車与廣安里大橋夜景；Day 2 甘川洞文化村、札嘎其市場、南浦洞與影島白淺灘文化村。',
+      ZH_CN: '最适合周末出发的釜山两天一夜自由行路线：Day 1 海云台蓝线公园胶囊小火车与广安里大桥夜景；Day 2 甘川文化村、札嘎其市场、南浦洞与影岛白浅滩文化村。',
+      ES: 'El mejor itinerario de 2 días en Busán: Día 1 en Playa Haeundae, Blueline Park y noche en Gwangalli; Día 2 en Gamcheon, Mercado Jagalchi y costa de Yeongdo.',
+      FR: 'Le meilleur itinéraire de 2 jours à Busan : Jour 1 à Haeundae, Blueline Park et soirée à Gwangalli ; Jour 2 à Gamcheon, Marché de Jagalchi et île de Yeongdo.',
+    },
+    h1: {
+      KR: '부산 1박 2일 알짜 추천 코스',
+      EN: '2-Day 1-Night Busan Trip Itinerary',
+      JA: '釜山1泊2日おすすめモデルコース',
+      ZH_TW: '釜山兩天一夜自由行推薦行程',
+      ZH_CN: '釜山两天一夜自由行推荐路线',
+      ES: 'Itinerario de 2 Días y 1 Noche en Busán',
+      FR: 'Itinéraire de 2 Jours et 1 Nuit à Busan',
+    },
+  },
+  '2NIGHTS': {
+    title: {
+      KR: '부산 2박 3일 여행 추천 코스 (해운대·기장·광안리·서면·남포동·영도) | 스탭리스 Stepless',
+      EN: '3-Day 2-Night Busan Trip Plan & Complete Itinerary | Stepless',
+      JA: '釜山2泊3日王道モデルコース（海雲台・機張・広安里・西面・南浦洞・影島） | Stepless',
+      ZH_TW: '釜山三天兩夜自由行完整行程推薦（海雲台・機張・廣安里・西面・南浦洞・影島） | Stepless',
+      ZH_CN: '釜山三天两夜自由行完整路线推荐（海云台・机张・广安里・西面・南浦洞・影岛） | Stepless',
+      ES: 'Itinerario de 3 Días y 2 Noches en Busán: Ruta Completa Día por Día | Stepless',
+      FR: 'Itinéraire de 3 Jours et 2 Nuits à Busan : Parcours Complet Jour par Jour | Stepless',
+    },
+    description: {
+      KR: '부산 여행자가 가장 많이 찾는 2박 3일 정석 코스! 해운대·기장 해동용궁사부터 광안리·센텀시티, 서면·전포카페거리, 남포동·자갈치·감천문화마을·영도까지 완벽 정복.',
+      EN: 'Our most popular 3-day 2-night Busan itinerary covering Haeundae, Gijang Haedong Yonggungsa, Gwangalli, Centum City, Seomyeon Jeonpo Cafe Street, Nampo-dong, Gamcheon, and Yeongdo.',
+      JA: '一番人気の釜山2泊3日王道モデルコース！海雲台・機張（海東龍宮寺）から広安里・センタムシティ、西面・田浦カフェ通り、南浦洞・チャガルチ・甘川文化村・影島まで3日間で完全網羅。',
+      ZH_TW: '最受台灣與香港旅客歡迎的釜山三天兩夜經典行程！完整串聯海雲台、機張海東龍宮寺、廣安里、新世界 Centum City、西面田浦咖啡街、南浦洞、甘川洞文化村與影島。',
+      ZH_CN: '最受欢迎的釜山三天两夜经典自由行路线！完整串联海云台、机张海东龙宫寺、广安里、新世界 Centum City、西面田浦咖啡街、南浦洞、甘川文化村与影岛。',
+      ES: 'El itinerario de 3 días más completo por Busán: Haeundae, Templo Haedong Yonggungsa en Gijang, Gwangalli, Centum City, Seomyeon, Nampo-dong, Gamcheon y Yeongdo.',
+      FR: 'L’itinéraire de 3 jours le plus complet à Busan : Haeundae, Temple Haedong Yonggungsa à Gijang, Gwangalli, Centum City, Seomyeon, Nampo-dong, Gamcheon et Yeongdo.',
+    },
+    h1: {
+      KR: '부산 2박 3일 완전정복 추천 코스',
+      EN: '3-Day 2-Night Complete Busan Itinerary',
+      JA: '釜山2泊3日王道おすすめモデルコース',
+      ZH_TW: '釜山三天兩夜自由行經典推薦行程',
+      ZH_CN: '釜山三天两夜自由行经典推荐路线',
+      ES: 'Itinerario Completo de 3 Días en Busán',
+      FR: 'Itinéraire Complet de 3 Jours à Busan',
+    },
+  },
+  '3NIGHTS': {
+    title: {
+      KR: '부산 3박 4일 여유로운 가족·효도 여행 추천 코스 | 스탭리스 Stepless',
+      EN: '4-Day 3-Night Relaxed Busan Itinerary for Families, Couples & Seniors | Stepless',
+      JA: '釜山3泊4日ゆったりモデルコース（家族旅行・親孝行・温泉・海辺散策） | Stepless',
+      ZH_TW: '釜山四天三夜深度自由行推薦行程（親子家庭・帶長輩孝親遊・海景與溫泉） | Stepless',
+      ZH_CN: '釜山四天三晚深度自由行推荐路线（亲子家庭・带父母旅游・海景与温泉） | Stepless',
+      ES: 'Itinerario de 4 Días y 3 Noches en Busán: Viaje Relajado en Familia | Stepless',
+      FR: 'Itinéraire de 4 Jours et 3 Nuits à Busan : Voyage Détente en Famille | Stepless',
+    },
+    description: {
+      KR: '부모님 효도여행·아이 동반 가족여행에 최적화된 여유로운 3박 4일 부산 코스. 해변 산책로, 스카이캡슐, 유람선/요트, 온천·스파, 미술관과 전통시장을 무리 없이 둘러봅니다.',
+      EN: 'A relaxed 4-day 3-night Busan trip itinerary ideal for families with kids or seniors: scenic coastal boardwalks, Sky Capsule, hot spring spas, museums, and seafood markets.',
+      JA: '子連れ家族旅行や親孝行旅行に最適なゆったり巡る釜山3泊4日モデルコース。海辺の平坦な散策路、スカイカプセル、温泉・スパ、美術館、伝統市場を無理のないペースで楽しめます。',
+      ZH_TW: '專為親子家庭與帶長輩孝親遊設計的釜山四天三夜輕鬆行程：結合平坦海濱步道、膠囊列車、遊艇、新世界 Spa Land 汗蒸幕、博物館與海鮮市場，步調從容不趕路。',
+      ZH_CN: '专为亲子家庭与带父母出游设计的釜山四天三晚轻松路线：结合平坦海滨步道、胶囊小火车、游艇、新世界 Spa Land 汗蒸幕、博物馆与海鲜市场，节奏从容舒适。',
+      ES: 'Itinerario relajado de 4 días en Busán ideal para familias con niños o personas mayores: paseos marítimos llanos, Sky Capsule, aguas termales, museos y mercados.',
+      FR: 'Itinéraire détente de 4 jours à Busan idéal en famille avec enfants ou seniors : promenades côtières plates, Sky Capsule, spas thermaux, musées et marchés.',
+    },
+    h1: {
+      KR: '부산 3박 4일 여유로운 힐링 코스',
+      EN: '4-Day 3-Night Relaxed Busan Itinerary',
+      JA: '釜山3泊4日ゆったり癒しモデルコース',
+      ZH_TW: '釜山四天三夜深度慢活自由行行程',
+      ZH_CN: '釜山四天三晚深度慢享自由行路线',
+      ES: 'Itinerario de 4 Días y 3 Noches en Busán',
+      FR: 'Itinéraire de 4 Jours et 3 Nuits à Busan',
+    },
+  },
+  '4NIGHTS': {
+    title: {
+      KR: '부산 4박 5일 전 지역 일주 여행 추천 코스 (동부산·원도심·서부산 다대포) | 스탭리스 Stepless',
+      EN: '5-Day 4-Night Grand Busan Trip Itinerary (All Regions & Hidden Gems) | Stepless',
+      JA: '釜山4泊5日全エリア完全制覇モデルコース（機張・海雲台・広安里・西面・南浦・多大浦） | Stepless',
+      ZH_TW: '釜山五天四夜全區深度自由行行程（機張・海雲台・廣安里・西面・南浦・松島・多大浦） | Stepless',
+      ZH_CN: '釜山五天四晚全区深度自由行路线（机张・海云台・广安里・西面・南浦・松岛・多大浦） | Stepless',
+      ES: 'Itinerario de 5 Días y 4 Noches en Busán: Gran Ruta por Todas las Regiones | Stepless',
+      FR: 'Itinéraire de 5 Jours et 4 Nuits à Busan : Grand Tour de Toutes les Régions | Stepless',
+    },
+    description: {
+      KR: '동부산(기장·송정·해운대·광안리), 도심(서면·전포·동래 온천), 원도심(남포·자갈치·영도·감천), 서부산(송도·다대포 낙조분수·을숙도)까지 부산 전역을 일주하는 4박 5일 코스.',
+      EN: 'Explore every corner of Busan in 5 days and 4 nights: East Busan (Gijang, Songjeong, Haeundae, Gwangalli), Seomyeon & Dongnae, Old Town & Yeongdo, and West Busan (Songdo, Dadaepo Sunset).',
+      JA: '東釜山（機張・松亭・海雲台・広安里）、都心（西面・田浦・東莱温泉）、旧都心（南浦・影島・甘川）、西釜山（松島・多大浦夕日噴水・乙淑島）まで釜山全域を巡る4泊5日完全ガイド。',
+      ZH_TW: '五天四夜徹底玩遍釜山全區：涵蓋東釜山（機張・松亭・海雲台・廣安里）、市中心（西面・田浦・東萊溫泉）、舊城區（南浦・影島・甘川洞）與西釜山（松島纜車・多大浦夕陽噴泉・乙淑島）。',
+      ZH_CN: '五天四晚彻底玩遍釜山全区：涵盖东釜山（机张・松亭・海云台・广安里）、市中心（西面・田浦・东莱温泉）、老城区（南浦・影岛・甘川洞）与西釜山（松岛缆车・多大浦夕阳喷泉・乙淑岛）。',
+      ES: 'Recorre todas las regiones de Busán en 5 días y 4 noches: Este (Gijang, Haeundae, Gwangalli), Centro (Seomyeon, Dongnae), Casco Antiguo (Nampo, Yeongdo) y Oeste (Songdo, Dadaepo).',
+      FR: 'Explorez toutes les régions de Busan en 5 jours et 4 nuits : Est (Gijang, Haeundae, Gwangalli), Centre (Seomyeon, Dongnae), Vieille Ville (Nampo, Yeongdo) et Ouest (Songdo, Dadaepo).',
+    },
+    h1: {
+      KR: '부산 4박 5일 전 지역 일주 코스',
+      EN: '5-Day 4-Night Grand Busan Itinerary',
+      JA: '釜山4泊5日全エリア周遊モデルコース',
+      ZH_TW: '釜山五天四夜全區深度自由行行程',
+      ZH_CN: '釜山五天四晚全区深度自由行路线',
+      ES: 'Gran Itinerario de 5 Días por Busán',
+      FR: 'Grand Itinéraire de 5 Jours à Busan',
+    },
+  },
+  SUBWAY: {
+    title: {
+      KR: '부산 지하철 1·2호선 역세권 무장애 여행 코스 | 스탭리스 Stepless',
+      EN: 'Busan Subway Line 1 & 2 Step-Free Travel Course & Station Attractions | Stepless',
+      JA: '釜山地下鉄1・2号線で巡る駅近観光モデルコース＆エレベーター出口案内 | Stepless',
+      ZH_TW: '搭釜山地鐵 1・2 號線玩遍釜山：車站周邊景點＆無障礙電梯出口路線 | Stepless',
+      ZH_CN: '坐釜山地铁 1・2 号线玩遍釜山：车站周边景点＆无障碍电梯出口路线 | Stepless',
+      ES: 'Ruta Turística en el Metro de Busán (Líneas 1 y 2 Sin Escalones) | Stepless',
+      FR: 'Circuit Touristique en Métro à Busan (Lignes 1 et 2 Sans Marche) | Stepless',
+    },
+    description: {
+      KR: '렌터카 없이 부산 지하철 1호선(다대포~자갈치~남포~부산역~서면~동래~범어사)과 2호선(장산~해운대~센텀~광안~서면) 엘리베이터 출구만으로 여행하는 역세권 코스.',
+      EN: 'Travel across Busan without a car using only step-free elevator exits along Busan Metro Line 1 (Dadaepo, Jagalchi, Nampo, Busan Stn, Seomyeon) and Line 2 (Haeundae, Centum, Gwangan).',
+      JA: 'レンタカーやタクシーなしで釜山地下鉄1号線（多大浦〜チャガルチ〜南浦〜釜山駅〜西面〜梵魚寺）と2号線（海雲台〜センタム〜広安〜西面）のエレベーター出口だけで巡る駅近観光コース。',
+      ZH_TW: '免租車！單靠釜山地鐵 1 號線（多大浦・札嘎其・南浦・釜山站・西面・梵魚寺）與 2 號線（海雲台・Centum City・廣安・西面）電梯出口就能輕鬆暢遊的車站周邊景點路線。',
+      ZH_CN: '免租车！单靠釜山地铁 1 号线（多大浦・札嘎其・南浦・釜山站・西面・梵鱼寺）与 2 号线（海云台・Centum City・广安・西面）电梯出口就能轻松畅游的车站周边景点路线。',
+      ES: 'Viaja por Busán sin coche utilizando únicamente las salidas con ascensor de la Línea 1 (Dadaepo, Jagalchi, Nampo, Estación de Busán, Seomyeon) y la Línea 2 (Haeundae, Gwangalli).',
+      FR: 'Voyagez dans Busan sans voiture grâce aux sorties avec ascenseur de la Ligne 1 (Dadaepo, Jagalchi, Nampo, Gare de Busan, Seomyeon) et de la Ligne 2 (Haeundae, Gwangalli).',
+    },
+    h1: {
+      KR: '부산 지하철 1·2호선 역세권 여행 코스',
+      EN: 'Busan Subway Line 1 & 2 Step-Free Travel Course',
+      JA: '釜山地下鉄1・2号線 駅近観光モデルコース',
+      ZH_TW: '釜山地鐵 1・2 號線沿線景點旅遊路線',
+      ZH_CN: '釜山地铁 1・2 号线沿线景点旅游路线',
+      ES: 'Ruta Turística en Metro por Busán (Líneas 1 y 2)',
+      FR: 'Circuit Touristique en Métro à Busan (Lignes 1 et 2)',
+    },
+  },
+};
+
 function buildLocalizedCoursePage(course: ItineraryCourse, cleanRoutePath: string, lang: Language): StaticRoutePage {
-  const courseTitle = trEn(course.titleEn, lang);
+  const catMeta = COURSE_CATEGORY_SEO_META[course.category];
+  const courseTitle = catMeta ? catMeta.h1[lang] : trEn(course.titleEn, lang);
   const courseSub = trEn(course.subtitleEn, lang);
   const courseTip = trEn(course.overallTipEn, lang);
 
-  const title = pickLang(lang, {
-    KR: `${course.titleKo} | 스탭리스 Stepless`,
-    EN: `${course.titleEn} — Busan Travel Itinerary & Step-Free Guide | Stepless`,
-    JA: `${courseTitle}｜釜山旅行おすすめモデルコース＆バリアフリー観光ガイド | Stepless`,
-    ZH_TW: `${courseTitle}｜釜山自由行推薦行程＆無障礙旅遊指南 | Stepless`,
-    ZH_CN: `${courseTitle}｜釜山自由行推荐路线＆无障碍旅游攻略 | Stepless`,
-    ES: `${courseTitle} — Itinerario de Viaje a Busan y Guía Sin Escalones | Stepless`,
-    FR: `${courseTitle} — Itinéraire de Voyage à Busan et Guide Sans Marche | Stepless`,
-  });
+  const title = catMeta
+    ? catMeta.title[lang]
+    : pickLang(lang, {
+        KR: `${course.titleKo} | 스탭리스 Stepless`,
+        EN: `${course.titleEn} — Busan Travel Itinerary & Step-Free Guide | Stepless`,
+        JA: `${courseTitle}｜釜山旅行おすすめモデルコース＆バリアフリー観光ガイド | Stepless`,
+        ZH_TW: `${courseTitle}｜釜山自由行推薦行程＆無障礙旅遊指南 | Stepless`,
+        ZH_CN: `${courseTitle}｜釜山自由行推荐路线＆无障碍旅游攻略 | Stepless`,
+        ES: `${courseTitle} — Itinerario de Viaje a Busan y Guía Sin Escalones | Stepless`,
+        FR: `${courseTitle} — Itinéraire de Voyage à Busan et Guide Sans Marche | Stepless`,
+      });
 
-  const description = pickLang(lang, {
-    KR: `${course.subtitleKo} — ${course.overallTipKo}`,
-    EN: `${course.titleEn}: ${courseSub} — ${courseTip}`,
-    JA: `【釜山おすすめモデルコース】${courseTitle}：${courseSub} — ${courseTip}`,
-    ZH_TW: `【釜山自由行推薦行程】${courseTitle}：${courseSub} — ${courseTip}`,
-    ZH_CN: `【釜山自由行推荐路线】${courseTitle}：${courseSub} — ${courseTip}`,
-    ES: `[Itinerario Recomendado en Busan] ${courseTitle}: ${courseSub} — ${courseTip}`,
-    FR: `[Itinéraire Recommandé à Busan] ${courseTitle} : ${courseSub} — ${courseTip}`,
-  });
+  const description = catMeta
+    ? catMeta.description[lang]
+    : pickLang(lang, {
+        KR: `${course.subtitleKo} — ${course.overallTipKo}`,
+        EN: `${course.titleEn}: ${courseSub} — ${courseTip}`,
+        JA: `【釜山おすすめモデルコース】${courseTitle}：${courseSub} — ${courseTip}`,
+        ZH_TW: `【釜山自由行推薦行程】${courseTitle}：${courseSub} — ${courseTip}`,
+        ZH_CN: `【釜山自由行推荐路线】${courseTitle}：${courseSub} — ${courseTip}`,
+        ES: `[Itinerario Recomendado en Busan] ${courseTitle}: ${courseSub} — ${courseTip}`,
+        FR: `[Itinéraire Recommandé à Busan] ${courseTitle} : ${courseSub} — ${courseTip}`,
+      });
 
   const stepsHtml = course.steps.length > 0
     ? course.steps.map((step, idx) => {
@@ -1940,11 +2579,17 @@ function generateRouteHtml(
   cleanRoutePath = '/'
 ): string {
   const langOpt = LANGUAGE_OPTIONS.find(o => o.code === lang) || LANGUAGE_OPTIONS[0];
+  const geoCfg = LANGUAGE_GEO_CONFIG[lang] || LANGUAGE_GEO_CONFIG.KR;
   const canonicalUrl = `https://stepless.kr${page.routePath === '/' ? '/' : page.routePath}`;
   const hreflangLinksHtml = getHreflangEntries(cleanRoutePath)
     .map(e => `<link rel="alternate" hreflang="${escapeHtml(e.hreflang)}" href="${escapeHtml(e.href)}" />`)
     .join('\n    ');
-  const keywords = LANGUAGE_SEO_KEYWORDS[lang] || LANGUAGE_SEO_KEYWORDS.KR;
+  const baseKeywords = LANGUAGE_SEO_KEYWORDS[lang] || LANGUAGE_SEO_KEYWORDS.KR;
+  const cleanTopic = page.h1.replace(/\s*\|\s*.*$/, '').trim();
+  const keywords = cleanRoutePath === '/' ? baseKeywords : `${cleanTopic}, ${baseKeywords}`;
+  const alternateOgLocalesHtml = LANGUAGE_OPTIONS.filter(o => o.code !== lang)
+    .map(o => `<meta property="og:locale:alternate" content="${escapeHtml(o.ogLocale)}" />`)
+    .join('\n    ');
 
   let html = templateHtml;
 
@@ -1967,6 +2612,48 @@ function generateRouteHtml(
     `<meta name="keywords" content="${escapeHtml(keywords)}" />`
   );
 
+  // 2.5. Replace Multi-Engine Bot Directives & Localized GEO / AI Search Meta Tags
+  html = html.replace(
+    /\s*<meta\s+name="(?:bingbot|yeti|baiduspider|slurp)"\s+content="[^"]*"\s*\/?>/gi,
+    ''
+  );
+  html = html.replace(
+    /<meta\s+name="googlebot"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />\n    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />\n    <meta name="yeti" content="index, follow" />\n    <meta name="baiduspider" content="index, follow" />\n    <meta name="slurp" content="index, follow" />`
+  );
+  html = html.replace(
+    /<meta\s+name="author"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="author" content="${escapeHtml(geoCfg.authorName)}" />`
+  );
+  html = html.replace(
+    /<meta\s+name="geo\.placename"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="geo.placename" content="${escapeHtml(geoCfg.geoPlacename)}" />`
+  );
+  html = html.replace(
+    /<meta\s+name="target-country"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="target-country" content="${escapeHtml(geoCfg.targetCountry)}" />`
+  );
+  html = html.replace(
+    /<meta\s+name="content-language"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="content-language" content="${escapeHtml(geoCfg.contentLanguage)}" />`
+  );
+  html = html.replace(
+    /<meta\s+name="citation_title"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="citation_title" content="${escapeHtml(page.title)}" />`
+  );
+  html = html.replace(
+    /<meta\s+name="citation_author"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="citation_author" content="${escapeHtml(geoCfg.authorName)}" />`
+  );
+  html = html.replace(
+    /<meta\s+name="chatgpt:snippet"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="chatgpt:snippet" content="${escapeHtml(page.description)}" />`
+  );
+  html = html.replace(
+    /<meta\s+name="perplexity:description"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="perplexity:description" content="${escapeHtml(page.description)}" />`
+  );
+
   // 3. Replace <link rel="canonical" ...> and all <link rel="alternate" hreflang ...>
   html = html.replace(
     /\s*<link\s+rel="alternate"\s+hreflang="[^"]*"\s+href="[^"]*"\s*\/?>/gi,
@@ -1977,10 +2664,18 @@ function generateRouteHtml(
     `<link rel="canonical" href="${escapeHtml(canonicalUrl)}" />\n    ${hreflangLinksHtml}`
   );
 
-  // 4. Replace OpenGraph & Twitter URL/Title/Description/Locale
+  // 4. Replace OpenGraph & Twitter URL/Title/Description/Locale/SiteName/Alt
+  html = html.replace(
+    /<meta\s+property="og:site_name"\s+content="[^"]*"\s*\/?>/i,
+    `<meta property="og:site_name" content="${escapeHtml(geoCfg.siteName)}" />`
+  );
+  html = html.replace(
+    /\s*<meta\s+property="og:locale:alternate"\s+content="[^"]*"\s*\/?>/gi,
+    ''
+  );
   html = html.replace(
     /<meta\s+property="og:locale"\s+content="[^"]*"\s*\/?>/i,
-    `<meta property="og:locale" content="${escapeHtml(langOpt.ogLocale)}" />`
+    `<meta property="og:locale" content="${escapeHtml(langOpt.ogLocale)}" />\n    ${alternateOgLocalesHtml}`
   );
   html = html.replace(
     /<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/i,
@@ -1995,12 +2690,22 @@ function generateRouteHtml(
     `<meta property="og:description" content="${escapeHtml(page.description)}" />`
   );
   html = html.replace(
+    /<meta\s+property="og:image:alt"\s+content="[^"]*"\s*\/?>/i,
+    `<meta property="og:image:alt" content="${escapeHtml(geoCfg.ogImageAlt)}" />`
+  );
+  html = html.replace(
     /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/i,
     `<meta name="twitter:title" content="${escapeHtml(page.title)}" />`
   );
   html = html.replace(
     /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/?>/i,
     `<meta name="twitter:description" content="${escapeHtml(page.description)}" />`
+  );
+
+  // 4.5. Replace Schema.org JSON-LD with Localized Graph
+  html = html.replace(
+    /<script\s+type="application\/ld\+json">[\s\S]*?<\/script>/i,
+    buildLocalizedJsonLd(page, lang, cleanRoutePath, canonicalUrl, keywords)
   );
 
   const archiveSummaryLabel = lang === 'KR'
@@ -2039,7 +2744,7 @@ function generateRouteHtml(
 }
 
 function generateMultilingualSitemapXml(basePages: StaticRoutePage[]): string {
-  const today = '2026-11-03';
+  const today = '2026-11-05';
   const allLangs: Language[] = ['KR', 'EN', 'JA', 'ZH_TW', 'ZH_CN', 'ES', 'FR'];
   const urlBlocks: string[] = [];
 
