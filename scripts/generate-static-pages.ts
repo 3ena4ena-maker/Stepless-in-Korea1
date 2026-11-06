@@ -72,12 +72,36 @@ const LANGUAGE_GEO_CONFIG: Record<Language, LanguageGeoConfig> = {
     ],
     faqs: [
       {
-        q: '부산 여행 코스는 일정별로 어떻게 짜는 것이 좋나요?',
-        a: '스탭리스에서는 당일치기, 1박 2일, 2박 3일, 3박 4일, 4박 5일 일정별 최적 코스와 식도락(맛집), 핵심 명소, 체험·박물관, 전통시장, 무장애 관광지 코스를 권역별 이동 동선과 함께 제공합니다.',
+        q: '부산 여행 코스는 일정별(당일치기·1박2일·2박3일·3박4일)로 어떻게 짜는 것이 가장 좋나요?',
+        a: '1박 2일·2박 3일 부산 여행은 첫째 날 동부산(해운대 해수욕장·블루라인파크 스카이캡슐·광안리 드론쇼 야경), 둘째 날 원도심(자갈치시장·국제시장·감천문화마을·영도 흰여울문화마을), 셋째 날 기장(해동용궁사·오시리아 루지·롯데월드) 또는 서면·전포카페거리 순서로 권역을 묶어 이동하는 것이 가장 효율적입니다.',
       },
       {
-        q: '부산 지하철역에서 유모차·휠체어·캐리어로 이동할 때 엘리베이터 출구는 어디서 확인하나요?',
-        a: '서면역, 부산역(KTX), 해운대역, 광안역, 남포역, 자갈치역, 센텀시티역 등 부산 주요 46개 지하철역의 지상 직결 엘리베이터 출구 번호와 환승 경로를 스탭리스 역 검색에서 바로 확인할 수 있습니다.',
+        q: '김해국제공항(PUS)에서 해운대·서면·남포동·부산역까지 대중교통으로 어떻게 가나요?',
+        a: '김해공항역에서 부산김해경전철을 타고 사상역(2호선 환승)으로 이동하면 서면역까지 약 25분, 광안·해운대역까지 약 50~60분이 소요됩니다. 부산역·남포동·자갈치 방면은 사상역(2호선)에서 서면역(1호선)으로 환승하거나 대저역(3호선)을 경유하면 엘리베이터로 계단 없이 이동할 수 있습니다.',
+      },
+      {
+        q: '해운대 블루라인파크(스카이캡슐·해변열차) 예약 방법과 타는 곳은 어디인가요?',
+        a: '스카이캡슐은 미포정거장(해운대 해수욕장 끝단)과 청사포정거장 구간을 공중 레일로 왕복하며, 주말·성수기에는 사전 온라인 예매가 필수입니다. 지하철 2호선 해운대역 3번·5번 출구(엘리베이터 이용 후 구남로 평지 도보) 또는 중동역 7번 출구에서 미포정거장으로 접근할 수 있습니다.',
+      },
+      {
+        q: '비짓부산패스(Visit Busan Pass) 혜택과 무료 입장 가능한 대표 명소는 어디인가요?',
+        a: '비짓부산패스는 외국인 및 관광객 전용 자유이용권(24시간·48시간권 및 BIG3·BIG5)으로 해운대 해변열차, 부산 엑스더스카이 전망대, 롯데월드 어드벤처 부산, 스카이라인 루지, 송도 해상케이블카, 다이아몬드베이 요트, 부산타워, 신세계 스파랜드 등 30여 개 유료 명소를 무료로 이용할 수 있습니다.',
+      },
+      {
+        q: '광안리 M 드론라이트쇼 공연 시간과 명당 위치는 어디인가요?',
+        a: '광안리 M 드론라이트쇼는 매주 토요일 저녁 광안리 해변에서 무료로 2회 진행됩니다(하절기 4~9월 20시·22시, 동절기 10~3월 19시·21시). 지하철 2호선 광안역 3번·5번 출구 엘리베이터를 이용해 해변 중앙 백사장 보행 데크로 내려오면 가장 정면에서 관람할 수 있습니다.',
+      },
+      {
+        q: '부산 여행에서 꼭 먹어야 할 대표 음식(돼지국밥·밀면·씨앗호떡·해산물) 맛집 거리는 어디인가요?',
+        a: '부산 대표 향토 음식인 돼지국밥은 서면 시장 국밥골목과 부산역 초량 일대, 밀면은 초량·서면·해운대, 씨앗호떡과 유부주머니는 남포동 BIFF광장·부평깡통야시장, 신선한 활어회와 꼼장어는 자갈치시장과 민락수변공원, 대게는 기장시장에서 맛볼 수 있습니다.',
+      },
+      {
+        q: '부산 지하철역에서 유모차·휠체어·캐리어 이동 시 엘리베이터 출구와 무료 환승 기준은 어떻게 되나요?',
+        a: '서면역(7·11·12·13번), 부산역(4·6번), 해운대역(1·3번), 광안역(3·5번), 남포역(1·7번), 자갈치역(3·6·10번) 등 부산 46개 주요 역의 지상 직결 엘리베이터 출구를 스탭리스에서 확인할 수 있으며, 하차 태그 후 30분 이내 지하철-버스 간 최대 2회 무료 환승 및 만 6~12세 어린이 요금 무료 혜택이 적용됩니다.',
+      },
+      {
+        q: '유모차·아이 동반 가족·부모님 효도여행·휠체어로 가기 좋은 부산 무장애(배리어프리) 명소는 어디인가요?',
+        a: '해운대 해수욕장 호안도로 우든 데크길, 동백섬 APEC나루공원 평지 산책로, 광안리 해변 테마거리, 다대포 해변공원 무장애 생태탐방로, 국립해양박물관, 부산시립미술관, 신세계 센텀시티가 단차와 계단이 없어 보행 약자와 가족 여행객에게 가장 추천됩니다.',
       },
     ],
   },
@@ -100,12 +124,36 @@ const LANGUAGE_GEO_CONFIG: Record<Language, LanguageGeoConfig> = {
     ],
     faqs: [
       {
-        q: 'How many days do I need for a Busan trip itinerary?',
-        a: 'Stepless in Busan provides curated 1-day, 2-day, 3-day, 4-day, and 5-day Busan itineraries covering East Busan (Haeundae, Gwangalli, Gijang) and Old Town (Gamcheon, Jagalchi, Yeongdo), plus food, market, and barrier-free courses.',
+        q: 'How should I plan a 2-day, 3-day, or 4-day Busan itinerary?',
+        a: 'For an efficient 2 to 3-day Busan trip, spend Day 1 in East Busan (Haeundae Beach, Blueline Park Sky Capsule, and Gwangalli Beach night drone show), Day 2 in Old Town & Yeongdo (Gamcheon Culture Village, Jagalchi Fish Market, Gukje Market, and Huinnyeoul Culture Village), and Day 3 in Gijang (Haedong Yonggungsa Temple, Skyline Luge, Lotte World) or Seomyeon Jeonpo Cafe Street.',
       },
       {
-        q: 'How can I find elevator exits in Busan subway stations with luggage, a stroller, or a wheelchair?',
-        a: 'Stepless in Busan maps exact street-level elevator exits, escalator locations, accessible restrooms, and step-free transfer paths across 46 major Busan Metro stations including Seomyeon, Busan Station (KTX), Haeundae, and Nampo.',
+        q: 'How do I get from Gimhae International Airport (PUS) to Haeundae, Seomyeon, or Busan Station?',
+        a: 'Take the Busan-Gimhae Light Rail Transit (LRT) from Gimhae Airport Station 3 stops to Sasang Station and transfer via elevator to Subway Line 2. From Sasang, Seomyeon takes 20 minutes and Gwangalli/Haeundae takes 45–55 minutes directly on Line 2. For Busan Station or Nampo-dong, transfer from Line 2 to Line 1 at Seomyeon Station.',
+      },
+      {
+        q: 'How do I book and ride the Haeundae Blueline Park Sky Capsule and Beach Train?',
+        a: 'The Haeundae Sky Capsule runs on an elevated ocean track between Mipo Station (east end of Haeundae Beach) and Cheongsapo Station, while the Beach Train continues to Songjeong. Advance online booking is essential. Take Subway Line 2 to Haeundae Station (Exit 1 or 3 elevator) and walk along flat Gunam-ro to Mipo Station.',
+      },
+      {
+        q: 'Is the Visit Busan Pass worth it and which attractions are included for free?',
+        a: 'Yes, the Visit Busan Pass (available as 24h/48h unlimited or BIG3/BIG5 passes) grants free entry to over 30 top paid attractions including Busan X the Sky, Haeundae Beach Train, Lotte World Adventure Busan, Skyline Luge, Songdo Marine Cable Car, Shinsegae Spa Land, Busan Tower, and yacht tours.',
+      },
+      {
+        q: 'When is the Gwangalli M Drone Light Show and where is the best place to watch?',
+        a: 'The free Gwangalli M Drone Light Show takes place every Saturday evening over Gwangalli Beach with two shows: 8:00 PM & 10:00 PM (April–September) and 7:00 PM & 9:00 PM (October–March). Take Line 2 Gwangan Station Exit 3 or Exit 5 elevator for a flat 7-minute walk to the central beachfront promenade.',
+      },
+      {
+        q: 'What local food is Busan famous for and where should I eat?',
+        a: 'Must-eat Busan specialties include Dwaeji-gukbap (pork rice soup at Seomyeon Pork Soup Alley or Busan Station), Milmyeon (cold wheat noodles), Ssiat Hotteok (seed-stuffed sweet pancakes at BIFF Square), live seafood at Jagalchi Market, snow crab at Gijang Market, and specialty coffee at Jeonpo Cafe Street and Yeongdo ocean-view cafes.',
+      },
+      {
+        q: 'How can I find elevator exits in Busan subway stations and how do free transit transfers work?',
+        a: 'Stepless in Busan maps exact street-level elevator exit numbers across 46 major Busan Metro stations (including Seomyeon Exits 7/11/12/13, Busan Station Exits 4/6, Haeundae Exits 1/3, and Nampo Exits 1/7). Tapping a T-money or EZL card when exiting grants up to 2 free transfers within 30 minutes between subway lines and city buses.',
+      },
+      {
+        q: 'What are the best stroller-friendly, wheelchair-accessible, and family attractions in Busan?',
+        a: 'Top barrier-free attractions in Busan with flat boardwalks, elevators, and accessible restrooms include Haeundae Beach Wooden Deck, Dongbaekseom APEC Naru Park, Gwangalli Beach Promenade, Dadaepo Beach Eco-Trail, National Maritime Museum, Busan Museum of Art, and Shinsegae Centum City.',
       },
     ],
   },
@@ -128,12 +176,36 @@ const LANGUAGE_GEO_CONFIG: Record<Language, LanguageGeoConfig> = {
     ],
     faqs: [
       {
-        q: '釜山旅行のモデルコース（1泊2日・2泊3日・日帰り）のおすすめは？',
-        a: 'Steplessでは、日帰り・1泊2日・2泊3日・3泊4日・4泊5日の日程別モデルコースから、釜山グルメ（デジクッパ・ミルミョン・海鮮）、定番観光スポット、伝統市場、バリアフリー観光地まで最適なルートを日本語で案内しています。',
+        q: '釜山旅行のモデルコース（1泊2日・2泊3日・3泊4日）はどう回るのが効率的ですか？',
+        a: '釜山旅行はエリア別に回るのが最も効率的です。1日目は東釜山（海雲台ビーチ・ブルーラインパークのスカイカプセル・広安里の夜景＆ドローンショー）、2日目は旧都心（甘川文化村・チャガルチ市場・国際市場・影島ヒニョウル文化村）、3日目は機張（海東龍宮寺・ロッテワールド・リュージュ）と西面・田浦カフェ通りを巡る2泊3日コースが王道です。',
       },
       {
-        q: '釜山の地下鉄でスーツケースやベビーカー・車椅子で移動する際のエレベーター出口は？',
-        a: '西面駅、釜山駅（KTX）、海雲台駅、広安駅、南浦駅、チャガルチ駅など主要46駅の地上直結エレベーター出口番号と階段なしの乗換ルートを駅別に詳しく確認できます。',
+        q: '金海国際空港（PUS）から西面・海雲台・南浦洞・釜山駅への行き方は？',
+        a: '金海空港駅から釜山金海軽電鉄に乗り、3駅目の沙上駅で地下鉄2号線に乗り換えます（エレベーター完備）。沙上駅から西面駅まで約20分、広安駅・海雲台駅まで乗換なしで約45〜55分です。釜山駅や南浦洞・チャガルチへは西面駅で地下鉄1号線に乗り換えます。',
+      },
+      {
+        q: '海雲台ブルーラインパーク（スカイカプセル・海辺列車）の予約方法と乗り場は？',
+        a: 'スカイカプセルは尾浦（ミポ）停留場と青沙浦（チョンサポ）停留場の間を走る空中レールで、事前予約が必須です。地下鉄2号線・海雲台駅の1番・3番出口エレベーターから平坦な亀南路（クナムロ）と海辺デッキを通って尾浦乗り場へアクセスできます。',
+      },
+      {
+        q: 'ビジット釜山パス（Visit Busan Pass）の対象施設とメリットは？',
+        a: 'ビジット釜山パス（24時間・48時間フリーパスおよびBIG3・BIG5）は、海雲台海辺列車、釜山エックスザスカイ展望台、ロッテワールド釜山、スカイラインリュージュ、松島海上ケーブルカー、新世界スパランド、釜山タワーなど30以上の人気有料スポットに無料で入場できる外国人観光客向けお得パスです。',
+      },
+      {
+        q: '広安里Mドローンライトショーの開催時間とおすすめ観覧場所は？',
+        a: '広安里Mドローンライトショーは毎週土曜日の夜に広安里ビーチで無料開催されます（4〜9月は20:00・22:00、10〜3月は19:00・21:00の2回公演）。地下鉄2号線・広安駅の3番・5番出口エレベーターから海辺まで平坦な道を徒歩約7分で正面観覧エリアに到着します。',
+      },
+      {
+        q: '釜山で絶対食べるべき名物グルメ（デジクッパ・ミルミョン・海鮮・ホットク）のおすすめエリアは？',
+        a: '釜山名物のデジクッパ（豚クッパ）は西面市場のデジクッパ通りや釜山駅周辺、ミルミョン（小麦冷麺）は草梁・西面・海雲台、シアホットク（種入りホットク）は南浦洞BIFF広場と富平カントン夜市、新鮮な刺身・海鮮はチャガルチ市場、ズワイガニは機張市場が定番です。',
+      },
+      {
+        q: '釜山の地下鉄でスーツケースやベビーカー・車椅子で移動する際のエレベーター出口と無料乗換ルールは？',
+        a: 'Steplessでは西面駅（7・11・12・13番出口）、釜山駅（4・6番）、海雲台駅（1・3番）、南浦駅（1・7番）など主要46駅の地上直結エレベーター出口番号を案内しています。またT-money等の交通カードで降車時にタッチすると、地下鉄と市内バス間を30分以内に最大2回まで無料乗換できます。',
+      },
+      {
+        q: '子連れ（ベビーカー）・親孝行旅行・車椅子におすすめの釜山バリアフリー観光地は？',
+        a: '海雲台ビーチの海辺ウッドデッキ、冬柏島（APECナル公園）の平坦な散策路、広安里ビーチ遊歩道、多大浦海辺公園のバリアフリー生態探訪路、国立海洋博物館、新世界百貨店センタムシティ店が段差や階段がなく安心して楽しめます。',
       },
     ],
   },
@@ -157,11 +229,35 @@ const LANGUAGE_GEO_CONFIG: Record<Language, LanguageGeoConfig> = {
     faqs: [
       {
         q: '釜山自由行三天兩夜、四天三夜或五天四夜行程怎麼安排最順路？',
-        a: 'Stepless 提供釜山一日遊、兩天一夜、三天兩夜、四天三夜、五天四夜精選行程，以及釜山必吃美食（豬肉湯飯、小麥冷麵、堅果糖餅）、熱門景點、傳統市場與無障礙旅遊路線，並支援 Google 地圖即時大眾運輸導航。',
+        a: '最順路的釜山自由行建議分區規劃：Day 1 東釜山海景線（海雲台海水浴場、藍線公園膠囊列車、廣安里夜景與無人機秀）；Day 2 舊城區與影島線（甘川洞文化村、札嘎其市場、南浦洞國際市場、白淺灘文化村）；Day 3 機張與市中心（海東龍宮寺、斜坡滑車 Luge、釜山樂天世界、西面田浦咖啡街）。',
       },
       {
-        q: '帶嬰兒車、大件行李或長輩去釜山旅遊，哪裡可以查地鐵電梯出口？',
-        a: 'Stepless 完整整理西面站、釜山站（KTX）、海雲台站、廣安站、南浦站、札嘎其站等釜山地鐵 46 個主要車站的地面直達電梯出口編號與無階梯轉乘動線。',
+        q: '從金海國際機場（PUS）怎麼去西面、海雲台、南浦洞或釜山站最方便？',
+        a: '從金海機場站搭乘釜山金海輕軌 3 站至「沙上站」，透過無障礙電梯轉乘地鐵 2 號線：前往西面站約 20 分鐘，前往廣安站與海雲台站免換車約 45～55 分鐘；前往釜山站、南浦洞與札嘎其則在西面站轉乘地鐵 1 號線即可直達。',
+      },
+      {
+        q: '海雲台藍線公園（天空膠囊列車・海岸列車）如何預約與前往搭乘？',
+        a: '天空膠囊列車行駛於「尾浦站」至「青沙浦站」高架海景軌道，熱門時段務必提前於 Klook、KKday 或官網預訂。可搭乘地鐵 2 號線至海雲台站（1 號或 3 號出口旁電梯），沿平坦的龜南路與海濱木棧道步行前往尾浦站。',
+      },
+      {
+        q: '釜山通行證（Visit Busan Pass）包含哪些免費景點？值得買嗎？',
+        a: '非常划算！Visit Busan Pass（分為 24/48 小時計時型與 BIG3/BIG5 計次型）可免費兌換超過 30 個釜山熱門付費景點，包含海雲台海岸列車、BUSAN X the SKY 展望台、釜山樂天世界、Skyline Luge 斜坡滑車、松島海上纜車、新世界 Spa Land 汗蒸幕與遊艇體驗。',
+      },
+      {
+        q: '廣安里 M 無人機燈光秀演出時間是什麼時候？哪裡看最清楚？',
+        a: '廣安里 M 無人機秀每週六晚間於廣安里海水浴場免費演出 2 場（4～9 月為 20:00、22:00；10～3 月為 19:00、21:00）。搭乘地鐵 2 號線至廣安站，由 3 號或 5 號出口電梯出站後直走約 7 分鐘抵達海灘中央步道，視野最正且完全平坦。',
+      },
+      {
+        q: '釜山必吃美食（豬肉湯飯・小麥冷麵・堅果糖餅・海鮮螃蟹）推薦去哪裡吃？',
+        a: '釜山代表美食：豬肉湯飯推薦「西面市場豬肉湯飯一條街」與釜山站草梁區；小麥冷麵推薦草梁、西面與海雲台；堅果糖餅必去「南浦洞 BIFF 廣場」與富平罐頭夜市；活海鮮推薦札嘎其市場，吃松葉蟹則推薦機張市場。',
+      },
+      {
+        q: '帶嬰兒車、大件行李或長輩去釜山，哪裡查地鐵電梯出口與公車免費轉乘規則？',
+        a: 'Stepless 完整整理西面站（7/11/12/13 號出口）、釜山站（4/6 號）、海雲台站（1/3 號）、南浦站（1/7 號）等 46 個地鐵站地面電梯出口。持 T-money 等交通卡下車刷卡後，30 分鐘內轉乘地鐵與公車享最多 2 次免費轉乘，且 6～12 歲兒童登錄兒童卡享車資免費。',
+      },
+      {
+        q: '釜山親子旅遊（推嬰兒車）、帶父母孝親遊與輪椅族最推薦哪些無障礙景點？',
+        a: '最推薦全程平坦無階梯的「海雲台海濱木棧道」、「冬柏島 APEC 世峰樓步道」、「廣安里海濱長廊」、「多大浦海濱公園生態步道」、「國立海洋博物館」與「新世界百貨 Centum City」，且廣安里觀光案內所與各大博物館皆提供免費租借嬰兒車與輪椅。',
       },
     ],
   },
@@ -185,11 +281,35 @@ const LANGUAGE_GEO_CONFIG: Record<Language, LanguageGeoConfig> = {
     faqs: [
       {
         q: '釜山自由行三天两夜、四天三晚行程怎么安排最合理？',
-        a: 'Stepless 提供釜山一日游、两天一夜、三天两夜、四天三晚、五天四晚精选行程，涵盖釜山美食（猪肉汤饭、小麦冷面、坚果糖饼）、核心景点、传统市场与无障碍景点，并提供实时公交地铁导航。',
+        a: '釜山自由行按区域串联最省时：Day 1 东釜山海景线（海云台海水浴场、蓝线公园胶囊小火车、广安里夜景与无人机表演）；Day 2 老城区与影岛线（甘川文化村、札嘎其市场、南浦洞国际市场、影岛白浅滩文化村）；Day 3 机张与市中心（海东龙宫寺、斜坡滑车 Luge、釜山乐天世界、西面田浦咖啡街）。',
       },
       {
-        q: '带婴儿车、行李箱或父母去釜山旅游，如何查询釜山地铁电梯出口？',
-        a: 'Stepless 详细整理了西面站、釜山站（KTX）、海云台站、广安站、南浦站、札嘎其站等釜山地铁 46 个主要车站的地面直达电梯出口编号与无台阶换乘路线。',
+        q: '从金海国际机场（PUS）怎么去西面、海云台、南浦洞或釜山站？',
+        a: '从金海机场站乘坐釜山金海轻轨 3 站至“沙上站”，通过无障碍直梯换乘地铁 2 号线：前往西面站约 20 分钟，前往广安站和海云台站无需换乘约 45～55 分钟；前往釜山站、南浦洞、札嘎其只需在西面站换乘地铁 1 号线即可。',
+      },
+      {
+        q: '海云台蓝线公园（天空胶囊小火车・海岸列车）怎么预约和乘车？',
+        a: '天空胶囊小火车运行于“尾浦站”至“青沙浦站”空中海景轨道，旺季需提前在网上预订。可乘坐地铁 2 号线至海云台站（1 号或 3 号出口旁电梯），沿平坦的龟南路与海滨木栈道步行前往尾浦站。',
+      },
+      {
+        q: '釜山通行证（Visit Busan Pass）包含哪些免费景点？划算吗？',
+        a: '非常划算！Visit Busan Pass（24/48 小时卡及 BIG3/BIG5 次卡）可免费畅玩 30 多个釜山核心收费景点，包括海云台海岸列车、BUSAN X the SKY 观景台、釜山乐天世界、Skyline Luge 斜坡滑车、松岛海上缆车、新世界 Spa Land 汗蒸幕及游艇出海。',
+      },
+      {
+        q: '广安里 M 无人机灯光秀演出时间是几点？最佳观赏位置在哪里？',
+        a: '广安里 M 无人机表演每周六晚在广安里海滩免费举行两场（4～9 月为 20:00、22:00；10～3 月为 19:00、21:00）。乘坐地铁 2 号线至广安站，从 3 号或 5 号出口直梯出站直行约 7 分钟即可到达海滩正中央步道。',
+      },
+      {
+        q: '釜山必吃美食（猪肉汤饭・小麦冷面・坚果糖饼・海鲜雪蟹）推荐去哪里吃？',
+        a: '釜山代表美食：猪肉汤饭推荐“西面市场猪肉汤饭一条街”与釜山站草梁区；小麦冷面推荐草梁、西面与海云台；坚果糖饼必去“南浦洞 BIFF 广场”与富平罐头夜市；吃活海鲜去札嘎其市场，吃雪蟹推荐机张市场。',
+      },
+      {
+        q: '带婴儿车、行李箱或父母去釜山旅游，如何查询釜山地铁电梯出口与免费换乘规则？',
+        a: 'Stepless 详细整理了西面站（7/11/12/13 号出口）、釜山站（4/6 号）、海云台站（1/3 号）、南浦站（1/7 号）等 46 个地铁站地面直梯出口。使用 T-money 等交通卡下车刷卡后，30 分钟内换乘地铁与公交可享最多 2 次免费换乘。',
+      },
+      {
+        q: '带孩子（婴儿车）、带父母长辈或轮椅出行，釜山有哪些无障碍推荐景点？',
+        a: '最推荐全程平坦无台阶的“海云台海滨木栈道”、“冬柏岛 APEC 世峰楼步道”、“广安里海滨长廊”、“多大浦海滨公园生态步道”、“国立海洋博物馆”与“新世界百货 Centum City”，各大场馆均设有无障碍电梯并提供免费婴儿车与轮椅租借。',
       },
     ],
   },
@@ -212,12 +332,36 @@ const LANGUAGE_GEO_CONFIG: Record<Language, LanguageGeoConfig> = {
     ],
     faqs: [
       {
-        q: '¿Qué ver en Busán en 1, 2, 3 o 4 días?',
-        a: 'Stepless in Busan ofrece itinerarios detallados de 1 a 5 días por Busán, rutas gastronómicas, mercados tradicionales, playas, templos y atracciones sin barreras con direcciones en Google Maps.',
+        q: '¿Qué ver en Busán en 2, 3 o 4 días y cómo organizar el itinerario?',
+        a: 'Para un viaje de 2 a 3 días en Busán, dedica el Día 1 al Este (Playa Haeundae, Blueline Park Sky Capsule y espectáculo nocturno de drones en Gwangalli), el Día 2 al Casco Antiguo y Yeongdo (Aldea Cultural de Gamcheon, Mercado Jagalchi, Mercado Gukje y Aldea Huinnyeoul) y el Día 3 a Gijang (Templo Haedong Yonggungsa, Skyline Luge) y Seomyeon.',
       },
       {
-        q: '¿Dónde encontrar ascensores en el metro de Busán para viajar con maletas, carrito de bebé o silla de ruedas?',
-        a: 'Nuestra guía muestra los números exactos de salida con ascensor, escaleras mecánicas y rutas sin escalones en las 46 principales estaciones del metro de Busán, incluidas Seomyeon, Estación de Busán (KTX), Haeundae y Nampo.',
+        q: '¿Cómo ir del Aeropuerto Internacional de Gimhae (PUS) a Haeundae, Seomyeon o la Estación de Busán?',
+        a: 'Toma el tren ligero Busan-Gimhae (LRT) desde el aeropuerto durante 3 paradas hasta la estación Sasang y haz transbordo con ascensor a la Línea 2 del metro: llegarás a Seomyeon en 20 minutos y a Gwangalli/Haeundae en 50 minutos sin cambiar de tren. Para la Estación de Busán (KTX) o Nampo, cambia a la Línea 1 en Seomyeon.',
+      },
+      {
+        q: '¿Cómo reservar y subir al Sky Capsule de Haeundae Blueline Park?',
+        a: 'Las cápsulas panorámicas Sky Capsule circulan entre las estaciones de Mipo (al final de la Playa Haeundae) y Cheongsapo. Es imprescindible reservar en línea con antelación. Puedes llegar sin escalones tomando el ascensor de la salida 1 o 3 de la estación Haeundae (Línea 2) y caminando por el paseo marítimo llano.',
+      },
+      {
+        q: '¿Merece la pena el Visit Busan Pass y qué atracciones incluye gratis?',
+        a: 'Sí, el Visit Busan Pass (de 24h, 48h o BIG3/BIG5) ofrece acceso gratuito a más de 30 atracciones principales, incluyendo el tren costero de Haeundae, mirador Busan X the Sky, Lotte World Busán, Skyline Luge, teleférico marítimo de Songdo, Shinsegae Spa Land y paseos en yate.',
+      },
+      {
+        q: '¿A qué hora es el espectáculo de drones en la Playa Gwangalli?',
+        a: 'El espectáculo gratuito Gwangalli M Drone Light Show se celebra todos los sábados por la noche con dos pases: a las 20:00 y 22:00 (de abril a septiembre) y a las 19:00 y 21:00 (de octubre a marzo). Usa el ascensor de la salida 3 o 5 de la estación Gwangan (Línea 2) para llegar al paseo central.',
+      },
+      {
+        q: '¿Qué platos típicos comer en Busán y en qué zonas probarlos?',
+        a: 'Los platos imprescindibles de Busán son el Dwaeji-gukbap (sopa de cerdo con arroz en el callejón gastronómico de Seomyeon o Estación de Busán), Milmyeon (fideos fríos de trigo), Ssiat Hotteok (panqueque dulce relleno de semillas en la plaza BIFF de Nampo-dong), marisco fresco en el Mercado Jagalchi y cangrejo de las nieves en Gijang.',
+      },
+      {
+        q: '¿Dónde encontrar ascensores en el metro de Busán y cómo funcionan los transbordos gratuitos?',
+        a: 'Stepless muestra los números exactos de salida con ascensor en 46 estaciones del metro de Busán (como Seomyeon salidas 7/11/12/13, Estación de Busán 4/6 y Haeundae 1/3). Al validar tu tarjeta T-money al bajar, tienes hasta 2 transbordos gratuitos en 30 minutos entre metro y autobuses urbanos.',
+      },
+      {
+        q: '¿Cuáles son los mejores lugares accesibles en Busán para ir con niños, carrito de bebé o silla de ruedas?',
+        a: 'Los paseos más accesibles y sin escalones son el paseo entarimado de la Playa Haeundae, el parque APEC Naru en la isla Dongbaekseom, el paseo marítimo de Gwangalli, el sendero ecológico de Dadaepo, el Museo Marítimo Nacional y el centro comercial Shinsegae Centum City.',
       },
     ],
   },
@@ -240,16 +384,198 @@ const LANGUAGE_GEO_CONFIG: Record<Language, LanguageGeoConfig> = {
     ],
     faqs: [
       {
-        q: 'Que faire à Busan en 1, 2, 3 ou 4 jours ?',
-        a: 'Stepless in Busan propose des itinéraires complets de 1 à 5 jours à Busan, des parcours gastronomiques, marchés traditionnels, plages, temples et sites accessibles sans marches avec itinéraires Google Maps.',
+        q: 'Que faire à Busan en 2, 3 ou 4 jours et comment organiser son itinéraire ?',
+        a: 'Pour visiter Busan en 2 ou 3 jours efficacement, consacrez le Jour 1 à l’Est (Plage de Haeundae, Sky Capsule Blueline Park et spectacle de drones à Gwangalli), le Jour 2 à la Vieille Ville et Yeongdo (Village culturel de Gamcheon, Marché de Jagalchi, Marché Gukje et Village de Huinnyeoul) et le Jour 3 à Gijang (Temple Haedong Yonggungsa, Skyline Luge) et Seomyeon.',
       },
       {
-        q: 'Comment trouver les sorties avec ascenseur dans le métro de Busan avec une valise, une poussette ou un fauteuil roulant ?',
-        a: 'Notre guide indique les numéros exacts des sorties équipées d’ascenseurs, d’escaliers mécaniques et les correspondances sans marches dans les 46 principales stations du métro de Busan (Seomyeon, Gare KTX de Busan, Haeundae, Nampo).',
+        q: 'Comment aller de l’aéroport international de Gimhae (PUS) à Haeundae, Seomyeon ou la gare de Busan ?',
+        a: 'Prenez le métro léger Busan-Gimhae (LRT) depuis l’aéroport sur 3 stations jusqu’à Sasang, puis prenez l’ascenseur vers la Ligne 2 du métro : comptez 20 minutes jusqu’à Seomyeon et 50 minutes en train direct jusqu’à Gwangalli et Haeundae. Pour la gare KTX de Busan ou Nampo-dong, changez pour la Ligne 1 à Seomyeon.',
+      },
+      {
+        q: 'Comment réserver et prendre la Sky Capsule du Haeundae Blueline Park ?',
+        a: 'Les capsules aériennes Sky Capsule circulent le long de la mer entre les gares de Mipo (extrémité est de la plage de Haeundae) et Cheongsapo. La réservation en ligne à l’avance est indispensable. Accédez-y sans marche via l’ascenseur des sorties 1 ou 3 de la station Haeundae (Ligne 2) puis par la promenade côtière plate.',
+      },
+      {
+        q: 'Le Visit Busan Pass vaut-il le coup et quelles attractions sont incluses gratuitement ?',
+        a: 'Oui, le Visit Busan Pass (24h, 48h ou formules BIG3/BIG5) donne accès gratuitement à plus de 30 attractions majeures dont le train côtier de Haeundae, l’observatoire Busan X the Sky, Lotte World Busan, Skyline Luge, le téléphérique maritime de Songdo, Shinsegae Spa Land et les croisières en yacht.',
+      },
+      {
+        q: 'À quelle heure a lieu le spectacle de drones sur la plage de Gwangalli ?',
+        a: 'Le spectacle gratuit Gwangalli M Drone Light Show a lieu tous les samedis soir au-dessus de la plage de Gwangalli avec deux séances : 20h00 et 22h00 (avril à septembre) et 19h00 et 21h00 (octobre à mars). Prenez l’ascenseur des sorties 3 ou 5 de la station Gwangan (Ligne 2) pour rejoindre le front de mer plat.',
+      },
+      {
+        q: 'Quelles sont les spécialités culinaires incontournables de Busan et où les déguster ?',
+        a: 'Ne manquez pas le Dwaeji-gukbap (soupe de porc au riz dans la ruelle dédiée de Seomyeon ou près de la gare de Busan), le Milmyeon (nouilles froides de blé), le Ssiat Hotteok (crêpe sucrée aux graines sur la place BIFF à Nampo-dong), les fruits de mer frais au marché de Jagalchi et le crabe des neiges à Gijang.',
+      },
+      {
+        q: 'Comment trouver les sorties avec ascenseur dans le métro de Busan et profiter des correspondances gratuites ?',
+        a: 'Stepless répertorie les numéros exacts des sorties avec ascenseur dans 46 stations du métro de Busan (dont Seomyeon sorties 7/11/12/13, Gare de Busan 4/6 et Haeundae 1/3). En badgeant votre carte T-money à la descente, vous bénéficiez de 2 correspondances gratuites dans les 30 minutes entre métro et bus.',
+      },
+      {
+        q: 'Quels sont les meilleurs lieux accessibles à Busan en famille, avec une poussette ou en fauteuil roulant ?',
+        a: 'Les sites les plus accessibles sans marches sont la promenade en bois de la plage de Haeundae, le parc APEC Naru sur l’île de Dongbaekseom, le front de mer de Gwangalli, le sentier écologique de Dadaepo, le Musée Maritime National et le complexe Shinsegae Centum City.',
       },
     ],
   },
 };
+
+function buildPageSpecificAeoFaqs(
+  page: StaticRoutePage,
+  lang: Language,
+  cleanRoutePath: string
+): Array<{ q: string; a: string }> {
+  const geoCfg = LANGUAGE_GEO_CONFIG[lang] || LANGUAGE_GEO_CONFIG.KR;
+  const dynamicFaqs: Array<{ q: string; a: string }> = [];
+
+  // 1. Station-specific AEO Q&A (/station/:id or /search/:id)
+  const stMatch = cleanRoutePath.match(/^\/(?:station|search)\/([^/]+)$/);
+  if (stMatch) {
+    const st = STATIONS.find(s => s.id === stMatch[1]);
+    if (st) {
+      const stTitle = getLocalizedStationTitle(st, lang);
+      const loc = getStationLocalized(st, lang);
+      const lineNames = st.lines.map(l => formatLineLabelI18n(l, lang)).join(' · ');
+      const recExits = loc ? loc.recommendedExits : (st.recommendedExitsEn || st.recommendedExits);
+      const elevDesc = loc ? loc.elevatorLocationDesc : (st.elevatorLocationDescEn || st.elevatorLocationDesc);
+      const transferDesc = loc ? loc.transferRouteDesc : (st.transferRouteDescEn || st.transferRouteDesc);
+      const precautions = loc ? loc.precautions : (st.precautionsEn || st.precautions);
+
+      dynamicFaqs.push(
+        {
+          q: pickLang(lang, {
+            KR: `${st.name}에서 유모차·휠체어·캐리어로 지상에 나가는 엘리베이터는 몇 번 출구에 있나요?`,
+            EN: `Which exit has the street-level elevator at ${st.englishName} (${lineNames}) for strollers, wheelchairs, and luggage?`,
+            JA: `${stTitle}（${lineNames}）でベビーカー・車椅子・スーツケースが使える地上エレベーターは何番出口ですか？`,
+            ZH_TW: `${stTitle}（${lineNames}）適合嬰兒車、輪椅與大型行李箱搭乘的地面電梯在哪個出口？`,
+            ZH_CN: `${stTitle}（${lineNames}）适合婴儿车、轮椅与大件行李箱乘坐的地面直梯在哪个出口？`,
+            ES: `¿Qué salida tiene ascensor a nivel de calle en ${stTitle} (${lineNames}) para cochecitos, sillas de ruedas y maletas?`,
+            FR: `Quelle sortie dispose d’un ascenseur vers la rue à ${stTitle} (${lineNames}) pour poussettes, fauteuils roulants et valises ?`,
+          }),
+          a: pickLang(lang, {
+            KR: `${st.name}(${lineNames})의 추천 엘리베이터·무장애 출구는 ${recExits}입니다. ${elevDesc} (역 내 엘리베이터 ${st.elevatorCount}대, 에스컬레이터 ${st.escalatorCount}대 운영)`,
+            EN: `At ${st.englishName} (${lineNames}), the recommended step-free elevator/escalator exits are ${recExits}. ${elevDesc} (Equipped with ${st.elevatorCount} elevators and ${st.escalatorCount} escalators.)`,
+            JA: `${stTitle}（${lineNames}）の推奨エレベーター・バリアフリー出口は「${recExits}」です。${elevDesc}（構内エレベーター${st.elevatorCount}基・エスカレーター${st.escalatorCount}基完備）`,
+            ZH_TW: `${stTitle}（${lineNames}）的推薦電梯與無障礙出口為「${recExits}」。${elevDesc}（站內設有 ${st.elevatorCount} 座電梯與 ${st.escalatorCount} 座電扶梯）`,
+            ZH_CN: `${stTitle}（${lineNames}）的推荐直梯与无障碍出口为“${recExits}”。${elevDesc}（站内设有 ${st.elevatorCount} 部电梯与 ${st.escalatorCount} 部自动扶梯）`,
+            ES: `En ${stTitle} (${lineNames}), las salidas recomendadas con ascensor son: ${recExits}. ${elevDesc} (Cuenta con ${st.elevatorCount} ascensores y ${st.escalatorCount} escaleras mecánicas).`,
+            FR: `À ${stTitle} (${lineNames}), les sorties recommandées avec ascenseur sont : ${recExits}. ${elevDesc} (Équipée de ${st.elevatorCount} ascenseurs et ${st.escalatorCount} escalators).`,
+          }),
+        },
+        {
+          q: pickLang(lang, {
+            KR: `${st.name} 환승 동선과 보행 약자·가족 여행객 이동 시 주의할 점은 무엇인가요?`,
+            EN: `What is the step-free transfer route and traveler tip at ${st.englishName}?`,
+            JA: `${stTitle}での階段なし乗換ルートと移動時の注意点は？`,
+            ZH_TW: `${stTitle}的無階梯轉乘動線與無障礙通行注意事項是什麼？`,
+            ZH_CN: `${stTitle}的无台阶换乘路线与无障碍出行注意事项是什么？`,
+            ES: `¿Cuál es la ruta de transbordo sin escalones y qué consejos seguir en ${stTitle}?`,
+            FR: `Quel est l’itinéraire de correspondance sans marche et les conseils pratiques à ${stTitle} ?`,
+          }),
+          a: `${transferDesc} ${precautions}`.trim(),
+        }
+      );
+    }
+  }
+
+  // 2. Course-specific AEO Q&A (/tips/courses/:slug)
+  const courseSlugMap: Record<string, ItineraryCourse['category']> = {
+    '/tips/courses/gourmet': 'GOURMET',
+    '/tips/courses/experience': 'EXPERIENCE',
+    '/tips/courses/market': 'MARKET',
+    '/tips/courses/attraction': 'ATTRACTION',
+    '/tips/courses/day': 'DAY',
+    '/tips/courses/1night': '1NIGHT',
+    '/tips/courses/2nights': '2NIGHTS',
+    '/tips/courses/3nights': '3NIGHTS',
+    '/tips/courses/4nights': '4NIGHTS',
+    '/tips/courses/subway': 'SUBWAY',
+  };
+  if (courseSlugMap[cleanRoutePath]) {
+    const course = BUSAN_ITINERARIES.find(c => c.category === courseSlugMap[cleanRoutePath]);
+    if (course) {
+      const stopNames = course.steps
+        .slice(0, 6)
+        .map(s => (lang === 'KR' ? s.titleKo : trEn(s.titleEn, lang)))
+        .join(' → ');
+      const tipText = lang === 'KR' ? course.overallTipKo : trEn(course.overallTipEn, lang);
+
+      dynamicFaqs.push({
+        q: pickLang(lang, {
+          KR: `${page.h1}의 핵심 방문 순서와 무장애 이동 팁은 무엇인가요?`,
+          EN: `What is the best route and step-free transit tip for ${page.h1}?`,
+          JA: `「${page.h1}」のおすすめ巡り順とバリアフリー移動のコツは？`,
+          ZH_TW: `「${page.h1}」的推薦順遊路線與無障礙交通秘訣是什麼？`,
+          ZH_CN: `“${page.h1}”的推荐顺游路线与无障碍交通秘诀是什么？`,
+          ES: `¿Cuál es el recorrido recomendado y el consejo de transporte para ${page.h1}?`,
+          FR: `Quel est le parcours recommandé et l’astuce transport pour ${page.h1} ?`,
+        }),
+        a: `${page.description} ${stopNames ? `(${stopNames})` : ''} ${tipText}`.trim(),
+      });
+    }
+  } else if (!stMatch && cleanRoutePath !== '/') {
+    // 3. Hub / Article specific AEO Q&A
+    dynamicFaqs.push({
+      q: pickLang(lang, {
+        KR: `${page.h1} 핵심 요약 및 이용 방법은 무엇인가요?`,
+        EN: `What are the key takeaways and practical rules for ${page.h1}?`,
+        JA: `「${page.h1}」の要点と利用方法は？`,
+        ZH_TW: `「${page.h1}」的重點整理與實用規則是什麼？`,
+        ZH_CN: `“${page.h1}”的重点整理与实用规则是什么？`,
+        ES: `¿Cuáles son los puntos clave y consejos prácticos sobre ${page.h1}?`,
+        FR: `Quels sont les points clés et conseils pratiques concernant ${page.h1} ?`,
+      }),
+      a: page.description,
+    });
+  }
+
+  return [...dynamicFaqs, ...geoCfg.faqs];
+}
+
+function buildAeoAnswerHubHtml(
+  page: StaticRoutePage,
+  lang: Language,
+  cleanRoutePath: string
+): string {
+  const faqs = buildPageSpecificAeoFaqs(page, lang, cleanRoutePath);
+  const directSummaryLabel = pickLang(lang, {
+    KR: '핵심 요약 답변 (Quick Answer)',
+    EN: 'Quick Direct Answer Summary',
+    JA: '要点まとめ（クイックアンサー）',
+    ZH_TW: '重點速覽（快速解答）',
+    ZH_CN: '重点速览（快速解答）',
+    ES: 'Resumen de Respuesta Rápida',
+    FR: 'Résumé et Réponse Rapide',
+  });
+  const faqHeading = pickLang(lang, {
+    KR: '자주 묻는 질문과 핵심 답변 (부산 여행 & 무장애 교통 Q&A)',
+    EN: 'Frequently Asked Questions: Busan Travel, Itineraries & Step-Free Subway',
+    JA: 'よくある質問（釜山旅行モデルコース・空港アクセス・地下鉄エレベーターQ&A）',
+    ZH_TW: '釜山自由行常見問題 Q&A（行程規劃・機場交通・膠囊列車・地鐵電梯）',
+    ZH_CN: '釜山自由行常见问题 Q&A（行程规划・机场交通・胶囊小火车・地铁直梯）',
+    ES: 'Preguntas Frecuentes sobre Viajar a Busán (Itinerarios, Aeropuerto y Metro Accesible)',
+    FR: 'Questions Fréquentes sur un Voyage à Busan (Itinéraires, Aéroport et Métro Accessible)',
+  });
+
+  const faqItemsHtml = faqs
+    .map(
+      item => `
+            <article style="background: #FBFBF9; border: 1px solid #E5E2DC; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px;">
+              <h3 style="font-size: 15px; font-weight: 800; color: #11161B; margin: 0 0 6px 0;">Q. ${escapeHtml(item.q)}</h3>
+              <p style="font-size: 14px; color: #334155; margin: 0; line-height: 1.6;">${escapeHtml(item.a)}</p>
+            </article>`
+    )
+    .join('\n');
+
+  return `
+          <aside class="aeo-direct-summary" aria-label="${escapeHtml(directSummaryLabel)}" style="background: #F3F7EC; border: 1px solid #CFE0B4; border-radius: 14px; padding: 16px 18px; margin-bottom: 20px;">
+            <div style="font-size: 12px; font-weight: 800; color: #4D6328; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;">${escapeHtml(directSummaryLabel)}</div>
+            <p class="aeo-direct-answer" style="font-size: 14.5px; font-weight: 600; color: #1E293B; margin: 0; line-height: 1.6;">${escapeHtml(page.description)}</p>
+          </aside>
+          <section id="aeo-qa-section" aria-label="${escapeHtml(faqHeading)}" style="background: #FFFFFF; border: 1px solid #E5E2DC; border-radius: 16px; padding: 20px; margin-top: 24px; margin-bottom: 24px;">
+            <h2 style="font-size: 19px; font-weight: 800; margin: 0 0 14px 0; color: #11161B;">${escapeHtml(faqHeading)}</h2>
+            ${faqItemsHtml}
+          </section>`;
+}
 
 function buildLocalizedJsonLd(
   page: StaticRoutePage,
@@ -263,6 +589,7 @@ function buildLocalizedJsonLd(
   const d = DICTIONARY[lang] || DICTIONARY.KR;
   const homeUrl = `https://stepless.kr${buildLocalizedPath('/', lang)}`;
   const searchUrl = `https://stepless.kr${buildLocalizedPath('/search', lang)}?q={search_term_string}`;
+  const aeoFaqs = buildPageSpecificAeoFaqs(page, lang, cleanRoutePath);
 
   const breadcrumbItems: Record<string, unknown>[] = [
     {
@@ -281,93 +608,131 @@ function buildLocalizedJsonLd(
     });
   }
 
+  const graphNodes: Record<string, unknown>[] = [
+    {
+      '@type': 'WebSite',
+      '@id': `${homeUrl}#website`,
+      url: homeUrl,
+      name: geoCfg.siteName,
+      alternateName: [
+        'Stepless in Busan',
+        'Stepless in Korea',
+        '스탭리스 부산',
+        'ステップレス釜山',
+        '釜山自由行無障礙指南',
+      ],
+      description: page.description,
+      inLanguage: langOpt.htmlLang,
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: searchUrl,
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: page.title,
+      headline: page.h1,
+      description: page.description,
+      keywords,
+      inLanguage: langOpt.htmlLang,
+      isPartOf: { '@id': `${homeUrl}#website` },
+      about: { '@id': 'https://stepless.kr/#busan-destination' },
+      speakable: {
+        '@type': 'SpeakableSpecification',
+        cssSelector: ['h1', '.aeo-direct-answer', '#aeo-qa-section h3', '#aeo-qa-section p'],
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: breadcrumbItems,
+    },
+    {
+      '@type': 'TouristDestination',
+      '@id': 'https://stepless.kr/#busan-destination',
+      name: geoCfg.destName,
+      alternateName: ['Busan', '부산광역시', '釜山広域市', '釜山廣域市', '釜山广域市', 'Busán'],
+      description: geoCfg.destDesc,
+      inLanguage: langOpt.htmlLang,
+      sameAs: [
+        'https://ko.wikipedia.org/wiki/%EB%B6%80%EC%82%B0%EA%B4%91%EC%97%AD%EC%8B%9C',
+        'https://en.wikipedia.org/wiki/Busan',
+        'https://ja.wikipedia.org/wiki/%E9%87%9C%E5%B1%B1%E5%BA%83%E5%9F%9F%E5%B8%82',
+        'https://zh.wikipedia.org/wiki/%E9%87%9C%E5%B1%B1%E5%BB%A3%E5%9F%9F%E5%B8%82',
+        'https://es.wikipedia.org/wiki/Busan',
+        'https://fr.wikipedia.org/wiki/Busan',
+        'https://www.wikidata.org/wiki/Q16520',
+        'https://www.visitbusan.net/',
+      ],
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: 35.1796,
+        longitude: 129.0756,
+      },
+      touristType: [
+        'Sightseeing & Cultural Tourism',
+        'Food & Culinary Tourism',
+        'Family & Stroller Friendly Tourism',
+        'Accessible & Step-Free Tourism',
+      ],
+      includesAttraction: geoCfg.attractions.map(name => ({
+        '@type': 'TouristAttraction',
+        name,
+      })),
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      inLanguage: langOpt.htmlLang,
+      mainEntity: aeoFaqs.map(item => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.a,
+        },
+      })),
+    },
+  ];
+
+  // Add ItemList schema for course pages so Answer Engines extract step-by-step ordered lists
+  const courseSlugMap: Record<string, ItineraryCourse['category']> = {
+    '/tips/courses/gourmet': 'GOURMET',
+    '/tips/courses/experience': 'EXPERIENCE',
+    '/tips/courses/market': 'MARKET',
+    '/tips/courses/attraction': 'ATTRACTION',
+    '/tips/courses/day': 'DAY',
+    '/tips/courses/1night': '1NIGHT',
+    '/tips/courses/2nights': '2NIGHTS',
+    '/tips/courses/3nights': '3NIGHTS',
+    '/tips/courses/4nights': '4NIGHTS',
+    '/tips/courses/subway': 'SUBWAY',
+  };
+  if (courseSlugMap[cleanRoutePath]) {
+    const course = BUSAN_ITINERARIES.find(c => c.category === courseSlugMap[cleanRoutePath]);
+    if (course && course.steps.length > 0) {
+      graphNodes.push({
+        '@type': 'ItemList',
+        '@id': `${canonicalUrl}#course-list`,
+        name: page.h1,
+        description: page.description,
+        numberOfItems: course.steps.length,
+        itemListElement: course.steps.map((step, idx) => ({
+          '@type': 'ListItem',
+          position: idx + 1,
+          name: lang === 'KR' ? step.titleKo : trEn(step.titleEn, lang),
+          description: lang === 'KR' ? step.descKo : trEn(step.descEn, lang),
+        })),
+      });
+    }
+  }
+
   const schemaObj = {
     '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'WebSite',
-        '@id': `${homeUrl}#website`,
-        url: homeUrl,
-        name: geoCfg.siteName,
-        alternateName: [
-          'Stepless in Busan',
-          'Stepless in Korea',
-          '스탭리스 부산',
-          'ステップレス釜山',
-          '釜山自由行無障礙指南',
-        ],
-        description: page.description,
-        inLanguage: langOpt.htmlLang,
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: searchUrl,
-          'query-input': 'required name=search_term_string',
-        },
-      },
-      {
-        '@type': 'WebPage',
-        '@id': `${canonicalUrl}#webpage`,
-        url: canonicalUrl,
-        name: page.title,
-        headline: page.h1,
-        description: page.description,
-        keywords,
-        inLanguage: langOpt.htmlLang,
-        isPartOf: { '@id': `${homeUrl}#website` },
-        about: { '@id': 'https://stepless.kr/#busan-destination' },
-      },
-      {
-        '@type': 'BreadcrumbList',
-        '@id': `${canonicalUrl}#breadcrumb`,
-        itemListElement: breadcrumbItems,
-      },
-      {
-        '@type': 'TouristDestination',
-        '@id': 'https://stepless.kr/#busan-destination',
-        name: geoCfg.destName,
-        alternateName: ['Busan', '부산광역시', '釜山広域市', '釜山廣域市', '釜山广域市', 'Busán'],
-        description: geoCfg.destDesc,
-        inLanguage: langOpt.htmlLang,
-        sameAs: [
-          'https://ko.wikipedia.org/wiki/%EB%B6%80%EC%82%B0%EA%B4%91%EC%97%AD%EC%8B%9C',
-          'https://en.wikipedia.org/wiki/Busan',
-          'https://ja.wikipedia.org/wiki/%E9%87%9C%E5%B1%B1%E5%BA%83%E5%9F%9F%E5%B8%82',
-          'https://zh.wikipedia.org/wiki/%E9%87%9C%E5%B1%B1%E5%BB%A3%E5%9F%9F%E5%B8%82',
-          'https://es.wikipedia.org/wiki/Busan',
-          'https://fr.wikipedia.org/wiki/Busan',
-          'https://www.wikidata.org/wiki/Q16520',
-          'https://www.visitbusan.net/',
-        ],
-        geo: {
-          '@type': 'GeoCoordinates',
-          latitude: 35.1796,
-          longitude: 129.0756,
-        },
-        touristType: [
-          'Sightseeing & Cultural Tourism',
-          'Food & Culinary Tourism',
-          'Family & Stroller Friendly Tourism',
-          'Accessible & Step-Free Tourism',
-        ],
-        includesAttraction: geoCfg.attractions.map(name => ({
-          '@type': 'TouristAttraction',
-          name,
-        })),
-      },
-      {
-        '@type': 'FAQPage',
-        '@id': `${canonicalUrl}#faq`,
-        inLanguage: langOpt.htmlLang,
-        mainEntity: geoCfg.faqs.map(item => ({
-          '@type': 'Question',
-          name: item.q,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: item.a,
-          },
-        })),
-      },
-    ],
+    '@graph': graphNodes,
   };
 
   return `<script type="application/ld+json">\n${JSON.stringify(schemaObj, null, 2)}\n    </script>`;
@@ -2650,8 +3015,12 @@ function generateRouteHtml(
     `<meta name="chatgpt:snippet" content="${escapeHtml(page.description)}" />`
   );
   html = html.replace(
+    /\s*<meta\s+name="(?:ai:summary|aeo:primary-answer)"\s+content="[^"]*"\s*\/?>/gi,
+    ''
+  );
+  html = html.replace(
     /<meta\s+name="perplexity:description"\s+content="[^"]*"\s*\/?>/i,
-    `<meta name="perplexity:description" content="${escapeHtml(page.description)}" />`
+    `<meta name="perplexity:description" content="${escapeHtml(page.description)}" />\n    <meta name="ai:summary" content="${escapeHtml(page.description)}" />\n    <meta name="aeo:primary-answer" content="${escapeHtml(page.description)}" />`
   );
 
   // 3. Replace <link rel="canonical" ...> and all <link rel="alternate" hreflang ...>
@@ -2712,6 +3081,8 @@ function generateRouteHtml(
     ? `${escapeHtml(page.h1)} — 텍스트 가이드 아카이브 (Text Reference Guide)`
     : `${escapeHtml(page.h1)} — Text Reference Guide`;
 
+  const aeoHubHtml = buildAeoAnswerHubHtml(page, lang, cleanRoutePath);
+
   // 5. Replace <div id="root">...</div> inner content AND <details id="seo-prerender-archive"> with route-specific visible semantic HTML
   const rootReplacement = `<div id="root">
       <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px 16px; background-color: #FBFBF9; color: #11161B;">
@@ -2723,6 +3094,7 @@ function generateRouteHtml(
         ${buildCommonHeader(page.h1, page.lead, page.h1, cleanRoutePath, lang)}
         <main>
           ${page.bodyHtml}
+          ${aeoHubHtml}
         </main>
         ${buildCommonFooter(lang)}
       </div>
@@ -2732,6 +3104,7 @@ function generateRouteHtml(
       <summary style="cursor: pointer; font-weight: 600; color: #94A3B8; list-style: none; text-align: center;">${archiveSummaryLabel}</summary>
       <div style="margin-top: 12px;">
         ${page.bodyHtml}
+        ${aeoHubHtml}
       </div>
     </details>`;
 
@@ -2744,7 +3117,7 @@ function generateRouteHtml(
 }
 
 function generateMultilingualSitemapXml(basePages: StaticRoutePage[]): string {
-  const today = '2026-11-05';
+  const today = '2026-11-06';
   const allLangs: Language[] = ['KR', 'EN', 'JA', 'ZH_TW', 'ZH_CN', 'ES', 'FR'];
   const urlBlocks: string[] = [];
 

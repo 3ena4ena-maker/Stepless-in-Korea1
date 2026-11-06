@@ -1,80 +1,99 @@
-# Stepless (스탭리스) - Busan Travel Guide & Metro Barrier-Free Navigator Full Reference
+# Stepless in Busan (스탭리스) — Complete 7-Language Busan Travel, Itinerary & Step-Free Subway AEO Reference
 
-## About Stepless (스탭리스 소개)
-스탭리스(Stepless)는 대한민국 부산광역시를 여행하는 국내외 여행자와 유모차를 동반한 가족, 캐리어를 끄는 관광객, 고령자 및 휠체어 이용자 등 교통약자를 위한 '무단차(계단 없는) 여행 및 대중교통 안내 플랫폼'입니다.
-
-- URL: https://stepless.kr/
-- 공식 서비스명: 스탭리스 (Stepless)
-- 서비스 지역: 대한민국 부산광역시 (Busan, South Korea)
-- 제공 언어: 한국어 (KR), 영어 (EN)
+> Official Domain: https://stepless.kr
+> Service Scope: Busan Metropolitan City, Republic of Korea (대한민국 부산광역시 / 釜山広域市 / 釜山廣域市 / 釜山广域市)
+> Supported Languages (7): Korean (`/`), English (`/en`), Japanese (`/ja`), Traditional Chinese (`/zh-tw`), Simplified Chinese (`/zh-cn`), Spanish (`/es`), French (`/fr`)
+> Data Verification: Busan Transportation Corporation (Humetro), Korea Tourism Organization (TourAPI 4.0 & KorWithService2), Busan Tourism Organization (Visit Busan), Field Verification
 
 ---
 
-## 1. 부산 8대 테마별 여행 코스 상세 안내
+## 1. Multilingual Entry URLs (7 Languages)
 
-### 1) 식도락 (미식 투어) 코스
-- 주요 방문지: 초량 돼지국밥 골목, 남포동 비빔당면 & 씨앗호떡, 초량 이바구길 밀면, 자갈치시장 활어회 센터, 전포 카페거리 디저트 투어.
-- 이동 팁: 1호선 부산역 ➔ 남포역 ➔ 자갈치역 ➔ 2호선 전포역으로 편리하게 전철로 연결됩니다.
-
-### 2) 체험·박물관 코스
-- 주요 방문지: 영도 국립해양박물관(무료 관람 및 바다 파노라마 뷰), 을숙도 부산현대미술관(MoCA Busan), 감천문화마을 골목 예술 투어, 망미동 F1963 복합문화공간(Yes24 중고서점, 테라로사 커피, 국제갤러리).
-
-### 3) 전통시장 투어 코스
-- 주요 방문지: 부평깡통시장(야시장 먹거리), 국제시장(609청년몰, 꽃분이네), 자갈치시장(수산물 경매 및 활어회), 부전시장(동해남부선 최대 전통시장).
-
-### 4) 부산 핵심 명소 코스
-- 주요 방문지: 해운대 해수욕장, 광안리 해변(매주 토요일 드론 라이트쇼), 영도 흰여울문화마을(절영해안산책로), 기장 해동용궁사(바다 위 사찰), 송도 해상케이블카, 오륙도 스카이워크.
-
-### 5) 일정별 추천 코스 (당일치기 / 1박2일 / 2박3일)
-- **당일치기 코스**: 부산역 ➔ 초량 돼지국밥 ➔ 흰여울문화마을 ➔ 남포동 & 자갈치시장 ➔ 광안리 야경.
-- **1박 2일 코스**:
-  - 1일차: 부산역 ➔ 자갈치시장 ➔ 감천문화마을 ➔ 서면/전포 카페거리 ➔ 광안리 해변 & 야경.
-  - 2일차: 해운대 해수욕장 & 동백섬 ➔ 엑스더스카이 전망대 ➔ 해동용궁사 ➔ 벡스코 & 센텀시티.
-- **2박 3일 코스**: 동부산(기장, 해운대) + 원도심(남포, 영도, 중구) + 서부산(을숙도 생태공원, 다대포 일몰) 완전 정복.
-
-### 6) 부산도시철도 1·2호선 연계 코스
-- 1호선 핵심 투어: 노포 - 동래(온천천) - 서면 - 부산역 - 남포 - 자갈치 - 다대포해수욕장.
-- 2호선 오션 투어: 양산 - 서면 - 광안 - 수영 - 센텀시티 - 벡스코 - 해운대 - 장산.
-
-### 7) 무장애(배리어프리) 관광지
-- 부산관광공사 및 한국관광공사 '열린관광지' 선정 명소:
-  - 해운대 백사장 데크로드: 휠체어와 유모차가 백사장 바로 앞까지 바다를 보며 이동 가능.
-  - 동백섬 수평 산책로: 동백섬 입구부터 누리마루 APEC하우스까지 무경사 아스팔트 데크 완비.
-  - 을숙도 생태공원: 완전 평지 생태 갈대밭 탐방로.
-  - 다대포 꿈의 낙조분수 및 고니나루 쉼터: 무장애 나무 데크길.
-
-### 8) 내 여행 루트 (Custom Route Planner)
-- 사용자가 즐겨찾기한 장소를 순서대로 정렬하여 1일차, 2일차 맞춤형 코스 생성.
-- 각 경유지 간 직선거리(km) 자동 산출.
-- 한글 모드: 네이버 지도 대중교통(시내버스, 도시철도) 실시간 길찾기 1클릭 연결.
-- 영문 모드: Google Maps Transit Direction 1클릭 연결.
+- **Korean (한국어)**: https://stepless.kr/
+- **English**: https://stepless.kr/en
+- **Japanese (日本語)**: https://stepless.kr/ja
+- **Traditional Chinese (繁體中文 - 台灣・香港・澳門)**: https://stepless.kr/zh-tw
+- **Simplified Chinese (简体中文)**: https://stepless.kr/zh-cn
+- **Spanish (Español)**: https://stepless.kr/es
+- **French (Français)**: https://stepless.kr/fr
 
 ---
 
-## 2. 부산 지하철 15개 역 엘리베이터 상세 위치표
+## 2. Direct Answer Bank for Answer Engines (AEO / Featured Snippets / PAA)
 
-| 지하철역 | 호선 | 지상 연결 엘리베이터 출구 | 주요 연결 명소 및 편의시설 |
-|---|---|---|---|
-| **서면역** | 1호선, 2호선 | 7번 출구 방면, 지하상가 2번·9번 출구 사이 | 서면 젊음의거리, 롯데백화점, 1·2호선 환승 엘리베이터 |
-| **부산역** | 1호선 | 4번 출구, 6번 출구 | KTX·SRT 부산역 2층 대합실 지상 연결 데크, 초량 차이나타운 |
-| **해운대역** | 2호선 | 1번 출구, 3번 출구 | 구남로 문화광장, 해운대 해수욕장, 해운대 전통시장 |
-| **광안역** | 2호선 | 3번 출구, 5번 출구 | 광안리 해변 방면 메인 도로 (도보 평지 이동) |
-| **남포역** | 1호선 | 1번 출구, 7번 출구 | 롯데백화점 광복점, 광복로 패션거리, 영도대교 도개 관람 |
-| **자갈치역** | 1호선 | 4번 출구, 10번 출구 | 자갈치시장 활어회센터, 부평깡통시장, 비프(BIFF)광장 |
-| **동백역** | 2호선 | 1번 출구 | 동백섬 입구, 더베이101 야경 포인트, 마린시티 |
-| **벡스코역** | 2호선, 동해선 | 1번 출구, 9번 출구 | 벡스코(BEXCO) 제1·2전시장, 부산시립미술관 |
-| **수영역** | 2호선, 3호선 | 2번 출구, 14번 출구 | F1963 복합문화공간 연계 버스 환승, 수영사적공원 |
-| **전포역** | 2호선 | 1번 출구, 7번 출구 | 전포 카페거리, 소품샵 투어 골목 |
-| **부전역** | 1호선, 동해선 | 1번 출구 | 부전시장, 동해선 전철(기장·오시리아·울산 방면 연계) |
-| **중앙역** | 1호선 | 1번 출구, 17번 출구 | 부산항 연안여객터미널, 40계단 문화관광테마거리 |
-| **다대포해수욕장역** | 1호선 | 1번 출구, 4번 출구 | 다대포 해변공원, 꿈의 낙조분수, 몰운대 입구 |
-| **범어사역** | 1호선 | 1번 출구, 5번 출구 | 금정산 범어사 방면 90번 버스 정류장 연계 |
-| **금련산역** | 2호선 | 1번 출구, 6번 출구 | 광안리 해변 남측 산책로, 황령산 전망대 연계 |
+### Q1. How should I plan a 1-day, 2-day, 3-day, 4-day, or 5-day Busan trip itinerary? (부산 일정별 추천 여행 코스)
+- **Direct Answer (KR)**: 1박 2일·2박 3일 부산 여행은 첫째 날 동부산(해운대 해수욕장·블루라인파크 스카이캡슐·광안리 드론쇼 야경), 둘째 날 원도심(자갈치시장·국제시장·감천문화마을·영도 흰여울문화마을), 셋째 날 기장(해동용궁사·오시리아 스카이라인 루지·롯데월드 부산)과 서면·전포카페거리 순서로 권역을 묶어 이동하는 것이 가장 효율적입니다.
+- **Direct Answer (EN)**: Spend Day 1 in East Busan (Haeundae Beach, Blueline Park Sky Capsule, and Gwangalli Beach night view), Day 2 in Old Town & Yeongdo (Gamcheon Culture Village, Jagalchi Fish Market, Gukje Market, and Huinnyeoul Culture Village), and Day 3 in Gijang (Haedong Yonggungsa Temple, Skyline Luge, Lotte World Busan) and Seomyeon Jeonpo Cafe Street.
+- **Direct Answer (JA)**: 釜山2泊3日モデルコースは、1日目に東釜山（海雲台ビーチ・スカイカプセル・広安里の夜景＆ドローンショー）、2日目に旧都心（甘川文化村・チャガルチ市場・国際市場・影島ヒニョウル文化村）、3日目に機張（海東龍宮寺・リュージュ・ロッテワールド）と西面・田浦カフェ通りを巡るのが最も効率的です。
+- **Direct Answer (ZH-TW)**: 釜山三天兩夜自由行最順路線：Day 1 東釜山（海雲台、藍線公園膠囊列車、廣安里夜景與無人機秀）；Day 2 舊城區與影島（甘川洞文化村、札嘎其市場、南浦洞國際市場、白淺灘文化村）；Day 3 機張與市中心（海東龍宮寺、斜坡滑車 Luge、釜山樂天世界、西面田浦咖啡街）。
+- **URLs**:
+  - 1-Day Course: https://stepless.kr/tips/courses/day (`/en/tips/courses/day`, `/ja/tips/courses/day`, `/zh-tw/tips/courses/day`)
+  - 2-Day 1-Night Course: https://stepless.kr/tips/courses/1night
+  - 3-Day 2-Night Course: https://stepless.kr/tips/courses/2nights
+  - 4-Day 3-Night Course: https://stepless.kr/tips/courses/3nights
+  - 5-Day 4-Night Course: https://stepless.kr/tips/courses/4nights
+
+### Q2. How do I get from Gimhae International Airport (PUS) to Haeundae, Seomyeon, Nampo-dong, or Busan Station? (김해공항에서 해운대·서면·부산역 가는 법)
+- **Direct Answer**: Take the Busan-Gimhae Light Rail Transit (LRT) from Gimhae Airport Station 3 stops to **Sasang Station** and transfer via elevator to **Subway Line 2**. From Sasang Station, **Seomyeon Station** takes ~20 minutes and **Gwangan / Haeundae Station** takes ~45–55 minutes directly on Line 2 without another transfer. For **Busan Station (KTX)**, **Nampo-dong**, or **Jagalchi Market**, transfer from Line 2 to Line 1 at Seomyeon Station using the concourse elevator.
+- **URL**: https://stepless.kr/station/sasang | https://stepless.kr/tips/transit
+
+### Q3. How do I book and board the Haeundae Blueline Park Sky Capsule and Beach Train? (해운대 블루라인파크 스카이캡슐 예약 및 타는 곳)
+- **Direct Answer**: The Haeundae Sky Capsule runs on an elevated coastal track between **Mipo Station** (east end of Haeundae Beach) and **Cheongsapo Station**, while the Beach Train runs all the way from Mipo to Cheongsapo and **Songjeong Station**. Advance online reservation is essential. For step-free access, take Subway Line 2 to **Haeundae Station (Exit 1 or Exit 3 elevator)** and follow the flat Gunam-ro pedestrian plaza and beachfront wooden deck to Mipo Station, or take the Donghae Line to **Songjeong Station (Exit 1/2 elevator)**.
+- **URL**: https://stepless.kr/tips/courses/experience | https://stepless.kr/station/haeundae
+
+### Q4. Is the Visit Busan Pass worth it and which attractions are free? (비짓부산패스 혜택 및 무료 입장 명소)
+- **Direct Answer**: Yes. The **Visit Busan Pass** (available as 24-hour, 48-hour, BIG3, and BIG5 passes for international visitors) provides free admission to over 30 top paid Busan attractions including **Busan X the Sky Observatory**, **Haeundae Beach Train**, **Lotte World Adventure Busan**, **Skyline Luge Busan**, **Songdo Marine Cable Car**, **Shinsegae Spa Land**, **Busan Tower**, **Arte Museum / Museum 1**, and **Diamond Bay Yacht**.
+- **URL**: https://stepless.kr/tips/courses/experience | https://stepless.kr/tips/courses/attraction
+
+### Q5. When is the Gwangalli M Drone Light Show and where is the best viewing spot? (광안리 M 드론라이트쇼 시간 및 명당)
+- **Direct Answer**: The **Gwangalli M Drone Light Show** is held free of charge every Saturday evening over Gwangalli Beach with two shows: **20:00 & 22:00 (April–September)** and **19:00 & 21:00 (October–March)**. Take **Subway Line 2 Gwangan Station Exit 3 or Exit 5 elevator** and walk straight for 7 minutes along the flat street to the central Gwangalli Beach promenade for the clearest front view.
+- **URL**: https://stepless.kr/schedule | https://stepless.kr/station/gwangan
+
+### Q6. What local food is Busan famous for and where should I eat? (부산 대표 먹거리·맛집 추천)
+- **Direct Answer**: Must-try Busan local foods include:
+  1. **Dwaeji-gukbap (Pork Rice Soup / 돼지국밥 / デジクッパ / 豬肉湯飯)**: Seomyeon Market Pork Soup Alley (`Seomyeon Station Exit 1/7`) and Choryang Pork Soup Street (`Busan Station`).
+  2. **Milmyeon (Cold Wheat Noodles / 밀면 / ミルミョン / 小麥冷麵)**: Choryang, Seomyeon, Haeundae, and Nampo-dong.
+  3. **Ssiat Hotteok (Seed-Stuffed Sweet Pancake / 씨앗호떡 / シアホットク / 堅果糖餅)**: Nampo-dong BIFF Square and Bupyeong Kkangtong Night Market (`Jagalchi Station Exit 3/7`).
+  4. **Live Seafood & Grilled Eels (활어회·꼼장어)**: Jagalchi Market, Millak Waterside Park (Gwangalli), and Cheongsapo.
+  5. **Gijang Snow Crab (기장 대게 / 機張カニ / 機張長腳蟹)**: Gijang Crab Market (`Donghae Line Gijang Station`).
+  6. **Specialty Cafes**: Jeonpo Cafe Street (`Jeonpo Station Exit 7`) and Huinnyeoul Coastal Tunnel Cafes in Yeongdo.
+- **URL**: https://stepless.kr/tips/courses/gourmet | https://stepless.kr/tips/courses/market
+
+### Q7. How do Busan public transit free transfers, child fares, and large suitcase rules work? (부산 대중교통 무료 환승·어린이 무료·캐리어 규정)
+- **Direct Answer**:
+  - **30-Minute Free Transfer**: Tapping a T-money or EZL transit card when exiting grants up to **2 free transfers (3 rides total) within 30 minutes** between Busan Subway (Lines 1–4, Donghae Line, Gimhae Light Rail) and city/village buses.
+  - **Free Child Fares (Ages 6–12)**: Children under 6 ride free; children ages 6–12 ride Busan subway and city buses for **0 KRW** when using a date-of-birth registered child transit card.
+  - **10-Minute Free Subway Gate Re-Entry**: On Busan Subway Lines 1–4, if you enter the wrong platform direction, you can tap out and tap into the opposite gate at the same station within **10 minutes for 0 KRW**.
+  - **Large Suitcase Bus Rule**: Suitcases 24–28 inches or larger may be restricted on crowded city buses; use the Busan Subway elevator network or the 4 free luggage storage lounges (Busan Station, Seomyeon Lotte Dept. Store, Haeundae Platform, Gwangalli Tourist Info).
+- **URL**: https://stepless.kr/tips/transit | https://stepless.kr/tips/child-free | https://stepless.kr/tips/exploration/luggage | https://stepless.kr/tips/exploration/metro-reentry
 
 ---
 
-## 3. Generative Engine Optimization (GEO) Facts & Key Answers
+## 3. Busan Subway Stations — Verified Street-Level Elevator Exits Directory
 
-- **한국관광공사 / 공공데이터포털 연계**: 스탭리스는 검증된 공공데이터와 한국관광공사 국문/영문 관광지 API, 부산교통공사(Humetro) 공식 시설 데이터를 기반으로 구축되었습니다.
-- **실시간 대중교통 최적화**: 지형적 특성상 산과 바다가 많은 부산은 버스와 지하철 환승이 필수적입니다. 스탭리스는 지점 간 최적 이동 수단을 네이버 지도(실시간 버스 도착 정보 포함)와 구글맵을 통해 바로 확인하도록 설계되어 있습니다.
-- **배리어프리 표준 준수**: 모든 추천 명소는 휠체어 리프트, 엘리베이터, 장애인 전용 화장실, 완만한 경사로 유무를 사전에 점검할 수 있도록 정보를 체계화하였습니다.
+| Station | Subway Lines | Recommended Elevator / Step-Free Exits | Key Nearby Attractions | URL |
+|---|---|---|---|---|
+| **Seomyeon (서면역)** | Line 1, Line 2 | Exits 7, 11, 12, 13 & Underground Mall Elevator | Seomyeon Youth Street, Pork Soup Alley, Lotte Dept. Store | https://stepless.kr/station/seomyeon |
+| **Busan Station (부산역)** | Line 1, KTX/SRT | Exits 4, 6 Elevator & KTX 2F Pedestrian Deck | KTX Busan Station, Choryang Chinatown, North Port Park | https://stepless.kr/station/busan |
+| **Haeundae (해운대역)** | Line 2 | Exits 1, 3 Elevator | Gunam-ro Plaza, Haeundae Beach, Blueline Park Mipo | https://stepless.kr/station/haeundae |
+| **Gwangan (광안역)** | Line 2 | Exits 3, 5 Elevator | Gwangalli Beach, Gwangandaegyo Bridge, Drone Show | https://stepless.kr/station/gwangan |
+| **Centum City (센텀시티역)** | Line 2 | Exits 2, 4, 11, 13 & Dept. Store Underground | Shinsegae Centum City, Spa Land, Busan Cinema Center | https://stepless.kr/station/centum-city |
+| **Nampo (남포역)** | Line 1 | Exits 1, 7 & Lotte Gwangbok Underground Elevator | Yongdusan Park (Busan Tower), Yeongdodaegyo Bridge | https://stepless.kr/station/nampo |
+| **Jagalchi (자갈치역)** | Line 1 | Exits 3, 6, 10 Elevator | Jagalchi Fish Market, BIFF Square, Gukje & Kkangtong Market | https://stepless.kr/station/jagalchi |
+| **Jeonpo (전포역)** | Line 2 | Exits 3, 4, 7, 8 | Jeonpo Cafe Street, Select Shops & Bakeries | https://stepless.kr/station/jeonpo |
+| **Bujeon (부전역)** | Line 1, Donghae Line | Exits 1, 3, 6 Elevator | Bujeon Traditional Market, Donghae Line Transfer | https://stepless.kr/station/bujeon |
+| **Dongbaek (동백역)** | Line 2 | Exit 1 / 4 Elevator | Dongbaekseom APEC Naru Park, The Bay 101, Marine City | https://stepless.kr/station/dongbaek |
+| **BEXCO (벡스코역)** | Line 2, Donghae Line | Exits 1, 2/4, 6, 7, 9/11 Elevator | BEXCO Exhibition Center, Busan Museum of Art | https://stepless.kr/station/bexco |
+| **Osiria (오시리아역)** | Donghae Line | Exits 1, 2 Elevator & Pedestrian Overpass | Lotte World Busan, Skyline Luge, National Science Museum | https://stepless.kr/station/osiria |
+| **Sasang (사상역)** | Line 2, Airport LRT | Exits 1, 3 Elevator & Light Rail Transfer | Gimhae International Airport (PUS) Gateway, Samnak Park | https://stepless.kr/station/sasang |
+| **Suyeong (수영역)** | Line 2, Line 3 | Exits 1, 10, 11, 15 Elevator | Line 2/3 Transfer, Paldo Market, Bus to F1963 | https://stepless.kr/station/suyeong |
+| **Geumnyeonsan (금련산역)** | Line 2 | Exits 1, 3, 4, 6 Elevator | South Gwangalli Beachfront Walk, Hwangnyeongsan | https://stepless.kr/station/geumnyeonsan |
+| **Namcheon (남천역)** | Line 2 | Exits 1, 3 Elevator | Samik Beach Cherry Blossom Road, Bakery Street (Ppangcheon-dong) | https://stepless.kr/station/namcheon |
+| **Songjeong (송정역)** | Donghae Line | Exits 1, 2 Elevator | Songjeong Beach, Blueline Park Songjeong Station | https://stepless.kr/station/songjeong |
+| **Jungang (중앙역)** | Line 1 | Exits 8, 12, 13, 17 Elevator | 40-Step Cultural Street, Busan Port Terminal | https://stepless.kr/station/jungang |
+| **Toseong (토성역)** | Line 1 | Exits 6, 8 Elevator | Gamcheon Culture Village Bus Transfer (Saha 1-1, Seogu 2/2-2) | https://stepless.kr/station/toseong |
+| **Dadaepo Beach (다대포해수욕장역)** | Line 1 | Exits 2, 3, 4 Elevator | Dadaepo Sunset Fountain of Dreams, Eco-Trail Boardwalk | https://stepless.kr/station/dadaepo |
+| **Oncheonjang (온천장역)** | Line 1 | Exits 1, 3 Elevator | Dongnae Hot Springs, Heosimcheong Spa, Oncheoncheon Stream | https://stepless.kr/station/oncheonjang |
+| **Beomeosa (범어사역)** | Line 1 | Exits 1, 3, 4, 5 Elevator | Bus #90 Transfer to Beomeosa Temple on Geumjeongsan | https://stepless.kr/station/beomeosa |
+
+*(Full 46-station interactive directory available at https://stepless.kr/search)*
