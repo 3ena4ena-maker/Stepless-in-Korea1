@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /*{search_term_string}*
+Disallow: /*%7Bsearch_term_string%7D*
 
 # 1. Korea Search Engines: Naver (네이버), Daum/Kakao (다음·카카오), Zum (줌)
 User-agent: Yeti

@@ -2945,13 +2945,18 @@ function generateRouteHtml(
 ): string {
   const langOpt = LANGUAGE_OPTIONS.find(o => o.code === lang) || LANGUAGE_OPTIONS[0];
   const geoCfg = LANGUAGE_GEO_CONFIG[lang] || LANGUAGE_GEO_CONFIG.KR;
-  const canonicalUrl = `https://stepless.kr${page.routePath === '/' ? '/' : page.routePath}`;
-  const hreflangLinksHtml = getHreflangEntries(cleanRoutePath)
+  const isSearchAlias = cleanRoutePath.startsWith('/search/');
+  const canonicalCleanPath = isSearchAlias
+    ? cleanRoutePath.replace(/^\/search\//, '/station/')
+    : cleanRoutePath;
+  const canonicalRoutePath = buildLocalizedPath(canonicalCleanPath, lang);
+  const canonicalUrl = `https://stepless.kr${canonicalRoutePath === '/' ? '/' : canonicalRoutePath}`;
+  const hreflangLinksHtml = getHreflangEntries(canonicalCleanPath)
     .map(e => `<link rel="alternate" hreflang="${escapeHtml(e.hreflang)}" href="${escapeHtml(e.href)}" />`)
     .join('\n    ');
   const baseKeywords = LANGUAGE_SEO_KEYWORDS[lang] || LANGUAGE_SEO_KEYWORDS.KR;
   const cleanTopic = page.h1.replace(/\s*\|\s*.*$/, '').trim();
-  const keywords = cleanRoutePath === '/' ? baseKeywords : `${cleanTopic}, ${baseKeywords}`;
+  const keywords = canonicalCleanPath === '/' ? baseKeywords : `${cleanTopic}, ${baseKeywords}`;
   const alternateOgLocalesHtml = LANGUAGE_OPTIONS.filter(o => o.code !== lang)
     .map(o => `<meta property="og:locale:alternate" content="${escapeHtml(o.ogLocale)}" />`)
     .join('\n    ');
@@ -2978,13 +2983,20 @@ function generateRouteHtml(
   );
 
   // 2.5. Replace Multi-Engine Bot Directives & Localized GEO / AI Search Meta Tags
+  const robotsDirective = isSearchAlias
+    ? 'noindex, follow'
+    : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+  html = html.replace(
+    /<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i,
+    `<meta name="robots" content="${robotsDirective}" />`
+  );
   html = html.replace(
     /\s*<meta\s+name="(?:bingbot|yeti|baiduspider|slurp)"\s+content="[^"]*"\s*\/?>/gi,
     ''
   );
   html = html.replace(
     /<meta\s+name="googlebot"\s+content="[^"]*"\s*\/?>/i,
-    `<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />\n    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />\n    <meta name="yeti" content="index, follow" />\n    <meta name="baiduspider" content="index, follow" />\n    <meta name="slurp" content="index, follow" />`
+    `<meta name="googlebot" content="${robotsDirective}" />\n    <meta name="bingbot" content="${robotsDirective}" />\n    <meta name="yeti" content="${isSearchAlias ? 'noindex, follow' : 'index, follow'}" />\n    <meta name="baiduspider" content="${isSearchAlias ? 'noindex, follow' : 'index, follow'}" />\n    <meta name="slurp" content="${isSearchAlias ? 'noindex, follow' : 'index, follow'}" />`
   );
   html = html.replace(
     /<meta\s+name="author"\s+content="[^"]*"\s*\/?>/i,

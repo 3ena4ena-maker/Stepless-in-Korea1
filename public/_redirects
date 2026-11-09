@@ -1,5 +1,14 @@
 # Redirect pages.dev default domain to custom domain stepless.kr
 https://steplessinkorea.pages.dev/* https://stepless.kr/:splat 301!
 
+# Redirect legacy /search/:station aliases to canonical /station/:station across all 7 languages
+/search/:station          /station/:station          301
+/en/search/:station       /en/station/:station       301
+/ja/search/:station       /ja/station/:station       301
+/zh-tw/search/:station    /zh-tw/station/:station    301
+/zh-cn/search/:station    /zh-cn/station/:station    301
+/es/search/:station       /es/station/:station       301
+/fr/search/:station       /fr/station/:station       301
+
 # Cloudflare Pages SPA Routing rule
 /*    /index.html   200
