@@ -799,11 +799,17 @@ export default function App() {
           else expectedPath = '/tips/transit';
         } else if (currentTab === 'courses') {
           if (selectedItineraryCategory) {
-            const catSlug = categoryToUrlSlug(selectedItineraryCategory);
-            if (selectedItineraryCategory === 'SUBWAY' && activeRegionPage) {
-              expectedPath = `/tips/courses/subway/${activeRegionPage.toLowerCase()}`;
+            if (selectedItineraryCategory === 'MY_ROUTE') {
+              expectedPath = '/my-route';
+            } else if (selectedItineraryCategory === 'BARRIER_FREE') {
+              expectedPath = '/barrier-free';
             } else {
-              expectedPath = `/tips/courses/${catSlug}`;
+              const catSlug = categoryToUrlSlug(selectedItineraryCategory);
+              if (selectedItineraryCategory === 'SUBWAY' && activeRegionPage) {
+                expectedPath = `/tips/courses/subway/${activeRegionPage.toLowerCase()}`;
+              } else {
+                expectedPath = `/tips/courses/${catSlug}`;
+              }
             }
           } else if (activeRegionPage) {
             expectedPath = `/tips/courses/${activeRegionPage.toLowerCase()}`;
@@ -821,11 +827,17 @@ export default function App() {
         } else if (currentTab === 'tips' || currentTab === 'transit' || currentTab === 'courses' || currentTab === 'schedule' || currentTab === 'exploration') {
           if (tipsSubPage === 'courses') {
             if (selectedItineraryCategory) {
-              const catSlug = categoryToUrlSlug(selectedItineraryCategory);
-              if (selectedItineraryCategory === 'SUBWAY' && activeRegionPage) {
-                expectedPath = `/tips/courses/subway/${activeRegionPage.toLowerCase()}`;
+              if (selectedItineraryCategory === 'MY_ROUTE') {
+                expectedPath = '/my-route';
+              } else if (selectedItineraryCategory === 'BARRIER_FREE') {
+                expectedPath = '/barrier-free';
               } else {
-                expectedPath = `/tips/courses/${catSlug}`;
+                const catSlug = categoryToUrlSlug(selectedItineraryCategory);
+                if (selectedItineraryCategory === 'SUBWAY' && activeRegionPage) {
+                  expectedPath = `/tips/courses/subway/${activeRegionPage.toLowerCase()}`;
+                } else {
+                  expectedPath = `/tips/courses/${catSlug}`;
+                }
               }
             } else if (activeRegionPage) {
               expectedPath = `/tips/courses/${activeRegionPage.toLowerCase()}`;
@@ -833,8 +845,14 @@ export default function App() {
               expectedPath = '/tips/courses';
             }
           } else if (selectedItineraryCategory) {
-            const catSlug = categoryToUrlSlug(selectedItineraryCategory);
-            expectedPath = `/tips/courses/${catSlug}`;
+            if (selectedItineraryCategory === 'MY_ROUTE') {
+              expectedPath = '/my-route';
+            } else if (selectedItineraryCategory === 'BARRIER_FREE') {
+              expectedPath = '/barrier-free';
+            } else {
+              const catSlug = categoryToUrlSlug(selectedItineraryCategory);
+              expectedPath = `/tips/courses/${catSlug}`;
+            }
           } else if (tipsSubPage === 'transit') {
             expectedPath = '/tips/transit';
           } else if (tipsSubPage === 'child-free') {
@@ -2034,15 +2052,16 @@ export default function App() {
                         return (
                           <a
                             key={st.id}
-                            href={`/station/${st.id}`}
+                            href={buildLocalizedPath(`/station/${st.id}`, language)}
                             onClick={(e) => {
                               e.preventDefault();
                               setSelectedStationId(st.id);
                               setExpandedExitNum(null);
                               setSearchViewMode('DETAIL');
+                              navigateToSpa(`/station/${st.id}`, { tab: 'search', stationId: st.id });
                               window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
-                            className="px-1.5 py-2 sm:p-3 rounded-xl sm:rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-0.5 active:scale-95 bg-white border-slate-300 hover:border-[#8EA85E] hover:bg-slate-50 text-slate-800 shadow-2xs hover:shadow-xs group min-w-0"
+                            className="px-1.5 py-2 sm:p-3 rounded-xl sm:rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-0.5 active:scale-95 bg-white border-slate-300 hover:border-[#8EA85E] hover:bg-slate-50 text-slate-800 shadow-2xs hover:shadow-xs group min-w-0 no-underline"
                           >
                             <span className={`font-bold ${mobileTitleClass} font-heading text-slate-800 group-hover:text-[#8EA85E] transition-colors break-keep w-full`}>
                               {translatedName}
@@ -2077,6 +2096,86 @@ export default function App() {
                       })}
                     </div>
                   </div>
+
+                  {/* 부산 주요 46개 지하철역 무장애 출구 & 엘리베이터 요약 디렉토리 (정적 HTML과 동일한 본문 노출) */}
+                  <section className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-xs space-y-4">
+                    <div>
+                      <h3 className="text-base sm:text-lg font-extrabold font-heading text-slate-800">
+                        {pickLang(language, {
+                          KR: `부산 주요 ${STATIONS.length}개 지하철역 엘리베이터 & 무장애 출구 일람`,
+                          EN: `Busan ${STATIONS.length} Major Subway Stations Elevator & Step-Free Exit Directory`,
+                          JA: `釜山地下鉄 主要${STATIONS.length}駅 エレベーター＆バリアフリー出口一覧`,
+                          ZH_TW: `釜山地鐵 主要 ${STATIONS.length} 站 電梯與無障礙出口總覽表`,
+                          ZH_CN: `釜山地铁 主要 ${STATIONS.length} 站 电梯与无障碍出口总览表`,
+                          ES: `Directorio de Ascensores y Salidas Accesibles (${STATIONS.length} Estaciones de Busan)`,
+                          FR: `Répertoire des Ascenseurs et Sorties Accessibles (${STATIONS.length} Stations de Busan)`,
+                        })}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-500 mt-1 aeo-direct-answer">
+                        {pickLang(language, {
+                          KR: '각 지하철역의 지상 직결 엘리베이터 추천 출구 번호와 승강장-대합실 무장애 이동 동선 요약입니다. 역 이름을 누르면 상세 지도와 출구별 사진·타임라인을 확인할 수 있습니다.',
+                          EN: 'Summary of street-level elevator exit numbers and platform-to-concourse step-free transfer routes for each station. Select any station name for detailed maps and exit timelines.',
+                          JA: '各駅の地上直結エレベーター推奨出口番号とホーム〜改札間のバリアフリー移動ルート一覧です。駅名をタップすると詳細マップと出口別案内を確認できます。',
+                          ZH_TW: '彙整各站地面直達電梯推薦出口編號與月台至大廳無障礙轉乘動線。點擊站名即可查看詳細出口地圖與動線時間軸。',
+                          ZH_CN: '汇总各站地面直达直梯推荐出口编号与站台至站厅无障碍换乘路线。点击站名即可查看详细出口地图与路线时间轴。',
+                          ES: 'Resumen de salidas recomendadas con ascensor a nivel de calle y rutas sin escalones por estación. Haz clic en cualquier estación para ver el mapa detallado.',
+                          FR: 'Résumé des sorties recommandées avec ascenseur et des itinéraires sans marche par station. Cliquez sur une station pour afficher le plan détaillé.',
+                        })}
+                      </p>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                        <thead>
+                          <tr className="bg-slate-50 border-y border-slate-200 text-slate-700 font-bold">
+                            <th className="py-2.5 px-3 whitespace-nowrap">
+                              {pickLang(language, { KR: '지하철역', EN: 'Station', JA: '駅名', ZH_TW: '車站', ZH_CN: '车站', ES: 'Estación', FR: 'Station' })}
+                            </th>
+                            <th className="py-2.5 px-3 whitespace-nowrap">
+                              {pickLang(language, { KR: '노선', EN: 'Lines', JA: '路線', ZH_TW: '路線', ZH_CN: '线路', ES: 'Líneas', FR: 'Lignes' })}
+                            </th>
+                            <th className="py-2.5 px-3">
+                              {pickLang(language, { KR: '추천 엘리베이터/에스컬레이터 출구', EN: 'Recommended Elevator / Escalator Exits', JA: '推奨エレベーター／エスカレーター出口', ZH_TW: '推薦電梯／電扶梯出口', ZH_CN: '推荐直梯／扶梯出口', ES: 'Salidas con Ascensor / Escalera', FR: 'Sorties Ascenseur / Escalator' })}
+                            </th>
+                            <th className="py-2.5 px-3 hidden md:table-cell">
+                              {pickLang(language, { KR: '엘리베이터 상세 위치 및 이동 팁', EN: 'Elevator Location & Step-Free Note', JA: 'エレベーター位置＆移動のポイント', ZH_TW: '電梯位置與無障礙動線說明', ZH_CN: '电梯位置与无障碍路线说明', ES: 'Ubicación del Ascensor', FR: 'Emplacement de l’Ascenseur' })}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100">
+                          {STATIONS.map((st) => {
+                            const stName = getLocalizedStationTitle(st, language, true);
+                            const lineLabel = st.lines.map(l => formatLineLabelI18n(l, language)).join(' · ');
+                            const recExitText = language === 'KR' ? st.recommendedExits : (st.recommendedExitsEn || st.recommendedExits);
+                            const elevLocText = language === 'KR' ? st.elevatorLocationDesc : (st.elevatorLocationDescEn || st.elevatorLocationDesc);
+                            return (
+                              <tr key={st.id} className="hover:bg-slate-50/80 transition-colors">
+                                <td className="py-2.5 px-3 font-bold whitespace-nowrap">
+                                  <a
+                                    href={buildLocalizedPath(`/station/${st.id}`, language)}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setSelectedStationId(st.id);
+                                      setExpandedExitNum(null);
+                                      setSearchViewMode('DETAIL');
+                                      navigateToSpa(`/station/${st.id}`, { tab: 'search', stationId: st.id });
+                                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
+                                    className="text-[#5B7332] hover:underline"
+                                  >
+                                    {stName}
+                                  </a>
+                                </td>
+                                <td className="py-2.5 px-3 text-slate-600 whitespace-nowrap">{lineLabel}</td>
+                                <td className="py-2.5 px-3 text-slate-700 font-medium">{recExitText}</td>
+                                <td className="py-2.5 px-3 text-slate-500 hidden md:table-cell">{elevLocText}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
                 </div>
               ) : (
                 /* === 지하철역 개별 상세 페이지 (DETAIL) === */
@@ -2087,6 +2186,7 @@ export default function App() {
                       type="button"
                       onClick={() => {
                         setSearchViewMode('INDEX');
+                        navigateToSpa('/search', { tab: 'search' });
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:text-emerald-700 hover:border-emerald-300 font-bold text-sm shadow-2xs transition-all cursor-pointer group w-fit active:scale-95"
@@ -2109,6 +2209,7 @@ export default function App() {
                             setExpandedExitNum(null);
                           }
                           setSearchViewMode('DETAIL');
+                          navigateToSpa(`/station/${stId}`, { tab: 'search', stationId: stId });
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
                         onNavigateToSearch={(q) => {
@@ -2172,14 +2273,15 @@ export default function App() {
                     return (
                       <a
                         key={st.id}
-                        href={`/search/${st.id}`}
+                        href={buildLocalizedPath(`/station/${st.id}`, language)}
                         onClick={(e) => {
                           e.preventDefault();
                           setSelectedStationId(st.id);
                           setExpandedExitNum(null);
+                          navigateToSpa(`/station/${st.id}`, { tab: 'search', stationId: st.id });
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className={`px-1.5 py-2 sm:p-3 rounded-xl sm:rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-0.5 active:scale-95 min-w-0 ${
+                        className={`px-1.5 py-2 sm:p-3 rounded-xl sm:rounded-2xl border text-center transition-all cursor-pointer flex flex-col justify-center items-center gap-0.5 active:scale-95 min-w-0 no-underline ${
                           isSelected
                             ? 'bg-[#8EA85E] border-[#8EA85E] text-white shadow-sm ring-2 ring-[#8EA85E]/20'
                             : 'bg-white border-slate-300 hover:border-[#8EA85E] hover:bg-slate-50 text-slate-800'

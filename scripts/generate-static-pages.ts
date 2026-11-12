@@ -588,7 +588,6 @@ function buildLocalizedJsonLd(
   const geoCfg = LANGUAGE_GEO_CONFIG[lang] || LANGUAGE_GEO_CONFIG.KR;
   const d = DICTIONARY[lang] || DICTIONARY.KR;
   const homeUrl = `https://stepless.kr${buildLocalizedPath('/', lang)}`;
-  const searchUrl = `https://stepless.kr${buildLocalizedPath('/search', lang)}?q={search_term_string}`;
   const aeoFaqs = buildPageSpecificAeoFaqs(page, lang, cleanRoutePath);
 
   const breadcrumbItems: Record<string, unknown>[] = [
@@ -623,11 +622,6 @@ function buildLocalizedJsonLd(
       ],
       description: page.description,
       inLanguage: langOpt.htmlLang,
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: searchUrl,
-        'query-input': 'required name=search_term_string',
-      },
     },
     {
       '@type': 'WebPage',
@@ -2946,8 +2940,21 @@ function generateRouteHtml(
   const langOpt = LANGUAGE_OPTIONS.find(o => o.code === lang) || LANGUAGE_OPTIONS[0];
   const geoCfg = LANGUAGE_GEO_CONFIG[lang] || LANGUAGE_GEO_CONFIG.KR;
   const isSearchAlias = cleanRoutePath.startsWith('/search/');
+  const isBarrierFreeCourseAlias = cleanRoutePath === '/tips/courses/barrier-free';
+  const isAliasRoute = isSearchAlias || isBarrierFreeCourseAlias;
+  const isNoAdUtilityOrPolicyRoute =
+    isAliasRoute ||
+    cleanRoutePath === '/my-route' ||
+    cleanRoutePath === '/tips' ||
+    cleanRoutePath === '/about/privacy' ||
+    cleanRoutePath === '/about/terms' ||
+    cleanRoutePath === '/about/contact' ||
+    cleanRoutePath === '/about/data-source';
+
   const canonicalCleanPath = isSearchAlias
     ? cleanRoutePath.replace(/^\/search\//, '/station/')
+    : isBarrierFreeCourseAlias
+    ? '/barrier-free'
     : cleanRoutePath;
   const canonicalRoutePath = buildLocalizedPath(canonicalCleanPath, lang);
   const canonicalUrl = `https://stepless.kr${canonicalRoutePath === '/' ? '/' : canonicalRoutePath}`;
@@ -2962,6 +2969,18 @@ function generateRouteHtml(
     .join('\n    ');
 
   let html = templateHtml;
+
+  // Strip AdSense script from policy, legal, utility tool, and alias pages so ads never fire on non-editorial screens
+  if (isNoAdUtilityOrPolicyRoute) {
+    html = html.replace(
+      /\s*<!--\s*Google AdSense Ownership[\s\S]*?<\/script>/i,
+      ''
+    );
+    html = html.replace(
+      /\s*<script[^>]*pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js[^>]*><\/script>/gi,
+      ''
+    );
+  }
 
   // 0. Replace <html lang="...">
   html = html.replace(/<html\s+lang="[^"]*"/i, `<html lang="${escapeHtml(langOpt.htmlLang)}"`);
@@ -2983,7 +3002,7 @@ function generateRouteHtml(
   );
 
   // 2.5. Replace Multi-Engine Bot Directives & Localized GEO / AI Search Meta Tags
-  const robotsDirective = isSearchAlias
+  const robotsDirective = isAliasRoute
     ? 'noindex, follow'
     : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
   html = html.replace(
@@ -2996,7 +3015,7 @@ function generateRouteHtml(
   );
   html = html.replace(
     /<meta\s+name="googlebot"\s+content="[^"]*"\s*\/?>/i,
-    `<meta name="googlebot" content="${robotsDirective}" />\n    <meta name="bingbot" content="${robotsDirective}" />\n    <meta name="yeti" content="${isSearchAlias ? 'noindex, follow' : 'index, follow'}" />\n    <meta name="baiduspider" content="${isSearchAlias ? 'noindex, follow' : 'index, follow'}" />\n    <meta name="slurp" content="${isSearchAlias ? 'noindex, follow' : 'index, follow'}" />`
+    `<meta name="googlebot" content="${robotsDirective}" />\n    <meta name="bingbot" content="${robotsDirective}" />\n    <meta name="yeti" content="${isAliasRoute ? 'noindex, follow' : 'index, follow'}" />\n    <meta name="baiduspider" content="${isAliasRoute ? 'noindex, follow' : 'index, follow'}" />\n    <meta name="slurp" content="${isAliasRoute ? 'noindex, follow' : 'index, follow'}" />`
   );
   html = html.replace(
     /<meta\s+name="author"\s+content="[^"]*"\s*\/?>/i,
@@ -3089,13 +3108,9 @@ function generateRouteHtml(
     buildLocalizedJsonLd(page, lang, cleanRoutePath, canonicalUrl, keywords)
   );
 
-  const archiveSummaryLabel = lang === 'KR'
-    ? `${escapeHtml(page.h1)} — 텍스트 가이드 아카이브 (Text Reference Guide)`
-    : `${escapeHtml(page.h1)} — Text Reference Guide`;
-
   const aeoHubHtml = buildAeoAnswerHubHtml(page, lang, cleanRoutePath);
 
-  // 5. Replace <div id="root">...</div> inner content AND <details id="seo-prerender-archive"> with route-specific visible semantic HTML
+  // 5. Replace <div id="root">...</div> inner content with route-specific visible semantic HTML (NO hidden/duplicate <details> archive)
   const rootReplacement = `<div id="root">
       <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px 16px; background-color: #FBFBF9; color: #11161B;">
         <div style="font-size: 12px; font-weight: 800; letter-spacing: 0.08em; color: #5B7332; background: #F3F7EC; padding: 6px 14px; border-radius: 999px; margin-bottom: 16px;">STEPLESS IN BUSAN</div>
@@ -3110,31 +3125,34 @@ function generateRouteHtml(
         </main>
         ${buildCommonFooter(lang)}
       </div>
-    </div>
-
-    <details id="seo-prerender-archive" style="max-width: 1120px; margin: 0 auto; padding: 8px 16px 24px; font-size: 12px; color: #64748B; line-height: 1.65;">
-      <summary style="cursor: pointer; font-weight: 600; color: #94A3B8; list-style: none; text-align: center;">${archiveSummaryLabel}</summary>
-      <div style="margin-top: 12px;">
-        ${page.bodyHtml}
-        ${aeoHubHtml}
-      </div>
-    </details>`;
+    </div>`;
 
   html = html.replace(
-    /<div id="root">[\s\S]*?<\/details>/i,
-    rootReplacement
+    /<div id="root">[\s\S]*?<\/body>/i,
+    `${rootReplacement}\n  </body>`
   );
 
   return html;
 }
 
 function generateMultilingualSitemapXml(basePages: StaticRoutePage[]): string {
-  const today = '2026-11-06';
+  const today = '2026-11-12';
   const allLangs: Language[] = ['KR', 'EN', 'JA', 'ZH_TW', 'ZH_CN', 'ES', 'FR'];
   const urlBlocks: string[] = [];
 
-  // Deduplicate clean route paths (skip /search/:id aliases in sitemap so only canonical /station/:id is submitted)
-  const canonicalBasePages = basePages.filter(p => !p.routePath.startsWith('/search/'));
+  // Exclude alias routes (/search/:id, /tips/courses/barrier-free), legal boilerplate (/about/privacy, /about/terms, /about/contact, /about/data-source), and interactive utility/index routes (/my-route, /tips) from sitemap.xml
+  const excludedFromSitemap = new Set([
+    '/tips/courses/barrier-free',
+    '/my-route',
+    '/tips',
+    '/about/privacy',
+    '/about/terms',
+    '/about/contact',
+    '/about/data-source',
+  ]);
+  const canonicalBasePages = basePages.filter(
+    p => !p.routePath.startsWith('/search/') && !excludedFromSitemap.has(p.routePath)
+  );
 
   for (const basePage of canonicalBasePages) {
     const cleanPath = basePage.routePath;

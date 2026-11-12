@@ -97,7 +97,10 @@ export const AdSenseUnit: React.FC<AdSenseUnitProps> = ({
   const adRef = useRef<HTMLModElement | null>(null);
   const isPushedRef = useRef<boolean>(false);
 
-  const isEligible = isAdEligibleScreen(currentParams);
+  // Manual <ins class="adsbygoogle"> units require a valid numeric slotId from AdSense console.
+  // Without slotId, rendering an unconfigured <ins> and calling adsbygoogle.push({}) triggers TagError.
+  const hasValidSlot = Boolean(slotId && /^\d+$/.test(slotId.trim()));
+  const isEligible = hasValidSlot && isAdEligibleScreen(currentParams);
 
   useEffect(() => {
     if (!isEligible) {
@@ -129,8 +132,8 @@ export const AdSenseUnit: React.FC<AdSenseUnitProps> = ({
     return () => window.clearTimeout(timer);
   }, [isEligible, currentParams.currentTab, currentParams.tipsSubPage, currentParams.siteSubPage]);
 
-  // If not eligible, strictly do NOT render any ad tags or markup
-  if (!isEligible) {
+  // If not eligible or no explicit ad-slot ID is configured yet, strictly do NOT render broken <ins> markup
+  if (!isEligible || !slotId) {
     return null;
   }
 
@@ -147,7 +150,7 @@ export const AdSenseUnit: React.FC<AdSenseUnitProps> = ({
           ...style
         }}
         data-ad-client={ADSENSE_CLIENT_ID}
-        {...(slotId ? { 'data-ad-slot': slotId } : {})}
+        data-ad-slot={slotId}
         data-ad-format={format}
         data-full-width-responsive={responsive ? 'true' : 'false'}
       />

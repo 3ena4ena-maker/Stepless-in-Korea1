@@ -12,7 +12,7 @@ import {
   ArrowUpRight
 } from 'lucide-react';
 import StationSearchBar from './StationSearchBar';
-import { DICTIONARY, Language, pickLang } from '../i18n/dictionary';
+import { DICTIONARY, Language, pickLang, buildLocalizedPath } from '../i18n/dictionary';
 import { formatLineLabelI18n, getLocalizedStationTitle } from '../i18n/stationTranslations';
 import { STATIONS } from '../data';
 
@@ -526,7 +526,7 @@ export function HomeOverviewSection({
             return (
               <a
                 key={st.id}
-                href={`/station/${st.id}`}
+                href={buildLocalizedPath(`/station/${st.id}`, language)}
                 onClick={(e) => {
                   e.preventDefault();
                   onSelectStation(st.id);
@@ -584,7 +584,7 @@ export function HomeOverviewSection({
             return (
               <a 
                 key={course.id}
-                href={course.href}
+                href={buildLocalizedPath(course.href, language)}
                 onClick={(e) => {
                   e.preventDefault();
                   if (onNavigateToItinerary) {
@@ -635,15 +635,15 @@ export function HomeOverviewSection({
               FR: '3 Points Clés pour Visiter Busan Sans Marche',
             })}
           </h2>
-          <p className="text-xs text-slate-500 break-keep">
+          <p className="text-xs text-slate-500 break-keep aeo-direct-answer">
             {pickLang(language, {
-              KR: '휠체어·유모차·캐리어 여행객을 위한 부산 지하철 및 무장애 이동 기준입니다.',
-              EN: 'Essential step-free transit and accessibility standards for Busan travelers.',
-              JA: 'ベビーカー・車椅子・大型スーツケース旅行者のための釜山地下鉄＆バリアフリー移動基準です。',
-              ZH_TW: '專為嬰兒車家庭、輪椅族與大型行李箱旅客整理的釜山地鐵與無障礙移動標準。',
-              ZH_CN: '专为婴儿车家庭、轮椅出行者与大件行李箱旅客整理的釜山地铁与无障碍出行标准。',
-              ES: 'Estándares de movilidad accesible para viajeros con cochecito, silla de ruedas o equipaje en Busan.',
-              FR: 'Repères de mobilité sans marche pour les voyageurs en poussette, fauteuil roulant ou avec bagages à Busan.',
+              KR: '스텝리스(Stepless in Busan)는 부산 도시철도 주요 46개 역의 지상 직결 엘리베이터 출구 번호, 휠체어·유모차·캐리어 무장애 환승 동선, 당일치기~4박5일 추천 여행 코스를 제공합니다.',
+              EN: 'Stepless in Busan provides verified street-level elevator exit numbers across 46 major Busan subway stations, step-free stroller and wheelchair routes, and 1 to 5-day Busan travel itineraries.',
+              JA: 'Stepless in Busanは釜山地下鉄主要46駅の地上直結エレベーター出口番号、ベビーカー・車椅子・大型スーツケース向けバリアフリー乗換ルート、日帰り〜4泊5日モデルコースを提供します。',
+              ZH_TW: 'Stepless in Busan 提供釜山地鐵 46 個主要車站的地面直達電梯出口編號、嬰兒車・輪椅・大型行李箱無障礙轉乘動線，以及一日遊至五天四夜推薦行程。',
+              ZH_CN: 'Stepless in Busan 提供釜山地铁 46 个主要车站的地面直达直梯出口编号、婴儿车・轮椅・大件行李箱无障碍换乘路线，以及一日游至五天四晚推荐路线。',
+              ES: 'Stepless in Busan ofrece los números exactos de salida con ascensor en 46 estaciones del metro de Busan, rutas sin escalones para cochecitos y sillas de ruedas, e itinerarios de 1 a 5 días.',
+              FR: 'Stepless in Busan fournit les numéros exacts de sortie avec ascenseur dans 46 stations du métro de Busan, des parcours sans marche pour poussettes et fauteuils roulants, et des itinéraires de 1 à 5 jours.',
             })}
           </p>
         </div>
@@ -651,7 +651,7 @@ export function HomeOverviewSection({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
           {/* Card 1 */}
           <a
-            href="/tips/courses/subway"
+            href={buildLocalizedPath('/tips/courses/subway', language)}
             onClick={(e) => {
               e.preventDefault();
               onNavigateToItinerary?.('SUBWAY');
@@ -666,30 +666,30 @@ export function HomeOverviewSection({
                 {pickLang(language, {
                   KR: '주요 환승역 1동선 엘리베이터',
                   EN: 'Direct Station Elevators',
-                  JA: '主要22駅の地上直結エレベーター案内',
-                  ZH_TW: '22座主要車站地面直達電梯指南',
-                  ZH_CN: '22座主要车站地面直达直梯指南',
-                  ES: 'Ascensores directos en 22 estaciones clave',
-                  FR: 'Ascenseurs directs dans 22 stations clés',
+                  JA: '主要46駅の地上直結エレベーター案内',
+                  ZH_TW: '46座主要車站地面直達電梯指南',
+                  ZH_CN: '46座主要车站地面直达直梯指南',
+                  ES: 'Ascensores directos en 46 estaciones clave',
+                  FR: 'Ascenseurs directs dans 46 stations clés',
                 })}
               </h3>
             </div>
             <p className="text-[11.5px] sm:text-xs text-slate-600 leading-relaxed break-keep">
               {pickLang(language, {
-                KR: '서면역(7·11·12·13번), 부산역(4·6번), 해운대역(1·3번), 광안역(3·5번) 등 22개 주요 역사의 승강장부터 지상 보도까지 계단 없이 직결되는 엘리베이터 출구 번호를 안내합니다.',
-                EN: 'Find direct platform-to-street elevator exits across 22 major stations including Seomyeon, Busan Station, Haeundae, Gwangan, and Centum City.',
-                JA: '西面駅（7・11・12・13番）、釜山駅（4・6番）、海雲台駅（1・3番）、広安駅（3・5番）、センタムシティ駅など主要22駅のホームから地上歩道まで階段なしで直結するエレベーター出口を正確に案内します。',
-                ZH_TW: '精準標示西面站（7・11・12・13號）、釜山站（4・6號）、海雲台站（1・3號）、廣安站（3・5號）、Centum City 站等 22 個主要車站從月台直達地面的無障礙電梯出口。',
-                ZH_CN: '精准标示西面站（7・11・12・13号）、釜山站（4・6号）、海云台站（1・3号）、广安站（3・5号）、Centum City 站等 22 个主要车站从站台直达地面的无障碍直梯出口。',
-                ES: 'Consulta las salidas exactas con ascensor desde el andén hasta la acera en las 22 estaciones principales, incluidas Seomyeon, Busan Station, Haeundae, Gwangan y Centum City.',
-                FR: 'Retrouvez les numéros exacts des sorties avec ascenseur reliant les quais à la chaussée dans 22 grandes stations (Seomyeon, Gare de Busan, Haeundae, Gwangan, Centum City).',
+                KR: '서면역(7·11·12·13번), 부산역(4·6번), 해운대역(1·3번), 광안역(3·5번) 등 46개 주요 역사의 승강장부터 지상 보도까지 계단 없이 직결되는 엘리베이터 출구 번호를 안내합니다.',
+                EN: 'Find direct platform-to-street elevator exits across 46 major stations including Seomyeon, Busan Station, Haeundae, Gwangan, and Centum City.',
+                JA: '西面駅（7・11・12・13番）、釜山駅（4・6番）、海雲台駅（1・3番）、広安駅（3・5番）、センタムシティ駅など主要46駅のホームから地上歩道まで階段なしで直結するエレベーター出口を正確に案内します。',
+                ZH_TW: '精準標示西面站（7・11・12・13號）、釜山站（4・6號）、海雲台站（1・3號）、廣安站（3・5號）、Centum City 站等 46 個主要車站從月台直達地面的無障礙電梯出口。',
+                ZH_CN: '精准标示西面站（7・11・12・13号）、釜山站（4・6号）、海云台站（1・3号）、广安站（3・5号）、Centum City 站等 46 个主要车站从站台直达地面的无障碍直梯出口。',
+                ES: 'Consulta las salidas exactas con ascensor desde el andén hasta la acera en las 46 estaciones principales, incluidas Seomyeon, Busan Station, Haeundae, Gwangan y Centum City.',
+                FR: 'Retrouvez les numéros exacts des sorties avec ascenseur reliant les quais à la chaussée dans 46 grandes stations (Seomyeon, Gare de Busan, Haeundae, Gwangan, Centum City).',
               })}
             </p>
           </a>
 
           {/* Card 2 */}
           <a
-            href="/barrier-free"
+            href={buildLocalizedPath('/barrier-free', language)}
             onClick={(e) => {
               e.preventDefault();
               onNavigateToGuide?.('barrier-free');
@@ -727,7 +727,7 @@ export function HomeOverviewSection({
 
           {/* Card 3 */}
           <a
-            href="/tips/transit"
+            href={buildLocalizedPath('/tips/transit', language)}
             onClick={(e) => {
               e.preventDefault();
               onNavigateToGuide?.('transit');
@@ -766,9 +766,254 @@ export function HomeOverviewSection({
       </section>
 
       {/* ==========================================
-          5. COMPACT ABOUT & VERIFICATION BANNER
+          5. IN-DEPTH BUSAN STEP-FREE TRAVEL & SUBWAY EDITORIAL GUIDE
          ========================================== */}
-      <section className="pt-4" id="about-verification-banner">
+      <section
+        className="bg-white border border-black/[0.05] rounded-2xl p-5 sm:p-6 space-y-4 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.04)]"
+        id="home-comprehensive-guide"
+        aria-label={pickLang(language, {
+          KR: '부산 무장애 지하철 및 배리어프리 여행 종합 가이드',
+          EN: 'Busan Step-Free Subway & Barrier-Free Travel Comprehensive Guide',
+          JA: '釜山バリアフリー地下鉄＆階段なし旅行総合ガイド',
+          ZH_TW: '釜山無障礙地鐵＆免爬樓梯自由行綜合指南',
+          ZH_CN: '釜山无障碍地铁＆无台阶自由行综合指南',
+          ES: 'Guía Integral del Metro Accesible y Viajes Sin Escalones en Busan',
+          FR: 'Guide Complet du Métro Accessible et du Voyage Sans Marche à Busan',
+        })}
+      >
+        <div className="space-y-1.5">
+          <h2 className="text-base sm:text-lg font-black text-[#18181B] tracking-tight">
+            {pickLang(language, {
+              KR: '부산 무장애(배리어프리) 지하철 & 권역별 여행 동선 종합 가이드',
+              EN: 'Busan Step-Free Subway & Regional Itinerary Planning Guide',
+              JA: '釜山バリアフリー地下鉄＆エリア別モデルコース設計ガイド',
+              ZH_TW: '釜山無障礙地鐵＆分區旅遊路線規劃完整指南',
+              ZH_CN: '釜山无障碍地铁＆分区旅游路线规划完整指南',
+              ES: 'Guía de Planificación por Zonas y Metro Sin Escalones en Busan',
+              FR: 'Guide de Planification par Quartier et Métro Sans Marche à Busan',
+            })}
+          </h2>
+          <p className="text-xs sm:text-[13px] text-slate-600 leading-relaxed break-keep">
+            {pickLang(language, {
+              KR: '부산은 바다와 산이 맞닿은 입체적인 지형을 가진 해양 관광 도시로, 지하철역 출구 선택과 환승 동선에 따라 여행의 피로도가 크게 달라집니다. 스텝리스(Stepless)는 부산교통공사 공식 승강편의시설 데이터와 한국관광공사 열린관광지(TourAPI) 정보, 그리고 현지 실사를 결합하여 유모차 동반 가족, 휠체어 이용자, 부모님 효도여행 및 캐리어 여행객에게 가장 안전하고 평탄한 이동 경로를 안내합니다.',
+              EN: 'Busan is a coastal city where mountains meet the sea, meaning the subway exit and transfer path you choose can make a major difference when traveling with a stroller, wheelchair, or heavy luggage. Stepless combines official Busan Transportation Corporation facility data with Korea Tourism Organization (TourAPI) accessibility records and on-site verification to help you travel across Busan without stairs.',
+              JA: '釜山は海と山が隣接する立体的な地形を持つ港町であり、地下鉄の出口選びや乗換ルートによって移動の快適さが大きく変わります。Steplessは釜山交通公社の公式データと韓国観光公社(TourAPI)のバリアフリー情報、現地調査を組み合わせ、ベビーカーや車椅子、スーツケースでも階段なしで巡れる最適ルートを案内します。',
+              ZH_TW: '釜山是山海相連的海港城市，地鐵站出口選擇與轉乘動線會直接影響推嬰兒車、輪椅或攜帶大型行李箱的舒適度。Stepless 結合釜山交通公社官方數據、韓國觀光公社(TourAPI)無障礙資料與實地踏查，為親子家庭、孝親遊與自由行旅客提供最平緩安全的無階梯路線。',
+              ZH_CN: '釜山是山海相连的海滨城市，地铁站出口选择与换乘路线会直接影响推婴儿车、轮椅或携带大件行李箱的出行体验。Stepless 结合釜山交通公社官方数据、韩国观光公社(TourAPI)无障碍数据与实地勘查，为亲子家庭、父母出游与自由行游客提供最平缓安全的无台阶路线。',
+              ES: 'Busan es una ciudad costera rodeada de montañas donde elegir la salida de metro correcta marca la diferencia al viajar con cochecito, silla de ruedas o maletas. Stepless combina datos oficiales de Busan Transportation Corporation y Korea Tourism Organization con verificaciones en terreno para ofrecer rutas 100 % sin escalones.',
+              FR: 'Busan est une ville côtière vallonnée où le choix de la sortie de métro change tout lorsqu’on voyage avec une poussette, un fauteuil roulant ou des valises. Stepless combine les données officielles de Busan Transportation Corporation et de la Korea Tourism Organization avec des relevés sur le terrain pour garantir des trajets sans marche.',
+            })}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
+          <article className="bg-[#FAF9F6] border border-black/[0.04] rounded-xl p-4 space-y-1.5">
+            <h3 className="font-bold text-xs sm:text-[13.5px] text-[#18181B]">
+              {pickLang(language, {
+                KR: '1. 도시철도 1~4호선·동해선·경전철 환승 및 지상 엘리베이터 기준',
+                EN: '1. Metro Lines 1–4, Donghae Line & Airport LRT Elevator Standards',
+                JA: '1. 地下鉄1〜4号線・東海線・空港軽電鉄のエレベーター＆乗換基準',
+                ZH_TW: '1. 地鐵 1～4 號線・東海線・機場輕軌電梯與轉乘標準',
+                ZH_CN: '1. 地铁 1～4 号线・东海线・机场轻轨直梯与换乘标准',
+                ES: '1. Criterios de Ascensor y Transbordo en Líneas 1–4, Donghae y Tren Ligero',
+                FR: '1. Normes d’Ascenseur et de Correspondance (Lignes 1–4, Donghae et LRT)',
+              })}
+            </h3>
+            <p className="text-[11.5px] sm:text-xs text-slate-600 leading-relaxed break-keep">
+              {pickLang(language, {
+                KR: '1·2호선 최대 환승역인 서면역(7·11·12·13번 출구 엘리베이터)과 KTX 부산역(1호선 4·6번 출구 엘리베이터 및 2층 보행데크 직결), 김해국제공항 관문인 사상역(경전철-2호선 무장애 환승통로)은 승강장부터 대합실·지상 보도까지 끊김 없이 이어지는 1동선 엘리베이터 확인이 핵심입니다. 상대식 승강장 역사에서는 개찰구 진입 전 행선지 방향을 먼저 확인하시고, 실수로 반대편 개찰구에 진입하더라도 10분 이내 동일 역 재진입 시 추가 요금이 부과되지 않습니다.',
+                EN: 'At major hubs like Seomyeon Station (Exits 7, 11, 12, 13 elevators), KTX Busan Station (Line 1 Exits 4 & 6 elevators linked to the 2F skywalk deck), and Sasang Station (Gimhae Airport LRT to Line 2 transfer), checking continuous platform-to-street elevators saves time. At side-platform stations, if you accidentally enter the wrong direction gate, tapping out and re-entering the opposite gate within 10 minutes at the same station is completely free.',
+                JA: '1・2号線最大の乗換駅である西面駅（7・11・12・13番出口エレベーター）、KTX釜山駅（1号線4・6番出口エレベーター＆2階歩行デッキ直結）、金海空港玄関口の沙上駅ではホームから地上歩道まで直結するエレベーター確認が重要です。また相対式ホームの駅で反対方向の改札に誤入場しても、同じ駅で10分以内にタッチし直せば追加料金なしで再入場できます。',
+                ZH_TW: '在 1・2 號線最大轉乘站西面站（7、11、12、13 號出口電梯）、KTX 釜山站（1 號線 4、6 號出口電梯直通 2 樓空中步道）與金海機場門戶沙上站，事先確認從月台直達地面的電梯最能節省體力。若在側式月台不小心進錯方向閘門，同站 10 分鐘內刷卡出站再進站享免費重進優惠。',
+                ZH_CN: '在 1・2 号线最大换乘站西面站（7、11、12、13 号出口直梯）、KTX 釜山站（1 号线 4、6 号出口直梯连通 2 楼空中廊桥）与金海机场门户沙上站，提前确认从站台直达地面的电梯最省力。若在侧式站台误入反方向闸机，同站 10 分钟内刷卡出站再进站免收额外车费。',
+                ES: 'En estaciones clave como Seomyeon (salidas 7, 11, 12 y 13 con ascensor), Estación KTX de Busan (salidas 4 y 6) y Sasang (enlace con el Aeropuerto de Gimhae), verificar los ascensores directos desde el andén evita rodeos. Si entras al andén equivocado, puedes salir y reingresar gratis en menos de 10 minutos.',
+                FR: 'Dans les gares majeures comme Seomyeon (ascenseurs sorties 7, 11, 12, 13), Gare KTX de Busan (sorties 4 et 6) et Sasang (liaison aéroport de Gimhae), repérer les ascenseurs directs du quai à la rue est essentiel. En cas d’erreur de quai, la réentrée dans les 10 minutes à la même station est gratuite.',
+              })}
+            </p>
+          </article>
+
+          <article className="bg-[#FAF9F6] border border-black/[0.04] rounded-xl p-4 space-y-1.5">
+            <h3 className="font-bold text-xs sm:text-[13.5px] text-[#18181B]">
+              {pickLang(language, {
+                KR: '2. 동부산(해운대·기장) & 원도심(남포·자갈치·영도) 권역별 추천 동선',
+                EN: '2. East Busan (Haeundae & Gijang) vs. Old Town (Nampo & Jagalchi) Routes',
+                JA: '2. 東釜山（海雲台・機張）＆旧都心（南浦・チャガルチ・影島）おすすめ動線',
+                ZH_TW: '2. 東釜山（海雲台・機張）＆舊城區（南浦・札嘎其・影島）分區路線',
+                ZH_CN: '2. 东釜山（海云台・机张）＆老城区（南浦・札嘎其・影岛）分区路线',
+                ES: '2. Rutas por el Este de Busan (Haeundae y Gijang) y Casco Antiguo (Nampo)',
+                FR: '2. Itinéraires Est de Busan (Haeundae & Gijang) et Vieille Ville (Nampo)',
+              })}
+            </h3>
+            <p className="text-[11.5px] sm:text-xs text-slate-600 leading-relaxed break-keep">
+              {pickLang(language, {
+                KR: '동부산 권역은 해운대역(1·3번 출구 엘리베이터)에서 구남로 문화광장, 해운대 해수욕장 호안도로 우든 데크길, 동백섬 APEC나루공원 평지 산책로, 블루라인파크 미포정거장까지 단차 없이 이어지며, 센텀시티역·벡스코역·오시리아역(동해선)을 통해 신세계 센텀시티와 롯데월드·국립부산과학관으로 편리하게 이동할 수 있습니다. 원도심 권역은 자갈치역(3·6·10번 출구)과 남포역(1·7번 출구 및 백화점 엘리베이터)을 거점으로 자갈치시장 현대화 건물, BIFF광장, 부평깡통시장·국제시장 평지 아케이드와 영도 국립해양박물관을 묶어 여행하는 코스가 가장 효율적입니다.',
+                EN: 'In East Busan, take Haeundae Station (Exit 1 or 3 elevator) to walk along flat Gunam-ro Plaza, Haeundae Beach Wooden Deck, Dongbaekseom APEC Park, and Blueline Park Mipo Station, or connect via Centum City, BEXCO, and Osiria Station to Shinsegae Centum City and Lotte World Busan. In Old Town, use Jagalchi Station (Exits 3/6/10) and Nampo Station (Exits 1/7) to explore the modern Jagalchi Fish Market building, BIFF Square, Gukje & Bupyeong Kkangtong Market flat arcades, and the National Maritime Museum in Yeongdo.',
+                JA: '東釜山エリアは海雲台駅（1・3番出口エレベーター）から亀南路広場、海雲台ビーチの海辺ウッドデッキ、冬柏島APECナル公園、ブルーラインパーク尾浦停留場まで段差なしで繋がり、センタムシティ駅やオシリア駅経由で新世界百貨店やロッテワールドへ快適に移動できます。旧都心エリアはチャガルチ駅（3・6・10番出口）と南浦駅を拠点に、チャガルチ市場ビル、BIFF広場、国際市場・富平カントン夜市の平坦なアーケードや国立海洋博物館を巡るのが効率的です。',
+                ZH_TW: '東釜山區域可由海雲台站（1・3 號出口電梯）沿平坦的龜南路廣場、海雲台海濱木棧道、冬柏島 APEC 公園一路漫步至藍線公園尾浦站，並可搭乘地鐵與東海線前往新世界百貨 Centum City 與 오시리아(Osiria) 樂天世界。舊城區則建議以札嘎其站（3・6・10 號出口）與南浦站為中心，串聯札嘎其市場大樓、BIFF 廣場、國際市場與富平罐頭夜市平坦拱廊及影島國立海洋博物館。',
+                ZH_CN: '东釜山区域可由海云台站（1・3 号出口直梯）沿平坦的龟南路广场、海云台海滨木栈道、冬柏岛 APEC 公园漫步至蓝线公园尾浦站，并可乘地铁与东海线前往新世界百货 Centum City 与奥西利亚乐天世界。老城区建议以札嘎其站（3・6・10 号出口）与南浦站为中心，串联札嘎其市场大楼、BIFF 广场、国际市场与富平罐头夜市平坦拱廊及影岛国立海洋博物馆。',
+                ES: 'En el Este de Busan, la estación Haeundae (ascensor salidas 1 y 3) conecta sin escalones con la plaza Gunam-ro, el paseo entarimado de Haeundae, la isla Dongbaekseom y Blueline Park, además de Centum City y Osiria. En el Casco Antiguo, las estaciones Jagalchi y Nampo permiten recorrer sin barreras el Mercado de Pescado Jagalchi, la plaza BIFF, el Mercado Gukje y el Museo Marítimo Nacional.',
+                FR: 'À l’Est de Busan, la station Haeundae (ascenseur sorties 1 et 3) rejoint sans marche la place Gunam-ro, la promenade en bois de Haeundae, l’île de Dongbaekseom et le Blueline Park, ainsi que Centum City et Osiria. Dans la Vieille Ville, les stations Jagalchi et Nampo donnent un accès plat au marché aux poissons de Jagalchi, à la place BIFF, au marché Gukje et au Musée Maritime National.',
+              })}
+            </p>
+          </article>
+
+          <article className="bg-[#FAF9F6] border border-black/[0.04] rounded-xl p-4 space-y-1.5">
+            <h3 className="font-bold text-xs sm:text-[13.5px] text-[#18181B]">
+              {pickLang(language, {
+                KR: '3. 대중교통 30분 무료 환승·어린이 요금 0원 및 무료 짐 보관소 활용',
+                EN: '3. 30-Min Free Transfers, Free Child Fares & Free Luggage Lounges',
+                JA: '3. 30分無料乗換・子供運賃0円＆4大無料荷物預かり所の活用術',
+                ZH_TW: '3. 30分鐘免費轉乘・兒童車資0元＆4大免費行李寄放處活用法',
+                ZH_CN: '3. 30分钟免费换乘・儿童车费0元＆4大免费行李寄存处活用法',
+                ES: '3. Transbordos Gratis en 30 Min, Niños Gratis y Consignas Gratuitas',
+                FR: '3. Correspondances Gratuites 30 Min, Enfants Gratuits & Consignes',
+              })}
+            </h3>
+            <p className="text-[11.5px] sm:text-xs text-slate-600 leading-relaxed break-keep">
+              {pickLang(language, {
+                KR: '부산 도시철도와 시내버스·마을버스는 하차 단말기 태그 후 30분 이내 갈아타면 최대 2회까지 무료 환승이 적용됩니다. 만 6세 미만 영유아 및 생년월일이 등록된 어린이 교통카드(만 6~12세) 이용자는 부산 지하철과 시내버스를 무료(0원)로 탑승할 수 있습니다. 24~28인치 이상 대형 캐리어는 시내버스 반입이 제한될 수 있으므로 부산역(부산트래블라운지), 서면(롯데백화점), 해운대(해운대플랫폼), 광안리(관광안내소)의 무료 짐 보관소나 지하철 물품보관함(T-Luggage)을 적극 활용하세요.',
+                EN: 'Tapping your T-money or EZL transit card when exiting grants up to 2 free transfers within 30 minutes between Busan subway lines and city/village buses. Children under 6 ride free, and children aged 6–12 enjoy 0 KRW fares on buses and subway lines with a registered child transit card. Since suitcases over 24–28 inches may be restricted on city buses, use subway elevators and the 4 free luggage lounges at Busan Station, Seomyeon, Haeundae, and Gwangalli.',
+                JA: '釜山地下鉄と市内バス・マウルバスは降車タッチ後30分以内の乗換で最大2回まで無料乗換割引が適用されます。満6歳未満の乳幼児および生年月日登録済みの子供用交通カード（満6〜12歳）は釜山地下鉄・バス運賃が無料（0ウォン）です。大型スーツケースは市内バスへの持ち込みが制限される場合があるため、釜山駅・西面・海雲台・広安里の無料荷物預かり所や駅コインロッカーをご活用ください。',
+                ZH_TW: '使用 T-money 等交通卡於下車刷卡後 30 分鐘內轉乘釜山地鐵與市區／社區巴士，可享最多 2 次免費轉乘。未滿 6 歲幼童及持登錄生日兒童卡的 6～12 歲兒童搭乘釜山地鐵與公車完全免費（0韓元）。由於 24～28 吋以上大行李箱可能無法帶上公車，建議善用釜山站、西面、海雲台與廣安里的 4 處免費行李寄放服務或地鐵寄物櫃。',
+                ZH_CN: '使用 T-money 等交通卡在下车刷卡后 30 分钟内换乘釜山地铁与市区／社区公交，可享最多 2 次免费换乘。未满 6 岁幼童及持实名儿童卡的 6～12 岁儿童乘坐釜山地铁与公交完全免费（0韩元）。由于 24～28 寸以上大件行李箱可能受限上公交，建议善用釜山站、西面、海云台与广安里的 4 处免费行李寄存处或地铁寄存柜。',
+                ES: 'Al validar tu tarjeta T-money al bajar, dispones de hasta 2 transbordos gratuitos en 30 minutos entre el metro y los autobuses de Busan. Los menores de 6 años y niños de 6 a 12 años con tarjeta infantil viajan gratis. Como las maletas grandes tienen restricciones en los autobuses urbanos, utiliza las consignas gratuitas en Busan Station, Seomyeon, Haeundae y Gwangalli.',
+                FR: 'En badgeant votre carte T-money à la descente, vous bénéficiez de 2 correspondances gratuites dans les 30 minutes entre métro et bus à Busan. Les enfants de moins de 6 ans et de 6 à 12 ans (avec carte enfant) voyagent gratuitement. Les grandes valises étant limitées dans les bus, profitez des consignes gratuites à la gare de Busan, Seomyeon, Haeundae et Gwangalli.',
+              })}
+            </p>
+          </article>
+        </div>
+      </section>
+
+      {/* ==========================================
+          6. VISIBLE FAQ SECTION (Matches FAQPage JSON-LD & Speakable)
+         ========================================== */}
+      <section
+        id="aeo-qa-section"
+        aria-label={pickLang(language, {
+          KR: '부산 여행 코스 & 지하철 엘리베이터 자주 묻는 질문 (FAQ)',
+          EN: 'Frequently Asked Questions: Busan Itinerary & Step-Free Subway Guide',
+          JA: 'よくある質問（FAQ）：釜山モデルコース＆地下鉄エレベーター案内',
+          ZH_TW: '常見問題（FAQ）：釜山自由行行程＆地鐵無障礙電梯指南',
+          ZH_CN: '常见问题（FAQ）：釜山自由行路线＆地铁无障碍直梯指南',
+          ES: 'Preguntas Frecuentes (FAQ): Itinerarios por Busan y Metro Sin Escalones',
+          FR: 'Questions Fréquentes (FAQ) : Itinéraires à Busan et Métro Sans Marche',
+        })}
+        className="bg-white border border-black/[0.05] rounded-2xl p-5 sm:p-6 space-y-4 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.04)]"
+      >
+        <h2 className="text-base sm:text-lg font-black text-[#18181B] tracking-tight">
+          {pickLang(language, {
+            KR: '부산 여행 코스 & 무장애 지하철 자주 묻는 질문 (FAQ)',
+            EN: 'Frequently Asked Questions: Busan Travel & Step-Free Subway (FAQ)',
+            JA: '釜山旅行コース＆地下鉄バリアフリー よくある質問（FAQ）',
+            ZH_TW: '釜山自由行行程＆無障礙地鐵 常見問題（FAQ）',
+            ZH_CN: '釜山自由行路线＆无障碍地铁 常见问题（FAQ）',
+            ES: 'Preguntas Frecuentes sobre Viajes y Metro Accesible en Busan (FAQ)',
+            FR: 'Questions Fréquentes sur le Voyage et le Métro Accessible à Busan (FAQ)',
+          })}
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          {[
+            {
+              q: pickLang(language, {
+                KR: 'Q1. 부산 1박 2일·2박 3일 여행 코스는 어떻게 짜는 것이 가장 효율적인가요?',
+                EN: 'Q1. How should I plan a 2-day or 3-day Busan trip itinerary?',
+                JA: 'Q1. 釜山1泊2日・2泊3日旅行のモデルコースはどう組むのが効率的ですか？',
+                ZH_TW: 'Q1. 釜山兩天一夜、三天兩夜自由行行程怎麼安排最順路？',
+                ZH_CN: 'Q1. 釜山两天一夜、三天两夜自由行路线怎么安排最顺路？',
+                ES: 'Q1. ¿Cómo organizar un itinerario de 2 o 3 días en Busan?',
+                FR: 'Q1. Comment organiser un itinéraire de 2 ou 3 jours à Busan ?',
+              }),
+              a: pickLang(language, {
+                KR: '첫째 날은 동부산(해운대 해수욕장 데크길 · 블루라인파크 스카이캡슐 · 광안리 해변 야경 및 토요일 드론쇼), 둘째 날은 원도심과 영도(자갈치시장 · 국제시장 · 감천문화마을 · 흰여울문화마을 · 국립해양박물관), 셋째 날은 기장(해동용궁사 · 오시리아 루지 · 롯데월드) 또는 서면·전포카페거리를 묶어 이동하면 지하철 환승을 최소화하며 알차게 여행할 수 있습니다.',
+                EN: 'Spend Day 1 in East Busan (Haeundae Beach boardwalk, Blueline Park Sky Capsule, and Gwangalli Beach night view & Saturday Drone Show), Day 2 in Old Town & Yeongdo (Jagalchi Fish Market, Gukje Market, Gamcheon Culture Village, and Huinnyeoul Culture Village), and Day 3 in Gijang (Haedong Yonggungsa Temple, Skyline Luge, Lotte World) or Seomyeon & Jeonpo Cafe Street.',
+                JA: '1日目は東釜山（海雲台ビーチ・ブルーラインパークのスカイカプセル・広安里の夜景＆土曜ドローンショー）、2日目は旧都心と影島（チャガルチ市場・国際市場・甘川文化村・ヒニョウル文化村）、3日目は機張（海東龍宮寺・オシリアのリュージュやロッテワールド）または西面・田浦カフェ通りを巡ると乗換ロスなく回れます。',
+                ZH_TW: '建議 Day 1 安排東釜山海景線（海雲台海濱步道、藍線公園膠囊列車、廣安里夜景與週六無人機秀），Day 2 走訪舊城區與影島（札嘎其市場、國際市場、甘川洞文化村、白淺灘文化村），Day 3 前往機張（海東龍宮寺、斜坡滑車、樂天世界）或西面田浦咖啡街。',
+                ZH_CN: '建议 Day 1 安排东釜山海景线（海云台海滨步道、蓝线公园胶囊小火车、广安里夜景与周六无人机秀），Day 2 走访老城区与影岛（札嘎其市场、国际市场、甘川文化村、白浅滩文化村），Day 3 前往机张（海东龙宫寺、斜坡滑车、乐天世界）或西面田浦咖啡街。',
+                ES: 'Dedica el Día 1 al Este (Playa Haeundae, Sky Capsule de Blueline Park y noche en Gwangalli), el Día 2 al Casco Antiguo y Yeongdo (Mercado Jagalchi, Mercado Gukje, Gamcheon y Huinnyeoul) y el Día 3 a Gijang (Templo Haedong Yonggungsa, Luge) o Seomyeon.',
+                FR: 'Consacrez le Jour 1 à l’Est (Plage de Haeundae, Sky Capsule Blueline Park et soirée à Gwangalli), le Jour 2 à la Vieille Ville et Yeongdo (Marché de Jagalchi, Marché Gukje, Gamcheon et Huinnyeoul) et le Jour 3 à Gijang (Temple Haedong Yonggungsa, Luge) ou Seomyeon.',
+              }),
+            },
+            {
+              q: pickLang(language, {
+                KR: 'Q2. 서면역과 KTX 부산역에서 유모차·캐리어로 갈 때 몇 번 출구 엘리베이터를 타야 하나요?',
+                EN: 'Q2. Which elevator exits should I use at Seomyeon Station and KTX Busan Station?',
+                JA: 'Q2. 西面駅とKTX釜山駅でベビーカーやスーツケース移動におすすめのエレベーター出口は？',
+                ZH_TW: 'Q2. 在西面站與 KTX 釜山站推嬰兒車或拖行李箱，應該搭幾號出口的電梯？',
+                ZH_CN: 'Q2. 在西面站与 KTX 釜山站推婴儿车或拖行李箱，应该乘几号出口的电梯？',
+                ES: 'Q2. ¿Qué salidas con ascensor debo usar en la estación Seomyeon y en la estación KTX de Busan?',
+                FR: 'Q2. Quelles sorties avec ascenseur utiliser à la station Seomyeon et à la gare KTX de Busan ?',
+              }),
+              a: pickLang(language, {
+                KR: '1·2호선 환승역인 서면역은 지상 직결 엘리베이터가 설치된 7번·11번·12번·13번 출구 및 롯데백화점 지하 연결 통로를 이용하면 계단 없이 지상으로 나갈 수 있습니다. KTX 부산역은 지하철 1호선 부산역 4번·6번 출구 지상 엘리베이터와 KTX 역사 2층 보행 데크 엘리베이터가 평지로 연결되어 있습니다.',
+                EN: 'At Seomyeon Station (Lines 1 & 2 transfer hub), Exits 7, 11, 12, and 13 have direct street-level elevators, alongside underground elevator access through Lotte Department Store. At Busan Station, Subway Line 1 Exits 4 and 6 provide street-level elevators that connect across a flat plaza directly to the KTX Busan Station elevators.',
+                JA: '1・2号線乗換駅の西面駅では7番・11番・12番・13番出口に地上直結エレベーターがあり、ロッテ百貨店地下連絡通路も利用可能です。KTX釜山駅では地下鉄1号線・釜山駅の4番・6番出口エレベーターから平坦な広場を通ってKTX駅舎エレベーターへ直結しています。',
+                ZH_TW: '在 1・2 號線交會的西面站，7 號、11 號、12 號與 13 號出口設有地面直達電梯，亦可連通樂天百貨地下電梯。在 KTX 釜山站，地鐵 1 號線釜山站 4 號與 6 號出口設有地面電梯，出站後經平坦廣場即可直達 KTX 車站大樓電梯。',
+                ZH_CN: '在 1・2 号线换乘枢纽西面站，7 号、11 号、12 号与 13 号出口设有地面直达电梯，也可连通乐天百货地下电梯。在 KTX 釜山站，地铁 1 号线釜山站 4 号与 6 号出口设有地面直梯，出站后经平坦广场即可直达 KTX 车站大楼电梯。',
+                ES: 'En la estación Seomyeon (transbordo Líneas 1 y 2), las salidas 7, 11, 12 y 13 cuentan con ascensores directos a la calle. En la estación de Busan, las salidas 4 y 6 de la Línea 1 tienen ascensores que conectan en llano con los ascensores de la terminal KTX.',
+                FR: 'À la station Seomyeon (correspondance Lignes 1 et 2), les sorties 7, 11, 12 et 13 disposent d’ascenseurs directs vers la rue. À la gare de Busan, les sorties 4 et 6 de la Ligne 1 offrent des ascenseurs reliés à plat au hall de la gare KTX.',
+              }),
+            },
+            {
+              q: pickLang(language, {
+                KR: 'Q3. 김해국제공항(PUS)에서 해운대·광안리·서면·남포동까지 계단 없이 어떻게 이동하나요?',
+                EN: 'Q3. How do I travel step-free from Gimhae Airport (PUS) to Haeundae, Gwangalli, or Seomyeon?',
+                JA: 'Q3. 金海国際空港（PUS）から海雲台・広安里・西面へ階段なしで行く方法は？',
+                ZH_TW: 'Q3. 如何從金海國際機場（PUS）免爬樓梯前往海雲台、廣安里、西面或南浦洞？',
+                ZH_CN: 'Q3. 如何从金海国际机场（PUS）无台阶前往海云台、广安里、西面或南浦洞？',
+                ES: 'Q3. ¿Cómo ir sin escalones desde el Aeropuerto de Gimhae (PUS) a Haeundae, Gwangalli o Seomyeon?',
+                FR: 'Q3. Comment aller sans marche de l’aéroport de Gimhae (PUS) à Haeundae, Gwangalli ou Seomyeon ?',
+              }),
+              a: pickLang(language, {
+                KR: '김해공항역에서 부산김해경전철(전 역사 엘리베이터 완비)을 타고 3정거장 뒤인 사상역에서 하차한 뒤, 무장애 환승 통로 엘리베이터로 도시철도 2호선에 탑승하면 서면역(약 20분), 광안역·해운대역(약 50분)까지 환승 없이 한 번에 이동할 수 있습니다.',
+                EN: 'Take the Busan-Gimhae Light Rail (equipped with large elevators at every station) 3 stops from Gimhae Airport to Sasang Station, then follow the step-free elevator transfer passage to Subway Line 2. Line 2 takes you directly to Seomyeon (20 mins), Gwangan (45 mins), and Haeundae (55 mins).',
+                JA: '金海空港駅から釜山金海軽電鉄（全駅エレベーター完備）で3駅の沙上駅まで行き、バリアフリー乗換通路のエレベーターで地下鉄2号線に乗り換えると、西面駅（約20分）、広安駅・海雲台駅（約50分）まで1本で移動できます。',
+                ZH_TW: '從金海機場站搭乘釜山金海輕軌（全線設有大型電梯）3 站至沙上站，經由無障礙電梯轉乘通道換乘地鐵 2 號線，即可免換車直達西面站（約 20 分鐘）、廣安站與海雲台站（約 50 分鐘）。',
+                ZH_CN: '从金海机场站乘坐釜山金海轻轨（全线配备大型直梯）3 站至沙上站，通过无障碍电梯换乘通道换乘地铁 2 号线，即可一车直达西面站（约 20 分钟）、广安站与海云台站（约 50 分钟）。',
+                ES: 'Toma el tren ligero Busan-Gimhae (con ascensores en todas las estaciones) 3 paradas desde el aeropuerto hasta Sasang y usa el pasillo accesible hacia la Línea 2 del metro, que te lleva directo a Seomyeon (20 min), Gwangan y Haeundae (50 min).',
+                FR: 'Prenez le métro léger Busan-Gimhae (équipé d’ascenseurs) sur 3 stations jusqu’à Sasang, puis empruntez le couloir avec ascenseur vers la Ligne 2 du métro, directe pour Seomyeon (20 min), Gwangan et Haeundae (50 min).',
+              }),
+            },
+            {
+              q: pickLang(language, {
+                KR: 'Q4. 광안리 드론쇼 시간과 해운대 블루라인파크 스카이캡슐 무장애 접근법은?',
+                EN: 'Q4. When is the Gwangalli Drone Show and how do I reach Haeundae Sky Capsule step-free?',
+                JA: 'Q4. 広安里ドローンショーの時間と海雲台スカイカプセルへのバリアフリーアクセスは？',
+                ZH_TW: 'Q4. 廣安里無人機秀時間是幾點？如何無障礙前往海雲台膠囊列車？',
+                ZH_CN: 'Q4. 广安里无人机表演是几点？如何无障碍前往海云台胶囊小火车？',
+                ES: 'Q4. ¿A qué hora es el show de drones de Gwangalli y cómo llegar sin escalones al Sky Capsule?',
+                FR: 'Q4. À quelle heure a lieu le spectacle de drones de Gwangalli et comment accéder à la Sky Capsule ?',
+              }),
+              a: pickLang(language, {
+                KR: '광안리 M 드론라이트쇼는 매주 토요일 저녁 2회(4~9월 20:00·22:00 / 10~3월 19:00·21:00) 무료로 열리며 2호선 광안역 3·5번 출구 엘리베이터에서 평지로 도보 7분 거리입니다. 해운대 블루라인파크 미포정거장은 해운대역 1·3번 출구 엘리베이터에서 구남로와 해변 데크길을 따라 단차 없이 이동할 수 있으며, 탑승장 내 승강기가 설치되어 있습니다.',
+                EN: 'The free Gwangalli M Drone Light Show runs every Saturday evening twice (20:00 & 22:00 Apr–Sep; 19:00 & 21:00 Oct–Mar)—take Line 2 Gwangan Station Exit 3 or 5 elevator for a flat 7-minute walk. For Haeundae Blueline Park Mipo Station, take Haeundae Station Exit 1 or 3 elevator and follow flat Gunam-ro and the beachfront wooden deck; Mipo Station has elevator access to the boarding platform.',
+                JA: '広安里Mドローンライトショーは毎週土曜夜に2回（4〜9月は20:00・22:00、10〜3月は19:00・21:00）無料開催され、2号線広安駅3・5番出口エレベーターから平坦な道で徒歩7分です。海雲台ブルーラインパーク尾浦停留場は海雲台駅1・3番出口エレベーターから亀南路と海辺デッキ経由で段差なしでアクセスでき、乗り場にもエレベーターがあります。',
+                ZH_TW: '廣安里 M 無人機秀每週六晚間免費演出兩場（4～9 月 20:00、22:00；10～3 月 19:00、21:00），從 2 號線廣安站 3・5 號出口電梯直走 7 分鐘即達。海雲台藍線公園尾浦站則可由海雲台站 1・3 號出口電梯沿龜南路與海濱木棧道平地前往，車站內設有電梯直達月台。',
+                ZH_CN: '广安里 M 无人机秀每周六晚免费演出两场（4～9 月 20:00、22:00；10～3 月 19:00、21:00），从 2 号线广安站 3・5 号出口直梯直行 7 分钟即达。海云台蓝线公园尾浦站可由海云台站 1・3 号出口直梯沿龟南路与海滨木栈道平地前往，站内设有电梯直达乘车层。',
+                ES: 'El show gratuito de drones en Gwangalli se realiza cada sábado por la noche (20:00 y 22:00 abr–sep; 19:00 y 21:00 oct–mar), a 7 minutos en llano desde el ascensor de la salida 3 o 5 de Gwangan. Para la estación Mipo del Sky Capsule, usa el ascensor de la salida 1 o 3 de Haeundae y camina por el paseo marítimo llano.',
+                FR: 'Le spectacle gratuit de drones à Gwangalli a lieu chaque samedi soir (20h et 22h avr–sep ; 19h et 21h oct–mar), à 7 minutes à plat de l’ascenseur des sorties 3 ou 5 de Gwangan. Pour la gare Mipo de la Sky Capsule, prenez l’ascenseur des sorties 1 ou 3 de Haeundae puis la promenade côtière plate.',
+              }),
+            },
+          ].map((item, idx) => (
+            <article
+              key={idx}
+              className="bg-[#FAF9F6] border border-black/[0.04] rounded-xl p-4 space-y-1.5"
+            >
+              <h3 className="font-bold text-xs sm:text-[13.5px] text-[#18181B] leading-snug break-keep">
+                {item.q}
+              </h3>
+              <p className="text-[11.5px] sm:text-xs text-slate-600 leading-relaxed break-keep">
+                {item.a}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* ==========================================
+          7. COMPACT ABOUT & VERIFICATION BANNER
+         ========================================== */}
+      <section className="pt-2" id="about-verification-banner">
         <div className="bg-white border border-black/[0.05] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.04)]">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-[#F3F7EC] text-[#5B7332] shrink-0">
@@ -801,7 +1046,7 @@ export function HomeOverviewSection({
           </div>
 
           <a
-            href="/about"
+            href={buildLocalizedPath('/about', language)}
             onClick={(e) => {
               e.preventDefault();
               if (onNavigateToAbout) {
